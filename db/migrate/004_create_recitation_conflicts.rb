@@ -12,7 +12,6 @@ class CreateRecitationConflicts < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :recitation_conflicts, [:student_info_id, :timeslot]
     drop_table :recitation_conflicts
   end
 end

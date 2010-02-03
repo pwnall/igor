@@ -8,6 +8,10 @@ class CreateGrades < ActiveRecord::Migration
 
       t.timestamps
     end
+    
+    # Optimize getting a user's grades.
+    add_index :grades, [:user_id, :assignment_metric_id], :unique => true,
+                                                          :null => false
   end
 
   def self.down

@@ -18,8 +18,6 @@ class CreateRecitationSections < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :recitation_sections, :serial
-    
     drop_table :recitation_sections
   end
 end

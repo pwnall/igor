@@ -23,7 +23,6 @@ class CreateDeliverables < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :deliverables, :assignment_id
     drop_table :deliverables
   end
 end

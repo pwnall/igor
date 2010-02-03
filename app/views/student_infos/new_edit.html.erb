@@ -22,6 +22,7 @@ end
 				<%= f.check_box :wants_credit, :class => 'form_field' %>Yes
 			</div>
 		</div>
+		<% if Course.main.has_recitations? %>
 		<div class="form_entry">
 			<div class="form_label">(recitation allocation)<br />Enter the classes you are taking on Wednesday and Friday</div>
 			<div class="form_field_box">
@@ -60,6 +61,7 @@ end
 				</table>
 			</div>			
 		</div>
+    <% end %>
 		
 		<div class="form_entry">
 			<div class="form_label">Have you taken</div>
@@ -94,9 +96,11 @@ end
     <% end %>
 							
 		<div class="form_entry">
-			<div class="form_label">Other comments / questions</div>
+			<div class="form_label">
+				Why do you want to take <%= Course.main.number%>?
+			</div>
 			<div class="form_field_box">
-				<%= f.text_area :comments, :rows => 5, :class => 'form_field' %>
+				<%= f.text_area :motivation, :rows => 5, :class => 'form_field' %>
 			</div>
 		</div>
 		<div class="form_submit_box">

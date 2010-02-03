@@ -16,7 +16,6 @@ class CreateTokens < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :tokens, :token
     drop_table :tokens
   end
 end

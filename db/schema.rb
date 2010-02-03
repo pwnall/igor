@@ -95,6 +95,8 @@ ActiveRecord::Schema.define(:version => 20100203193053) do
     t.datetime "updated_at"
   end
 
+  add_index "grades", ["user_id", "assignment_metric_id"], :name => "index_grades_on_user_id_and_assignment_metric_id", :unique => true
+
   create_table "notice_statuses", :force => true do |t|
     t.integer "notice_id",                    :null => false
     t.integer "user_id",                      :null => false
@@ -181,13 +183,9 @@ ActiveRecord::Schema.define(:version => 20100203193053) do
   add_index "run_results", ["submission_id"], :name => "index_run_results_on_submission_id", :unique => true
 
   create_table "student_infos", :force => true do |t|
-    t.integer  "user_id",                               :null => false
-    t.boolean  "wants_credit",                          :null => false
-    t.boolean  "has_python",                            :null => false
-    t.boolean  "has_math",                              :null => false
-    t.string   "python_experience", :limit => 4096
-    t.string   "math_experience",   :limit => 4096
-    t.text     "comments",          :limit => 16777215
+    t.integer  "user_id",                          :null => false
+    t.boolean  "wants_credit",                     :null => false
+    t.text     "motivation",   :limit => 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
   end

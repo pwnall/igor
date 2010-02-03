@@ -34,7 +34,7 @@ class CreateProfiles < ActiveRecord::Migration
       t.timestamps
     end
     
-    # ensure no user gets two profiles
+    # Ensure no user gets two profiles.
     add_index :profiles, :user_id, :unique => true
   end
 

@@ -20,9 +20,6 @@ class CreateSubmissions < ActiveRecord::Migration
   end  
 
   def self.down
-    remove_index :submissions, :updated_at
-    remove_index :submissions, [:deliverable_id, :updated_at]
-    remove_index :submissions, [:user_id, :deliverable_id]
     drop_table :submissions
   end
 end

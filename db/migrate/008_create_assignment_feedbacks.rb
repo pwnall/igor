@@ -24,8 +24,6 @@ class CreateAssignmentFeedbacks < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :assignment_feedbacks, [:user_id, :assignment_id]
-    remove_index :assignment_feedbacks, :assignment_id
     drop_table :assignment_feedbacks
   end
 end

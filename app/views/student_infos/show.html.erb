@@ -11,6 +11,8 @@
 				<%=@student_info.wants_credit ? 'Yes' : 'No' %>
 			</div>
 		</div>
+		
+    <% if Course.main.has_recitations? %>
 		<div class="form_entry">
 			<div class="form_label">(recitation allocation)<br />Enter the classes you are taking on Wednesday and Friday</div>
 			<div class="form_field_box">
@@ -37,41 +39,45 @@
 					</tbody>
 				</table>
 			</div>			
-		</div>					
+		</div>
+		<% end %>
+							
 		<div class="form_entry">
 			<div class="form_label">Have you taken</div>
 			<div class="form_field_box">
-				<%=h @student_info.has_python ? 'Yes' : 'No' %> 6.01
-				<%=h @student_info.has_math ? 'Yes' : 'No' %> 6.042/18.062
-			</div>
-		</div>
-		<div class="form_entry" id="python_experience_container">
-			<div class="form_label">What Python experience do you have?</div>
-			<div class="form_field_box">
-				<% if @student_info.python_experience.empty? %>
-					&nbsp;
-				<% else %>
-					<%=h @student_info.python_experience %>
+				<% @student_info.prerequisite_answers.sort_by(&:prerequisite_id).
+                         each do |answer| %>
+        <div>
+				<%=h answer.took_course? ? 'Yes' : 'No' %> -
+				<%=h answer.prerequisite.course_number %>
+        </div>
 				<% end %>
 			</div>
 		</div>
-		<div class="form_entry" id="math_experience_container">
-			<div class="form_label">What math background do you have?</div>
-			<div class="form_field_box">
-				<% if @student_info.math_experience.empty? %>
-					&nbsp;
-				<% else %>
-					<%=h @student_info.math_experience %>
-				<% end %>
-			</div>
-		</div>		
+    <% @student_info.prerequisite_answers.sort_by(&:prerequisite_id).
+                     each do |answer| %>
+    <% next if answer.took_course? %>
+    <div class="form_entry">
+      <div class="form_label"><%=h answer.prerequisite.waiver_question %></div>
+      <div class="form_field_box">
+        <% if answer.waiver_answer.empty? %>
+          &nbsp;
+        <% else %>
+          <%=h answer.waiver_answer %>
+        <% end %>
+      </div>
+    </div>
+    <% end %>
+		
 		<div class="form_entry">
-			<div class="form_label">Other comments / questions</div>
+			<div class="form_label">
+				Why do you want to take <%= Course.main.number%>?
+			</div>
 			<div class="form_field_box">
-				<% if @student_info.comments.empty? %>
+				<% if @student_info.motivation.empty? %>
 					&nbsp;
 				<% else %>
-					<%=h @student_info.comments %>
+					<%=h @student_info.motivation %>
 				<% end %>
 			</div>
 		</div>

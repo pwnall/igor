@@ -20,7 +20,6 @@ class CreateRunResults < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :run_results, :submission_id
     drop_table :run_results
   end
 end
