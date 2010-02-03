@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 18
+# Schema version: 20100203124712
 #
 # Table name: student_infos
 #
@@ -18,8 +18,8 @@
 class StudentInfo < ActiveRecord::Base
   belongs_to :user
   has_many :recitation_conflicts, :dependent => :destroy
+  has_many :prerequisite_answers, :dependent => :destroy
+  accepts_nested_attributes_for :prerequisite_answers, :allow_destroy => false
   
   validates_inclusion_of :wants_credit, :in => [true, false]
-  validates_inclusion_of :has_python, :in => [true, false]
-  validates_inclusion_of :has_math, :in => [true, false]
 end

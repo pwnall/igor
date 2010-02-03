@@ -1,16 +1,16 @@
 # == Schema Information
-# Schema version: 18
+# Schema version: 20100203124712
 #
 # Table name: deliverable_validations
 #
 #  id               :integer(4)      not null, primary key
-#  deliverable_id   :integer(4)      not null
 #  type             :string(128)     not null
+#  deliverable_id   :integer(4)      not null
 #  message_name     :string(64)
-#  file_uri         :string(1024)
-#  file_tag         :string(64)
-#  pkg_file_name    :string(255)
-#  pkg_content_type :string(255)
+#  pkg_uri          :string(1024)
+#  pkg_tag          :string(64)
+#  pkg_file_name    :string(256)
+#  pkg_content_type :string(64)
 #  pkg_file_size    :integer(4)
 #  pkg_file         :binary(21474836
 #  pkg_medium_file  :binary

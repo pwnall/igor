@@ -21,10 +21,10 @@
 			<dd>
 				<ul class="admin_console_buttons">
 					<li>
-						<%= link_to 'Get Submissions', :controller => :submissions, :action => :request_stuff, :id => 0 %>
+						<%= link_to 'Get Submissions', request_package_submissions_path %>
 					</li>
 					<li>
-						<%= link_to 'Post Grades', :controller => :grades, :action => :index %>
+						<%= link_to 'Post Grades', grades_path %>
 					</li>
 				</ul>
 			</dd>
@@ -33,17 +33,20 @@
 			<dd>
 				<ul class="admin_console_buttons">
 					<li>
-						<%= link_to 'Assignments', :controller => :assignments, :action => :index %>
+						<%= link_to 'Assignments', assignments_path %>
 					</li>
 					<li>
-						<%= link_to 'Metrics', :controller => :assignment_metrics, :action => :index %>
+						<%= link_to 'Metrics', assignment_metrics_path %>
 					</li>
 					<li>
-						<%= link_to 'Notices', :controller => :notices, :action => :index %>
+						<%= link_to 'Notices', notices_path %>
 					</li>
 					<li>
-						<%= link_to 'Recitations', :controller => :recitation_sections, :action => :index %>
+						<%= link_to 'Recitations', recitation_sections_path %>
 					</li>
+          <li>
+            <%= link_to 'Prerequisites', prerequisites_path %>
+          </li>
 				</ul>
 			</dd>
 			
@@ -51,19 +54,19 @@
 			<dd>
 				<ul class="admin_console_buttons">
 					<li>
-						<%= link_to 'Submissions', :controller => :submissions, :action => :index %>
+						<%= link_to 'Submissions', submissions_path %>
 					</li>
 					<li>
-						<%= link_to 'Profiles', :controller => :profiles, :action => :index %>
+						<%= link_to 'Profiles', profiles_path %>
 					</li>
 					<li>
-						<%= link_to 'Feedback', :controller => :assignment_feedbacks, :action => :index %>
+						<%= link_to 'Feedback', assignment_feedbacks_path %>
 					</li>
 					<li>
-						<%= link_to 'Grades', :controller => :grades, :action => :request_report, :id => 0 %>
+						<%= link_to 'Grades', request_report_grades_path %>
 					</li>
 					<li>
-						<%= link_to 'Missing Grades', :controller => :grades, :action => :request_missing, :id => 0 %>
+						<%= link_to 'Missing Grades', request_missing_grades_path %>
 					</li>
 				</ul>
 			</dd>
@@ -73,10 +76,10 @@
 			<dd>
 				<ul class="admin_console_buttons">
 					<li>
-						<%= link_to 'Users', :controller => :users, :action => :index %>
+						<%= link_to 'Users', users_path %>
 					</li>
 					<li>
-						<%= link_to 'Student Info', :controller => :student_infos, :action => :index %>
+						<%= link_to 'Student Info', student_infos_path %>
 					</li>
 				</ul>
 			</dd>
@@ -85,10 +88,10 @@
 			<dd>
 				<ul class="admin_console_buttons">
 					<li>
-						<%= link_to 'System', :controller => :health, :action => :system_stat, :id => 0 %>
+						<%= link_to 'System', system_stat_health_path %>
 					</li>
 					<li>
-						<%= link_to 'Processes', :controller => :health, :action => :index %>
+						<%= link_to 'Processes', health_index_path %>
 					</li>
 				</ul>
 			</dd>			

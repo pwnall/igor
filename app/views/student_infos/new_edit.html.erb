@@ -59,26 +59,40 @@ end
 					</tbody>
 				</table>
 			</div>			
-		</div>					
+		</div>
+		
 		<div class="form_entry">
 			<div class="form_label">Have you taken</div>
 			<div class="form_field_box">
-				<%= f.check_box :has_python, :class => 'form_field' %>6.01
-				<%= f.check_box :has_math, :class => 'form_field' %>6.042/18.062
+				<div id="prereq_inject_target"></div>
 			</div>
 		</div>
-		<div class="form_entry" id="python_experience_container">
-			<div class="form_label">What Python experience do you have?</div>
-			<div class="form_field_box">
-				<%= f.text_area :python_experience, :rows => 3, :class => 'form_field' %>
-			</div>
+		
+    <% f.fields_for :prerequisite_answers do |p| %>
+    <div class="form_entry">
+      <div class="form_label"><%= p.object.prerequisite.waiver_question %></div>
+      <div class="form_field_box">
+      <%= p.text_area :waiver_answer, :rows => 3, :class => 'form_field' %>
+      </div>
+			<span class="prereq_inject">
+        <%= p.check_box :took_course, :class => 'prereq_inject_trigger' %>
+        <%= p.object.prerequisite.course_number %>        
+				<%= p.hidden_field :prerequisite_id %>
+			</span>
 		</div>
-		<div class="form_entry" id="math_experience_container">
-			<div class="form_label">What math background do you have?</div>
-			<div class="form_field_box">
-				<%= f.text_area :math_experience, :rows => 3, :class => 'form_field' %>
-			</div>
-		</div>		
+		<% object_prefix = p.object_name.gsub(/\[|\]/, '_').gsub('__', '_') %>
+		<script type="text/javascript">
+			var masterDiv = $('<%= object_prefix %>waiver_answer').up('.form_entry');
+			var injectSpan = masterDiv.down('.prereq_inject');
+			var targetDiv = $('prereq_inject_target');
+			injectSpan.up().removeChild(injectSpan);
+			targetDiv.appendChild(injectSpan);
+			
+      show_div_on_checkbox_setting(masterDiv,
+			     injectSpan.down('.prereq_inject_trigger'), false);
+		</script>
+    <% end %>
+							
 		<div class="form_entry">
 			<div class="form_label">Other comments / questions</div>
 			<div class="form_field_box">
@@ -92,12 +106,5 @@ end
 		</div>
 	</div>
 <% end %>
-
-
-<%= javascript_tag <<JS_END
-show_div_on_checkbox_setting('python_experience_container', 'student_info_has_python', false);
-show_div_on_checkbox_setting('math_experience_container', 'student_info_has_math', false);
-JS_END
-%>
 
 </div>

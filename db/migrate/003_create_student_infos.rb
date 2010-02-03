@@ -5,14 +5,6 @@ class CreateStudentInfos < ActiveRecord::Migration
       t.integer :user_id, :null => false
       # taking the class for credit ?
       t.boolean :wants_credit, :null => false
-      # has taken 6.01 ?
-      t.boolean :has_python, :null => false
-      # has taken 6.042 / 18.062? ?
-      t.boolean :has_math, :null => false
-      # previous python experience (if hasn't taken 6.01)
-      t.string :python_experience, :limit => 4.kilobytes
-      # previous math experience (if hasn't taken 6.042)
-      t.string :math_experience, :limit => 4.kilobytes
       # comments
       t.string :comments, :limit => 32.kilobytes
 

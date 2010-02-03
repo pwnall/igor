@@ -2,7 +2,7 @@
 
 function show_div_on_checkbox_setting(div_id, checkbox_id, value_for_shown){
 	var checkbox = $(checkbox_id);
-	var div_element = $(div_id); 
+	var div_element = $(div_id);
 	if(checkbox.checked != value_for_shown)
 		div_element.hide();
 	checkbox.observe('change', function(event) {

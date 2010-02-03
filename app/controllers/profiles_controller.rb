@@ -41,13 +41,14 @@ class ProfilesController < ApplicationController
 
   def new_edit(manual)
     @manual = manual
+    
     if @profile.new_record?
       unless manual
         @profile.athena_username = @s_user.email.split('@')[0]
       end
     else
       if !@s_user.admin && @s_user.id != @profile.user_id
-        # do not allow random record updates
+        # Don't let normal users edit other users' profiles.
         notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
         redirect_to :controller => :welcome, :action => :index
         return

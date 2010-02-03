@@ -1,16 +1,15 @@
 # == Schema Information
-# Schema version: 18
+# Schema version: 20100203124712
 #
 # Table name: submissions
 #
 #  id                :integer(4)      not null, primary key
 #  deliverable_id    :integer(4)      not null
 #  user_id           :integer(4)      not null
-#  code_file_name    :string(255)
-#  code_content_type :string(255)
+#  code_file_name    :string(256)
+#  code_content_type :string(64)
 #  code_file_size    :integer(4)
-#  code_updated_at   :datetime
-#  code_file         :binary
+#  code_file         :binary(16777215
 #  code_medium_file  :binary
 #  code_thumb_file   :binary
 #  created_at        :datetime

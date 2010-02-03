@@ -25,8 +25,8 @@ class SubmissionsController < ApplicationController
     end
   end  
   
-  # GET /submissions/request_stuff/0
-  def request_stuff
+  # GET /submissions/request_package
+  def request_package
     @deliverables = Deliverable.find(:all, :order => 'deliverables.id DESC', :include => :assignment)
     @assignments = Assignment.find(:all, :order => 'assignments.id DESC')    
   end

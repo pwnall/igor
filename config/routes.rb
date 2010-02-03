@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :prerequisites
+
   map.resources :users, :collection => { :lookup  => :get,
                                          :check_available => :get },
                         :member => { :edit_password => :get,
@@ -14,10 +16,12 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :assignments
   map.resources :deliverables
   map.resources :deliverable_validations
-  map.resources :student_infos
-  map.resources :submissions
+  map.resources :student_infos, :collection => { :my_own => :get }
+  map.resources :submissions, :collection => { :request_package => :get }
   map.resources :profiles
-  map.resources :health
+  map.resources :health, :collection => { :system_stat => :get }
+  map.resources :grades, :collection => { :request_report => :get,
+                                          :request_missing => :get  }
 
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -50,7 +54,7 @@ ActionController::Routing::Routes.draw do |map|
   # See how all your routes lay out with "rake routes"
 
   # Install the default routes as the lowest priority.
-  map.coneect 'tokens/:token', :controller => 'tokens', :action => 'spend'
+  map.connect 'tokens/:token', :controller => 'tokens', :action => 'spend'
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
 end

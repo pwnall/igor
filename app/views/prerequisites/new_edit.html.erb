@@ -1,0 +1,42 @@
+<!-- assignment_metrics/new_edit -->
+<div class="full_section">
+  
+<% if @prerequisite.new_record? %>
+  <h1 class="full_section">New Prerequisite</h1>
+<% else %>
+  <h1 class="full_section">Editing Prerequisite</h1>
+<% end %>
+
+<%= error_messages_for :prerequisite %>
+
+<%
+if @prerequisite.new_record?
+  url = {:controller => :prerequisites, :action => :create}
+else
+  url = {:controller => :prerequisites, :action => :update, :id => @prerequisites.id}
+end
+%>
+
+<% form_for(@prerequisite, :url => url, :html => {:class => 'student_form'}) do |f| %>
+  <div class="form_box">
+    <div class="form_entry">
+      <div class="form_label">Course number(s)</div>
+      <div class="form_field_box">
+        <%= f.text_field :course_number, :class => 'form_field' %>
+      </div>
+    </div>
+    <div class="form_entry">
+      <div class="form_label">Waiver question</div>
+      <div class="form_field_box">
+        <%= f.text_area :waiver_question, :rows => 3, :class => 'form_field' %>
+      </div>
+    </div>
+    <div class="form_submit_box">
+        <%= f.submit @prerequisite.new_record? ? "Create" : "Update", :class => 'form_submit' %>
+      or
+      <%= link_to 'Go back', :controller => :prerequisites, :action => :index %>
+    </div>
+  </div>
+<% end %>
+
+</div>

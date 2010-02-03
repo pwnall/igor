@@ -8,10 +8,9 @@
 		  <tr>
 		  	<td>User</td>
 		    <td>Credit</td>
-		    <td>6.01</td>
-		    <td>6.042</td>
-		    <td>Python XP</td>
-		    <td>Math XP</td>
+				<% @prerequisites.sort_by(&:id).each do |prereq| %>
+				<td><%= prereq.course_number %></td>
+				<% end %>
 		    <td>Comments</td>
 		  </tr>
 		</thead>
@@ -21,10 +20,16 @@
 			  <tr>
 			    <td><%=link_to h(student_info.user.name), :controller => :users, :action => :show, :id => student_info.user.id %></td>
 			    <td><%=h student_info.wants_credit %></td>
-			    <td><%=h student_info.has_python %></td>
-			    <td><%=h student_info.has_math %></td>
-			    <td><%=h student_info.python_experience %></td>
-			    <td><%=h student_info.math_experience %></td>
+					<% student_info.prerequisite_answers.
+                          sort_by(&:prerequisite_id).each do |answer| %>
+						<td>
+						<% if answer.took_course? %>
+						  Took class
+						<% else %>
+						  <%= answer.waiver_answer %>
+						<% end %>
+						</td>
+					<% end %>
 			    <td><%=h student_info.comments %></td>
 			    <td><%= link_to 'Show', student_info %></td>
 			    <td><%= link_to 'Edit', edit_student_info_path(student_info) %></td>

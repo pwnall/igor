@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 18) do
+ActiveRecord::Schema.define(:version => 20100203124712) do
 
   create_table "assignment_feedbacks", :force => true do |t|
     t.integer  "user_id",                       :null => false
@@ -87,12 +87,33 @@ ActiveRecord::Schema.define(:version => 18) do
     t.boolean "seen",      :default => false, :null => false
   end
 
+  add_index "notice_statuses", ["notice_id", "user_id"], :name => "index_notice_statuses_on_notice_id_and_user_id", :unique => true
+  add_index "notice_statuses", ["user_id", "notice_id"], :name => "index_notice_statuses_on_user_id_and_notice_id", :unique => true
+
   create_table "notices", :force => true do |t|
     t.string   "subject",         :limit => 128,                 :null => false
     t.string   "contents",        :limit => 8192,                :null => false
     t.integer  "posted_count",                    :default => 0, :null => false
     t.integer  "seen_count",                      :default => 0, :null => false
     t.integer  "dismissed_count",                 :default => 0, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "prerequisite_answers", :force => true do |t|
+    t.integer  "student_info_id", :null => false
+    t.integer  "prerequisite_id", :null => false
+    t.boolean  "took_course",     :null => false
+    t.text     "waiver_answer"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "prerequisite_answers", ["student_info_id", "prerequisite_id"], :name => "prerequisites_for_a_student", :unique => true
+
+  create_table "prerequisites", :force => true do |t|
+    t.string   "course_number",   :limit => 64,  :null => false
+    t.string   "waiver_question", :limit => 256, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -149,13 +170,9 @@ ActiveRecord::Schema.define(:version => 18) do
   add_index "run_results", ["submission_id"], :name => "index_run_results_on_submission_id", :unique => true
 
   create_table "student_infos", :force => true do |t|
-    t.integer  "user_id",                               :null => false
-    t.boolean  "wants_credit",                          :null => false
-    t.boolean  "has_python",                            :null => false
-    t.boolean  "has_math",                              :null => false
-    t.string   "python_experience", :limit => 4096
-    t.string   "math_experience",   :limit => 4096
-    t.text     "comments",          :limit => 16777215
+    t.integer  "user_id",                          :null => false
+    t.boolean  "wants_credit",                     :null => false
+    t.text     "comments",     :limit => 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -5,7 +5,8 @@ class StudentInfosController < ApplicationController
   # GET /student_infos
   # GET /student_infos.xml
   def index
-    @student_infos = StudentInfo.find(:all)
+    @prerequisites = Prerequisite.all
+    @student_infos = StudentInfo.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -17,8 +18,8 @@ class StudentInfosController < ApplicationController
   # GET /student_infos/1.xml
   def show
     @student_info = StudentInfo.find(params[:id])
-
-    @recitation_conflicts = Hash[*(@student_info.recitation_conflicts.map { |r| [r.timeslot, r] }.flatten)]    
+    @recitation_conflicts =
+        @student_info.recitation_conflicts.index_by &:timeslot
 
     respond_to do |format|
       format.html
@@ -27,26 +28,41 @@ class StudentInfosController < ApplicationController
   end
 
   def new_edit(manual)
+    prepare_for_editing
+
     @manual = manual
     unless @student_info.new_record?
       if !@s_user.admin && @s_user.id != @student_info.user_id
-        # do not allow random record updates
-        notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
+        # Do not allow random record updates.
+        notice[:error] =
+            'That is not yours to play with! Your attempt has been logged.'
         redirect_to :controller => :welcome, :action => :index
         return
       end
     end
     
-    @recitation_conflicts = Hash[*(@student_info.recitation_conflicts.map { |r| [r.timeslot, r] }.flatten)]    
-
     respond_to do |format|
       format.html { render :action => :new_edit }
       format.xml  { render :xml => @student_info }
     end    
   end
+  private :new_edit
   
-  # GET /student_infos/for_user/0
-  def for_user
+  def prepare_for_editing
+    @prerequisites = @student_info.prerequisite_answers.index_by &:id
+    Prerequisite.all.each do |prereq|
+      next if @prerequisites.has_key? prereq.id
+      @prerequisites[prereq.id] =
+          @student_info.prerequisite_answers.build(:prerequisite => prereq)
+    end
+
+    @recitation_conflicts =
+        @student_info.recitation_conflicts.index_by &:timeslot
+  end
+  private :prepare_for_editing
+  
+  # GET /student_infos/for_myself
+  def my_own
     if @s_user.student_info
       # the user has a student_info, so hack it into the request
       params[:id] = @s_user.student_info.id
@@ -82,16 +98,16 @@ class StudentInfosController < ApplicationController
       @student_info.user = manual ? @new_user : @s_user       
     else
       if !@s_user.admin && @s_user.id != @student_info.user_id
-        # do not allow random record updates
+        # Do not allow random record updates.
         notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
         redirect_to :controller => :welcome, :action => :index
         return
       end
     end
-
     
-    old_recitation_conflicts = Hash[*(@student_info.recitation_conflicts.map { |r| [r.timeslot, r] }.flatten)]
-    # update recitation conflicts
+    old_recitation_conflicts =
+        @student_info.recitation_conflicts.index_by &:timeslot
+    # Update recitation conflicts.
     unless params[:old_recitation_conflicts].nil?
       params[:recitation_conflicts] += params[:old_recitation_conflicts].values
     end
@@ -126,8 +142,8 @@ class StudentInfosController < ApplicationController
           end  
         end  
       else
-        @recitation_conflicts = Hash[*(@student_info.recitation_conflicts.map { |r| [r.position, r] }.flatten)]        
-        format.html { render :action => :edit }
+        prepare_for_editing
+        format.html { render :action => :new_edit }
         format.xml  { render :xml => @student_info.errors, :status => :unprocessable_entity }
       end
     end    
