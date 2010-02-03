@@ -1,0 +1,43 @@
+<!-- assignment_metrics/index -->
+<div class="full_section">
+
+	<div style="z-index: 10; float: right; width: 100px; text-align: right;">
+		<h1 class="full_section">
+			<%= link_to 'New', new_assignment_metric_path %>
+		</h1>
+	</div>
+	<h1 class="full_section" style="margin-right: 100px; ">
+		Assignment Metrics
+	</h1>
+	
+	<table>
+	  <tr>
+	    <th style="text-align: left;">Assignment</th>
+	    <th style="text-align: left; width: 250px;">Name</th>
+	    <th style="text-align: left; width: 150px;">Max score</th>
+		<th style="text-align: left; width: 150px;">Weight</th>
+		<th style="text-align: left;">Published</th>
+	  </tr>
+	
+	<% for @assignment_metric in @assignment_metrics %>
+	  <tr>
+	    <td>
+	    	<%= in_place_select(:assignment_metric, :assignment_id, :choices => @assignments.map { |a| [a.name, a.id] }) %>
+		</td>
+	    <td>
+	    	<%= in_place_editor_field(:assignment_metric, :name, {}, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
+		</td>
+	    <td>
+	    	<%= in_place_editor_field(:assignment_metric, :max_score, {}, :cols => 3, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
+		</td>
+		<td>
+			<%= in_place_editor_field(:assignment_metric, :weight, {}, :cols => 4, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
+		</td>
+		<td style="text-align: center;">
+			<%= in_place_checkbox(:assignment_metric, :published, :checked => true, :unchecked => false) %>
+		</td>
+	    <td><%= link_to 'Destroy', @assignment_metric, :confirm => 'Are you sure?', :method => :delete %></td>
+	  </tr>
+	<% end %>
+	</table>
+</div>

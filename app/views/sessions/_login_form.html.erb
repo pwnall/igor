@@ -1,0 +1,37 @@
+<!-- users/login_form -->
+
+<%= error_messages_for :user %>
+
+<% form_for(@user, :url => sessions_url, :method => :post,
+            :html => {:class => 'user_form'}) do |f| %>
+	<div class="form_box">
+		<div class="form_entry">
+			<div class="form_label">Login name</div>
+			<div class="form_field_box">
+				<%= f.text_field :name, :class => 'form_field', :tabindex => 1 %>
+			</div>
+		</div>
+		<div class="form_entry">
+			<div class="form_label">Password</div>
+			<div class="form_field_box">
+				<%= f.password_field :password, :class => 'form_field',
+                             :tabindex => 2 %>
+			</div>
+		</div>
+		<div class="form_submit_box">
+		    <%= f.submit "Login", :class => 'form_submit', :tabindex => 3 %>
+		</div>
+		<div class="form_entry">
+			<div class="form_label">New?</div>				
+			<div class="form_field_box">
+				<%= link_to 'Click here to register', new_user_url %> 
+			</div>
+		</div>
+		<div class="form_entry">
+			<div class="form_label">Forgot your login?</div>				
+			<div class="form_field_box">
+				<%= link_to 'Click here to recover name/password', :controller => :users, :action => :recover_password, :id => 0 %> 
+			</div>
+		</div>
+	</div>
+<% end %>

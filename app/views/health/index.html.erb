@@ -1,0 +1,22 @@
+<!-- health/index -->
+<div class="full_section">	
+	<h3 class="full_section">System Processes</h3>
+	<table>
+		<thead>
+			<th style="text-align: left;">PID</th>
+			<th style="text-align: left;">Comm</th>
+			<th style="text-align: left;">Cmdline</th>
+		</thead>
+		<tbody>
+			<% @processes.each do |proc| %>
+				<tr>
+					<td><%=h proc.pid %></td>
+					<td><%=h proc.comm %></td>
+					<td><%=h proc.cmdline %></td>
+					<td><%= link_to 'Details', :controller => :health, :action => :show, :id => proc.pid %></td>					
+					<td><%= link_to 'Kill', {:controller => :health, :action => :show, :id => proc.pid}, :method => :delete, :confirm => "Kill process #{proc.pid} (#{proc.comm})?" %></td>					
+				</tr>
+			<% end %>		
+		</tbody>
+	</table>
+</div>

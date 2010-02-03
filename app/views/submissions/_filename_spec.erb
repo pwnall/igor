@@ -1,0 +1,36 @@
+			<div class="form_entry">
+					<div class="form_label form_section"><%= title %></div>
+					<div class="form_field_box">
+						<%= check_box_tag "package_include[#{id}]", "1", true, :id => "submission_package_include_#{id}" %>
+					</div>
+			</div>
+
+			<div id="submission_package_container_<%= id %>">
+				<div class="form_entry">
+					<div class="form_label"><%= name %> example filename</div>
+					<div class="form_field_box">
+						<span id="submission_package_fexample_<%= id %>">username</span>.<%= extension %>
+					</div>				
+				</div>
+				<div class="form_entry">
+					<div class="form_label"><%= name %> filename prefix</div>
+					<div class="form_field_box">
+						<%= text_field_tag "filename_prefix[#{id}]", default_prefix, :class => 'form_field', :id => "submission_package_fprefix_#{id}" %>
+					</div>	
+				</div>
+				<div class="form_entry">
+					<div class="form_label"><%= name %> filename suffix</div>
+					<div class="form_field_box">
+						<%= text_field_tag "filename_suffix[#{id}]", default_suffix, :class => 'form_field', :id => "submission_package_fsuffix_#{id}" %>
+					</div>	
+				</div>
+		</div>
+
+<%= javascript_tag "show_div_on_checkbox_setting('submission_package_container_#{id}', 'submission_package_include_#{id}', true);" %>			
+<%= javascript_tag "submission_packager_update_fe('submission_package_fexample_#{id}', 'username', 'submission_package_fprefix_#{id}', 'submission_package_fsuffix_#{id}')" %>
+<%= observe_field "submission_package_fprefix_#{id}",
+	:frequency => 0.2,
+	:function => "submission_packager_update_fe('submission_package_fexample_#{id}', 'username', 'submission_package_fprefix_#{id}', 'submission_package_fsuffix_#{id}')" %>			
+<%= observe_field "submission_package_fsuffix_#{id}",
+	:frequency => 0.2,
+	:function => "submission_packager_update_fe('submission_package_fexample_#{id}', 'username', 'submission_package_fprefix_#{id}', 'submission_package_fsuffix_#{id}')" %>			

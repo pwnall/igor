@@ -1,0 +1,47 @@
+# == Schema Information
+# Schema version: 18
+#
+# Table name: profiles
+#
+#  id                    :integer(4)      not null, primary key
+#  user_id               :integer(4)      not null
+#  real_name             :string(128)     not null
+#  nickname              :string(64)      not null
+#  year                  :string(255)     not null
+#  athena_username       :string(16)      not null
+#  about_me              :string(4096)    default(""), not null
+#  has_phone             :boolean(1)      default(TRUE), not null
+#  phone_number          :string(64)
+#  has_aim               :boolean(1)      not null
+#  aim_name              :string(64)
+#  has_jabber            :boolean(1)      not null
+#  jabber_name           :string(64)
+#  recitation_section_id :integer(4)
+#  created_at            :datetime
+#  updated_at            :datetime
+#
+
+#admin:
+#  user_id: 1
+#  real_name: MyString
+#  year: MyString
+#  athena_username: MyString
+
+dexter:
+  user: dexter
+  real_name: Dexter Boy Genius
+  nickname: Dex
+  year: 1
+  athena_username: genius
+  about_me: "I am Dexter, boy genius!"
+  has_phone: true
+  phone_number: (617) 808-0808
+  has_aim: true
+  aim_name: boygenius
+  has_jabber: false
+  jabber_name: ""
+  recitation_section: victor_10am
+  
+#  real_name: MyString
+#  year: MyString
+#  athena_username: MyString

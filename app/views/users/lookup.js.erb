@@ -1,0 +1,7 @@
+<% unless @users.empty? %>
+	<ul>
+		<% @users.each do |user| %>
+			<li><%= highlight(h(display_name_for_user(user, :long)), @query) %></li>
+		<% end %>
+	</ul>
+<% end %>

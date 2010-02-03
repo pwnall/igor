@@ -1,0 +1,116 @@
+<!-- profiles/new_edit -->
+<div class="full_section">
+	
+<h1 class="full_section">Profile for <%= @s_user.name %></h1>
+
+<%= error_messages_for :profile %>
+
+<%
+if @profile.new_record?
+	url = {:controller => :profiles, :action => @manual ? :create_manual : :create}
+	url[:id] = 0 if @manual
+else
+	url = {:controller => :profiles, :action => :update, :id => @profile.id}
+end
+%>
+
+<% form_for(@profile, :url => url, :html => {:class => 'student_form'}) do |f| %>
+	<div class="form_box">
+		<div class="form_entry">
+			<div class="form_label">MIT username</div>
+			<div class="form_field_box">
+				<%= f.text_field :athena_username, :class => 'form_field' %>				
+			</div>
+		</div>				
+		<div class="form_entry">
+			<div class="form_label">WebSIS lookup status</div>
+			<div class="form_field_box" id="profile_websis_lookup">
+				Not started.
+			</div>
+			<%= observe_field :profile_athena_username,
+				:url => {:controller => :profiles, :action => :websis_lookup, :id => 0},
+				:before => '$("profile_websis_lookup").update(\'<span style="color: gray; ">Querying WebSIS...</span>\')',
+				:with => '"athena_id=" + encodeURIComponent($("profile_athena_username").value)',
+				:frequency => 0.5 %>
+			
+			<%= javascript_tag '$("profile_athena_username").writeAttribute("autocomplete", "off");' %>
+			<% if @profile.new_record? %>
+				<%= javascript_tag remote_function(
+					:url => {:controller => :profiles, :action => :websis_lookup, :id => 0, :athena_id => @profile.athena_username},
+					:before => '$("profile_websis_lookup").update(\'<span style="color: gray; ">Querying WebSIS...</span>\')') %>
+			<% end %>
+		</div>
+		<div class="form_entry">
+			<div class="form_label">Real Full Name</div>
+			<div class="form_field_box">
+				<%= f.text_field :real_name, :class => 'form_field' %>
+			</div>
+		</div>
+		<div class="form_entry">
+			<div class="form_label">Year</div>
+			<div class="form_field_box" id="profile_year_container">
+				<%= f.select :year, @year_options, :class => 'form_field' %>
+			</div>
+		</div>
+		<div class="form_entry">
+			<div class="form_label">Would like to be called</div>
+			<div class="form_field_box">
+				<%= f.text_field :nickname, :class => 'form_field' %>
+			</div>
+		</div>		
+		<div class="form_entry">
+			<div class="form_label">Recitation section</div>
+			<div class="form_field_box">
+				<%= f.select :recitation_section_id, @recitation_section_options, :class => 'form_field' %>
+			</div>
+		</div>		
+		<div class="form_entry">
+			<div class="form_label">Staff should whitelist my</div>
+			<div class="form_field_box">
+				<%= f.check_box :has_phone, :class => 'form_field' %>Phone
+				<%= f.check_box :has_aim, :class => 'form_field' %>AIM
+				<%= f.check_box :has_jabber, :class => 'form_field' %>Jabber
+			</div>
+		</div>
+		<div class="form_entry" id="phone_container">
+			<div class="form_label">Phone</div>
+			<div class="form_field_box">
+				<%= f.text_field :phone_number, :class => 'form_field' %>
+			</div>
+		</div>
+		<div class="form_entry" id="aim_container">
+			<div class="form_label">AIM screen name</div>
+			<div class="form_field_box">
+				<%= f.text_field :aim_name, :class => 'form_field' %>
+			</div>
+		</div>
+		<div class="form_entry" id="jabber_container">
+			<div class="form_label">Jabber account</div>
+			<div class="form_field_box">
+				<%= f.text_field :jabber_name, :class => 'form_field' %>
+			</div>
+		</div>
+		
+		<div class="form_entry">
+			<div class="form_label">About me</div>
+			<div class="form_field_box">
+				<%= f.text_area :about_me, :rows => 5, :class => 'form_field' %>
+			</div>
+		</div>
+		<div class="form_submit_box">
+		    <%= f.submit @profile.new_record? ? "Submit" : "Update", :class => 'form_submit' %>
+			or
+			<%= link_to 'Go home', :controller => :welcome, :action => :home %>
+		</div>
+	</div>
+<% end %>
+
+
+<%= javascript_tag <<JS_END
+show_div_on_checkbox_setting('phone_container', 'profile_has_phone', true);
+show_div_on_checkbox_setting('aim_container', 'profile_has_aim', true);
+show_div_on_checkbox_setting('jabber_container', 'profile_has_jabber', true);
+JS_END
+%>
+
+</div>

@@ -1,0 +1,71 @@
+<!-- submissions/request_assignment -->
+<div class="full_section">	
+	<h3 class="full_section">Package Assignment Submissions</h3>
+	<% form_tag({:controller => :submissions, :action => :package_assignment, :id => 0}, {:class => 'student_form'}) do %>
+		<div class="form_box">
+			<div class="form_entry">
+				<div class="form_label">Assignment</div>
+				<div class="form_field_box">
+					<%= select_tag :assignment_id, options_for_select(@assignments.map { |a| [a.name, a.id] }, nil), :class => 'form_field', :id => 'submission_assignment_id' %>
+				</div>
+			</div>
+			
+			<div class="form_entry">
+				<div class="form_label">
+					<%= check_box_tag :cutoff_enable, '1', false, :id => 'submission_cutoff_enable' %>
+					At least 1 submission after
+				</div>
+				<div class="form_field_box">
+					<div id="submission_cutoff_container">
+						<%= select_datetime (@assignments.first ? @assignments.first.deadline : Time.now - 1.day),
+                                :prefix => 'cutoff', :use_short_month => true, :minute_step => 15,
+                                :datetime_separator => ' at ', :time_separator => ':' %>
+					</div>
+					<div id="submission_cutoff_placeholder">
+						&nbsp;
+					</div>
+				</div>
+			</div>
+			
+<%= javascript_tag "show_div_on_checkbox_setting('submission_cutoff_container', 'submission_cutoff_enable', true);" %>			
+<%= javascript_tag "show_div_on_checkbox_setting('submission_cutoff_placeholder', 'submission_cutoff_enable', false);" %>			
+			
+			
+			
+<%= render :partial => 'submissions/filename_spec', :locals => {
+	:default_suffix => 'cover', :default_prefix => nil,
+	:id => 'cover', :name => 'Cover', :title => 'Cover Sheet', :extension => 'pdf' } %>			
+						
+			<div id="submission_deliverables_container">
+				&nbsp;
+			</div>
+			
+			<%= observe_field :submission_assignment_id,
+				:url => {:controller => :submissions, :action => :xhr_update_deliverables, :id => 0},
+				:with => '"assignment_id=" + encodeURIComponent($("submission_assignment_id").value)',
+				:update => 'submission_deliverables_container',
+				:before => '$("submission_deliverables_container").update("<div style=\\"text-align: center;\\">Loading...<\/div>")'
+			%>
+
+			<%= observe_field :submission_assignment_id,
+				:url => {:controller => :submissions, :action => :xhr_update_cutoff, :id => 0},
+				:with => '"assignment_id=" + encodeURIComponent($("submission_assignment_id").value)',
+				:update => 'submission_cutoff_container',
+				:before => '$("submission_cutoff_container").update("<div style=\\"text-align: center;\\">Loading...<\/div>")'
+			%>
+			
+			<%= javascript_tag remote_function(
+				:url => {:controller => :submissions, :action => :xhr_update_deliverables, :id => 0},
+				:with => '"assignment_id=" + encodeURIComponent($("submission_assignment_id").value)',
+				:update => 'submission_deliverables_container',
+				:before => '$("submission_deliverables_container").update("<div style=\\"text-align: center;\\">Loading...<\/div>")'
+			) %>
+			
+			<div class="form_submit_box">
+			    <%= submit_tag "Build package", :class => 'form_submit', :id => 'submission_submit_button' %>
+				or
+				<%= link_to 'Go home', :controller => :welcome, :action => :home %>
+			</div>			
+		</div>		
+	<% end %>	
+</div>

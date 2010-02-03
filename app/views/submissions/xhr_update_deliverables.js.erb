@@ -1,0 +1,11 @@
+<% @assignment.deliverables.each do |d| %>
+
+<%= render :partial => 'submissions/filename_spec', :locals => {
+	:default_suffix => d.filename.blank? ? '' : d.filename[0...(d.filename.rindex(?.) || d.filename.length)],
+	:default_prefix => nil,
+	:id => d.id,
+	:name => d.name,
+	:title => d.name,
+	:extension => d.filename.blank? ? '{pdf|py}' : d.filename.split('.').last 
+} %>
+<% end %>

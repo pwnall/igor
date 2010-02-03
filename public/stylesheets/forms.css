@@ -1,0 +1,82 @@
+/** Common style for all forms on the site. **/
+.form_box {
+	padding: 5px;
+	margin: 0px auto 0px auto;
+}
+.form_title {
+	color: #0e1f5b;
+}
+.form_entry {
+	margin: 2px;
+	padding: 2px;	
+}
+.form_label {
+	height: 0px;
+	color: #0e1f5b;
+	text-align: right;
+}
+.form_field_box {
+	position: relative;
+}
+.form_field {
+	border: 1px inset #3b5998;
+	padding: 2px;
+}
+.form_field:hover {
+	background-color: #d8dfea;
+}
+.form_submit_box {
+	padding-top: 2px;
+}
+.form_submit {
+	background-color: #c3cddf;
+	border: outset 1px #0e1f5b;
+	font-size: 1.2em;
+}
+.form_submit:hover {
+	background-color: #95a5c6;
+}
+
+
+/** Custom style for the markup produced by validation functions in Rails **/
+.fieldWithErrors {
+  display: inline;
+}
+
+.fieldWithErrors input {
+  border: 1px inset #dd3c10;
+  background-color: #ffebe8;
+}
+.fieldWithErrors input:hover {
+  background-color: #efcbc8;
+}
+
+#errorExplanation {
+  width: 400px;
+  border: 2px solid #dd3c10;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin: 0px auto 20px auto;
+  background-color: #ffebe8;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  background-color: #dd3c10;
+  color: #fff;
+}
+
+#errorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#errorExplanation ul li {
+  font-size: 12px;
+  list-style: square;
+}

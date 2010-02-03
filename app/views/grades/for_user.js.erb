@@ -1,0 +1,75 @@
+<div class="full_section">	
+	<h3 class="full_section">Post grades for <%=h display_name_for_user(@user, :short) %></h3>
+	<% @assignments_by_aid.values.sort { |a, b| b.deadline <=> a.deadline }.each do |assignment| aid = assignment.id %>
+		<% remote_form_for(@user, :url => {:controller => :grades, :action => :update_for_user, :id => @user.id}, :update => :user_grades_div, :before => '$("query").value = "";') do |f| %>
+		<table>
+			<% metric_table = to_table_array(@metrics_by_aid[aid], 7) %>
+			<% metric_table.length.times do |row| %>
+				<tr>
+					<% if row.zero? %>
+						<th>
+							<%=h assignment.name %>
+						</th>
+					<% else %>
+						<th />
+					<% end %>
+					<% metric_table[row].length.times do |column| %>
+						<% if metric_table[row][column] %>
+							<th><%=h metric_table[row][column].name %></th>
+						<% else %>
+							<th />
+						<% end %>
+					<% end %>
+					<% if row + 1 == metric_table.length %>							
+						<th>Total</th>
+					<% else %>
+						<th />
+					<% end %>
+					<th></th>
+				</tr>
+							
+				<tr>
+					<th>Score</th>
+					<% metric_table[row].length.times do |column| %>
+						<% if metric_table[row][column] %>
+							<td>
+								<%= text_field_tag "grades[#{metric_table[row][column].id}]", @grades_by_mid[metric_table[row][column].id] ? @grades_by_mid[metric_table[row][column].id].score : '', :size => 3, :id => "grades_#{metric_table[row][column].id}"  %>
+								/
+								<%= metric_table[row][column].max_score %>
+								<%= observe_field "grades_#{metric_table[row][column].id}",
+								                  :frequency => 0.5,
+																	:function => "grades_compute_total('grades_total_#{aid}', #{@metrics_by_aid[aid].map { |m| "grades_#{m.id}" }.to_json});" %>
+							</td>
+						<% else %>
+							<td />
+						<% end %>
+					<% end %>
+					<% if row + 1 == metric_table.length %>							
+						<td>
+							<span id="grades_total_<%= aid %>"></span>
+							/
+							<%= @metrics_by_aid[aid].inject(0) { |acc, m| acc + m.max_score || 0 } %>
+							<%= javascript_tag "grades_compute_total('grades_total_#{aid}', #{@metrics_by_aid[aid].map { |m| "grades_#{m.id}" }.to_json});" %>
+						</td>
+						<td>
+							<% if params[:filter_aid] %>
+								<%= hidden_field_tag 'filter_aid', params[:filter_aid] %>
+							<% end %>
+							<%= f.submit 'Update' %>							
+						</td>
+					<% else %>
+						<td />
+						<td />
+					<% end %>
+				</tr>
+			<% end %>
+		</table>
+		<% end %>
+		<hr />
+	<% end %>
+</div>
+
+<% if @updated %>
+	<%= update_page_tag { |page| add_site_status page, "New grades recorded for #{@user.name}", true } %>
+	<%= javascript_tag '$("query").focus();' %>
+<% end %>

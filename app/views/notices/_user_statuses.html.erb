@@ -1,0 +1,16 @@
+<div id="all_notices">
+	<% user_statuses.each do |notice_status|
+		notice_status.mark_seen! %>
+		<div id="notice_<%= notice_status.notice.id %>" class="notice_box">
+			<div>
+				<div class="notice_dismiss">
+					<%= link_to_remote 'Dismiss', :url => {:controller => :notices, :action => :dismiss, :id => notice_status.id}, :method => :post %>
+				</div>
+				<div class="notice_title"><%= notice_status.notice.subject %></div>
+			</div>
+			<div>
+				<%= notice_status.notice.contents %>
+			</div>
+		</div>
+	<% end %>
+</div>

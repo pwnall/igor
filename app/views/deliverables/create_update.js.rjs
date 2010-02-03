@@ -1,0 +1,7 @@
+if @success
+  add_site_status page, (@new_record ? 'Deliverable created' : 'Deliverable updated'), true
+  page.replace "deliverable_row_#{@div_id}", :partial => 'show', :object => @deliverable 
+else
+  add_site_status page, (@new_record ? 'Failed to create deliverable' : 'Failed to update deliverable'), false
+  page.replace "deliverable_row_#{@div_id}", :partial => 'edit', :object => @deliverable, :locals => { :div_id => @div_id }   
+end

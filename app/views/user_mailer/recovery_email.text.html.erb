@@ -1,0 +1,34 @@
+<h3>Dear <%= @token.user.email%>,</h3>
+
+<p>
+You are receiving this e-mail because someone (hopefully you) claimed you
+have lost your
+<%= link_to 'alg.csail.mit.edu', 'http://alg.csail.mit.edu'%>
+login name or password.
+</p>
+
+<p>
+Your login name is listed below:
+</p>
+<h2>
+<%= @token.user.name %>
+</h2>
+
+<p>
+Please go
+<%= link_to 'here', @token_url %>
+to the address below to reset your password.
+</p>
+
+<p>
+If you haven't requested help recovering your
+<%= link_to 'alg.csail.mit.edu', 'http://alg.csail.mit.edu'%>
+login name or password, you
+don't need to do anything. Most probably, someone
+mistyped their e-mail. If you receive many e-mails like this, e-mail
+<%= link_to '6.006-tas@mit.edu', 'mailto:6.006-tas@mit.edu' %>, and we'll address the problem.
+</p>
+
+<p>
+Thank you for your interest in 6.006!
+</p>

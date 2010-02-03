@@ -1,0 +1,42 @@
+<!-- assignments/index -->
+<div class="full_section">	
+	<h3 class="full_section">Assignment Administration</h3>
+
+	<div id="assignments_list">
+		<div id="assignments_header">
+			<div class="assignment_expand">
+				+
+			</div>
+			<div class="assignment_name">
+				Name		
+			</div>
+			<div class="assignment_deadline">
+				Deadline
+			</div>
+			<div id="assignments_ajax_cmdbar">
+				You need Javascript to edit assignments.
+			</div>
+		</div>
+		
+		<div id="assignments_listing">
+<%= render :partial => 'assignments/show', :collection => @assignments %>
+		</div>
+	</div>
+	
+	<!-- contents of the assignments AJAX command bar -->
+	<div id="assignments_ajax_cmds" style="display: none">
+			<%= link_to_remote 'New',
+				:url => new_assignment_path,
+				:before => update_page { |p| p << "$('assignments_ajax_cmdbar').update($('assignments_ajax_progress').innerHTML)" },
+				:complete => update_page { |p| p << "$('assignments_ajax_cmdbar').update($('assignments_ajax_cmds').innerHTML)" },
+				:position => :top
+				 %>	
+	</div>
+	<%= update_page_tag { |p| p << "$('assignments_ajax_cmdbar').update($('assignments_ajax_cmds').innerHTML)" } %>
+	
+	<!-- contents of the assignments AJAX command bar during command processing -->
+	<div id="assignments_ajax_progress" style="display: none">
+		processing...					
+	</div>
+
+</div>

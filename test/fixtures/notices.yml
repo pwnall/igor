@@ -1,0 +1,30 @@
+# == Schema Information
+# Schema version: 18
+#
+# Table name: notices
+#
+#  id              :integer(4)      not null, primary key
+#  subject         :string(128)     not null
+#  contents        :string(8192)    not null
+#  posted_count    :integer(4)      default(0), not null
+#  seen_count      :integer(4)      default(0), not null
+#  dismissed_count :integer(4)      default(0), not null
+#  created_at      :datetime
+#  updated_at      :datetime
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+#one:
+#  title: MyString
+#  contents: MyString
+#  posted_count: 1
+#  seen_count: 1
+#  dismissed_count: 1
+#
+#two:
+#  title: MyString
+#  contents: MyString
+#  posted_count: 1
+#  seen_count: 1
+#  dismissed_count: 1

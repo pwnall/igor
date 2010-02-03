@@ -1,0 +1,4 @@
+--- 
+dns_name: 'alg-test.csail.mit.edu'
+frontends: 2
+frontends_per_core: 0

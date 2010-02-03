@@ -1,0 +1,35 @@
+<!-- profiles/index -->
+<div class="full_section">
+
+	<h1 class="full_section">Listing <%= @profiles.length %> Profiles</h1>
+
+	<table>
+		<thead>
+		  <tr>
+		  	<td>User</td>
+		    <td>Real Name</td>
+		    <td>Athena ID</td>
+		    <td>Section</td>
+		    <td>AIM</td>
+		    <td>Jabber</td>
+		    <td>Phone</td>
+		  </tr>
+		</thead>
+		
+		<tbody>
+			<% for @profile in @profiles %>
+			  <tr>
+			    <td><%=link_to h(@profile.user.name), :controller => :users, :action => :show, :id => @profile.user.id %></td>
+			    <td><%=h @profile.real_name %></td>
+			    <td><%=h @profile.athena_username %></td>
+					<td><%=h 'R%02d' % (@profile.recitation_section ? @profile.recitation_section.serial : 0) %>
+			    <td><%= @profile.has_aim ? h(@profile.aim_name) : 'No' %></td>
+			    <td><%= @profile.has_jabber ? h(@profile.jabber_name) : 'No' %></td>
+			    <td><%= @profile.has_phone ? h(@profile.phone_number) : 'No' %></td>
+			    <td><%= link_to 'Edit', edit_profile_path(@profile) %></td>
+			    <td><%= link_to 'Destroy', @profile, :confirm => 'Are you sure?', :method => :delete %></td>
+			  </tr>
+			<% end %>		
+		</tbody>
+	</table>
+</div>

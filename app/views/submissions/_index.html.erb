@@ -1,0 +1,31 @@
+<% if index.empty? %>
+	<div>
+		You haven't submitted any assignments yet.
+	</div>
+<% else %>
+	<table>
+		<thead style="font-size: 1.1em; font-weight: bold;">
+			<tr>
+				<td>Assignment</td>
+				<td>Deliverable</td>
+				<td>Deadline</td>
+				<td>Submitted</td>
+				<td>Status</td>
+			</tr>		
+		</thead>
+		<tbody>
+			<% index.each do |submission| %>
+				<tr>
+					<td><%=h submission.deliverable.assignment.name %></td>
+					<td><%=h submission.deliverable.name %></td>
+					<td><%=h time_delta(submission.deliverable.assignment.deadline) %></td>
+					<td><%=h time_delta(submission.updated_at) %></td>
+					<td><%= submission.run_result.nil? ? 'no status' : link_to(submission.run_result.diagnostic, :controller => :run_results, :action => :show, :id => submission.run_result.id) %></td>
+					<td><%= link_to "View", :controller => :submissions, :action => :file, :id => submission.id, :inline => true %></td>
+					<td><%= link_to "Download (#{number_to_human_size submission.code.size})", :controller => :submissions, :action => :file, :id => submission.id %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+<% end %>
+

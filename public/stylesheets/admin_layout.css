@@ -1,0 +1,87 @@
+div#admin_console {
+	float:left;
+	width: 160px;
+	height: 0px;
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+}
+div#admin_console_inner {
+	position: relative;
+	left: 0px;
+	top: 0px;
+	width: 160px;
+	margin: 0px auto;
+	border: 1px solid #0e1f5b;
+	border-left: 0px none;
+	border-top: 0px none;
+}
+div#admin_console_header {
+	height: 120px;
+	background-color: #ffffff;
+	color: #0e1f5b;
+}
+div#admin_badge_title {
+	position: relative;
+	top: 0px;
+	height: 0px;
+	z-index: 99;
+	font-family: Courier;
+	font-size: 1.8em;
+	font-weight: bold;
+	line-height: 0.9em;	
+	text-align: center;
+}
+div#admin_badge_username {
+	position: relative;
+	top: 98px;
+	height: 0px;
+	z-index: 99;
+	text-align: center;
+	font-family: Courier;
+	font-size: 2.0em;
+	font-weight: bolder;
+}
+div#admin_console_body {
+	border-left: 1px solid #0e1f5b;
+}
+dl.admin_console_menu {
+	margin: 0px;
+	padding: 0px;
+}
+dl.admin_console_menu dt {
+	border-top: 1px solid #0e1f5b;	
+	margin: 0px;
+	background-color: #ffffff;
+	padding: 0px 0px 5px 0px;
+	color: #0e1f5b;
+	height: 1.3em;
+	font-size: 1.3em;
+	font-weight: bold;	
+}
+dl.admin_console_menu dd {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+ul.admin_console_buttons {
+	margin: 0px;
+	padding: 0px;
+}
+ul.admin_console_buttons li {
+	margin: 0px;
+	list-style: none;
+}
+ul.admin_console_buttons li a {	
+	background-color: #ffffff;
+	color: #0e1f5b;
+	text-decoration: none;
+	display: block;
+	font-size: 1.2em;
+	height: 1.4em;
+	padding-left: 5px;
+}
+ul.admin_console_buttons li a:hover {
+	background-color: #3b5998;	
+	color: #ffffff;
+}

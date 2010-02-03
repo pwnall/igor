@@ -1,0 +1,35 @@
+# == Schema Information
+# Schema version: 18
+#
+# Table name: recitation_conflicts
+#
+#  id              :integer(4)      not null, primary key
+#  student_info_id :integer(4)      not null
+#  class_name      :string(255)     not null
+#  timeslot        :integer(4)      not null
+#
+
+dexter_6001_monday_1pm:
+  student_info: dexter
+  class_name: 6.001
+  timeslot: 130
+
+dexter_6001_monday_2pm:
+  student_info: dexter
+  class_name: 6.001
+  timeslot: 140
+
+dexter_6002_wednesday_1pm:
+  student_info: dexter
+  class_name: 6.002
+  timeslot: 132
+
+dexter_6002_wednesday_2pm:
+  student_info: dexter
+  class_name: 6.002
+  timeslot: 142
+
+dexter_doesnt_get_registration:
+  student_info: dexter
+  class_name: 6.006
+  timeslot: 134

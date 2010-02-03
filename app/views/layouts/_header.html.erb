@@ -1,0 +1,26 @@
+<!-- layout/header -->
+<div id="site_header">
+	<h1>6.006: Introduction to Algorithms</h1>
+	
+<% if @s_user %>
+	<div style="float: right; width: 260px; text-align: right; ">
+		<%= @s_user.name %>
+		|
+		<%= link_to 'Logout', session_url(:id => 0), :method => :delete %>
+		|			
+		<%= link_to 'Change Password', edit_password_user_url(@s_user) %>
+	</div>
+	
+	<div class="site_header_buttons" style="padding-left: 15px; ">
+		<%= link_to 'Home', :controller => :welcome, :action => :home %>
+		|
+		<%= link_to 'Grades', :controller => :grades, :action => :reveal_mine, :id => 0 %>
+		|
+		<%= link_to 'Profile', :controller => :profiles, :action => :for_user, :id => 0 %>
+		|
+		<%= link_to 'Student Info', :controller => :student_infos, :action => :for_user, :id => 0 %>
+	</div>
+	
+	<div class="float_clearer"></div>	
+<% end %>		
+</div>

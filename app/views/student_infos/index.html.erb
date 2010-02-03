@@ -1,0 +1,36 @@
+<!-- student_infos/index -->
+<div class="full_section">
+
+	<h1 class="full_section">Listing <%= @student_infos.length %> Student Information Sheets</h1>
+
+	<table>
+		<thead>
+		  <tr>
+		  	<td>User</td>
+		    <td>Credit</td>
+		    <td>6.01</td>
+		    <td>6.042</td>
+		    <td>Python XP</td>
+		    <td>Math XP</td>
+		    <td>Comments</td>
+		  </tr>
+		</thead>
+		
+		<tbody>
+			<% for student_info in @student_infos %>
+			  <tr>
+			    <td><%=link_to h(student_info.user.name), :controller => :users, :action => :show, :id => student_info.user.id %></td>
+			    <td><%=h student_info.wants_credit %></td>
+			    <td><%=h student_info.has_python %></td>
+			    <td><%=h student_info.has_math %></td>
+			    <td><%=h student_info.python_experience %></td>
+			    <td><%=h student_info.math_experience %></td>
+			    <td><%=h student_info.comments %></td>
+			    <td><%= link_to 'Show', student_info %></td>
+			    <td><%= link_to 'Edit', edit_student_info_path(student_info) %></td>
+			    <td><%= link_to 'Destroy', student_info, :confirm => 'Are you sure?', :method => :delete %></td>
+			  </tr>
+			<% end %>		
+		</tbody>
+	</table>
+</div>

@@ -1,0 +1,91 @@
+div#admin_all_contents {
+	width: 960px;
+	margin: 0px auto;
+	padding: 0px;
+}
+div#all_contents {
+	border: 1px solid #0e1f5b;	
+	padding: 0px;		
+}
+div#all_contents.admin {
+	margin-left: 160px;
+}
+div#all_contents.nonadmin {
+	width: 800px;
+	margin: 0px auto;
+}
+div#site_header {
+	color: #ffffff;
+	background-color: #0e1f5b;
+}
+div#site_header.dev {
+	background-color: #f44;	
+}
+div#site_header.staging {
+	background-color: #f44;
+}
+#site_header h1 {
+	padding: 15px 5px;
+	margin: 0px;
+}
+div.site_header_buttons {
+	padding-bottom: 4px;
+	font-size: 1.2em;
+}
+#site_header a {
+	color: #fff;
+	text-decoration: none;
+}
+#site_header a:hover {
+	text-decoration: underline;
+	background-color: #3b5998;
+}
+
+
+div#site_footer {
+	border-top: 1px solid #0e1f5b;
+	padding: 2px;	
+}
+div#site_footer_icons {
+	float: right;
+	margin: 0px;
+	padding: 0px;	
+}
+div#site_footer_text {
+	padding-top: 4px;
+}
+
+div.site_status {
+	padding: 4px;
+	text-align: center;
+}
+div.site_status_error { background-color: #f88; border-bottom: 1px solid #a00 ; color: #000; }
+div.site_status_notice { background-color: #7bf; border-bottom: 1px solid #06e; color: #000; }
+div.site_status_close {
+	float: right;
+	width: 60px;
+	text-align: right;
+}
+
+.error_box {
+	border: solid 1px #dd3c10;
+	background-color: #ffebe8;
+}
+.attention_box {
+	border: solid 1px #e2c822;
+	background-color: #fff9d7;
+}
+.error_text {
+	color: red;
+}
+.attention_text {
+	color: green;
+}
+
+td {
+	vertical-align: top;
+}
+th {
+	text-align: left;
+	vertical-align: top;
+}

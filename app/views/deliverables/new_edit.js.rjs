@@ -1,0 +1,7 @@
+div_id = @deliverable.new_record? ? ((0...16).map { rand(256).to_s(16) }.join) : @deliverable.id
+if @deliverable.new_record?
+  page.insert_html :top, "assignment_deliverables_listing_#{@deliverable.assignment.id}", :partial => 'edit', :object => @deliverable, :locals => {:div_id => div_id}
+else
+  page.replace "deliverable_row_#{div_id}", :partial => 'edit', :object => @deliverable, :locals => {:div_id => div_id}  
+end
+page["deliverable_row_#{div_id}"].hide.appear :duration => 0.2

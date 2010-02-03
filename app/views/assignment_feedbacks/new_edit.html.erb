@@ -1,0 +1,60 @@
+<!-- assignment_feedbacks/new_edit -->
+<div class="full_section">
+	
+<h3 class="full_section">Feedback for <%= @assignment_feedback.assignment.name %></h1>
+
+<%= error_messages_for :assignment_feedback %>
+
+<%
+if @assignment_feedback.new_record?
+	url = {:controller => :assignment_feedbacks, :action => :create}
+	url[:id] = 0 if @manual
+else
+	url = {:controller => :assignment_feedbacks, :action => :update, :id => @assignment_feedback.id}
+end
+%>
+
+<% form_for(@assignment_feedback, :url => url, :html => {:class => 'student_form'}) do |f| %>
+	<div style="display: none">
+		<%= f.hidden_field :assignment_id %>
+	</div>
+	<div class="form_box">
+		<div class="form_entry">
+			<div class="form_label">Time spent</div>
+			<div class="form_field_box">
+				<%= f.text_field :hours, :size => 3, :class => 'form_field' %> hours
+			</div>
+		</div>				
+		<div class="form_entry">
+			<div class="form_label">Difficulty</div>
+			<div class="form_field_box">
+				<%= f.select :difficulty, AssignmentFeedback.difficulty_levels_hash.to_a.map { |l| [l[1], l[0]] }.sort { |a,b| a[1] <=> b[1] }, :class => 'form_field' %>
+			</div>
+		</div>				
+		<div class="form_entry">
+			<div class="form_label">Theory</div>
+			<div class="form_field_box">
+				<%= f.select :theory_quant, AssignmentFeedback.quant_levels_hash.to_a.map { |l| [l[1], l[0]] }.sort { |a,b| a[1] <=> b[1] }, :class => 'form_field' %>
+			</div>
+		</div>				
+		<div class="form_entry">
+			<div class="form_label">Coding</div>
+			<div class="form_field_box">
+				<%= f.select :coding_quant, AssignmentFeedback.quant_levels_hash.to_a.map { |l| [l[1], l[0]] }.sort { |a,b| a[1] <=> b[1] }, :class => 'form_field' %>
+			</div>
+		</div>				
+		<div class="form_entry">
+			<div class="form_label">Comments</div>
+			<div class="form_field_box">
+				<%= f.text_area :comments, :rows => 5, :class => 'form_field' %>
+			</div>
+		</div>
+		<div class="form_submit_box">
+		    <%= f.submit @assignment_feedback.new_record? ? "Submit" : "Update", :class => 'form_submit' %>
+			or
+			<%= link_to 'Go home', :controller => :welcome, :action => :home %>
+		</div>
+	</div>
+<% end %>
+
+</div>

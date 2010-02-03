@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<!-- layout/application -->
+		
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>6.006: <%= controller.controller_name.capitalize %>: <%= controller.action_name.capitalize %></title>
+  <%= javascript_include_tag :all, :cache => true %>
+  <%= stylesheet_link_tag 'scaffold' %>
+  <%= stylesheet_link_tag 'generic', 'layout', 'admin_layout', 'auto_complete', 'forms', 'welcome', 'users', 'student_infos', 'assignments', 'notices', 'tasks', 'health', :cache => 'six' %>
+</head>
+<body>
+
+<% if @s_user and @s_user.admin %>
+<div id="admin_all_contents">
+<%= render :partial => 'layouts/admin_console' %>
+
+<div id="all_contents" class="admin">
+<% else %>
+<div id="all_contents" class="nonadmin">
+<% end %>
+	
+<%= render :partial => 'layouts/header' %>
+<!-- layout/application -->
+
+<div id="site_status_container">
+</div>
+
+<% if flash[:notice] %> 
+	<%= update_page_tag { |page| add_site_status page, flash[:notice], true } %>
+<% elsif flash[:error] %>
+	<%= update_page_tag { |page| add_site_status page, flash[:error], false } %>
+<% end %>
+
+<%= yield  %>
+
+<%= render :partial => 'layouts/footer' %>
+<!-- layout/application -->
+
+</div>
+
+<% if @s_user and @s_user.admin %>
+</div>
+<% end %>
+
+<!-- google analytics -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-2624215-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+
+</body>
+</html>

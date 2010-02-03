@@ -1,0 +1,63 @@
+<!-- assignment_feedbacks/index -->
+<div class="full_section">
+	<h3 class="full_section">Show Feedback for Assignment</h3>
+	<% form_tag({:controller => :assignment_feedbacks, :action => :index}, {:method => :get, :class => 'user_form'}) do %>
+		<div class="form_box">
+			<div class="form_entry">
+				<div class="form_label">Assignment</div>
+				<div class="form_field_box">
+					<%= select_tag :assignment_id, options_for_select(@assignments.map { |a| [a.name, a.id] }, nil), :class => 'form_field', :id => 'assignment_id' %>
+				</div>
+			</div>
+			<div class="form_submit_box">
+			    <%= submit_tag "Show Feedback", :class => 'form_submit', :id => 'submission_submit_button' %>
+				or
+				<%= link_to 'Go home', :controller => :welcome, :action => :home %>
+			</div>
+		</div>
+	
+	<% end %>	
+</div>
+
+<div class="full_section">
+	
+	<h3 class="full_section">Feedback
+	<% if @assignment %>
+		for <%=h @assignment.name %>
+	<% else %>
+		for all assignments
+	<% end %>
+	</h3>
+
+	<% if @assignment_feedbacks.empty? %>
+		No feedback
+	<% else %>
+		<table>
+		  <tr>
+		  	<th>Who</th>
+		    <th>Hours</th>
+		    <th>Difficulty</th>
+				<th>Coding</th>
+				<th>Theory</th>
+		    <th>Comments</th>
+		  </tr>
+		
+		<% for assignment_feedback in @assignment_feedbacks %>
+		  <tr>
+		  	<td><%=h display_name_for_user assignment_feedback.user %></td>
+		    <td><%=h assignment_feedback.hours %></td>
+		    <td><%=h assignment_feedback.difficulty_str %></td>
+		    <td><%=h assignment_feedback.coding_quant_str %></td>
+		    <td><%=h assignment_feedback.theory_quant_str %></td>		
+		    <td><%=h assignment_feedback.comments %></td>
+		    <td><%= link_to 'Show', assignment_feedback %></td>
+		    <td><%= link_to 'Edit', edit_assignment_feedback_path(assignment_feedback) %></td>
+		    <td><%= link_to 'Destroy', assignment_feedback, :confirm => 'Are you sure?', :method => :delete %></td>
+		  </tr>
+		<% end %>		
+		</table>
+		<p>
+			<%= @assignment_feedbacks.length %> pieces of feedback
+		</p>
+	<% end %>
+</div>

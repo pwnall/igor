@@ -1,0 +1,49 @@
+# == Schema Information
+# Schema version: 18
+#
+# Table name: student_infos
+#
+#  id                :integer(4)      not null, primary key
+#  user_id           :integer(4)      not null
+#  wants_credit      :boolean(1)      not null
+#  has_python        :boolean(1)      not null
+#  has_math          :boolean(1)      not null
+#  python_experience :string(4096)
+#  math_experience   :string(4096)
+#  comments          :text(16777215)
+#  created_at        :datetime
+#  updated_at        :datetime
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+dexter:
+  user: dexter
+  wants_credit: true
+  has_python: false
+  python_experience: I read the Python tutorial last night.
+  has_math: false
+  math_experience: Gold medal at IMO 2009.
+  comments: I will pwn this class.
+  
+#one:
+#  real_name: MyString
+#  year: MyString
+#  athena_username: MyString
+#  wants_credit: false
+#  has_python: false
+#  has_math: false
+#  python_experience: MyString
+#  math_experience: MyString
+#  comments: MyString
+#
+#two:
+#  real_name: MyString
+#  year: MyString
+#  athena_username: MyString
+#  wants_credit: false
+#  has_python: false
+#  has_math: false
+#  python_experience: MyString
+#  math_experience: MyString
+#  comments: MyString

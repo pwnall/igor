@@ -1,0 +1,3 @@
+<%= select_datetime (@assignment ? @assignment.deadline : Time.now - 0.day),
+                    :prefix => 'cutoff', :use_short_month => true, :minute_step => 15,
+                    :datetime_separator => ' at ', :time_separator => ':' %>

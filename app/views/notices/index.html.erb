@@ -1,0 +1,32 @@
+<!-- notices/index -->
+<div class="full_section">
+
+	<div style="z-index: 10; float: right; width: 100px; text-align: right;">
+		<h1 class="full_section">
+			<%= link_to 'New', new_notice_path %>
+		</h1>
+	</div>
+	<h1 class="full_section" style="margin-right: 100px; ">
+		Site-Wide Notices
+	</h1>
+	
+	<table>
+	  <tr>
+	    <th>Subject</th>
+	    <th>Received by</th>
+	    <th>Seen by</th>
+		<th>Dismissed by</th>
+	  </tr>
+	
+	<% for notice in @notices %>
+	  <tr>
+	    <td><%=h notice.subject %></td>
+	    <td><%=h notice.posted_count %></td>
+	    <td><%=h notice.seen_count %></td>
+	    <td><%=h notice.dismissed_count %></td>
+	    <td><%= link_to 'Edit', edit_notice_path(notice) %></td>
+	    <td><%= link_to 'Destroy', notice, :confirm => 'Are you sure?', :method => :delete %></td>
+	  </tr>
+	<% end %>
+	</table>
+</div>

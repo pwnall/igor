@@ -1,0 +1,79 @@
+<!-- student_infos/show -->
+<h1 class="form_title">Student Information Form for <%= @student_info.user.name %></h1>
+
+<%= error_messages_for :student_info %>
+
+<div class="student_form">
+	<div class="form_box">
+		<div class="form_entry">
+			<div class="form_label">Taking 6.006 for credit</div>
+			<div class="form_field_box">
+				<%=@student_info.wants_credit ? 'Yes' : 'No' %>
+			</div>
+		</div>
+		<div class="form_entry">
+			<div class="form_label">(recitation allocation)<br />Enter the classes you are taking on Wednesday and Friday</div>
+			<div class="form_field_box">
+				<table>
+					<thead>
+						<tr>
+							<td>Time</td>
+							<td>Wednesday</td>
+							<td>Friday</td>
+						</tr>						
+					</thead>
+					<tbody>
+						<% ['10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm'].zip((10..16).to_a).each do |hour, dhour| %>
+							<tr>
+								<td><%= hour %></td>
+								<% [2, 4].each do |day| %>
+									<td>
+										<% rc = @recitation_conflicts[day + dhour * 10] %> 
+										<%=h rc.nil? ? '' : rc.class_name %>
+									</td>
+								<% end %>
+							</tr>
+						<% end %>						
+					</tbody>
+				</table>
+			</div>			
+		</div>					
+		<div class="form_entry">
+			<div class="form_label">Have you taken</div>
+			<div class="form_field_box">
+				<%=h @student_info.has_python ? 'Yes' : 'No' %> 6.01
+				<%=h @student_info.has_math ? 'Yes' : 'No' %> 6.042/18.062
+			</div>
+		</div>
+		<div class="form_entry" id="python_experience_container">
+			<div class="form_label">What Python experience do you have?</div>
+			<div class="form_field_box">
+				<% if @student_info.python_experience.empty? %>
+					&nbsp;
+				<% else %>
+					<%=h @student_info.python_experience %>
+				<% end %>
+			</div>
+		</div>
+		<div class="form_entry" id="math_experience_container">
+			<div class="form_label">What math background do you have?</div>
+			<div class="form_field_box">
+				<% if @student_info.math_experience.empty? %>
+					&nbsp;
+				<% else %>
+					<%=h @student_info.math_experience %>
+				<% end %>
+			</div>
+		</div>		
+		<div class="form_entry">
+			<div class="form_label">Other comments / questions</div>
+			<div class="form_field_box">
+				<% if @student_info.comments.empty? %>
+					&nbsp;
+				<% else %>
+					<%=h @student_info.comments %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

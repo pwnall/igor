@@ -1,0 +1,23 @@
+.student_form .form_section {
+	font-weight: bold;
+	color: #0e1f5b;
+}
+.student_form .form_box {
+	width: 540px;
+	margin: 0px 0px 0px 0px;
+}
+.student_form .form_label {
+	width: 244px;
+}
+.student_form .form_field_box {
+	width: 480px;
+	left: 260px;
+}
+.student_form .form_submit_box {
+	padding-left: 300px;
+}
+.student_form .form_submit {
+}
+.student_form .small_form_field {
+	width: 100px;
+}

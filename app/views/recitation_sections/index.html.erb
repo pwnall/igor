@@ -1,0 +1,39 @@
+<!-- recitation_sections/index -->
+<div class="full_section">
+
+	<div style="z-index: 10; float: right; width: 100px; text-align: right;">
+		<h1 class="full_section">
+			<%= link_to 'New', new_recitation_section_path %>
+		</h1>
+	</div>
+	<h1 class="full_section" style="margin-right: 100px; ">
+		Recitation Sections
+	</h1>
+	
+	<table>
+	  <tr>
+	    <th style="text-align: left; width: 75px;">Serial</th>
+	    <th style="text-align: left; width: 180px;">Leader</th>
+	    <th style="text-align: left; width: 220px;">Time</th>
+	    <th style="text-align: left; width: 180px;">Location</th>
+	  </tr>
+	
+	<% for @recitation_section in @recitation_sections %>
+	  <tr>
+	  	<td>
+		  	<%= in_place_editor_field(:recitation_section, :serial, {}, :cols => 3, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
+	  	</td>
+		<td>
+	    	<%= in_place_select(:recitation_section, :leader_id, :choices => @leaders.map { |l| [display_name_for_user(l, :really_short), l.id] }) %>			
+	  	</td>
+		<td>
+		  	<%= in_place_editor_field(:recitation_section, :time, {}, :cols => 12, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
+	  	</td>
+		<td>
+		  	<%= in_place_editor_field(:recitation_section, :location, {}, :cols => 10, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
+		</td>
+	    <td><%= link_to 'Destroy', @recitation_section, :confirm => 'Are you sure?', :method => :delete %></td>
+	  </tr>
+	<% end %>
+	</table>
+</div>

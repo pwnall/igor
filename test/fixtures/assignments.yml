@@ -1,0 +1,21 @@
+# == Schema Information
+# Schema version: 18
+#
+# Table name: assignments
+#
+#  id         :integer(4)      not null, primary key
+#  deadline   :datetime        not null
+#  name       :string(64)      not null
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+#one:
+#  deadline: 2008-02-18 06:09:47
+#  name: MyString
+#
+#two:
+#  deadline: 2008-02-18 06:09:47
+#  name: MyString

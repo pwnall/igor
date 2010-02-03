@@ -1,0 +1,9 @@
+<% if @name.length < 5 %>
+	<span class="error_text">too short</span>	
+<% else %>
+	<% if @user %>
+		<span class="error_text">taken</span>
+	<% else %>
+		<span class="attention_text">available</span>
+	<% end %>
+<% end %>

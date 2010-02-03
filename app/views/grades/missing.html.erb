@@ -1,0 +1,33 @@
+<!-- grades/missing -->
+<%= render :partial => 'grades/request_missing', :locals => {:assignments => @assignments} %>
+
+<div class="full_section">	
+	<h3 class="full_section">Missing Grades
+		<% unless params[:filter_aid].blank? %>
+			for <%=h @assignments.find { |a| a.id == params[:filter_aid].to_i }.name %>
+		<% end %>
+	</h3>
+	
+	<% if @users.empty? %>
+		<div>No missing grades.</div>
+	<% else %>
+		<table>
+			<thead>
+				<th style="text-align: left; ">User</th>
+				<th style="text-align: left; ">Assignments</th>
+			</thead>
+			<% @users.each do |user_id, assignments| %>
+				<tr>
+					<td><%=h display_name_for_user @users_by_id[user_id] %></td>
+					<td>
+						<% assignments.keys.sort_by { |a| a.deadline }.each do |assignment| %>
+							<%=h assignment.name %>:
+							<%=h assignments[assignment].map { |m_id| @metrics_by_id[m_id].name }.join(', ') %>
+							<br />
+						<% end %>
+					</td>
+				</tr>
+			<% end %>
+		</table>
+	<% end %>
+</div>

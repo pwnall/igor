@@ -1,0 +1,23 @@
+div.assignment_expand {
+	float: left;
+	width: 18px;
+}
+div.assignment_name {
+	float: left;
+	width: 300px;
+}
+div.assignment_deadline {
+	float: left;
+	width: 340px;
+}
+div.assignment_deliverables {
+	padding-left: 30px;
+}
+div.deliverable_name {
+	float: left;
+	width: 300px;
+}
+div.deliverable_description {
+	float: left;
+	width: 340px;
+}

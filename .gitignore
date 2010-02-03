@@ -1,0 +1,5 @@
+*~
+/.loadpath
+/db/*.sqlite*
+/log/*.log
+/tmp/*

@@ -1,0 +1,29 @@
+<h1>Listing <%= @users.length %> Users</h1>
+
+<table>
+	<thead>
+	  <tr>
+	  	<td>Username</td>
+	    <td>Email</td>
+		  <td>Infosheet?</td>
+	    <td>Creation Time</td>
+		<td>Infosheet Creation Time</td>
+	  </tr>
+	</thead>
+	<tbody>
+		<% for user in @users %>
+		  <tr>
+		    <td><%=h user.name %></td>
+		    <td><%=h user.email %></td>
+		    <td><%= user.student_info.nil? ? 'No' : link_to('Yes', user.student_info) %></td>
+			  <td><%=h user.created_at.strftime('%m/%d %H:%M:%S') %></td>
+		    <td><%= user.student_info.nil? ? '' : user.student_info.created_at.strftime('%m/%d %H:%M:%S') %></td>
+			  <td><%= link_to (user.admin ? 'Strip Admin' : 'Make Admin'), {:controller => :users, :action => :set_admin, :id => user.id, :to => !user.admin} %>
+				<td><%= user.admin ? 'admin' : link_to('Impersonate', {:controller => :users, :action => :impersonate, :id => user.id })  %></td>
+		    <td><%= link_to 'Show', user %></td>
+		    <td><%= link_to 'Edit', edit_user_path(user) %></td>
+		    <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
+		  </tr>
+		<% end %>		
+	</tbody>
+</table>

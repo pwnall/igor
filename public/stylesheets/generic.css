@@ -1,0 +1,16 @@
+/* Kill the annoying border around linked images. */
+a img { border: 0px; }
+
+/* Clear floats (generically useful). */
+.float_clearer { clear: both; }
+
+/*
+ * #0e1f5b
+ * #3b5998
+ * #7f93bc
+ * #95a5c6
+ * #bdc7d8
+ * #c3cddf
+ * #d8dfea
+ * #f7f7f7
+ */

@@ -1,0 +1,24 @@
+div.auto_complete {
+  width: 350px;
+  background: #fff;
+	z-index: 99;
+}
+div.auto_complete ul {
+  border:1px solid #888;
+  margin:0;
+  padding:0;
+  width:100%;
+  list-style-type:none;
+}
+div.auto_complete ul li {
+  margin:0;
+  padding:3px;
+}
+div.auto_complete ul li.selected {
+  background-color: #c3cddf;
+}
+div.auto_complete ul strong.highlight {
+  color: #0e1f5b; 
+  margin:0;
+  padding:0;
+}

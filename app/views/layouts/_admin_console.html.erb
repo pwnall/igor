@@ -1,0 +1,99 @@
+<div id="admin_console">
+<div id="admin_console_inner">
+	<div id="admin_console_header">
+		<div style="position: relative; top: 0px; left: -1px; height: 0px;">
+			<%= image_tag 'pwned.png', :style => 'position: relative; left: -1px;' %>
+		</div>
+		
+		<div id="admin_badge_title">
+			site
+			pwnerer
+		</div>
+		
+		<div id="admin_badge_username">
+			<%= @s_user.name %>
+		</div>
+	</div>
+	
+	<div id="admin_console_body">
+		<dl class="admin_console_menu">
+			<dt>Grading</dt>
+			<dd>
+				<ul class="admin_console_buttons">
+					<li>
+						<%= link_to 'Get Submissions', :controller => :submissions, :action => :request_stuff, :id => 0 %>
+					</li>
+					<li>
+						<%= link_to 'Post Grades', :controller => :grades, :action => :index %>
+					</li>
+				</ul>
+			</dd>
+	
+			<dt>Content</dt>
+			<dd>
+				<ul class="admin_console_buttons">
+					<li>
+						<%= link_to 'Assignments', :controller => :assignments, :action => :index %>
+					</li>
+					<li>
+						<%= link_to 'Metrics', :controller => :assignment_metrics, :action => :index %>
+					</li>
+					<li>
+						<%= link_to 'Notices', :controller => :notices, :action => :index %>
+					</li>
+					<li>
+						<%= link_to 'Recitations', :controller => :recitation_sections, :action => :index %>
+					</li>
+				</ul>
+			</dd>
+			
+			<dt>Reporting</dt>
+			<dd>
+				<ul class="admin_console_buttons">
+					<li>
+						<%= link_to 'Submissions', :controller => :submissions, :action => :index %>
+					</li>
+					<li>
+						<%= link_to 'Profiles', :controller => :profiles, :action => :index %>
+					</li>
+					<li>
+						<%= link_to 'Feedback', :controller => :assignment_feedbacks, :action => :index %>
+					</li>
+					<li>
+						<%= link_to 'Grades', :controller => :grades, :action => :request_report, :id => 0 %>
+					</li>
+					<li>
+						<%= link_to 'Missing Grades', :controller => :grades, :action => :request_missing, :id => 0 %>
+					</li>
+				</ul>
+			</dd>
+			
+	
+			<dt>Users</dt>
+			<dd>
+				<ul class="admin_console_buttons">
+					<li>
+						<%= link_to 'Users', :controller => :users, :action => :index %>
+					</li>
+					<li>
+						<%= link_to 'Student Info', :controller => :student_infos, :action => :index %>
+					</li>
+				</ul>
+			</dd>
+			
+			<dt>Site Health</dt>
+			<dd>
+				<ul class="admin_console_buttons">
+					<li>
+						<%= link_to 'System', :controller => :health, :action => :system_stat, :id => 0 %>
+					</li>
+					<li>
+						<%= link_to 'Processes', :controller => :health, :action => :index %>
+					</li>
+				</ul>
+			</dd>			
+		</dl>		
+	</div>
+	
+</div>
+</div>

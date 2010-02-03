@@ -1,0 +1,42 @@
+dev_mysql: &dev_mysql
+  adapter: mysql
+  database: six_dev
+  username: root
+  password: 
+  
+# SQLite version 3.x
+#   gem install sqlite3-ruby (not necessary on OS X Leopard)
+dev_sqlite3: &dev_sqlite3
+  adapter: sqlite3
+  database: db/development.sqlite3
+  timeout: 5000
+
+test_mysql: &test_mysql
+  adapter: mysql
+  database: upside_test
+  username: root
+  password:
+  
+# SQLite version 3.x
+#   gem install sqlite3-ruby (not necessary on OS X Leopard)
+test_sqlite3: &test_sqlite3
+  adapter: sqlite3
+  database: db/test.sqlite3
+  timeout: 5000
+
+# use &dev_sqlite3 or &dev_mysql, depending on which db engine you want
+development:
+  <<: *dev_mysql
+
+# Warning: The database defined as 'test' will be erased and
+# re-generated from your development database when you run 'rake'.
+# Do not set this db to the same as development or production.
+test:
+  <<: *test_mysql
+
+# This section is rewritten by rpwn, don't bother :)
+production:
+  adapter: mysql
+  database: six_prod
+  username: six
+  password: superpass

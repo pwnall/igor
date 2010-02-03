@@ -1,0 +1,27 @@
+<!-- grades/request_missing -->
+<% @assignments = assignments %>
+<div class="full_section">	
+	<h3 class="full_section">Compute Missing Grades</h3>
+
+	<% form_tag({:controller => :grades, :action => :missing, :id => 0}, {:class => 'user_form'}) do %>
+		<div class="form_box">
+			<div class="form_entry">
+				<div class="form_label">Assignment</div>
+				<div class="form_field_box">
+					<%= select_tag :filter_aid, options_for_select([['(all)', nil]] + @assignments.map { |a| [a.name, a.id.to_s] }, params[:filter_aid]), :class => 'form_field', :id => 'filter_aid' %>
+				</div>
+			</div>
+			<div class="form_entry">
+				<div class="form_label">Only published metrics</div>
+				<div class="form_field_box">
+					<%= check_box_tag :filter_published, '1', params[:filter_published] == '1', :class => 'form_field', :id => 'filter_published' %>
+				</div>
+			</div>
+			<div class="form_submit_box">
+				<%= submit_tag "Compute missing grades", :class => 'form_submit', :id => 'request_missing_submit_button' %>
+				or
+				<%= link_to 'Go home', :controller => :welcome, :action => :home %>
+			</div>
+		</div>
+	<% end %>	
+</div>
