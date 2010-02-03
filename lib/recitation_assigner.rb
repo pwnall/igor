@@ -1,12 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'pp'
-require 'net/http'
-require 'uri'
-require 'yaml'
-
-require 'rubygems'
-require 'active_support'
+require File.join(File.dirname(__FILE__), '..', 'config', 'environment.rb')
 
 module RecitationAssigner
   # The raw conflict information obtained directly from the API.
@@ -28,7 +22,8 @@ module RecitationAssigner
     students['info'].map do |student|
       {
         :conflicts => student['conflicts'].reject { |c|
-          c['class'].strip == '6.006' || c['class'] == 'free'}.index_by { |c| c['timeslot'] },
+          c['class'].strip == Course.main.number || c['class'] == 'free' }.
+                                           index_by { |c| c['timeslot'] },
         :athena => student['athena']
       }
     end

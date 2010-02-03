@@ -14,14 +14,14 @@
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  student_info_id: 1
-  prerequisite_id: 1
+dexter_math:
+  student_info: dexter
+  prerequisite: math
   took_course: false
-  waiver_answer: MyText
+  waiver_answer: Gold medal at IMO 2009.
 
-two:
-  student_info_id: 1
-  prerequisite_id: 1
+dexter_python:
+  student_info: dexter
+  prerequisite: python
   took_course: false
-  waiver_answer: MyText
+  waiver_answer: I read the Python tutorial last night.

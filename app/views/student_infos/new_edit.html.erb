@@ -17,7 +17,7 @@ end
 <% form_for(@student_info, :url => url, :html => {:class => 'student_form'}) do |f| %>
 	<div class="form_box">
 		<div class="form_entry">
-			<div class="form_label">Taking 6.006 for credit</div>
+			<div class="form_label">Taking <%= Course.main.number %> for credit</div>
 			<div class="form_field_box">
 				<%= f.check_box :wants_credit, :class => 'form_field' %>Yes
 			</div>

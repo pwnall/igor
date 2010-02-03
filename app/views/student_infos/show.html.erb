@@ -6,7 +6,7 @@
 <div class="student_form">
 	<div class="form_box">
 		<div class="form_entry">
-			<div class="form_label">Taking 6.006 for credit</div>
+			<div class="form_label">Taking <%= Course.main.number %> for credit</div>
 			<div class="form_field_box">
 				<%=@student_info.wants_credit ? 'Yes' : 'No' %>
 			</div>

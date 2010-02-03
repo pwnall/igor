@@ -16,12 +16,14 @@ module CoverSheet
     pdf = PDF::Writer.new :paper => 'LETTER', :orientation => :portrait
     
     # course footer
+    course = Course.main
     pdf.select_font "Helvetica"
     pdf.y = 40 + 18 * 3
     pdf.font_size = 14
-    pdf.text "6.006 - Introduction to Algorithms", :justification => :center
+    pdf.text "#{course.number} - #{course.title}", :justification => :center
     pdf.text "Massachusetts Institute of Technology", :justification => :center
-    pdf.text "Department of Electrical Engineering and Computer Science", :justification => :center
+    pdf.text "Department of Electrical Engineering and Computer Science",
+             :justification => :center
 
     # Section, MIT name and real name
     pdf.y = 792 - 36

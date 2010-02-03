@@ -12,10 +12,10 @@
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  course_number: 1
-  waive_question: MyString
+math:
+  course_number: "6.042"
+  waiver_question: "What is your mathematics background?"
 
-two:
-  course_number: 1
-  waive_question: MyString
+python:
+  course_number: "6.01"
+  waiver_question: "What is your experience with Python?"

@@ -20,10 +20,6 @@
 dexter:
   user: dexter
   wants_credit: true
-  has_python: false
-  python_experience: I read the Python tutorial last night.
-  has_math: false
-  math_experience: Gold medal at IMO 2009.
   comments: I will pwn this class.
   
 #one:

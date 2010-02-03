@@ -6,10 +6,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <title>6.006: <%= controller.controller_name.capitalize %>: <%= controller.action_name.capitalize %></title>
+  <title>
+  	<%= Course.main.number %>: <%= Course.main.title %> -
+		<%= controller.controller_name.capitalize %>:
+		<%= controller.action_name.capitalize %>
+	</title>
   <%= javascript_include_tag :all, :cache => true %>
   <%= stylesheet_link_tag 'scaffold' %>
-  <%= stylesheet_link_tag 'generic', 'layout', 'admin_layout', 'auto_complete', 'forms', 'welcome', 'users', 'student_infos', 'assignments', 'notices', 'tasks', 'health', :cache => 'six' %>
+  <%= stylesheet_link_tag 'generic', 'layout', 'admin_layout', 'auto_complete',
+                          'forms', 'welcome', 'users', 'student_infos',
+                          'assignments', 'notices', 'tasks', 'health',
+                          :cache => 'seven' %>
 </head>
 <body>
 

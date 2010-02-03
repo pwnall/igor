@@ -11,7 +11,8 @@ class UserMailerTest < ActionMailer::TestCase
     @expected.date    = Time.now
 
     token = tokens(:inactive_email_confirmation)
-    UserMailer.create_email_confirmation(token, 'http://token').parts.
+    UserMailer.create_email_confirmation(token, 'http://token',
+                                         'http://alg.csail.mit.edu').parts.
                each do |part|
       assert_match 'costan+lurker@mit.edu', part.body
       assert_match 'http://token', part.body

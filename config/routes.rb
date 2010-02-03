@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :courses
+
   map.resources :prerequisites
 
   map.resources :users, :collection => { :lookup  => :get,

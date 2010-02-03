@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100203124712) do
+ActiveRecord::Schema.define(:version => 20100203193053) do
 
   create_table "assignment_feedbacks", :force => true do |t|
     t.integer  "user_id",                       :null => false
@@ -41,6 +41,20 @@ ActiveRecord::Schema.define(:version => 20100203124712) do
     t.string   "name",       :limit => 64, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "courses", :force => true do |t|
+    t.string   "number",          :limit => 16,                    :null => false
+    t.string   "title",           :limit => 256,                   :null => false
+    t.boolean  "has_recitations",                :default => true, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "courses", ["number"], :name => "index_courses_on_number", :unique => true
+
+  create_table "db_files", :force => true do |t|
+    t.binary "data", :limit => 2147483647
   end
 
   create_table "deliverable_validations", :force => true do |t|
@@ -86,9 +100,6 @@ ActiveRecord::Schema.define(:version => 20100203124712) do
     t.integer "user_id",                      :null => false
     t.boolean "seen",      :default => false, :null => false
   end
-
-  add_index "notice_statuses", ["notice_id", "user_id"], :name => "index_notice_statuses_on_notice_id_and_user_id", :unique => true
-  add_index "notice_statuses", ["user_id", "notice_id"], :name => "index_notice_statuses_on_user_id_and_notice_id", :unique => true
 
   create_table "notices", :force => true do |t|
     t.string   "subject",         :limit => 128,                 :null => false
@@ -170,9 +181,13 @@ ActiveRecord::Schema.define(:version => 20100203124712) do
   add_index "run_results", ["submission_id"], :name => "index_run_results_on_submission_id", :unique => true
 
   create_table "student_infos", :force => true do |t|
-    t.integer  "user_id",                          :null => false
-    t.boolean  "wants_credit",                     :null => false
-    t.text     "comments",     :limit => 16777215
+    t.integer  "user_id",                               :null => false
+    t.boolean  "wants_credit",                          :null => false
+    t.boolean  "has_python",                            :null => false
+    t.boolean  "has_math",                              :null => false
+    t.string   "python_experience", :limit => 4096
+    t.string   "math_experience",   :limit => 4096
+    t.text     "comments",          :limit => 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
   end

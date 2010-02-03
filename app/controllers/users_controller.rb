@@ -55,7 +55,9 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         flash[:notice] = 'Please check your e-mail to activate your account.'
-        UserMailer.deliver_email_confirmation token, url_for(:controller => :tokens, :action => :spend, :token => token.token, :only_path => false, :host => request.host, :port => request.port)
+        UserMailer.deliver_email_confirmation token,
+            url_for(:controller => :tokens, :action => :spend, :token => token.token, :only_path => false),
+            root_url(:only_path => false)
         
         format.html { redirect_to(:controller => :sessions, :action => :index) }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
@@ -171,7 +173,10 @@ class UsersController < ApplicationController
     @user.save!
     
     # send it over via email
-    UserMailer.deliver_recovery_email token, url_for(:controller => :tokens, :action => :spend, :token => token.token, :only_path => false, :host => request.host, :port => request.port)
+    UserMailer.deliver_recovery_email token,
+        url_for(:controller => :tokens, :action => :spend, :token => token.token, :only_path => false),
+        root_url(:only_path => false)
+
 
     # go home
     flash[:notice] = "Please check your e-mail at #{params[:user][:email]} for next steps."

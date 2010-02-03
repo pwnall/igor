@@ -2,7 +2,8 @@ Dear <%= @token.user.email%>,
 
 
 You are receiving this e-mail because someone (hopefully you) claimed you
-have lost your alg.csail.mit.edu login name or password.
+have lost your <%= @course.number %> server (<%= @server_url %>) login name or
+password.
 
 Your login name is listed below:
 <%= @token.user.name %>
@@ -10,9 +11,9 @@ Your login name is listed below:
 Please go to the address below to reset your password.
 <%= @token_url %>
 
-If you haven't requested help recovering your alg.csail.mit.edu login name
-or password, you don't need to do anything. Most probably, someone
+If you haven't requested help recovering your <%= @course.number %> server login
+name or password, you don't need to do anything. Most probably, someone
 mistyped their e-mail. If you receive many e-mails like this, e-mail
-6.006-tas@mit.edu, and we'll address the problem.
+<%= @course.number %>-tas@mit.edu, and we'll address the problem.
 
-Thank you for your interest in 6.006!
+Thank you for your interest in <%= @course.number %>!

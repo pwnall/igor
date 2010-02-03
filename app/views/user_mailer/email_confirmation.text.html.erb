@@ -2,8 +2,8 @@
 
 <p>
 You are receiving this e-mail because someone (hopefully you) registered on
-<%= link_to 'alg.csail.mit.edu', 'http://alg.csail.mit.edu'%>
-claiming to have your e-mail address.
+<%= link_to "the #{@course.number} server", @server_url %> claiming to have your
+e-mail address.
 </p>
 
 <p>
@@ -18,13 +18,16 @@ to confirm that you own this e-mail address.
 </p>
 
 <p>
-If you haven't registered to <%= link_to 'alg.csail.mit.edu', 'http://alg.csail.mit.edu'%>,
-or the login name above does
-not belong to you, you don't need to do anything. Most probably, someone
-mistyped their e-mail. If you receive many e-mails like this, e-mail
-<%= link_to '6.006-tas@mit.edu', 'mailto:6.006-tas@mit.edu' %>, and we'll address the problem.
+If you haven't registered on
+<%= link_to "the #{@course.number} server", @server_url %>,
+or the login name above does not belong to you, you don't need to do anything.
+Most probably, someone mistyped their e-mail. If you receive many e-mails like
+this, e-mail
+<%= link_to "#{@course.number}-tas@mit.edu",
+            "mailto:#{@course.number}-tas@mit.edu" %>,
+and we'll address the problem.
 </p>
 
 <p>
-Welcome to 6.006!
+Welcome to <%= @course.number %>!
 </p>
