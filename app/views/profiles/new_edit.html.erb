@@ -53,17 +53,33 @@ end
 			</div>
 		</div>
 		<div class="form_entry">
+			<div class="form_label">University</div>
+			<div class="form_field_box">
+				<%= f.text_field :university, :class => 'form_field' %>
+			</div>
+		</div>
+		<div class="form_entry">
 			<div class="form_label">Would like to be called</div>
 			<div class="form_field_box">
 				<%= f.text_field :nickname, :class => 'form_field' %>
 			</div>
-		</div>		
+		</div>
+		<% if Course.main.has_recitations? %>
 		<div class="form_entry">
 			<div class="form_label">Recitation section</div>
 			<div class="form_field_box">
 				<%= f.select :recitation_section_id, @recitation_section_options, :class => 'form_field' %>
 			</div>
-		</div>		
+		</div>
+		<% end %>
+    <div class="form_entry">
+      <div class="form_label">Permission to publish</div>
+      <div class="form_field_box">
+        <%= f.check_box :allows_publishing, :class => 'form_field' %>
+				The course staff may publish my proposals or homework solutions on
+				the Web, as long as I am credited
+      </div>
+    </div>		
 		<div class="form_entry">
 			<div class="form_label">Staff should whitelist my</div>
 			<div class="form_field_box">

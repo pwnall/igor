@@ -135,14 +135,16 @@ ActiveRecord::Schema.define(:version => 20100203193053) do
     t.integer  "user_id",                                                  :null => false
     t.string   "real_name",             :limit => 128,                     :null => false
     t.string   "nickname",              :limit => 64,                      :null => false
-    t.string   "year",                                                     :null => false
-    t.string   "athena_username",       :limit => 16,                      :null => false
+    t.string   "university",            :limit => 64,                      :null => false
+    t.string   "year",                  :limit => 4,                       :null => false
+    t.string   "athena_username",       :limit => 32,                      :null => false
     t.string   "about_me",              :limit => 4096, :default => "",    :null => false
+    t.boolean  "allows_publishing",                     :default => true,  :null => false
     t.boolean  "has_phone",                             :default => true,  :null => false
-    t.string   "phone_number",          :limit => 64
     t.boolean  "has_aim",                               :default => false, :null => false
-    t.string   "aim_name",              :limit => 64
     t.boolean  "has_jabber",                            :default => false, :null => false
+    t.string   "phone_number",          :limit => 64
+    t.string   "aim_name",              :limit => 64
     t.string   "jabber_name",           :limit => 64
     t.integer  "recitation_section_id"
     t.datetime "created_at"
