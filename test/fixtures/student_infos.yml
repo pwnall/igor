@@ -20,7 +20,7 @@
 dexter:
   user: dexter
   wants_credit: true
-  comments: I will pwn this class.
+  motivation: I will pwn this class.
   
 #one:
 #  real_name: MyString

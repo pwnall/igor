@@ -3,6 +3,8 @@ if @athena_info.nil?
 else
   page[:profile_websis_lookup].update %Q[<span style="color: green;">#{@athena_username} found</span>]
   page[:profile_real_name].value = @athena_info[:full_name]
+  page[:profile_department].value = @athena_info[:department]
+  page[:profile_university].value = guess_university_from_athena @athena_info
   page[:profile_nickname].value = @athena_info[:full_name].split(' ').first
   page[:profile_phone_number].value = @athena_info[:phone]
   page[:profile_year_container].update select_tag('profile[year]', options_for_select(@year_options), :class => 'form_field', :id => 'profile_year') 

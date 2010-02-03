@@ -136,6 +136,7 @@ ActiveRecord::Schema.define(:version => 20100203193053) do
     t.string   "real_name",             :limit => 128,                     :null => false
     t.string   "nickname",              :limit => 64,                      :null => false
     t.string   "university",            :limit => 64,                      :null => false
+    t.string   "department",            :limit => 64,                      :null => false
     t.string   "year",                  :limit => 4,                       :null => false
     t.string   "athena_username",       :limit => 32,                      :null => false
     t.string   "about_me",              :limit => 4096, :default => "",    :null => false

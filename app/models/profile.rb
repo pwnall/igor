@@ -34,8 +34,11 @@ class Profile < ActiveRecord::Base
   # The user's school year.
   validates_inclusion_of :year, :in => %w{ 1 2 3 4 G }, :allow_nil => false
 
-  # The user's university.
+  # The user's university (e.g., "Massachusetts Institute of Technology").
   validates_length_of :university, :in => 1..64, :allow_nil => false
+  
+  # The user's department (e.g., "Electrical Eng & Computer Sci").
+  validates_length_of :department, :in => 1..64, :allow_nil => false
   
   # The user's account.
   belongs_to :user
