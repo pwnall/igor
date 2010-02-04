@@ -1,6 +1,6 @@
 class StudentInfosController < ApplicationController
   before_filter :authenticated_as_user, :only => [:new, :create, :edit, :update, :new_or_edit]
-  before_filter :authenticated_as_admin, :only => [:index, :show]
+  before_filter :authenticated_as_admin, :only => [:index, :show, :destroy]
    
   # GET /student_infos
   # GET /student_infos.xml
