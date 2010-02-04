@@ -71,5 +71,15 @@ class Profile < ActiveRecord::Base
   validates_length_of :jabber_name, :in => 1..64, :allow_nil => true
   
   # Self-description that the site admins can see.
-  validates_length_of :about_me, :in => 1..(4.kilobytes), :allow_nil => false
+  validates_length_of :about_me, :in => 0..(4.kilobytes), :allow_nil => false
+  
+  def phone_number=(new_number)
+    super(new_number.blank? ? nil : new_number)    
+  end
+  def aim_name=(new_name)
+    super(new_name.blank? ? nil : new_name)    
+  end
+  def jabber_name=(new_name)
+    super(new_name.blank? ? nil : new_name)    
+  end
 end
