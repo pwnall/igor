@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(:version => 20100203193053) do
   create_table "courses", :force => true do |t|
     t.string   "number",          :limit => 16,                    :null => false
     t.string   "title",           :limit => 256,                   :null => false
+    t.string   "ga_account",      :limit => 32,                    :null => false
     t.boolean  "has_recitations",                :default => true, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"

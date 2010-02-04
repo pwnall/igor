@@ -1,4 +1,5 @@
 main:
   number: "6.006"
   title: "Introduction to Algorithms"
+  ga_account: UA-2624215-2
   has_recitations: true

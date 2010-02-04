@@ -2,7 +2,9 @@ class CoursesController < ApplicationController
   before_filter :authenticated_as_admin
   
   in_place_edit_for_boolean :course, :has_recitations
-  [:number, :title].each { |field| in_place_edit_for :course, field }
+  [:number, :ga_account, :title].each do |field|
+    in_place_edit_for :course, field
+  end
   
   # GET /courses
   # GET /courses.xml
