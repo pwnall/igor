@@ -19,13 +19,13 @@
 	<% unless @student_info %>
 	<div class="notice_box">
 		<div class="notice_dismiss">
-			<%= link_to 'Enter information', :controller => :student_infos, :action => :for_user, :id => 0 %>
+			<%= link_to 'Enter information', my_own_student_infos_path %>
 		</div>
 		<div class="notice_title">
 			We do not have a student information sheet for you.
 		</div>
 		<div>
-			<%= link_to 'Enter your information', :controller => :student_infos, :action => :for_user, :id => 0 %>
+			<%= link_to 'Enter your information', my_own_student_infos_path %>
 			to receive a recitation assignment.
 		</div>
 	</div>
