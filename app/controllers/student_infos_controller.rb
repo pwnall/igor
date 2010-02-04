@@ -49,7 +49,7 @@ class StudentInfosController < ApplicationController
   private :new_edit
   
   def prepare_for_editing
-    @prerequisites = @student_info.prerequisite_answers.index_by &:id
+    @prerequisites = @student_info.prerequisite_answers.index_by &:prerequisite_id
     Prerequisite.all.each do |prereq|
       next if @prerequisites.has_key? prereq.id
       @prerequisites[prereq.id] =
