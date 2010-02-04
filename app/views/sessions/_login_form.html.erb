@@ -24,13 +24,13 @@
 		<div class="form_entry">
 			<div class="form_label">New?</div>				
 			<div class="form_field_box">
-				<%= link_to 'Click here to register', new_user_url %> 
+				<%= link_to 'Click here to register', new_user_path %> 
 			</div>
 		</div>
 		<div class="form_entry">
 			<div class="form_label">Forgot your login?</div>				
 			<div class="form_field_box">
-				<%= link_to 'Click here to recover name/password', :controller => :users, :action => :recover_password, :id => 0 %> 
+				<%= link_to 'Click here to recover name/password', recover_password_users_path %> 
 			</div>
 		</div>
 	</div>

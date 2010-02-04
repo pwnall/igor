@@ -4,7 +4,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :prerequisites
 
   map.resources :users, :collection => { :lookup  => :get,
-                                         :check_available => :get },
+                                         :check_available => :get,
+                                         :recover_password => :get },
                         :member => { :edit_password => :get,
                                      :update_password => :put }
   map.resources :sessions
