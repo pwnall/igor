@@ -105,24 +105,26 @@ class StudentInfosController < ApplicationController
       end
     end
     
-    old_recitation_conflicts =
-        @student_info.recitation_conflicts.index_by &:timeslot
-    # Update recitation conflicts.
-    unless params[:old_recitation_conflicts].nil?
-      params[:recitation_conflicts] += params[:old_recitation_conflicts].values
-    end
-    params[:recitation_conflicts].each do |rc|
-      next if rc[:class_name].nil? || rc[:class_name].empty?
-      timeslot = rc[:timeslot].to_i
-      if old_recitation_conflicts[timeslot]
-        old_recitation_conflicts[timeslot].class_name = rc[:class_name]
-        old_recitation_conflicts.delete timeslot
-      else
-        @student_info.recitation_conflicts << RecitationConflict.new(rc)
+    if Course.main.has_recitations?
+      old_recitation_conflicts =
+          @student_info.recitation_conflicts.index_by &:timeslot
+      # Update recitation conflicts.
+      unless params[:old_recitation_conflicts].nil?
+        params[:recitation_conflicts] += params[:old_recitation_conflicts].values
       end
+      params[:recitation_conflicts].each do |rc|
+        next if rc[:class_name].nil? || rc[:class_name].empty?
+        timeslot = rc[:timeslot].to_i
+        if old_recitation_conflicts[timeslot]
+          old_recitation_conflicts[timeslot].class_name = rc[:class_name]
+          old_recitation_conflicts.delete timeslot
+        else
+          @student_info.recitation_conflicts << RecitationConflict.new(rc)
+        end
+      end
+      # wipe cleared conflicts
+      old_recitation_conflicts.each_value { |orc| @student_info.recitation_conflicts.delete orc }
     end
-    # wipe cleared conflicts
-    old_recitation_conflicts.each_value { |orc| @student_info.recitation_conflicts.delete orc }
     
     if is_new_record
       success = @student_info.save
