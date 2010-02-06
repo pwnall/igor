@@ -13,7 +13,8 @@
 if @prerequisite.new_record?
   url = {:controller => :prerequisites, :action => :create}
 else
-  url = {:controller => :prerequisites, :action => :update, :id => @prerequisites.id}
+  url = {:controller => :prerequisites, :action => :update,
+         :id => @prerequisite.id}
 end
 %>
 
