@@ -1,5 +1,6 @@
+.bundle
+.loadpath
 *~
-/.loadpath
-/db/*.sqlite*
-/log/*.log
-/tmp/*
+db/*.sqlite3
+log/*.log
+tmp/**/*

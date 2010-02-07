@@ -10,7 +10,7 @@ if @profile.new_record?
 	url = {:controller => :profiles, :action => @manual ? :create_manual : :create}
 	url[:id] = 0 if @manual
 else
-	url = {:controller => :profiles, :action => :update, :id => @profile.id}
+	url = update_profile_path @profile
 end
 %>
 
@@ -28,7 +28,7 @@ end
 				Not started.
 			</div>
 			<%= observe_field :profile_athena_username,
-				:url => {:controller => :profiles, :action => :websis_lookup, :id => 0},
+				:url => websis_lookup_profiles_path,
 				:before => '$("profile_websis_lookup").update(\'<span style="color: gray; ">Querying WebSIS...</span>\')',
 				:with => '"athena_id=" + encodeURIComponent($("profile_athena_username").value)',
 				:frequency => 0.5 %>
@@ -122,7 +122,7 @@ end
 		<div class="form_submit_box">
 		    <%= f.submit @profile.new_record? ? "Submit" : "Update", :class => 'form_submit' %>
 			or
-			<%= link_to 'Go home', :controller => :welcome, :action => :home %>
+			<%= link_to 'Go home', root_path %>
 		</div>
 	</div>
 <% end %>

@@ -50,7 +50,7 @@ class ProfilesController < ApplicationController
       if !@s_user.admin && @s_user.id != @profile.user_id
         # Don't let normal users edit other users' profiles.
         notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
-        redirect_to :controller => :welcome, :action => :index
+        redirect_to root_url
         return
       end
     end
@@ -65,34 +65,28 @@ class ProfilesController < ApplicationController
   end
   private :new_edit
   
-  # GET /profiles/for_user/0
-  def for_user
-    if @s_user.admin
-      user = (params[:id] == '0') ? @s_user : User.find(params[:id])
-    else
-      user = @s_user
-    end
-    
-    @profile = user.profile || Profile.new(:user => user)
-    new_edit(false)
+  # GET /profiles/my_own
+  def my_own
+    @profile = @s_user.profile || Profile.new(:user => @s_user)
+    new_edit false
   end
   
   # GET /profiles/new
   # GET /profiles/new.xml
   def new
     @profile = Profile.new
-    new_edit(false)
+    new_edit false
   end
 
   # GET /profiles/1/edit
   def edit
     @profile = Profile.find(params[:id])
-    new_edit(false)
+    new_edit false
   end
   
   def new_manual
     @profile = Profile.new
-    new_edit(true)    
+    new_edit true
   end
     
   def create_update(manual)
@@ -105,7 +99,7 @@ class ProfilesController < ApplicationController
       if !@s_user.admin && @s_user.id != @profile.user_id
         # do not allow random record updates
         notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
-        redirect_to :controller => :welcome, :action => :index
+        redirect_to root_path
         return
       end
     end
@@ -120,7 +114,7 @@ class ProfilesController < ApplicationController
     respond_to do |format|
       if success
         flash[:notice] = "Profile successfully #{is_new_record ? 'created' : 'updated'}."
-        format.html { redirect_to(:controller => :welcome, :action => :home) }
+        format.html { redirect_to root_path }
         format.xml do
           if is_new_record
             render :xml => @profile, :status => :created, :location => @profile

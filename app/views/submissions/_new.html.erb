@@ -23,12 +23,12 @@
 		</div>						
 		<%= observe_field 'submission_deliverable_id', :frequency => 0.5, :update => 'submission_description_text',
 				:before => update_page { |p| p.replace_html 'submission_description_text', 'loading...' },
-				:url => {:controller => :deliverables, :action => :xhr_description, :id => 0},
+				:url => xhr_description_deliverables_path,
 				:with => "'deliverable_id=' + encodeURIComponent(value)" %>					
 		<div class="form_submit_box">
 		    <%= f.submit "Submit", :class => 'form_submit', :id => 'submission_submit_button' %>
 			or
-			<%= link_to 'Go home', :controller => :welcome, :action => :home %>
+			<%= link_to 'Go home', root_path %>
 		</div>
 		
 <%= javascript_tag <<JS_END		

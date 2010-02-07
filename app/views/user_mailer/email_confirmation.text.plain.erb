@@ -9,7 +9,7 @@ Please make sure that you have indeed registered with the login name below:
 
 If this is true, you can go to the address below to confirm that you own
 this e-mail address.
-<%= @token_url %>
+<%= spend_token_url :token => @token.token, :only_path => false %>
 
 If you haven't registered on the <%= @course.number %> server, or the login name 
 above does not belong to you, you don't need to do anything. Most probably,

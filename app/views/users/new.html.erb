@@ -22,8 +22,7 @@
 						:frequency => 0.5,
 						:update => 'user_form_name_availability',
 						:before => "$('user_form_name_availability').update('checking availability...')",
-						:complete => "", 
-						:url => {:controller => :users, :action => :check_name, :id => 0, :only_path => false },
+						:complete => "", :url => check_name_users_path,
 						:with => "'name=' + encodeURIComponent(value)" %>
 				</div>
 			</div>

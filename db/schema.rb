@@ -54,10 +54,6 @@ ActiveRecord::Schema.define(:version => 20100203193053) do
 
   add_index "courses", ["number"], :name => "index_courses_on_number", :unique => true
 
-  create_table "db_files", :force => true do |t|
-    t.binary "data", :limit => 2147483647
-  end
-
   create_table "deliverable_validations", :force => true do |t|
     t.string   "type",             :limit => 128,        :null => false
     t.integer  "deliverable_id",                         :null => false
@@ -96,13 +92,14 @@ ActiveRecord::Schema.define(:version => 20100203193053) do
     t.datetime "updated_at"
   end
 
-  add_index "grades", ["user_id", "assignment_metric_id"], :name => "index_grades_on_user_id_and_assignment_metric_id", :unique => true
-
   create_table "notice_statuses", :force => true do |t|
     t.integer "notice_id",                    :null => false
     t.integer "user_id",                      :null => false
     t.boolean "seen",      :default => false, :null => false
   end
+
+  add_index "notice_statuses", ["notice_id", "user_id"], :name => "index_notice_statuses_on_notice_id_and_user_id", :unique => true
+  add_index "notice_statuses", ["user_id", "notice_id"], :name => "index_notice_statuses_on_user_id_and_notice_id", :unique => true
 
   create_table "notices", :force => true do |t|
     t.string   "subject",         :limit => 128,                 :null => false

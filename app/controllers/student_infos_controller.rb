@@ -36,7 +36,7 @@ class StudentInfosController < ApplicationController
         # Do not allow random record updates.
         notice[:error] =
             'That is not yours to play with! Your attempt has been logged.'
-        redirect_to :controller => :welcome, :action => :index
+        redirect_to root_path
         return
       end
     end
@@ -100,7 +100,7 @@ class StudentInfosController < ApplicationController
       if !@s_user.admin && @s_user.id != @student_info.user_id
         # Do not allow random record updates.
         notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
-        redirect_to :controller => :welcome, :action => :index
+        redirect_to root_path
         return
       end
     end
@@ -135,7 +135,7 @@ class StudentInfosController < ApplicationController
     respond_to do |format|
       if success
         flash[:notice] = "Student Information successfully #{is_new_record ? 'submitted' : 'updated'}."
-        format.html { redirect_to(:controller => :welcome, :action => :home) }
+        format.html { redirect_to root_path }
         format.xml do
           if is_new_record
             render :xml => @student_info, :status => :created, :location => @student_info

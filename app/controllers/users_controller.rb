@@ -55,9 +55,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         flash[:notice] = 'Please check your e-mail to activate your account.'
-        UserMailer.deliver_email_confirmation token,
-            url_for(:controller => :tokens, :action => :spend, :token => token.token, :only_path => false),
-            root_url(:only_path => false)
+        TokenMailer.deliver_email_confirmation token
         
         format.html { redirect_to(:controller => :sessions, :action => :index) }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
@@ -145,7 +143,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         flash[:notice] = 'Password successfully updated.'
-        format.html { redirect_to :controller => :welcome, :action => :home }
+        format.html { redirect_to root_path }
         format.xml  { head :ok }
       else
         format.html { render :action => :edit_password }
@@ -180,7 +178,7 @@ class UsersController < ApplicationController
 
     # go home
     flash[:notice] = "Please check your e-mail at #{params[:user][:email]} for next steps."
-    redirect_to(:controller => :welcome, :action => :index)    
+    redirect_to root_path
   end
   
   def impersonate
@@ -189,7 +187,7 @@ class UsersController < ApplicationController
     
     session[:user_id] = @user.id
     respond_to do |format|
-      format.html { redirect_to :controller => :welcome, :action => :home }
+      format.html { redirect_to root_path }
       format.xml { head :ok }
     end
   end

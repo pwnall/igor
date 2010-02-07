@@ -75,7 +75,7 @@ class SubmissionsController < ApplicationController
     OfflineTasks.validate_submission(@submission)
     flash[:notice] = "Re-validating #{@submission.code.original_filename} from #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}. "
     respond_to do |format|
-      format.html { redirect_to(:controller => :submissions, :action => :index) }
+      format.html { redirect_to submissions_path }
       format.xml { head :ok }
     end    
   end
@@ -96,7 +96,7 @@ class SubmissionsController < ApplicationController
         OfflineTasks.validate_submission @submission        
         
         flash[:notice] = "Uploaded #{@submission.code.original_filename} for #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}. Don't forget to <a href=\"#{url_for :controller => :assignment_feedbacks, :action => :new, :assignment_id => @submission.deliverable.assignment.id}\">submit feedback</a>!"
-        format.html { redirect_to(:controller => :welcome, :action => :home) }
+        format.html { redirect_to root_path }
         format.xml do
           if is_new_record
             render :xml => @submission, :status => :created, :location => @submission
@@ -110,7 +110,7 @@ class SubmissionsController < ApplicationController
         else
           flash[:notice] = "Submission for #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name} failed."
         end
-        format.html { redirect_to(:controller => :welcome, :action => :home) }
+        format.html { redirect_to root_path }
         format.xml  { render :xml => @submission.errors, :status => :unprocessable_entity }
       end
     end    

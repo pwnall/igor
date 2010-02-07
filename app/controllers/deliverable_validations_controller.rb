@@ -14,7 +14,7 @@ class DeliverableValidationsController < ApplicationController
       new_class = ProcValidation
     else
       flash[:error] = "Don't mess with the validation type."
-      redirect_to :controller => :welcome, :action => :index
+      redirect_to root_path
       return
     end
     params_hash.delete :type

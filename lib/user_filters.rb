@@ -7,7 +7,7 @@ module UserFilters
   # bounces the user to a safe page via redirect_to and returns +false+
   def bounce_user(*args)
     flash[:error] = args[0] unless args.length < 1    
-    redirect_to :controller => :welcome, :action => :index
+    redirect_to new_session_path
     return false
   end
   

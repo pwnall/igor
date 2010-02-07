@@ -89,7 +89,7 @@ class AssignmentFeedbacksController < ApplicationController
     respond_to do |format|
       if success
         flash[:notice] = "Feedback for #{@assignment_feedback.assignment.name} successfully #{@is_new_record ? 'submitted' : 'updated'}."
-        format.html { redirect_to(:controller => :welcome, :action => :home) }
+        format.html { redirect_to root_path }
         format.xml do
           if is_new_record
             render :xml => @assignment_feedback, :status => :created, :location => @assignment_feedback

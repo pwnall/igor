@@ -106,7 +106,7 @@ end
 		<div class="form_submit_box">
 		    <%= f.submit @student_info.new_record? ? "Submit" : "Update", :class => 'form_submit' %>
 			or
-			<%= link_to 'Go home', :controller => :welcome, :action => :home %>
+			<%= link_to 'Go home', root_path %>
 		</div>
 	</div>
 <% end %>
