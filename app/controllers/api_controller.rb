@@ -1,4 +1,3 @@
-require 'yaml'
 class ApiController < ApplicationController
   def conflict_info
     @student_infos = StudentInfo.find :all, :include => :recitation_conflicts

@@ -1,0 +1,23 @@
+<p>
+  <b>Name:</b>
+  <%= @team_partition.name %>
+</p>
+
+<p>
+  <b>Manual:</b>
+  <%= @team_partition.manual %>
+</p>
+
+<p>
+  <b>Frozen:</b>
+  <%= @team_partition.frozen %>
+</p>
+
+<p>
+  <b>Published:</b>
+  <%= @team_partition.published %>
+</p>
+
+
+<%= link_to 'Edit', edit_team_partition_path(@team_partition) %> |
+<%= link_to 'Back', team_partitions_path %>

@@ -1,4 +1,8 @@
 Seven::Application.routes.draw do |map|
+  resources :team_partitions
+
+  resources :teams
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

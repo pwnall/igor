@@ -5,6 +5,7 @@ class CreateAssignments < ActiveRecord::Migration
       t.datetime :deadline, :null => false
       # the assignment name (e.g. Pset 1)
       t.string :name, :limit => 64, :null => false
+      t.integer :team_partition_id, :null => true
 
       # we keep these around for accounting purposes
       t.timestamps

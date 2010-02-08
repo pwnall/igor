@@ -1,0 +1,29 @@
+<h1>Listing team_partitions</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Manual</th>
+    <th>Frozen</th>
+    <th>Published</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @team_partitions.each do |team_partition| %>
+  <tr>
+    <td><%= team_partition.name %></td>
+    <td><%= team_partition.manual %></td>
+    <td><%= team_partition.frozen %></td>
+    <td><%= team_partition.published %></td>
+    <td><%= link_to 'Show', team_partition %></td>
+    <td><%= link_to 'Edit', edit_team_partition_path(team_partition) %></td>
+    <td><%= link_to 'Destroy', team_partition, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New team_partition', new_team_partition_path %>
