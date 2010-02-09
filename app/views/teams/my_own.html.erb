@@ -8,7 +8,7 @@
 	<ol>
 	<% @teams.each do |team| %>
 	  <li>
-	  	<%= render :partial => :show, :locals => { :team => team } %>
+	  	<%= render :partial => 'teams/show', :locals => { :team => team } %>
 	  </li>
 	<% end %>
 	</ol>

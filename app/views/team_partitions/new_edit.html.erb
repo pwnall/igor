@@ -20,8 +20,8 @@
       	<% if @team_partition.new_record? %>
         <%= f.check_box :automated, :class => 'form_field' %>
 				<% else %>
-				<% @team_partition.automated? ? 'Yes' : 'No' %>
-				<% end %>
+				<%= @team_partition.automated? ? 'Yes' : 'No' %>
+				<% end %>				
       </div>
     </div>
 		
