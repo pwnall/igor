@@ -38,7 +38,7 @@ class TeamPartition < ActiveRecord::Base
   def auto_assign_users(team_size = 3)
     all_users = User.all(:include => :student_info).
                      reject(&:admin?).select(&:student_info)
-    # TODO(costan): shuffle all_users
+    RandomShuffle.shuffle! all_users
     all_teams = []
     all_users.partition { |u| u.student_info.wants_credit }.each do |users|
       leftovers = users.length % team_size

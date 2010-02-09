@@ -17,11 +17,11 @@
 psets:
   name: "Pset Team Assignment"
   automated: true
-  frozen: false
+  editable: true
   published: true
 
 project:
   name: "Final Project Team Assignment"
   automated: false
-  frozen: false
+  editable: true
   published: true
