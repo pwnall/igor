@@ -1,10 +1,10 @@
 class CreateTeamPartitions < ActiveRecord::Migration
   def self.up
     create_table :team_partitions do |t|
-      t.string :name
-      t.boolean :manual
-      t.boolean :frozen
-      t.boolean :published
+      t.string :name, :limit => 64, :null => false
+      t.boolean :automated, :null => false, :default => true
+      t.boolean :editable, :null => false, :default => true
+      t.boolean :published, :null => false, :default => false
 
       t.timestamps
     end

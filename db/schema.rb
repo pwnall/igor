@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100203193053) do
+ActiveRecord::Schema.define(:version => 20100208065707) do
 
   create_table "assignment_feedbacks", :force => true do |t|
     t.integer  "user_id",                       :null => false
@@ -37,8 +37,9 @@ ActiveRecord::Schema.define(:version => 20100203193053) do
   end
 
   create_table "assignments", :force => true do |t|
-    t.datetime "deadline",                 :null => false
-    t.string   "name",       :limit => 64, :null => false
+    t.datetime "deadline",                        :null => false
+    t.string   "name",              :limit => 64, :null => false
+    t.integer  "team_partition_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -91,6 +92,8 @@ ActiveRecord::Schema.define(:version => 20100203193053) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "grades", ["user_id", "assignment_metric_id"], :name => "index_grades_on_user_id_and_assignment_metric_id", :unique => true
 
   create_table "notice_statuses", :force => true do |t|
     t.integer "notice_id",                    :null => false
@@ -184,9 +187,9 @@ ActiveRecord::Schema.define(:version => 20100203193053) do
   add_index "run_results", ["submission_id"], :name => "index_run_results_on_submission_id", :unique => true
 
   create_table "student_infos", :force => true do |t|
-    t.integer  "user_id",                          :null => false
-    t.boolean  "wants_credit",                     :null => false
-    t.text     "motivation",   :limit => 16777215
+    t.integer  "user_id",                       :null => false
+    t.boolean  "wants_credit",                  :null => false
+    t.string   "motivation",   :limit => 32768
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -209,6 +212,33 @@ ActiveRecord::Schema.define(:version => 20100203193053) do
   add_index "submissions", ["deliverable_id", "updated_at"], :name => "index_submissions_on_deliverable_id_and_updated_at"
   add_index "submissions", ["updated_at"], :name => "index_submissions_on_updated_at"
   add_index "submissions", ["user_id", "deliverable_id"], :name => "index_submissions_on_user_id_and_deliverable_id", :unique => true
+
+  create_table "team_memberships", :force => true do |t|
+    t.integer  "team_id",    :null => false
+    t.integer  "user_id",    :null => false
+    t.datetime "created_at"
+  end
+
+  add_index "team_memberships", ["team_id", "user_id"], :name => "index_team_memberships_on_team_id_and_user_id", :unique => true
+  add_index "team_memberships", ["user_id", "team_id"], :name => "index_team_memberships_on_user_id_and_team_id", :unique => true
+
+  create_table "team_partitions", :force => true do |t|
+    t.string   "name",       :limit => 64,                    :null => false
+    t.boolean  "automated",                :default => true,  :null => false
+    t.boolean  "editable",                 :default => true,  :null => false
+    t.boolean  "published",                :default => false, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "teams", :force => true do |t|
+    t.integer  "partition_id",               :null => false
+    t.string   "name",         :limit => 64, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "teams", ["partition_id"], :name => "index_teams_on_partition_id"
 
   create_table "tokens", :force => true do |t|
     t.integer  "user_id",                    :null => false

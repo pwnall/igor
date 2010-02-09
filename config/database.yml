@@ -1,6 +1,6 @@
 dev_mysql: &dev_mysql
   adapter: mysql
-  database: six_dev
+  database: seven_dev
   username: root
   password: 
   
@@ -13,7 +13,7 @@ dev_sqlite3: &dev_sqlite3
 
 test_mysql: &test_mysql
   adapter: mysql
-  database: upside_test
+  database: seven_test
   username: root
   password:
   

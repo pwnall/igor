@@ -1,0 +1,19 @@
+<!-- teams/_show -->
+<%= team.name %>:
+
+<% team.partition.assignments.each do |assignment| %>
+  <%= assignment.name %>
+<% end %>
+
+<ul>
+  <% team.users.each do |user| %>
+    <li>
+      <%= user.real_name %>
+      &lt;<%= link_to "#{user.athena_id}@mit.edu",
+                      "mailto:#{user.athena_id}@mit.edu" %>&gt;
+      <% if @s_user.admin? and user.student_info %>
+			<%= user.student_info.wants_credit ? 'Credit' : 'Listener' %>
+			<% end %>
+    </li>
+  <% end %>
+</ul>

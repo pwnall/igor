@@ -1,13 +1,13 @@
 class CreateTeams < ActiveRecord::Migration
   def self.up
     create_table :teams do |t|
-      t.integer :team_partition_id, :null => false
+      t.integer :partition_id, :null => false
       t.string :name, :limit => 64, :null => false
 
       t.timestamps
     end
     
-    add_index :teams, :team_set_id, :unique => false, :null => false
+    add_index :teams, :partition_id, :unique => false, :null => false
   end
 
   def self.down

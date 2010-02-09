@@ -1,9 +1,29 @@
+# == Schema Information
+# Schema version: 20100208065707
+#
+# Table name: teams
+#
+#  id           :integer(4)      not null, primary key
+#  partition_id :integer(4)      not null
+#  name         :string(64)      not null
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  team_set_id: 1
-  name: MyString
+awesome_pset:
+  partition: psets
+  name: "Team Awesome"
 
-two:
-  team_set_id: 1
-  name: MyString
+boo_pset:
+  partition: psets
+  name: "Team Boo"
+
+awesome_project:
+  partition: project
+  name: "Team Awesome"
+
+boo_project:
+  partition: pset
+  name: "Team Boo"

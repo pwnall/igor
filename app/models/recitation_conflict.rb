@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100203124712
+# Schema version: 20100208065707
 #
 # Table name: recitation_conflicts
 #

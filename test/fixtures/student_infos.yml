@@ -1,18 +1,14 @@
 # == Schema Information
-# Schema version: 20100203124712
+# Schema version: 20100208065707
 #
 # Table name: student_infos
 #
-#  id                :integer(4)      not null, primary key
-#  user_id           :integer(4)      not null
-#  wants_credit      :boolean(1)      not null
-#  has_python        :boolean(1)      not null
-#  has_math          :boolean(1)      not null
-#  python_experience :string(4096)
-#  math_experience   :string(4096)
-#  comments          :text(16777215)
-#  created_at        :datetime
-#  updated_at        :datetime
+#  id           :integer(4)      not null, primary key
+#  user_id      :integer(4)      not null
+#  wants_credit :boolean(1)      not null
+#  motivation   :text(16777215)
+#  created_at   :datetime
+#  updated_at   :datetime
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

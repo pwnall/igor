@@ -1,4 +1,3 @@
 --- 
-gems: json,mit_stalker,pdf-writer,simple-daemon,starling,sys-cpu,sys-proctable,sys-uname,sys-uptime,system_timer,zerg_support
 frontends: 2
 frontends_per_core: 2

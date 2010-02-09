@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100203124712
+# Schema version: 20100208065707
 #
 # Table name: profiles
 #
@@ -7,14 +7,17 @@
 #  user_id               :integer(4)      not null
 #  real_name             :string(128)     not null
 #  nickname              :string(64)      not null
-#  year                  :string(255)     not null
-#  athena_username       :string(16)      not null
+#  university            :string(64)      not null
+#  department            :string(64)      not null
+#  year                  :string(4)       not null
+#  athena_username       :string(32)      not null
 #  about_me              :string(4096)    default(""), not null
+#  allows_publishing     :boolean(1)      default(TRUE), not null
 #  has_phone             :boolean(1)      default(TRUE), not null
-#  phone_number          :string(64)
 #  has_aim               :boolean(1)      not null
-#  aim_name              :string(64)
 #  has_jabber            :boolean(1)      not null
+#  phone_number          :string(64)
+#  aim_name              :string(64)
 #  jabber_name           :string(64)
 #  recitation_section_id :integer(4)
 #  created_at            :datetime

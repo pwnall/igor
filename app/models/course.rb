@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20100208065707
+#
+# Table name: courses
+#
+#  id              :integer(4)      not null, primary key
+#  number          :string(16)      not null
+#  title           :string(256)     not null
+#  ga_account      :string(32)      not null
+#  has_recitations :boolean(1)      default(TRUE), not null
+#  created_at      :datetime
+#  updated_at      :datetime
+#
+
 # A course is bunch of work that ends up with grades for registered students.
 class Course < ActiveRecord::Base
   # The course number (e.g. "6.006")

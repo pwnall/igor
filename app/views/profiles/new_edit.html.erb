@@ -10,7 +10,7 @@ if @profile.new_record?
 	url = {:controller => :profiles, :action => @manual ? :create_manual : :create}
 	url[:id] = 0 if @manual
 else
-	url = update_profile_path @profile
+	url = profile_path @profile
 end
 %>
 

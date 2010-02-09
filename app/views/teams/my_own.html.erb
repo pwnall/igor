@@ -1,0 +1,16 @@
+<!-- teams/my_own -->
+<div class="full_section">
+  <h3 class="full_section">Your teams</h3>
+
+	<% if @teams.empty? %>
+	<p>You are not a member of any team yet.</p>
+	<% else %>
+	<ol>
+	<% @teams.each do |team| %>
+	  <li>
+	  	<%= render :partial => :show, :locals => { :team => team } %>
+	  </li>
+	<% end %>
+	</ol>
+	<% end %>
+</div>

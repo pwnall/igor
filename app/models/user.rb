@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100203124712
+# Schema version: 20100208065707
 #
 # Table name: users
 #
@@ -14,8 +14,6 @@
 #  updated_at    :datetime
 #
 
-require 'digest/sha2'
-
 class User < ActiveRecord::Base
   has_many :tokens, :dependent => :destroy
   has_one :student_info, :dependent => :destroy
@@ -24,6 +22,8 @@ class User < ActiveRecord::Base
   has_many :submissions, :dependent => :destroy
   has_many :notice_statuses, :dependent => :destroy
   has_many :notices, :through => :notice_statuses
+  has_many :team_memberships, :dependent => :destroy
+  has_many :teams, :through => :team_memberships
 
   attr_protected :admin, :active
   

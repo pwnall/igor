@@ -1,8 +1,4 @@
 Seven::Application.routes.draw do |map|
-  resources :team_partitions
-
-  resources :teams
-
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -26,13 +22,17 @@ Seven::Application.routes.draw do |map|
   resources :assignment_feedbacks
   resources :assignments
   resources :deliverable_validations
-
+  resources :team_partitions
+  
   resources :users do
     collection do
       get :lookup, :recover_password
       post :check_name, :recovery_email
     end
-    member { get :edit_password, :update_password }
+    member do
+      get :edit_password, :update_password
+      post :impersonate, :set_admin
+    end
   end
  
   resource :api, :controller => 'api' do    
@@ -65,6 +65,9 @@ Seven::Application.routes.draw do |map|
     collection do
       get :request_package
     end
+  end
+  resources :teams do
+    collection { get :my_own }
   end
 
   # Sample resource route with options:

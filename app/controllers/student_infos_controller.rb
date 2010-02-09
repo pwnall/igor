@@ -32,7 +32,7 @@ class StudentInfosController < ApplicationController
 
     @manual = manual
     unless @student_info.new_record?
-      if !@s_user.admin && @s_user.id != @student_info.user_id
+      if !@s_user.admin && (@s_user.id != @student_info.user_id)
         # Do not allow random record updates.
         notice[:error] =
             'That is not yours to play with! Your attempt has been logged.'

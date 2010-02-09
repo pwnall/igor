@@ -1,0 +1,52 @@
+<!-- team_partitions/new_edit -->
+<div class="full_section">
+  
+<h1 class="full_section">Team Partition</h1>
+
+<%= error_messages_for :team_partition %>
+
+<% form_for(@team_partition, :html => {:class => 'student_form'}) do |f| %>
+  <div class="form_box">
+    <div class="form_entry">
+      <div class="form_label">Name</div>
+      <div class="form_field_box">
+        <%= f.text_field :name, :class => 'form_field' %>
+      </div>
+    </div>
+    
+    <div class="form_entry">
+      <div class="form_label">Automated partitioning</div>
+      <div class="form_field_box">
+      	<% if @team_partition.new_record? %>
+        <%= f.check_box :automated, :class => 'form_field' %>
+				<% else %>
+				<% @team_partition.automated? ? 'Yes' : 'No' %>
+				<% end %>
+      </div>
+    </div>
+		
+    <div class="form_entry">
+      <div class="form_label">Published</div>
+      <div class="form_field_box">
+        <%= f.check_box :published, :class => 'form_field' %>
+      </div>
+    </div>
+		
+		<% if @team_partition.new_record? %>
+    <div class="form_entry">
+      <div class="form_label">Optimal team size</div>
+      <div class="form_field_box">
+        <%= text_field_tag 'optimal_size', nil, :class => 'form_field' %>
+      </div>
+    </div>
+		<% end %>
+
+    <div class="form_submit_box">
+        <%= f.submit @team_partition.new_record? ? "Submit" : "Update", :class => 'form_submit' %>
+      or
+      <%= link_to 'Go home', root_path %>
+    </div>
+  </div>
+<% end %>
+
+</div>

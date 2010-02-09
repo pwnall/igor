@@ -6,7 +6,7 @@ div_class = "site_status #{is_notice ? 'site_status_notice' : 'site_status_error
 	<div class="site_status_close">
 		<%= link_to_function 'Close', update_page { |p| p[div_id].hide } %>
 	</div>
-	<%= status %>
+	<%= status.html_safe %>
 	<div class="float_clearer"></div>
 </div>
 <%= update_page_tag do |p|
