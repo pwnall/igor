@@ -1,3 +1,4 @@
 --- 
 frontends_per_core: 0
 frontends: 4
+dns_name: sec.csail.mit.edu
