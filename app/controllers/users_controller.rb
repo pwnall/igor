@@ -55,7 +55,8 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         flash[:notice] = 'Please check your e-mail to activate your account.'
-        TokenMailer.account_confirmation(token).deliver
+        TokenMailer.account_confirmation(token, root_url, 
+                                         spend_token_url(token.token)).deliver
         
         format.html { redirect_to(:controller => :sessions, :action => :index) }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
@@ -163,6 +164,7 @@ class UsersController < ApplicationController
     unless @user
       flash[:notice] = "No account for e-mail #{params[:user][:email]}. Are you sure you registered?"
       render :action => :recover_password
+      return
     end
     
     # generate one-time login token
@@ -171,7 +173,8 @@ class UsersController < ApplicationController
     @user.save!
     
     # send it over via email
-    UserMailer.recovery_email(token).deliver
+    TokenMailer.password_recovery(token, root_url,
+                                  spend_token_url(token.token)).deliver
 
     # go home
     flash[:notice] = "Please check your e-mail at #{params[:user][:email]} for next steps."

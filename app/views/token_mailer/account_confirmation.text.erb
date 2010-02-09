@@ -1,15 +1,15 @@
 Dear <%= @token.user.email%>,
 
 You are receiving this e-mail because someone (hopefully you) registered on
-the <%= @course.number %> server (<%= root_url :only_path => false %>)
-claiming to have your e-mail address.
+the <%= @course.number %> server (<%= @root_url %>) claiming to have your e-mail
+address.
 
 Please make sure that you have indeed registered with the login name below:
 <%= @token.user.name %>
 
 If this is true, you can go to the address below to confirm that you own
 this e-mail address.
-<%= spend_token_url @token.name, :only_path => false %>
+<%= @token_url %>
 
 If you haven't registered on the <%= @course.number %> server, or the login name 
 above does not belong to you, you don't need to do anything. Most probably,
