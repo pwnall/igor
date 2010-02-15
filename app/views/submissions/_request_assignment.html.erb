@@ -1,7 +1,7 @@
 <!-- submissions/request_assignment -->
 <div class="full_section">	
 	<h3 class="full_section">Package Assignment Submissions</h3>
-	<% form_tag({:controller => :submissions, :action => :package_assignment, :id => 0}, {:class => 'student_form'}) do %>
+	<% form_tag(package_assignment_submissions_path, {:class => 'student_form'}) do %>
 		<div class="form_box">
 			<div class="form_entry">
 				<div class="form_label">Assignment</div>
@@ -41,21 +41,21 @@
 			</div>
 			
 			<%= observe_field :submission_assignment_id,
-				:url => {:controller => :submissions, :action => :xhr_update_deliverables, :id => 0},
+				:url => xhr_update_deliverables_submissions_path,
 				:with => '"assignment_id=" + encodeURIComponent($("submission_assignment_id").value)',
 				:update => 'submission_deliverables_container',
 				:before => '$("submission_deliverables_container").update("<div style=\\"text-align: center;\\">Loading...<\/div>")'
 			%>
 
 			<%= observe_field :submission_assignment_id,
-				:url => {:controller => :submissions, :action => :xhr_update_cutoff, :id => 0},
+				:url => xhr_update_cutoff_submissions_path,
 				:with => '"assignment_id=" + encodeURIComponent($("submission_assignment_id").value)',
 				:update => 'submission_cutoff_container',
 				:before => '$("submission_cutoff_container").update("<div style=\\"text-align: center;\\">Loading...<\/div>")'
 			%>
 			
 			<%= javascript_tag remote_function(
-				:url => {:controller => :submissions, :action => :xhr_update_deliverables, :id => 0},
+				:url => xhr_update_deliverables_submissions_path,
 				:with => '"assignment_id=" + encodeURIComponent($("submission_assignment_id").value)',
 				:update => 'submission_deliverables_container',
 				:before => '$("submission_deliverables_container").update("<div style=\\"text-align: center;\\">Loading...<\/div>")'

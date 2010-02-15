@@ -12,15 +12,12 @@ Seven::Application.routes.draw do |map|
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-  resources :sessions
-  resources :courses
-  resources :prerequisites
+  resources :sessions  
   resources :recitation_sections
   resources :notices
   resources :assignment_metrics
   resources :run_results
   resources :assignment_feedbacks
-  resources :assignments
   resources :deliverable_validations
   resources :team_partitions
   
@@ -34,9 +31,22 @@ Seven::Application.routes.draw do |map|
       post :impersonate, :set_admin
     end
   end
- 
-  resource :api, :controller => 'api' do    
+   
+  resource :api, :controller => 'api' do
     get :conflict_info
+  end
+  resources :assignments do
+    member do
+      post :set_assignment_name
+    end
+  end
+  resources :courses do
+    member do
+      post :set_course_ga_account
+      post :set_course_has_recitations
+      post :set_course_number
+      post :set_course_title
+    end    
   end
   resources :deliverables do
     collection do
@@ -44,28 +54,38 @@ Seven::Application.routes.draw do |map|
     end
   end
   resources :grades do
-    collection { get :request_report, :request_missing, :reveal_mine }
+    collection do
+      get :request_report, :request_missing, :reveal_mine
+      post :for_user, :missing, :report
+    end
   end
-  
-  namespace :system do
-    root :to => 'system/health#stat_system'
-    resources :processes, :controller => 'health'
+  resources :prerequisites do
+    member do
+      post :set_prerequisite_course_number
+      post :set_prerequisite_waiver_question
+    end
   end
-  
   resources :profiles do
     collection do
       get :my_own
       post :websis_lookup
     end
-  end
+  end    
   resources :student_infos do
     collection { get :my_own }
   end
   resources :submissions do
     collection do
       get :request_package
+      post :package_assignment
+      post :xhr_update_cutoff
+      post :xhr_update_deliverables
     end
   end
+  namespace :system do
+    root :to => 'system/health#stat_system'
+    resources :processes, :controller => 'health'
+  end  
   resources :teams do
     collection { get :my_own }
   end
@@ -105,7 +125,6 @@ Seven::Application.routes.draw do |map|
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => "welcome#index"
   root :to => "sessions#index"
 
   # See how all your routes lay out with "rake routes"

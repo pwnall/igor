@@ -27,8 +27,9 @@ class SubmissionsController < ApplicationController
   
   # GET /submissions/request_package
   def request_package
-    @deliverables = Deliverable.find(:all, :order => 'deliverables.id DESC', :include => :assignment)
-    @assignments = Assignment.find(:all, :order => 'assignments.id DESC')    
+    @deliverables = Deliverable.find :all, :order => 'deliverables.id DESC',
+                                     :include => :assignment
+    @assignments = Assignment.find :all, :order => 'assignments.id DESC'
   end
   
   # GET /submissions
@@ -129,7 +130,7 @@ class SubmissionsController < ApplicationController
               :disposition => params[:inline] ? 'inline' : 'attachment'
   end
 
-  # GET /submissions/package_assignment/0
+  # GET /submissions/package_assignment
   def package_assignment
     @assignment = Assignment.find(params[:assignment_id])
     if params[:cutoff_enable].blank?

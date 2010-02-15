@@ -27,6 +27,7 @@
 	<div id="assignments_ajax_cmds" style="display: none">
 			<%= link_to_remote 'New',
 				:url => new_assignment_path,
+        :method => :get,
 				:before => update_page { |p| p << "$('assignments_ajax_cmdbar').update($('assignments_ajax_progress').innerHTML)" },
 				:complete => update_page { |p| p << "$('assignments_ajax_cmdbar').update($('assignments_ajax_cmds').innerHTML)" },
 				:position => :top

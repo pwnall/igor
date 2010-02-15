@@ -1,7 +1,8 @@
 class ProfilesController < ApplicationController
   include ApplicationHelper
 
-  before_filter :authenticated_as_user, :only => [:new, :create, :edit, :update, :websis_lookup]
+  before_filter :authenticated_as_user,
+      :only => [:new, :create, :edit, :update, :websis_lookup, :my_own]
   before_filter :authenticated_as_admin, :only => [:index, :show, :destroy]
 
   # GET /profiles

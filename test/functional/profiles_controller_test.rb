@@ -7,13 +7,13 @@ class ProfilesControllerTest < ActionController::TestCase
   
   test "my_own does not work without login" do
     get :my_own
-    assert_redirect_to root_path
+    assert_redirected_to new_session_path
   end
   
   test "simple my_own" do
     get :my_own, {}, { :user_id => @user.id }
     assert_response :success
-    assert_template 'my_own'
+    assert_template 'new_edit'
     assert_equal assigns(:profile), @user.profile
   end
   
