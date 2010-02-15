@@ -2,14 +2,15 @@
 div_id = 'status_' + (0...16).map { rand(256).to_s(16) }.join
 div_class = "site_status #{is_notice ? 'site_status_notice' : 'site_status_error'}"
 %>
-<div id="<%= div_id %>" class="<%= div_class %>" style="display: none;">
+<div id="<%= div_id.html_safe %>" class="<%= div_class.html_safe %>">
 	<div class="site_status_close">
 		<%= link_to_function 'Close', update_page { |p| p[div_id].hide } %>
 	</div>
 	<%= status.html_safe %>
 	<div class="float_clearer"></div>
 </div>
+
 <%= update_page_tag do |p|
-	p[div_id].show
-	p.visual_effect :pulsate, div_id, :pulses => 1, :from => 0.3, :duration => 2
+  p[div_id].show
+  p.visual_effect :pulsate, div_id, :pulses => 1, :from => 0.3, :duration => 2
 end %>

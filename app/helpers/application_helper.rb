@@ -1,7 +1,8 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  def add_site_status(page, message, is_notice)
-    page.insert_html :bottom, 'site_status_container', :partial => 'layouts/status', :object => message.html_safe, :locals => {:is_notice => is_notice}    
+  def add_site_status(message, is_notice)
+    render :partial => 'layouts/status', :object => message,
+           :locals => { :is_notice => is_notice }
   end
   
   def time_delta(dtime, ref_time = Time.now)

@@ -37,9 +37,9 @@
 </div>
 
 <% if flash[:notice] %> 
-	<%= update_page_tag { |page| add_site_status page, flash[:notice], true } %>
+	<%= add_site_status flash[:notice], true %>
 <% elsif flash[:error] %>
-	<%= update_page_tag { |page| add_site_status page, flash[:error], false } %>
+	<%= add_site_status flash[:error], false %>
 <% end %>
 
 <%= yield  %>
