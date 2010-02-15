@@ -187,9 +187,9 @@ ActiveRecord::Schema.define(:version => 20100208065707) do
   add_index "run_results", ["submission_id"], :name => "index_run_results_on_submission_id", :unique => true
 
   create_table "student_infos", :force => true do |t|
-    t.integer  "user_id",                       :null => false
-    t.boolean  "wants_credit",                  :null => false
-    t.string   "motivation",   :limit => 32768
+    t.integer  "user_id",                          :null => false
+    t.boolean  "wants_credit",                     :null => false
+    t.text     "motivation",   :limit => 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -27,8 +27,8 @@ class Token < ActiveRecord::Base
   # An argument for the TokenController method called when the token is spent.
   serialize :argument
 
-  def before_validation_on_create
-    # generate the random token string
-    self.token = Digest::SHA2.hexdigest((1..32).map { rand 256 }.pack('C*'))
+  def before_validation
+    # Generate the random token string.
+    self.token ||= Digest::SHA2.hexdigest OpenSSL::Random.random_bytes(32)
   end
 end

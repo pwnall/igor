@@ -36,6 +36,12 @@ module Seven
     #   g.test_framework  :test_unit, :fixture => true
     # end
 
+    config.action_mailer.smtp_settings = { 
+      :address => "outgoing.mit.edu", 
+      :port => 25,
+      :domain => "mit.edu", 
+    }
+
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters << :password
   end
