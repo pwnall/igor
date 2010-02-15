@@ -2,6 +2,11 @@ class DeliverablesController < ApplicationController
   before_filter :authenticated_as_admin, :except => [:xhr_description]
   before_filter :authenticated_as_user, :only => [:xhr_description]
 
+  in_place_edit_for_boolean :deliverable, :published
+  in_place_edit_for :deliverable, :filename
+  in_place_edit_for :deliverable, :name
+  in_place_edit_for :deliverable, :description
+
   # GET /deliverables/1
   # GET /deliverables/1.xml
   def show

@@ -14,7 +14,8 @@
 	</div>
 	<div class="assignment_deliverables" id="assignment_deliverables_<%= @assignment.id %>" style="display: none">
 		<div>
-			<%= link_to_remote 'New deliverable', :url => {:controller => :deliverables, :action => :new, :assignment_id => @assignment.id} %>
+			<%= link_to_remote 'New deliverable', :method => :get,
+              :url => new_deliverable_path(:assignment_id => @assignment.id) %>
 		</div>
 		<div id="assignment_deliverables_listing_<%= show.id %>">
 <%= render :partial => 'deliverables/show', :collection => @assignment.deliverables %>

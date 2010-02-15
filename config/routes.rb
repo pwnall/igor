@@ -18,7 +18,6 @@ Seven::Application.routes.draw do |map|
   resources :assignment_metrics
   resources :run_results
   resources :assignment_feedbacks
-  resources :deliverable_validations
   resources :team_partitions
   
   resources :users do
@@ -51,6 +50,17 @@ Seven::Application.routes.draw do |map|
   resources :deliverables do
     collection do
       get :xhr_description
+    end
+    member do
+      post :set_deliverable_description
+      post :set_deliverable_filename
+      post :set_deliverable_name
+      post :set_deliverable_published      
+    end
+  end
+  resources :deliverable_validations do
+    member do
+      post :update_deliverable
     end
   end
   resources :grades do

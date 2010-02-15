@@ -1,11 +1,6 @@
 class AssignmentsController < ApplicationController
   before_filter :authenticated_as_admin
-  
-  in_place_edit_for_boolean :deliverable, :published
-  in_place_edit_for :deliverable, :filename
-  in_place_edit_for :deliverable, :name
-  in_place_edit_for :deliverable, :description
-  
+    
   in_place_edit_for :assignment, :name
 
 

@@ -159,7 +159,7 @@ module InPlaceControls
         js << "{\n"
         js << " $('#{container_id(type)}').hide(); $('#{saving_id}').show(); \n"
         js << " new Ajax.Request(\n"
-        js << "'" + @template.url_for(:action => url_action, :id => @object.id) + "', \n"
+        js << "'" + (@options[:url] || @template.url_for(:action => url_action, :id => @object.id)) + "', \n"
         js << "{ parameters: 'authenticity_token=#{@template.form_authenticity_token}&value=' + encodeURI(value),\n"
         js << "  onComplete: function(response) {\n"
         js << "      $('#{field_id}').value = response.responseText;\n"
