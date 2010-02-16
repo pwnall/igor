@@ -47,7 +47,7 @@ class FeedbackQuestionsController < ApplicationController
 
     respond_to do |format|
       if @feedback_question.save
-        format.html { redirect_to(@feedback_question, :notice => 'FeedbackQuestion was successfully created.') }
+        format.html { redirect_to(feedback_questions_path, :notice => 'Feedback Question was successfully created.') }
         format.xml  { render :xml => @feedback_question, :status => :created, :location => @feedback_question }
       else
         format.html { render :action => "new" }
@@ -63,7 +63,7 @@ class FeedbackQuestionsController < ApplicationController
 
     respond_to do |format|
       if @feedback_question.update_attributes(params[:feedback_question])
-        format.html { redirect_to(@feedback_question, :notice => 'FeedbackQuestion was successfully updated.') }
+        format.html { redirect_to(feedback_questions_path, :notice => 'Feedback Question was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

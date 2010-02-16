@@ -50,13 +50,23 @@ class SessionsController < ApplicationController
     @profile = @s_user.profile
     @student_info = @s_user.student_info
     
-    @submissions = Submission.find(:all, :conditions => {:user_id => @s_user.id}, :order => 'updated_at DESC')
-    @assignments_h = Hash[*(@submissions.map { |s| [s.deliverable.assignment.id, s.deliverable.assignment] }.flatten)]
-    @feedbacks = AssignmentFeedback.find(:all, :conditions => {:user_id => @s_user.id, :assignment_id => @assignments_h.keys })
-    @feedbacks_h = Hash[*(@feedbacks.map { |f| [f.assignment_id, f] }.flatten)]
+    @feedbacks = AssignmentFeedback.all :conditions =>
+         { :user_id => @s_user.id }
+    feedbacks_by_aid = @feedbacks.index_by &:assignment_id
     
-    @notice_statuses = @s_user.notice_statuses
-    @notice_statuses.each { |status| status.mark_seen! }
+    @submissions = Submission.all :conditions => { :user_id => @s_user.id },
+                                  :order => 'updated_at DESC'
+    
+    @assignments = Assignment.all :conditions => { :accepts_feedback => true }
+    @assignments_wo_feedback = @assignments.select do |assignment|
+      # Assignments where the user didn't submit feedback yet, and either
+      # (1) the user submitted a deliverable or (2) the assignment is team-based
+      assignment.accepts_feedback && !@feedbacks[assignment.id] &&
+          (feedbacks_by_aid[assignment.id] || assignment.team_partition)
+    end
+    
+    @notice_statuses = @s_user.notice_statuses.all
+    @notice_statuses.each &:mark_seen!
     @notice_statuses.sort! { |a, b| b.notice.created_at <=> a.notice.created_at }
   end
 end

@@ -32,7 +32,7 @@
 	<% end %>
 <% end %>
 
-<% unless @assignments_h.length == @feedbacks_h.length %>
+<% unless @assignments_wo_feedback.empty? %>
 <div class="full_section">	
 	<h3 class="full_section">Feedback You Need to Submit</h3>
 	
@@ -44,8 +44,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<% @assignments_h.each do |assignment_id, assignment| %>
-				<% next if @feedbacks_h[assignment_id] %>
+			<% @assignments_wo_feedback.each do |assignment| %>
 				<tr>
 					<td>
 						<%= assignment.name %>						
@@ -54,7 +53,7 @@
 						<%= time_delta(assignment.deadline) %>
 					</td>
 					<td>
-						<%= link_to 'Submit feedback', :controller => :assignment_feedbacks, :action => :new, :assignment_id => assignment.id %>
+						<%= link_to 'Submit feedback', new_assignment_feedback_path(:assignment_id => assignment.id) %>
 					</td>
 				</tr>				
 			<% end %>
