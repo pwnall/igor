@@ -1,0 +1,34 @@
+# == Schema Information
+# Schema version: 20100216020942
+#
+# Table name: feedback_question_set_memberships
+#
+#  id                       :integer(4)      not null, primary key
+#  feedback_question_id     :integer(4)      not null
+#  feedback_question_set_id :integer(4)      not null
+#  created_at               :datetime
+#
+
+hours_psets:
+  feedback_question: hours
+  feedback_question_set: psets
+
+prepared_psets:
+  feedback_question: prepared
+  feedback_question_set: psets
+
+reliable_psets:
+  feedback_question: reliable
+  feedback_question_set: psets
+
+coding_psets:
+  feedback_question: coding_ammount
+  feedback_question_set: psets
+
+coding_psets:
+  feedback_question: theory_ammount
+  feedback_question_set: projects
+  
+hours_projects:
+  feedback_question: hours
+  feedback_question_set: projects

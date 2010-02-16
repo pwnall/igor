@@ -1,12 +1,12 @@
 # == Schema Information
-# Schema version: 20100208065707
+# Schema version: 20100216020942
 #
 # Table name: team_partitions
 #
 #  id         :integer(4)      not null, primary key
 #  name       :string(64)      not null
 #  automated  :boolean(1)      default(TRUE), not null
-#  frozen     :boolean(1)      default(TRUE), not null
+#  editable   :boolean(1)      default(TRUE), not null
 #  published  :boolean(1)      not null
 #  created_at :datetime
 #  updated_at :datetime

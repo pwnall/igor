@@ -1,0 +1,76 @@
+<!-- feedback_questions/index -->
+<div class="full_section">
+  <div style="z-index: 10; float: right; width: 100px; text-align: right;">
+    <h1 class="full_section">
+      <%= link_to 'New', new_feedback_question_set_path %>
+    </h1>
+  </div>
+  <h1 class="full_section" style="margin-right: 100px; ">
+    Feedback Question Sets
+  </h1>
+  
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Questions</th>
+    </tr>
+  
+  <% @feedback_question_sets.each do |feedback_question_set| %>
+    <tr>
+      <td><%= feedback_question_set.name %></td>
+      <td><%= feedback_question_set.questions.length %></td>
+      <td>
+      	<%= link_to 'Edit',
+                    edit_feedback_question_set_path(feedback_question_set) %>
+			</td>
+      <td>
+      	<%= link_to 'Destroy', feedback_question_set,
+                    :confirm => 'Are you sure?', :method => :delete %>
+			</td>
+    </tr>
+  <% end %>
+  </table>
+</div>
+
+<div class="full_section">
+  <div style="z-index: 10; float: right; width: 100px; text-align: right;">
+    <h1 class="full_section">
+      <%= link_to 'New', new_feedback_question_path %>
+    </h1>
+  </div>
+  <h1 class="full_section" style="margin-right: 100px; ">
+    Feedback Questions
+  </h1>
+  
+  <table>
+    <tr>
+      <th>Text</th>
+      <th>For User</th>
+      <th>Scale</th>
+    </tr>
+  
+  <% @feedback_questions.each do |feedback_question| %>
+	  <tr>
+	    <td><%= feedback_question.human_string %></td>
+      <td><%= feedback_question.targets_user ? 'Yes' : 'No' %></td>
+	    <td>
+	    	<% if feedback_question.scaled? %>
+				<%= feedback_question.scale_min %>
+				(<%= feedback_question.scale_min_label %>) -
+        <%= feedback_question.scale_max %>
+        (<%= feedback_question.scale_max_label %>)				
+				<% else %>
+				None
+				<% end %>
+			</td>
+	    <td>
+	    	<%= link_to 'Edit', edit_feedback_question_path(feedback_question) %>
+			</td>
+	    <td>
+	    	<%= link_to 'Destroy', feedback_question, :confirm => 'Are you sure?',
+                                                  :method => :delete %>
+      </td>
+	  </tr>	
+  <% end %>
+  </table>
+</div>

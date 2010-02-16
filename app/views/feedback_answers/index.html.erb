@@ -1,0 +1,33 @@
+<h1>Listing feedback_answers</h1>
+
+<table>
+  <tr>
+    <th>Assignment feedback</th>
+    <th>Question</th>
+    <th>User</th>
+    <th>Target user</th>
+    <th>Number</th>
+    <th>Comment</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @feedback_answers.each do |feedback_answer| %>
+  <tr>
+    <td><%= feedback_answer.assignment_feedback_id %></td>
+    <td><%= feedback_answer.question_id %></td>
+    <td><%= feedback_answer.user_id %></td>
+    <td><%= feedback_answer.target_user_id %></td>
+    <td><%= feedback_answer.number %></td>
+    <td><%= feedback_answer.comment %></td>
+    <td><%= link_to 'Show', feedback_answer %></td>
+    <td><%= link_to 'Edit', edit_feedback_answer_path(feedback_answer) %></td>
+    <td><%= link_to 'Destroy', feedback_answer, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New feedback_answer', new_feedback_answer_path %>

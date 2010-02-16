@@ -1,29 +1,33 @@
 # == Schema Information
-# Schema version: 20100208065707
+# Schema version: 20100216020942
 #
 # Table name: assignments
 #
-#  id                :integer(4)      not null, primary key
-#  deadline          :datetime        not null
-#  name              :string(64)      not null
-#  team_partition_id :integer(4)
-#  created_at        :datetime
-#  updated_at        :datetime
+#  id                       :integer(4)      not null, primary key
+#  deadline                 :datetime        not null
+#  name                     :string(64)      not null
+#  team_partition_id        :integer(4)
+#  feedback_question_set_id :integer(4)
+#  accepts_feedback         :boolean(1)      not null
+#  created_at               :datetime
+#  updated_at               :datetime
 #
-
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 ps1:
   deadline: 2010-02-01 00:00:01
   name: "PSet 1"
   team_partition: psets
+  feedback_question_set: psets
 
 ps2:
   deadline: 2010-02-15 00:00:01
   name: "PSet 2"
   team_partition: psets
+  feedback_question_set: psets
 
 project:
   deadline: 2010-04-30 17:00:00
   name: "Final Project"
   team_partition: projects
+  feedback_question_set: projects
+  

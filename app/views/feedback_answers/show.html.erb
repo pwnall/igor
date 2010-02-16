@@ -1,0 +1,33 @@
+<p>
+  <b>Assignment feedback:</b>
+  <%= @feedback_answer.assignment_feedback_id %>
+</p>
+
+<p>
+  <b>Question:</b>
+  <%= @feedback_answer.question_id %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @feedback_answer.user_id %>
+</p>
+
+<p>
+  <b>Target user:</b>
+  <%= @feedback_answer.target_user_id %>
+</p>
+
+<p>
+  <b>Number:</b>
+  <%= @feedback_answer.number %>
+</p>
+
+<p>
+  <b>Comment:</b>
+  <%= @feedback_answer.comment %>
+</p>
+
+
+<%= link_to 'Edit', edit_feedback_answer_path(@feedback_answer) %> |
+<%= link_to 'Back', feedback_answers_path %>
