@@ -6,7 +6,7 @@
 #  id           :integer(4)      not null, primary key
 #  user_id      :integer(4)      not null
 #  wants_credit :boolean(1)      not null
-#  motivation   :text(16777215)
+#  motivation   :string(32768)
 #  created_at   :datetime
 #  updated_at   :datetime
 #

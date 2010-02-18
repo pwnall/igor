@@ -12,13 +12,8 @@
 ActiveRecord::Schema.define(:version => 20100216020942) do
 
   create_table "assignment_feedbacks", :force => true do |t|
-    t.integer  "user_id",                       :null => false
-    t.integer  "assignment_id",                 :null => false
-    t.float    "hours",                         :null => false
-    t.integer  "difficulty",                    :null => false
-    t.integer  "coding_quant",                  :null => false
-    t.integer  "theory_quant",                  :null => false
-    t.string   "comments",      :limit => 4096
+    t.integer  "user_id",       :null => false
+    t.integer  "assignment_id", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -89,15 +84,14 @@ ActiveRecord::Schema.define(:version => 20100216020942) do
   create_table "feedback_answers", :force => true do |t|
     t.integer  "assignment_feedback_id",                 :null => false
     t.integer  "question_id",                            :null => false
-    t.integer  "user_id",                                :null => false
     t.integer  "target_user_id"
     t.float    "number",                                 :null => false
-    t.string   "comment",                :limit => 1024, :null => false
+    t.string   "comment",                :limit => 1024
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "feedback_answers", ["assignment_feedback_id", "question_id", "user_id"], :name => "feedback_answers_by_assignment_question_user", :unique => true
+  add_index "feedback_answers", ["assignment_feedback_id", "question_id", "target_user_id"], :name => "feedback_answers_by_assignment_question_user", :unique => true
 
   create_table "feedback_question_set_memberships", :force => true do |t|
     t.integer  "feedback_question_id",     :null => false

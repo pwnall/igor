@@ -6,7 +6,6 @@
 #  id                     :integer(4)      not null, primary key
 #  assignment_feedback_id :integer(4)      not null
 #  question_id            :integer(4)      not null
-#  user_id                :integer(4)      not null
 #  target_user_id         :integer(4)
 #  number                 :float           not null
 #  comment                :string(1024)    not null

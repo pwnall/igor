@@ -25,9 +25,9 @@ coding_psets:
   feedback_question: coding_ammount
   feedback_question_set: psets
 
-coding_psets:
+theory_psets:
   feedback_question: theory_ammount
-  feedback_question_set: projects
+  feedback_question_set: psets
   
 hours_projects:
   feedback_question: hours

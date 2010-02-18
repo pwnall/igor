@@ -1,8 +1,10 @@
 require 'test_helper'
 
 class FeedbackQuestionSetTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  test "questions" do
+    assert_equal 5, feedback_question_sets(:psets).questions.length,
+                 'Pset feedback uses all the questions'
+    assert_equal 1, feedback_question_sets(:projects).questions.length,
+                 'Projec feedback only cares about hours'
   end
 end

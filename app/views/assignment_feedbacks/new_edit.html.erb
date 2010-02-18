@@ -1,35 +1,49 @@
 <!-- assignment_feedbacks/new_edit -->
 <div class="full_section">
 	
-<h3 class="full_section">Feedback for <%= @assignment_feedback.assignment.name %></h1>
+<h3 class="full_section">
+	Feedback for <%= @assignment_feedback.assignment.name %>
+</h3>
 
 <%= error_messages_for :assignment_feedback %>
 
-<%
-if @assignment_feedback.new_record?
-	url = {:controller => :assignment_feedbacks, :action => :create}
-	url[:id] = 0 if @manual
-else
-	url = {:controller => :assignment_feedbacks, :action => :update, :id => @assignment_feedback.id}
-end
-%>
-
-<% form_for(@assignment_feedback, :url => url, :html => {:class => 'student_form'}) do |f| %>
+<% form_for(@assignment_feedback, :html => {:class => 'student_form'}) do |f| %>
 	<div style="display: none">
 		<%= f.hidden_field :assignment_id %>
 	</div>
 	<div class="form_box">
-		<% @assignment_feedback.questions.reject(&:targets_user?).each do |q| %>
+		<% last_target_user = nil %>
+		<% f.fields_for :answers do |a| %>
+		<% if last_target_user != a.object.target_user %>
+      <% last_target_user = a.object.target_user %>
+      <h3 class="full_section">
+        <%= display_name_for_user last_target_user %>
+      </h3>
+		<% end %>
+		<%= a.hidden_field :question_id %>		
+		<% if last_target_user %>
+      <%= a.hidden_field :target_user_id %>
+		<% end %>
     <div class="form_entry">
-      <div class="form_label"><%= q.human_string %></div>
+      <% question = a.object.question %>
+      <div class="form_label"><%= question.human_string %></div>
       <div class="form_field_box">
-      	Text
+			<% if question.scaled? %>
+			  <%= question.scale_min_label %>
+				<% question.scale_min.upto(question.scale_max) do |scale_index| %>
+				  <%= a.radio_button :number, scale_index.to_f %>
+				<% end %>
+				<%= question.scale_max_label %>
+			<% else %>
+      	<%= a.text_field :number %>
+      <% end %>
       </div>
     </div>        
 		<% end %>
 		
 		<div class="form_submit_box">
-		    <%= f.submit @assignment_feedback.new_record? ? "Submit" : "Update", :class => 'form_submit' %>
+		    <%= f.submit((@assignment_feedback.new_record? ? "Submit" : "Update"),
+                     :class => 'form_submit') %>
 			or
 			<%= link_to 'Go home', root_path %>
 		</div>

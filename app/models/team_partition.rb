@@ -34,6 +34,21 @@ class TeamPartition < ActiveRecord::Base
   # The assignments using this partitioning.
   has_many :assignments, :dependent => :nullify
   
+  # The team in this assignment containing a user.
+  #
+  # Returns nil if the given user isn't contained in any team.
+  def team_for_user(user)
+    membership = TeamMembership.first :conditions => { :user_id => user.id,
+        :team_id => teams.map(&:id)}
+    membership && membership.team
+  end
+  
+  # The teammates in this assignment for a user.
+  def teammates_for_user(user)
+    team = team_for_user(user)
+    team && (team.users - [user])
+  end
+  
   # Automatically assigns users to teams for this partitioning.
   def auto_assign_users(team_size = 3)
     all_users = User.all(:include => :student_info).

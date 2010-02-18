@@ -34,10 +34,15 @@ class AssignmentFeedbacksController < ApplicationController
   # GET /assignment_feedbacks/new.xml
   def new
     assignment = Assignment.find(params[:assignment_id])
+    Rails.logger.info assignment.inspect
     @assignment_feedback = AssignmentFeedback.first :conditions =>
         {:assignment_id => assignment.id, :user_id => @s_user.id}
-    @assignment_feedback ||= AssignmentFeedback.new
-    @assignment_feedback.assignment = assignment
+        
+    unless @assignment_feedback
+      @assignment_feedback = AssignmentFeedback.new :assignment => assignment,
+                                                    :user => @s_user
+      @assignment_feedback.create_answers
+    end
     
     new_edit
   end
