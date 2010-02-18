@@ -94,4 +94,22 @@ class TeamsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  # POST /teams/1/remove_user?user_id=5
+  # POST /teams/1/remove_user.xml?user_id=5
+  def remove_user
+    @team = Team.find(params[:id])
+    @user = User.find(params[:user_id])
+    
+    membership = @team.memberships.first :conditions => { :user_id => @user.id }
+    membership.destroy
+    
+    respond_to do |format|
+      format.html do
+        redirect_to @team.partition,
+                    :notice => "#{@user.real_name} removed from #{@team.name}"
+      end
+      format.xml  { head :ok }
+    end
+  end
 end

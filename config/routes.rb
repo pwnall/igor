@@ -109,6 +109,7 @@ Seven::Application.routes.draw do |map|
   end  
   resources :teams do
     collection { get :my_own }
+    member { post :remove_user }
   end
 
   # Sample resource route with options:

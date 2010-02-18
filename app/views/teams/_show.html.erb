@@ -11,8 +11,14 @@
       <%= user.real_name %>
       &lt;<%= link_to "#{user.athena_id}@mit.edu",
                       "mailto:#{user.athena_id}@mit.edu" %>&gt;
-      <% if @s_user.admin? and user.student_info %>
+      <% if @s_user.admin? %>
+			<% if user.student_info %>
 			<%= user.student_info.wants_credit ? 'Credit' : 'Listener' %>
+			<% end %>
+			<%= link_to 'Remove',
+              remove_user_team_path(team, :user_id => user.id),
+              :method => :post,
+              :confirm => "Remove #{user.real_name} from #{team.name}" %>
 			<% end %>
     </li>
   <% end %>
