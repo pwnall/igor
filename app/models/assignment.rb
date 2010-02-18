@@ -30,4 +30,11 @@ class Assignment < ActiveRecord::Base
   
   # The set of feedback questions for this assignment. 
   belongs_to :feedback_question_set
+  
+  # The feedback questions for this assignment. 
+  def feedback_questions
+    # NOTE: this should be a has_many :through association, except ActiveRecord
+    #       doesn't support nested :through associations 
+    feedback_question_set.questions
+  end
 end

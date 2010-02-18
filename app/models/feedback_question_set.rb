@@ -21,6 +21,7 @@ class FeedbackQuestionSet < ActiveRecord::Base
   # Memberships for the questions in this set.
   has_many :memberships, :class_name => 'FeedbackQuestionSetMembership',
                          :dependent => :destroy
+                         
   # The questions in this set.
   has_many :questions, :through => :memberships, :source => :feedback_question
 end

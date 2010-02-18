@@ -19,36 +19,15 @@ end
 		<%= f.hidden_field :assignment_id %>
 	</div>
 	<div class="form_box">
-		<div class="form_entry">
-			<div class="form_label">Time spent</div>
-			<div class="form_field_box">
-				<%= f.text_field :hours, :size => 3, :class => 'form_field' %> hours
-			</div>
-		</div>				
-		<div class="form_entry">
-			<div class="form_label">Difficulty</div>
-			<div class="form_field_box">
-				<%= f.select :difficulty, AssignmentFeedback.difficulty_levels_hash.to_a.map { |l| [l[1], l[0]] }.sort { |a,b| a[1] <=> b[1] }, :class => 'form_field' %>
-			</div>
-		</div>				
-		<div class="form_entry">
-			<div class="form_label">Theory</div>
-			<div class="form_field_box">
-				<%= f.select :theory_quant, AssignmentFeedback.quant_levels_hash.to_a.map { |l| [l[1], l[0]] }.sort { |a,b| a[1] <=> b[1] }, :class => 'form_field' %>
-			</div>
-		</div>				
-		<div class="form_entry">
-			<div class="form_label">Coding</div>
-			<div class="form_field_box">
-				<%= f.select :coding_quant, AssignmentFeedback.quant_levels_hash.to_a.map { |l| [l[1], l[0]] }.sort { |a,b| a[1] <=> b[1] }, :class => 'form_field' %>
-			</div>
-		</div>				
-		<div class="form_entry">
-			<div class="form_label">Comments</div>
-			<div class="form_field_box">
-				<%= f.text_area :comments, :rows => 5, :class => 'form_field' %>
-			</div>
-		</div>
+		<% @assignment_feedback.questions.reject(&:targets_user?).each do |q| %>
+    <div class="form_entry">
+      <div class="form_label"><%= q.human_string %></div>
+      <div class="form_field_box">
+      	Text
+      </div>
+    </div>        
+		<% end %>
+		
 		<div class="form_submit_box">
 		    <%= f.submit @assignment_feedback.new_record? ? "Submit" : "Update", :class => 'form_submit' %>
 			or

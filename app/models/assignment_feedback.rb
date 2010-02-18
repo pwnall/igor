@@ -18,7 +18,14 @@ class AssignmentFeedback < ActiveRecord::Base
   
   # The subject of this feedback.
   belongs_to :assignment
-  
+    
   # The answers that are part of this feedback.
   has_many :answers, :class_name => 'FeedbackAnswer', :dependent => :destroy
+  
+  # The questions asked for this feedback.
+  def questions
+    # NOTE: this should be a has_many :through association, but ActiveRecord
+    #       doesn't support nested :through associations
+    assignment.feedback_questions
+  end
 end

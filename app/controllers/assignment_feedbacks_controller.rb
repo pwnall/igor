@@ -34,9 +34,11 @@ class AssignmentFeedbacksController < ApplicationController
   # GET /assignment_feedbacks/new.xml
   def new
     assignment = Assignment.find(params[:assignment_id])
-    @assignment_feedback = AssignmentFeedback.find(:first, :conditions => {:assignment_id => assignment.id, :user_id => @s_user.id})
+    @assignment_feedback = AssignmentFeedback.first :conditions =>
+        {:assignment_id => assignment.id, :user_id => @s_user.id}
     @assignment_feedback ||= AssignmentFeedback.new
     @assignment_feedback.assignment = assignment
+    
     new_edit
   end
 
