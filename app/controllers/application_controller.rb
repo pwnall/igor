@@ -3,9 +3,5 @@ class ApplicationController < ActionController::Base
 
   include UserFilters
   
-  before_filter :extract_user_filter
-  
-  # filtering out file_upload due to its size, not for confidentiality
-  filter_parameter_logging :password, :password_confirmation,
-                           :file_upload
+  before_filter :extract_user_filter  
 end

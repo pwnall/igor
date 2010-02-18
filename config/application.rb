@@ -44,5 +44,10 @@ module Seven
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters << :password
+    config.filter_parameters << :password_confirmation
+    
+    # Filtering out file uploads due to its size, not for confidentiality.
+    config.filter_parameters << :code
+    config.filter_parameters << :pkg_file_upload
   end
 end

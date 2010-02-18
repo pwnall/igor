@@ -56,7 +56,7 @@ class SessionsController < ApplicationController
     
     @submissions = Submission.all :conditions => { :user_id => @s_user.id },
                                   :order => 'updated_at DESC'
-    submissions_by_aid = @submissions.index_by &:assignment_id
+    submissions_by_aid = @submissions.index_by { |s| s.assignment.id }
     
     @assignments = Assignment.all :conditions => { :accepts_feedback => true }
     @assignments_wo_feedback = @assignments.select do |assignment|

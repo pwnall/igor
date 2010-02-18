@@ -20,14 +20,19 @@
 class Submission < ActiveRecord::Base
   # The deliverable that the submission is for.
   belongs_to :deliverable
+  validates_presence_of :deliverable
+  
   # The user doing the submission.
   belongs_to :user
+  validates_presence_of :user
+  
   # The result of checking the submission.
   has_one :run_result, :dependent => :destroy
+
   # The submitted file (presumably code).
   has_attached_file :code, :storage => :database
-  
-  validates_presence_of :deliverable
-  validates_presence_of :user
   validates_attachment_presence :code
+  
+  # The assignment that this submission is for.
+  has_one :assignment, :through => :deliverable
 end

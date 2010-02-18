@@ -31,7 +31,7 @@ class DeliverableValidationsController < ApplicationController
       @deliverable_validation = @deliverable.deliverable_validation
 
       # record / update data here
-      @success = @new_record ? @deliverable_validation.save : @deliverable_validation.update_attributes(params_hash)
+      @success = @new_record ? @deliverable_validation.save! : @deliverable_validation.update_attributes!(params_hash)
       @deliverable.save! if @success
     end
     

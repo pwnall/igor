@@ -71,7 +71,8 @@
 <div class="full_section">	
 	<h3 class="full_section">Submitted Assignments</h3>
 	
-<%= render :partial => 'submissions/index', :object => @submissions %>
+<%= render :partial => 'submissions/index',
+           :locals => { :submissions => @submissions } %>
 </div>
 
 <% unless @feedbacks.empty? %>

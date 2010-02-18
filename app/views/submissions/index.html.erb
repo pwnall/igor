@@ -1,7 +1,7 @@
 <!-- submissions/index -->
 <div class="full_section">	
 	<h3 class="full_section">Filter Submissions</h3>
-	<% form_tag({:controller => :submissions, :action => :index, :id => 0}, {:class => 'user_form'}) do %>
+	<% form_tag(submissions_path, {:class => 'user_form'}) do %>
 		<div class="form_box">
 			<div class="form_entry">
 				<div class="form_label">Deliverable</div>
@@ -17,7 +17,7 @@
 		</div>
 	<% end %>	
 
-	<% form_tag({:controller => :submissions, :action => :index, :id => 0}, {:class => 'user_form'}) do %>
+	<% form_tag(submissions_path, {:class => 'user_form'}) do %>
 		<div class="form_box">
 			<div class="form_entry">
 				<div class="form_label">Assignment</div>
@@ -51,15 +51,36 @@
 			</thead>
 			<tbody>
 				<% @submissions.each do |submission| %>
-					<tr>
-						<td><%=h submission.deliverable.assignment.name %>: <%=h submission.deliverable.name %></td>
-						<td><%=h display_name_for_user submission.user %></td>
-						<td title="<%=h submission.updated_at %>"><%=h (submission.updated_at < submission.deliverable.assignment.deadline) ? 'on time' : "late by #{distance_of_time_in_words(submission.deliverable.assignment.deadline, submission.updated_at)}" %></td>
-						<td><%= submission.run_result.nil? ? 'no status' : link_to(submission.run_result.diagnostic, :controller => :run_results, :action => :show, :id => submission.run_result.id) %></td>
-						<td><%= link_to "Re-validate", :controller => :submissions, :action => :revalidate, :id => submission.id %></td>
-						<td><%= link_to "View", :controller => :submissions, :action => :file, :id => submission.id, :inline => true %></td>
-						<td><%= link_to "Download (#{number_to_human_size submission.code.size})", :controller => :submissions, :action => :file, :id => submission.id %></td>
-					</tr>
+				<tr>
+					<td>
+						<%=h submission.deliverable.assignment.name %>:
+						<%=h submission.deliverable.name %>
+					</td>
+					<td><%=h display_name_for_user submission.user %></td>
+					<td title="<%=h submission.updated_at %>">
+						<%=h (submission.updated_at < submission.deliverable.assignment.deadline) ? 'on time' : "late by #{distance_of_time_in_words(submission.deliverable.assignment.deadline, submission.updated_at)}" %>
+					</td>
+					<td>
+						<% if submission.run_result %>
+						<%= link_to submission.run_result.diagnostic,
+                        submission.run_result %>
+						<% else %>
+						no status
+						<% end %>
+					<td>
+						<%= link_to "Re-validate",
+                        revalidate_submission_path(submission),
+                        :method => :post %>
+					</td>
+					<td>
+						<%= link_to "View",
+                        file_submission_path(submission, :inline => true) %>
+					</td>
+					<td>
+						<%= link_to "Download (#{number_to_human_size submission.code.size})",
+                        file_submission_path(submission, :inline => false) %>
+				  </td>
+				</tr>
 				<% end %>
 			</tbody>
 		</table>

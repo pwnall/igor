@@ -50,7 +50,7 @@ Seven::Application.routes.draw do |map|
   end
   resources :deliverables do
     collection do
-      get :xhr_description
+      post :xhr_description
     end
     member do
       post :set_deliverable_description
@@ -92,6 +92,10 @@ Seven::Application.routes.draw do |map|
     collection { get :my_own }
   end
   resources :submissions do
+    member do
+      get :file
+      post :revalidate
+    end
     collection do
       get :request_package
       post :package_assignment
