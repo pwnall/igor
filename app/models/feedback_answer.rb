@@ -8,7 +8,7 @@
 #  question_id            :integer(4)      not null
 #  target_user_id         :integer(4)
 #  number                 :float           not null
-#  comment                :string(1024)    not null
+#  comment                :string(1024)
 #  created_at             :datetime
 #  updated_at             :datetime
 #

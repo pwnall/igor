@@ -47,6 +47,7 @@
       <th>Text</th>
       <th>For User</th>
       <th>Scale</th>
+			<th>Comments</th>
     </tr>
   
   <% @feedback_questions.each do |feedback_question| %>
@@ -63,6 +64,8 @@
 				None
 				<% end %>
 			</td>
+			<td>
+				<%= feedback_question.allows_comments? ? 'Yes' : 'No' %>
 	    <td>
 	    	<%= link_to 'Edit', edit_feedback_question_path(feedback_question) %>
 			</td>

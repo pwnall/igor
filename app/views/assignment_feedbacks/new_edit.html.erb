@@ -24,8 +24,8 @@
 		<% if last_target_user %>
       <%= a.hidden_field :target_user_id %>
 		<% end %>
+    <% question = a.object.question %>
     <div class="form_entry">
-      <% question = a.object.question %>
       <div class="form_label"><%= question.human_string %></div>
       <div class="form_field_box">
 			<% if question.scaled? %>
@@ -35,10 +35,20 @@
 				<% end %>
 				<%= question.scale_max_label %>
 			<% else %>
-      	<%= a.text_field :number %>
+      	<%= a.text_field :number, :size => 8 %>
       <% end %>
       </div>
-    </div>        
+    </div>
+		<% if question.allows_comments? %>
+    <div class="form_entry">
+      <div class="form_label">
+      	<%= question.human_string %> - comments
+			</div>
+      <div class="form_field_box">
+        <%= a.text_area :comment, :rows => 5 %>
+      </div>
+    </div>
+    <% end %>
 		<% end %>
 		
 		<div class="form_submit_box">

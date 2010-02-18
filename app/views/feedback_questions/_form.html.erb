@@ -17,6 +17,12 @@
       </div>
     </div>
     <div class="form_entry">
+      <div class="form_label"><%= f.label :allows_comments %></div>
+      <div class="form_field_box">
+        <%= f.check_box :allows_comments %>
+      </div>
+    </div>
+    <div class="form_entry">
       <div class="form_label"><%= f.label :scaled %></div>
       <div class="form_field_box">
         <%= f.check_box :scaled, :id => 'scaled_question_checkbox' %>

@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20100216020942) do
   create_table "feedback_questions", :force => true do |t|
     t.string   "human_string",    :limit => 1024,                      :null => false
     t.boolean  "targets_user",                    :default => false,   :null => false
+    t.boolean  "allows_comments",                 :default => false,   :null => false
     t.boolean  "scaled",                          :default => false,   :null => false
     t.integer  "scale_min",                       :default => 1,       :null => false
     t.integer  "scale_max",                       :default => 5,       :null => false

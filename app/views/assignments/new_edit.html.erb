@@ -31,6 +31,22 @@
        <%= f.check_box :accepts_feedback, :class => 'form_field' %>
       </div>
     </div>
+    <div class="form_entry">
+      <div class="form_label">Teams</div>
+      <div class="form_field_box">
+       <%= f.select :team_partition_id,
+                    ([['(none)', nil]] + TeamPartition.all.map { |p| [p.name, p.id] }),
+                    :class => 'form_field' %>
+      </div>
+    </div>
+    <div class="form_entry">
+      <div class="form_label">Feedback Questions</div>
+      <div class="form_field_box">
+       <%= f.select :feedback_question_set_id,
+                    ([['(none)', nil]] + FeedbackQuestionSet.all.map { |p| [p.name, p.id] }),
+                    :class => 'form_field' %>
+      </div>
+    </div>
     <div class="form_submit_box">
         <%= f.submit((@assignment.new_record? ? "Create" : "Update"),
                      :class => 'form_submit') %>

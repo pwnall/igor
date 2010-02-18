@@ -6,6 +6,7 @@
 #  id              :integer(4)      not null, primary key
 #  human_string    :string(1024)    not null
 #  targets_user    :boolean(1)      not null
+#  allows_comments :boolean(1)      not null
 #  scaled          :boolean(1)      not null
 #  scale_min       :integer(4)      default(1), not null
 #  scale_max       :integer(4)      default(5), not null

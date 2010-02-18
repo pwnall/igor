@@ -6,6 +6,7 @@
 #  id              :integer(4)      not null, primary key
 #  human_string    :string(1024)    not null
 #  targets_user    :boolean(1)      not null
+#  allows_comments :boolean(1)      not null
 #  scaled          :boolean(1)      not null
 #  scale_min       :integer(4)      default(1), not null
 #  scale_max       :integer(4)      default(5), not null
@@ -25,6 +26,10 @@ class FeedbackQuestion < ActiveRecord::Base
   # If this is false, the question asks for feedback on the assignment.
   validates_inclusion_of :targets_user, :in => [false, true],
                                         :allow_nil => false
+
+  # True if the question asks for comments, asides from the numerical answer.
+  validates_inclusion_of :allows_comments, :in => [false, true],
+                                           :allow_nil => false
   
   # True if the question's answer is an integer on a scale.
   #
