@@ -41,7 +41,8 @@ class AssignmentsController < ApplicationController
   
   def new_edit
     respond_to do |format|
-      format.js   { render :action => 'new_edit' } # new_edit.js.rjs 
+      format.html { render :action => :new_edit } # new_edit.html.erb
+      format.js   { render :action => :new_edit } # new_edit.js.rjs 
       format.xml  { render :xml => @assignment }
     end    
   end
@@ -57,13 +58,15 @@ class AssignmentsController < ApplicationController
       end
       if @success
         format.html do
-          flash[:notice] = 'Assignment was successfully created.'
+          flash[:notice] = "Assignment was successfully #{@new_record ? 'created' : 'updated'}."
+          redirect_to assignments_path
         end
         if @new_record then format.xml { render :xml => @assignment, :status => :created, :location => @assignment }          
         else format.xml { head :ok } end
       else
         format.html do
-          flash[:notice] = 'Assignment was successfully updated.'
+          flash[:notice] = "Assignment #{@new_record ? 'creation' : 'update'} failed."
+          render :action => :new_edit
         end
         format.xml { render :xml => @assignment.errors, :status => :unprocessable_entity }        
       end

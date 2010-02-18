@@ -1,0 +1,43 @@
+<!-- assignments/new_edit -->
+<div class="full_section">
+  
+<% if @assignment.new_record? %>
+  <h1 class="full_section">New Assignment</h1>
+<% else %>
+  <h1 class="full_section">Editing Assignment</h1>
+<% end %>
+
+<% form_for(@assignment, :html => {:class => 'student_form'}) do |f| %>
+  <%= f.error_messages %>
+
+  <div class="form_box">
+    <div class="form_entry">
+      <div class="form_label">Name</div>
+      <div class="form_field_box">
+        <%= f.text_field :name, :class => 'form_field' %>
+      </div>
+    </div>
+    <div class="form_entry">
+      <div class="form_label">Deadline</div>
+      <div class="form_field_box">
+        <%= f.datetime_select :deadline, :use_short_month => true,
+               :minute_step => 15, :datetime_separator => ' at ',
+               :time_separator => ':' %>
+      </div>
+    </div>
+    <div class="form_entry">
+      <div class="form_label">Accepts Feedback</div>
+      <div class="form_field_box">
+       <%= f.check_box :accepts_feedback, :class => 'form_field' %>
+      </div>
+    </div>
+    <div class="form_submit_box">
+        <%= f.submit((@assignment.new_record? ? "Create" : "Update"),
+                     :class => 'form_submit') %>
+      or
+      <%= link_to 'Go back', assignments_path %>
+    </div>
+  </div>
+<% end %>
+
+</div>

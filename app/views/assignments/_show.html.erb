@@ -10,6 +10,7 @@
 		<%= time_delta(@assignment.deadline) %>
 	</div>
 	<div>			
+    <%= link_to 'Edit', edit_assignment_path(show) %>
     <%= link_to_remote 'Destroy', :url => show, :confirm => "Removing assignment #{@assignment.name}. Are you sure?", :method => :delete %>
 	</div>
 	<div class="assignment_deliverables" id="assignment_deliverables_<%= @assignment.id %>" style="display: none">

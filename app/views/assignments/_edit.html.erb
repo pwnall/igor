@@ -15,7 +15,8 @@
 		</div>
 		<div class="assignment_deadline">
 	    <%= f.datetime_select :deadline, :use_short_month => true, :minute_step => 15, :datetime_separator => ' at ', :time_separator => ':' %>
-		</div>
+			Accepts Feedback <%= f.check_box :accepts_feedback %>
+ 		</div>
 		<span>
 			<%= link_to_function (edit.new_record? ? 'Create' : 'Updated'), remote_function(:url => edit, :with => "Form.serialize('assignment_row_#{div_id}')") %>
 			<% if edit.new_record? %>
