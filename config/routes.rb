@@ -13,7 +13,15 @@ Seven::Application.routes.draw do |map|
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
   resources :assignment_feedbacks
-  resources :assignment_metrics
+  resources :assignment_metrics do
+    member do
+      post :set_assignment_metric_assignment_id
+      post :set_assignment_metric_max_score
+      post :set_assignment_metric_name
+      post :set_assignment_metric_published
+      post :set_assignment_metric_weight
+    end
+  end
   resources :feedback_questions
   resources :notices
   resources :recitation_sections  
