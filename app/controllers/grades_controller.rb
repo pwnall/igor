@@ -149,7 +149,7 @@ class GradesController < ApplicationController
     send_data csv_text, :filename => 'grades.csv', :type => 'text/csv', :disposition => 'inline'
   end
   
-  # GET /grades/reveal_mine/0
+  # GET /grades/reveal_mine
   def reveal_mine
     pull_grades @s_user
     pull_metrics true
@@ -169,12 +169,11 @@ class GradesController < ApplicationController
     show_or_update_for_user    
   end
 
-  # XHR /grades/update_for_user/uid
+  # XHR PUT /grades/1/update_for_user
   def update_for_user
     @user = User.find(params[:id])
     pull_grades @user
     
-    p params[:grades]
     params[:grades].each do |mid_text, grade_score|
       mid = mid_text.to_i
       if grade_score.blank?
@@ -201,11 +200,12 @@ class GradesController < ApplicationController
     show_or_update_for_user
   end
   
-  private
   def pull_grades(user)
     @grades_by_mid = {}
     user.grades.each { |grade| @grades_by_mid[grade.assignment_metric_id] = grade }    
   end
+  private :pull_grades
+  
   def pull_metrics(only_published = true)
     conditions = {}
     conditions[:published] = true if only_published
@@ -219,7 +219,8 @@ class GradesController < ApplicationController
       @metrics_by_aid[m.assignment_id] ||= []
       @metrics_by_aid[m.assignment_id] << m
     end    
-  end
+  end  
+  private :pull_metrics
   
   def show_or_update_for_user
     pull_metrics false
@@ -228,4 +229,5 @@ class GradesController < ApplicationController
       format.js { render :action => :for_user, :layout => false }
     end    
   end
+  private :show_or_update_for_user
 end

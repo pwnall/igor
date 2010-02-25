@@ -1,7 +1,7 @@
 <div class="full_section">	
 	<h3 class="full_section">Post grades for <%=h display_name_for_user(@user, :short) %></h3>
 	<% @assignments_by_aid.values.sort { |a, b| b.deadline <=> a.deadline }.each do |assignment| aid = assignment.id %>
-		<% remote_form_for(@user, :url => {:controller => :grades, :action => :update_for_user, :id => @user.id}, :update => :user_grades_div, :before => '$("query").value = "";') do |f| %>
+		<% remote_form_for(@user, :url => update_for_user_grade_path(@user), :update => :user_grades_div, :before => '$("query").value = "";') do |f| %>
 		<table>
 			<% metric_table = to_table_array(@metrics_by_aid[aid], 7) %>
 			<% metric_table.length.times do |row| %>
@@ -70,6 +70,6 @@
 </div>
 
 <% if @updated %>
-	<%= update_page_tag { |page| add_site_status page, "New grades recorded for #{@user.name}", true } %>
+	<%= add_site_status "New grades recorded for #{@user.name}", true %>
 	<%= javascript_tag '$("query").focus();' %>
 <% end %>
