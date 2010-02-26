@@ -31,29 +31,50 @@
 
 	<% if @assignment_feedbacks.empty? %>
 		No feedback
-	<% else %>
-		<table>
-		  <tr>
-		  	<th>Who</th>
-		    <th>Hours</th>
-		    <th>Difficulty</th>
-				<th>Coding</th>
-				<th>Theory</th>
-		    <th>Comments</th>
-		  </tr>
-		
-		<% for assignment_feedback in @assignment_feedbacks %>
-		  <tr>
-		  	<td><%=h display_name_for_user assignment_feedback.user %></td>
-		    <td><%=h assignment_feedback.hours %></td>
-		    <td><%=h assignment_feedback.difficulty_str %></td>
-		    <td><%=h assignment_feedback.coding_quant_str %></td>
-		    <td><%=h assignment_feedback.theory_quant_str %></td>		
-		    <td><%=h assignment_feedback.comments %></td>
-		    <td><%= link_to 'Show', assignment_feedback %></td>
-		    <td><%= link_to 'Edit', edit_assignment_feedback_path(assignment_feedback) %></td>
-		    <td><%= link_to 'Destroy', assignment_feedback, :confirm => 'Are you sure?', :method => :delete %></td>
-		  </tr>
+	<% else %>		
+		<% @assignment_feedbacks.each do |feedback| %>
+		  <div class="feedback_piece">
+		  	<h4>
+		  		<%= display_name_for_user feedback.user %> on <%= feedback.assignment.name %>
+		  	</h4>
+				<% feedback.answers.reject(&:target_user).each do |answer| %>
+				<p class="question">
+					<span class="text">
+						<%= answer.question.human_string %>
+					</span>
+					<span class="answer">
+						<%= answer.number %>
+					</span>
+				</p>
+				<% end %>
+				<% last_user = nil;
+           feedback.answers.select(&:target_user).sort_by { |a| [a.target_user.id, a.question_id] }.each do |answer| %>
+				<% if last_user != answer.target_user %>
+				<% unless last_user %>
+				</div>
+				<% end %>
+				<% last_user = answer.target_user %>
+				<div class="teammate">
+					<p class="name">
+						<%= display_name_for_user last_user %>
+					</p>
+				<% end %>
+				<p class="question team">
+          <span class="text">
+            <%= answer.question.human_string %>
+          </span>
+          <span class="answer">
+            <%= answer.number %>
+          </span>					
+				</p>
+				<% end %>
+				</div>
+				<p class="actions">
+	        <%= link_to 'Show', feedback %>
+	        <%= link_to 'Edit', edit_assignment_feedback_path(feedback) %>
+	        <%= link_to 'Destroy', feedback, :confirm => 'Are you sure?', :method => :delete %>					
+				</p>
+			</div>
 		<% end %>		
 		</table>
 		<p>
