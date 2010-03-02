@@ -1,7 +1,7 @@
 <!-- submissions/request_assignment -->
 <div class="full_section">	
 	<h3 class="full_section">Package Assignment Submissions</h3>
-	<% form_tag(package_assignment_submissions_path, {:class => 'student_form'}) do %>
+	<% form_tag(package_assignment_submissions_path, :method => :get, :class => 'student_form') do %>
 		<div class="form_box">
 			<div class="form_entry">
 				<div class="form_label">Assignment</div>
