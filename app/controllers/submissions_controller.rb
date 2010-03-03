@@ -140,12 +140,10 @@ class SubmissionsController < ApplicationController
     @deliverables = Deliverable.where(:id => deliverable_ids).
                                 includes(:assignment)
     
-    deliverable_ids = if @deliverables.empty?
+    if @deliverables.empty?
       # Admin only requested cover sheets, so find all users that submitted
       # anything for this assignment.
-      @assignment.deliverables.map(&:id)
-    else
-      @deliverables.map(&:id)
+      deliverable_ids = @assignment.deliverables.map(&:id)
     end
 
     seed_submissions = Submission.where :deliverable_id => deliverable_ids
@@ -153,7 +151,7 @@ class SubmissionsController < ApplicationController
       cutoff = Time.local(*([:year, :month, :day, :hour, :minute].
                           map { |e| params[:cutoff][e].to_i }))
       seed_submissions = seed_submissions.          
-          where(Submission.arel_table[:updated_at].ge(cutoff))
+          where(Submission.arel_table[:updated_at].gteq(cutoff))
     end
     
     user_ids = seed_submissions.map(&:user_id).uniq
@@ -171,8 +169,8 @@ class SubmissionsController < ApplicationController
     
     if @user_submissions.empty?
       flash[:error] = 'There is no submission meeting your conditions.'
-      request_stuff
-      render :action => :request_stuff
+      request_package
+      render :action => :request_package
       return
     end
     
