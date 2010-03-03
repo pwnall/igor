@@ -122,6 +122,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
     if @s_user.id != @submission.user_id && !@s_user.admin?
       bounce_user "That's not yours to play with. Your attempt has been logged."
+      return
     end
     
     filename = @submission.user.name + '_' + @submission.code.original_filename
@@ -133,30 +134,40 @@ class SubmissionsController < ApplicationController
   # GET /submissions/package_assignment
   def package_assignment
     @assignment = Assignment.find(params[:assignment_id])
-    if params[:cutoff_enable].blank?
-      @cutoff = nil
-    else
-      @cutoff = Time.local(*([:year, :month, :day, :hour, :minute].map { |e| params[:cutoff][e].to_i }))
-    end
     
-    @deliverables = Deliverable.find(:all, :conditions => {:id => params[:package_include].map {|k, v| (v == '1') ? k : nil }.reject { |v| v.nil? }}, :include => :assignment)
+    deliverable_ids = params[:package_include].select { |k, v| v == '1' }.
+                                               map(&:first)
+    @deliverables = Deliverable.where(:id => deliverable_ids).
+                                includes(:assignment)
+    
     deliverable_ids = if @deliverables.empty?
-      # just cover sheets, so find all users that submitted _something_
+      # Admin only requested cover sheets, so find all users that submitted
+      # anything for this assignment.
       @assignment.deliverables.map(&:id)
     else
       @deliverables.map(&:id)
     end
-    conditions = if @cutoff
-      ['deliverable_id IN (:deliverable_ids) AND submissions.updated_at >= :cutoff', {:deliverable_ids => deliverable_ids, :cutoff => @cutoff}]
-    else
-      {:deliverable_id => deliverable_ids }
+
+    seed_submissions = Submission.where :deliverable_id => deliverable_ids
+    unless params[:cutoff_enable].blank?
+      cutoff = Time.local(*([:year, :month, :day, :hour, :minute].
+                          map { |e| params[:cutoff][e].to_i }))
+      seed_submissions = seed_submissions.          
+          where(Submission.arel_table[:updated_at].ge(cutoff))
     end
-    @user_submissions = Submission.find(:all, :conditions => conditions, :include => [:deliverable, :user])
-    @users = @user_submissions.map(&:user).index_by(&:id).values
-    if @cutoff
-      # cutoff mode: now get all the submissions of the selected users
-      @user_submissions = Submission.find(:all, :conditions => {:deliverable_id => deliverable_ids, :user_id => @users.map(&:id)}, :include => [:deliverable, :user])
+    
+    user_ids = seed_submissions.map(&:user_id).uniq
+    if team_partition = @assignment.team_partition
+      user_ids = User.where(:id => user_ids).map { |u|
+        team_partition.team_for_user(u) }.reject(&:nil?).
+                       map { |team| team.memberships.map(&:user_id) }.
+                       flatten.uniq
     end
+    @users = User.where :id => user_ids
+    @user_submissions = Submission.where(:deliverable_id => deliverable_ids,
+                                         :user_id => user_ids).
+                                   includes(:deliverable, :user).
+                                   order(:id)
     
     if @user_submissions.empty?
       flash[:error] = 'There is no submission meeting your conditions.'
@@ -165,26 +176,39 @@ class SubmissionsController < ApplicationController
       return
     end
     
+    if team_partition
+      @teams = @users.map { |u| team_partition.team_for_user(u) }.uniq
+    else
+      @teams = nil
+    end
+    
     temp_dir = with_temp_dir do |tempdir|
       # write out submissions
       unless @deliverables.empty?
         @user_submissions.each do |s|
           prefix = params[:filename_prefix][s.deliverable.id.to_s] || ''
           suffix = params[:filename_suffix][s.deliverable.id.to_s] || ''
+          basename = if team_partition
+            team_partition.team_for_user(s.user).name.underscore.gsub(' ', '_')
+          else
+            s.user.email.split('@').first
+          end
           extension = s.code.original_filename.split('.').last
-          fname = "#{tempdir}/#{prefix}#{s.user.email.split('@').first}#{suffix}.#{extension}"
+          fname = "#{tempdir}/#{prefix}#{basename}#{suffix}.#{extension}"
           File.open(fname, 'w') { |f| f.write s.code.file_contents }      
         end
       end
       
       # generate cover sheets
       if params[:package_include]['cover'] == '1'
-        @users.each do |u|
+        (@teams || @users).each do |target|
           prefix = params[:filename_prefix]['cover'] || ''
           suffix = params[:filename_suffix]['cover'] || ''
+          basename = team_partition ? target.name.underscore.gsub(' ', '_') :
+                                      target.email.split('@').first          
           extension = 'pdf'
-          fname = "#{tempdir}/#{prefix}#{u.email.split('@').first}#{suffix}.#{extension}"
-          cover_sheet_for_assignment u, @assignment, fname
+          fname = "#{tempdir}/#{prefix}#{basename}#{suffix}.#{extension}"
+          cover_sheet_for_assignment target, @assignment, fname
         end        
       end
       

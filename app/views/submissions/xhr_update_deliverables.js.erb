@@ -1,3 +1,8 @@
+<%= render :partial => 'submissions/filename_spec', :locals => {
+  :default_suffix => 'cover', :default_prefix => nil,
+  :basename => (@assignment.team_partition ? 'teamname' : 'username'),
+  :id => 'cover', :name => 'Cover', :title => 'Cover Sheet', :extension => 'pdf' } %>     
+
 <% @assignment.deliverables.each do |d| %>
 
 <%= render :partial => 'submissions/filename_spec', :locals => {
@@ -6,6 +11,7 @@
 	:id => d.id,
 	:name => d.name,
 	:title => d.name,
+  :basename => (@assignment.team_partition ? 'teamname' : 'username'),
 	:extension => d.filename.blank? ? '{pdf|py}' : d.filename.split('.').last 
 } %>
 <% end %>

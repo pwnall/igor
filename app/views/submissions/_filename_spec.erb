@@ -9,7 +9,7 @@
 				<div class="form_entry">
 					<div class="form_label"><%= name %> example filename</div>
 					<div class="form_field_box">
-						<span id="submission_package_fexample_<%= id %>">username</span>.<%= extension %>
+						<span id="submission_package_fexample_<%= id %>"><%= basename %></span>.<%= extension %>
 					</div>				
 				</div>
 				<div class="form_entry">
@@ -27,10 +27,10 @@
 		</div>
 
 <%= javascript_tag "show_div_on_checkbox_setting('submission_package_container_#{id}', 'submission_package_include_#{id}', true);" %>			
-<%= javascript_tag "submission_packager_update_fe('submission_package_fexample_#{id}', 'username', 'submission_package_fprefix_#{id}', 'submission_package_fsuffix_#{id}')" %>
+<%= javascript_tag "submission_packager_update_fe('submission_package_fexample_#{id}', '#{basename}', 'submission_package_fprefix_#{id}', 'submission_package_fsuffix_#{id}')" %>
 <%= observe_field "submission_package_fprefix_#{id}",
 	:frequency => 0.2,
-	:function => "submission_packager_update_fe('submission_package_fexample_#{id}', 'username', 'submission_package_fprefix_#{id}', 'submission_package_fsuffix_#{id}')" %>			
+	:function => "submission_packager_update_fe('submission_package_fexample_#{id}', '#{basename}', 'submission_package_fprefix_#{id}', 'submission_package_fsuffix_#{id}')" %>			
 <%= observe_field "submission_package_fsuffix_#{id}",
 	:frequency => 0.2,
-	:function => "submission_packager_update_fe('submission_package_fexample_#{id}', 'username', 'submission_package_fprefix_#{id}', 'submission_package_fsuffix_#{id}')" %>			
+	:function => "submission_packager_update_fe('submission_package_fexample_#{id}', '#{basename}', 'submission_package_fprefix_#{id}', 'submission_package_fsuffix_#{id}')" %>			

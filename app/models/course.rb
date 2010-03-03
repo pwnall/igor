@@ -18,6 +18,8 @@ class Course < ActiveRecord::Base
   validates_length_of :number, :in => 1..16, :allow_nil => false
   # The course title (e.g. "Introoduction to Algorithms").
   validates_length_of :title, :in => 1..256, :allow_nil => false
+  # True if the course has recitation sections.
+  validates_inclusion_of :has_recitations, :in => [true, false]
   
   # The Google Analytics account ID for the course.
   validates_length_of :ga_account, :in => 1..32, :allow_nil => false
