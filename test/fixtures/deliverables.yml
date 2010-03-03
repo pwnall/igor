@@ -15,12 +15,16 @@
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-#one:
-#  name: MyString
-#  description: MyString
-#  type: MyString
-#
-#two:
-#  name: MyString
-#  description: MyString
-#  type: MyString
+ps1_writeup:
+  assignment: ps1
+  name: PDF Write-Up
+  description: "Your team's write-up for PS1, in PDF format."
+  published: true
+  filename: ps1.pdf
+
+project_writeup:
+  assignment: project
+  name: PDF Write-Up
+  description: "Your team's write-up for the final project, in PDF format."
+  published: true
+  filename: project.pdf

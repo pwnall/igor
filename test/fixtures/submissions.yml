@@ -16,16 +16,26 @@
 #  updated_at        :datetime
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+admin_ps1:
+  deliverable: ps1_writeup
+  user: admin
+  code_file_name: output.pdf
+  code_file_size: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").length %>
+  code_content_type: application/pdf
+  code_file: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").inspect %>
 
-#one:
-#  assignment_id: 1
-#  user_id: 1
-#  mime_type: MyString
-#  file_contents: 
-#
-#two:
-#  assignment_id: 1
-#  user_id: 1
-#  mime_type: MyString
-#  file_contents: 
+inactive_project:
+  deliverable: project_writeup
+  user: inactive
+  code_file_name: output.pdf
+  code_file_size: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").length %>
+  code_content_type: application/pdf
+  code_file: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").inspect %>
+
+solo_ps1:
+  deliverable: ps1_writeup
+  user: solo
+  code_file_name: output.pdf
+  code_file_size: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").length %>
+  code_content_type: application/pdf
+  code_file: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").inspect %>

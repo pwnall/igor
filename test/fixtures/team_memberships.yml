@@ -30,3 +30,7 @@ admin_project:
 dexter_project:
   team: awesome_project
   user: dexter
+
+inactive_project:
+  team: awesome_project
+  user: inactive

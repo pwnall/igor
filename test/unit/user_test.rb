@@ -127,6 +127,17 @@ class UserTest < ActiveSupport::TestCase
     assert_equal nil, User.authenticate('dexter', 'awesome'), 'Bogus password'
   end
   
+  test "connected_submissions for team user" do
+    assert_equal Set.new([submissions(:admin_ps1),
+                         submissions(:inactive_project)]),
+                 Set.new(users(:dexter).connected_submissions)                 
+  end
+  
+  test "connected_submissions for user with no teams" do
+    assert_equal Set.new([submissions(:solo_ps1)]),
+                 Set.new(users(:solo).connected_submissions)    
+  end
+  
   def test_real_name
     assert_equal 'costan', users(:admin).real_name
     assert_equal 'Dexter Boy Genius', users(:dexter).real_name    
@@ -191,7 +202,8 @@ class UserTest < ActiveSupport::TestCase
   end
   
   def test_find_all_by_query
-    assert_equal [users(:admin), users(:dexter), users(:inactive)],
+    assert_equal [users(:admin), users(:dexter), users(:inactive),
+                  users(:solo)],
                  User.find_all_by_query!('i')
   end
   

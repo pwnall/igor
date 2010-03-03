@@ -9,6 +9,7 @@
 				<td>Assignment</td>
 				<td>Deliverable</td>
 				<td>Deadline</td>
+        <td>Submitter</td>
 				<td>Submitted</td>
 				<td>Status</td>
 			</tr>		
@@ -19,6 +20,7 @@
 					<td><%=h submission.deliverable.assignment.name %></td>
 					<td><%=h submission.deliverable.name %></td>
 					<td><%=h time_delta(submission.deliverable.assignment.deadline) %></td>
+          <td><%=h submission.user.name %></td>
 					<td><%=h time_delta(submission.updated_at) %></td>
 					<td><%= submission.run_result.nil? ? 'no status' : link_to(submission.run_result.diagnostic, :controller => :run_results, :action => :show, :id => submission.run_result.id) %></td>
 					<td><%= link_to "View", file_submission_path(submission.id, :inline => true) %></td>

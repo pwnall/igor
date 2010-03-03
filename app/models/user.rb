@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
   has_many :notices, :through => :notice_statuses
   has_many :team_memberships, :dependent => :destroy
   has_many :teams, :through => :team_memberships
+  has_many :assignment_feedbacks
 
   attr_protected :admin, :active
   
@@ -87,6 +88,15 @@ class User < ActiveRecord::Base
     (@user && @user.check_password(password)) ? @user : nil
   end  
   
+  # Submissions connected to this user.
+  #
+  # Returns the submissions authored by the user, as well as the submissions
+  # authored by the user's teammates.
+  def connected_submissions
+    author_ids = (teams.map(&:users).flatten.map(&:id) << id).uniq
+    Submission.where(:user_id => author_ids).all
+  end
+  
   # The user's real name.
   #
   # Returns the email username if the user has not created a profile.
@@ -100,7 +110,7 @@ class User < ActiveRecord::Base
   def athena_id
     profile ? profile.athena_username : email[0, email.index(?@)]
   end
-  
+    
   # TODO(costan): move query processing in another class
   
   # Parses a free-form user search query.
