@@ -18,32 +18,38 @@ class GradesController < ApplicationController
   end
   
   def missing
-    if params[:filter_aid].blank?
-      assignments = Assignment.find(:all, :include => [:deliverables, {:assignment_metrics => :assignment} ])
-      @assignments = assignments
-    else
-      assignments = Assignment.find(:all, :conditions => {:id => params[:filter_aid]}, :include => [:deliverables, :assignment_metrics])
-      @assignments = Assignment.find(:all)
+    assignments = Assignment.includes(:deliverables,
+                                      {:assignment_metrics => :assignment})
+    @assignments = assignments
+    if params[:filter_aid]
+      assignments = assignments.where(:id => params[:filter_aid])
     end
     
-    @metrics_by_id = assignments.map(&:assignment_metrics).flatten.index_by(&:id)
+    @metrics_by_id =
+        assignments.map(&:assignment_metrics).flatten.index_by(&:id)
     
     gradeless_users = {}
     @users_by_id = {}
   
     assignments.each do |assignment|
-      metric_ids = (params[:filter_published] ? assignment.assignment_metrics.select(&:published) : assignment.assignment_metrics).map(&:id)
+      metrics = assignment.assignment_metrics
+      metrics.select!(&:published) if params[:filtered_published]
+      metric_ids = metrics.map(&:id)
 
       # get the users who submitted
-      users = Submission.find(:all, :conditions => {:deliverable_id => assignment.deliverables.map(&:id)}, :include => :user).map(&:user).index_by(&:id)
+      deliverable_ids = assignment.deliverables.map(&:id)
+      users = Submission.where(:deliverable_id => deliverable_ids).
+                         includes(:user).map(&:user).index_by(&:id)
+          
       # find those without all the grades
       users.each do |user_id, user|
-        user_grades = user.grades.find(:all, :conditions => {:assignment_metric_id => metric_ids})
+        user_grades = user.grades.where(:assignment_metric_id => metric_ids)
         next if user_grades.length == metric_ids.length
         
         # user found: add to list
         gradeless_users[user_id] ||= {}
-        gradeless_users[user_id][assignment] = metric_ids - user_grades.map(&:assignment_metric_id)
+        gradeless_users[user_id][assignment] =
+            metric_ids - user_grades.map(&:assignment_metric_id)
         @users_by_id[user_id] = user
       end
     end
