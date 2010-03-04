@@ -26,8 +26,8 @@ Seven::Application.routes.draw do |map|
       post :check_name, :recovery_email
     end
     member do
-      get :edit_password, :update_password
-      post :impersonate, :set_admin
+      get :edit_password
+      post :impersonate, :set_admin, :update_password
     end
   end
    
