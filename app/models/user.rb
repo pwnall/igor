@@ -93,8 +93,9 @@ class User < ActiveRecord::Base
   # Returns the submissions authored by the user, as well as the submissions
   # authored by the user's teammates.
   def connected_submissions
-    author_ids = (teams.map(&:users).flatten.map(&:id) << id).uniq
-    Submission.where(:user_id => author_ids).all
+    submissions = self.submissions.all
+    teams.each { |team| submissions += team.submissions.all }
+    submissions.uniq
   end
   
   # The user's real name.

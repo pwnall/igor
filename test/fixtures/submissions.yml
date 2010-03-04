@@ -19,7 +19,15 @@
 admin_ps1:
   deliverable: ps1_writeup
   user: admin
-  code_file_name: output.pdf
+  code_file_name: admin_ps1.pdf
+  code_file_size: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").length %>
+  code_content_type: application/pdf
+  code_file: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").inspect %>
+
+admin_project:
+  deliverable: project_writeup
+  user: admin
+  code_file_name: admin_project.pdf
   code_file_size: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").length %>
   code_content_type: application/pdf
   code_file: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").inspect %>
@@ -27,7 +35,7 @@ admin_ps1:
 inactive_project:
   deliverable: project_writeup
   user: inactive
-  code_file_name: output.pdf
+  code_file_name: inactive_project.pdf
   code_file_size: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").length %>
   code_content_type: application/pdf
   code_file: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").inspect %>
@@ -35,7 +43,7 @@ inactive_project:
 solo_ps1:
   deliverable: ps1_writeup
   user: solo
-  code_file_name: output.pdf
+  code_file_name: solo_ps1.pdf
   code_file_size: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").length %>
   code_content_type: application/pdf
   code_file: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").inspect %>

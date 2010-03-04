@@ -34,6 +34,9 @@ class TeamPartition < ActiveRecord::Base
   # The assignments using this partitioning.
   has_many :assignments, :dependent => :nullify
   
+  # The deliverables for the assignments using this partitioning.
+  has_many :deliverables, :through => :assignments
+  
   # The team in this assignment containing a user.
   #
   # Returns nil if the given user isn't contained in any team.

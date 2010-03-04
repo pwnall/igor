@@ -28,6 +28,6 @@ ps2:
 project:
   deadline: 2010-04-30 17:00:00
   name: "Final Project"
-  team_partition: projects
+  team_partition: project
   feedback_question_set: projects
   

@@ -6,8 +6,9 @@ class CreateTeams < ActiveRecord::Migration
 
       t.timestamps
     end
-    
-    add_index :teams, :partition_id, :unique => false, :null => false
+
+    # Prevent duplicate names in a partition.
+    add_index :teams, [:partition_id, :name], :unique => true, :null => false
   end
 
   def self.down

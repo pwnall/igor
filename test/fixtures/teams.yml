@@ -25,5 +25,5 @@ awesome_project:
   name: "Team Awesome"
 
 boo_project:
-  partition: pset
+  partition: project
   name: "Team Boo"

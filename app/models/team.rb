@@ -30,8 +30,7 @@ class Team < ActiveRecord::Base
   
   # The submissions of this team.
   def submissions
-    deliverables = partition.assignments.map(&:deliverables).flatten
     Submission.where(:user_id => memberships.map(&:user_id),
-                     :deliverable_id => deliverables.map(&:id))
+                     :deliverable_id => partition.deliverables.map(&:id))
   end
 end
