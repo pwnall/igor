@@ -4,10 +4,11 @@
 # Table name: grades
 #
 #  id                   :integer(4)      not null, primary key
-#  assignment_metric_id :integer(4)
-#  user_id              :integer(4)
-#  grader_user_id       :integer(4)
-#  score                :integer(4)
+#  assignment_metric_id :integer(4)      not null
+#  subject_type         :string(64)      not null
+#  subject_id           :integer(4)      not null
+#  grader_id            :integer(4)      not null
+#  score                :decimal(8, 2)   not null
 #  created_at           :datetime
 #  updated_at           :datetime
 #

@@ -122,15 +122,16 @@ ActiveRecord::Schema.define(:version => 20100216020942) do
   end
 
   create_table "grades", :force => true do |t|
-    t.integer  "assignment_metric_id"
-    t.integer  "user_id"
-    t.integer  "grader_user_id"
-    t.integer  "score"
+    t.integer  "assignment_metric_id",                                             :null => false
+    t.string   "subject_type",         :limit => 64,                               :null => false
+    t.integer  "subject_id",                                                       :null => false
+    t.integer  "grader_id",                                                        :null => false
+    t.decimal  "score",                              :precision => 8, :scale => 2, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "grades", ["user_id", "assignment_metric_id"], :name => "index_grades_on_user_id_and_assignment_metric_id", :unique => true
+  add_index "grades", ["subject_type", "subject_id", "assignment_metric_id"], :name => "grades_by_subject_and_assignment_metric_id", :unique => true
 
   create_table "notice_statuses", :force => true do |t|
     t.integer "notice_id",                    :null => false

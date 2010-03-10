@@ -138,6 +138,12 @@ class UserTest < ActiveSupport::TestCase
                  Set.new(users(:solo).connected_submissions)    
   end
   
+  test "grades" do
+    golden = Set.new([:awesome_ps1_p1, :awesome_project, :dexter_assessment].
+                     map { |i| grades(i) })
+    assert_equal golden, Set.new(users(:dexter).grades), 'All grades for dexter'
+  end  
+  
   def test_real_name
     assert_equal 'costan', users(:admin).real_name
     assert_equal 'Dexter Boy Genius', users(:dexter).real_name    

@@ -18,7 +18,8 @@ class User < ActiveRecord::Base
   has_many :tokens, :dependent => :destroy
   has_one :student_info, :dependent => :destroy
   has_one :profile, :dependent => :destroy
-  has_many :direct_grades, :class_name => 'Grade', :dependent => :destroy
+  has_many :direct_grades, :class_name => 'Grade', :dependent => :destroy,
+           :as => :subject
   has_many :submissions, :dependent => :destroy
   has_many :notice_statuses, :dependent => :destroy
   has_many :notices, :through => :notice_statuses

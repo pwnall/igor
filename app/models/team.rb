@@ -29,7 +29,7 @@ class Team < ActiveRecord::Base
   has_many :users, :through => :memberships
   
   # The grades assigned to this team.
-  has_many :grades
+  has_many :grades, :dependent => :destroy, :as => :subject
   
   # The submissions of this team.
   def submissions

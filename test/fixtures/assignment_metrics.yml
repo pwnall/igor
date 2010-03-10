@@ -13,14 +13,21 @@
 #  updated_at    :datetime
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+ps1_p1:
+  name: Problem 1
+  assignment: ps1
+  max_score: 10
+  published: true
+  weight: 1.0
+  
+project_overall:
+  name: Overall
+  assignment: project
+  max_score: 100
+  weight: 1.0
 
-#one:
-#  name: MyString
-#  assignment_id: 1
-#  max_score: 1
-#
-#two:
-#  name: MyString
-#  assignment_id: 1
-#  max_score: 1
+assessment_quality:
+  name: Quality
+  assignment: assessment
+  max_score: 10
+  weight: 1.0
