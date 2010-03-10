@@ -3,10 +3,11 @@
 function show_div_on_checkbox_setting(div_id, checkbox_id, value_for_shown){
 	var checkbox = $(checkbox_id);
 	var div_element = $(div_id);
-	if(checkbox.checked != value_for_shown)
+	if (checkbox.checked != value_for_shown) {
 		div_element.hide();
+	}
 	checkbox.observe('change', function(event) {
-		if(checkbox.checked != value_for_shown)
+		if (checkbox.checked != value_for_shown)
 			div_element.fade();
 		else
 			div_element.appear();
@@ -15,10 +16,11 @@ function show_div_on_checkbox_setting(div_id, checkbox_id, value_for_shown){
 
 function grades_compute_total(target_id, field_ids) {
 	var total = 0;
-	for(var i = 0; i < field_ids.length; i++) {
+	for (var i = 0; i < field_ids.length; i++) {
 		var fval = $(field_ids[i]).value;
-		if(fval != "")
-			total += parseInt(fval);				
+		if (fval != "") {
+			total += parseFloat(fval);
+		}
 	}
 	$(target_id).update(total + '')
 }	
@@ -34,15 +36,15 @@ function submission_validation_update_visiblity(id_suffix) {
 	v_upkg.hide();
 	v_rupkg.hide();
 	v_bin.hide();
-	if(vtype == 'RemoteScriptValidation') {
+	if (vtype == 'RemoteScriptValidation') {
 		v_rpkg.show();
 		v_rupkg.show();
 	}
-	else if(vtype == 'UploadedScriptValidation') {
+	else if (vtype == 'UploadedScriptValidation') {
 		v_upkg.show();
 		v_rupkg.show();
 	}
-	else if(vtype == 'ProcValidation') {
+	else if (vtype == 'ProcValidation') {
 		v_bin.show();
 	}
 }

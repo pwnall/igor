@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   has_many :tokens, :dependent => :destroy
   has_one :student_info, :dependent => :destroy
   has_one :profile, :dependent => :destroy
-  has_many :grades, :dependent => :destroy
+  has_many :direct_grades, :class_name => 'Grade', :dependent => :destroy
   has_many :submissions, :dependent => :destroy
   has_many :notice_statuses, :dependent => :destroy
   has_many :notices, :through => :notice_statuses
@@ -96,6 +96,14 @@ class User < ActiveRecord::Base
     submissions = self.submissions.all
     teams.each { |team| submissions += team.submissions.all }
     submissions.uniq
+  end
+  
+  # All the grades connected to a user.
+  #
+  # The returned set includes the user's direct grades, as well as grades
+  # recorded for a team that the user is a part of.
+  def grades
+    direct_grades + teams.map(&:grades).flatten
   end
   
   # The user's real name.

@@ -1,6 +1,9 @@
 <div class="full_section">	
-	<h3 class="full_section">Post grades for <%=h display_name_for_user(@user, :short) %></h3>
-	<% @assignments_by_aid.values.sort { |a, b| b.deadline <=> a.deadline }.each do |assignment| aid = assignment.id %>
+	<h3 class="full_section">
+		Post grades for <%=h display_name_for_user(@user, :short) %>
+	</h3>
+	<% @assignments_by_aid.values.sort_by(&:deadline).each do |assignment| %>
+	  <% aid = assignment.id %>
 		<% remote_form_for(@user, :url => update_for_user_grade_path(@user), :update => :user_grades_div, :before => '$("query").value = "";') do |f| %>
 		<table>
 			<% metric_table = to_table_array(@metrics_by_aid[aid], 7) %>
@@ -25,7 +28,11 @@
 					<% else %>
 						<th />
 					<% end %>
-					<th></th>
+					<th>
+					<% if assignment.team_partition %>
+					<%= assignment.team_partition.team_for_user(@user).name %>
+					<% end %>
+					</th>
 				</tr>
 							
 				<tr>

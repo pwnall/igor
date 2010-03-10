@@ -28,6 +28,9 @@ class Team < ActiveRecord::Base
   # The users in this team.  
   has_many :users, :through => :memberships
   
+  # The grades assigned to this team.
+  has_many :grades
+  
   # The submissions of this team.
   def submissions
     Submission.where(:user_id => memberships.map(&:user_id),

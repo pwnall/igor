@@ -13,7 +13,18 @@
 #
 
 class Grade < ActiveRecord::Base
+  # The metric that this grade is for.
   belongs_to :assignment_metric
-  belongs_to :user
-  belongs_to :grader_user, :class_name => 'User'
+  validates_presence_of :assignment_metric
+  
+  # The subject being graded (a user or a team).
+  belongs_to :subject, :polymorphic => true
+  validates_presence_of :subject
+  
+  # The user who posted this grade (an admin).
+  belongs_to :grader, :class_name => 'User'
+  validates_presence_of :grader
+
+  # The numeric grade.
+  validates_numericality_of :score, :only_integer => false
 end

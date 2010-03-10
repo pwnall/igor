@@ -14,7 +14,7 @@ class GradesController < ApplicationController
 
   # GET /grades/request_missing/0
   def request_missing
-    @assignments = Assignment.find(:all)
+    @assignments = Assignment.all
   end
   
   def missing

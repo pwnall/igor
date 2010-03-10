@@ -1,17 +1,18 @@
 class CreateGrades < ActiveRecord::Migration
   def self.up
     create_table :grades do |t|
-      t.integer :assignment_metric_id
-      t.integer :user_id
-      t.integer :grader_user_id
-      t.integer :score
+      t.integer :assignment_metric_id, :null => false
+      t.string  :subject_type, :limit => 64, :null => false
+      t.integer :subject_id, :null => false
+      t.integer :grader_id, :null => false
+      t.decimal :score, :precision => 8, :scale => 2, :null => false
 
       t.timestamps
     end
     
-    # Optimize getting a user's grades.
-    add_index :grades, [:user_id, :assignment_metric_id], :unique => true,
-                                                          :null => false
+    # Optimize getting the grades for a user / team.
+    add_index :grades, [:subject_type, :subject_id, :assignment_metric_id],
+                       :unique => true, :null => false
   end
 
   def self.down
