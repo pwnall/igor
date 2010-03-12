@@ -57,7 +57,7 @@ class GradesController < ApplicationController
     @users = gradeless_users
   end
 
-  # GET /graes/report/0
+  # GET /grades/report/0
   def report
     # pull data
     pull_metrics false
@@ -191,15 +191,20 @@ class GradesController < ApplicationController
       else
         # add grade
         unless @grades_by_mid.has_key? mid
-          @grades_by_mid[mid] = Grade.new(:assignment_metric_id => mid)
-          @user.grades << @grades_by_mid[mid] 
+          if partition = AssignmentMetric.find(mid).assignment.team_partition
+            subject = partition.team_for_user @user
+          else
+            subject = @user
+          end
+          @grades_by_mid[mid] = Grade.new :assignment_metric_id => mid,
+                                          :subject => subject
         end
-        if @grades_by_mid[mid].score != grade_score.to_i
+        if @grades_by_mid[mid].score != grade_score.to_f
           @grades_by_mid[mid].score = grade_score
-          @grades_by_mid[mid].grader_user = @s_user
+          @grades_by_mid[mid].grader = @s_user
           @grades_by_mid[mid].save!
         end
-      end     
+      end
     end
     
     @updated = true    
@@ -207,8 +212,7 @@ class GradesController < ApplicationController
   end
   
   def pull_grades(user)
-    @grades_by_mid = {}
-    user.grades.each { |grade| @grades_by_mid[grade.assignment_metric_id] = grade }    
+    @grades_by_mid = user.grades.index_by(&:assignment_metric_id)
   end
   private :pull_grades
   
