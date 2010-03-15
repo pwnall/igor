@@ -4,7 +4,9 @@
 	</h3>
 	<% @assignments_by_aid.values.sort_by(&:deadline).each do |assignment| %>
 	  <% aid = assignment.id %>
-		<% remote_form_for(@user, :url => update_for_user_grade_path(@user), :update => :user_grades_div, :before => '$("query").value = "";') do |f| %>
+		<%= remote_form_for(@user, :url => update_for_user_grade_path(@user),
+                        :update => :user_grades_div,
+                        :before => '$("query").value = "";') do |f| %>
 		<table>
 			<% metric_table = to_table_array(@metrics_by_aid[aid], 7) %>
 			<% metric_table.length.times do |row| %>

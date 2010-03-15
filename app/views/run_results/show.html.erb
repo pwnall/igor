@@ -1,9 +1,13 @@
 <!-- run_results/show -->
 <div class="full_section">
 	
-<h1 class="full_section">Run results for <%= @run_result.submission.deliverable.assignment.name %>: <%= @run_result.submission.deliverable.name %></h1>
+<h1 class="full_section">
+	Run results for <%= @run_result.submission.deliverable.assignment.name %>:
+	<%= @run_result.submission.deliverable.name %>
+</h1>
 
-<% form_for(@run_result, :url => '#', :html => {:class => 'user_form'}) do |f| %>
+<%= form_for(@run_result, :url => '#',
+             :html => {:class => 'user_form'}) do |f| %>
 	<div class="form_box">
 		<div class="form_entry">
 			<div class="form_label">Result</div>

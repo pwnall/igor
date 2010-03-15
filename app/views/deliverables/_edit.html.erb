@@ -1,5 +1,5 @@
 <div id="deliverable_row_<%= div_id %>">
-	<% form_for(edit, :html => {:id => "deliverable_#{div_id}"}) do |f| %>
+	<%= form_for(edit, :html => {:id => "deliverable_#{div_id}"}) do |f| %>
 		<div style="display: none;">
 			<%= hidden_field_tag :div_id, div_id %>
 			<%= f.hidden_field :assignment_id %>

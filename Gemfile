@@ -2,10 +2,11 @@
 source 'http://gemcutter.org'
 
 
-gem "rails", "3.0.0.beta"
+#gem "rails", "3.0.0.beta"
 
 ## Bundle edge rails:
-# gem "rails", :git => "git://github.com/rails/rails.git"
+gem "rails", :git => "git://github.com/rails/rails.git",
+             :ref => "96bc6bcfee704701de1a9c4c3c6a7c265610d34d"
 
 # ActiveRecord requires a database adapter. By default,
 # Rails has selected sqlite3.

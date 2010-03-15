@@ -9,16 +9,7 @@
 
 <%= error_messages_for :prerequisite %>
 
-<%
-if @prerequisite.new_record?
-  url = {:controller => :prerequisites, :action => :create}
-else
-  url = {:controller => :prerequisites, :action => :update,
-         :id => @prerequisite.id}
-end
-%>
-
-<% form_for(@prerequisite, :url => url, :html => {:class => 'student_form'}) do |f| %>
+<%= form_for(@prerequisite, :html => {:class => 'student_form'}) do |f| %>
   <div class="form_box">
     <div class="form_entry">
       <div class="form_label">Course number(s)</div>

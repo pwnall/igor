@@ -7,14 +7,16 @@
 
 <%
 if @profile.new_record?
-	url = {:controller => :profiles, :action => @manual ? :create_manual : :create}
+	url = { :controller => :profiles,
+          :action => @manual ? :create_manual : :create }
 	url[:id] = 0 if @manual
 else
 	url = profile_path @profile
 end
 %>
 
-<% form_for(@profile, :url => url, :html => {:class => 'student_form'}) do |f| %>
+<%= form_for(@profile, :url => url,
+             :html => {:class => 'student_form'}) do |f| %>
 	<div class="form_box">
 		<div class="form_entry">
 			<div class="form_label">MIT username</div>

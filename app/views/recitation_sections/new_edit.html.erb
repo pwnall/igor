@@ -1,4 +1,4 @@
-<!-- assignment_metrics/new_edit -->
+<!-- recitation_sections/new_edit -->
 <div class="full_section">
 	
 <% if @recitation_section.new_record? %>
@@ -9,15 +9,7 @@
 
 <%= error_messages_for :recitation_section %>
 
-<%
-if @recitation_section.new_record?
-	url = {:controller => :recitation_sections, :action => :create}
-else
-	url = {:controller => :recitation_sections, :action => :update, :id => @recitation_section.id}
-end
-%>
-
-<% form_for(@recitation_section, :url => url, :html => {:class => 'student_form'}) do |f| %>
+<%= form_for(@recitation_section, :html => {:class => 'student_form'}) do |f| %>
 	<div class="form_box">
 		<div class="form_entry">
 			<div class="form_label">Serial</div>

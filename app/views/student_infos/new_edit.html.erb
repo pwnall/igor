@@ -14,7 +14,8 @@ else
 end
 %>
 
-<% form_for(@student_info, :url => url, :html => {:class => 'student_form'}) do |f| %>
+<%= form_for(@student_info, :url => url,
+             :html => {:class => 'student_form'}) do |f| %>
 	<div class="form_box">
 		<div class="form_entry">
 			<div class="form_label">Taking <%= Course.main.number %> for credit</div>

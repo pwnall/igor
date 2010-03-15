@@ -9,15 +9,7 @@
 
 <%= error_messages_for :assignment_metric %>
 
-<%
-if @assignment_metric.new_record?
-	url = {:controller => :assignment_metrics, :action => :create}
-else
-	url = {:controller => :assignment_metrics, :action => :update, :id => @assignment_metric.id}
-end
-%>
-
-<% form_for(@assignment_metric, :url => url, :html => {:class => 'student_form'}) do |f| %>
+<%= form_for(@assignment_metric, :html => {:class => 'student_form'}) do |f| %>
 	<div class="form_box">
 		<div class="form_entry">
 			<div class="form_label">Name</div>

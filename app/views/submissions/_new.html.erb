@@ -1,5 +1,6 @@
 <!-- submissions/new -->
-<% form_for(Submission.new, :html => {:multipart => true, :class => 'user_form'}) do |f| %>
+<%= form_for(Submission.new,
+             :html => {:multipart => true, :class => 'user_form'}) do |f| %>
 	<div class="form_box">
 		<div class="form_entry">
 			<div class="form_label">Deliverable</div>

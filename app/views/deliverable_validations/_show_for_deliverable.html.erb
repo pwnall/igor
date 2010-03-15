@@ -1,5 +1,9 @@
 <div id="validation_for_deliverable_<%= deliverable.id %>">
-	<% form_for(deliverable.deliverable_validation || DeliverableValidation.new(:deliverable => deliverable), :url => update_deliverable_deliverable_validation_path(deliverable), :html => {:multipart => true, :id => "deliverable_validation_#{deliverable.id}"}) do |f| %>
+	<%= form_for(deliverable.deliverable_validation ||
+               DeliverableValidation.new(:deliverable => deliverable),
+               :url => update_deliverable_deliverable_validation_path(deliverable),
+               :html => {:multipart => true,
+                         :id => "deliverable_validation_#{deliverable.id}"}) do |f| %>
 		<div style="display: none;">
 			<%= f.hidden_field :deliverable_id, :id => "deliverable_validation_id_#{deliverable.id}" %>
 		</div>

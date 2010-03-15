@@ -22,14 +22,14 @@
 
 <% if @s_user and @s_user.admin %>
 <div id="admin_all_contents">
-<%= render :partial => 'layouts/admin_console' %>
+<%= render 'layouts/admin_console' %>
 
 <div id="all_contents" class="admin">
 <% else %>
 <div id="all_contents" class="nonadmin">
 <% end %>
 	
-<%= render :partial => 'layouts/header' %>
+<%= render 'layouts/header' %>
 <!-- layout/application -->
 
 <div id="site_status_container">
@@ -43,7 +43,7 @@
 
 <%= yield  %>
 
-<%= render :partial => 'layouts/footer' %>
+<%= render 'layouts/footer' %>
 <!-- layout/application -->
 
 </div>
@@ -52,6 +52,6 @@
 </div>
 <% end %>
 
-<%= render :partial => 'layouts/google_analytics' %>
+<%= render 'layouts/google_analytics' %>
 </body>
 </html>

@@ -9,15 +9,7 @@
 
 <%= error_messages_for :notice %>
 
-<%
-if @notice.new_record?
-	url = {:controller => :notices, :action => :create}
-else
-	url = {:controller => :notices, :action => :update, :id => @notice.id}
-end
-%>
-
-<% form_for(@notice, :url => url, :html => {:class => 'student_form'}) do |f| %>
+<%= form_for(@notice, :html => {:class => 'student_form'}) do |f| %>
 	<div class="form_box">
 		<div class="form_entry">
 			<div class="form_label">Subject</div>

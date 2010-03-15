@@ -1,8 +1,8 @@
-<!-- users/login_form -->
+<!-- sessions/login_form -->
 
 <%= error_messages_for :user %>
 
-<% form_for(@user, :url => sessions_url, :method => :post,
+<%= form_for(@user, :url => sessions_url, :method => :post,
             :html => {:class => 'user_form'}) do |f| %>
 	<div class="form_box">
 		<div class="form_entry">

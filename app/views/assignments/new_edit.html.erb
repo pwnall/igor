@@ -7,7 +7,7 @@
   <h1 class="full_section">Editing Assignment</h1>
 <% end %>
 
-<% form_for(@assignment, :html => {:class => 'student_form'}) do |f| %>
+<%= form_for(@assignment, :html => {:class => 'student_form'}) do |f| %>
   <%= f.error_messages %>
 
   <div class="form_box">

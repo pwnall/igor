@@ -1,8 +1,9 @@
+<!-- run_results/edit -->
 <h1>Editing run_result</h1>
 
 <%= error_messages_for :run_result %>
 
-<% form_for(@run_result) do |f| %>
+<%= form_for(@run_result) do |f| %>
   <p>
     <b>Submission</b><br />
     <%= f.text_field :submission_id %>
