@@ -6,7 +6,7 @@ source 'http://gemcutter.org'
 
 ## Bundle edge rails:
 gem "rails", :git => "git://github.com/rails/rails.git",
-             :ref => "96bc6bcfee704701de1a9c4c3c6a7c265610d34d"
+             :ref => "067b350301279f608a369a39aff9b6f5a22357aa"
 
 # ActiveRecord requires a database adapter. By default,
 # Rails has selected sqlite3.

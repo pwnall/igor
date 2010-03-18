@@ -3,7 +3,7 @@
 	<h3 class="full_section">User Lookup</h3>
 	<% @user = User.new	%>
 	<%= remote_form_for User.new, :url => for_user_grades_path,
-                      :update => :user_grades_div do |f| %>
+                                :update => :user_grades_div do |f| %>
 		<div style="margin-bottom: 5px;">
 			<div style="float: left; width: 100px; ">
 				Assignment:

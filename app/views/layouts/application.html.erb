@@ -10,11 +10,12 @@
 		<%= controller.action_name.capitalize %>
 	</title>
   <%= javascript_include_tag :all, :cache => true %>
-  <%= stylesheet_link_tag 'scaffold' %>
-  <%= stylesheet_link_tag 'generic', 'layout', 'admin_layout', 'auto_complete',
-                          'forms', 'welcome', 'users', 'student_infos',
-                          'assignments', 'notices', 'tasks', 'health',
-                          :cache => 'seven' %>
+  <%= stylesheet_link_tag  %>
+  <%= stylesheet_link_tag 'scaffold', 'generic', 'layout', 'admin_layout',
+                          'auto_complete', 'forms', 'welcome', 'users',
+                          'student_infos', 'assignments', 'notices', 'tasks',
+                          'health',
+                          :cache => 'all' %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
 </head>
