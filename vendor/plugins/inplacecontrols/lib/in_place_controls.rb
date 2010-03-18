@@ -20,7 +20,6 @@ module InPlaceControls
   #   :object - the object to create the control for, if other than an instance variable. (Useful for iterations.)
   # Any other options will be passed on to the HTML control(s).
   module HelperMethods
-
     # Creates "active" radio button controls that submit any changes to the server
     # using an <tt>in_place_edit</tt>-style action.
     # Options:
@@ -56,7 +55,7 @@ module InPlaceControls
       InPlaceControls::HelperMethods::InPlaceControl.new(object, method, self, options).to_checkbox
     end
     
-    class InPlaceControl #:nodoc:
+    class InPlaceControl #:nodoc:     
       attr_accessor :options      
       
       def initialize(object, method, template, opts={})
@@ -71,42 +70,51 @@ module InPlaceControls
       def to_checkbox
         raise ArgumentError, "Missing checked value! Specify options[:checked]" if @options[:checked].nil?
         raise ArgumentError, "Missing unchecked value! Specify options[:unchecked]" if @options[:unchecked].nil?
+        
         options[:onclick] = onchange_function(:checkbox)
-        output = "<span id=\"#{container_id(:checkbox)}\">"
-        output << @template.check_box_tag(field_id, @options[:checked], @options[:checked]==@value, cleanoptions)        
-        output << "</span><span id=\"#{saving_id}\" style=\"display:none;\">#{saving_text}</span>"
-          output << update_function(:checkbox)
-        end
+        output = @template.tag(:span, {:id => container_id(:checkbox)}, true)
+        output.safe_concat(@template.check_box_tag(field_id, @options[:checked], @options[:checked]==@value, cleanoptions))
+        output.safe_concat("</span>")
+        output.safe_concat(@template.tag(:span, {:id => saving_id, :style => "display:none;"}, true))
+        output.concat(saving_text)
+        output.safe_concat("</span>")
+        output.safe_concat(update_function(:checkbox))
+      end
 
-        def to_radios
-          raise ArgumentError, "Missing choices for radios" if options[:choices].nil?
+      def to_radios
+        raise ArgumentError, "Missing choices for radios" if options[:choices].nil?
         raise ArgumentError, "options[:choices] must be an array" if !options[:choices].is_a?(Array)
         options[:onchange] = onchange_function(:radio)
-        output = "<span id=\"#{container_id(:radio)}\">"
+        output = @template.tag(:span, {:id => container_id(:radio)}, true)
         options[:choices].each do |choice|
           if choice.is_a?(Array)
             v, label = choice[0].to_s, choice[1].to_s
           else
             v, label = choice.to_s, choice.to_s.humanize
           end
-          output << @template.radio_button_tag(field_id, v, (@value.to_s == v.to_s), cleanoptions)
-          output << label + " "
+          output.safe_concat(@template.radio_button_tag(field_id, v, (@value.to_s == v.to_s), cleanoptions))
+          output.safe_concat(label + " ")
         end
-        output << "</span>"
-        output << "<span id=\"#{saving_id}\" style=\"display: none;\">#{saving_text}</span>"
-        output << update_function(:radio)
+        output.safe_concat("</span>")
+        output.safe_concat(@template.tag(:span, {:id => saving_id, :style => "display:none;"}, true))
+        output.concat(saving_text)
+        output.safe_concat("</span>")
+        output.safe_concat(update_function(:radio))
       end
       
       def to_select
         raise ArgumentError, "Missing choices for select! Specify options[:choices]" if options[:choices].nil?
         options[:onchange] = onchange_function(:select)
-        output = "<span id=\"#{container_id(:select)}\">"
+        output = @template.tag(:span, {:id => container_id(:select)}, true)
         if options[:choices].is_a?(Array)
           options[:choices] = @template.options_for_select(options[:choices], @value)
         end
-        output << @template.select_tag(field_id, options[:choices], cleanoptions)
-        output << "</span><span id=\"#{saving_id}\" style=\"display:none;\">#{saving_text}</span>"
-        output << update_function(:select)        
+        output.safe_concat(@template.select_tag(field_id, options[:choices], cleanoptions))
+        output.safe_concat("</span>")
+        output.safe_concat(@template.tag(:span, {:id => saving_id, :style => "display:none;"}, true))
+        output.concat(saving_text)
+        output.safe_concat("</span>")
+        output.safe_concat(update_function(:select))
       end
                 
       private
