@@ -6,8 +6,8 @@
 	<div class="assignment_name">
   	<%= in_place_editor_field(:assignment, :name, {}, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
 	</div>
-	<div class="assignment_deadline">
-		<%= time_delta(@assignment.deadline) %>
+	<div class="assignment_deadline" title="<%= time_delta(@assignment.deadline) %>">
+		<%= @assignment.deadline.to_s(:rfc822) %>
 	</div>
 	<div>			
     <%= link_to 'Edit', edit_assignment_path(show) %>
