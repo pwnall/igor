@@ -1,57 +1,29 @@
 <!DOCTYPE html>
 
-<!-- layout/application -->
-		
 <html>
 <head>
   <title>
-  	<%= Course.main.number %>: <%= Course.main.title %> -
+    <%= Course.main.number %>: <%= Course.main.title %> -
 		<%= controller.controller_name.capitalize %>:
-		<%= controller.action_name.capitalize %>
-	</title>
+    <%= controller.action_name.capitalize %>
+  </title>
   <%= javascript_include_tag :all, :cache => true %>
-  <%= stylesheet_link_tag  %>
-  <%= stylesheet_link_tag 'scaffold', 'generic', 'layout', 'admin_layout',
-                          'auto_complete', 'forms', 'welcome', 'users',
-                          'student_infos', 'assignments', 'notices', 'tasks',
-                          'health',
-                          :cache => 'all' %>
-  <%= javascript_include_tag :defaults %>
+  <%= stylesheet_link_tag :all, :cache => true %>
   <%= csrf_meta_tag %>
 </head>
 <body>
+	<div id="page_wrapper">
 
-<% if @s_user and @s_user.admin %>
-<div id="admin_all_contents">
-<%= render 'layouts/admin_console' %>
-
-<div id="all_contents" class="admin">
-<% else %>
-<div id="all_contents" class="nonadmin">
-<% end %>
-	
 <%= render 'layouts/header' %>
-<!-- layout/application -->
-
-<div id="site_status_container">
-</div>
-
-<% if flash[:notice] %> 
-	<%= add_site_status flash[:notice], true %>
-<% elsif flash[:error] %>
-	<%= add_site_status flash[:error], false %>
-<% end %>
-
+		
+		<div id="content">
 <%= yield  %>
+    </div>
 
-<%= render 'layouts/footer' %>
-<!-- layout/application -->
-
-</div>
-
-<% if @s_user and @s_user.admin %>
-</div>
-<% end %>
+    <div id="footer">
+    	
+    </div>
+	</div>
 
 <%= render 'layouts/google_analytics' %>
 </body>
