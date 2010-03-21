@@ -1,0 +1,21 @@
+body {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+#page_wrapper {
+	min-width: 1000px;
+}
+
+#header {
+	margin: 0 20px;
+  background-color: #123456;
+	border: 1px solid #123456;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+}
