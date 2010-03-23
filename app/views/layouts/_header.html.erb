@@ -1,13 +1,23 @@
 <div id="header">
-  <%= image_tag 'mit-blackred-footer3.gif' %>
-  <span class="course-number"><%= Course.main.number %></span>
-  <span class="course-title"><%= Course.main.title %></span>
+  <%= image_tag 'mit-greywhite-footer3.gif', :alt => 'MIT Logo' %>
+	<div class="course-info">
+	  <span class="course-number">
+	  	<%= link_to Course.main.number, sessions_path %>
+		</span>
+	  <span class="course-title">
+	  	<%= link_to Course.main.title, sessions_path %>
+		</span>
+  </div>
 
   <% if @s_user %>
-	<div class="account-panel">
-    <span class="user-name"><%= @s_user.name %></span>
-    <%= link_to 'Change Password', edit_password_user_url(@s_user) %>
-    <%= link_to 'Logout', session_url(@s_user), :method => :delete %>
-	</div>
+	<ul class="account-panel">
+    <li class="user-name"><%= @s_user.name %></li>
+		<li class="action">
+	    <%= link_to 'Change Password', edit_password_user_url(@s_user) %>			
+		</li>
+		<li>
+	    <%= link_to 'Logout', session_url(@s_user), :method => :delete %>			
+		</li>		
+	</ul>
   <% end %>
 </div>

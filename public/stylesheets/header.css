@@ -1,0 +1,53 @@
+#header {
+  margin: 0;
+  padding: 0 8px;
+  background-color: #CA5200;
+  color: #ffffff;
+  font-family: "Myriad Pro", Helvetica, Tahoma, sans-serif;
+  font-weight: bold;
+  overflow: hidden;
+  
+  border: 1px solid #CA5200;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  -moz-border-radius-bottomright: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+}
+#header img {
+  float: left;  
+  margin-right: 8px;
+}
+#header div.course-info {
+  float: left;
+  line-height: 36px;
+  font-size: 32px;
+}
+#header .course-title {
+  display: none;
+}
+#header a, #header a:visited, #header a:hover, #header a:active {
+  color: #ffffff;
+  text-decoration: none;
+  display: inline-block;
+}
+#header a:hover, #header a:active {
+  background-color: #fd944c;  
+}
+#header ul.account-panel {
+  margin: 0;
+  padding: 12px 0 0 0;
+  list-style: none;
+  float: right;
+  font-family: Helvetica, Verdana, Geneva, Arial, sans-serif;
+  font-size: 11pt;
+  font-weight: normal;
+}
+#header .account-panel li {
+  line-height: 22px;
+  float: left;
+}
+#header .account-panel li a {
+  padding: 0 5px;  
+}
