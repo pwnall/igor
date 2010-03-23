@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Colors</title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">			
+		</script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js">			
+		</script>
+		<style type="text/css">
+			#palette .row {
+				width: 100px;
+				height: 60px;
+				border: 1px solid #ffffff;
+				float: left;
+				color: #ffffff;
+				text-shadow: #000000 1px 1px 0;
+			}
+			#palette .line {
+				clear: both;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="palette"></div>
+		<script type="text/javascript">
+			var colors = [
+				"3F2513 7F4A26 BE6F39 FD944C FDA970 FEBF94 FED4B7 FFEADB",
+				"331400 652900 983E00 CA5200 D57533 DF9766 EABA99 F4DCCC",
+				"1F0D00 3F1900 5E2600 7E3300 975C33 B18566 CBAD99 E5D6CC",
+				"13173F 262E7F 3944BE 4C5BFD 707CFD 949DFE B7BEFE DBDEFF",
+				"000536 00096B 000EA1 0013D7 3342DF 6671E7 99A0EF CCD0F7",
+				"00031F 00053F 00085E 000B7E 333C97 666DB1 999DCB CCCEE5"		
+			];
+			for (var i = 0; i < colors.length; i++) {
+				colors[i] = colors[i].split(' ');
+			}
+						
+			var div = $('#palette').first();
+			for (var i = 0; i < colors.length; i++) {
+	      var lineDiv = $('<div></div>');
+	      lineDiv.addClass('line');
+				for (var j = 0; j < colors[i].length; j++) {
+					var rowDiv = $('<div></div>');
+					rowDiv.addClass('row');
+					rowDiv.css('backgroundColor', '#' + colors[i][j]);
+					rowDiv.html(colors[i][j]);
+					lineDiv.append(rowDiv);
+				}
+        div.append(lineDiv);
+			}
+		</script>
+	</body>
+</html>
