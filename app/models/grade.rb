@@ -28,4 +28,9 @@ class Grade < ActiveRecord::Base
 
   # The numeric grade.
   validates_numericality_of :score, :only_integer => false
+  
+  # The users impacted by a grade.
+  def users
+    subject.respond_to?(:users) ? subject.users : [subject]
+  end
 end
