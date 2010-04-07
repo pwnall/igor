@@ -61,15 +61,18 @@ class GradesController < ApplicationController
   def report
     # pull data
     pull_metrics false
-    grades = Grade.find(:all, :conditions => {:assignment_metric_id => @metrics.map { |m| m.id }}, :include => [{:assignment_metric => :assignment}, :user])
+    grades = Grade.where(:assignment_metric_id => @metrics.map(&:id)).
+                   includes({:assignment_metric => :assignment}, :subject)
     @grades_by_uid_and_mid = {}
     @users = []
     grades.each do |grade|
-      unless @grades_by_uid_and_mid.has_key? grade.user_id
-        @users << grade.user
-        @grades_by_uid_and_mid[grade.user_id] = {}
+      grade.users.each do |user|
+        unless @grades_by_uid_and_mid.has_key? user.id
+          @users << user
+          @grades_by_uid_and_mid[user.id] = {}
+        end
+        @grades_by_uid_and_mid[user.id][grade.assignment_metric_id] = grade
       end
-      @grades_by_uid_and_mid[grade.user_id][grade.assignment_metric_id] = grade
     end
     @names_by_uid = Hash[*((
       case params[:name_by]
@@ -217,10 +220,11 @@ class GradesController < ApplicationController
   private :pull_grades
   
   def pull_metrics(only_published = true)
-    conditions = {}
-    conditions[:published] = true if only_published
-    conditions[:assignment_id] = params[:filter_aid].to_i if params[:filter_aid] && !params[:filter_aid].empty?
-    @metrics = AssignmentMetric.find(:all, :conditions => conditions, :include => :assignment)
+    @metrics = AssignmentMetric.includes :assignment
+    @metrics = @metrics.where(:published => true) if only_published
+    if params[:filter_aid] && !params[:filter_aid].empty?
+      @metrics = @metrics.where(:assignment_id => params[:filter_aid].to_i)
+    end
     
     @metrics_by_aid = {}
     @assignments_by_aid = {}

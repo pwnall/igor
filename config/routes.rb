@@ -14,7 +14,6 @@ Seven::Application.routes.draw do |map|
   #   resources :products
   resources :assignment_feedbacks
   resources :feedback_questions
-  resources :notices
   resources :recitation_sections  
   resources :run_results
   resources :sessions
@@ -86,6 +85,11 @@ Seven::Application.routes.draw do |map|
     end
     member do
       put :update_for_user
+    end
+  end
+  resources :notices do
+    member do
+      post :dismiss
     end
   end
   resources :prerequisites do
