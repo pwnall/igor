@@ -1,3 +1,6 @@
+#menu {
+  font-size: 11pt;	
+}
 #menu h2 {
   margin: 8px 0 2px 0;
   padding: 0;
@@ -8,7 +11,6 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  font-size: 11pt;
 }
 #menu a, a:visited {
   color: #000000;
@@ -18,4 +20,28 @@
 }
 #menu li:hover {
   background-color: #EABA99;
+}
+
+#menu dl {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+#menu dt {
+  float: left;
+	margin: 0;
+	padding: 0;
+}
+#menu dd {
+  float: left;
+	margin: 0;
+	padding: 0;
+}
+#menu input[type=text], #menu input[type=password] {
+  width: 180px;
+}
+#menu p {
+	margin: 0;
+	padding: 2px 0 0 0;
 }

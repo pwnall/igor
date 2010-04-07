@@ -1,4 +1,5 @@
 <div id="menu">
+<% if @s_user %>
  
   <% if @s_user.admin? %>
   <%= render 'layouts/admin_console' %>
@@ -8,4 +9,17 @@
   <ol>
     <li>Logout</li>
   </ol>
+<% else %>
+  <h2>Login</h2>
+	<%= render 'sessions/login_form' %>
+	
+  <h2>Account</h2>
+	<ol>
+		<li><%= link_to 'Register', new_user_path %></li>
+		<li>
+			<%= link_to 'Click here to recover username/password',
+                  recover_password_users_path %>
+    </li>
+	</ol>
+<% end %>
 </div>
