@@ -1,0 +1,11 @@
+<div id="menu">
+ 
+  <% if @s_user.admin? %>
+  <%= render 'layouts/admin_console' %>
+  <% end %>
+
+  <h2>Account</h2>
+  <ol>
+    <li>Logout</li>
+  </ol>
+</div>

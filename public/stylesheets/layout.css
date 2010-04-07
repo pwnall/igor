@@ -11,9 +11,22 @@ body {
 	min-width: 1000px;
 }
 
-#content {
-	margin: 0 auto;
-	width: 800px;	
+#content_wrapper {
+  margin: 0 auto;
+  width: 1000px;
+  overflow: hidden;  
+}
+
+#menu {
+  float: left;
+  margin: 0;
+  padding: 0 12px 0 0;
+  width: 188px;
+}
+
+#content_main {
+  float: left;
+  width: 800px;
 }
 
 a, a:visited {

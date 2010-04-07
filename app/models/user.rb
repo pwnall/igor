@@ -120,6 +120,9 @@ class User < ActiveRecord::Base
   def athena_id
     profile ? profile.athena_username : email[0, email.index(?@)]
   end
+  
+  # Configure gravatars.
+  is_gravtastic :email, :secure => true, :rating => 'G', :filetype => 'png'
     
   # TODO(costan): move query processing in another class
   

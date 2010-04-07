@@ -1,117 +1,81 @@
-<div id="admin_console">
-<div id="admin_console_inner">
-	<div id="admin_console_header">
-		<div style="position: relative; top: 0px; left: -1px; height: 0px;">
-			<%= image_tag 'pwned.png', :style => 'position: relative; left: -1px;' %>
-		</div>
-		
-		<div id="admin_badge_title">
-			site
-			pwnerer
-		</div>
-		
-		<div id="admin_badge_username">
-			<%= @s_user.name %>
-		</div>
-	</div>
-	
-	<div id="admin_console_body">
-		<dl class="admin_console_menu">
-			<dt>Grading</dt>
-			<dd>
-				<ul class="admin_console_buttons">
-					<li>
-						<%= link_to 'Get Submissions', request_package_submissions_path %>
-					</li>
-					<li>
-						<%= link_to 'Post Grades', grades_path %>
-					</li>
-				</ul>
-			</dd>
-	
-			<dt>Content</dt>
-			<dd>
-				<ul class="admin_console_buttons">
-					<li>
-						<%= link_to 'Assignments', assignments_path %>
-					</li>
-          <li>
-            <%= link_to 'Feedback', feedback_questions_path %>
-          </li>
-					<li>
-						<%= link_to 'Metrics', assignment_metrics_path %>
-					</li>
-					<li>
-						<%= link_to 'Notices', notices_path %>
-					</li>
-					<li>
-						<%= link_to 'Recitations', recitation_sections_path %>
-					</li>
-          <li>
-            <%= link_to 'Teams', team_partitions_path %>
-          </li>
-				</ul>
-			</dd>
-			
-			<dt>Setup</dt>
-			<dd>
-				<ul class="admin_console_buttons">
-          <li>
-            <%= link_to 'Course Info', courses_path %>
-          </li>					
-          <li>
-            <%= link_to 'Prerequisites', prerequisites_path %>
-          </li>
-				</ul>
-			</dd>
-			
-			<dt>Reporting</dt>
-			<dd>
-				<ul class="admin_console_buttons">
-					<li>
-						<%= link_to 'Submissions', submissions_path %>
-					</li>
-					<li>
-						<%= link_to 'Profiles', profiles_path %>
-					</li>
-					<li>
-						<%= link_to 'Feedback', assignment_feedbacks_path %>
-					</li>
-					<li>
-						<%= link_to 'Grades', request_report_grades_path %>
-					</li>
-					<li>
-						<%= link_to 'Missing Grades', request_missing_grades_path %>
-					</li>
-				</ul>
-			</dd>
-			
-	
-			<dt>Users</dt>
-			<dd>
-				<ul class="admin_console_buttons">
-					<li>
-						<%= link_to 'Users', users_path %>
-					</li>
-					<li>
-						<%= link_to 'Student Info', student_infos_path %>
-					</li>
-				</ul>
-			</dd>
-			
-			<dt>Site Health</dt>
-			<dd>
-				<ul class="admin_console_buttons">
-					<li>
-						<%= link_to 'System', system_root_path %>
-					</li>
-					<li>
-						<%= link_to 'Processes', system_processes_path %>
-					</li>
-				</ul>
-			</dd>			
-		</dl>		
-	</div>
-	
-</div>
-</div>
+<h2>Grading</h2>
+<ol>
+  <li>
+    <%= link_to 'Get Submissions', request_package_submissions_path %>
+  </li>
+  <li>
+    <%= link_to 'Post Grades', grades_path %>
+  </li>
+</ol>
+
+<h2>Content</h2>
+<ol>
+  <li>
+    <%= link_to 'Assignments', assignments_path %>
+  </li>
+  <li>
+    <%= link_to 'Feedback', feedback_questions_path %>
+  </li>
+  <li>
+    <%= link_to 'Metrics', assignment_metrics_path %>
+  </li>
+  <li>
+    <%= link_to 'Notices', notices_path %>
+  </li>
+  <li>
+    <%= link_to 'Recitations', recitation_sections_path %>
+  </li>
+  <li>
+    <%= link_to 'Teams', team_partitions_path %>
+  </li>
+</ol>
+
+<h2>Setup</h2>
+<ol class="admin_console_buttons">
+  <li>
+    <%= link_to 'Course Info', courses_path %>
+  </li>         
+  <li>
+    <%= link_to 'Prerequisites', prerequisites_path %>
+  </li>
+</ol>
+
+<h2>Reporting</h2>
+<ol class="admin_console_buttons">
+  <li>
+    <%= link_to 'Submissions', submissions_path %>
+  </li>
+  <li>
+    <%= link_to 'Profiles', profiles_path %>
+  </li>
+  <li>
+    <%= link_to 'Feedback', assignment_feedbacks_path %>
+  </li>
+  <li>
+    <%= link_to 'Grades', request_report_grades_path %>
+  </li>
+  <li>
+    <%= link_to 'Missing Grades', request_missing_grades_path %>
+  </li>
+</ol>
+
+
+<h2>Users</h2>
+<ol class="admin_console_buttons">
+  <li>
+    <%= link_to 'Users', users_path %>
+  </li>
+  <li>
+    <%= link_to 'Student Info', student_infos_path %>
+  </li>
+</ol>
+
+<h2>Site Health</h2>
+<ol class="admin_console_buttons">
+  <li>
+    <%= link_to 'System', system_root_path %>
+  </li>
+  <li>
+    <%= link_to 'Processes', system_processes_path %>
+  </li>
+</ol>

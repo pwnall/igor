@@ -11,9 +11,12 @@
 
   <% if @s_user %>
 	<ul class="account-panel">
-    <li class="user-name"><%= @s_user.name %></li>
+    <li class="user-name">
+      <%= image_tag @s_user.gravatar_url(:size => 36), :alt => 'gravatar' %>      
+      <%= @s_user.name %>
+    </li>
 		<li class="action">
-	    <%= link_to 'Change Password', edit_password_user_url(@s_user) %>			
+	    <%= link_to 'Settings', edit_password_user_url(@s_user) %>			
 		</li>
 		<li>
 	    <%= link_to 'Logout', session_url(@s_user), :method => :delete %>			

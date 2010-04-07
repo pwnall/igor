@@ -1,5 +1,3 @@
-require 'pp'
-
 class SubmissionsController < ApplicationController
   include CoverSheet
   
