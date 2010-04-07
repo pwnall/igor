@@ -13,16 +13,11 @@
 </head>
 <body>
 	<div id="page_wrapper">
-
-<%= render 'layouts/header' %>
-		
+<%= render 'layouts/header' %>		
 		<div id="content">
 <%= yield  %>
     </div>
-
-    <div id="footer">
-    	
-    </div>
+<%= render 'layouts/footer' %>
 	</div>
 
 <%= render 'layouts/google_analytics' %>

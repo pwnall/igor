@@ -1,7 +1,23 @@
 <div id="footer">
-  <p>
-    &copy; Copyright 2008-2010
-    <a href="http://web.mit.edu/">Massachusetts Institute of Technology</a>.
-    Designed by <a href="http://www.costan.us">Victor Costan</a>.
-  </p>
+	<div id="footer-contents">		
+		<ul class="links">
+			<li>
+				<a href="mailto:<%= Course.main.number %>-tas@mit.edu">
+					<%= Course.main.number %> TA Mailing List
+				</a>
+	      <a href="">MIT Academic Calendar</a>
+	      <a href="">MIT EECS Department</a>
+				<a href="">MIT Course Catalog</a>
+			</li>
+		</ul>		
+    <p class="copyright">
+      <%= link_to image_tag('cc_by_nd.png', :alt => 'Creative Commons License'),
+                  'http://creativecommons.org/licenses/by-nd/3.0/us/' %>
+      &copy; Copyright 2008-2010
+      <a href="http://web.mit.edu/">Massachusetts Institute of Technology</a>
+    </p>
+	  <p class="design">
+	    Designed by <a href="http://www.costan.us">Victor Costan</a>
+	  </p>
+  </div>
 </div>

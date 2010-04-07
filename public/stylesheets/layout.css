@@ -2,10 +2,18 @@ body {
 	margin: 0;
 	padding: 0;
 	border: none;
+  font-family: Helvetica, Verdana, Geneva, Arial, sans-serif;
+  font-size: 12pt;
+	font-weight: normal;	
 }
 
 #page_wrapper {
 	min-width: 1000px;
+}
+
+#content {
+	margin: 0 auto;
+	width: 800px;	
 }
 
 a, a:visited {
@@ -15,4 +23,7 @@ a, a:visited {
 a:hover, a:active {
   color: #0013d7;
   text-decoration: underline;
+}
+a img {
+	border: none;
 }
