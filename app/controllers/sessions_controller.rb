@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
     if @s_user
       redirect_to root_path
     else
-      @user = User.new
+      @login = User.new
     end
   end
   
@@ -12,12 +12,12 @@ class SessionsController < ApplicationController
   # POST /sessions.xml
   def create
     session[:user_id] = nil
-    @user = User.new params[:user]    
-    @s_user = User.authenticate @user.name, @user.password
+    @login = User.new params[:user]    
+    @s_user = User.authenticate @login.name, @login.password
     if @s_user.nil?
       flash[:error] = 'Invalid user/password combination'
     elsif !@s_user.active
-      flash[:error] = "Your account is not active (did you confirm your #{@user.email} e-mail address?)"
+      flash[:error] = "Your account is not active (did you confirm your #{@login.email} e-mail address?)"
     else
       session[:user_id] = @s_user.id
     end
@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
         format.html { redirect_to root_path }
         format.xml { head :ok }
       else
-        format.html { @user.reset_password; render :action => :new }
+        format.html { @login.reset_password; render :action => :new }
         format.xml  { render :xml => nil, :status => :unprocessable_entity }
       end
     end    
