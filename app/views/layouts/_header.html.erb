@@ -1,13 +1,13 @@
 <div id="header">
   <%= image_tag 'mit-greywhite-footer3.gif', :alt => 'MIT Logo' %>
-	<div class="course-info">
+	<h1>
 	  <span class="course-number">
 	  	<%= link_to Course.main.number, sessions_path %>
 		</span>
 	  <span class="course-title">
 	  	<%= link_to Course.main.title, sessions_path %>
 		</span>
-  </div>
+  </h1>
 
   <% if @s_user %>
 	<ul class="account-panel">

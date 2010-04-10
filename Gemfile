@@ -3,7 +3,7 @@ source 'http://gemcutter.org'
 
 ## Bundle edge rails:
 gem "rails", :git => "git://github.com/rails/rails.git",
-             :ref => "1e3dce08e11bd11e7d774512ea599166c4c45378"
+             :ref => "c09744bec9c606593535f42d50487d7d02cab504"
 # gem "rails", "3.0.0.beta"
 
 # ActiveRecord requires a database adapter. By default,

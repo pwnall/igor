@@ -20,8 +20,8 @@ body {
 #menu {
   float: left;
   margin: 0;
-  padding: 0 12px 0 0;
-  width: 188px;
+  padding: 0 12px 0 5px;
+  width: 183px;
 }
 
 #content_main {

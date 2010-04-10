@@ -17,16 +17,21 @@
   -webkit-border-bottom-right-radius: 4px;
 }
 #header img {
-  float: left;  
+  float: left;
   margin-right: 8px;
 }
-#header div.course-info {
+#header h1 {
+	padding: 0;
+	margin: 0;
+  font-family: "Myriad Pro", Helvetica, Tahoma, sans-serif;
+	font-weight: bold;
   float: left;
-  line-height: 36px;
+  line-height: 40px;
   font-size: 32px;
+  position: relative;
+  top: 6px;	
 }
 #header .course-title {
-  display: none;
 }
 #header a, #header a:visited, #header a:hover, #header a:active {
   color: #ffffff;

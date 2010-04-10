@@ -1,11 +1,23 @@
 @font-face {
+  font-family: "Lucida Grande";
+  font-weight: normal;
+  src: url("../fonts/LucidaGrande_Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Lucida Grande";
+  font-weight: bold;
+  src: url("../fonts/LucidaGrande_Bold.otf") format("opentype");
+}
+
+@font-face {
   font-family: "Myriad Pro";
   font-weight: normal;
-  src: url("MyriadPro_Regular.otf") format("opentype");
+  src: url("../fonts/MyriadPro_Regular.otf") format("opentype");
 }
 
 @font-face {
   font-family: "Myriad Pro";
   font-weight: bold;
-  src: url("MyriadPro_Bold.otf") format("opentype");
+  src: url("../fonts/MyriadPro_Bold.otf") format("opentype");
 }
