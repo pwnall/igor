@@ -1,15 +1,15 @@
-
 #footer {
-  margin: 24px 0 0 0;
-  padding: 5px 8px 0 8px;
-  border: none;
-  border-top: 5px solid #FD944C;
   color: #3F2513;
   font-size: 11pt;
+  margin: 24px auto 0 auto;
+  width: 1000px;
+  border: none;
+  border-top: 5px solid #FD944C;
 }
 #footer-contents {
+  margin: 0 0 0 200px;
+  padding: 5px 8px 0 8px;
 	width: 800px;
-	margin: 0 auto;
 }
 #footer p {
   margin: 0;
