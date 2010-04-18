@@ -32,7 +32,11 @@
 					<% end %>
 					<th>
 					<% if assignment.team_partition %>
-					<%= assignment.team_partition.team_for_user(@user).name %>
+					  <% if team = assignment.team_partition.team_for_user(@user) %>
+    					<%= team.name %>
+					  <% else %>
+						  No team
+					  <% end %>
 					<% end %>
 					</th>
 				</tr>
