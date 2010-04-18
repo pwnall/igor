@@ -225,9 +225,9 @@ ActiveRecord::Schema.define(:version => 20100216020942) do
   add_index "run_results", ["submission_id"], :name => "index_run_results_on_submission_id", :unique => true
 
   create_table "student_infos", :force => true do |t|
-    t.integer  "user_id",                       :null => false
-    t.boolean  "wants_credit",                  :null => false
-    t.string   "motivation",   :limit => 32768
+    t.integer  "user_id",                          :null => false
+    t.boolean  "wants_credit",                     :null => false
+    t.text     "motivation",   :limit => 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -276,7 +276,7 @@ ActiveRecord::Schema.define(:version => 20100216020942) do
     t.datetime "updated_at"
   end
 
-  add_index "teams", ["partition_id"], :name => "index_teams_on_partition_id"
+  add_index "teams", ["partition_id", "name"], :name => "index_teams_on_partition_id_and_name", :unique => true
 
   create_table "tokens", :force => true do |t|
     t.integer  "user_id",                    :null => false
