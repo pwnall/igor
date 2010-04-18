@@ -10,10 +10,10 @@
     
 # The base path for daemon binaries specified in binary, start_binary and
 # stop_binary.
-:root_path: <%= RAILS_ROOT %>
+:root_path: <%= Rails.root %>
 
 # Where daemonz should log - set to stdout, stderr, or rails.
-:logger: stdout
+:logger: rails
 
 # Set to true to completely disable daemonz, and not load any plugins.
 :disabled: false

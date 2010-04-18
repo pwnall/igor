@@ -16,6 +16,7 @@ class TeamPartitionsController < ApplicationController
   # GET /team_partitions/1.xml
   def show
     @team_partition = TeamPartition.find(params[:id])
+    @team = Team.new :partition => @team_partition 
 
     respond_to do |format|
       format.html # show.html.erb
