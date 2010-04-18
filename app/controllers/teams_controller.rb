@@ -55,13 +55,17 @@ class TeamsController < ApplicationController
   # POST /teams.xml
   def create
     @team = Team.new(params[:team])
+    @team_partition = @team.partition
 
     respond_to do |format|
       if @team.save
-        format.html { redirect_to(@team, :notice => 'Team was successfully created.') }
+        format.html do
+          redirect_to @team.partition,
+                      :notice => 'Team was successfully created.'
+        end
         format.xml  { render :xml => @team, :status => :created, :location => @team }
       else
-        format.html { render :action => "new" }
+        format.html { render :action => 'team_partitions/show' }
         format.xml  { render :xml => @team.errors, :status => :unprocessable_entity }
       end
     end
@@ -93,23 +97,5 @@ class TeamsController < ApplicationController
       format.html { redirect_to(teams_url) }
       format.xml  { head :ok }
     end
-  end
-  
-  # POST /teams/1/remove_user?user_id=5
-  # POST /teams/1/remove_user.xml?user_id=5
-  def remove_user
-    @team = Team.find(params[:id])
-    @user = User.find(params[:user_id])
-    
-    membership = @team.memberships.first :conditions => { :user_id => @user.id }
-    membership.destroy
-    
-    respond_to do |format|
-      format.html do
-        redirect_to @team.partition,
-                    :notice => "#{@user.real_name} removed from #{@team.name}"
-      end
-      format.xml  { head :ok }
-    end
-  end
+  end  
 end

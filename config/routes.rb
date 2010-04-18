@@ -17,6 +17,7 @@ Seven::Application.routes.draw do |map|
   resources :recitation_sections  
   resources :run_results
   resources :sessions
+  resources :team_memberships
   resources :team_partitions
   
   resources :users do
@@ -125,7 +126,6 @@ Seven::Application.routes.draw do |map|
   end  
   resources :teams do
     collection { get :my_own }
-    member { post :remove_user }
   end
 
   # Sample resource route with options:
