@@ -14,7 +14,7 @@
       </div>
     </div>
     
-    <div class="form_entry">
+    <div class="form_entry" >
       <div class="form_label">Automated partitioning</div>
       <div class="form_field_box">
       	<% if @team_partition.new_record? %>
@@ -33,12 +33,24 @@
     </div>
 		
 		<% if @team_partition.new_record? %>
-    <div class="form_entry">
+    <div class="form_entry" id="optimal_size_container">
       <div class="form_label">Optimal team size</div>
       <div class="form_field_box">
-        <%= text_field_tag 'optimal_size', nil, :class => 'form_field' %>
+        <%= text_field_tag :optimal_size, nil, :class => 'form_field' %>
       </div>
     </div>
+		
+		<div class="form_entry" id="clone_container">
+      <div class="form_label">Clone partition</div>
+      <div class="form_field_box">
+        <%= select_tag :clone_partition_id, options_for_select([['(none)', nil]] + TeamPartition.all.map { |p| [p.name, p.id] }) %>
+      </div>			
+		</div>
+		<%= javascript_tag <<JS_END
+show_div_on_checkbox_setting('clone_container', 'team_partition_automated', false);
+show_div_on_checkbox_setting('optimal_size_container', 'team_partition_automated', true);
+JS_END
+%>
 		<% end %>
 
     <div class="form_submit_box">
