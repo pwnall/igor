@@ -69,10 +69,16 @@ class TeamPartitionsController < ApplicationController
     
     respond_to do |format|
       if success
-        if @is_new_record && @team_partition.automated?
-          team_size = params[:optimal_size].to_i
-          team_size = 3 if team_size == 0
-          @team_partition.auto_assign_users team_size
+        if @is_new_record
+          if @team_partition.automated?
+            team_size = params[:optimal_size].to_i
+            team_size = 3 if team_size == 0
+            @team_partition.auto_assign_users team_size
+          else
+            unless params[:clone_partition_id].blank?
+              @team_partition.populate_from TeamPartition.find(params[:clone_partition_id])
+            end
+          end
         end
 
         flash[:notice] = "Team partition #{@team_partition.name} successfully #{@is_new_record ? 'created' : 'updated'}."

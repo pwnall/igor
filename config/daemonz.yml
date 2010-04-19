@@ -25,6 +25,7 @@
 # Daemons will not be started / stopped when the name of the binary that's
 # loading Rails ($0) is one of the following.
 :disabled_for: 
+- 'irb'
 - 'rake'
 - 'script/generate'
 - 'script/destroy'

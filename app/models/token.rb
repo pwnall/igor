@@ -27,8 +27,10 @@ class Token < ActiveRecord::Base
   # An argument for the TokenController method called when the token is spent.
   serialize :argument
 
-  def before_validation
-    # Generate the random token string.
+  before_validation :method => :generate_token
+  
+  # Generates a random string for the token.
+  def generate_token
     self.token ||= Digest::SHA2.hexdigest OpenSSL::Random.random_bytes(32)
   end
 end
