@@ -17,7 +17,10 @@
     <div id="content_wrapper">
 <%= render 'layouts/menu' %>
       <div id="content_main">
+<%= render 'layouts/sidebar' %>
+        <div id="contents">
 <%= yield %>
+        </div>
       </div>
     </div>
 <%= render 'layouts/footer' %>

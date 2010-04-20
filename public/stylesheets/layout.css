@@ -27,6 +27,22 @@ body {
 #content_main {
   float: left;
   width: 800px;
+	margin: 0;
+	padding: 0;
+}
+
+#sidebar {
+  float: right;
+  width: 250px;	
+	margin: 0;
+	padding: 0;
+}
+
+#contents {
+	float: left;
+	width: 550px;
+	margin: 0;
+	padding: 0;
 }
 
 a, a:visited {

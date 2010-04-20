@@ -1,14 +1,14 @@
-#menu {
+#menu, #sidebar {
   font-size: 11pt;	
   font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, Verdana, sans-serif;
 }
-#menu h2 {
+#menu h2, #sidebar h2 {
   margin: 8px 0 2px 0;
   padding: 0;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, Verdana, sans-serif;
   font-size: 11pt;
 	font-weight: 600;
-  color: #3F2513;
+  color: #652900;
 }
 #menu ol {
   list-style: none;
@@ -42,7 +42,13 @@
 	padding: 0;
 }
 #menu input[type=text], #menu input[type=password] {
-  width: 180px;
+  width: 176px;
+	margin: 0;
+	padding: 2px;
+	border: 1px solid #3F1900;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 #menu p {
 	margin: 0;

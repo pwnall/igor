@@ -1,11 +1,14 @@
 <div id="header">
-  <%= image_tag 'mit-greywhite-footer3.gif', :alt => 'MIT Logo' %>
+	<%= link_to root_path do
+        image_tag('mit-greywhite-footer3.gif', :alt => 'MIT Logo')
+      end %>
+  <%=  %>
 	<h1>
 	  <span class="course-number">
-	  	<%= link_to Course.main.number, sessions_path %>
+	  	<%= link_to Course.main.number, root_path %>
 		</span>
 	  <span class="course-title">
-	  	<%= link_to Course.main.title, sessions_path %>
+	  	<%= link_to Course.main.title, root_path %>
 		</span>
   </h1>
 
