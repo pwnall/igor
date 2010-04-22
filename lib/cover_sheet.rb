@@ -14,7 +14,6 @@ module CoverSheet
     # letter: 612pts x 792pts
     pdf = Prawn::Document.new :page_size => 'LETTER', :page_layout => :portrait
     
-    
     # course footer
     course = Course.main
     pdf.font "Helvetica"
@@ -94,7 +93,7 @@ module CoverSheet
                     4 => :center},
         :column_widths => {0 => 170, 1 => 70, 2 => 100, 3 => 110, 4 => 80},
         :align_headers => :left, :position => :center do |t|
-      t.row(1).style :font_style => :bold, :background_color => 'ffffff'
+      t.row(0).style :font_style => :bold, :background_color => 'ffffff'
     end
     pdf.y -= 2
     pdf.text "Please contact the course staff as soon as possible " +
@@ -114,12 +113,12 @@ module CoverSheet
     end
     pdf.text "Grades for #{assignment.name}", :size => 24, :align => :center
     pdf.table table_data, :font_size => 12, :row_colors => ['f3f3f3', 'ffffff'],
-        :headers => ['Problem', 'Grade', 'Grader', 'Points', 'Comments'],
+        :headers => ['Problem', 'Grade', 'Grader', 'Points', 'Comments'].map { |text| Prawn::Table::Cell.new(:text => text, :font_style => :bold)},
         :align => { 0 => :left, 1 => :right, 2 => :center, 3 => :right,
                     4 => :center},
         :column_widths => { 0 => 140, 1 => 70, 2 => 70, 3 => 70, 4 => 110},
         :align_headers => :left, :position => :center do |t|
-      t.row(0).style :font_style => :bold
+      t.row(0).style :font_style => :bold, :background_color => 'ffffff'
     end
     pdf.y -= 2
     pdf.text "Please check the course site if any of your grades is not " +
