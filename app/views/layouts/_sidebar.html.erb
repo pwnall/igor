@@ -1,22 +1,5 @@
 <div id="sidebar">
-	<h2>Deadlines</h2>
+  <%= render :partial => 'layouts/deadlines' %>
 	
-	<% deadlines = Assignment.includes(:deliverables, :feedback_question_set).
-         order('deadline DESC').
-         map { |a| a.feedback_question_set ? a.deliverables.all + [a] : a.deliverables.all }.
-         flatten
-    %>
-	
-	<dl class="deadlines">
-	<% deadlines.each do |d| %>
-		<dt>
-      <%= (d.kind_of?(Assignment) ? d : d.assignment).deadline.to_s(:deadline_short) %>
-		</dt>
-		<dd>
-			<%= link_to d do %>
-        <%= d.kind_of?(Assignment) ? "Feedback for #{d.name}" : "#{d.name} for #{d.assignment.name}" %>
-      <% end %>
-		</dd>
-	<% end %>
-	</dl>
+	<%= render :partial => 'layouts/networks' %>
 </div>

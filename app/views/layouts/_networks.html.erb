@@ -1,0 +1,19 @@
+<h2>Networks</h2>
+
+<dl class="networks">
+<% @s_user.teams.sort_by(&:created_at).reverse.each do |team| %>
+  <dt>
+    <%= team.partition.name %>: <%= team.name %>
+  </dt>
+  <dd>
+  	<ul>
+  	<% (team.users - [@s_user]).sort_by { |u| u.display_name_for @s_user }.each do |user| %>
+		  <li>
+  			<%= user_image_tag user %>
+	   		<%= link_to user.display_name_for(@s_user), @s_user, :class => 'name'%>
+			</li>
+		<% end %>
+		</ul>
+  </dd>
+<% end %>
+</dl>
