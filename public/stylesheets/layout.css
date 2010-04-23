@@ -2,9 +2,6 @@ body {
 	margin: 0;
 	padding: 0;
 	border: none;
-  font-family: Helvetica, Verdana, Geneva, Arial, sans-serif;
-  font-size: 12pt;
-	font-weight: normal;	
 }
 
 #page_wrapper {
@@ -43,16 +40,4 @@ body {
 	width: 550px;
 	margin: 0;
 	padding: 0;
-}
-
-a, a:visited {
-	color: #0013d7;
-	text-decoration: none;
-}
-a:hover, a:active {
-  color: #0013d7;
-  text-decoration: underline;
-}
-a img {
-	border: none;
 }

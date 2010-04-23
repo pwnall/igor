@@ -121,6 +121,21 @@ class User < ActiveRecord::Base
     profile ? profile.athena_username : email[0, email.index(?@)]
   end
   
+  # The user's name, suitable to be displayed to the given user.
+  def display_name_for(other_user = nil, identity_value = 'You')
+    if self.id == other_user.id
+      identity_value
+    elsif profile and profile.real_name
+      # TODO(costan): look at the other user's network, and if we're the only
+      #               user with a given first name, return the first name
+      profile.real_name
+    elsif profile and profile.athena_username
+      profile.athena_username
+    else
+      email[0, email.index(?@)]
+    end      
+  end
+  
   # Configure gravatars.
   is_gravtastic :email, :secure => true, :rating => 'G', :filetype => 'png'
     

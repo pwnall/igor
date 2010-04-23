@@ -2,3 +2,17 @@
 	float: right;
 	width: 250px;
 }
+
+dl.deadlines {
+	margin: 0;
+	padding: 0;
+}
+dl.deadlines dt {
+	float: left;
+	width: 50px;
+	color: #99A0EF;
+}
+dl.deadlines dd {
+	padding: 0 0 0 50px;
+	margin: 0;
+}

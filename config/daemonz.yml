@@ -33,4 +33,5 @@
 
 # Daemons will not be started for the following environments. 
 :disabled_in:
+- 'development'
 - 'test'

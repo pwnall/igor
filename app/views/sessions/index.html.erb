@@ -1,4 +1,8 @@
+<h2>Newsfeed</h2>
+
+<% if false %>
 <%= render :partial => 'notices/user_statuses', :locals => { :user_statuses => @notice_statuses } %>
+<% end %>
 
 <% unless @profile and @student_info %>
 	<% unless @profile %>
@@ -62,6 +66,8 @@
 </div>
 <% end %>
 
+<% if false %>
+
 <div class="full_section">	
 	<h3 class="full_section">Submit Assignment</h3>
 	
@@ -71,6 +77,8 @@
 <div class="full_section">	
 	<h3 class="full_section">Submitted Assignments</h3>
 	
+<% end %>
+
 <%= render :partial => 'submissions/index',
            :locals => { :submissions => @submissions } %>
 </div>

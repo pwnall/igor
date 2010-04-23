@@ -10,7 +10,7 @@
 	<dl class="deadlines">
 	<% deadlines.each do |d| %>
 		<dt>
-      <%= (d.kind_of?(Assignment) ? d : d.assignment).deadline.to_s(:short) %>
+      <%= (d.kind_of?(Assignment) ? d : d.assignment).deadline.to_s(:deadline_short) %>
 		</dt>
 		<dd>
 			<%= link_to d do %>

@@ -15,7 +15,7 @@
   <% if @s_user %>
 	<ul class="account-panel">
     <li class="user-name">
-      <%= image_tag @s_user.gravatar_url(:size => 36), :alt => 'gravatar' %>      
+      <%= user_image_tag @s_user %>      
       <%= @s_user.name %>
     </li>
 		<li class="action">

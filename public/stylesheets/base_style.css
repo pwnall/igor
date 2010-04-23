@@ -1,0 +1,25 @@
+body {
+  font-family: Helvetica, Verdana, Geneva, Arial, sans-serif;
+  font-size: 12pt;
+  font-weight: normal;  
+}
+
+a, a:visited {
+  color: #0013d7;
+  text-decoration: none;
+}
+a:hover, a:active {
+  color: #0013d7;
+  text-decoration: underline;
+}
+a img {
+  border: none;
+}
+
+h2 {
+  margin: 8px 0 2px 0;
+  padding: 0;	
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, Verdana, sans-serif;
+  font-size: 16pt;
+	color: #652900;
+}
