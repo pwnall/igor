@@ -14,7 +14,6 @@ module CoverSheet
     # letter: 612pts x 792pts
     pdf = Prawn::Document.new :page_size => 'LETTER', :page_layout => :portrait
     
-    
     # course footer
     course = Course.main
     pdf.font "Helvetica"
@@ -67,7 +66,11 @@ module CoverSheet
     # Submissions
     pdf.y = 792 - 36 - (36 + 24 + v_offset) - 40
     pdf.font "Times-Roman"
-    table_data = assignment.deliverables.map do |d|
+    table_data = 
+
+    pdf.text "Submissions for #{assignment.name}", :size => 24, :align => :center
+    table_data = [['Name', 'Size', 'Validation', 'Submitted', 'Extension']] +
+                 assignment.deliverables.map do |d|
       s = submissions[d.id]
       if s.nil?
         [d.name, 'N / A', 'no submission', 'N / A', 'N / A']
@@ -86,15 +89,14 @@ module CoverSheet
          (s.updated_at < d.assignment.deadline) ? 'not needed' : '']
       end
     end
-
-    pdf.text "Submissions for #{assignment.name}", :size => 24, :align => :center
-    pdf.table table_data, :size => 12, :row_colors => ['f3f3f3', 'ffffff'],
-        :headers => ['Name', 'Size', 'Validation', 'Submitted', 'Extension'],
-        :align => { 0 => :left, 1 => :right, 2 => :left, 3 => :center,
-                    4 => :center},
-        :column_widths => {0 => 170, 1 => 70, 2 => 100, 3 => 110, 4 => 80},
-        :align_headers => :left, :position => :center do |t|
-      t.row(1).style :font_style => :bold, :background_color => 'ffffff'
+    pdf.table table_data, :header => true do |table|
+      table.column_widths = [170, 70, 100, 110, 80]
+      table.row_colors = ['ffffff', 'f3f3f3']
+      table.cells.font_size = 12
+      table.row(0).font_style = :bold
+      #[:left, :right, :left, :center, :center].each_with_index do |a, i|      
+      #  table.column(i).align = a
+      #end
     end
     pdf.y -= 2
     pdf.text "Please contact the course staff as soon as possible " +
@@ -104,7 +106,8 @@ module CoverSheet
     # Grades
     pdf.y -= 40
     pdf.font "Times-Roman"
-    table_data = assignment.assignment_metrics.map do |m|        
+    table_data = [['Problem', 'Grade', 'Grader', 'Points', 'Comments']] +
+                 assignment.assignment_metrics.map do |m|        
       [m.name,
        '',
        '',
@@ -113,13 +116,14 @@ module CoverSheet
       ]
     end
     pdf.text "Grades for #{assignment.name}", :size => 24, :align => :center
-    pdf.table table_data, :font_size => 12, :row_colors => ['f3f3f3', 'ffffff'],
-        :headers => ['Problem', 'Grade', 'Grader', 'Points', 'Comments'],
-        :align => { 0 => :left, 1 => :right, 2 => :center, 3 => :right,
-                    4 => :center},
-        :column_widths => { 0 => 140, 1 => 70, 2 => 70, 3 => 70, 4 => 110},
-        :align_headers => :left, :position => :center do |t|
-      t.row(0).style :font_style => :bold
+    pdf.table table_data, :header => true do |table|
+      table.column_widths = [140, 70, 70, 70, 110]
+      table.cells.font_size = 12
+      table.row_colors = ['ffffff', 'f3f3f3']
+      table.row(0).font_style = :bold
+      #[:left, :right, :center, :right, :center].each_with_index do |a, i|
+      #  table.column(i).align = a
+      #end
     end
     pdf.y -= 2
     pdf.text "Please check the course site if any of your grades is not " +
