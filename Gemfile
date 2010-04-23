@@ -19,7 +19,7 @@ gem 'gravtastic'
 gem 'json'
 gem 'mit_stalker'
 gem 'prawn', :git => 'git://github.com/sandal/prawn.git',
-             :ref => '704e0d75add5d496de71b983c341f3c5b95fe017'
+             :ref => '23719711d1bd70a2fd8d3bf51bd16688af7a2164'
 gem 'simple-daemon'
 gem 'starling'
 gem 'system_timer'
