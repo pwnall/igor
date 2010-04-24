@@ -9,6 +9,8 @@
 #  seen      :boolean(1)      not null
 #
 
+# TODO(costan): this model is deprecated. Move status functionality to feeditems
+#               when materializing them in the database. 
 class NoticeStatus < ActiveRecord::Base
   belongs_to :notice
   belongs_to :user

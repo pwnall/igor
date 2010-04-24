@@ -35,6 +35,7 @@ class FeedItem
     end
     add_grades items, user, options
     add_deliverables items, user, options
+    add_announcements items, user, options
     
     items.sort_by(&:time).reverse
   end
@@ -101,6 +102,24 @@ class FeedItem
           :actions => [
             ['Submit', [:url_for, deliverable]]
           ]
+      items << item
+    end
+  end
+  
+  # Generates feed items for the published announcements.
+  def self.add_announcements(items, user, options)
+    # TODO(costan): distinguish between open announcements,
+    #               semi-open (login required), and admin-only; right now,
+    #               the default is semi-open, so we can post sensitive info
+    return unless user
+    
+    # TODO(costan): get authors on notices
+    Notice.all.each do |notice|
+      item = FeedItem.new :time => notice.updated_at,
+          :author => User.first,
+          :headline => notice.subject.html_safe,
+          :contents => notice.contents.html_safe,
+          :actions => []
       items << item
     end
   end

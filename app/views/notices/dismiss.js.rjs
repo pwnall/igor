@@ -1,1 +1,0 @@
-page["notice_#{@notice.id}"].fade
