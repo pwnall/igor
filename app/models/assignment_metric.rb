@@ -21,6 +21,9 @@ class AssignmentMetric < ActiveRecord::Base
   belongs_to :assignment  
   validates_presence_of :assignment
   
+  # The grades issued for this metric.
+  has_many :grades
+  
   # The maximum score (grade) that can be received on this metric.
   #
   # This score is for display purposes, and it is not enforced.
@@ -38,4 +41,9 @@ class AssignmentMetric < ActiveRecord::Base
   # assignment's maximum score, as well as its weight in the final class grade.
   # For example, exam scores usually weigh heavier than pset scores.
   validates_numericality_of :weight, :in => [true, false]
+  
+  # True if the given user should be allowed to see the metric.
+  def visible_for_user?(user)
+    published? or (user and user.admin?)
+  end
 end

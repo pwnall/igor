@@ -1,0 +1,26 @@
+<h2>Newsfeed</h2>
+
+<% Contents::FeedItem.for(@s_user).each do |item| %>
+<div class="feed-item">
+  <h3>
+    <span class="author">
+      <%= user_image_tag item.author %>
+      <%= item.author.display_name_for @s_user %>
+    </span>
+		<%= item.headline %>
+  </h3>
+  <p><%= item.contents %></p>
+  <div class="footer">
+    <p class="time">
+      <%= time_delta item.time %>
+    </p>
+    <ul class="actions">
+    	<% item.actions.each do |action| %>
+      <li>
+        <%= link_to action.first, self.send(*action.last) %> 
+      </li>
+			<% end %>
+    </ul>
+  </div>
+</div>
+<% end %>

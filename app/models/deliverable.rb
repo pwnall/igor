@@ -19,14 +19,21 @@ class Deliverable < ActiveRecord::Base
     
   # The user-visible assignment name.
   validates_length_of :name, :in => 1..64, :allow_nil => false
-  # 
+  # Instructions on preparing submissions for this deliverable.
   validates_length_of :description, :in => 1..(2.kilobytes), :allow_nil => false
+  # If true, regular users can see this deliverable and submit to it.
+  validates_inclusion_of :published, :in => [true, false]
 
   # The method used to verify students' submissions for this deliverable.
   has_one :deliverable_validation, :dependent => :destroy
   
   # All the student submissions for this deliverable.
   has_many :submissions, :dependent => :destroy
+  
+  # True if the given user should be allowed to see the deliverable.
+  def visible_for_user?(user)
+    published? or (user and user.admin?)
+  end
 
   # This deliverable's submission for the given user.
   #

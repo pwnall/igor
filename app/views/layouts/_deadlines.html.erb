@@ -3,7 +3,7 @@
 <dl class="deadlines">
 <% Contents::Deadline.for(@s_user).each do |deadline| %>
   <dt class="deadline-<%= deadline.state %>">
-    <%= deadline.date.to_s(:deadline_short) %>
+    <%= deadline.due.to_s(:deadline_short) %>
   </dt>
   <dd class="deadline-<%= deadline.state %>">
   <% if deadline.active? %>

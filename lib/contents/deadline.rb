@@ -5,7 +5,7 @@ module Contents
 # An item that shows up in the Deadlines widget.
 class Deadline
   # The date when the deadline is due.
-  attr_accessor :date
+  attr_accessor :due
   # Short description for the deadline.
   attr_accessor :headline
   # An action that can lead to completing the deadline.
@@ -21,7 +21,7 @@ class Deadline
   
   # True if the deadline passed and the user hasn't fulfilled it.
   def overdue?
-    !done? and date < Time.now
+    !done? and due < Time.now
   end
 
   # Returns :pending, :done, :overdue, or :missed.
@@ -31,7 +31,7 @@ class Deadline
     elsif overdue?
       active? ? :overdue : :missed
     else
-      :missed
+      :pending
     end
   end
 
@@ -45,12 +45,13 @@ class Deadline
       feedbacks_by_aid = []
     end
     
-    deadlines = []    
+    deadlines = []
     Assignment.includes(:deliverables, :feedback_question_set).
                order('deadline DESC').each do |assignment|
       include_feedback = user ? false : true
       assignment.deliverables.each do |deliverable|
-        d = Deadline.new :date => assignment.deadline, :done => false,
+        next unless deliverable.visible_for_user?(@s_user)
+        d = Deadline.new :due => assignment.deadline, :done => false,
                          :active => true, :headline =>
                              "#{deliverable.name} for #{assignment.name}",
                          :link => deliverable, :source => assignment
@@ -63,7 +64,7 @@ class Deadline
       end
     
       if include_feedback and assignment.feedback_question_set
-        d = Deadline.new :date => assignment.deadline, :done => false,         
+        d = Deadline.new :due => assignment.deadline, :done => false,         
                          :headline => "Feedback for #{assignment.name}",
                          :link => assignment, :source => assignment,
                          :active => assignment.accepts_feedback

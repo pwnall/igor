@@ -123,7 +123,7 @@ class User < ActiveRecord::Base
   
   # The user's name, suitable to be displayed to the given user.
   def display_name_for(other_user = nil, identity_value = 'You')
-    if self.id == other_user.id
+    if self == other_user
       identity_value
     elsif profile and profile.real_name
       # TODO(costan): look at the other user's network, and if we're the only

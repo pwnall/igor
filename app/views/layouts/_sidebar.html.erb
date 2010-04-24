@@ -1,5 +1,7 @@
 <div id="sidebar">
   <%= render :partial => 'layouts/deadlines' %>
 	
+	<% if @s_user %>
 	<%= render :partial => 'layouts/networks' %>
+	<% end %>
 </div>

@@ -15,8 +15,10 @@
 
 # An assignment for the course students. (e.g., a problem set or a project)
 class Assignment < ActiveRecord::Base
+  # The deliverables that students need to submit to complete the assignment.
   has_many :deliverables, :dependent => :destroy
-  has_many :assignment_metrics, :dependent => :destroy
+  # The metrics that the students are graded on for this assignment.
+  has_many :metrics, :class_name => 'AssignmentMetric', :dependent => :destroy
   
   # The user-visible assignment name (e.g., "PSet 1").
   validates_length_of :name, :in => 1..64, :allow_nil => false
