@@ -32,6 +32,14 @@ admin_project:
   code_content_type: application/pdf
   code_file: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").inspect %>
 
+admin_assessment:
+  deliverable: assessment_writeup
+  user: admin
+  code_file_name: admin_assessment.pdf
+  code_file_size: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").length %>
+  code_content_type: application/pdf
+  code_file: <%= File.read("#{Rails.root}/test/fixtures/submission_files/small.pdf").inspect %>
+
 inactive_project:
   deliverable: project_writeup
   user: inactive

@@ -28,3 +28,10 @@ project_writeup:
   description: "Your team's write-up for the final project, in PDF format."
   published: true
   filename: project.pdf
+
+assessment_writeup:
+  assignment: assessment
+  name: PDF Write-Up
+  description: "Your self-assessment, in PDF format."
+  published: true
+  filename: assessment.pdf
