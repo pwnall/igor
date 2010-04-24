@@ -1,14 +1,16 @@
 <h2>Deadlines</h2>
 
 <dl class="deadlines">
-<% deadlines.each do |d| %>
-  <dt>
-    <%= (d.kind_of?(Assignment) ? d : d.assignment).deadline.to_s(:deadline_short) %>
+<% Contents::Deadline.for(@s_user).each do |deadline| %>
+  <dt class="deadline-<%= deadline.state %>">
+    <%= deadline.date.to_s(:deadline_short) %>
   </dt>
-  <dd>
-    <%= link_to d do %>
-      <%= d.kind_of?(Assignment) ? "Feedback for #{d.name}" : "#{d.name} for #{d.assignment.name}" %>
-    <% end %>
+  <dd class="deadline-<%= deadline.state %>">
+  <% if deadline.active? %>
+    <%= link_to deadline.headline, deadline.link %>
+	<% else %>
+	  <%= deadline.headline %>
+	<% end %>
   </dd>
 <% end %>
 </dl>

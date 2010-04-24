@@ -32,8 +32,9 @@ class Deliverable < ActiveRecord::Base
   #
   # The result is non-trivial in the presence of teams.
   def submission_for_user(user)    
-    if partition = assignment.team_partition
-      users = partition.team_for_user(user).users
+    if (partition = assignment.team_partition) and
+       (team = partition.team_for_user(user))
+      users = team.users
     else
       users = [user]
     end
