@@ -1,11 +1,5 @@
 <h2>Deadlines</h2>
 
-<% deadlines = Assignment.includes(:deliverables, :feedback_question_set).
-       order('deadline DESC').
-       map { |a| a.feedback_question_set ? a.deliverables.all + [a] : a.deliverables.all }.
-       flatten
-  %>
-
 <dl class="deadlines">
 <% deadlines.each do |d| %>
   <dt>
