@@ -15,8 +15,8 @@
 
 class Grade < ActiveRecord::Base
   # The metric that this grade is for.
-  belongs_to :assignment_metric
-  validates_presence_of :assignment_metric
+  belongs_to :metric, :class_name => 'AssignmentMetric'
+  validates_presence_of :metric
   
   # The subject being graded (a user or a team).
   belongs_to :subject, :polymorphic => true

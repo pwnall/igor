@@ -1,0 +1,28 @@
+dl.groups {
+  margin: 0;
+  padding: 0;
+}
+dl.groups dt {
+  clear: both;
+}
+dl.groups dd {
+  margin: 0;
+  padding: 2px 0 5px 0;
+  overflow: hidden;
+}
+dl.groups ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+dl.groups li {
+  margin: 0;
+  padding: 0;
+  float: left;
+  width: 80px;
+  text-align: center;
+}
+dl.groups li img {
+  display: block;
+  margin: 0 auto 0 auto;
+}

@@ -160,8 +160,15 @@ class GradesController < ApplicationController
   
   # GET /grades/reveal_mine
   def reveal_mine
-    pull_grades @s_user
-    pull_metrics true
+    grades_by_mid = @s_user.grades.index_by &:metric_id
+    
+    @grades = []
+    Assignment.includes(:metrics).order('deadline DESC').each do |assignment|
+      metrics = assignment.metrics.
+          select { |metric| metric.visible_for_user? @s_user }.
+          map { |metric| [metric, grades_by_mid[metric.id]] }
+      @grades << [assignment, metrics] unless metrics.empty?
+    end
   end
   
   # XHR /grades/for_user/uid

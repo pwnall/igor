@@ -1,60 +1,25 @@
-<div class="full_section">	
-	<h3 class="full_section">Your grades</h3>
-	<% if @assignments_by_aid.empty? %>
-		<div>No grades available. Check back later.</div>
-	<% else %>
-  	<% @assignments_by_aid.values.sort { |a, b| b.deadline <=> a.deadline }.each do |assignment| aid = assignment.id %>
-			<table>
-				<% metric_table = to_table_array(@metrics_by_aid[aid], 7) %>				
-				<% metric_table.length.times do |row| %>
-					<tr>
-						<% if row.zero? %>
-							<th>
-								<%=h assignment.name %>
-							</th>
-						<% else %>
-							<th />
-						<% end %>
-						<% metric_table[row].length.times do |column| %>
-							<% if metric_table[row][column] %>
-								<th><%=h metric_table[row][column].name %></th>
-							<% else %>
-								<th />
-							<% end %>
-						<% end %>
-						<% if row + 1 == metric_table.length %>							
-							<th>Total</th>
-						<% else %>
-							<th />
-						<% end %>
-					</tr>
-								
-					<tr>
-						<th>Score</th>
-						<% metric_table[row].length.times do |column| %>
-							<% if metric_table[row][column] %>
-								<td>
-									<%= @grades_by_mid[metric_table[row][column].id] ? (@grades_by_mid[metric_table[row][column].id].score || 'N')  : 'N' %>
-									/
-									<%= metric_table[row][column].max_score %>
-								</td>
-							<% else %>
-								<td />
-							<% end %>
-						<% end %>
-						<% if row + 1 == metric_table.length %>							
-							<td>
-								<%= @metrics_by_aid[aid].inject(0) { |acc, m| acc + (@grades_by_mid[m.id] ? (@grades_by_mid[m.id].score || 0) : 0) } %>
-								/
-								<%= @metrics_by_aid[aid].inject(0) { |acc, m| acc + m.max_score || 0 } %>									
-							</td>
-						<% else %>
-							<td />
-						<% end %>
-					</tr>
-				<% end %>
-			</table>
-			<hr />
-		<% end %>
-	<% end %>
-</div>	
+<h2>Grades</h2>
+
+<% @grades.each do |assignment, metrics| %>
+  <h3 class="grades"><%= assignment.name %></h3>
+	<dl class="grades">
+    <% metrics.each do |metric, grade| %>
+		<dt><%= metric.name %></dt>
+		<dd>
+			<span class="score"><%= grade ? grade.score : 'N' %></span>
+			/
+		  <span class="max-score"><%= metric.max_score %></span>
+		</dd>
+  	<% end %>
+	  <dt>Total</dt>
+		<dd>
+			<span class="score">
+				<%= metrics.map { |metric, grade| grade ? grade.score : 0 }.sum %>
+			</span>
+			/
+      <span class="max-score">
+      	<%= metrics.map { |metric, grade| metric.max_score }.sum %>
+			</span>
+		</dd>
+	</dl>
+<% end %>

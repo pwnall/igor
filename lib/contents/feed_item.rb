@@ -22,6 +22,11 @@ class FeedItem
   #     first:: the user-visible name for the action 
   #     last::  the link target for the action
   attr_accessor :actions
+  # The type of information conveyed by this item.
+  #
+  # This attribute should be named :type, but Rails uses :type for Single-Table
+  # Inheritance, so we had to avoid that name.
+  attr_accessor :flavor
   
   # The items that are readable by a user.
   #
@@ -44,7 +49,7 @@ class FeedItem
   def self.add_feedbacks(items, user, options)
     user.assignment_feedbacks.each do |feedback|
       item = FeedItem.new :time => feedback.updated_at,
-          :author => feedback.user,
+          :author => feedback.user, :flavor => :feedback,
           :headline => "submitted feedback on #{feedback.assignment.name}",
           :contents => '',
           :actions => [['Edit', [:edit_assignment_feedback_path, feedback]]]
@@ -56,8 +61,8 @@ class FeedItem
   def self.add_submissions(items, user, options)
     user.connected_submissions.each do |submission|
       item = FeedItem.new :time => submission.updated_at,
-          :author => submission.user,
-          :headline => "submitted #{submission.deliverable.name} for " +
+          :author => submission.user, :flavor => :submission,
+          :headline => "submitted a #{submission.deliverable.name} for " +
                        submission.deliverable.assignment.name,
           :contents => number_to_human_size(submission.code.size) +
                        " #{submission.code_content_type} file",
@@ -78,7 +83,7 @@ class FeedItem
       last_grade = metrics.sort_by(&:updated_at).last.grades.
                            sort_by(&:updated_at).last
       item = FeedItem.new :time => last_grade.updated_at,
-           :author => last_grade.grader,
+           :author => last_grade.grader, :flavor => :grade,
            :headline => "released the grades for #{assignment.name}",
            :contents => '',
            :actions => [
@@ -94,10 +99,12 @@ class FeedItem
       next unless deliverable.visible_for_user?(user)
       
       # TODO(costan): get authors on deliverables
+      with_teammates = deliverable.assignment.team_partition_id ?
+                       'and your teammates ' : ''
       item = FeedItem.new :time => deliverable.updated_at,
-          :author => User.first,
-          :headline => "posted #{deliverable.name} for " +
-                       deliverable.assignment.name,
+          :author => User.first, :flavor => :deliverable,
+          :headline => "asked you #{with_teammates}to submit a " +
+                       "#{deliverable.name} for #{deliverable.assignment.name}",
           :contents => deliverable.description,
           :actions => [
             ['Submit', [:url_for, deliverable]]
@@ -116,7 +123,7 @@ class FeedItem
     # TODO(costan): get authors on notices
     Notice.all.each do |notice|
       item = FeedItem.new :time => notice.updated_at,
-          :author => User.first,
+          :author => User.first, :flavor => :announcement,
           :headline => notice.subject.html_safe,
           :contents => notice.contents.html_safe,
           :actions => []

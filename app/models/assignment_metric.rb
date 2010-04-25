@@ -22,7 +22,7 @@ class AssignmentMetric < ActiveRecord::Base
   validates_presence_of :assignment
   
   # The grades issued for this metric.
-  has_many :grades
+  has_many :grades, :foreign_key => :metric_id
   
   # The maximum score (grade) that can be received on this metric.
   #

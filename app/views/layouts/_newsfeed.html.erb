@@ -1,7 +1,7 @@
 <h2>Newsfeed</h2>
 
 <% Contents::FeedItem.for(@s_user).each do |item| %>
-<div class="feed-item">
+<div class="feed-item feed-item-flavor-<%= item.flavor %>">
   <h3>
     <span class="author">
       <%= user_image_tag item.author %>

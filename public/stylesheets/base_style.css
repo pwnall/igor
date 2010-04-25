@@ -23,3 +23,11 @@ h2 {
   font-size: 16pt;
 	color: #652900;
 }
+
+h3 {
+  margin: 8px 0 2px 0;
+  padding: 0; 
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, Verdana, sans-serif;
+  font-size: 14pt;
+  color: #652900;
+}

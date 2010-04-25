@@ -30,8 +30,8 @@ body {
 
 #sidebar {
   float: right;
-  width: 250px;	
-	margin: 0;
+  width: 233px;	
+	margin: 0 5px 0 12px;
 	padding: 0;
 }
 

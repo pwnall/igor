@@ -1,0 +1,38 @@
+.request {
+  margin: 8px 0 12px 0;
+	overflow: hidden;
+}
+.request .author img {
+  float: left;
+	margin: 0 4px 4px 0;
+}
+
+.request h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 12pt;
+  font-weight: normal;
+  color: #000000;
+}
+.request .author {
+  font-weight: bold;
+}
+.request p {
+  margin: 0;
+  padding: 0;
+  color: #595959;
+}
+.request .actions {
+  clear: both;
+  float: left;
+  margin: 0;
+  padding: 0;
+  font-size: 11pt;
+  overflow: hidden;
+}
+.request .actions li {
+  float: left;
+  list-style-type: none;
+  margin: 0;
+  padding: 0 10px 0 0;
+}

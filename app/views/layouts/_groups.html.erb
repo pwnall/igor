@@ -1,7 +1,8 @@
-<h2>Networks</h2>
+<h2>Groups</h2>
 
-<dl class="networks">
-<% @s_user.teams.sort_by(&:created_at).reverse.each do |team| %>
+<dl class="groups">
+<% @s_user.teams.includes(:partition, :users => :profile).sort_by(&:created_at).
+           reverse.each do |team| %>
   <dt>
     <%= team.partition.name %>: <%= team.name %>
   </dt>
