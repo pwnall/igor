@@ -47,22 +47,5 @@ class SessionsController < ApplicationController
   # GET /sessions
   before_filter :authenticated_as_user, :only => [:index]
   def index
-    @profile = @s_user.profile
-    @student_info = @s_user.student_info
-        
-    @submissions = @s_user.connected_submissions.sort_by(&:updated_at).reverse
-    submissions_by_aid = @submissions.index_by { |s| s.assignment.id }
-    
-    @assignments = Assignment.all :conditions => { :accepts_feedback => true }
-    @assignments_wo_feedback = @assignments.select do |assignment|
-      # Assignments where the user didn't submit feedback yet, and either
-      # (1) the user submitted a deliverable or (2) the assignment is team-based
-      assignment.accepts_feedback && !feedbacks_by_aid[assignment.id] &&
-          (submissions_by_aid[assignment.id] || assignment.team_partition)
-    end
-    
-    @notice_statuses = @s_user.notice_statuses.all
-    @notice_statuses.each &:mark_seen!
-    @notice_statuses.sort! { |a, b| b.notice.created_at <=> a.notice.created_at }
   end
 end
