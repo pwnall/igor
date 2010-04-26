@@ -2,7 +2,6 @@
 	<%= link_to root_path do
         image_tag('mit-greywhite-footer3.gif', :alt => 'MIT Logo')
       end %>
-  <%=  %>
 	<h1>
 	  <span class="course-number">
 	  	<%= link_to Course.main.number, root_path %>
@@ -16,13 +15,13 @@
 	<ul class="account-panel">
     <li class="user-name">
       <%= user_image_tag @s_user %>      
-      <%= @s_user.name %>
+      <%= link_to @s_user.name, profile_path(@s_user) %>
     </li>
 		<li class="action">
-	    <%= link_to 'Settings', edit_password_user_url(@s_user) %>			
+	    <%= link_to 'Settings', edit_password_user_path(@s_user) %>			
 		</li>
 		<li>
-	    <%= link_to 'Logout', session_url(@s_user), :method => :delete %>			
+	    <%= link_to 'Logout', session_path(@s_user), :method => :delete %>			
 		</li>		
 	</ul>
   <% end %>

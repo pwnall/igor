@@ -98,9 +98,9 @@ class DeliverablesController < ApplicationController
   
   # called via XHR to get the description
   def xhr_description
-    @deliverable = Deliverable.find(:first, :conditions => {:id => params[:deliverable_id]})
+    @deliverable = Deliverable.where(:id => params[:deliverable_id]).first
     if @deliverable.nil?
-      dtext = 'After you select a deliverable, I might give you a description of the file you should submit.'
+      dtext = 'Select a deliverable for instructions.'
     else
       dtext = @deliverable.description
       if @deliverable.assignment.deadline <= Time.now

@@ -21,6 +21,7 @@
 .feed-item .author {
 	font-weight: bold;
 }
+
 /* Story. */
 .feed-item p {
 	margin: 0;
@@ -45,4 +46,46 @@
 	list-style-type: none;
 	margin: 0;
 	padding: 0 0 0 10px;
+}
+
+/* New item. */
+.new-feed-item {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  margin: 8px 0 6px;
+  padding: 0;
+}
+.new-feed-item h2 {
+	float: left;
+	margin: 0;
+	padding: 0 4px 0 0;
+  color: #3F1900;
+  font: inherit;
+  font-size: 13pt;
+  font-weight: inherit;
+}
+ul.new-feed-item-type {
+  margin: 0;
+	padding: 0 4px 4px 4px;
+	overflow: hidden;
+	font-size: 13pt;
+}
+ul.new-feed-item-type li {
+	float: left;
+	list-style-type: none;
+  margin: 0;
+	padding: 0;
+}
+ul.new-feed-item-type a, ul.new-feed-item-type a:visited {
+	color: #3F1900;
+  display: block;
+	padding: 0 4px;
+}
+ul.new-feed-item-type a:hover, ul.new-feed-item-type a:active {
+	color: #7E3300;
+	text-decoration: none;
+}
+.new-feed-item-form {
+	margin: 0;
+	padding: 0 4px;
 }

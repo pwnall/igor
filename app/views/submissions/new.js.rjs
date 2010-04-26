@@ -1,0 +1,3 @@
+page.select('.new-feed-item-form-container').each do |element|
+  element.update render('submissions/new')
+end

@@ -1,50 +1,40 @@
-<!-- submissions/new -->
-<%= form_for(Submission.new,
-             :html => {:multipart => true, :class => 'user_form'}) do |f| %>
-	<div class="form_box">
-		<div class="form_entry">
-			<div class="form_label">Deliverable</div>
-			<div class="form_field_box">
-				<%= f.select :deliverable_id, Deliverable.find(:all, :conditions => (@s_user.admin ? '' : ['published = ?', true]), :order => 'id DESC').map { |d| [d.assignment.name + ': ' + d.name, d.id] }, {:include_blank => '(pick one)'}, :class => 'form_field', :id => 'submission_deliverable_id' %>
-			</div>
-		</div>
-		<div class="form_entry">
-			<div class="form_label">File</div>
-			<div class="form_field_box">
-				<%= f.file_field :code, :class => 'form_field', :id => 'submission_file_upload' %>
-			</div>
-		</div>	
-		<div class="form_entry">
-			<div class="form_label">Description</div>
-			<div class="form_field_box">
-				<div id="submission_description_text">
-					After you select a deliverable, I might give you a description of the file you should submit.
-				</div>
-			</div>
-		</div>						
-		<%= observe_field 'submission_deliverable_id', :frequency => 0.5, :update => 'submission_description_text',
-				:before => update_page { |p| p.replace_html 'submission_description_text', 'loading...' },
-				:url => xhr_description_deliverables_path,
-				:with => "'deliverable_id=' + encodeURIComponent(value)" %>					
-		<div class="form_submit_box">
-		    <%= f.submit "Submit", :class => 'form_submit', :id => 'submission_submit_button' %>
-			or
-			<%= link_to 'Go home', root_path %>
-		</div>
+<%= form_for(Submission.new, :html => {:multipart => true}) do |f| %>
+  <dl>
+  	<dt><%= f.label :deliverable_id, 'Deliverable' %></dt>
+		<dd>
+		  <%= f.select :deliverable_id,
+		               Deliverable.where(@s_user.admin ? {:published => true} : {}).
+		                           order('id DESC').
+		                           map {|d| ["#{d.assignment.name} : #{d.name}", d.id]},
+		               :include_blank => '(pick one)' %>			
+		</dd>
+		<dt>Instructions</dt>
+		<dd id="submission_description_text">
+	    Select a deliverable for instructions.
+		</dd>
+		<dt><%= f.label :code, 'File' %></dt>
+		<dd>
+		  <%= f.file_field :code %>
+		  <%= f.submit "Submit" %>			
+		</dd>
+  </dl>
+	
+	<%= observe_field 'submission_deliverable_id', :frequency => 0.5, :update => 'submission_description_text',
+			:before => update_page { |p| p.replace_html 'submission_description_text', 'loading...' },
+			:url => xhr_description_deliverables_path,
+			:with => "'deliverable_id=' + encodeURIComponent(value)" %>					
 		
-<%= javascript_tag <<JS_END		
-$('submission_submit_button').observe('click', function(event) {
+  <%= javascript_tag <<JS_END		
+$('submission_submit').observe('click', function(event) {
 	if($('submission_deliverable_id').value == '') {
 		alert("You need to tell me what you're submitting for");
 		event.stop();
 	}
-	else if ($('submission_file_upload').value == '') {
+	else if ($('submission_code').value == '') {
 		alert('You need to give me a file to work with');
 		event.stop();
 	}
 });
 JS_END
-%>
-	</div>				
-
+  %>
 <% end %>

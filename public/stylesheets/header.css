@@ -1,7 +1,7 @@
 #header {
   margin: 0;
   padding: 0 8px;
-  height: 40px;
+  height: 38px;
   background-color: #CA5200;
   color: #ffffff;
   font-family: "Myriad Pro", Helvetica, Tahoma, sans-serif;
@@ -16,7 +16,7 @@
   -webkit-border-bottom-left-radius: 4px;
   -webkit-border-bottom-right-radius: 4px;
 }
-#header a img {
+#header > a {
   float: left;
   margin-right: 8px;
 }
@@ -26,42 +26,48 @@
   font-family: "Myriad Pro", Helvetica, Tahoma, sans-serif;
 	font-weight: bold;
   float: left;
-  line-height: 40px;
+  line-height: 36px;
   font-size: 32px;
   position: relative;
-  top: 6px;	
+  top: 6px;
 }
 #header .course-title {
+	/* display: none; */
 }
 #header a, #header a:visited, #header a:hover, #header a:active {
   color: #ffffff;
   text-decoration: none;
   display: inline-block;
 }
-#header a:hover, #header a:active {
-  background-color: #fd944c;  
+#header .account-panel a:hover, #header .account-panel a:active {
+	color: #3F1900;
 }
 #header ul.account-panel {
   margin: 0;
-  padding: 12px 0 0 0;
+  padding: 0;
   list-style: none;
   float: right;
-  font-size: 11pt;
+  height: 36px;
+  font-size: 12pt;
   font-weight: normal;
 }
-#header ul.account-panel img {
-  position: relative;
-  top: -12px;
-  width: 36px;
-  height: 36px;
-  margin: 0 2px -12px 0;
-  padding: 0;
-  border: 1px solid #DF9766;
-}
 #header .account-panel li {
-  line-height: 22px;
+  height: 36px;
   float: left;
+	margin: 0;
+	padding: 0;
 }
 #header .account-panel li a {
-  padding: 0 8px;  
+  display: inline-block;  
+	padding: 18px 8px 0 0;
+	height: 36px;
+	line-height: 18px;
+}
+#header ul.account-panel li img {
+  display: inline-block;
+	float: left;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  padding: 1px 4px 1px 0;
 }
