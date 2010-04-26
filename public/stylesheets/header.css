@@ -32,7 +32,7 @@
   top: 6px;
 }
 #header .course-title {
-	/* display: none; */
+	display: none;
 }
 #header a, #header a:visited, #header a:hover, #header a:active {
   color: #ffffff;
