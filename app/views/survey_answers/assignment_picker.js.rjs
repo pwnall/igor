@@ -1,0 +1,4 @@
+page.select('.new-feed-item-form-container').each do |element|
+  element.update render('survey_answers/assignment_picker',
+                        :locals => { :assignments => @assignments })
+end

@@ -15,7 +15,6 @@ Seven::Application.routes.draw do |map|
   resources :recitation_sections  
   resources :run_results
   resources :sessions
-  resources :survey_answers
   resources :survey_questions
   resources :team_memberships
   resources :team_partitions
@@ -113,6 +112,9 @@ Seven::Application.routes.draw do |map|
       post :xhr_update_cutoff
       post :xhr_update_deliverables
     end
+  end
+  resources :survey_answers do
+    collection { get :assignment_picker }
   end
   resources :surveys do
     member do

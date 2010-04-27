@@ -1,0 +1,22 @@
+<%= form_for SurveyAnswer.new,
+             :html => { :class => 'new-survey-answer-form' } do |f| %>
+  <dl>
+    <dt><%= f.label :assignment_id, 'For' %></dt>
+    <dd>
+      <%= f.select :assignment_id, @assignments.map { |a| [a.name, a.id] },
+                   :include_blank => '(pick one)' %>
+      <span id="survey-answer-ajax-indicator">
+      </span>
+		</dd>
+	</dl>
+<% end %>
+
+<p id="survey-answer-description-text">Select an assignment.</p>
+  
+<%= observe_field 'survey_answer_assignment_id',
+      :url => new_survey_answer_path, :method => :get, :frequency => 0.5,
+		  :before => update_page { |p|
+		      p.replace_html 'survey-answer-ajax-indicator',
+		                     image_tag('ajax-loader.gif')
+		  },
+		  :with => "'survey_answer[assignment_id]=' + encodeURIComponent(value)" %>         

@@ -53,4 +53,14 @@ class SurveyAnswer < ActiveRecord::Base
     end
     answers
   end
+  
+  # The assignments that a user can choose from for completing feedback surveys.
+  def self.assignments_for_user(user)
+    # TODO(costan): this should be renamed to subjects_for_user
+    assignments = Assignment.all.select(&:feedback_survey_id)
+    unless user.admin?
+      assignments.select!(&:accepts_feedback?)
+    end
+    assignments
+  end
 end
