@@ -40,11 +40,10 @@
       </div>
     </div>
     <div class="form_entry">
-      <div class="form_label">Feedback Questions</div>
+      <div class="form_label">Feedback Survey</div>
       <div class="form_field_box">
-       <%= f.select :feedback_question_set_id,
-                    ([['(none)', nil]] + FeedbackQuestionSet.all.map { |p| [p.name, p.id] }),
-                    :class => 'form_field' %>
+       <%= f.select :feedback_survey_id, Survey.all.map { |s| [s.name, s.id] },
+                    :include_blank => '(none)', :class => 'form_field' %>
       </div>
     </div>
     <div class="form_submit_box">

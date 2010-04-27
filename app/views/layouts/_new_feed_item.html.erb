@@ -3,10 +3,24 @@
 	  <h2>New </h2>
 	  <ul>
 	    <li>
-	      <%= link_to 'Submission', new_submission_path, :remote => true, :method => :get %>
+        <%= link_to_remote 'Submission', :url => new_submission_path,
+              :method => :get,
+              :before => update_page { |p|
+                 p.select('.new-feed-item-form-container').each { |element|
+                   element.update image_tag('ajax-loader.gif')
+                 }
+              }
+        %>
 	    </li>
 	    <li>
-	      <%= link_to 'Survey Answers', assignment_picker_survey_answers_path, :remote => true, :method => :get %>
+	      <%= link_to_remote 'Survey Answers',
+              :url => assignment_picker_survey_answers_path, :method => :get,
+              :before => update_page { |p|
+                 p.select('.new-feed-item-form-container').each { |element|
+                   element.update image_tag('ajax-loader.gif')
+                 }
+              }
+        %>
 	    </li>
 	  </ul>		
 	</div>
