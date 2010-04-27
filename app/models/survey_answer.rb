@@ -21,7 +21,8 @@ class SurveyAnswer < ActiveRecord::Base
     
   # The answers that are part of this feedback.
   has_many :answers, :class_name => 'SurveyQuestionAnswer',
-                     :dependent => :destroy
+                     :dependent => :destroy,
+                     :order => 'target_user_id, question_id'
   accepts_nested_attributes_for :answers
   
   # The questions asked for this feedback.
