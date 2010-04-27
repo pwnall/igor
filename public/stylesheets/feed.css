@@ -55,12 +55,14 @@
 }
 .new-feed-item-type-selector {
   overflow: hidden;
-	padding: 3px 0;
+	padding: 4px 0 3px 0;
   border: 1px solid #EABA99;
-  border-radius: 6px;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  background-color: #F4DCCC;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  box-shadow: inset 0px 1px 2px #F4DCCC;
+  -moz-box-shadow: inset 0px 1px 2px #F4DCCC;
+  -webkit-box-shadow: inset 0px 1px 2px #F4DCCC;
 }
 
 .new-feed-item h2 {
@@ -83,13 +85,16 @@
 	list-style-type: none;
   margin: 0 2px;
 	padding: 0 4px;
-  border: 1px solid #DF9766;
+  border: 1px solid #EABA99;
   border-radius: 6px;
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
+  box-shadow: 0px 1px 2px #F4DCCC;
+  -moz-box-shadow: 0px 1px 2px #F4DCCC;
+  -webkit-box-shadow: 0px 1px 2px #F4DCCC;	
 }
 .new-feed-item-type-selector ul li:hover {
-  background-color: #EABA99;	
+  background-color: #F4DCCC;	
 }
 .new-feed-item-type-selector ul a, .new-feed-item-type-selector ul a:visited {
 	color: #3F1900;
@@ -105,13 +110,16 @@
   padding: 4px 4px; 
   border: 1px solid #EABA99;
 	border-top: none;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-  -moz-border-radius-bottomleft: 6px;
-  -moz-border-radius-bottomright: 6px;
-  -webkit-border-bottom-left-radius: 6px;
-  -webkit-border-bottom-right-radius: 6px;
-	background-color: #F4DCCC;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  -moz-border-radius-bottomright: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+
+  box-shadow: inset 0px 1px 2px #F4DCCC;
+  -moz-box-shadow: inset 0px 1px 2px #F4DCCC;
+  -webkit-box-shadow: inset 0px 1px 2px #F4DCCC;
 }
 .new-feed-item-form-container:empty {
   padding: 0;
