@@ -1,8 +1,8 @@
 class SubmissionsController < ApplicationController
   include CoverSheet
   
-  before_filter :authenticated_as_user, :only => [:create, :update, :file]
-  before_filter :authenticated_as_admin, :except => [:create, :update, :file]
+  before_filter :authenticated_as_user, :only => [:new, :create, :update, :file]
+  before_filter :authenticated_as_admin, :except => [:new, :create, :update, :file]
   
   # XHR /submissions/xhr_update_deliverables/0?assignment_id=1
   def xhr_update_deliverables
@@ -49,6 +49,18 @@ class SubmissionsController < ApplicationController
       format.xml  { render :xml => @submissions }
     end
   end
+
+  # GET /submissions/new
+  # GET /submissions/new.xml
+  def new
+    @submission = Submission.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.js   # new.js.rjs
+      format.xml  { render :xml => @submission }
+    end
+  end  
 
   # POST /submissions
   # POST /submissions.xml
