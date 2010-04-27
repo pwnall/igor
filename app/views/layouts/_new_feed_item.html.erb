@@ -7,7 +7,7 @@
               :method => :get,
               :before => update_page { |p|
                  p.select('.new-feed-item-form-container').each { |element|
-                   element.update image_tag('ajax-loader.gif')
+                   element.update loading_image_tag
                  }
               }
         %>
@@ -17,7 +17,7 @@
               :url => assignment_picker_survey_answers_path, :method => :get,
               :before => update_page { |p|
                  p.select('.new-feed-item-form-container').each { |element|
-                   element.update image_tag('ajax-loader.gif')
+                   element.update loading_image_tag
                  }
               }
         %>

@@ -1,5 +1,9 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  def loading_image_tag
+    image_tag 'ajax-loader.gif', :alt => 'Loading...'
+  end
+  
   def add_site_status(message, is_notice)
     render :partial => 'layouts/status', :object => message,
            :locals => { :is_notice => is_notice }

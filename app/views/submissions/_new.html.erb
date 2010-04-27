@@ -21,8 +21,7 @@
 	
 	<%= observe_field 'submission_deliverable_id', :frequency => 0.5, :update => 'submission_description_text',
 			:before => update_page { |p|
-          p.replace_html 'submission_description_text',
-                         image_tag('ajax-loader.gif')
+          p.replace_html 'submission_description_text', loading_image_tag
       },
 			:url => xhr_description_deliverables_path,
 			:with => "'deliverable_id=' + encodeURIComponent(value)" %>					

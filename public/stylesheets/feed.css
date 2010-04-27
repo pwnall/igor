@@ -55,7 +55,7 @@
 }
 .new-feed-item-type-selector {
   overflow: hidden;
-	padding: 4px 0 3px 0;
+	padding: 4px 0 4px 0;
   border: 1px solid #EABA99;
   border-radius: 3px;
   -moz-border-radius: 3px;
@@ -106,8 +106,8 @@
 }
 
 .new-feed-item-form-container {
-	margin: 0 6px;
-  padding: 4px 4px; 
+	margin: 0 3px;
+  padding: 8px 8px 6px 8px; 
   border: 1px solid #EABA99;
 	border-top: none;
   border-bottom-left-radius: 3px;
