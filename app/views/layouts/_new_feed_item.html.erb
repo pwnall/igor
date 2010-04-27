@@ -1,17 +1,17 @@
 <div class="new-feed-item">
-	<h2>New </h2>
-	<ul class="new-feed-item-type">
-		<li>
-			<%= link_to 'Submission', new_submission_path, :remote => true %>
-		</li>
-		<li>
-			<%= link_to 'Feedback', new_assignment_feedback_path, :remote => true %>
-		</li>
-		<li>
-			<%= link_to 'Message', '#', :remote => true %>
-		</li>
-	</ul>
-	<div class="new-feed-item-form-container">
-		
+	<div class="new-feed-item-type-selector">
+	  <h2>New </h2>
+	  <ul>
+	    <li>
+	      <%= link_to 'Submission', new_submission_path, :remote => true %>
+	    </li>
+	    <li>
+	      <%= link_to 'Feedback', new_assignment_feedback_path, :remote => true %>
+	    </li>
+	    <li>
+	      <%= link_to 'Message', '#', :remote => true %>
+	    </li>
+	  </ul>		
 	</div>
+	<div class="new-feed-item-form-container"></div>
 </div>

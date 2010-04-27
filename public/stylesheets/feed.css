@@ -50,42 +50,74 @@
 
 /* New item. */
 .new-feed-item {
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
   margin: 8px 0 6px;
   padding: 0;
 }
+.new-feed-item-type-selector {
+  overflow: hidden;
+	padding: 3px 0;
+  border: 1px solid #EABA99;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  background-color: #F4DCCC;
+}
+
 .new-feed-item h2 {
 	float: left;
 	margin: 0;
-	padding: 0 4px 0 0;
+	padding: 1px 8px 1px 4px;
   color: #3F1900;
   font: inherit;
   font-size: 13pt;
   font-weight: inherit;
 }
-ul.new-feed-item-type {
-  margin: 0;
-	padding: 0 4px 4px 4px;
-	overflow: hidden;
-	font-size: 13pt;
-}
-ul.new-feed-item-type li {
-	float: left;
-	list-style-type: none;
+.new-feed-item-type-selector ul {
   margin: 0;
 	padding: 0;
+	float: left;
+	font-size: 13pt;
 }
-ul.new-feed-item-type a, ul.new-feed-item-type a:visited {
-	color: #3F1900;
-  display: block;
+.new-feed-item-type-selector ul li {
+	float: left;
+	list-style-type: none;
+  margin: 0 2px;
 	padding: 0 4px;
+  border: 1px solid #DF9766;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
 }
-ul.new-feed-item-type a:hover, ul.new-feed-item-type a:active {
-	color: #7E3300;
+.new-feed-item-type-selector ul li:hover {
+  background-color: #EABA99;	
+}
+.new-feed-item-type-selector ul a, .new-feed-item-type-selector ul a:visited {
+	color: #3F1900;
+}
+.new-feed-item-type-selector ul a:hover,
+    .new-feed-item-type-selector ul a:active {
+	color: #3F1900;
 	text-decoration: none;
 }
-.new-feed-item-form {
-	margin: 0;
-	padding: 0 4px;
+
+.new-feed-item-form-container {
+	margin: 0 6px;
+  padding: 4px 4px; 
+  border: 1px solid #EABA99;
+	border-top: none;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  -moz-border-radius-bottomleft: 6px;
+  -moz-border-radius-bottomright: 6px;
+  -webkit-border-bottom-left-radius: 6px;
+  -webkit-border-bottom-right-radius: 6px;
+	background-color: #F4DCCC;
+}
+.new-feed-item-form-container:empty {
+  padding: 0;
+	border: none;
+}
+.new-feed-item-form-container form {
+	visibility: hidden;
+	height: 350px;
 }

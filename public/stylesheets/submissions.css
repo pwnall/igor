@@ -1,0 +1,17 @@
+.new-submission-form dl {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+.new-submission-form dt {
+	clear: both;
+  float: left;
+	margin: 0;
+  padding: 0;
+	width: 100px;
+}
+.new-submission-form dd {
+  margin: 0;
+  padding: 0;
+	float: left;
+}
