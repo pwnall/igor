@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100216020942
+# Schema version: 20100427075741
 #
 # Table name: deliverables
 #
@@ -48,5 +48,10 @@ class Deliverable < ActiveRecord::Base
     
     Submission.where(:deliverable_id => self.id, :user_id => users.map(&:id)).
                first
+  end
+  
+  # The deliverables that a user is allowed to submit.
+  def self.submittable_by_user(user)
+    Deliverable.where(user.admin? ? {} : {:published => true})
   end
 end

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100216020942
+# Schema version: 20100427075741
 #
 # Table name: users
 #
@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   has_many :notices, :through => :notice_statuses
   has_many :team_memberships, :dependent => :destroy
   has_many :teams, :through => :team_memberships
-  has_many :assignment_feedbacks
+  has_many :survey_answers
 
   attr_protected :admin, :active
   

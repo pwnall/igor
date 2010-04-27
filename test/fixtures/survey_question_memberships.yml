@@ -1,0 +1,34 @@
+# == Schema Information
+# Schema version: 20100427075741
+#
+# Table name: survey_question_memberships
+#
+#  id                 :integer(4)      not null, primary key
+#  survey_question_id :integer(4)      not null
+#  survey_id          :integer(4)      not null
+#  created_at         :datetime
+#
+
+hours_psets:
+  survey_question: hours
+  survey: psets
+
+prepared_psets:
+  survey_question: prepared
+  survey: psets
+
+reliable_psets:
+  survey_question: reliable
+  survey: psets
+
+coding_psets:
+  survey_question: coding_ammount
+  survey: psets
+
+theory_psets:
+  survey_question: theory_ammount
+  survey: psets
+  
+hours_projects:
+  survey_question: hours
+  survey: projects

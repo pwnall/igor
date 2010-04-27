@@ -1,0 +1,62 @@
+<div class="full_section">
+	
+<h3 class="full_section">
+	Survey Answers for <%= @survey_answer.assignment.name %>
+</h3>
+
+<%= error_messages_for :survey_answer %>
+
+<%= form_for(@survey_answer, :html => {:class => 'student_form'}) do |f| %>
+	<div style="display: none">
+		<%= f.hidden_field :assignment_id %>
+	</div>
+	<div class="form_box">
+		<% last_target_user = nil %>
+		<% f.fields_for :answers do |a| %>
+		<% if last_target_user != a.object.target_user %>
+      <% last_target_user = a.object.target_user %>
+      <h3 class="full_section">
+        <%= display_name_for_user last_target_user %>
+      </h3>
+		<% end %>
+		<%= a.hidden_field :question_id %>		
+		<% if last_target_user %>
+      <%= a.hidden_field :target_user_id %>
+		<% end %>
+    <% question = a.object.question %>
+    <div class="form_entry">
+      <div class="form_label"><%= question.human_string %></div>
+      <div class="form_field_box">
+			<% if question.scaled? %>
+			  <%= question.scale_min_label %>
+				<% question.scale_min.upto(question.scale_max) do |scale_index| %>
+				  <%= a.radio_button :number, scale_index.to_f %>
+				<% end %>
+				<%= question.scale_max_label %>
+			<% else %>
+      	<%= a.text_field :number, :size => 8 %>
+      <% end %>
+      </div>
+    </div>
+		<% if question.allows_comments? %>
+    <div class="form_entry">
+      <div class="form_label">
+      	<%= question.human_string %> - comments
+			</div>
+      <div class="form_field_box">
+        <%= a.text_area :comment, :rows => 5 %>
+      </div>
+    </div>
+    <% end %>
+		<% end %>
+		
+		<div class="form_submit_box">
+		    <%= f.submit((@survey_answer.new_record? ? "Submit" : "Update"),
+                     :class => 'form_submit') %>
+			or
+			<%= link_to 'Go home', root_path %>
+		</div>
+	</div>
+<% end %>
+
+</div>

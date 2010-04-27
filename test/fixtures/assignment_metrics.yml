@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100216020942
+# Schema version: 20100427075741
 #
 # Table name: assignment_metrics
 #

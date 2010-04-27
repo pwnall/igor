@@ -1,0 +1,17 @@
+# == Schema Information
+# Schema version: 20100427075741
+#
+# Table name: surveys
+#
+#  id         :integer(4)      not null, primary key
+#  name       :string(128)     not null
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+psets:
+  name: PSet Questions
+
+projects:
+  name: Project Questions
+

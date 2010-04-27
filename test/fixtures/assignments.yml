@@ -1,35 +1,35 @@
 # == Schema Information
-# Schema version: 20100216020942
+# Schema version: 20100427075741
 #
 # Table name: assignments
 #
-#  id                       :integer(4)      not null, primary key
-#  deadline                 :datetime        not null
-#  name                     :string(64)      not null
-#  team_partition_id        :integer(4)
-#  feedback_question_set_id :integer(4)
-#  accepts_feedback         :boolean(1)      not null
-#  created_at               :datetime
-#  updated_at               :datetime
+#  id                 :integer(4)      not null, primary key
+#  deadline           :datetime        not null
+#  name               :string(64)      not null
+#  team_partition_id  :integer(4)
+#  feedback_survey_id :integer(4)
+#  accepts_feedback   :boolean(1)      not null
+#  created_at         :datetime
+#  updated_at         :datetime
 #
 
 ps1:
   deadline: 2010-02-01 00:00:01
   name: "PSet 1"
   team_partition: psets
-  feedback_question_set: psets
+  feedback_survey: psets
 
 ps2:
   deadline: 2010-02-15 00:00:01
   name: "PSet 2"
   team_partition: psets
-  feedback_question_set: psets
+  feedback_survey: psets
 
 project:
   deadline: 2010-04-30 17:00:00
   name: "Final Project"
   team_partition: project
-  feedback_question_set: projects
+  feedback_survey: projects
   
 assessment:
   deadline: 2010-05-01 17:00:00

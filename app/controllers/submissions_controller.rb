@@ -65,7 +65,8 @@ class SubmissionsController < ApplicationController
   # POST /submissions
   # POST /submissions.xml
   def create    
-    @submission = Submission.find(:first, :conditions => {:user_id => @s_user.id, :deliverable_id => params[:submission][:deliverable_id]})
+    @submission = Submission.where(:user_id => @s_user.id,
+        :deliverable_id => params[:submission][:deliverable_id]).first
     @submission ||= Submission.new(params[:submission])
     @submission.user = @s_user
     
@@ -126,6 +127,7 @@ class SubmissionsController < ApplicationController
       end
     end    
   end
+  private :create_update
   
   # GET /submissions/1/file
   def file

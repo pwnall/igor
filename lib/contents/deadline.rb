@@ -40,13 +40,13 @@ class Deadline
   # Returns an array of Deadline objects sorted in order of relevance.
   def self.for(user = nil, options = {})
     if user
-      feedbacks_by_aid = user.assignment_feedbacks.index_by(&:assignment_id)
+      answers_by_aid = user.survey_answers.index_by(&:assignment_id)
     else
-      feedbacks_by_aid = []
+      answers_by_aid = []
     end
     
     deadlines = []
-    Assignment.includes(:deliverables, :feedback_question_set).
+    Assignment.includes(:deliverables, :feedback_survey).
                order('deadline DESC').each do |assignment|
       include_feedback = user ? false : true
       assignment.deliverables.each do |deliverable|
@@ -63,12 +63,12 @@ class Deadline
         deadlines << d
       end
     
-      if include_feedback and assignment.feedback_question_set
+      if include_feedback and assignment.feedback_survey
         d = Deadline.new :due => assignment.deadline, :done => false,         
-                         :headline => "Feedback for #{assignment.name}",
+                         :headline => "Feedback survey for #{assignment.name}",
                          :link => assignment, :source => assignment,
                          :active => assignment.accepts_feedback
-        d.done = true if feedbacks_by_aid[assignment.id]
+        d.done = true if answers_by_aid[assignment.id]
         deadlines << d
       end
     end

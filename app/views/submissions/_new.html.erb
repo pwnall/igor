@@ -3,11 +3,10 @@
   <dl>
   	<dt><%= f.label :deliverable_id, 'Deliverable' %></dt>
 		<dd>
-		  <%= f.select :deliverable_id,
-		               Deliverable.where(@s_user.admin ? {:published => true} : {}).
-		                           order('id DESC').
-		                           map {|d| ["#{d.assignment.name} : #{d.name}", d.id]},
-		               :include_blank => '(pick one)' %>
+		  <%= f.select :deliverable_id, Deliverable.submittable_by_user(@s_user).
+           order('id DESC').
+           map {|d| ["#{d.assignment.name} : #{d.name}", d.id]},
+		       :include_blank => '(pick one)' %>
 		</dd>
 		<dt>Instructions</dt>
 		<dd id="submission_description_text">
@@ -21,7 +20,10 @@
   </dl>
 	
 	<%= observe_field 'submission_deliverable_id', :frequency => 0.5, :update => 'submission_description_text',
-			:before => update_page { |p| p.replace_html 'submission_description_text', 'loading...' },
+			:before => update_page { |p|
+          p.replace_html 'submission_description_text',
+                         image_tag('ajax-loader.gif')
+      },
 			:url => xhr_description_deliverables_path,
 			:with => "'deliverable_id=' + encodeURIComponent(value)" %>					
 		

@@ -35,7 +35,7 @@ class FeedItem
     items = []
     
     if user
-      add_feedbacks items, user, options
+      add_survey_answers items, user, options
       add_submissions items, user, options
     end
     add_grades items, user, options
@@ -45,14 +45,14 @@ class FeedItem
     items.sort_by(&:time).reverse
   end
   
-  # Generates feed items for the user's submitted feedback.
-  def self.add_feedbacks(items, user, options)
-    user.assignment_feedbacks.each do |feedback|
-      item = FeedItem.new :time => feedback.updated_at,
-          :author => feedback.user, :flavor => :feedback,
-          :headline => "submitted feedback on #{feedback.assignment.name}",
+  # Generates feed items for the user's submitted surveys.
+  def self.add_survey_answers(items, user, options)
+    user.survey_answers.each do |answer|
+      item = FeedItem.new :time => answer.updated_at,
+          :author => answer.user, :flavor => :survey_answer,
+          :headline => "answered a survey on #{answer.assignment.name}",
           :contents => '',
-          :actions => [['Edit', [:edit_assignment_feedback_path, feedback]]]
+          :actions => [['Edit', [:edit_survey_answer_path, answer]]]
       items << item
     end
   end

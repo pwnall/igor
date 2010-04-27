@@ -9,17 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100424223733) do
-
-  create_table "assignment_feedbacks", :force => true do |t|
-    t.integer  "user_id",       :null => false
-    t.integer  "assignment_id", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "assignment_feedbacks", ["assignment_id"], :name => "index_assignment_feedbacks_on_assignment_id"
-  add_index "assignment_feedbacks", ["user_id", "assignment_id"], :name => "index_assignment_feedbacks_on_user_id_and_assignment_id", :unique => true
+ActiveRecord::Schema.define(:version => 20100427075741) do
 
   create_table "assignment_metrics", :force => true do |t|
     t.string   "name",          :limit => 64,                                                   :null => false
@@ -32,11 +22,11 @@ ActiveRecord::Schema.define(:version => 20100424223733) do
   end
 
   create_table "assignments", :force => true do |t|
-    t.datetime "deadline",                                                  :null => false
-    t.string   "name",                     :limit => 64,                    :null => false
+    t.datetime "deadline",                                            :null => false
+    t.string   "name",               :limit => 64,                    :null => false
     t.integer  "team_partition_id"
-    t.integer  "feedback_question_set_id"
-    t.boolean  "accepts_feedback",                       :default => false, :null => false
+    t.integer  "feedback_survey_id"
+    t.boolean  "accepts_feedback",                 :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -80,46 +70,6 @@ ActiveRecord::Schema.define(:version => 20100424223733) do
   end
 
   add_index "deliverables", ["assignment_id"], :name => "index_deliverables_on_assignment_id"
-
-  create_table "feedback_answers", :force => true do |t|
-    t.integer  "assignment_feedback_id",                 :null => false
-    t.integer  "question_id",                            :null => false
-    t.integer  "target_user_id"
-    t.float    "number",                                 :null => false
-    t.string   "comment",                :limit => 1024
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "feedback_answers", ["assignment_feedback_id", "question_id", "target_user_id"], :name => "feedback_answers_by_assignment_question_user", :unique => true
-
-  create_table "feedback_question_set_memberships", :force => true do |t|
-    t.integer  "feedback_question_id",     :null => false
-    t.integer  "feedback_question_set_id", :null => false
-    t.datetime "created_at"
-  end
-
-  add_index "feedback_question_set_memberships", ["feedback_question_id", "feedback_question_set_id"], :name => "feedback_question_set_to_questions", :unique => true
-  add_index "feedback_question_set_memberships", ["feedback_question_set_id", "feedback_question_id"], :name => "feedback_questions_to_sets", :unique => true
-
-  create_table "feedback_question_sets", :force => true do |t|
-    t.string   "name",       :limit => 128, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "feedback_questions", :force => true do |t|
-    t.string   "human_string",    :limit => 1024,                      :null => false
-    t.boolean  "targets_user",                    :default => false,   :null => false
-    t.boolean  "allows_comments",                 :default => false,   :null => false
-    t.boolean  "scaled",                          :default => false,   :null => false
-    t.integer  "scale_min",                       :default => 1,       :null => false
-    t.integer  "scale_max",                       :default => 5,       :null => false
-    t.string   "scale_min_label", :limit => 64,   :default => "Small", :null => false
-    t.string   "scale_max_label", :limit => 64,   :default => "Large", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "grades", :force => true do |t|
     t.integer  "metric_id",                                                :null => false
@@ -250,6 +200,56 @@ ActiveRecord::Schema.define(:version => 20100424223733) do
   add_index "submissions", ["deliverable_id", "updated_at"], :name => "index_submissions_on_deliverable_id_and_updated_at"
   add_index "submissions", ["updated_at"], :name => "index_submissions_on_updated_at"
   add_index "submissions", ["user_id", "deliverable_id"], :name => "index_submissions_on_user_id_and_deliverable_id", :unique => true
+
+  create_table "survey_answers", :force => true do |t|
+    t.integer  "user_id",       :null => false
+    t.integer  "assignment_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "survey_answers", ["assignment_id"], :name => "index_assignment_feedbacks_on_assignment_id"
+  add_index "survey_answers", ["user_id", "assignment_id"], :name => "index_assignment_feedbacks_on_user_id_and_assignment_id", :unique => true
+
+  create_table "survey_question_answers", :force => true do |t|
+    t.integer  "survey_answer_id",                 :null => false
+    t.integer  "question_id",                      :null => false
+    t.integer  "target_user_id"
+    t.float    "number",                           :null => false
+    t.string   "comment",          :limit => 1024
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "survey_question_answers", ["survey_answer_id", "question_id", "target_user_id"], :name => "feedback_answers_by_assignment_question_user", :unique => true
+
+  create_table "survey_question_memberships", :force => true do |t|
+    t.integer  "survey_question_id", :null => false
+    t.integer  "survey_id",          :null => false
+    t.datetime "created_at"
+  end
+
+  add_index "survey_question_memberships", ["survey_id", "survey_question_id"], :name => "feedback_questions_to_sets", :unique => true
+  add_index "survey_question_memberships", ["survey_question_id", "survey_id"], :name => "feedback_question_set_to_questions", :unique => true
+
+  create_table "survey_questions", :force => true do |t|
+    t.string   "human_string",    :limit => 1024,                      :null => false
+    t.boolean  "targets_user",                    :default => false,   :null => false
+    t.boolean  "allows_comments",                 :default => false,   :null => false
+    t.boolean  "scaled",                          :default => false,   :null => false
+    t.integer  "scale_min",                       :default => 1,       :null => false
+    t.integer  "scale_max",                       :default => 5,       :null => false
+    t.string   "scale_min_label", :limit => 64,   :default => "Small", :null => false
+    t.string   "scale_max_label", :limit => 64,   :default => "Large", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "surveys", :force => true do |t|
+    t.string   "name",       :limit => 128, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "team_memberships", :force => true do |t|
     t.integer  "team_id",    :null => false

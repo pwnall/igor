@@ -12,11 +12,11 @@ Seven::Application.routes.draw do |map|
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-  resources :assignment_feedbacks
-  resources :feedback_questions
   resources :recitation_sections  
   resources :run_results
   resources :sessions
+  resources :survey_answers
+  resources :survey_questions
   resources :team_memberships
   resources :team_partitions
   
@@ -73,12 +73,6 @@ Seven::Application.routes.draw do |map|
       post :update_deliverable
     end
   end
-  resources :feedback_question_sets do
-    member do
-      post :add_question
-      delete :remove_question
-    end
-  end
   resources :grades do
     collection do
       get :request_report, :request_missing, :reveal_mine
@@ -118,6 +112,12 @@ Seven::Application.routes.draw do |map|
       post :package_assignment
       post :xhr_update_cutoff
       post :xhr_update_deliverables
+    end
+  end
+  resources :surveys do
+    member do
+      post :add_question
+      delete :remove_question
     end
   end
   namespace :system do

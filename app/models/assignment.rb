@@ -1,16 +1,16 @@
 # == Schema Information
-# Schema version: 20100216020942
+# Schema version: 20100427075741
 #
 # Table name: assignments
 #
-#  id                       :integer(4)      not null, primary key
-#  deadline                 :datetime        not null
-#  name                     :string(64)      not null
-#  team_partition_id        :integer(4)
-#  feedback_question_set_id :integer(4)
-#  accepts_feedback         :boolean(1)      not null
-#  created_at               :datetime
-#  updated_at               :datetime
+#  id                 :integer(4)      not null, primary key
+#  deadline           :datetime        not null
+#  name               :string(64)      not null
+#  team_partition_id  :integer(4)
+#  feedback_survey_id :integer(4)
+#  accepts_feedback   :boolean(1)      not null
+#  created_at         :datetime
+#  updated_at         :datetime
 #
 
 # An assignment for the course students. (e.g., a problem set or a project)
@@ -30,13 +30,13 @@ class Assignment < ActiveRecord::Base
   # The partition of teams used for this assignment.
   belongs_to :team_partition
   
-  # The set of feedback questions for this assignment. 
-  belongs_to :feedback_question_set
+  # The set of survey questions for getting feedback on this assignment. 
+  belongs_to :feedback_survey, :class_name => 'Survey'
   
-  # The feedback questions for this assignment. 
+  # The questions in the feedback survey for this assignment. 
   def feedback_questions
     # NOTE: this should be a has_many :through association, except ActiveRecord
     #       doesn't support nested :through associations 
-    feedback_question_set.questions
+    feedback_survey.questions
   end
 end
