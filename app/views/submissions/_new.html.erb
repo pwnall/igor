@@ -1,5 +1,5 @@
 <%= form_for(Submission.new, :html => {:multipart => true,
-        :class => 'new-submission-form'}) do |f| %>
+        :class => 'submission-form'}) do |f| %>
   <dl>
   	<dt><%= f.label :deliverable_id, 'Deliverable' %></dt>
 		<dd>
@@ -15,7 +15,6 @@
 		<dt><%= f.label :code, 'File' %></dt>
 		<dd>
 		  <%= f.file_field :code %>
-		  <%= f.submit "Submit" %>			
 		</dd>
   </dl>
 	
@@ -39,4 +38,9 @@ $('submission_submit').observe('click', function(event) {
 });
 JS_END
   %>
+	
+  <p class="privacy-policy">
+    Only you and <%= Course.main.number %> Staff can see this.
+  </p>	
+  <%= f.submit "Submit" %>      
 <% end %>

@@ -42,13 +42,7 @@
 	padding: 0;
 }
 #menu input[type=text], #menu input[type=password] {
-  width: 176px;
-	margin: 0;
-	padding: 2px;
-	border: 1px solid #3F1900;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
+  width: 172px;
 }
 #menu p {
 	margin: 0;
