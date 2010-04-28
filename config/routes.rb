@@ -17,7 +17,6 @@ Seven::Application.routes.draw do |map|
   resources :recitation_sections  
   resources :run_results
   resources :team_memberships
-  resources :team_partitions
   
   resources :users do
     collection do
@@ -131,7 +130,12 @@ Seven::Application.routes.draw do |map|
   namespace :system do
     root :to => 'system/health#stat_system'
     resources :processes, :controller => 'health'
-  end  
+  end
+  resources :team_partitions do
+    member do
+      post :set_team_name
+    end
+  end
   resources :teams do
     collection { get :my_own }
   end
