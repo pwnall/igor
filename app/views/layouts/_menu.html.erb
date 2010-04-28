@@ -22,11 +22,6 @@
   <% if @s_user.admin? %>
   <%= render 'layouts/admin_console' %>
   <% end %>
-
-  <h2>Account</h2>
-  <ol>
-    <li>Logout</li>
-  </ol>
 <% else %>
   <h2>Login</h2>
 	<%= render 'sessions/login_form' %>
