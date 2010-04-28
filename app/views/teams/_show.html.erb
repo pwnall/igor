@@ -1,7 +1,10 @@
 <!-- teams/_show -->
+<% if @s_user.admin? %>
 <% @team = team %>
-<%= in_place_editor_field(:team, :name, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
-:
+<%= in_place_editor_field(:team, :name, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>:
+<% else %>
+<%= team.name %>:
+<% end %>
 
 <% team.partition.assignments.each do |assignment| %>
   <%= assignment.name %>
