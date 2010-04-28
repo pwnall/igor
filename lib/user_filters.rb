@@ -1,7 +1,12 @@
 module UserFilters
   # (before-filter) extracts the logged in user from the session
   def extract_user_filter
-    @s_user = session[:user_id] && User.find(:first, :conditions => {:id => session[:user_id]})    
+    if @s_user = session[:user_id] && User.find(session[:user_id])
+      response.headers['X-Account-Management-Status'] =
+          "active; name=\"#{@s_user.real_name}\""
+    else
+      response.headers['X-Account-Management-Status'] = "none"
+    end
   end
   
   # bounces the user to a safe page via redirect_to and returns +false+

@@ -3,5 +3,5 @@ class ApplicationController < ActionController::Base
 
   include UserFilters
   
-  before_filter :extract_user_filter  
+  before_filter :extract_user_filter
 end
