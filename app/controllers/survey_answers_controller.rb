@@ -34,7 +34,6 @@ class SurveyAnswersController < ApplicationController
   
   # XHR GET /survey_answers/assignment_picker
   def assignment_picker
-    @assignments = SurveyAnswer.assignments_for_user @s_user
     respond_to do |format|
       format.js  # assignment_picker.rjs.js
     end
@@ -67,7 +66,6 @@ class SurveyAnswersController < ApplicationController
   end
   
   def new_edit
-    @assignments = SurveyAnswer.assignments_for_user @s_user
     respond_to do |format|
       format.html { render :action => :new_edit }
       format.js   { render :action => :new_edit }
@@ -108,6 +106,7 @@ class SurveyAnswersController < ApplicationController
       if success
         flash[:notice] = "Feedback for #{@survey_answer.assignment.name} successfully #{@is_new_record ? 'submitted' : 'updated'}."
         format.html { redirect_to root_path }
+        format.js   { render :action => :create_update }
         format.xml do
           if is_new_record
             render :xml => @survey_answer, :status => :created, :location => @survey_answer
@@ -117,6 +116,7 @@ class SurveyAnswersController < ApplicationController
         end  
       else
         format.html { render :action => :new_edit }
+        format.js   { render :action => :new_edit }
         format.xml  { render :xml => @survey_answer.errors, :status => :unprocessable_entity }
       end
     end    

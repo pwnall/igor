@@ -1,8 +1,10 @@
-<%= form_for @survey_answer, :html => {:class => 'survey-answer-picker'} do |f| %>
+<%= form_for @survey_answer,
+             :html => {:class => 'survey-answer-picker'} do |f| %>
   <dl>
     <dt><%= f.label :assignment_id, 'For' %></dt>
     <dd>
-      <%= f.select :assignment_id, @assignments.map { |a| [a.name, a.id] } %>
+      <%= f.select :assignment_id, SurveyAnswer.assignments_for_user(@s_user).
+                                                map { |a| [a.name, a.id] } %>
       <span id="survey-answer-ajax-indicator">
       </span>
     </dd>
@@ -16,14 +18,14 @@
       :with => "'survey_answer[assignment_id]=' + encodeURIComponent(value)" %>         
 <% end %>
 
-<%= error_messages_for :survey_answer %>
+<%= form_for @survey_answer, :remote => true,
+             :html => {:class => 'survey-answer-form'} do |f| %>	
+  <%= f.error_messages %>
+  <%= f.hidden_field :assignment_id %>  
 
-<%= form_for @survey_answer, :html => {:class => 'survey-answer-form'} do |f| %>
-	<%= f.hidden_field :assignment_id %>	
-	
 	<% last_target_user = nil %>
 	<dl>
-	<% f.fields_for :answers do |a| %>
+	<%= f.fields_for :answers do |a| %>
 	
 	<% if last_target_user != a.object.target_user %>
 	<% last_target_user = a.object.target_user %>
