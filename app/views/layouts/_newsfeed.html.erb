@@ -1,6 +1,7 @@
 <h2>Newsfeed</h2>
 
 <% Contents::FeedItem.for(@s_user).each do |item| %>
+<% next if @news_flavor and item.flavor != @news_flavor %>
 <div class="feed-item feed-item-flavor-<%= item.flavor %>">
   <h3>
     <span class="author">

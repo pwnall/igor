@@ -1,6 +1,24 @@
 <div id="menu">
-<% if @s_user %>
- 
+  <h2><%= link_to 'News', root_path %></h2>
+  <ol>
+    <li>
+      <%= link_to 'Homework', root_path(:flavor => :deliverable) %>
+    </li>
+    <li>
+      <%= link_to 'Announcements', root_path(:flavor => :announcement) %>
+    </li>
+    <li>
+      <%= link_to 'Submissions', root_path(:flavor => :submission) %>
+    </li>
+    <li>
+      <%= link_to 'Survey Answers', root_path(:flavor => :survey_answer) %>
+    </li>
+    <li>
+      <%= link_to 'Grades', root_path(:flavor => :grade) %>
+    </li>
+  </ol>
+	
+<% if @s_user %> 
   <% if @s_user.admin? %>
   <%= render 'layouts/admin_console' %>
   <% end %>

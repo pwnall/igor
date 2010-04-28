@@ -1,15 +1,6 @@
 class SessionsController < ApplicationController
   protect_from_forgery :except => [:create, :destroy, :logout]
-  
-  # GET /sessions/new
-  def new
-    if @s_user
-      redirect_to root_path
-    else
-      @login = User.new
-    end
-  end
-  
+    
   # POST /sessions
   # POST /sessions.xml
   def create
@@ -60,7 +51,7 @@ class SessionsController < ApplicationController
   end
   
   # GET /sessions
-  before_filter :authenticated_as_user, :only => [:index]
   def index
+    @news_flavor = params[:flavor] ? params[:flavor].to_sym : nil
   end
 end
