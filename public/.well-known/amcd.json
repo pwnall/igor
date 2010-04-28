@@ -1,0 +1,57 @@
+{
+  "methods": {
+    "username-password-form": {
+      "connect": {
+        "method":"POST",
+        "path":"/sessions/",
+        "params": {
+          "username":"user[name]",
+          "password":"user[password]"
+        }
+      },
+      "disconnect": {
+        "method":"POST",
+        "path":"/sessions/logout",
+        "params": {
+          "username":"user[name]",
+          "password":"user[password]"
+        }
+      },
+      "register": {
+        "method":"POST",
+        "path":"/users/",
+        "schemas": {
+          "poco":"http://portablecontacts/ns/1.0"
+        },
+        "params": {
+          "username":"user[name]",
+          "password":"user[password]",
+          "password_verify":"user[password_confirmation]",
+          "poco": {
+					  "emails": {
+						  "value": "user[email]"
+						}
+          }
+        }
+      },
+      "changepassword": {
+        "method":"POST",
+        "path":"/user/update_password",
+        "params": {
+          "username":"user[name]",
+          "old_password":"old_pwd",
+          "password":"pwd",
+          "password_verify":"pwd2"
+        }
+      },
+      "sessionstatus": {
+          "method":"GET",
+          "path":"/sessions/1"
+      },
+      "accountstatus": {
+          "method":"GET",
+          "path":"/user/account_status"
+      }
+    }
+  }
+}

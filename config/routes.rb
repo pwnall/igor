@@ -16,7 +16,6 @@ Seven::Application.routes.draw do |map|
   resources :feedback_questions
   resources :recitation_sections  
   resources :run_results
-  resources :sessions
   resources :team_memberships
   resources :team_partitions
   
@@ -105,6 +104,15 @@ Seven::Application.routes.draw do |map|
       post :websis_lookup
     end
   end    
+  resources :sessions do
+    collection do
+      # TODO(costan): remove the "get" once Firefox Account Manager gets its bug
+      #               fixed
+      get :logout
+      # TODO(costan): remove the "post" once Account manager can DELETE
+      post :logout
+    end
+  end
   resources :student_infos do
     collection { get :my_own }
   end
