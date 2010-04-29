@@ -1,7 +1,8 @@
 <!-- teams/_show -->
 <% if @s_user.admin? %>
-<% @team = team %>
+<% old_team_value, @team = @team, team %>
 <%= in_place_editor_field(:team, :name, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>:
+<% @team = old_team_value %>
 <% else %>
 <%= team.name %>:
 <% end %>
