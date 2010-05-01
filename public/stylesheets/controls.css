@@ -33,9 +33,9 @@ input[type=text], input[type=password], textarea {
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
-  box-shadow: inset 0px 1px 2px #F4DCCC;
-  -moz-box-shadow: inset 0px 1px 2px #F4DCCC;
-  -webkit-box-shadow: inset 0px 1px 2px #F4DCCC;
+  box-shadow: inset 0px 2px 2px #F4DCCC;
+  -moz-box-shadow: inset 0px 2px 2px #F4DCCC;
+  -webkit-box-shadow: inset 0px 2px 2px #F4DCCC;
   background-color: #FFFFFF;
 	color: #000000;
 }

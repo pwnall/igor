@@ -1,5 +1,9 @@
 <h2>Newsfeed</h2>
 
+<% if @s_user %>
+<%= render 'layouts/new_feed_item' %>
+<% end %>
+
 <% Contents::FeedItem.for(@s_user).each do |item| %>
 <% next if @news_flavor and item.flavor != @news_flavor %>
 <div class="feed-item feed-item-flavor-<%= item.flavor %>">

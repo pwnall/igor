@@ -1,0 +1,34 @@
+.signup-form dl {
+	margin: 1em 0 0 1em;
+	padding: 0;
+}
+.signup-form dt {
+  margin: 0;
+  padding: 0 0 8px 0;
+	float: left;
+	width: 10em;
+	clear: both;
+	color: #331400;
+}
+.signup-form dd {
+	margin: 0;
+	padding: 0 0 8px 0;
+}
+.signup-form input[type=text], .signup-form input[type=password] {
+	width: 250px;
+}
+.signup-form .error-text {
+	display: inline-block;	
+	padding: 0 0 0 4px;
+	color: red;
+}
+.signup-form img {
+	padding: 0 0 0 4px;
+}
+.signup-form p {
+	margin: 0;
+	padding: 8px 0 0 0;
+	text-align: center;
+}
+.signup-form input[type=submit] {
+}

@@ -185,5 +185,5 @@ Seven::Application.routes.draw do |map|
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
   
-  match 'tokens/:token', :to => 'tokens#spend', :as => :spend_token
+  match '/tokens/:token', :to => 'tokens#spend', :as => :spend_token
 end

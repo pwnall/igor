@@ -1,0 +1,7 @@
+.login-form input[type=submit] {
+	float: right;
+	margin: 4px 10px 0 0;
+}
+.login-form p {
+	overflow: hidden;
+}

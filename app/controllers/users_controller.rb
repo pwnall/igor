@@ -153,24 +153,32 @@ class UsersController < ApplicationController
     end
   end
   
+  # GET /users/recover_password
+  def recover_password
+    @user = User.new
+  end
+  
+  # POST /users/recovery_email
   def recovery_email
-    # first, try to find active users
-    @user = User.find(:first, :conditions => {:email => params[:user][:email], :active => true})
-    unless @user
-      # if there's none, get the first user trying to register
-      @user = User.find(:first, :conditions => {:email => params[:user][:email]})
+    @user = User.new params[:user]
+    
+    template = User.where(:email => params[:user][:email])
+    
+    # First, try to find an active user matching the e-mail.
+    @real_user = template.where(:active => true).first
+    unless @real_user
+      # If there's none, get the first user trying to register.
+      @real_user = template.first
     end
     
-    unless @user
+    unless @real_user
       flash[:notice] = "No account for e-mail #{params[:user][:email]}. Are you sure you registered?"
       render :action => :recover_password
       return
     end
     
-    # generate one-time login token
-    token = Token.new(:action => 'login_once')
-    @user.tokens << token
-    @user.save!
+    # Generate one-time login token.
+    token = @real_user.tokens.create :action => 'login_once'
     
     # send it over via email
     TokenMailer.password_recovery(token, root_url,

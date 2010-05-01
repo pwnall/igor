@@ -1,48 +1,39 @@
-<!-- users/new -->
-<div class="full_section">
-	<h1 class="form_title">Create User Account</h1>
+<h2>Grab the Firehose</h2>
 
-<%= error_messages_for :user %>
+<%= form_for(@user, :html => {:class => 'signup-form'}) do |f| %>
+  <%= f.error_messages %>
 
-	<%= form_for(@user, :html => {:class => 'user_form'}) do |f| %>
-		<div class="form_box">
-			<div class="form_entry">
-				<div class="form_label">MIT e-mail address</div>
-				<div class="form_field_box">
-					<%= f.text_field :email, :class => 'form_field' %>
-				</div>
-			</div>		
-			<div class="form_entry">
-				<div class="form_label">Desired login name</div>
-				<div class="form_field_box">
-					<%= f.text_field :name, :class => 'form_field' %>
-					<span id="user_form_name_availability">
-					</span>
-					<%= observe_field :user_name,
-						:frequency => 0.5,
-						:update => 'user_form_name_availability',
-						:before => "$('user_form_name_availability').update('checking availability...')",
-						:complete => "", :url => check_name_users_path,
-						:with => "'name=' + encodeURIComponent(value)" %>
-				</div>
-			</div>
-			<div class="form_entry">
-				<div class="form_label">Choose a password</div>
-				<div class="form_field_box">
-					<%= f.password_field :password, :class => 'form_field' %>
-				</div>
-			</div>
-			<div class="form_entry">
-				<div class="form_label">Re-enter password</div>
-				<div class="form_field_box">
-					<%= f.password_field :password_confirmation, :class => 'form_field' %>
-					<span id="user_form_password_correctness">
-					</span>
-				</div>
-			</div>
-			<div class="form_submit_box">
-			    <%= f.submit "Create", :class => 'form_submit' %>
-			</div>
+  <dl>
+  	<dt><%= f.label :email, 'MIT e-mail' %></dt>
+		<dd>
+			<%= f.text_field :email %>
+		</dd>
+    <dt><%= f.label :name, 'Username' %></dt>
+    <dd>
+      <%= f.text_field :name %>
+      <span id="user_form_name_availability"></span>
+    </dd>
+    <dt><%= f.label :password, 'Password' %></dt>
+    <dd>
+      <%= f.password_field :password %>
+    </dd>
+    <dt><%= f.label :password_confirmation, 'Re-enter password' %></dt>
+    <dd>
+      <%= f.password_field :password_confirmation %>
+      <span id="user_form_password_correctness"></span>
+    </dd>
+  </dl>
+	
+	<p><%= f.submit 'Create my account' %></p>
+<% end %>
+
+<%= observe_field :user_name,
+  :frequency => 0.5,
+  :update => 'user_form_name_availability',
+  :before => "$('user_form_name_availability').update('#{loading_image_tag}')",
+  :complete => "", :url => check_name_users_path,
+  :with => "'name=' + encodeURIComponent(value)" %>
+
 <%
 password_js = <<JS_END
 var password = $('user_password').value;
@@ -50,23 +41,18 @@ var confirmation = $('user_password_confirmation').value;
 var resultElem = $('user_form_password_correctness');
 var submitElem = $('user_submit');
 if(password == confirmation) {
-	resultElem.update('<span class=\\"attention_text\\">OK</span>');
-	submitElem.appear();
+resultElem.update('#{ok_image_tag}');
+submitElem.appear();
 }
 else {
-	resultElem.update('<span class="error_text">doesn\\'t match password</span>');
-	submitElem.hide();
+resultElem.update('<span class="error-text">doesn\\'t match</span>');
+submitElem.hide();
 }
 JS_END
-%>		
-			<%= observe_field :user_password,
-				:frequency => 0.5,
-				:function => password_js %>			
-			<%= observe_field :user_password_confirmation,
-				:frequency => 0.5,
-				:function => password_js %>			
-			
-		</div>
-	<% end %>	
-</div>
-
+%>    
+<%= observe_field :user_password,
+  :frequency => 0.5,
+  :function => password_js %>     
+<%= observe_field :user_password_confirmation,
+  :frequency => 0.5,
+  :function => password_js %>     

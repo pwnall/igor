@@ -4,7 +4,7 @@ source 'http://rubygems.org'
 
 ## Bundle edge rails instead:
 gem 'rails', :git => 'git://github.com/rails/rails.git',
-             :ref => '7100c9d6ca1aedea7dc1cb8a6cea08ed57432f19'
+             :ref => '6c280f3398966ffba45069500ff43d632513fe44'
 
 gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'mysql'

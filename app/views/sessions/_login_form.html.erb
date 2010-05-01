@@ -1,16 +1,18 @@
 <!-- sessions/login_form -->
 
-<%= error_messages_for :user %>
-
 <%= form_for(@login || User.new, :url => sessions_url, :method => :post,
-            :html => {:class => 'user_form'}) do |f| %>
+            :html => {:class => 'login-form', :id => 'login_form'}) do |f| %>
+  <%= f.error_messages %>
+	
 	<dl>
 		<dt><%= f.label :name, 'Username' %></dt>
-		<dd><%= f.text_field :name %></dd>
+		<dd><%= f.text_field :name, :id => 'login_name' %></dd>
     <dt><%= f.label :password, 'Password' %></dt>
-    <dd><%= f.password_field :password %></dd>
+    <dd>
+    	<%= f.password_field :password, :id => nil, :id => 'login_password' %>
+		</dd>
 	</dl>
 	<p>
-		<%= f.submit "Login", :class => 'form_submit' %>
+		<%= f.submit "Login", :id => 'login_submit' %>
 	</p>
 <% end %>
