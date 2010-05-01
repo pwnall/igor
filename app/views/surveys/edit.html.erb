@@ -31,7 +31,7 @@
           <% end %>
         </td>
         <td>
-          <% form_tag remove_question_survey_path(@survey), :method => :delete do |f| %>
+          <%= form_tag remove_question_survey_path(@survey), :method => :delete do |f| %>
             <%= hidden_field_tag :question_id, question.id %>
             <%= submit_tag 'Remove Question' %>
           <% end %>
@@ -72,7 +72,7 @@
 					<% end %>
 				</td>
 				<td>
-					<% form_tag add_question_survey_path(@survey) do |f| %>
+					<%= form_tag add_question_survey_path(@survey) do |f| %>
 					  <%= hidden_field_tag :question_id, question.id %>
 						<%= submit_tag 'Add Question' %>
 					<% end %>

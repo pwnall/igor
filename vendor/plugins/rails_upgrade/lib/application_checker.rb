@@ -189,7 +189,7 @@ module Rails
                     grep_for("def manifest", g).empty? ? g : nil
                   end.compact
         
-          if files
+          if !files.empty?
             alert(
               "Old Rails generator API", 
               "A plugin in the app is using the old generator API (a new one may be available at http://github.com/trydionel/rails3-generators).",
@@ -217,6 +217,84 @@ module Rails
             "At least one plugin in your app is broken (according to the wiki).  Most of project maintainers are rapidly working towards compatability, but do be aware you may encounter issues.",
             "http://wiki.rubyonrails.org/rails/version3/plugins_and_gems",
             bad_plugins
+          )
+        end
+      end
+      
+      # Checks for old-style ERb helpers
+      def check_old_helpers
+        lines = grep_for("<% .* do.*%>", "app/views/**/*")
+        files = extract_filenames(lines)
+        
+        if files
+          alert(
+            "Deprecated ERb helper calls", 
+            "Block helpers that use concat (e.g., form_for) should use <%= instead of <%.  The current form will continue to work for now, but you will get deprecation warnings since this form will go away in the future.",
+            "http://weblog.rubyonrails.org/",
+            files
+          )
+        end
+      end
+      
+      # Checks for old-style AJAX helpers
+      def check_old_ajax_helpers
+        files = []
+        ['link_to_remote','form_remote_tag','remote_form_for'].each do |type|
+          lines = grep_for(type, "app/views/**/*")
+          inner_files = extract_filenames(lines)
+          files += inner_files unless inner_files.nil?
+        end
+                
+        if files
+          alert(
+            "Deprecated AJAX helper calls", 
+            "AJAX javascript helpers have been switched to be unobtrusive and use :remote => true instead of having a seperate function to handle remote requests.",
+            "http://www.themodestrubyist.com/2010/02/24/rails-3-ujs-and-csrf-meta-tags/",
+            files
+          )
+        end
+      end
+      
+      # Checks for old cookie secret settings
+      def check_old_cookie_secret
+        lines = grep_for("ActionController::Base.cookie_verifier_secret = ", "config/**/*")
+        files = extract_filenames(lines)
+
+        if files
+          alert(
+            "Deprecated cookie secret setting", 
+            "Previously, cookie secret was set directly on ActionController::Base; it's now config.secret_token.",
+            "http://lindsaar.net/2010/4/7/rails_3_session_secret_and_session_store",
+            files
+          )
+        end
+      end
+
+      def check_old_session_secret
+        lines = grep_for("ActionController::Base.session = {", "config/**/*")
+        files = extract_filenames(lines)
+
+        if files
+          alert(
+            "Deprecated session secret setting", 
+            "Previously, session secret was set directly on ActionController::Base; it's now config.secret_token.",
+            "http://lindsaar.net/2010/4/7/rails_3_session_secret_and_session_store",
+            files
+          )
+        end
+      end
+      
+      # Checks for old session settings
+      def check_old_session_setting
+        lines = grep_for("ActionController::Base.session_store", "config/**/*")
+        files = extract_filenames(lines)
+        
+        if files
+          alert(
+            "Old session store setting", 
+            "Previously, session store was set directly on ActionController::Base; it's now config.session_store :whatever.",
+            "http://lindsaar.net/2010/4/7/rails_3_session_secret_and_session_store",
+            files
           )
         end
       end

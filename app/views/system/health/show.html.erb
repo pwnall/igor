@@ -5,7 +5,7 @@
 	<!-- <%= @process.to_s %> -->
 	
 <div class="health_form">
-	<% form_tag({:controller => :health, :action => :destroy, :id => @process.pid}, :method => :delete, :class => 'health_form') do %>
+	<%= form_tag({:controller => :health, :action => :destroy, :id => @process.pid}, :method => :delete, :class => 'health_form') do %>
 		<% @process.members.each do |m| %>
 			<div class="form_entry">
 				<div class="form_label"><%=h m %></div>

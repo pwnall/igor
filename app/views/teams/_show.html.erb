@@ -29,7 +29,7 @@
   <% end %>
 </ul>
 
-<% form_for TeamMembership.new(:team => team) do |f| %>
+<%= form_for TeamMembership.new(:team => team) do |f| %>
   <%= f.hidden_field :team_id %>
 
   <%= text_field_tag :query, '', :id => "query_#{team.id}", :autocomplete => false, :style => 'width: 450px;' %> <%= f.submit "Add to #{team.name}" %>

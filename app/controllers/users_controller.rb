@@ -47,16 +47,15 @@ class UsersController < ApplicationController
   # POST /users.xml
   def create
     @user = User.new(params[:user])
-    token = Token.new(:action => 'confirm_email')
-    @user.tokens << token
     # "admin" becomes an administrator by default
     @user.admin = (@user.name == 'admin')
 
     respond_to do |format|
-      if @user.save
+      if @user.save        
         flash[:notice] = 'Please check your e-mail to activate your account.'
+        token = @user.tokens.create :action => 'confirm_email'
         TokenMailer.account_confirmation(token, root_url, 
-                                         spend_token_url(token.token)).deliver
+            spend_token_url(:token => token.token)).deliver
         
         format.html { redirect_to(:controller => :sessions, :action => :index) }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
@@ -177,12 +176,10 @@ class UsersController < ApplicationController
       return
     end
     
-    # Generate one-time login token.
+    # Generate one-time login token and e-mail it.
     token = @real_user.tokens.create :action => 'login_once'
-    
-    # send it over via email
     TokenMailer.password_recovery(token, root_url,
-                                  spend_token_url(token.token)).deliver
+        spend_token_url(:token => token.token)).deliver
 
     # go home
     flash[:notice] = "Please check your e-mail at #{params[:user][:email]} for next steps."
