@@ -1,10 +1,12 @@
 .feed-item {
 	margin: 8px 0 12px 0;
+	padding: 0 0 0 40px;
 	overflow: hidden;
+	position: relative;
 }
 .feed-item .author img {
-	float: left;
-  padding: 4px 4px 4px 0;
+	position: absolute;
+	left: 0px;
 }
 .feed-item .action-bar {
 	clear: both;
@@ -57,7 +59,8 @@
 
 /* Replies. */
 .feed-item .replies {
-	margin: 0 0 0 40px;
+	margin: 0;
+	padding: 0;
 }
 .feed-item .replies .feed-item {
 	margin: 2px 0 4px 0;
