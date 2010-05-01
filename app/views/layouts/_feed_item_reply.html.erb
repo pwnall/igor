@@ -1,0 +1,21 @@
+<div class="feed-item feed-item-flavor-<%= feed_item.flavor %>">
+  <h4>
+    <span class="author">
+      <%= user_image_tag feed_item.author %>
+      <%= feed_item.author.display_name_for @s_user %>
+    </span>
+    <%= feed_item.contents %>
+  </h3>
+  <div class="footer">
+    <p class="time">
+      <%= time_delta feed_item.time %>
+    </p>
+    <ul class="actions">
+      <% feed_item.actions.each do |action| %>
+      <li>
+        <%= link_to action.first, self.send(*action.last) %> 
+      </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

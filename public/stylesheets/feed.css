@@ -18,6 +18,13 @@
 	font-weight: normal;
 	color: #000000;
 }
+.feed-item h4 {
+	margin: 0;
+	padding: 0;
+	font-size: 11pt;
+	font-weight: normal;
+	color: #000000;
+}
 .feed-item .author {
 	font-weight: bold;
 }
@@ -46,6 +53,14 @@
 	list-style-type: none;
 	margin: 0;
 	padding: 0 0 0 10px;
+}
+
+/* Replies. */
+.feed-item .replies {
+	margin: 0 0 0 40px;
+}
+.feed-item .replies .feed-item {
+	margin: 2px 0 4px 0;
 }
 
 /* New item. */

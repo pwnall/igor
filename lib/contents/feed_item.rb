@@ -27,6 +27,8 @@ class FeedItem
   # This attribute should be named :type, but Rails uses :type for Single-Table
   # Inheritance, so we had to avoid that name.
   attr_accessor :flavor
+  # Follow-ups to this item. 
+  attr_accessor :replies
   
   # The items that are readable by a user.
   #
@@ -52,8 +54,9 @@ class FeedItem
           :author => answer.user, :flavor => :survey_answer,
           :headline => "answered a survey on #{answer.assignment.name}",
           :contents => '',
-          :actions => [['Edit', [:edit_survey_answer_path, answer]]]
-      items << item
+          :actions => [['Edit', [:edit_survey_answer_path, answer]]],
+          :replies => []
+      items << item      
     end
   end
 
@@ -69,8 +72,19 @@ class FeedItem
           :actions => [
             ['View', [:file_submission_path, submission, {:inline => true}]],
             ['Download', [:file_submission_path, submission, {:inline => false}]]
-          ]
+          ],
+          :replies => []
       items << item
+      if run_result = submission.run_result
+        reply = FeedItem.new :time => run_result.updated_at,
+            :author => User.first, :flavor => :announcement,
+            :contents => run_result.diagnostic,
+            :actions => [
+              ['Details', [:url_for, run_result]]
+            ],
+            :replies => []
+        item.replies << reply
+      end
     end
   end
   
@@ -88,7 +102,8 @@ class FeedItem
            :contents => '',
            :actions => [
              ['View', [:reveal_mine_grades_path]]
-           ]
+           ],
+           :replies => []
       items << item
     end
   end
@@ -108,9 +123,18 @@ class FeedItem
           :contents => deliverable.description,
           :actions => [
             ['Submit', [:url_for, deliverable]]
-          ]
+          ],
+          :replies => []
       items << item
-    end
+      
+      if deliverable.deadline_passed_for_user? @s_user
+        reply = FeedItem.new :time => deliverable.deadline_for_user(@s_user),
+            :author => User.first, :flavor => :announcement,
+            :contents => "The deadline has passed.",
+            :actions => [], :replies => []
+        item.replies << reply
+      end
+    end    
   end
   
   # Generates feed items for the published announcements.
@@ -126,7 +150,8 @@ class FeedItem
           :author => User.first, :flavor => :announcement,
           :headline => notice.subject.html_safe,
           :contents => notice.contents.html_safe,
-          :actions => []
+          :actions => [],
+          :replies => []
       items << item
     end
   end

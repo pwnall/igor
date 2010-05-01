@@ -39,4 +39,19 @@ class Assignment < ActiveRecord::Base
     #       doesn't support nested :through associations 
     feedback_survey.questions
   end
+  
+  # The assignment deadline, customized to a specific user.
+  #
+  # This method will eventually account for deadline extensions. 
+  def deadline_for_user(user)
+    deadline
+  end
+  
+  # True if the sumbissions for this assignment should be marked as late.
+  #
+  # This method takes an user as an argument so that we can later account for
+  # deadline extensions.
+  def deadline_passed_for_user?(user)
+    deadline < Time.now
+  end
 end

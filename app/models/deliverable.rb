@@ -54,4 +54,14 @@ class Deliverable < ActiveRecord::Base
   def self.submittable_by_user(user)
     Deliverable.where(user.admin? ? {} : {:published => true})
   end
+  
+  # The deliverable deadline, customized to a specific user.
+  def deadline_for_user(user)
+    assignment.deadline_for_user user
+  end
+  
+  # True if the submissions for this deliverable should be marked as late.
+  def deadline_passed_for_user?(user)
+    assignment.deadline_passed_for_user? user
+  end  
 end
