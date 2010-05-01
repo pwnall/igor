@@ -4,7 +4,7 @@ source 'http://rubygems.org'
 
 ## Bundle edge rails instead:
 gem 'rails', :git => 'git://github.com/rails/rails.git',
-             :ref => '6c280f3398966ffba45069500ff43d632513fe44'
+             :ref => '8b1b273c21a2f1a6eeccca5fbe0303679c2d707d'
 
 gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'mysql'
@@ -19,7 +19,7 @@ gem 'gravtastic'
 gem 'json'
 gem 'mit_stalker'
 gem 'prawn', :git => 'git://github.com/sandal/prawn.git',
-             :ref => '23719711d1bd70a2fd8d3bf51bd16688af7a2164'
+             :ref => '7701a4fe7d089be255a7d42ebdf140df67c4ac39'
 gem 'simple-daemon'
 gem 'starling'
 gem 'system_timer'

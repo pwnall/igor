@@ -92,11 +92,11 @@ module CoverSheet
     pdf.table table_data, :header => true do |table|
       table.column_widths = [170, 70, 100, 110, 80]
       table.row_colors = ['ffffff', 'f3f3f3']
-      table.cells.font_size = 12
-      table.row(0).font_style = :bold
-      #[:left, :right, :left, :center, :center].each_with_index do |a, i|      
-      #  table.column(i).align = a
-      #end
+      table.cells.size = 12
+      table.row(0).style = :bold
+      [:left, :right, :left, :center, :center].each_with_index do |a, i|      
+        table.column(i).align = a
+      end
     end
     pdf.y -= 2
     pdf.text "Please contact the course staff as soon as possible " +
@@ -118,12 +118,12 @@ module CoverSheet
     pdf.text "Grades for #{assignment.name}", :size => 24, :align => :center
     pdf.table table_data, :header => true do |table|
       table.column_widths = [140, 70, 70, 70, 110]
-      table.cells.font_size = 12
+      table.cells.size = 12
       table.row_colors = ['ffffff', 'f3f3f3']
-      table.row(0).font_style = :bold
-      #[:left, :right, :center, :right, :center].each_with_index do |a, i|
-      #  table.column(i).align = a
-      #end
+      table.row(0).style = :bold
+      [:left, :right, :center, :right, :center].each_with_index do |a, i|
+        table.column(i).align = a
+      end
     end
     pdf.y -= 2
     pdf.text "Please check the course site if any of your grades is not " +
