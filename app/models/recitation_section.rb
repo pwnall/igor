@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100427075741
+# Schema version: 20100502201753
 #
 # Table name: recitation_sections
 #

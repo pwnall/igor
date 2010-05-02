@@ -1,7 +1,7 @@
 # == Schema Information
-# Schema version: 20100427075741
+# Schema version: 20100502201753
 #
-# Table name: student_infos
+# Table name: registrations
 #
 #  id           :integer(4)      not null, primary key
 #  user_id      :integer(4)      not null
@@ -9,14 +9,17 @@
 #  motivation   :string(32768)
 #  created_at   :datetime
 #  updated_at   :datetime
+#  dropped      :boolean(1)      not null
+#  course_id    :integer(4)      not null
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 dexter:
+  course: main
+  motivation: I will pwn this class.
   user: dexter
   wants_credit: true
-  motivation: I will pwn this class.
   
 #one:
 #  real_name: MyString

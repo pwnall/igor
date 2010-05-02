@@ -112,7 +112,7 @@ Seven::Application.routes.draw do |map|
       post :logout
     end
   end
-  resources :student_infos do
+  resources :registrations do
     collection { get :my_own }
   end
   resources :submissions do

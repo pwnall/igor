@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100427075741
+# Schema version: 20100502201753
 #
 # Table name: courses
 #
@@ -23,6 +23,9 @@ class Course < ActiveRecord::Base
   
   # The Google Analytics account ID for the course.
   validates_length_of :ga_account, :in => 1..32, :allow_nil => false
+  
+  # The student registrations for this course.
+  has_many :registrations, :dependent => :destroy
 
   # The main (and only) course on the website.
   def self.main

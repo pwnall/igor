@@ -1,12 +1,12 @@
-<!-- student_infos/show -->
-<h1 class="form_title">Student Information Form for <%= @student_info.user.name %></h1>
+<!-- registrations/show -->
+<h1 class="form_title">Registration for <%= @registration.user.name %></h1>
 
 <div class="student_form">
 	<div class="form_box">
 		<div class="form_entry">
 			<div class="form_label">Taking <%= Course.main.number %> for credit</div>
 			<div class="form_field_box">
-				<%=@student_info.wants_credit ? 'Yes' : 'No' %>
+				<%=@registration.wants_credit ? 'Yes' : 'No' %>
 			</div>
 		</div>
 		
@@ -43,7 +43,7 @@
 		<div class="form_entry">
 			<div class="form_label">Have you taken</div>
 			<div class="form_field_box">
-				<% @student_info.prerequisite_answers.sort_by(&:prerequisite_id).
+				<% @registration.prerequisite_answers.sort_by(&:prerequisite_id).
                          each do |answer| %>
         <div>
 				<%=h answer.took_course? ? 'Yes' : 'No' %> -
@@ -52,7 +52,7 @@
 				<% end %>
 			</div>
 		</div>
-    <% @student_info.prerequisite_answers.sort_by(&:prerequisite_id).
+    <% @registration.prerequisite_answers.sort_by(&:prerequisite_id).
                      each do |answer| %>
     <% next if answer.took_course? %>
     <div class="form_entry">
@@ -72,10 +72,10 @@
 				Why do you want to take <%= Course.main.number%>?
 			</div>
 			<div class="form_field_box">
-				<% if @student_info.motivation.empty? %>
+				<% if @registration.motivation.empty? %>
 					&nbsp;
 				<% else %>
-					<%=h @student_info.motivation %>
+					<%=h @registration.motivation %>
 				<% end %>
 			</div>
 		</div>

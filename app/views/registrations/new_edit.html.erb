@@ -1,20 +1,11 @@
-<!-- student_infos/new_edit -->
+<!-- registrations/new_edit -->
 <div class="full_section">
 	
 <h1 class="full_section">Student Information Form for <%= @s_user.name %></h1>
 
-<%= error_messages_for :student_info %>
+<%= error_messages_for :registration %>
 
-<%
-if @student_info.new_record?
-	url = {:controller => :student_infos, :action => @manual ? :create_manual : :create}
-	url[:id] = 0 if @manual
-else
-	url = {:controller => :student_infos, :action => :update, :id => @student_info.id}
-end
-%>
-
-<%= form_for(@student_info, :url => url,
+<%= form_for(@registration,
              :html => {:class => 'student_form'}) do |f| %>
 	<div class="form_box">
 		<div class="form_entry">
@@ -105,7 +96,7 @@ end
 			</div>
 		</div>
 		<div class="form_submit_box">
-		    <%= f.submit @student_info.new_record? ? "Submit" : "Update", :class => 'form_submit' %>
+		    <%= f.submit @registration.new_record? ? "Submit" : "Update", :class => 'form_submit' %>
 			or
 			<%= link_to 'Go home', root_path %>
 		</div>

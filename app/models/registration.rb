@@ -1,7 +1,7 @@
 # == Schema Information
-# Schema version: 20100427075741
+# Schema version: 20100502201753
 #
-# Table name: student_infos
+# Table name: registrations
 #
 #  id           :integer(4)      not null, primary key
 #  user_id      :integer(4)      not null
@@ -9,17 +9,29 @@
 #  motivation   :string(32768)
 #  created_at   :datetime
 #  updated_at   :datetime
+#  dropped      :boolean(1)      not null
+#  course_id    :integer(4)      not null
 #
 
-class StudentInfo < ActiveRecord::Base
+# A student's commitment to participate in a class.
+class Registration < ActiveRecord::Base
   has_many :recitation_conflicts, :dependent => :destroy
   has_many :prerequisite_answers, :dependent => :destroy
   accepts_nested_attributes_for :prerequisite_answers, :allow_destroy => false
   
-  # The user described by this piece of student information.
+  # The student who registered.
   belongs_to :user
+  validates_presence_of :user
+  # The course for which the student registered.
+  belongs_to :course
+  validates_uniqueness_of :course_id, :scope => [:user_id], :allow_nil => false
+  validates_presence_of :course
   # True if the student is taking the class for credit.
   validates_inclusion_of :wants_credit, :in => [true, false]
+  # True if the student dropped the class.
+  validates_inclusion_of :dropped, :in => [true, false]
+
   # Why is the student taking the class.
+  # TODO(costan): this should be rolled into the registration survey.
   validates_length_of :motivation, :in => 1..(32.kilobytes), :allow_nil => false
 end

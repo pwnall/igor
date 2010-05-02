@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100427075741
+# Schema version: 20100502201753
 #
 # Table name: users
 #
@@ -16,7 +16,7 @@
 
 class User < ActiveRecord::Base
   has_many :tokens, :dependent => :destroy
-  has_one :student_info, :dependent => :destroy
+  has_many :registrations, :dependent => :destroy
   has_one :profile, :dependent => :destroy
   has_many :direct_grades, :class_name => 'Grade', :dependent => :destroy,
            :as => :subject
@@ -136,6 +136,11 @@ class User < ActiveRecord::Base
     else
       email[0, email.index(?@)]
     end      
+  end
+
+  # The user's registration for the main class on this site.
+  def registration
+    registrations.where(:course_id => Course.main.id).first
   end
   
   # Configure gravatars.

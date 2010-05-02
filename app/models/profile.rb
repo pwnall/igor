@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100427075741
+# Schema version: 20100502201753
 #
 # Table name: profiles
 #
@@ -13,9 +13,6 @@
 #  athena_username       :string(32)      not null
 #  about_me              :string(4096)    default(""), not null
 #  allows_publishing     :boolean(1)      default(TRUE), not null
-#  has_phone             :boolean(1)      default(TRUE), not null
-#  has_aim               :boolean(1)      not null
-#  has_jabber            :boolean(1)      not null
 #  phone_number          :string(64)
 #  aim_name              :string(64)
 #  jabber_name           :string(64)

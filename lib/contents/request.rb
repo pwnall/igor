@@ -32,15 +32,15 @@ class Request
           ]
       requests << request
     end
-    unless user.student_info
+    unless user.registration
       request = Request.new :author => User.first,
           :headline => 'wants you to answer the course sign-up survey',
           :contents => 'We need your answers to give you a recitation ' +
                        'assignment, and to tailor the course to your needs.',
           :actions => [
-            ['Answer Survey', [:my_own_student_infos_path]]
+            ['Answer Survey', [:my_own_registrations_path]]
           ]
-      requests << request      
+      requests << request
     end
     requests
   end

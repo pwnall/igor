@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100427075741) do
+ActiveRecord::Schema.define(:version => 20100502201753) do
 
   create_table "assignment_metrics", :force => true do |t|
     t.string   "name",          :limit => 64,                                                   :null => false
@@ -121,24 +121,21 @@ ActiveRecord::Schema.define(:version => 20100427075741) do
   end
 
   create_table "profiles", :force => true do |t|
-    t.integer  "user_id",                                                  :null => false
-    t.string   "real_name",             :limit => 128,                     :null => false
-    t.string   "nickname",              :limit => 64,                      :null => false
-    t.string   "university",            :limit => 64,                      :null => false
-    t.string   "department",            :limit => 64,                      :null => false
-    t.string   "year",                  :limit => 4,                       :null => false
-    t.string   "athena_username",       :limit => 32,                      :null => false
-    t.string   "about_me",              :limit => 4096, :default => "",    :null => false
-    t.boolean  "allows_publishing",                     :default => true,  :null => false
+    t.integer  "user_id",                                                 :null => false
+    t.string   "real_name",             :limit => 128,                    :null => false
+    t.string   "nickname",              :limit => 64,                     :null => false
+    t.string   "university",            :limit => 64,                     :null => false
+    t.string   "department",            :limit => 64,                     :null => false
+    t.string   "year",                  :limit => 4,                      :null => false
+    t.string   "athena_username",       :limit => 32,                     :null => false
+    t.string   "about_me",              :limit => 4096, :default => "",   :null => false
+    t.boolean  "allows_publishing",                     :default => true, :null => false
     t.string   "phone_number",          :limit => 64
     t.string   "aim_name",              :limit => 64
     t.string   "jabber_name",           :limit => 64
     t.integer  "recitation_section_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "has_phone",                             :default => true,  :null => false
-    t.boolean  "has_aim",                               :default => false, :null => false
-    t.boolean  "has_jabber",                            :default => false, :null => false
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id", :unique => true
@@ -162,6 +159,18 @@ ActiveRecord::Schema.define(:version => 20100427075741) do
 
   add_index "recitation_sections", ["serial"], :name => "index_recitation_sections_on_serial", :unique => true
 
+  create_table "registrations", :force => true do |t|
+    t.integer  "user_id",                                          :null => false
+    t.boolean  "wants_credit",                                     :null => false
+    t.string   "motivation",   :limit => 32768
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "dropped",                       :default => false, :null => false
+    t.integer  "course_id",                                        :null => false
+  end
+
+  add_index "registrations", ["user_id"], :name => "index_student_infos_on_user_id", :unique => true
+
   create_table "run_results", :force => true do |t|
     t.integer  "submission_id",                     :null => false
     t.integer  "score"
@@ -173,16 +182,6 @@ ActiveRecord::Schema.define(:version => 20100427075741) do
   end
 
   add_index "run_results", ["submission_id"], :name => "index_run_results_on_submission_id", :unique => true
-
-  create_table "student_infos", :force => true do |t|
-    t.integer  "user_id",                       :null => false
-    t.boolean  "wants_credit",                  :null => false
-    t.string   "motivation",   :limit => 32768
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "student_infos", ["user_id"], :name => "index_student_infos_on_user_id", :unique => true
 
   create_table "submissions", :force => true do |t|
     t.integer  "deliverable_id",                        :null => false
