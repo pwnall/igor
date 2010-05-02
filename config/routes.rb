@@ -14,7 +14,6 @@ Seven::Application.routes.draw do |map|
   #   resources :products
   resources :assignment_feedbacks
   resources :feedback_questions
-  resources :recitation_sections  
   resources :run_results
   resources :team_memberships
   
@@ -103,6 +102,14 @@ Seven::Application.routes.draw do |map|
       post :websis_lookup
     end
   end    
+  resources :recitation_sections do
+    member do
+      post :set_recitation_section_leader_id
+      post :set_recitation_section_location
+      post :set_recitation_section_serial
+      post :set_recitation_section_time
+    end
+  end
   resources :sessions do
     collection do
       # TODO(costan): remove the "get" once Firefox Account Manager gets its bug
