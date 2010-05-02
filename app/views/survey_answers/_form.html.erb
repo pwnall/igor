@@ -5,21 +5,22 @@
     <dd>
       <%= f.select :assignment_id, SurveyAnswer.assignments_for_user(@s_user).
                                                 map { |a| [a.name, a.id] } %>
-      <span id="survey-answer-ajax-indicator">
-      </span>
     </dd>
   </dl>
   
 <%= observe_field 'survey_answer_assignment_id',
       :url => new_survey_answer_path, :method => :get, :frequency => 0.5,
       :before => update_page { |p|
-          p.replace_html 'survey-answer-ajax-indicator', loading_image_tag
+        p.replace_html 'survey-answer-ajax-indicator', loading_image_tag
       },
       :with => "'survey_answer[assignment_id]=' + encodeURIComponent(value)" %>         
 <% end %>
 
-<%= form_for @survey_answer, :remote => true,
-             :html => {:class => 'survey-answer-form'} do |f| %>	
+<%= remote_form_for @survey_answer,
+      :html => {:class => 'survey-answer-form'},
+      :before => update_page { |p|            
+        p.replace_html 'survey-answer-ajax-indicator', loading_image_tag
+      } do |f| %>	
   <%= f.error_messages %>
   <%= f.hidden_field :assignment_id %>  
 
@@ -69,7 +70,9 @@
 	
 	<p class="privacy-policy">
 		Only you and <%= Course.main.number %> Staff can see this.
-	</p>		
-  <%= f.submit "Submit" %>
+	</p>
+  <span id="survey-answer-ajax-indicator">
+    <%= f.submit "Submit" %>
+	</span>
 <% end %>
 </div>

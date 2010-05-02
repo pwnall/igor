@@ -50,7 +50,7 @@ class ProfilesController < ApplicationController
   # GET /profiles/new.xml
   def new
     @profile = Profile.new
-    new_edit false
+    new_edit
   end
 
   # GET /profiles/1/edit
@@ -75,10 +75,11 @@ class ProfilesController < ApplicationController
     
     respond_to do |format|
       if success
-        flash[:notice] = "Profile successfully #{is_new_record ? 'created' : 'updated'}."
-        format.html { redirect_to root_path }
+        flash[:notice] = "Profile successfully #{@profile.new_record? ? 'created' : 'updated'}."
+        format.html { redirect_to @profile.user }
+        format.js   { render :action => :create_update }
         format.xml do
-          if is_new_record
+          if @profile.new_record?
             render :xml => @profile, :status => :created, :location => @profile
           else
             head :ok
@@ -86,6 +87,7 @@ class ProfilesController < ApplicationController
         end  
       else
         format.html { render :action => :new_edit }
+        format.js   { render :action => :edit }
         format.xml  { render :xml => @profile.errors, :status => :unprocessable_entity }
       end
     end    
@@ -96,24 +98,16 @@ class ProfilesController < ApplicationController
   # POST /profiles.xml
   def create
     @profile = Profile.new(params[:profile])
-    create_update(false)    
+    create_update
   end
 
   # PUT /profiles/1
   # PUT /profiles/1.xml
   def update
     @profile = Profile.find(params[:id])
-    create_update(false)
+    create_update
   end
   
-  def create_manual
-    @new_user = User.new(:name => "dummy_#{Time.now.to_i}", :password => 'superdummy', :email => 'costan@mit.edu', :active => false, :admin => false)
-    @new_user.save!
-
-    @profile = Profile.new(params[:profile])
-    create_update(true)
-  end
-
   # DELETE /profiles/1
   # DELETE /profiles/1.xml
   def destroy

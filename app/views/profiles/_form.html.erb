@@ -1,140 +1,78 @@
-<!-- profiles/new_edit -->
-<div class="full_section">
-	
-<h1 class="full_section">Profile for <%= @s_user.name %></h1>
+<div class="profile-container">
+<h3>Profile</h3>
 
-<%= error_messages_for :profile %>
+<%= remote_form_for @profile,
+      :before => update_page { |p|            
+        p.replace_html 'survey-answer-ajax-indicator', loading_image_tag
+      } do |f| %> 
+  <%= f.error_messages %>
 
-<%
-if @profile.new_record?
-	url = { :controller => :profiles,
-          :action => @manual ? :create_manual : :create }
-	url[:id] = 0 if @manual
-else
-	url = profile_path @profile
-end
-%>
+	<dl class="profile">
+	  <dt>MIT username</dt>
+	  <dd>
+	  	<%= f.text_field :athena_username, :autocomplete => :off %>
+			<span id="websis-ajax-indicator"></span>
+		</dd>
+	  <dt>Full name</dt>
+	  <dd><%= f.text_field :real_name %></dd>
+	  <dt>Call me</dt>
+	  <dd><%= f.text_field :nickname %></dd>
+	  <dt>School</dt>
+	  <dd><%= f.text_field :university %></dd>
+	  <dt>Department</dt>
+	  <dd><%= f.text_field :department %></dd>
+	  <dt>Year</dt>
+	  <dd><%= f.select :year, profile_year_options(@profile) %></dd>
+	  
+	  <% if Course.main.has_recitations? %>
+	  <dt>Recitation</dt>
+	  <dd>
+	    <%= f.select :recitation_section_id,
+                   profile_recitation_section_options(@profile) %>
+	  </dd>
+	  <% end %>
+	  
+	  <dt>Publish my work</dt>
+	  <dd>
+	  	<%= f.check_box :allows_publishing %>
+      course staff may publish my proposals or homework solutions, as long as I
+			am credited
+		</dd>	  
+    
+		<dt>Phone</dt>
+    <dd>
+      <%= f.text_field :phone_number %>
+    </dd>
+    <dt>AIM screen name</dt>
+    <dd>
+      <%= f.text_field :aim_name %>
+    </dd>
+    <dt>Jabber account</dt>
+    <dd>
+      <%= f.text_field :jabber_name %>
+    </dd>
+					
+	  <dt>About</dt>
+	  <dd><%= f.text_area :about_me %></dd>
+	</dl>
 
-<%= form_for(@profile, :url => url,
-             :html => {:class => 'student_form'}) do |f| %>
-	<div class="form_box">
-		<div class="form_entry">
-			<div class="form_label">MIT username</div>
-			<div class="form_field_box">
-				<%= f.text_field :athena_username, :class => 'form_field' %>				
-			</div>
-		</div>				
-		<div class="form_entry">
-			<div class="form_label">WebSIS lookup status</div>
-			<div class="form_field_box" id="profile_websis_lookup">
-				Not started.
-			</div>
-			<%= observe_field :profile_athena_username,
-				:url => websis_lookup_profiles_path,
-				:before => %|$("profile_websis_lookup").update(\'#{loading_image_tag}\')|,
-				:with => '"athena_id=" + encodeURIComponent($("profile_athena_username").value)',
-				:frequency => 0.5 %>
-			
-			<%= javascript_tag '$("profile_athena_username").writeAttribute("autocomplete", "off");' %>
-			<% if @profile.new_record? %>
-				<%= javascript_tag remote_function(
-					:url => {:controller => :profiles, :action => :websis_lookup, :id => 0, :athena_id => @profile.athena_username},
-					:before => '$("profile_websis_lookup").update(\'<span style="color: gray; ">Querying WebSIS...</span>\')') %>
-			<% end %>
-		</div>
-		<div class="form_entry">
-			<div class="form_label">Real Full Name</div>
-			<div class="form_field_box">
-				<%= f.text_field :real_name, :class => 'form_field' %>
-			</div>
-		</div>
-		<div class="form_entry">
-			<div class="form_label">Year</div>
-			<div class="form_field_box" id="profile_year_container">
-				<%= f.select :year, profile_year_options(@profile), :class => 'form_field' %>
-			</div>
-		</div>
-    <div class="form_entry">
-      <div class="form_label">Department</div>
-      <div class="form_field_box">
-        <%= f.text_field :department, :class => 'form_field' %>
-      </div>
-    </div>
-		<div class="form_entry">
-			<div class="form_label">University</div>
-			<div class="form_field_box">
-				<%= f.text_field :university, :class => 'form_field' %>
-			</div>
-		</div>
-		<div class="form_entry">
-			<div class="form_label">Would like to be called</div>
-			<div class="form_field_box">
-				<%= f.text_field :nickname, :class => 'form_field' %>
-			</div>
-		</div>
-		<% if Course.main.has_recitations? %>
-		<div class="form_entry">
-			<div class="form_label">Recitation section</div>
-			<div class="form_field_box">
-				<%= f.select :recitation_section_id, profile_recitation_section_options(@profile), :class => 'form_field' %>
-			</div>
-		</div>
-		<% end %>
-    <div class="form_entry">
-      <div class="form_label">Permission to publish</div>
-      <div class="form_field_box">
-        <%= f.check_box :allows_publishing, :class => 'form_field' %>
-				The course staff may publish my proposals or homework solutions on
-				the Web, as long as I am credited
-      </div>
-    </div>		
-		<div class="form_entry">
-			<div class="form_label">Staff should whitelist my</div>
-			<div class="form_field_box">
-				<%= f.check_box :has_phone, :class => 'form_field' %>Phone
-				<%= f.check_box :has_aim, :class => 'form_field' %>AIM
-				<%= f.check_box :has_jabber, :class => 'form_field' %>Jabber
-			</div>
-		</div>
-		<div class="form_entry" id="phone_container">
-			<div class="form_label">Phone</div>
-			<div class="form_field_box">
-				<%= f.text_field :phone_number, :class => 'form_field' %>
-			</div>
-		</div>
-		<div class="form_entry" id="aim_container">
-			<div class="form_label">AIM screen name</div>
-			<div class="form_field_box">
-				<%= f.text_field :aim_name, :class => 'form_field' %>
-			</div>
-		</div>
-		<div class="form_entry" id="jabber_container">
-			<div class="form_label">Jabber account</div>
-			<div class="form_field_box">
-				<%= f.text_field :jabber_name, :class => 'form_field' %>
-			</div>
-		</div>
-		
-		<div class="form_entry">
-			<div class="form_label">About me</div>
-			<div class="form_field_box">
-				<%= f.text_area :about_me, :rows => 5, :class => 'form_field' %>
-			</div>
-		</div>
-		<div class="form_submit_box">
-		    <%= f.submit @profile.new_record? ? "Submit" : "Update", :class => 'form_submit' %>
-			or
-			<%= link_to 'Go home', root_path %>
-		</div>
-	</div>
+  <p class="privacy-policy">
+    Every registered user can see this.
+  </p>  
+  <span id="survey-answer-ajax-indicator">
+    <%= f.submit @profile.new_record? ? 'Submit' : 'Update' %>
+  </span>
 <% end %>
-
-
-<%= javascript_tag <<JS_END
-show_div_on_checkbox_setting('phone_container', 'profile_has_phone', true);
-show_div_on_checkbox_setting('aim_container', 'profile_has_aim', true);
-show_div_on_checkbox_setting('jabber_container', 'profile_has_jabber', true);
-JS_END
-%>
-
 </div>
+
+<%= observe_field :profile_athena_username,
+  :url => websis_lookup_profiles_path,
+  :before => %|$("profile_websis_lookup").update(\'#{loading_image_tag}\')|,
+  :with => '"athena_id=" + encodeURIComponent($("profile_athena_username").value)',
+  :frequency => 0.5 %>
+
+<% if @profile.new_record? %>
+  <%= javascript_tag remote_function(
+    :url => websis_lookup_profiles_path(:athena_id => @profile.athena_username),
+    :before => %|$("profile_websis_lookup").update(\'#{loading_image_tag}\')|) %>
+<% end %>

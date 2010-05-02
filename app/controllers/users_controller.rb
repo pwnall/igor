@@ -4,7 +4,7 @@ class UsersController < ApplicationController
        :recover_password, :recovery_email]
   before_filter :authenticated_as_user, :only => [:edit_password,
                                                   :update_password,
-                                                  :show, :update]
+                                                  :show]
    
   # GET /users
   # GET /users.xml
@@ -72,6 +72,8 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.xml
   def update
+    # TODO(costan): figure out the usefulness of this, maybe drop it
+    
     @user = User.find(params[:id])
 
     respond_to do |format|

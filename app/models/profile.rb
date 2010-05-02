@@ -55,20 +55,11 @@ class Profile < ActiveRecord::Base
   # True if the user consents to having their work published on the Web.
   validates_inclusion_of :allows_publishing, :in => [true, false]
   
-  # True if the student expects to contact us via phone.
-  validates_inclusion_of :has_phone, :in => [true, false]
-  
   # The phone number the student will use to contact us.
   validates_length_of :phone_number, :in => 1..64, :allow_nil => true
   
-  # True if the student wants to share their AIM with us.
-  validates_inclusion_of :has_aim, :in => [true, false]
-  
   # The AIM name the student will use to contact us.
   validates_length_of :aim_name, :in => 1..64, :allow_nil => true
-
-  # True if the student wants to share their Jabber ID with us.
-  validates_inclusion_of :has_jabber, :in => [true, false]
 
   # The Jabber name the student will use to contact us.
   validates_length_of :jabber_name, :in => 1..64, :allow_nil => true

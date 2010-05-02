@@ -15,11 +15,7 @@
   <% if Course.main.has_recitations? %>
   <dt>Recitation</dt>
 	<dd>
-	<% if profile.recitation_section %>
-		<%= profile.recitation_section.name %>
-	<% else %>
-	  no assignment
-	<% end %>
+  	<%= display_name_for_recitation_section(profile.recitation_section) %>
 	</dd>
 	<% end %>
 	
@@ -27,17 +23,17 @@
 	<dd><%= profile.allows_publishing ? 'Yes' : 'No' %></dd>
 	
 	<% if profile.editable_by_user? @s_user %>
-	<% if profile.has_phone %>
+	<% if profile.phone_number %>
   <dt>Phone</dt>
 	<dd><%= profile.phone_number %></dd>
 	<% end %>
-  <% if profile.has_aim %>
+  <% if profile.aim_name %>
   <dt>AIM</dt>
   <dd><%= profile.aim_name %></dd>
   <% end %>
-  <% if profile.has_jabber %>
+  <% if profile.jabber_name %>
   <dt>Jabber</dt>
-  <dd><%= profile.jabber_account %></dd>
+  <dd><%= profile.jabber_name %></dd>
   <% end %>
 	<% end %>
 

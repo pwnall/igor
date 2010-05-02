@@ -1,0 +1,3 @@
+page.select('.profile-container').each do |element|
+  element.update render('profiles/show', :profile => @profile)
+end
