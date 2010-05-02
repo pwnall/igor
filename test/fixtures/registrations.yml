@@ -3,14 +3,14 @@
 #
 # Table name: registrations
 #
-#  id           :integer(4)      not null, primary key
-#  user_id      :integer(4)      not null
-#  wants_credit :boolean(1)      not null
-#  motivation   :string(32768)
-#  created_at   :datetime
-#  updated_at   :datetime
-#  dropped      :boolean(1)      not null
-#  course_id    :integer(4)      not null
+#  id         :integer(4)      not null, primary key
+#  user_id    :integer(4)      not null
+#  for_credit :boolean(1)      not null
+#  motivation :string(32768)
+#  created_at :datetime
+#  updated_at :datetime
+#  dropped    :boolean(1)      not null
+#  course_id  :integer(4)      not null
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
@@ -19,7 +19,8 @@ dexter:
   course: main
   motivation: I will pwn this class.
   user: dexter
-  wants_credit: true
+  dropped: false
+  for_credit: true
   
 #one:
 #  real_name: MyString

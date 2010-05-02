@@ -3,42 +3,45 @@ h2 img {
 	padding: 0 8px 8px 0;
 }
 
-.profile-container {
+.profile-container, .registration-container {
 	clear: both;
 }
 
-.profile-container h3 {
+.profile-container h3, .registration-container h3 {
 	margin: 0;
 	padding: 0;
 }
-.profile-container h3 a {
+.profile-container h3 a, .registration-container h3 a {
 	display: inline-block;
 	font-weight: normal;
 	padding: 0 0 0 8px;
 }
-dl.profile {
+dl.profile, dl.registration {
 	overflow: hidden;
 	margin: 0;
-	padding: 8px 0 0 0;
+	padding: 8px 0 8px 0;
 }
-dl.profile dt {
+dl.profile dt, dl.registration dt {
 	float: left;
   clear: both;
 	width: 10em;
 	color: #595959;
 	padding: 0 0 4px 0;
 }
-dl.profile dd {
-	margin: 0 0 0 10em;
+dl.profile dd, dl.registration dd {
+	float: left;
+	margin: 0;
 	padding: 0 0 4px 0;
 }
-.profile-container form .privacy-policy {
+.profile-container form .privacy-policy,
+    .registration-container form .privacy-policy {
   float: left;
   margin: 4px 0 0 0;
   padding: 4px 0 0 0;
   color: #652900;
 }
-.profile-container form input[type=submit] {
+.profile-container form input[type=submit],
+    .registration-container form input[type=submit] {
   margin: 4px 0 0 0;
   float: right;
 }

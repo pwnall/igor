@@ -27,22 +27,20 @@ class RegistrationsController < ApplicationController
     end
   end
 
-  def new_edit(manual)
+  def new_edit
     prepare_for_editing
 
-    @manual = manual
-    unless @registration.new_record?
-      if !@s_user.admin && (@s_user.id != @registration.user_id)
-        # Do not allow random record updates.
-        notice[:error] =
-            'That is not yours to play with! Your attempt has been logged.'
-        redirect_to root_path
-        return
-      end
+    # Do not allow random record updates.
+    unless @registration.editable_by_user? @s_user
+      notice[:error] =
+          'That is not yours to play with! Your attempt has been logged.'
+      redirect_to root_path
+      return
     end
     
     respond_to do |format|
       format.html { render :action => :new_edit }
+      format.js   { render :action => :edit }
       format.xml  { render :xml => @registration }
     end    
   end
@@ -60,49 +58,28 @@ class RegistrationsController < ApplicationController
         @registration.recitation_conflicts.index_by &:timeslot
   end
   private :prepare_for_editing
-  
-  # GET /registrations/for_myself
-  def my_own
-    if @s_user.registration
-      # the user has a registration, so hack it into the request
-      params[:id] = @s_user.registration.id
-      edit
-    else
-      new
-    end
-  end
-  
+    
   # GET /registrations/new
   # GET /registrations/new.xml
   def new
     @registration = Registration.new
-    new_edit(false)
+    new_edit
   end
 
   # GET /registrations/1/edit
   def edit
     @registration = Registration.find(params[:id])
-    new_edit(false)
+    new_edit
   end
   
-  def new_manual
-    @registration = Registration.new
-    new_edit(true)    
-  end
-    
-  def create_update(manual)
-    @manual = manual
-    
+  def create_update
     is_new_record = @registration.new_record?
-    if is_new_record
-      @registration.user = manual ? @new_user : @s_user       
-    else
-      if !@s_user.admin && @s_user.id != @registration.user_id
-        # Do not allow random record updates.
-        notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
-        redirect_to root_path
-        return
-      end
+    
+    if !@registration.editable_by_user?(@s_user)
+      # Do not allow random record updates.
+      notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
+      redirect_to root_path
+      return
     end
     
     if Course.main.has_recitations?
@@ -135,7 +112,8 @@ class RegistrationsController < ApplicationController
     respond_to do |format|
       if success
         flash[:notice] = "Student Information successfully #{is_new_record ? 'submitted' : 'updated'}."
-        format.html { redirect_to root_path }
+        format.html { redirect_to @registration.user }
+        format.js   { render :action => :create_update }
         format.xml do
           if is_new_record
             render :xml => @registration, :status => :created, :location => @registration
@@ -146,6 +124,7 @@ class RegistrationsController < ApplicationController
       else
         prepare_for_editing
         format.html { render :action => :new_edit }
+        format.js   { render :action => :edit }
         format.xml  { render :xml => @registration.errors, :status => :unprocessable_entity }
       end
     end    
@@ -155,24 +134,16 @@ class RegistrationsController < ApplicationController
   # POST /registrations.xml
   def create
     @registration = Registration.new(params[:registration])
-    create_update(false)    
+    create_update
   end
 
   # PUT /registrations/1
   # PUT /registrations/1.xml
   def update
     @registration = Registration.find(params[:id])
-    create_update(false)
+    create_update
   end
   
-  def create_manual
-    @new_user = User.new(:name => "dummy_#{Time.now.to_i}", :password => 'superdummy', :email => 'costan@mit.edu', :active => false, :admin => false)
-    @new_user.save!
-
-    @registration = Registration.new(params[:registration])
-    create_update(true)
-  end
-
   # DELETE /registrations/1
   # DELETE /registrations/1.xml
   def destroy

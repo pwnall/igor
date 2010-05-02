@@ -3,7 +3,7 @@
 
 <%= remote_form_for @profile,
       :before => update_page { |p|            
-        p.replace_html 'survey-answer-ajax-indicator', loading_image_tag
+        p.replace_html 'profile-ajax-indicator', loading_image_tag
       } do |f| %> 
   <%= f.error_messages %>
 
@@ -59,7 +59,7 @@
   <p class="privacy-policy">
     Every registered user can see this.
   </p>  
-  <span id="survey-answer-ajax-indicator">
+  <span id="profile-ajax-indicator">
     <%= f.submit @profile.new_record? ? 'Submit' : 'Update' %>
   </span>
 <% end %>

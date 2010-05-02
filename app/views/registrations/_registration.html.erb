@@ -1,0 +1,56 @@
+<dl class="registration">
+	<dt>For credit</dt>
+	<dd>
+		<%= registration.for_credit? ? 'Yes' : 'No' %>
+	</dd>
+	<dt>Dropped class</dt>
+  <dd>
+    <%= registration.dropped? ? 'Yes' : 'No' %>
+  </dd>
+	
+  <% registration.prerequisite_answers.sort_by(&:prerequisite_id).
+                  each do |answer| %>
+  <% next if answer.took_course? or answer.waiver_answer.empty? %>
+  <dt>
+  	<%= answer.prerequisite.waiver_question %>
+  </dt>
+	<dd>
+    <%= answer.waiver_answer %>
+  </dd>
+  <% end %>
+	
+	<% unless registration.motivation.blank? %>
+	<dt>Motivation</dt>
+	<dd>	
+		<%= registration.motivation %>
+	</dd>
+	<% end %>
+	
+  <% if Course.main.has_recitations? %>	
+	<dt>Availability</dt>
+  <dd>
+    <table>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Wednesday</th>
+          <th>Friday</th>
+        </tr>           
+      </thead>
+      <tbody>
+        <% ['10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm'].zip((10..16).to_a).each do |hour, dhour| %>
+          <tr>
+            <th><%= hour %></th>
+            <% [2, 4].each do |day| %>
+              <td>
+                <% rc = registration.recitation_conflicts.where(:timeslot => day + dhour * 10).first %> 
+                <%=h rc.nil? ? '' : rc.class_name %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>           
+      </tbody>
+    </table>
+	</dd>
+	<% end %>
+</dl>

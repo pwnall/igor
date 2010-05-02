@@ -1,0 +1,25 @@
+<div class="registration-container">
+<h3>Registration</h3>
+
+<%= remote_form_for @registration,
+      :before => update_page { |p|            
+        p.replace_html 'registration-ajax-indicator', loading_image_tag
+      } do |f| %> 
+  <%= f.error_messages %>
+
+	<dl class="registration">
+	  <dt>For credit</dt>
+	  <dd>
+	  	<%= f.check_box :for_credit %>
+			intending to take <%= @registration.course.number %> for credit / grades
+		</dd>
+	</dl>
+
+  <p class="privacy-policy">
+    Every registered user can see this.
+  </p>  
+  <span id="registration-ajax-indicator">
+    <%= f.submit @registration.new_record? ? 'Submit' : 'Update' %>
+  </span>
+<% end %>
+</div>

@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(:version => 20100502201753) do
   end
 
   create_table "prerequisite_answers", :force => true do |t|
-    t.integer  "student_info_id", :null => false
+    t.integer  "registration_id", :null => false
     t.integer  "prerequisite_id", :null => false
     t.boolean  "took_course",     :null => false
     t.text     "waiver_answer"
@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(:version => 20100502201753) do
     t.datetime "updated_at"
   end
 
-  add_index "prerequisite_answers", ["student_info_id", "prerequisite_id"], :name => "prerequisites_for_a_student", :unique => true
+  add_index "prerequisite_answers", ["registration_id", "prerequisite_id"], :name => "prerequisites_for_a_student", :unique => true
 
   create_table "prerequisites", :force => true do |t|
     t.string   "course_number",   :limit => 64,  :null => false
@@ -141,12 +141,12 @@ ActiveRecord::Schema.define(:version => 20100502201753) do
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id", :unique => true
 
   create_table "recitation_conflicts", :force => true do |t|
-    t.integer "student_info_id", :null => false
+    t.integer "registration_id", :null => false
     t.string  "class_name",      :null => false
     t.integer "timeslot",        :null => false
   end
 
-  add_index "recitation_conflicts", ["student_info_id", "timeslot"], :name => "index_recitation_conflicts_on_student_info_id_and_timeslot", :unique => true
+  add_index "recitation_conflicts", ["registration_id", "timeslot"], :name => "index_recitation_conflicts_on_student_info_id_and_timeslot", :unique => true
 
   create_table "recitation_sections", :force => true do |t|
     t.integer  "serial",                   :null => false
@@ -160,13 +160,13 @@ ActiveRecord::Schema.define(:version => 20100502201753) do
   add_index "recitation_sections", ["serial"], :name => "index_recitation_sections_on_serial", :unique => true
 
   create_table "registrations", :force => true do |t|
-    t.integer  "user_id",                                          :null => false
-    t.boolean  "wants_credit",                                     :null => false
-    t.string   "motivation",   :limit => 32768
+    t.integer  "user_id",                                        :null => false
+    t.boolean  "for_credit",                                     :null => false
+    t.string   "motivation", :limit => 32768
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "dropped",                       :default => false, :null => false
-    t.integer  "course_id",                                        :null => false
+    t.boolean  "dropped",                     :default => false, :null => false
+    t.integer  "course_id",                                      :null => false
   end
 
   add_index "registrations", ["user_id"], :name => "index_student_infos_on_user_id", :unique => true

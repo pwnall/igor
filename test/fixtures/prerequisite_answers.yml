@@ -4,7 +4,7 @@
 # Table name: prerequisite_answers
 #
 #  id              :integer(4)      not null, primary key
-#  student_info_id :integer(4)      not null
+#  registration_id :integer(4)      not null
 #  prerequisite_id :integer(4)      not null
 #  took_course     :boolean(1)      not null
 #  waiver_answer   :text

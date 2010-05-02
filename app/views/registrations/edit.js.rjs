@@ -1,0 +1,3 @@
+page.select('.registration-container').each do |element|
+  element.update render('registrations/form')
+end
