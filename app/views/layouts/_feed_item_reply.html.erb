@@ -2,7 +2,8 @@
   <h4>
     <span class="author">
       <%= user_image_tag feed_item.author %>
-      <%= feed_item.author.display_name_for @s_user %>
+      <%= link_to feed_item.author.display_name_for(@s_user),
+                  feed_item.author %>
     </span>
     <%= feed_item.contents %>
   </h3>

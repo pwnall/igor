@@ -1,0 +1,46 @@
+<dl class="profile">
+  <dt>MIT username</dt>
+	<dd><%= profile.athena_username %></dd>
+  <dt>Full name</dt>
+	<dd><%= profile.real_name %></dd>
+  <dt>Call me</dt>
+  <dd><%= profile.nickname %></dd>
+  <dt>School</dt>
+  <dd><%= profile.university %></dd>
+  <dt>Department</dt>
+  <dd><%= profile.department %></dd>
+	<dt>Year</dt>
+	<dd><%= profile.year %></dd>
+	
+  <% if Course.main.has_recitations? %>
+  <dt>Recitation</dt>
+	<dd>
+	<% if profile.recitation_section %>
+		<%= profile.recitation_section.name %>
+	<% else %>
+	  no assignment
+	<% end %>
+	</dd>
+	<% end %>
+	
+	<dt>Publish my work</dt>
+	<dd><%= profile.allows_publishing ? 'Yes' : 'No' %></dd>
+	
+	<% if profile.editable_by_user? @s_user %>
+	<% if profile.has_phone %>
+  <dt>Phone</dt>
+	<dd><%= profile.phone_number %></dd>
+	<% end %>
+  <% if profile.has_aim %>
+  <dt>AIM</dt>
+  <dd><%= profile.aim_name %></dd>
+  <% end %>
+  <% if profile.has_jabber %>
+  <dt>Jabber</dt>
+  <dd><%= profile.jabber_account %></dd>
+  <% end %>
+	<% end %>
+
+  <dt>About</dt>
+	<dd><%= profile.about_me %></dd>
+</dl>

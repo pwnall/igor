@@ -1,1 +1,11 @@
-<%= render @user %>
+<h2>
+	<%= user_image_tag @user, :size => :large %>
+	<%= @user.real_name %>
+</h2>
+
+<dl class="user-info">
+	<dt>E-mail</dt>
+	<dd><%= mail_to @user.email %></dd>
+</dl>
+
+<%= render 'profiles/show', :profile => @user.profile %>

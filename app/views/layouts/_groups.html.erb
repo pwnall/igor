@@ -11,7 +11,7 @@
   	<% (team.users - [@s_user]).sort_by { |u| u.display_name_for @s_user }.each do |user| %>
 		  <li>
   			<%= user_image_tag user %>
-	   		<%= link_to user.display_name_for(@s_user), @s_user, :class => 'name'%>
+	   		<%= link_to user.display_name_for(@s_user), user, :class => 'name'%>
 			</li>
 		<% end %>
 		</ul>

@@ -2,8 +2,8 @@ class ProfilesController < ApplicationController
   include ApplicationHelper
 
   before_filter :authenticated_as_user,
-      :only => [:new, :create, :edit, :update, :websis_lookup, :my_own]
-  before_filter :authenticated_as_admin, :only => [:index, :show, :destroy]
+      :only => [:new, :create, :edit, :show, :update, :websis_lookup, :my_own]
+  before_filter :authenticated_as_admin, :only => [:index, :destroy]
 
   # GET /profiles
   # GET /profiles.xml
@@ -48,8 +48,7 @@ class ProfilesController < ApplicationController
         @profile.athena_username = @s_user.email.split('@')[0]
       end
     else
-      if !@s_user.admin && @s_user.id != @profile.user_id
-        # Don't let normal users edit other users' profiles.
+      if !@profile.editable_by_user? @s_user
         notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
         redirect_to root_url
         return
@@ -61,6 +60,7 @@ class ProfilesController < ApplicationController
 
     respond_to do |format|
       format.html { render :action => :new_edit }
+      format.js   { render :action => :edit }
       format.xml  { render :xml => @profile }
     end    
   end
