@@ -31,7 +31,7 @@ end
 			</div>
 			<%= observe_field :profile_athena_username,
 				:url => websis_lookup_profiles_path,
-				:before => '$("profile_websis_lookup").update(\'<span style="color: gray; ">Querying WebSIS...</span>\')',
+				:before => %|$("profile_websis_lookup").update(\'#{loading_image_tag}\')|,
 				:with => '"athena_id=" + encodeURIComponent($("profile_athena_username").value)',
 				:frequency => 0.5 %>
 			
@@ -51,7 +51,7 @@ end
 		<div class="form_entry">
 			<div class="form_label">Year</div>
 			<div class="form_field_box" id="profile_year_container">
-				<%= f.select :year, @year_options, :class => 'form_field' %>
+				<%= f.select :year, profile_year_options(@profile), :class => 'form_field' %>
 			</div>
 		</div>
     <div class="form_entry">
@@ -76,7 +76,7 @@ end
 		<div class="form_entry">
 			<div class="form_label">Recitation section</div>
 			<div class="form_field_box">
-				<%= f.select :recitation_section_id, @recitation_section_options, :class => 'form_field' %>
+				<%= f.select :recitation_section_id, profile_recitation_section_options(@profile), :class => 'form_field' %>
 			</div>
 		</div>
 		<% end %>

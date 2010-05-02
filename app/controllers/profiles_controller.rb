@@ -1,8 +1,6 @@
 class ProfilesController < ApplicationController
-  include ApplicationHelper
-
   before_filter :authenticated_as_user,
-      :only => [:new, :create, :edit, :show, :update, :websis_lookup, :my_own]
+      :only => [:new, :create, :edit, :show, :update, :websis_lookup]
   before_filter :authenticated_as_admin, :only => [:index, :destroy]
 
   # GET /profiles
@@ -16,22 +14,11 @@ class ProfilesController < ApplicationController
     end
   end
   
-  # XHR /profiles/websis_lookup/0?athena_id=costan
-  def websis_lookup
-    @athena_username = params[:athena_id]
-    @athena_info = MitStalker.from_user_name @athena_username
-    @year_options = profile_year_options @athena_info[:year] unless @athena_info.nil?
-    respond_to do |format|
-      format.js # websis_lookup.js.rjs
-    end
-  end
-
   # GET /profiles/1
   # GET /profiles/1.xml
   def show
     @profile = Profile.find(params[:id])
 
-    @year_options = profile_year_options @profile.year
     @recitation_section_options = profile_recitation_section_options @profile.recitation_section_id
 
     respond_to do |format|
@@ -40,13 +27,9 @@ class ProfilesController < ApplicationController
     end
   end
 
-  def new_edit(manual)
-    @manual = manual
-    
+  def new_edit
     if @profile.new_record?
-      unless manual
-        @profile.athena_username = @s_user.email.split('@')[0]
-      end
+      @profile.athena_username = @s_user.email.split('@')[0]
     else
       if !@profile.editable_by_user? @s_user
         notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
@@ -54,9 +37,6 @@ class ProfilesController < ApplicationController
         return
       end
     end
-    
-    @year_options = profile_year_options @profile.year
-    @recitation_section_options = profile_recitation_section_options @profile.recitation_section_id
 
     respond_to do |format|
       format.html { render :action => :new_edit }
@@ -65,12 +45,6 @@ class ProfilesController < ApplicationController
     end    
   end
   private :new_edit
-  
-  # GET /profiles/my_own
-  def my_own
-    @profile = @s_user.profile || Profile.new(:user => @s_user)
-    new_edit false
-  end
   
   # GET /profiles/new
   # GET /profiles/new.xml
@@ -82,31 +56,18 @@ class ProfilesController < ApplicationController
   # GET /profiles/1/edit
   def edit
     @profile = Profile.find(params[:id])
-    new_edit false
+    new_edit
   end
   
-  def new_manual
-    @profile = Profile.new
-    new_edit true
-  end
-    
-  def create_update(manual)
-    @manual = manual
-    
-    is_new_record = @profile.new_record?
-    if is_new_record
-      @profile.user = manual ? @new_user : @s_user       
-    else
-      if !@s_user.admin && @s_user.id != @profile.user_id
-        # do not allow random record updates
-        notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
-        redirect_to root_path
-        return
-      end
+  def create_update
+    if !@profile.editable_by_user? @s_user
+      # do not allow random record updates
+      notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
+      redirect_to root_path
+      return
     end
-
-        
-    if is_new_record
+    
+    if @profile.new_record?
       success = @profile.save
     else
       success = @profile.update_attributes(params[:profile])
@@ -124,8 +85,6 @@ class ProfilesController < ApplicationController
           end  
         end  
       else
-        @year_options = profile_year_options @profile
-        @recitation_section_options = profile_recitation_section_options @profile.recitation_section_id        
         format.html { render :action => :new_edit }
         format.xml  { render :xml => @profile.errors, :status => :unprocessable_entity }
       end
@@ -167,20 +126,12 @@ class ProfilesController < ApplicationController
     end
   end
   
-
-  private
-  # make the right year stick in FF/tarded by putting it as the first option   
-  def profile_year_options(profile_year)
-    options = [['Freshman (1)', '1'], ['Sophomore (2)', '2'], ['Junior (3)', '3'], ['Senior (4)', '4'], ['Graduate (G)', 'G']]
-    yr_index = (0...(options.length)).find { |i| options[i][1] == profile_year }
-    options = options[yr_index...(options.length)] + options[0...yr_index] unless yr_index.nil?
-    return options
-  end  
-  
-  def profile_recitation_section_options(profile_recitation_section_id)
-    options = [['(none)', nil]] + RecitationSection.find(:all).map { |s| [display_name_for_recitation_section(s), s.id] }
-    rs_index = (0...(options.length)).find { |i| options[i][1] == profile_recitation_section_id }
-    options = options[rs_index...(options.length)] + options[0...rs_index] unless rs_index.nil?
-    return options
+  # XHR GET /profiles/websis_lookup?athena_id=costan
+  def websis_lookup
+    @athena_username = params[:athena_id]
+    @athena_info = MitStalker.from_user_name @athena_username
+    respond_to do |format|
+      format.js # websis_lookup.js.rjs
+    end
   end
 end

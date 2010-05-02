@@ -4,7 +4,7 @@ class UsersController < ApplicationController
        :recover_password, :recovery_email]
   before_filter :authenticated_as_user, :only => [:edit_password,
                                                   :update_password,
-                                                  :show]
+                                                  :show, :update]
    
   # GET /users
   # GET /users.xml
