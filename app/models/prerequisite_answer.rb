@@ -13,8 +13,8 @@
 #
 
 class PrerequisiteAnswer < ActiveRecord::Base
-  # The student information containing this answer to a prerequisite question.
-  belongs_to :student_info
+  # The registration containing this answer to a prerequisite class question.
+  belongs_to :registration
   # The prerequisite that this answer covers.
   belongs_to :prerequisite
   

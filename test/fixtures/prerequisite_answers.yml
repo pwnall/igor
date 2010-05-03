@@ -15,13 +15,13 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 dexter_math:
-  student_info: dexter
+  registration: dexter
   prerequisite: math
   took_course: false
   waiver_answer: Gold medal at IMO 2009.
 
 dexter_python:
-  student_info: dexter
+  registration: dexter
   prerequisite: python
   took_course: false
   waiver_answer: I read the Python tutorial last night.

@@ -21,27 +21,16 @@
 #  updated_at            :datetime
 #
 
-#admin:
-#  user_id: 1
-#  real_name: MyString
-#  year: MyString
-#  athena_username: MyString
-
 dexter:
   user: dexter
   real_name: Dexter Boy Genius
   nickname: Dex
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
   year: 1
   athena_username: genius
   about_me: "I am Dexter, boy genius!"
-  has_phone: true
+  allows_publishing: true
   phone_number: (617) 808-0808
-  has_aim: true
   aim_name: boygenius
-  has_jabber: false
-  jabber_name: ""
   recitation_section: victor_10am
-  
-#  real_name: MyString
-#  year: MyString
-#  athena_username: MyString
