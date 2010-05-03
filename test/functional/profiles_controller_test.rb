@@ -1,25 +1,44 @@
 require 'test_helper'
 
 class ProfilesControllerTest < ActionController::TestCase
-  def setup
+  setup do
     @user = users(:dexter)    
   end
   
-  test "my_own does not work without login" do
-    get :my_own
-    assert_redirected_to new_session_path
+  test "show does not work without login" do
+    get :show, :id => @user.profile.id
+    assert_redirected_to root_path
   end
   
-  test "simple my_own" do
-    get :my_own, {}, { :user_id => @user.id }
+  test "show does not reveal other person's contact info" do
+    get :show, { :id => @user.profile.id }, { :user_id => users(:solo).id }
     assert_response :success
-    assert_template 'new_edit'
+    assert_template :show
+    assert_select 'dl.profile dt' do |elements|
+      assert !elements.any? { |e| e.match /phone/i },
+             "Dexter's phone number should not be revealed to other users"      
+    end
+    
     assert_equal assigns(:profile), @user.profile
+  end
+    
+  test "show reveals everything for own profile" do
+    get :show, { :id => @user.profile.id }, { :user_id => @user.id }
+    check_profile_reveals_everything    
+  end
+
+  test "show reveals everything for admins" do
+    get :show, { :id => @user.profile.id }, { :user_id => users(:admin).id }
+    check_profile_reveals_everything
   end
   
-  test "my_own refuses to render another profile" do
-    get :my_own, { :id => users(:admin).to_param }, { :user_id => @user.id }
+  def check_profile_reveals_everything
     assert_response :success
+    assert_template :show
     assert_equal assigns(:profile), @user.profile
-  end
+    assert_select 'dl.profile dt' do |elements|
+      assert elements.any? { |e| e.match /phone/i },
+             "Dexter's profile should have a phone number"
+    end
+  end  
 end

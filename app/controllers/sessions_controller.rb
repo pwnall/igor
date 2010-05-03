@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
         format.html { redirect_to root_path }
         format.xml { head :ok }
       else
-        format.html { @login.reset_password; render :action => :new }
+        format.html { @login.reset_password; render :action => :index }
         format.xml  { render :xml => nil, :status => :unprocessable_entity }
       end
     end    

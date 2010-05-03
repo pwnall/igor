@@ -28,7 +28,7 @@ class Request
           :contents => 'You need a profile to have your homework graded, and ' +
                        'to receive a recitation assignment.',
           :actions => [
-            ['Create Profile', [:my_own_profiles_path]]
+            ['Create Profile', [:new_profile_path, {:user_id => user.id}]]
           ]
       requests << request
     end
@@ -38,7 +38,7 @@ class Request
           :contents => 'We need your answers to give you a recitation ' +
                        'assignment, and to tailor the course to your needs.',
           :actions => [
-            ['Answer Survey', [:my_own_registrations_path]]
+            ['Answer Survey', [:new_registration_path, {:user_id => user.id}]]
           ]
       requests << request
     end

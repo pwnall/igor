@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ApiControllerTest < ActionController::TestCase
-  fixtures :users, :student_infos, :recitation_conflicts
-  
   def check_conflict_info(info)
     assert info, 'Conflict info not present in response'    
     info = info.sort_by { |student| student['athena'] }

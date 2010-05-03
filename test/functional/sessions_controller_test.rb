@@ -6,13 +6,35 @@ class SessionsControllerTest < ActionController::TestCase
     @password = 'password'  
   end
   
-  test "when logged out index redirects to login screen" do 
+  test "when logged out renders generic news screen" do 
     get :index
-    assert_redirected_to new_session_path
+    assert_response :success
+    assert_template :index
+
+    assert_select '#header .account-panel .user-name', false,
+                  'Not logged in, should not get any name in user panel'
   end
   
-  test "when logged in index renders home page" do
+  test "when admin logged in, index renders home page" do
     get :index, {}, { :user_id => @user.id }
+    assert_response :success
+    assert_template :index
+    
+    assert_select '#header .account-panel .user-name', /admin/,
+                  'User panel should show admin'    
+  end
+
+  test "when regular user logged in, index renders home page" do
+    get :index, {}, { :user_id => users(:dexter).id }
+    assert_response :success
+    assert_template :index
+    
+    assert_select '#header .account-panel .user-name', /dexter/,
+                  'User panel should show dexter'    
+  end
+
+  test "smoke test for home page of inactive user" do
+    get :index, {}, { :user_id => users(:inactive).id }
     assert_response :success
     assert_template :index
   end
@@ -28,6 +50,10 @@ class SessionsControllerTest < ActionController::TestCase
     assert_equal "Invalid user/password combination", flash[:error]
     assert_equal nil, session[:user_id],
                  "User entered incorrect password but session was still set"
+
+    assert_template :index
+    assert_equal @user.name, assigns(:login).name,
+                 "User input (name) not retained"
   end
   
   test "login with inexistent username" do

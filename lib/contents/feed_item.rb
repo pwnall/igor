@@ -94,10 +94,11 @@ class FeedItem
       metrics = assignment.metrics.select { |m| m.visible_for_user?(user) }
       next if metrics.empty?
       
-      last_grade = metrics.sort_by(&:updated_at).last.grades.
-                           sort_by(&:updated_at).last
-      item = FeedItem.new :time => last_grade.updated_at,
-           :author => last_grade.grader, :flavor => :grade,
+      last_metric = metrics.sort_by(&:updated_at).last
+      last_grade = last_metric.grades.sort_by(&:updated_at).last
+      author = last_grade ? last_grade.grader : User.first
+      item = FeedItem.new :time => (last_grade || last_metric).updated_at,
+           :author => author, :flavor => :grade,
            :headline => "released the grades for #{assignment.name}",
            :contents => '',
            :actions => [

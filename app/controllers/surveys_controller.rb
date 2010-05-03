@@ -79,7 +79,7 @@ class SurveysController < ApplicationController
     @survey.destroy
 
     respond_to do |format|
-      format.html { redirect_to feedback_questions_path }
+      format.html { redirect_to surveys_path }
       format.xml  { head :ok }
     end
   end

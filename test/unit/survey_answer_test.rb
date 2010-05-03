@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class SurveyAnswerTest < ActiveSupport::TestCase
-  def setup
+  setup do
     @answer = SurveyAnswer.new :user => users(:admin),
                                :assignment => assignments(:ps1)
   end
