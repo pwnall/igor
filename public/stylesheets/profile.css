@@ -30,8 +30,18 @@ dl.profile dt, dl.registration dt {
 }
 dl.profile dd, dl.registration dd {
 	float: left;
+	width: 390px;
 	margin: 0;
 	padding: 0 0 4px 0;
+}
+dl.profile span.instructions, dl.registration span.instructions {
+	display: block;
+	color: #595959;
+	font-family: italic;
+}
+form dl.registration dd table {
+	position: relative;
+	left: -160px;
 }
 .profile-container form .privacy-policy,
     .registration-container form .privacy-policy {
@@ -44,4 +54,11 @@ dl.profile dd, dl.registration dd {
     .registration-container form input[type=submit] {
   margin: 4px 0 0 0;
   float: right;
+}
+
+dl.registration table.timetable th, dl.registration table.timetable td {
+	min-width: 50px;
+}
+dl.registration table.timetable td.free {
+	color: #A6A6A6;
 }

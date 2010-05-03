@@ -31,3 +31,7 @@ h3 {
   font-size: 14pt;
   color: #652900;
 }
+
+th {
+	text-align: left;
+}

@@ -85,18 +85,18 @@ class RegistrationsController < ApplicationController
     if Course.main.has_recitations?
       old_recitation_conflicts =
           @registration.recitation_conflicts.index_by &:timeslot
+      Rails.logger.warn old_recitation_conflicts.inspect
+      
       # Update recitation conflicts.
-      unless params[:old_recitation_conflicts].nil?
-        params[:recitation_conflicts] += params[:old_recitation_conflicts].values
-      end
-      params[:recitation_conflicts].each do |rc|
-        next if rc[:class_name].nil? || rc[:class_name].empty?
+      params[:recitation_conflicts].each_value do |rc|
+        next if rc[:class_name].blank?
         timeslot = rc[:timeslot].to_i
-        if old_recitation_conflicts[timeslot]
-          old_recitation_conflicts[timeslot].class_name = rc[:class_name]
-          old_recitation_conflicts.delete timeslot
+        if old_recitation_conflicts.has_key? timeslot
+          old_recitation_conflicts.delete(timeslot).update_attributes rc
         else
-          @registration.recitation_conflicts << RecitationConflict.new(rc)
+          rc[:registration] = @registration
+          conflict = RecitationConflict.new(rc)
+          @registration.recitation_conflicts << conflict
         end
       end
       # wipe cleared conflicts
@@ -104,7 +104,7 @@ class RegistrationsController < ApplicationController
     end
     
     if is_new_record
-      success = @registration.save
+      success = @registration.save!
     else
       success = @registration.update_attributes(params[:registration])
     end

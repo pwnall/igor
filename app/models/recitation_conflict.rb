@@ -18,6 +18,8 @@ class RecitationConflict < ActiveRecord::Base
 
   # The student registration containing this recitation conflict.
   belongs_to :registration
-  validates_presence_of :registration
-  validates_uniqueness_of :timeslot, :scope => [:registration_id]
+  
+  # TODO(costan): figure out a way to check that the registration is valid
+  validates_presence_of :registration_id
+  #validates_uniqueness_of :timeslot, :scope => [:registration_id]
 end

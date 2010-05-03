@@ -29,23 +29,30 @@
   <% if Course.main.has_recitations? %>	
 	<dt>Availability</dt>
   <dd>
-    <table>
+    <table class="timetable">
       <thead>
         <tr>
           <th>Time</th>
-          <th>Wednesday</th>
-          <th>Friday</th>
+          <% ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].each do |day| %>
+          <th><%= day %></th>
+          <% end %>
         </tr>           
       </thead>
       <tbody>
-        <% ['10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm'].zip((10..16).to_a).each do |hour, dhour| %>
+        <% ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm'].zip((9..17).to_a).each do |hour, dhour| %>
           <tr>
             <th><%= hour %></th>
-            <% [2, 4].each do |day| %>
-              <td>
-                <% rc = registration.recitation_conflicts.where(:timeslot => day + dhour * 10).first %> 
-                <%=h rc.nil? ? '' : rc.class_name %>
+            <% (1..5).each do |day| %>
+              <% rc = registration.recitation_conflicts.select { |rc| rc.timeslot.to_i == day + dhour * 10 }.first %> 
+							<% if rc %>
+              <td class="busy">
+                <%=h rc.class_name %>
               </td>
+							<% else %>
+							<td class="free">
+								free
+							</td>
+							<% end %>
             <% end %>
           </tr>
         <% end %>           
