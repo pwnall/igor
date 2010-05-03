@@ -1,41 +1,37 @@
-<!-- registrations/index -->
-<div class="full_section">
+<h2>Listing <%= @registrations.length %> Registrations</h2>
 
-	<h1 class="full_section">Listing <%= @registrations.length %> Student Information Sheets</h1>
-
-	<table>
-		<thead>
+<table>
+	<thead>
+	  <tr>
+	  	<td>User</td>
+	    <td>Credit</td>
+			<% @prerequisites.sort_by(&:id).each do |prereq| %>
+			<td><%= prereq.course_number %></td>
+			<% end %>
+	    <td>Comments</td>
+	  </tr>
+	</thead>
+	
+	<tbody>
+		<% for registration in @registrations %>
 		  <tr>
-		  	<td>User</td>
-		    <td>Credit</td>
-				<% @prerequisites.sort_by(&:id).each do |prereq| %>
-				<td><%= prereq.course_number %></td>
-				<% end %>
-		    <td>Comments</td>
-		  </tr>
-		</thead>
-		
-		<tbody>
-			<% for registration in @registrations %>
-			  <tr>
-			    <td><%=link_to h(registration.user.name), :controller => :users, :action => :show, :id => registration.user.id %></td>
-			    <td><%=h registration.wants_credit %></td>
-					<% registration.prerequisite_answers.
-                          sort_by(&:prerequisite_id).each do |answer| %>
-						<td>
-						<% if answer.took_course? %>
-						  Took class
-						<% else %>
-						  <%= answer.waiver_answer %>
-						<% end %>
-						</td>
+		    <td><%=link_to h(registration.user.name), registration.user %></td>
+		    <td><%= registration.for_credit ? 'Yes' : 'No' %></td>
+				<% registration.prerequisite_answers.
+                        sort_by(&:prerequisite_id).each do |answer| %>
+					<td>
+					<% if answer.took_course? %>
+					  <%= ok_image_tag %>
+					<% else %>
+					  <%= answer.waiver_answer %>
 					<% end %>
-			    <td><%=h registration.motivation %></td>
-			    <td><%= link_to 'Show', registration %></td>
-			    <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
-			    <td><%= link_to 'Destroy', registration, :confirm => 'Are you sure?', :method => :delete %></td>
-			  </tr>
-			<% end %>		
-		</tbody>
-	</table>
-</div>
+					</td>
+				<% end %>
+		    <td><%=h registration.motivation %></td>
+		    <td><%= link_to 'Show', registration %></td>
+		    <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
+		    <td><%= link_to 'Destroy', registration, :confirm => 'Are you sure?', :method => :delete %></td>
+		  </tr>
+		<% end %>		
+	</tbody>
+</table>

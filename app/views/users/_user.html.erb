@@ -1,26 +1,22 @@
 <h3 class="user-info">
   <%= user_image_tag user %>
-  <%= user.display_name_for @s_user %>  
+  <%= link_to user.display_name_for(@s_user), user %>  
 </h3>
 <dl class="user-info">
   <dt>E-mail</dt>
   <dd><%= user.email %></dd>
   <dt>Admin</dt>
   <dd><%= user.admin? ? 'Yes' : 'No' %></dd>
-  <dt>Join date</dt>
-  <dd><%= user.created_at %></dd>
+	<dt>Profile</dt>
+	<dd>
+		<%= user.profile ? ok_image_tag : 'No' %>		
+	</dd>
+	<dt>Registration</dt>
+	<dd>
+		<%= user.registration ? ok_image_tag : 'No' %>
+	</dd>
 </dl>
 <ul class="user-info-actions">
-  <% if user.profile %>
-  <li>
-    <%= link_to 'Profile', user.profile %>
-  </li>
-  <% end %>
-  <% if user.student_info %>
-  <li>
-    <%= link_to 'Student Info', user.student_info %>
-  </li>
-  <% end %>
 	<% if @s_user.admin? %>
   <li>
     <%= link_to 'Impersonate', impersonate_user_path(user), :method => :post %>

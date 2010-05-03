@@ -91,7 +91,6 @@ Seven::Application.routes.draw do |map|
   end
   resources :profiles do
     collection do
-      get :my_own
       post :websis_lookup
     end
   end    
@@ -112,9 +111,7 @@ Seven::Application.routes.draw do |map|
       post :logout
     end
   end
-  resources :registrations do
-    collection { get :my_own }
-  end
+  resources :registrations
   resources :submissions do
     member do
       get :file

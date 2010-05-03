@@ -19,14 +19,25 @@ class ProfilesController < ApplicationController
   def show
     @profile = Profile.find(params[:id])
 
-    @recitation_section_options = profile_recitation_section_options @profile.recitation_section_id
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @profile }
     end
   end
+  
+  # GET /profiles/new
+  # GET /profiles/new.xml
+  def new
+    @profile = Profile.new
+    new_edit
+  end
 
+  # GET /profiles/1/edit
+  def edit
+    @profile = Profile.find(params[:id])
+    new_edit
+  end
+  
   def new_edit
     if @profile.new_record?
       @profile.athena_username = @s_user.email.split('@')[0]
@@ -45,20 +56,21 @@ class ProfilesController < ApplicationController
     end    
   end
   private :new_edit
-  
-  # GET /profiles/new
-  # GET /profiles/new.xml
-  def new
-    @profile = Profile.new
-    new_edit
+
+  # POST /profiles
+  # POST /profiles.xml
+  def create
+    @profile = Profile.new(params[:profile])
+    create_update
   end
 
-  # GET /profiles/1/edit
-  def edit
+  # PUT /profiles/1
+  # PUT /profiles/1.xml
+  def update
     @profile = Profile.find(params[:id])
-    new_edit
+    create_update
   end
-  
+
   def create_update
     if !@profile.editable_by_user? @s_user
       # do not allow random record updates
@@ -93,20 +105,6 @@ class ProfilesController < ApplicationController
     end    
   end
   private :create_update
-
-  # POST /profiles
-  # POST /profiles.xml
-  def create
-    @profile = Profile.new(params[:profile])
-    create_update
-  end
-
-  # PUT /profiles/1
-  # PUT /profiles/1.xml
-  def update
-    @profile = Profile.find(params[:id])
-    create_update
-  end
   
   # DELETE /profiles/1
   # DELETE /profiles/1.xml
