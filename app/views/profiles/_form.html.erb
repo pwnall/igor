@@ -67,12 +67,12 @@
 
 <%= observe_field :profile_athena_username,
   :url => websis_lookup_profiles_path,
-  :before => %|$("profile_websis_lookup").update(\'#{loading_image_tag}\')|,
+  :before => %|$("websis-ajax-indicator").update(\'#{loading_image_tag}\')|,
   :with => '"athena_id=" + encodeURIComponent($("profile_athena_username").value)',
   :frequency => 0.5 %>
 
 <% if @profile.new_record? %>
   <%= javascript_tag remote_function(
     :url => websis_lookup_profiles_path(:athena_id => @profile.athena_username),
-    :before => %|$("profile_websis_lookup").update(\'#{loading_image_tag}\')|) %>
+    :before => %|$("websis-ajax-indicator").update(\'#{loading_image_tag}\')|) %>
 <% end %>

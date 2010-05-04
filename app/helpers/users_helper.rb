@@ -10,7 +10,7 @@ module UsersHelper
       url = user.gravatar_url(:size => size_pixels)
     end
     image_tag url, :alt => "avatar for #{user.name}",
-              :style => "width: #{size_pixels}px; height: #{size_pixels}px;"      
+              :style => "width: #{size_pixels}px; height: #{size_pixels}px;"
   end
   
   # TODO(costan): this should be outdated and replaced with the model method;

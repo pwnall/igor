@@ -1,1 +1,15 @@
-<%= render 'profile_photos/form' %>
+<h2>
+  <%= user_image_tag @profile.user, :size => :large %>
+  <%= @profile.user.real_name %>
+</h2>
+
+<dl class="user-info">
+  <dt>E-mail</dt>
+  <dd><%= mail_to @profile.user.email %></dd>
+</dl>
+
+<%= render 'profile_photos/for_user', :user => @profile.user %>
+
+<%= render 'profiles/form' %>
+
+<%= render 'registrations/for_user', :user => @profile.user %>

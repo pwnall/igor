@@ -28,7 +28,9 @@ class ProfilesController < ApplicationController
   # GET /profiles/new
   # GET /profiles/new.xml
   def new
-    @profile = Profile.new
+    user = User.find(params[:user_id])
+    @profile = Profile.new :user => user,
+                           :athena_username => user.email.split('@')[0]
     new_edit
   end
 
@@ -39,14 +41,10 @@ class ProfilesController < ApplicationController
   end
   
   def new_edit
-    if @profile.new_record?
-      @profile.athena_username = @s_user.email.split('@')[0]
-    else
-      if !@profile.editable_by_user? @s_user
-        notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
-        redirect_to root_url
-        return
-      end
+    if !@profile.editable_by_user? @s_user
+      notice[:error] = 'That is not yours to play with! Attempt logged.'
+      redirect_to root_url
+      return
     end
 
     respond_to do |format|
