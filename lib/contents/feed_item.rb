@@ -139,18 +139,17 @@ class FeedItem
   end
   
   # Generates feed items for the published announcements.
-  def self.add_announcements(items, user, options)
-    # TODO(costan): distinguish between open announcements,
-    #               semi-open (login required), and admin-only; right now,
-    #               the default is semi-open, so we can post sensitive info
-    return unless user
-    
-    # TODO(costan): get authors on notices
-    Notice.all.each do |notice|
-      item = FeedItem.new :time => notice.updated_at,
-          :author => User.first, :flavor => :announcement,
-          :headline => notice.subject.html_safe,
-          :contents => notice.contents.html_safe,
+  def self.add_announcements(items, user, options)    
+    Announcement.all.each do |announcement|
+      # TODO(costan): distinguish between open announcements,
+      #               semi-open (login required), and admin-only; right now,
+      #               the default is semi-open, so we can post sensitive info      
+      next unless user or announcement.open_to_visitors?
+      
+      item = FeedItem.new :time => announcement.updated_at,
+          :author => announcement.author, :flavor => :announcement,
+          :headline => announcement.headline.html_safe,
+          :contents => announcement.contents.html_safe,
           :actions => [],
           :replies => []
       items << item

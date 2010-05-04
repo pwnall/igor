@@ -208,8 +208,8 @@ class UserTest < ActiveSupport::TestCase
   end
   
   def test_find_all_by_query
-    assert_equal [users(:admin), users(:dexter), users(:inactive),
-                  users(:solo)],
+    assert_equal [users(:admin), users(:dexter), users(:solo),
+                  users(:inactive)],
                  User.find_all_by_query!('i')
   end
   

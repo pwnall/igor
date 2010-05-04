@@ -1,0 +1,26 @@
+<div class="full_section">
+	<div style="z-index: 10; float: right; width: 100px; text-align: right;">
+		<h1 class="full_section">
+			<%= link_to 'New', new_announcement_path %>
+		</h1>
+	</div>
+	<h1 class="full_section" style="margin-right: 100px; ">
+		Site-Wide Notices
+	</h1>
+	
+	<table>
+	  <tr>
+	    <th>Headline</th>
+	    <th>Author</th>
+	  </tr>
+	
+	<% for announcement in @announcements %>
+	  <tr>
+	    <td><%= announcement.headline %></td>
+	    <td><%= announcement.author.real_name %></td>
+	    <td><%= link_to 'Edit', edit_announcement_path(announcement) %></td>
+	    <td><%= link_to 'Destroy', announcement, :confirm => 'Are you sure?', :method => :delete %></td>
+	  </tr>
+	<% end %>
+	</table>
+</div>

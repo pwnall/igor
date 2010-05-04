@@ -2,6 +2,18 @@
 	<div class="new-feed-item-type-selector">
 	  <h2>New </h2>
 	  <ul>
+      <% if @s_user.admin? %>
+      <li>
+        <%= link_to_remote 'Announcement',
+              :url => new_announcement_path, :method => :get,
+              :before => update_page { |p|
+                 p.select('.new-feed-item-form-container').each { |element|
+                   element.update loading_image_tag
+                 }
+              }
+        %>        
+      </li>
+      <% end %>
 	    <li>
         <%= link_to_remote 'Submission', :url => new_submission_path,
               :method => :get,
@@ -22,18 +34,6 @@
               }
         %>
 	    </li>
-			<% if @s_user.admin? %>
-			<li>
-        <%= link_to_remote 'Announcement',
-              :url => new_notice_path, :method => :get,
-              :before => update_page { |p|
-                 p.select('.new-feed-item-form-container').each { |element|
-                   element.update loading_image_tag
-                 }
-              }
-        %>				
-			</li>
-			<% end %>
 	  </ul>		
 	</div>
 	<div class="new-feed-item-form-container"></div>

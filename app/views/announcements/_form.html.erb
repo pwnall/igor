@@ -1,4 +1,4 @@
-<%= remote_form_for @notice,
+<%= remote_form_for @announcement,
       :html => {:class => 'announcement-form'},
       :before => update_page { |p|            
         p.replace_html 'announcement-ajax-indicator', loading_image_tag
@@ -6,8 +6,8 @@
   <%= f.error_messages %>
 
   <dl>
-  	<dt><%= f.label :subject %></dt>
-		<dd><%= f.text_field :subject %></dd>
+  	<dt><%= f.label :headline %></dt>
+		<dd><%= f.text_field :headline %></dd>
     <dt><%= f.label :contents %></dt>
     <dd><%= f.text_area :contents %></dd>
   </dl>
@@ -15,7 +15,7 @@
   <p class="privacy-policy">
     Every site user can see this.
   </p>
-  <span id="survey-answer-ajax-indicator">
-    <%= @notice.new_record? ? "Publish" : "Update" %>
+  <span id="announcement-ajax-indicator">
+    <%= f.submit @announcement.new_record? ? "Publish" : "Update" %>
   </span>
 <% end %>

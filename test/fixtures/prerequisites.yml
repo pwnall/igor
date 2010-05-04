@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100503235401
+# Schema version: 20100504203833
 #
 # Table name: prerequisites
 #

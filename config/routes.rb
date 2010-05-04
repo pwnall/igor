@@ -27,7 +27,8 @@ Seven::Application.routes.draw do |map|
       put :update_password
     end
   end
-   
+  
+  resources :announcements  
   resource :api, :controller => 'api' do
     get :conflict_info
   end
@@ -76,11 +77,6 @@ Seven::Application.routes.draw do |map|
     end
     member do
       put :update_for_user
-    end
-  end
-  resources :notices do
-    member do
-      post :dismiss
     end
   end
   resources :prerequisites do

@@ -9,7 +9,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100503235401) do
+ActiveRecord::Schema.define(:version => 20100504203833) do
+
+  create_table "announcements", :force => true do |t|
+    t.string   "headline",         :limit => 128,                     :null => false
+    t.string   "contents",         :limit => 8192,                    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "author_id",                                           :null => false
+    t.boolean  "open_to_visitors",                 :default => false, :null => false
+  end
 
   create_table "assignment_metrics", :force => true do |t|
     t.string   "name",          :limit => 64,                                                   :null => false
@@ -89,16 +98,6 @@ ActiveRecord::Schema.define(:version => 20100503235401) do
 
   add_index "notice_statuses", ["notice_id", "user_id"], :name => "index_notice_statuses_on_notice_id_and_user_id", :unique => true
   add_index "notice_statuses", ["user_id", "notice_id"], :name => "index_notice_statuses_on_user_id_and_notice_id", :unique => true
-
-  create_table "notices", :force => true do |t|
-    t.string   "subject",         :limit => 128,                 :null => false
-    t.string   "contents",        :limit => 8192,                :null => false
-    t.integer  "posted_count",                    :default => 0, :null => false
-    t.integer  "seen_count",                      :default => 0, :null => false
-    t.integer  "dismissed_count",                 :default => 0, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "prerequisite_answers", :force => true do |t|
     t.integer  "registration_id", :null => false
