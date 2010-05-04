@@ -343,27 +343,19 @@ module Paperclip
 
     def post_process #:nodoc:
       return if @queued_for_write[:original].nil?
-      solidify_style_definitions
-      return if fire_events(:before)
-      post_process_styles
-      return if fire_events(:after)
+      instance.run_paperclip_callbacks(:post_process) do
+        instance.run_paperclip_callbacks(:"#{name}_post_process") do
+          post_process_styles
+        end
+      end
     end
 
-    def fire_events(which)
-      return true if callback(:"#{which}_post_process") == false
-      return true if callback(:"#{which}_#{name}_post_process") == false
-    end
-
-    def callback which #:nodoc:
-      instance.run_callbacks(which, @queued_for_write){|result, obj| result == false }
-    end
-
-    def post_process_styles
-      @styles.each do |name, args|
+    def post_process_styles #:nodoc:
+      styles.each do |name, style|
         begin
-          raise RuntimeError.new("Style #{name} has no processors defined.") if args[:processors].blank?
-          @queued_for_write[name] = args[:processors].inject(@queued_for_write[:original]) do |file, processor|
-            Paperclip.processor(processor).make(file, args, self)
+          raise RuntimeError.new("Style #{name} has no processors defined.") if style[:processors].blank?
+          @queued_for_write[name] = style[:processors].inject(@queued_for_write[:original]) do |file, processor|
+            Paperclip.processor(processor).make(file, style, self)
           end
         rescue PaperclipError => e
           log("An error was received while processing: #{e.inspect}")
@@ -371,7 +363,7 @@ module Paperclip
         end
       end
     end
-
+    
     def interpolate pattern, style = default_style #:nodoc:
       interpolations = self.class.interpolations.sort{|a,b| a.first.to_s <=> b.first.to_s }
       interpolations.reverse.inject( pattern.dup ) do |result, interpolation|

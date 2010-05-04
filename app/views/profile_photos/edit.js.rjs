@@ -1,0 +1,3 @@
+page.select('.profile-photo-container').each do |element|
+  element.replace render('profile_photos/form')
+end

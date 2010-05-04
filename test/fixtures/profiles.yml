@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100502201753
+# Schema version: 20100503235401
 #
 # Table name: profiles
 #
@@ -33,4 +33,17 @@ dexter:
   allows_publishing: true
   phone_number: (617) 808-0808
   aim_name: boygenius
+  recitation_section: victor_10am
+
+solo:
+  user: solo
+  real_name: Always Going Solo
+  nickname: Solo
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: 4
+  athena_username: solo
+  about_me: "Leave me alone"
+  allows_publishing: false
+  phone_number: (617) 900-0000
   recitation_section: victor_10am

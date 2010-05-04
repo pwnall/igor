@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100502201753) do
+ActiveRecord::Schema.define(:version => 20100503235401) do
 
   create_table "assignment_metrics", :force => true do |t|
     t.string   "name",          :limit => 64,                                                   :null => false
@@ -52,8 +52,6 @@ ActiveRecord::Schema.define(:version => 20100502201753) do
     t.string   "pkg_content_type", :limit => 64
     t.integer  "pkg_file_size"
     t.binary   "pkg_file",         :limit => 2147483647
-    t.binary   "pkg_medium_file"
-    t.binary   "pkg_thumb_file"
     t.integer  "time_limit"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -119,6 +117,20 @@ ActiveRecord::Schema.define(:version => 20100502201753) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "profile_photos", :force => true do |t|
+    t.integer  "profile_id",                           :null => false
+    t.string   "pic_file_name",    :limit => 256,      :null => false
+    t.string   "pic_content_type", :limit => 64,       :null => false
+    t.integer  "pic_file_size",                        :null => false
+    t.binary   "pic_file",         :limit => 16777215, :null => false
+    t.binary   "pic_profile_file", :limit => 16777215, :null => false
+    t.binary   "pic_thumb_file",   :limit => 16777215, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "profile_photos", ["profile_id"], :name => "index_profile_photos_on_profile_id", :unique => true
 
   create_table "profiles", :force => true do |t|
     t.integer  "user_id",                                                 :null => false
@@ -190,8 +202,6 @@ ActiveRecord::Schema.define(:version => 20100502201753) do
     t.string   "code_content_type", :limit => 64
     t.integer  "code_file_size"
     t.binary   "code_file",         :limit => 16777215
-    t.binary   "code_medium_file"
-    t.binary   "code_thumb_file"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

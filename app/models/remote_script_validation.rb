@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100502201753
+# Schema version: 20100503235401
 #
 # Table name: deliverable_validations
 #
@@ -13,8 +13,6 @@
 #  pkg_content_type :string(64)
 #  pkg_file_size    :integer(4)
 #  pkg_file         :binary(21474836
-#  pkg_medium_file  :binary
-#  pkg_thumb_file   :binary
 #  time_limit       :integer(4)
 #  created_at       :datetime
 #  updated_at       :datetime

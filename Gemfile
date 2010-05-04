@@ -20,6 +20,7 @@ gem 'json'
 gem 'mit_stalker'
 gem 'prawn', :git => 'git://github.com/sandal/prawn.git',
              :ref => '7701a4fe7d089be255a7d42ebdf140df67c4ac39'
+gem 'rmagick'
 gem 'simple-daemon'
 gem 'starling'
 gem 'system_timer'

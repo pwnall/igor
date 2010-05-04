@@ -8,6 +8,8 @@
 	<dd><%= mail_to @user.email %></dd>
 </dl>
 
-<%= render 'profiles/show', :profile => @user.profile %>
+<%= render 'profile_photos/for_user', :user => @user %>
 
-<%= render 'registrations/show', :registration => @user.registration %>
+<%= render 'profiles/for_user', :user => @user %>
+
+<%= render 'registrations/for_user', :user => @user %>

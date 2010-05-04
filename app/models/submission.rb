@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100502201753
+# Schema version: 20100503235401
 #
 # Table name: submissions
 #
@@ -10,8 +10,6 @@
 #  code_content_type :string(64)
 #  code_file_size    :integer(4)
 #  code_file         :binary(16777215
-#  code_medium_file  :binary
-#  code_thumb_file   :binary
 #  created_at        :datetime
 #  updated_at        :datetime
 #

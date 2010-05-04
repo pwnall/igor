@@ -1,0 +1,10 @@
+<% if user.profile and user.profile.editable_by_user?(@s_user) %>
+<div class="profile-photo-container">
+  <%= link_to_remote 'Change photo',
+        :url => new_profile_photo_path(:profile_id => user.profile.id),
+        :method => :get, :before => update_page { |p|
+           p.replace_html 'profile-ajax-indicator', loading_image_tag
+        } %>
+  <span id="profile-ajax-indicator"></span>
+</div>
+<% end %>

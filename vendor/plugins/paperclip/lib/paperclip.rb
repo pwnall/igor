@@ -33,6 +33,7 @@ require 'paperclip/processor'
 require 'paperclip/thumbnail'
 require 'paperclip/storage'
 require 'paperclip/attachment'
+require 'paperclip/callback_compatability'
 if defined? RAILS_ROOT
   Dir.glob(File.join(File.expand_path(RAILS_ROOT), "lib", "paperclip_processors", "*.rb")).each do |processor|
     require processor
@@ -102,9 +103,13 @@ module Paperclip
 
     def included base #:nodoc:
       base.extend ClassMethods
-      unless base.respond_to?(:define_callbacks)
-        base.send(:include, Paperclip::CallbackCompatability)
-      end
+      if base.respond_to?("set_callback")
+        base.send :include, Paperclip::CallbackCompatability::Rails3
+      elsif !base.respond_to?("define_callbacks")
+        base.send :include, Paperclip::CallbackCompatability::Rails20
+      else
+        base.send :include, Paperclip::CallbackCompatability::Rails21
+      end      
     end
 
     def processor name #:nodoc:
@@ -192,8 +197,7 @@ module Paperclip
       after_save :save_attached_files
       before_destroy :destroy_attached_files
 
-      define_callbacks :before_post_process, :after_post_process
-      define_callbacks :"before_#{name}_post_process", :"after_#{name}_post_process"
+      define_paperclip_callbacks :post_process, :"#{name}_post_process"
      
       define_method name do |*args|
         a = attachment_for(name)
@@ -210,9 +214,9 @@ module Paperclip
 
       validates_each(name) do |record, attr, value|
         attachment = record.attachment_for(name)
-        attachment.send(:flush_errors) unless attachment.valid?
+        attachment.send(:flush_errors)
       end
-
+      
       setup_file_columns(name) if options[:storage] == :database
     end
 

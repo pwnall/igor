@@ -25,7 +25,7 @@ class SurveyQuestionsControllerTest < ActionController::TestCase
 
   test "admin should get new" do
     get :new, {}, { :user_id => @admin.id }
-    assert_template :new_edit
+    assert_template :new
     assert_response :success
   end
 

@@ -1,4 +1,8 @@
 class ProfilePhotosController < ApplicationController
+  before_filter :authenticated_as_user,
+      :only => [:new, :create, :edit, :show, :update, :websis_lookup]
+  before_filter :authenticated_as_admin, :only => [:index, :destroy]
+  
   # GET /profile_photos
   # GET /profile_photos.xml
   def index
@@ -24,49 +28,77 @@ class ProfilePhotosController < ApplicationController
   # GET /profile_photos/new
   # GET /profile_photos/new.xml
   def new
-    @profile_photo = ProfilePhoto.new
-
+    @profile_photo =
+        ProfilePhoto.where(:profile_id => params[:profile_id]).first ||
+        ProfilePhoto.new(:profile_id => params[:profile_id])
+    
+    unless @profile_photo.profile.editable_by_user?(@s_user)
+      notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
+      redirect_to root_url
+      return      
+    end
+    
     respond_to do |format|
-      format.html # new.html.erb
+      format.html { render :action => :edit }
+      format.js   { render :action => :edit }
       format.xml  { render :xml => @profile_photo }
     end
-  end
-
-  # GET /profile_photos/1/edit
-  def edit
-    @profile_photo = ProfilePhoto.find(params[:id])
   end
 
   # POST /profile_photos
   # POST /profile_photos.xml
   def create
-    @profile_photo = ProfilePhoto.new(params[:profile_photo])
-
-    respond_to do |format|
-      if @profile_photo.save
-        format.html { redirect_to(@profile_photo, :notice => 'Profile photo was successfully created.') }
-        format.xml  { render :xml => @profile_photo, :status => :created, :location => @profile_photo }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @profile_photo.errors, :status => :unprocessable_entity }
-      end
-    end
+    @profile_photo =
+        ProfilePhoto.where(:profile_id => params[:profile_photo][:profile_id]).
+                     first
+    @profile_photo ||= ProfilePhoto.new params[:profile_photo]
+    create_update
   end
-
+  
   # PUT /profile_photos/1
   # PUT /profile_photos/1.xml
   def update
-    @profile_photo = ProfilePhoto.find(params[:id])
+    @profile_photo = ProfilePhoto.find params[:id]
+    create_update
+  end
+  
+  def create_update
+    unless @profile_photo.profile.editable_by_user?(@s_user)
+      notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
+      redirect_to root_url
+      return      
+    end
+    
+    if @profile_photo.new_record?
+      success = @profile_photo.save
+    else
+      success = @profile_photo.update_attributes(params[:profile_photo])
+    end
 
     respond_to do |format|
-      if @profile_photo.update_attributes(params[:profile_photo])
-        format.html { redirect_to(@profile_photo, :notice => 'Profile photo was successfully updated.') }
-        format.xml  { head :ok }
+      if success 
+        format.html { redirect_to(@profile_photo.profile.user, :notice => 'Profile photo was successfully changed.') }
+        format.xml  { render :xml => @profile_photo, :status => :created, :location => @profile_photo }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => :new }
         format.xml  { render :xml => @profile_photo.errors, :status => :unprocessable_entity }
       end
-    end
+    end    
+  end
+  private :create_update
+  
+  # GET /profile_photos/1/thumb
+  def thumb
+    @profile_photo = ProfilePhoto.find params[:id]
+    send_data @profile_photo.pic_thumb_file, :filename => 'thumb.png',
+              :type => 'image/png'
+  end
+  
+  # GET /profile_photos/1/profile
+  def profile
+    @profile_photo = ProfilePhoto.find params[:id]
+    send_data @profile_photo.pic_profile_file, :filename => 'profile.png',
+              :type => 'image/png'    
   end
 
   # DELETE /profile_photos/1
@@ -76,7 +108,7 @@ class ProfilePhotosController < ApplicationController
     @profile_photo.destroy
 
     respond_to do |format|
-      format.html { redirect_to(profile_photos_url) }
+      format.html { redirect_to @profile_photo.profile.user }
       format.xml  { head :ok }
     end
   end

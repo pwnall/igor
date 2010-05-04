@@ -1,0 +1,19 @@
+<% if user.registration %>
+<%= render 'registrations/show', :registration => user.registration %>
+<% else %>
+<div class="registration-container">
+<h3>
+  No registration for <%= Course.main.number %>
+  <% if Registration.new(:user => user, :course => Course.main.number).
+                     editable_by_user?(@s_user) %>
+  <%= link_to_remote 'Edit',
+        :url => new_registration_path(:user_id => user.id,
+                                      :course_id => Course.main.id),
+        :method => :get, :before => update_page { |p|
+           p.replace_html 'registration-ajax-indicator', loading_image_tag
+        } %>
+  <% end %>
+  <span id="registration-ajax-indicator"></span>
+</h3>
+</div>
+<% end %>
