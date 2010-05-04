@@ -41,9 +41,10 @@ class ProfilesController < ApplicationController
   end
   
   def new_edit
+    # Disallow random record updates.
     if !@profile.editable_by_user? @s_user
       notice[:error] = 'That is not yours to play with! Attempt logged.'
-      redirect_to root_url
+      redirect_to root_path
       return
     end
 
@@ -70,14 +71,14 @@ class ProfilesController < ApplicationController
   end
 
   def create_update
+    # Disallow random record updates.
     if !@profile.editable_by_user? @s_user
-      # Do not allow random record updates.
-      notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
+      notice[:error] = 'That is not yours to play with! Attempt logged.'
       redirect_to root_path
       return
     end
     
-    if @profile.new_record?
+    if @new_record = @profile.new_record?
       success = @profile.save
     else
       params[:profile].delete :user_id  # Profiles should not move among users.
@@ -90,7 +91,7 @@ class ProfilesController < ApplicationController
         format.html { redirect_to @profile.user }
         format.js   { render :action => :create_update }
         format.xml do
-          if @profile.new_record?
+          if @new_profile
             render :xml => @profile, :status => :created, :location => @profile
           else
             head :ok

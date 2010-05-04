@@ -30,7 +30,7 @@ class RegistrationsController < ApplicationController
   def new_edit
     prepare_for_editing
 
-    # Do not allow random record updates.
+    # Disallow random record updates.
     unless @registration.editable_by_user? @s_user
       notice[:error] = 'That is not yours to play with! Attempt logged.'
       redirect_to root_path
@@ -74,10 +74,8 @@ class RegistrationsController < ApplicationController
   end
   
   def create_update
-    is_new_record = @registration.new_record?
-    
     if !@registration.editable_by_user?(@s_user)
-      # Do not allow random record updates.
+      # Disallow random record updates.
       notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
       redirect_to root_path
       return
@@ -100,11 +98,11 @@ class RegistrationsController < ApplicationController
           @registration.recitation_conflicts << conflict
         end
       end
-      # wipe cleared conflicts
+      # Wipe cleared conflicts.
       old_recitation_conflicts.each_value { |orc| @registration.recitation_conflicts.delete orc }
     end
     
-    if is_new_record
+    if @new_record = @registration.new_record?
       success = @registration.save!
     else
       # Disallow structural changes to the record.
@@ -116,7 +114,7 @@ class RegistrationsController < ApplicationController
     
     respond_to do |format|
       if success
-        flash[:notice] = "Student Information successfully #{is_new_record ? 'submitted' : 'updated'}."
+        flash[:notice] = "Student Information successfully #{@new_record ? 'submitted' : 'updated'}."
         format.html { redirect_to @registration.user }
         format.js   { render :action => :create_update }
         format.xml do
