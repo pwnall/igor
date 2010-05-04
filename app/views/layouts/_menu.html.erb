@@ -18,7 +18,13 @@
     </li>
   </ol>
 	
-<% if @s_user %> 
+<% if @s_user %>
+  <h2><%= link_to 'Profile', @s_user %></h2> 
+  <ol>
+  	<li>
+  		<%= link_to 'Grades', reveal_mine_grades_path %>
+  	</li>
+  </ol>
   <% if @s_user.admin? %>
   <%= render 'layouts/admin_console' %>
   <% end %>
