@@ -32,8 +32,7 @@ class RegistrationsController < ApplicationController
 
     # Do not allow random record updates.
     unless @registration.editable_by_user? @s_user
-      notice[:error] =
-          'That is not yours to play with! Your attempt has been logged.'
+      notice[:error] = 'That is not yours to play with! Attempt logged.'
       redirect_to root_path
       return
     end
@@ -62,7 +61,9 @@ class RegistrationsController < ApplicationController
   # GET /registrations/new
   # GET /registrations/new.xml
   def new
-    @registration = Registration.new
+    user = User.find params[:user_id]
+    course = Course.find params[:course_id]
+    @registration = Registration.new :user => user, :course => course
     new_edit
   end
 
@@ -106,6 +107,10 @@ class RegistrationsController < ApplicationController
     if is_new_record
       success = @registration.save!
     else
+      # Disallow structural changes to the record.
+      params[:registration].delete :user_id
+      params[:registration].delete :course_id
+      
       success = @registration.update_attributes(params[:registration])
     end
     

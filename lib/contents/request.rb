@@ -27,7 +27,7 @@ class Request
           :headline => 'wants you to create a profile',
           :contents => 'You need a profile to have your homework graded.',
           :actions => [
-            ['Create Profile', [:new_profile_path, {:user_id => user.id}]]
+            ['Create Profile', [:new_profile_path, { :user_id => user.id }]]
           ]
       requests << request
     end
@@ -37,7 +37,8 @@ class Request
           :contents => 'You must register to get a recitation assignment ' +
                        'and have your homework graded .',
           :actions => [
-            ['Answer Survey', [:url_for, user]]
+            ['Register', [:new_registration_path, { :user_id => user.id,
+                          :course_id => Course.main.id }]]
           ]
       requests << request
     end

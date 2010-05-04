@@ -6,6 +6,7 @@
         p.replace_html 'profile-ajax-indicator', loading_image_tag
       } do |f| %> 
   <%= f.error_messages %>
+	<%= f.hidden_field :user_id %>
 
 	<dl class="profile">
 	  <dt>MIT username</dt>

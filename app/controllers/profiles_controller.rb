@@ -71,7 +71,7 @@ class ProfilesController < ApplicationController
 
   def create_update
     if !@profile.editable_by_user? @s_user
-      # do not allow random record updates
+      # Do not allow random record updates.
       notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
       redirect_to root_path
       return
@@ -80,6 +80,7 @@ class ProfilesController < ApplicationController
     if @profile.new_record?
       success = @profile.save
     else
+      params[:profile].delete :user_id  # Profiles should not move among users.
       success = @profile.update_attributes(params[:profile])
     end
     

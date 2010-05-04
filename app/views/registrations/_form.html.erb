@@ -6,6 +6,8 @@
         p.replace_html 'registration-ajax-indicator', loading_image_tag
       } do |f| %> 
   <%= f.error_messages %>
+  <%= f.hidden_field :user_id %>
+  <%= f.hidden_field :course_id %>
 
 	<dl class="registration">
 	  <dt>For credit</dt>
