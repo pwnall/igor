@@ -146,7 +146,7 @@ class FeedItem
       #               the default is semi-open, so we can post sensitive info      
       next unless user or announcement.open_to_visitors?
       
-      item = FeedItem.new :time => announcement.updated_at,
+      item = FeedItem.new :time => announcement.created_at,
           :author => announcement.author, :flavor => :announcement,
           :headline => announcement.headline.html_safe,
           :contents => announcement.contents.html_safe,
@@ -155,6 +155,8 @@ class FeedItem
       
       if announcement.editable_by_user? user
         item.actions = [
+          ['Edit', [:edit_announcement_path, announcement],
+                   {:remote => true}],
           ['Delete', [:url_for, announcement],
                      { :confirm => 'Are you sure?', :method => :delete }]
         ]

@@ -1,3 +1,4 @@
 page.select('.new-feed-item-form-container').each do |element|
   element.update render('announcements/form')
 end
+page['announcement_headline'].activate
