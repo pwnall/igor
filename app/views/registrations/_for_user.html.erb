@@ -4,9 +4,9 @@
 <div class="registration-container">
 <h3>
   No registration for <%= Course.main.number %>
-  <% if Registration.new(:user => user, :course => Course.main.number).
+  <% if Registration.new(:user => user, :course => Course.main).
                      editable_by_user?(@s_user) %>
-  <%= link_to_remote 'Edit',
+  <%= link_to_remote 'Register',
         :url => new_registration_path(:user_id => user.id,
                                       :course_id => Course.main.id),
         :method => :get, :before => update_page { |p|

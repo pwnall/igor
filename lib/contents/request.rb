@@ -25,20 +25,19 @@ class Request
     unless user.profile
       request = Request.new :author => User.first,
           :headline => 'wants you to create a profile',
-          :contents => 'You need a profile to have your homework graded, and ' +
-                       'to receive a recitation assignment.',
+          :contents => 'You need a profile to have your homework graded.',
           :actions => [
-            ['Create Profile', [:new_profile_path, {:user_id => user.id}]]
+            ['Create Profile', [:url_for, user]]
           ]
       requests << request
     end
     unless user.registration
       request = Request.new :author => User.first,
-          :headline => 'wants you to answer the course sign-up survey',
-          :contents => 'We need your answers to give you a recitation ' +
-                       'assignment, and to tailor the course to your needs.',
+          :headline => 'wants you to register for the course',
+          :contents => 'You must register to get a recitation assignment ' +
+                       'and have your homework graded .',
           :actions => [
-            ['Answer Survey', [:new_registration_path, {:user_id => user.id}]]
+            ['Answer Survey', [:url_for, user]]
           ]
       requests << request
     end
