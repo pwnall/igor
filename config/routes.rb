@@ -89,11 +89,16 @@ Seven::Application.routes.draw do |map|
       post :set_prerequisite_waiver_question
     end
   end
+  resources :profile_photos do
+    member do
+      get :profile, :thumb
+    end
+  end
   resources :profiles do
     collection do
       post :websis_lookup
     end
-  end    
+  end
   resources :recitation_sections do
     member do
       post :set_recitation_section_leader_id
@@ -102,6 +107,7 @@ Seven::Application.routes.draw do |map|
       post :set_recitation_section_time
     end
   end
+  resources :registrations  
   resources :sessions do
     collection do
       # TODO(costan): remove the "get" once Firefox Account Manager gets its bug
@@ -111,7 +117,6 @@ Seven::Application.routes.draw do |map|
       post :logout
     end
   end
-  resources :registrations
   resources :submissions do
     member do
       get :file

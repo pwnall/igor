@@ -47,6 +47,7 @@ class Profile < ActiveRecord::Base
   # The user's recitation section.
   #
   # This is only used if the user is a student and the course has recitations.
+  # TODO(costan): this belongs in the course registration
   belongs_to :recitation_section
   
   # True if the user consents to having their work published on the Web.
@@ -63,6 +64,9 @@ class Profile < ActiveRecord::Base
   
   # Self-description that the site admins can see.
   validates_length_of :about_me, :in => 0..(4.kilobytes), :allow_nil => false
+  
+  # The user's avatar.
+  has_one :photo, :class_name => 'ProfilePhoto'
   
   def phone_number=(new_number)
     super(new_number.blank? ? nil : new_number)    
