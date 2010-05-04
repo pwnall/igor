@@ -91,13 +91,13 @@ ActiveRecord::Schema.define(:version => 20100504203833) do
   add_index "grades", ["subject_type", "subject_id", "metric_id"], :name => "grades_by_subject_and_assignment_metric_id", :unique => true
 
   create_table "notice_statuses", :force => true do |t|
-    t.integer "notice_id",                    :null => false
-    t.integer "user_id",                      :null => false
-    t.boolean "seen",      :default => false, :null => false
+    t.integer "announcement_id",                    :null => false
+    t.integer "user_id",                            :null => false
+    t.boolean "seen",            :default => false, :null => false
   end
 
-  add_index "notice_statuses", ["notice_id", "user_id"], :name => "index_notice_statuses_on_notice_id_and_user_id", :unique => true
-  add_index "notice_statuses", ["user_id", "notice_id"], :name => "index_notice_statuses_on_user_id_and_notice_id", :unique => true
+  add_index "notice_statuses", ["announcement_id", "user_id"], :name => "index_notice_statuses_on_notice_id_and_user_id", :unique => true
+  add_index "notice_statuses", ["user_id", "announcement_id"], :name => "index_notice_statuses_on_user_id_and_notice_id", :unique => true
 
   create_table "prerequisite_answers", :force => true do |t|
     t.integer  "registration_id", :null => false

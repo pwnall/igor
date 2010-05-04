@@ -128,8 +128,8 @@ class FeedItem
           :replies => []
       items << item
       
-      if deliverable.deadline_passed_for_user? @s_user
-        reply = FeedItem.new :time => deliverable.deadline_for_user(@s_user),
+      if deliverable.deadline_passed_for_user? user
+        reply = FeedItem.new :time => deliverable.deadline_for_user(user),
             :author => User.first, :flavor => :announcement,
             :contents => "The deadline has passed.",
             :actions => [], :replies => []
@@ -152,6 +152,13 @@ class FeedItem
           :contents => announcement.contents.html_safe,
           :actions => [],
           :replies => []
+      
+      if announcement.editable_by_user? user
+        item.actions = [
+          ['Delete', [:url_for, announcement],
+                     { :confirm => 'Are you sure?', :method => :delete }]
+        ]
+      end
       items << item
     end
   end

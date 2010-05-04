@@ -15,7 +15,7 @@
     <ul class="actions">
       <% feed_item.actions.each do |action| %>
       <li>
-        <%= link_to action.first, self.send(*action.last) %> 
+        <%= link_to action[0], self.send(*action[1]), action[2] || {} %> 
       </li>
       <% end %>
     </ul>

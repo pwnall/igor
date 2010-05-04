@@ -97,7 +97,7 @@ class AnnouncementsController < ApplicationController
     @announcement.destroy
 
     respond_to do |format|
-      format.html { redirect_to(announcements_url) }
+      format.html { redirect_to root_path }
       format.xml  { head :ok }
     end
   end
