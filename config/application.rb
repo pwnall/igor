@@ -46,8 +46,9 @@ module Seven
     config.filter_parameters << :password
     config.filter_parameters << :password_confirmation
     
-    # Filtering out file uploads due to its size, not for confidentiality.
+    # Filtering out file uploads due to log size, not for confidentiality.
     config.filter_parameters << :code
-    config.filter_parameters << :pkg_file_upload
+    config.filter_parameters << :pic
+    config.filter_parameters << :pkg
   end
 end
