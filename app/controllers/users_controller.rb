@@ -54,7 +54,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save        
-        flash[:notice] = 'Please check your e-mail to activate your account.'
+        flash[:error] = 'Please check your e-mail to activate your account.'
         token = @user.tokens.create :action => 'confirm_email'
         TokenMailer.account_confirmation(token, root_url, 
             spend_token_url(:token => token.token)).deliver
