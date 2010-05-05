@@ -1,0 +1,17 @@
+<% if flash[:error] %>
+<div class="error-bar">
+  <span class="actions">
+  <%= link_to 'Hide', '#', :class => 'error-bar-hide' %>
+  </span>
+	<%= flash[:error] %>
+</div>
+<% end %>
+<%= javascript_tag <<JS_END
+  $$('.error-bar-hide').each(function(element) {
+    element.observe('click', function(event) {
+	    event.stop();
+	    $$('.error-bar').each(function(e) { e.hide(); });
+    });
+  });
+JS_END
+%>
