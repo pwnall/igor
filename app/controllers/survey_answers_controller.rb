@@ -32,24 +32,25 @@ class SurveyAnswersController < ApplicationController
     end
   end
   
-  # XHR GET /survey_answers/assignment_picker
-  def assignment_picker
-    respond_to do |format|
-      format.js  # assignment_picker.rjs.js
-    end
-  end
-
+  # GET /survey_answers/new
+  # GET /survey_answers/new.xml
   # GET /survey_answers/new?survey_answer[assignment_id]=3
   # GET /survey_answers/new.xml?survey_answer[assignment_id]=3
-  def new    
-    assignment = Assignment.find(params[:survey_answer][:assignment_id])
-    @survey_answer = @s_user.survey_answers.
-                             where(:assignment_id => assignment.id).first
-      
-    unless @survey_answer
-      @survey_answer = SurveyAnswer.new :assignment => assignment,
-                                        :user => @s_user
-      @survey_answer.create_question_answers
+  def new
+    if params[:survey_answer] and params[:survey_answer][:assignment_id]
+      assignment = Assignment.find params[:survey_answer][:assignment_id]
+
+      @survey_answer = @s_user.survey_answers.
+                               where(:assignment_id => assignment.id).first
+        
+      unless @survey_answer
+        @survey_answer = SurveyAnswer.new :assignment => assignment,
+                                          :user => @s_user
+        @survey_answer.create_question_answers
+      end
+    else
+      assignment = nil
+      @survey_answer = SurveyAnswer.new :user => @s_user
     end
   
     new_edit

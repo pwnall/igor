@@ -57,7 +57,7 @@ class Deadline
                              "#{deliverable.name} for #{assignment.name}",                         
                          :link => [
                             [:new_submission_path,
-                             {:deliverable_id => deliverable}],
+                             {:submission => {:deliverable_id => deliverable}}],
                             {:remote => true}
                          ]
 
@@ -72,7 +72,10 @@ class Deadline
       if include_feedback and assignment.feedback_survey
         d = Deadline.new :due => assignment.deadline, :done => false,         
                          :headline => "Feedback survey for #{assignment.name}",
-                         :link => [[:url_for, assignment]],
+                         :link => [[:new_survey_answer_path,
+                                    {:survey_answer => {:assignment_id =>
+                                                          assignment.id } }],
+                                   {:remote => true}],
                          :source => assignment,
                          :active => assignment.accepts_feedback
         d.done = true if answers_by_aid[assignment.id]

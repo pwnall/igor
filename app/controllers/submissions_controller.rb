@@ -52,8 +52,16 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions/new
   # GET /submissions/new.xml
+  # GET /submissions/new?submission[deliverable_id]=3
+  # GET /submissions/new.xml?submission[deliverable_id]=3
   def new
-    @submission = Submission.new
+    if params[:submission] and params[:submission][:deliverable_id]
+      deliverable = Deliverable.find(params[:submission][:deliverable_id])
+      @submission = Submission.where(:deliverable_id => deliverable.id).first
+      @submission ||= Submission.new :deliverable => deliverable
+    else
+      @submission = Submission.new
+    end
 
     respond_to do |format|
       format.html # new.html.erb
@@ -71,6 +79,12 @@ class SubmissionsController < ApplicationController
     @submission.user = @s_user
     
     create_update
+  end
+  
+  # PUT /submissions/1
+  # PUT /submissions/1.xml
+  def update
+    create
   end
   
   # POST /submissions/revalidate/1
@@ -107,7 +121,7 @@ class SubmissionsController < ApplicationController
         @submission.run_result.save!
         OfflineTasks.validate_submission @submission        
         
-        flash[:notice] = "Uploaded #{@submission.code.original_filename} for #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}. Don't forget to <a href=\"#{url_for :controller => :assignment_feedbacks, :action => :new, :assignment_id => @submission.deliverable.assignment.id}\">submit feedback</a>!"
+        flash[:notice] = "Uploaded #{@submission.code.original_filename} for #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}."
         format.html { redirect_to root_path }
         format.xml do
           if is_new_record
@@ -117,11 +131,7 @@ class SubmissionsController < ApplicationController
           end  
         end  
       else
-        if @submission.deliverable.nil?
-          flash[:notice] = "Submission did not contain a deliverable selection."
-        else
-          flash[:notice] = "Submission for #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name} failed."
-        end
+        flash[:notice] = "Submission for #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name} failed."
         format.html { redirect_to root_path }
         format.xml  { render :xml => @submission.errors, :status => :unprocessable_entity }
       end

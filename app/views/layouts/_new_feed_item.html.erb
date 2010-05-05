@@ -4,8 +4,8 @@
 	  <ul>
       <% if @s_user.admin? %>
       <li>
-        <%= link_to_remote 'Announcement',
-              :url => new_announcement_path, :method => :get,
+        <%= link_to_remote 'Announcement', :url => new_announcement_path,
+              :method => :get,
               :before => update_page { |p|
                  p.select('.new-feed-item-form-container').each { |element|
                    element.update loading_image_tag
@@ -25,8 +25,8 @@
         %>
 	    </li>
 	    <li>
-	      <%= link_to_remote 'Survey Answers',
-              :url => assignment_picker_survey_answers_path, :method => :get,
+	      <%= link_to_remote 'Survey Answers', :url => new_survey_answer_path,
+              :method => :get,
               :before => update_page { |p|
                  p.select('.new-feed-item-form-container').each { |element|
                    element.update loading_image_tag

@@ -6,16 +6,18 @@
       <%= f.select :assignment_id, SurveyAnswer.assignments_for_user(@s_user).
                                                 map { |a| [a.name, a.id] } %>
     </dd>
-  </dl>
-  
+		<span id="survey-assignment-ajax-indicator"></span>
+  </dl>  
+<% end %>
 <%= observe_field 'survey_answer_assignment_id',
       :url => new_survey_answer_path, :method => :get, :frequency => 0.5,
       :before => update_page { |p|
-        p.replace_html 'survey-answer-ajax-indicator', loading_image_tag
+        p.replace_html 'survey-assignment-ajax-indicator', loading_image_tag
       },
-      :with => "'survey_answer[assignment_id]=' + encodeURIComponent(value)" %>         
-<% end %>
+      :with => "'survey_answer[assignment_id]=' + encodeURIComponent(value)" %>
 
+
+<% if @survey_answer.assignment %>
 <%= remote_form_for @survey_answer,
       :html => {:class => 'survey-answer-form'},
       :before => update_page { |p|            
@@ -75,4 +77,4 @@
     <%= f.submit "Submit" %>
 	</span>
 <% end %>
-</div>
+<% end %>

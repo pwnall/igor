@@ -1,6 +1,5 @@
 class DeliverablesController < ApplicationController
-  before_filter :authenticated_as_admin, :except => [:xhr_description]
-  before_filter :authenticated_as_user, :only => [:xhr_description]
+  before_filter :authenticated_as_admin
 
   in_place_edit_for_boolean :deliverable, :published
   in_place_edit_for :deliverable, :filename
@@ -94,19 +93,5 @@ class DeliverablesController < ApplicationController
       end
       format.xml  { head :ok }
     end
-  end
-  
-  # called via XHR to get the description
-  def xhr_description
-    @deliverable = Deliverable.where(:id => params[:deliverable_id]).first
-    if @deliverable.nil?
-      dtext = 'Select a deliverable for instructions.'
-    else
-      dtext = @deliverable.description
-      if @deliverable.assignment.deadline <= Time.now
-        dtext += '<br /><span style="font-weight: bold">LATE SUBMISSION</span>'
-      end
-    end
-    render :text => dtext
-  end
+  end  
 end

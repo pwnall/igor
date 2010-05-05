@@ -125,9 +125,7 @@ Seven::Application.routes.draw do |map|
       post :xhr_update_deliverables
     end
   end
-  resources :survey_answers do
-    collection { get :assignment_picker }
-  end
+  resources :survey_answers
   resources :surveys do
     member do
       post :add_question

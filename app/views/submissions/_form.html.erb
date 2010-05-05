@@ -1,5 +1,5 @@
-<%= form_for(Submission.new, :html => {:multipart => true,
-        :class => 'submission-form'}) do |f| %>
+<%= form_for(@submission, :html => {:multipart => true,
+                                       :class => 'submission-form'}) do |f| %>
   <dl>
   	<dt><%= f.label :deliverable_id, 'Deliverable' %></dt>
 		<dd>
@@ -7,40 +7,47 @@
            order('id DESC').
            map {|d| ["#{d.assignment.name} : #{d.name}", d.id]},
 		       :include_blank => '(pick one)' %>
+		  <span id="submission-deliverable-ajax-indicator"></span>
 		</dd>
 		<dt>Instructions</dt>
 		<dd id="submission_description_text">
+			<% if @submission.deliverable %>
+			<%= @submission.deliverable.description %>
+			<% else %>
 	    Select a deliverable for instructions.
+			<% end %>
 		</dd>
+		
+		<% if @submission.deliverable %>
 		<dt><%= f.label :code, 'File' %></dt>
 		<dd>
 		  <%= f.file_field :code %>
 		</dd>
+		<% end %>
   </dl>
-	
-	<%= observe_field 'submission_deliverable_id', :frequency => 0.5, :update => 'submission_description_text',
-			:before => update_page { |p|
-          p.replace_html 'submission_description_text', loading_image_tag
+				
+  <p class="privacy-policy">
+    Only you and <%= Course.main.number %> Staff can see this.
+  </p>
+	<% if @submission.deliverable %>
+  <%= f.submit "Submit" %>
+  <% end %>
+<% end %>
+
+<%= observe_field 'submission_deliverable_id',
+      :url => new_submission_path, :method => :get, :frequency => 0.5,
+      :before => update_page { |p|
+        p.replace_html 'submission-deliverable-ajax-indicator',
+                       loading_image_tag
       },
-			:url => xhr_description_deliverables_path,
-			:with => "'deliverable_id=' + encodeURIComponent(value)" %>					
-		
-  <%= javascript_tag <<JS_END		
+      :with => "'submission[deliverable_id]=' + encodeURIComponent(value)" %>
+
+<%= javascript_tag <<JS_END   
 $('submission_submit').observe('click', function(event) {
-	if($('submission_deliverable_id').value == '') {
-		alert("You need to tell me what you're submitting for");
-		event.stop();
-	}
-	else if ($('submission_code').value == '') {
-		alert('You need to give me a file to work with');
-		event.stop();
-	}
+  if ($('submission_code').value == '') {
+    alert('You need to give me a file to work with');
+    event.stop();
+  }
 });
 JS_END
   %>
-	
-  <p class="privacy-policy">
-    Only you and <%= Course.main.number %> Staff can see this.
-  </p>	
-  <%= f.submit "Submit" %>      
-<% end %>
