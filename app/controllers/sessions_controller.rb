@@ -6,13 +6,14 @@ class SessionsController < ApplicationController
   def create
     session[:user_id] = nil
     @login = User.new params[:user]    
-    @s_user = User.authenticate @login.name, @login.password
-    if @s_user.nil?
+    user = User.authenticate @login.name, @login.password
+    if user.nil?
       flash[:error] = 'Invalid user/password combination'
-    elsif !@s_user.active
+    elsif !user.active
       flash[:error] = "Your account is not active (did you confirm your #{@login.email} e-mail address?)"
     else
-      session[:user_id] = @s_user.id
+      session[:user_id] = user.id
+      @s_user = user
     end
     
     respond_to do |format|

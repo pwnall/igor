@@ -36,18 +36,18 @@
 
 <%
 password_js = <<JS_END
-var password = $('user_password').value;
-var confirmation = $('user_password_confirmation').value;
-var resultElem = $('user_form_password_correctness');
-var submitElem = $('user_submit');
-if(password == confirmation) {
-resultElem.update('#{ok_image_tag}');
-submitElem.appear();
-}
-else {
-resultElem.update('<span class="error-text">doesn\\'t match</span>');
-submitElem.hide();
-}
+	var password = $('user_password').value;
+	var confirmation = $('user_password_confirmation').value;
+	var resultElem = $('user_form_password_correctness');
+	var submitElem = $('user_submit');
+	if(password == confirmation) {
+	  resultElem.update('#{ok_image_tag}');
+	  submitElem.appear();
+	}
+	else {
+	  resultElem.update('<span class="error-text">doesn\\'t match</span>');
+	  submitElem.hide();
+	}
 JS_END
 %>    
 <%= observe_field :user_password,

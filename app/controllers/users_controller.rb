@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_filter :authenticated_as_admin, :except =>
       [:new, :create, :show, :check_name, :edit_password, :update_password,
        :recover_password, :recovery_email]
+  
   before_filter :authenticated_as_user, :only => [:edit_password,
                                                   :update_password,
                                                   :show]

@@ -1,6 +1,6 @@
 class ProfilePhotosController < ApplicationController
   before_filter :authenticated_as_user,
-      :only => [:new, :create, :edit, :show, :update, :websis_lookup]
+      :only => [:new, :create, :edit, :show, :update, :profile]
   before_filter :authenticated_as_admin, :only => [:index, :destroy]
   
   # GET /profile_photos
@@ -33,7 +33,7 @@ class ProfilePhotosController < ApplicationController
         ProfilePhoto.new(:profile_id => params[:profile_id])
     
     unless @profile_photo.profile.editable_by_user?(@s_user)
-      notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
+      notice[:error] = 'That is not yours to play with! Attempt logged.'
       redirect_to root_url
       return      
     end

@@ -35,7 +35,7 @@ class Request
       request = Request.new :author => User.first,
           :headline => 'wants you to register for the course',
           :contents => 'You must register to get a recitation assignment ' +
-                       'and have your homework graded .',
+                       'and have your homework graded.',
           :actions => [
             ['Register', [:new_registration_path, { :user_id => user.id,
                           :course_id => Course.main.id }]]

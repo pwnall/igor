@@ -43,6 +43,7 @@ class SessionsControllerTest < ActionController::TestCase
     post :create, :user => { :name => @user.name, :password => @password }
     assert_redirected_to root_path
     assert_equal @user.id, session[:user_id]
+    assert_equal @user, assigns(:s_user)
   end
   
   test "login with wrong password" do
@@ -50,6 +51,8 @@ class SessionsControllerTest < ActionController::TestCase
     assert_equal "Invalid user/password combination", flash[:error]
     assert_equal nil, session[:user_id],
                  "User entered incorrect password but session was still set"
+    assert_equal nil, assigns(:s_user),
+                 "User entered incorrect password but @s_user was still set"                 
 
     assert_template :index
     assert_equal @user.name, assigns(:login).name,
@@ -61,6 +64,8 @@ class SessionsControllerTest < ActionController::TestCase
     assert_equal "Invalid user/password combination", flash[:error]
     assert_equal nil, session[:user_id],
                  "Nonexistent user but session was still set"
+    assert_equal nil, assigns(:s_user),
+                 "Nonexistent user but @s_user was still set"                 
   end
   
   test "logout" do
