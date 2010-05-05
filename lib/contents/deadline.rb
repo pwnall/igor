@@ -52,9 +52,15 @@ class Deadline
       assignment.deliverables.each do |deliverable|
         next unless deliverable.visible_for_user?(@s_user)
         d = Deadline.new :due => assignment.deadline, :done => false,
-                         :active => true, :headline =>
-                             "#{deliverable.name} for #{assignment.name}",
-                         :link => deliverable, :source => assignment
+                         :active => true, :source => assignment,
+                         :headline =>
+                             "#{deliverable.name} for #{assignment.name}",                         
+                         :link => [
+                            [:new_submission_path,
+                             {:deliverable_id => deliverable}],
+                            {:remote => true}
+                         ]
+
         if user and deliverable.submission_for_user(user)
           # TODO(costan): make deadline inactive if we posted grades or admin disabled submissions
           d.done = true
@@ -66,7 +72,8 @@ class Deadline
       if include_feedback and assignment.feedback_survey
         d = Deadline.new :due => assignment.deadline, :done => false,         
                          :headline => "Feedback survey for #{assignment.name}",
-                         :link => assignment, :source => assignment,
+                         :link => [[:url_for, assignment]],
+                         :source => assignment,
                          :active => assignment.accepts_feedback
         d.done = true if answers_by_aid[assignment.id]
         deadlines << d

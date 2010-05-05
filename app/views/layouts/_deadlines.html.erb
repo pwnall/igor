@@ -7,7 +7,8 @@
   </dt>
   <dd class="deadline-<%= deadline.state %>">
   <% if deadline.active? %>
-    <%= link_to deadline.headline, deadline.link %>
+    <%= link_to deadline.headline, self.send(*deadline.link[0]),
+                deadline.link[1] || {} %>
 	<% else %>
 	  <%= deadline.headline %>
 	<% end %>
