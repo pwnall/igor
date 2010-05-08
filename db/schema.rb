@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(:version => 20100503235401) do
   add_index "notice_statuses", ["user_id", "announcement_id"], :name => "index_notice_statuses_on_user_id_and_announcement_id", :unique => true
 
   create_table "prerequisite_answers", :force => true do |t|
-    t.integer  "registration",    :null => false
+    t.integer  "registration_id", :null => false
     t.integer  "prerequisite_id", :null => false
     t.boolean  "took_course",     :null => false
     t.text     "waiver_answer"
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(:version => 20100503235401) do
     t.datetime "updated_at"
   end
 
-  add_index "prerequisite_answers", ["registration", "prerequisite_id"], :name => "prerequisites_for_a_registration", :unique => true
+  add_index "prerequisite_answers", ["registration_id", "prerequisite_id"], :name => "prerequisites_for_a_registration", :unique => true
 
   create_table "prerequisites", :force => true do |t|
     t.string   "course_number",   :limit => 64,  :null => false
