@@ -9,15 +9,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100504203833) do
+ActiveRecord::Schema.define(:version => 20100503235401) do
 
   create_table "announcements", :force => true do |t|
     t.string   "headline",         :limit => 128,                     :null => false
     t.string   "contents",         :limit => 8192,                    :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "author_id",                                           :null => false
     t.boolean  "open_to_visitors",                 :default => false, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "assignment_metrics", :force => true do |t|
@@ -88,7 +88,7 @@ ActiveRecord::Schema.define(:version => 20100504203833) do
     t.datetime "updated_at"
   end
 
-  add_index "grades", ["subject_type", "subject_id", "metric_id"], :name => "grades_by_subject_and_assignment_metric_id", :unique => true
+  add_index "grades", ["subject_type", "subject_id", "metric_id"], :name => "grades_by_subject_and_metric_id", :unique => true
 
   create_table "notice_statuses", :force => true do |t|
     t.integer "announcement_id",                    :null => false
@@ -96,11 +96,10 @@ ActiveRecord::Schema.define(:version => 20100504203833) do
     t.boolean "seen",            :default => false, :null => false
   end
 
-  add_index "notice_statuses", ["announcement_id", "user_id"], :name => "index_notice_statuses_on_notice_id_and_user_id", :unique => true
-  add_index "notice_statuses", ["user_id", "announcement_id"], :name => "index_notice_statuses_on_user_id_and_notice_id", :unique => true
+  add_index "notice_statuses", ["user_id", "announcement_id"], :name => "index_notice_statuses_on_user_id_and_announcement_id", :unique => true
 
   create_table "prerequisite_answers", :force => true do |t|
-    t.integer  "registration_id", :null => false
+    t.integer  "registration",    :null => false
     t.integer  "prerequisite_id", :null => false
     t.boolean  "took_course",     :null => false
     t.text     "waiver_answer"
@@ -108,7 +107,7 @@ ActiveRecord::Schema.define(:version => 20100504203833) do
     t.datetime "updated_at"
   end
 
-  add_index "prerequisite_answers", ["registration_id", "prerequisite_id"], :name => "prerequisites_for_a_student", :unique => true
+  add_index "prerequisite_answers", ["registration", "prerequisite_id"], :name => "prerequisites_for_a_registration", :unique => true
 
   create_table "prerequisites", :force => true do |t|
     t.string   "course_number",   :limit => 64,  :null => false
@@ -153,11 +152,11 @@ ActiveRecord::Schema.define(:version => 20100504203833) do
 
   create_table "recitation_conflicts", :force => true do |t|
     t.integer "registration_id", :null => false
-    t.string  "class_name",      :null => false
     t.integer "timeslot",        :null => false
+    t.string  "class_name",      :null => false
   end
 
-  add_index "recitation_conflicts", ["registration_id", "timeslot"], :name => "index_recitation_conflicts_on_student_info_id_and_timeslot", :unique => true
+  add_index "recitation_conflicts", ["registration_id", "timeslot"], :name => "index_recitation_conflicts_on_registration_id_and_timeslot", :unique => true
 
   create_table "recitation_sections", :force => true do |t|
     t.integer  "serial",                   :null => false
@@ -171,16 +170,17 @@ ActiveRecord::Schema.define(:version => 20100504203833) do
   add_index "recitation_sections", ["serial"], :name => "index_recitation_sections_on_serial", :unique => true
 
   create_table "registrations", :force => true do |t|
-    t.integer  "user_id",                                        :null => false
-    t.boolean  "for_credit",                                     :null => false
-    t.string   "motivation", :limit => 32768
+    t.integer  "user_id",                                           :null => false
+    t.integer  "course_id",                                         :null => false
+    t.boolean  "dropped",                        :default => false, :null => false
+    t.boolean  "for_credit",                     :default => true,  :null => false
+    t.text     "motivation", :limit => 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "dropped",                     :default => false, :null => false
-    t.integer  "course_id",                                      :null => false
   end
 
-  add_index "registrations", ["user_id"], :name => "index_student_infos_on_user_id", :unique => true
+  add_index "registrations", ["course_id", "user_id"], :name => "index_registrations_on_course_id_and_user_id", :unique => true
+  add_index "registrations", ["user_id", "course_id"], :name => "index_registrations_on_user_id_and_course_id", :unique => true
 
   create_table "run_results", :force => true do |t|
     t.integer  "submission_id",                     :null => false
@@ -216,8 +216,8 @@ ActiveRecord::Schema.define(:version => 20100504203833) do
     t.datetime "updated_at"
   end
 
-  add_index "survey_answers", ["assignment_id"], :name => "index_assignment_feedbacks_on_assignment_id"
-  add_index "survey_answers", ["user_id", "assignment_id"], :name => "index_assignment_feedbacks_on_user_id_and_assignment_id", :unique => true
+  add_index "survey_answers", ["assignment_id"], :name => "index_survey_answers_on_assignment_id"
+  add_index "survey_answers", ["user_id", "assignment_id"], :name => "index_survey_answers_on_user_id_and_assignment_id", :unique => true
 
   create_table "survey_question_answers", :force => true do |t|
     t.integer  "survey_answer_id",                 :null => false
@@ -229,7 +229,7 @@ ActiveRecord::Schema.define(:version => 20100504203833) do
     t.datetime "updated_at"
   end
 
-  add_index "survey_question_answers", ["survey_answer_id", "question_id", "target_user_id"], :name => "feedback_answers_by_assignment_question_user", :unique => true
+  add_index "survey_question_answers", ["survey_answer_id", "question_id", "target_user_id"], :name => "survey_question_answers_by_answer_question_user", :unique => true
 
   create_table "survey_question_memberships", :force => true do |t|
     t.integer  "survey_question_id", :null => false
@@ -237,8 +237,8 @@ ActiveRecord::Schema.define(:version => 20100504203833) do
     t.datetime "created_at"
   end
 
-  add_index "survey_question_memberships", ["survey_id", "survey_question_id"], :name => "feedback_questions_to_sets", :unique => true
-  add_index "survey_question_memberships", ["survey_question_id", "survey_id"], :name => "feedback_question_set_to_questions", :unique => true
+  add_index "survey_question_memberships", ["survey_id", "survey_question_id"], :name => "survey_questions_to_surveys", :unique => true
+  add_index "survey_question_memberships", ["survey_question_id", "survey_id"], :name => "surveys_to_survey_questions", :unique => true
 
   create_table "survey_questions", :force => true do |t|
     t.string   "human_string",    :limit => 1024,                      :null => false
@@ -284,7 +284,7 @@ ActiveRecord::Schema.define(:version => 20100504203833) do
     t.datetime "updated_at"
   end
 
-  add_index "teams", ["partition_id"], :name => "index_teams_on_partition_id"
+  add_index "teams", ["partition_id", "name"], :name => "index_teams_on_partition_id_and_name", :unique => true
 
   create_table "tokens", :force => true do |t|
     t.integer  "user_id",                    :null => false

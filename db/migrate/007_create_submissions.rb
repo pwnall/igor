@@ -8,8 +8,6 @@ class CreateSubmissions < ActiveRecord::Migration
       t.string :code_content_type, :limit => 64
       t.integer :code_file_size
       t.binary :code_file, :limit => 1.megabyte
-      t.binary :code_medium_file
-      t.binary :code_thumb_file
 
       t.timestamps
     end

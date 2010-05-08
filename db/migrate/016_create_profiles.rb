@@ -11,12 +11,9 @@ class CreateProfiles < ActiveRecord::Migration
       t.string :about_me, :null => false, :default => '', :limit => 4.kilobytes
       t.boolean :allows_publishing, :null => false, :default => true
       
-      t.boolean :has_phone, :null => false, :default => true
-      t.boolean :has_aim, :null => false, :default => false
-      t.boolean :has_jabber, :null => false, :default => false
-      t.string :phone_number, :limit => 64
-      t.string :aim_name, :limit => 64
-      t.string :jabber_name, :limit => 64
+      t.string :phone_number, :limit => 64, :null => true
+      t.string :aim_name, :limit => 64, :null => true
+      t.string :jabber_name, :limit => 64, :null => true
       
       t.integer :recitation_section_id, :null => true
 

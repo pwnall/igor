@@ -14,8 +14,6 @@ class CreateDeliverableValidations < ActiveRecord::Migration
       t.string :pkg_content_type, :limit => 64
       t.integer :pkg_file_size
       t.binary :pkg_file, :limit => 64.megabytes
-      t.binary :pkg_medium_file
-      t.binary :pkg_thumb_file
       
       t.integer :time_limit, :default => nil
 

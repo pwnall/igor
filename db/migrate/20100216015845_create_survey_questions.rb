@@ -1,6 +1,6 @@
-class CreateFeedbackQuestions < ActiveRecord::Migration
+class CreateSurveyQuestions < ActiveRecord::Migration
   def self.up
-    create_table :feedback_questions do |t|
+    create_table :survey_questions do |t|
       t.string :human_string, :limit => 1.kilobyte, :null => false
       t.boolean :targets_user, :null => false, :default => false
       t.boolean :allows_comments, :null => false, :default => false
@@ -17,6 +17,6 @@ class CreateFeedbackQuestions < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :feedback_questions
+    drop_table :survey_questions
   end
 end
