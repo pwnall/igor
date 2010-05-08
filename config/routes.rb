@@ -141,9 +141,7 @@ Seven::Application.routes.draw do |map|
       post :set_team_name
     end
   end
-  resources :teams do
-    collection { get :my_own }
-  end
+  resources :teams
 
   # Sample resource route with options:
   #   resources :products do

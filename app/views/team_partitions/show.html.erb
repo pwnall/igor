@@ -1,15 +1,10 @@
-<!-- team_partitions/show -->
-<h1 class="form_title">Team partition <%= @team_partition.name %></h1>
+<h2>Team partition <%= @team_partition.name %></h2>
 
-<ul>
+<dl class="groups">
 	<% @team_partition.teams.each do |team| %>
-	<li>
-		<%= render :partial => 'teams/show', :locals => { :team => team } %>
-	</li>
+	<%= render team %>
 	<% end %>
-</ul>
+</dl>
 
-<div class="full_section">  
-<h1 class="full_section">Add Team</h1>
-<%= render :partial => 'teams/form' %>
-</div>
+<h3>Add Team</h3>
+<%= render 'teams/form' %>
