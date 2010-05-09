@@ -112,9 +112,6 @@ Seven::Application.routes.draw do |map|
       # TODO(costan): remove the "post" once Account manager can DELETE
       post :logout
     end
-    member do
-      post :set_team_name
-    end
   end
   resources :submissions do
     member do
@@ -139,12 +136,12 @@ Seven::Application.routes.draw do |map|
     root :to => 'system/health#stat_system'
     resources :processes, :controller => 'health'
   end
-  resources :team_partitions do
+  resources :team_partitions
+  resources :teams do
     member do
       post :set_team_name
     end
   end
-  resources :teams
 
   # Sample resource route with options:
   #   resources :products do

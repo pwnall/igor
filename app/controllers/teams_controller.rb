@@ -1,17 +1,7 @@
 class TeamsController < ApplicationController
-  before_filter :authenticated_as_admin, :except => [:my_own]
-  before_filter :authenticated_as_user, :only => [:my_own]
+  before_filter :authenticated_as_admin
 
-  # GET /teams/my_own
-  def my_own
-    @teams = @s_user.teams(:include => { :users => :profiles,
-                                         :team_partition => :assignments }).
-                     select { |t| t.partition.published? }.reverse
-    respond_to do |format|
-      format.html # my_own.html.erb
-      format.xml  { render :xml => @teams }
-    end
-  end
+  [:name].each { |field| in_place_edit_for :team, field }
 
   # GET /teams
   # GET /teams.xml

@@ -1,8 +1,6 @@
 class TeamPartitionsController < ApplicationController
   before_filter :authenticated_as_admin
-  
-  [:name].each { |field| in_place_edit_for :team, field }
-  
+    
   # GET /team_partitions
   # GET /team_partitions.xml
   def index
