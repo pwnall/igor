@@ -30,3 +30,37 @@ dl.groups dd ul li span.status {
 	color: #595959;
 	display: block;
 }
+
+form.group-membership-form {
+	overflow: visible;
+  display: box;
+	display: -moz-box;
+  display: -webkit-box;
+  box-align: baseline;
+	-moz-box-align: center;
+	-webkit-box-align: center;
+	box-orient: inline-axis;
+  -moz-box-orient: inline-axis;
+  -webkit-box-orient: inline-axis;	
+	width: 100%;
+}
+form.group-membership-form input[type=text] {
+  display: block;
+  box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-box-flex: 1;
+	margin: 0 5px 0 0;
+}
+form.group-membership-form input[type=submit] {
+  box-flex: 0;
+  -moz-box-flex: 0;
+  -webkit-box-flex: 0;
+	display: inline-block;
+	float: none;
+}
+form.group-membership-form .ajax-indicator-wrapper {
+	width: 24px;
+  box-flex: 0;
+  -moz-box-flex: 0;
+  -webkit-box-flex: 0;	
+}

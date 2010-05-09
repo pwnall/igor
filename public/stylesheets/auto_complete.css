@@ -2,7 +2,7 @@ div.auto_complete {
   background: #fff;
 }
 div.auto_complete ol {
-  border: 1px solid #888;
+  border: 1px solid #3F1900;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -13,7 +13,7 @@ div.auto_complete ol li {
   padding: 3px;
 }
 div.auto_complete ol li.selected {
-  background-color: #ffb;
+  background-color: #F4DCCC;
 }
 div.auto_complete ol strong.highlight {
   color: #800; 

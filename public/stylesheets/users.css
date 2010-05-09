@@ -39,3 +39,15 @@ ul.user-info-actions li {
 	padding: 0 6px 0 0;
 	float: left;
 }
+
+.auto_complete li.user-result .username {
+	color: #A6A6A6;
+}
+.auto_complete li.user-result .username::before {
+	content: " [";
+  color: #A6A6A6;
+}
+.auto_complete li.user-result .username::after {
+  content: "]";
+  color: #A6A6A6;
+}

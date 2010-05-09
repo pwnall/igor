@@ -36,4 +36,9 @@ class Team < ActiveRecord::Base
     Submission.where(:user_id => memberships.map(&:user_id),
                      :deliverable_id => partition.deliverables.map(&:id))
   end
+  
+  # Returns true if the given user is allowed to edit this team's membership.  
+  def editable_by_user?(user)
+    user.admin?
+  end
 end

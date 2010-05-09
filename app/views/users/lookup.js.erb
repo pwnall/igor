@@ -1,11 +1,19 @@
-<% unless @users.empty? %>
-<ol class="autocomplete-results">
-	<% @users.each do |user| %>
+<% if @users.empty? %>
+<ol>
 	<li>
+		No matching user
+		<span class="username"></span>
+	</li>
+</ol>
+<% else %>
+<ol>
+	<% @users.each do |user| %>
+	<li class="user-result">
     <%= user_image_tag user %>
 		<span class="name">
     <%= user.display_name_for @s_user %>
 		</span>
+		<span class="username"><%= user.name %></span>
   </li>
 	<% end %>
 </ol>

@@ -1,4 +1,7 @@
 /* Form buttons. */
+form {
+	overflow: hidden;
+}
 input[type=submit], input[type=button] {
 	margin: 0;
 	padding: 1px 6px;	
@@ -14,6 +17,7 @@ input[type=submit], input[type=button] {
   color: #FFFFFF;
   font-size: 11pt;
   font-weight: bold;
+	float: right;
 }
 input[type=submit]:hover, input[type=button]:hover {
   color: #F4DCCC;

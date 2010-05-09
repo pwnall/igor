@@ -112,6 +112,9 @@ Seven::Application.routes.draw do |map|
       # TODO(costan): remove the "post" once Account manager can DELETE
       post :logout
     end
+    member do
+      post :set_team_name
+    end
   end
   resources :submissions do
     member do

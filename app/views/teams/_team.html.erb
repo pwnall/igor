@@ -16,28 +16,35 @@
 	    <%= user_image_tag membership.user %>
 	    <%= link_to membership.user.display_name_for(@s_user), membership.user,
                   :class => 'name' %>
-	    <% if @s_user.admin? %>
-	    <% if membership.user.registration %>
+	    <% if @s_user.admin? and membership.user.registration %>
 			<span class="status">			
 	    <%= membership.user.registration.for_credit ? 'Credit' : 'Listener' %>
 			</span>
-	    <% end %>
+			<% end %>
+      <% if team.editable_by_user? @s_user %>
 	    <%= link_to 'Remove', membership, :method => :delete,
 	            :confirm => "Remove #{membership.user.real_name} from #{team.name}" %>
-	    <% end %>	
+	    <% end %>
 	  </li>
 	<% end %>
 	</ul>
-	<% if @s_user.admin? %>
-	<p>
-		<%= form_for TeamMembership.new(:team => team) do |f| %>
-		  <%= f.hidden_field :team_id %>
-		
-		  <%= text_field_tag :query, '', :id => "query_#{team.id}", :autocomplete => false %>
-			<%= f.submit "Add to #{team.name}" %>
-		  <div class="auto_complete" id="query_<%= team.id %>_auto_complete" style="width: 600px;"></div>
-		  <%= auto_complete_field "query_#{team.id}", :url => lookup_users_path, :method => :get, :frequency => 0.2 %>
-		<% end %>		
-	</p>
+	<% if team.editable_by_user? @s_user %>
+	<%= form_for TeamMembership.new(:team => team),
+               :html => { :class => 'group-membership-form' } do |f| %>
+	  <%= f.hidden_field :team_id %>
+	
+	  <%= text_field_tag :query, '', :id => "query_#{team.id}",
+                               :autocomplete => false %>
+    <div class="ajax-indicator-wrapper">
+			<span id="query-<%= team.id %>-ajax-indicator" style="display: none;">
+	    	<%= loading_image_tag %>
+	    </span>
+		</div>
+		<%= f.submit "Add" %>
+	  <div class="auto_complete" id="query_<%= team.id %>_auto_complete" style="width: 600px;"></div>
+	  <%= auto_complete_field "query_#{team.id}", :url => lookup_users_path,
+          :method => :get, :frequency => 0.2, :select => 'username',
+          :indicator => "query-#{team.id}-ajax-indicator" %>
+	<% end %>		
 	<% end %>
 </dd>
