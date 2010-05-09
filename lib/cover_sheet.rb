@@ -134,7 +134,10 @@ module CoverSheet
     pdf.y = 792 - 36 - 24
     max_score = assignment.metrics.map(&:max_score).sum
     pdf.text "/ #{max_score}", :align => :right, :size => 36
-                
+    
+    
+    pdf.start_new_page
+    
     if file_name.nil?
       pdf.to_s
     else
