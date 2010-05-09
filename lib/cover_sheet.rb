@@ -117,7 +117,7 @@ module CoverSheet
     end
     pdf.text "Grades for #{assignment.name}", :size => 24, :align => :center
     pdf.table table_data, :header => true do |table|
-      table.column_widths = [140, 70, 70, 70, 110]
+      table.column_widths = [140, 70, 70, 70, 180]
       table.cells.size = 12
       table.row_colors = ['ffffff', 'f3f3f3']
       table.row(0).style = :bold
