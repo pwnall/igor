@@ -222,7 +222,7 @@ class GradesController < ApplicationController
   end
   
   def pull_grades(user)
-    @grades_by_mid = user.grades.index_by(&:assignment_metric_id)
+    @grades_by_mid = user.grades.index_by(&:metric_id)
   end
   private :pull_grades
   

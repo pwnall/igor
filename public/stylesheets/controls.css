@@ -1,7 +1,26 @@
-/* Form buttons. */
+/* Forms. */
 form {
-	overflow: hidden;
+  overflow: hidden;
 }
+form dl {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+form dt {
+  clear: both;	
+  margin: 0;
+  padding: 0;
+  float: left;
+  width: 100px;
+}
+form dd {
+  margin: 0;
+  padding: 0;
+  float: left;
+}
+
+/* Form buttons. */
 input[type=submit], input[type=button] {
 	margin: 0;
 	padding: 1px 6px;	
