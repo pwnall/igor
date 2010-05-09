@@ -107,7 +107,7 @@ module CoverSheet
     pdf.y -= 40
     pdf.font "Times-Roman"
     table_data = [['Problem', 'Grade', 'Grader', 'Points', 'Comments']] +
-                 assignment.assignment_metrics.map do |m|        
+                 assignment.metrics.map do |m|        
       [m.name,
        '',
        '',
@@ -132,7 +132,7 @@ module CoverSheet
     # Total score
     pdf.font_size = 24
     pdf.y = 792 - 36 - 24
-    max_score = assignment.assignment_metrics.map(&:max_score).sum
+    max_score = assignment.metrics.map(&:max_score).sum
     pdf.text "/ #{max_score}", :align => :right, :size => 36
                 
     if file_name.nil?
