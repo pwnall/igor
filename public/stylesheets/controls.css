@@ -9,13 +9,13 @@ form dl {
 }
 form dt {
   clear: both;	
-  margin: 0;
+  margin: 1px 0;
   padding: 0;
   float: left;
   width: 100px;
 }
 form dd {
-  margin: 0;
+  margin: 1px 0;
   padding: 0;
   float: left;
 }
