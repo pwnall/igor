@@ -206,7 +206,7 @@ class GradesController < ApplicationController
           else
             subject = @user
           end
-          @grades_by_mid[mid] = Grade.new :assignment_metric_id => mid,
+          @grades_by_mid[mid] = Grade.new :metric_id => mid,
                                           :subject => subject
         end
         if @grades_by_mid[mid].score != grade_score.to_f
