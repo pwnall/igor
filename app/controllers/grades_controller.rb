@@ -61,8 +61,8 @@ class GradesController < ApplicationController
   def report
     # pull data
     pull_metrics false
-    grades = Grade.where(:assignment_metric_id => @metrics.map(&:id)).
-                   includes({:assignment_metric => :assignment}, :subject)
+    grades = Grade.where(:metric_id => @metrics.map(&:id)).
+                   includes({:metric => :assignment}, :subject)
     @grades_by_uid_and_mid = {}
     @users = []
     grades.each do |grade|
@@ -71,7 +71,7 @@ class GradesController < ApplicationController
           @users << user
           @grades_by_uid_and_mid[user.id] = {}
         end
-        @grades_by_uid_and_mid[user.id][grade.assignment_metric_id] = grade
+        @grades_by_uid_and_mid[user.id][grade.metric_id] = grade
       end
     end
     @names_by_uid = Hash[*((
@@ -92,7 +92,7 @@ class GradesController < ApplicationController
     @histogram_step = params[:histogram_step].to_i || 1
     @users.each do |user|
       if params[:use_weights]
-        @totals_by_uid[user.id] = @grades_by_uid_and_mid[user.id].values.inject(0) { |acc, grade| acc + (grade ? (grade.score || 0)  * grade.assignment_metric.weight : 0) }
+        @totals_by_uid[user.id] = @grades_by_uid_and_mid[user.id].values.inject(0) { |acc, grade| acc + (grade ? (grade.score || 0)  * grade.metric.weight : 0) }
       else
         @totals_by_uid[user.id] = @grades_by_uid_and_mid[user.id].values.inject(0) { |acc, grade| acc + (grade ? (grade.score || 0) : 0) }
       end
