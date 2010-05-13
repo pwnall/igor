@@ -1,5 +1,3 @@
-require 'csv'
-
 class GradesController < ApplicationController
   before_filter :authenticated_as_admin, :except => [:reveal_mine]
   before_filter :authenticated_as_user, :only => [:reveal_mine]
@@ -110,49 +108,43 @@ class GradesController < ApplicationController
     end
     
     # generate the CSV
-    csv_text = ''
-    @ordered_metrics = @assignments_by_aid.values.sort { |a, b| a.deadline <=> b.deadline }.map { |a| @metrics_by_aid[a.id].sort_by { |m| m.name } }.flatten
     
-    csv_text << CSV.generate_line(['GRADES'])
-    csv_text << "\r\n"
-    csv_text << CSV.generate_line(['Name', 'Rec'] + @ordered_metrics.map { |m| "#{m.assignment.name}: #{m.name}" } + [params[:use_weights] ? 'Weighted Total' : 'Raw Total'])
-    csv_text << "\r\n"
-    @users.each do |user|
-      section_number = 'None'
-      if user.profile && user.profile.recitation_section
-        section_number = user.profile.recitation_section.serial
+    csv_text = FasterCSV.generate do |csv|
+      @ordered_metrics = @assignments_by_aid.values.sort { |a, b| a.deadline <=> b.deadline }.map { |a| @metrics_by_aid[a.id].sort_by { |m| m.name } }.flatten
+      
+      csv << ['GRADES']
+      csv << []
+      csv << ['Name', 'Rec'] + @ordered_metrics.map { |m| "#{m.assignment.name}: #{m.name}" } + [params[:use_weights] ? 'Weighted Total' : 'Raw Total']
+      @users.each do |user|
+        section_number = 'None'
+        if user.profile && user.profile.recitation_section
+          section_number = user.profile.recitation_section.serial
+        end
+        csv << [@names_by_uid[user.id], section_number] +
+               @ordered_metrics.map { |m| g = @grades_by_uid_and_mid[user.id][m.id]; next (g ? g.score || 'N' : 'N') } +
+               [@totals_by_uid[user.id]]
       end
-      csv_text << CSV.generate_line([@names_by_uid[user.id], section_number] +
-                        @ordered_metrics.map { |m| g = @grades_by_uid_and_mid[user.id][m.id]; next (g ? g.score || 'N' : 'N') } +
-                        [@totals_by_uid[user.id]])
-      csv_text << "\r\n"
+      csv << []
+      
+      csv << ['HISTOGRAM']
+      @histogram_keys.each do |hk|
+        csv << ["#{hk} - #{hk + @histogram_step - 1}", @histogram[hk] || 0]
+      end
+      csv << []
+  
+      csv << ['STATISTICS']
+      csv << ['Count', @totals_by_uid.length]
+      csv << ['Max', @totals_by_uid.values.max]
+      csv << ['Mean', @totals_by_uid.values.inject(0.0) { |acc, v| acc + v } / @totals_by_uid.length ]
+      sorted_scores = @totals_by_uid.values.sort
+      if sorted_scores.length % 2
+        median = sorted_scores[sorted_scores.length / 2]
+      else
+        median = sorted_scores[sorted_scores.length / 2, 2].inject(0.0) { |acc, v| acc + v } / 2.0 
+      end
+      csv << ['Median', median]
+      csv << []
     end
-    csv_text << "\r\n\r\n"
-    
-    csv_text << CSV.generate_line(['HISTOGRAM'])
-    csv_text << "\r\n"
-    @histogram_keys.each do |hk|
-      csv_text << CSV.generate_line(["#{hk} - #{hk + @histogram_step - 1}", @histogram[hk] || 0])
-      csv_text << "\r\n"
-    end
-    csv_text << "\r\n\r\n"
-
-    csv_text << CSV.generate_line(['STATISTICS'])    
-    csv_text << "\r\n"    
-    csv_text << CSV.generate_line(['Count', @totals_by_uid.length])
-    csv_text << "\r\n"
-    csv_text << CSV.generate_line(['Max', @totals_by_uid.values.max])
-    csv_text << "\r\n"
-    csv_text << CSV.generate_line(['Mean', @totals_by_uid.values.inject(0.0) { |acc, v| acc + v } / @totals_by_uid.length ])
-    csv_text << "\r\n"
-    sorted_scores = @totals_by_uid.values.sort
-    if sorted_scores.length % 2
-      median = sorted_scores[sorted_scores.length / 2]
-    else
-      median = sorted_scores[sorted_scores.length / 2, 2].inject(0.0) { |acc, v| acc + v } / 2.0 
-    end
-    csv_text << CSV.generate_line(['Median', median])
-    csv_text << "\r\n"
 
     # push the CSV
     send_data csv_text, :filename => 'grades.csv', :type => 'text/csv', :disposition => 'inline'
