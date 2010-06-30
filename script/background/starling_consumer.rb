@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
 # Load Rails.
-RAILS_ENV = ARGV[1] || 'development'
-require File.dirname(__FILE__) + '/../../config/environment.rb'
+ENV['RAILS_ENV'] = ARGV[1] || 'development'
+require File.expand_path('../../../config/environment.rb', __FILE__)
 
 # More ARGV-based setup. 
 FileUtils.mkpath ARGV[3] unless ARGV[3].nil? or File.exists? ARGV[3]

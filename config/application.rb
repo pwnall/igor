@@ -2,8 +2,9 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
-# Auto-require default libraries and those for the current Rails environment.
-Bundler.require :default, Rails.env
+# If you have a Gemfile, require the gems listed there, including any gems
+# you've limited to :test, :development, or :production.
+Bundler.require(:default, Rails.env) if defined?(Bundler)
 
 module Seven
   class Application < Rails::Application
@@ -12,7 +13,8 @@ module Seven
     # -- all .rb files in that directory are automatically loaded.
 
     # Add additional load paths for your own custom dirs
-    # config.load_paths += %W( #{config.root}/extras )
+    # config.autoload_paths += %W( #{config.root}/extras )
+    config.autoload_paths += %W( #{config.root}/lib )
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named
@@ -23,10 +25,11 @@ module Seven
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
+    # config.time_zone = 'Central Time (US & Canada)'
     config.time_zone = 'Eastern Time (US & Canada)'
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
+    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
     # Configure generators values. Many other options are available, be sure to check the documentation.
@@ -35,20 +38,19 @@ module Seven
     #   g.template_engine :erb
     #   g.test_framework  :test_unit, :fixture => true
     # end
-
     config.action_mailer.smtp_settings = { 
       :address => "outgoing.mit.edu", 
       :port => 25,
       :domain => "mit.edu", 
     }
 
+    # Configure the default encoding used in templates for Ruby 1.9.
+    config.encoding = "utf-8"
+
     # Configure sensitive parameters which will be filtered from the log file.
-    config.filter_parameters << :password
-    config.filter_parameters << :password_confirmation
+    config.filter_parameters += [:password, :password_confirmation]
     
     # Filtering out file uploads due to log size, not for confidentiality.
-    config.filter_parameters << :code
-    config.filter_parameters << :pic
-    config.filter_parameters << :pkg
+    config.filter_parameters += [:code, :pic, :pkg]
   end
 end
