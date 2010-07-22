@@ -1,4 +1,3 @@
-# Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def loading_image_tag
     image_tag 'ajax-loader.gif', :alt => 'Loading...'

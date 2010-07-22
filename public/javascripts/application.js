@@ -1,4 +1,5 @@
-// application.js
+// Place your application-specific JavaScript functions and classes here
+// This file is automatically included by javascript_include_tag :defaults
 
 function show_div_on_checkbox_setting(div_id, checkbox_id, value_for_shown){
 	var checkbox = $(checkbox_id);

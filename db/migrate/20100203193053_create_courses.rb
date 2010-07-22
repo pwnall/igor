@@ -13,10 +13,10 @@ class CreateCourses < ActiveRecord::Migration
     add_index :courses, :number, :unique => :true, :null => false
 
     # Pre-populate with 6.006, since this is the course that founded the site.
-    Course.create :number => '6.006',
-                  :title => 'Introduction to Algorithms',
-                  :has_recitations => true,
-                  :ga_account => 'UA-2624215-2'
+    Course.create! :number => '6.006',
+                   :title => 'Introduction to Algorithms',
+                   :has_recitations => true,
+                   :ga_account => 'UA-2624215-2'
   end
 
   def self.down

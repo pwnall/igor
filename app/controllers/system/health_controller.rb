@@ -1,18 +1,18 @@
 class System::HealthController < ApplicationController
   before_filter :authenticated_as_admin
 
-  include Sys
-  
   def index    
-    @processes = ProcTable.ps.sort { |a, b| b.pid <=> a.pid }
+    @processes = Sys::ProcTable.ps.sort { |a, b| b.pid <=> a.pid }
   end
 
   def show
-    @process = ProcTable.ps.select { |p| p.pid.to_s == params[:id].to_s }.first
+    @process =
+        Sys::ProcTable.ps.select { |p| p.pid.to_s == params[:id].to_s }.first
   end
 
   def destroy
-    @process = ProcTable.ps.select { |p| p.pid.to_s == params[:id].to_s }.first
+    @process =
+        Sys::ProcTable.ps.select { |p| p.pid.to_s == params[:id].to_s }.first
     
     if @process.nil?
       flash[:error] = "No process with PID #{@process.pid}"
@@ -26,14 +26,14 @@ class System::HealthController < ApplicationController
   
   def stat_system
     @server = {
-      :os_name => Uname.sysname,
-      :node_name => Uname.nodename,
-      :os_arch => Uname.machine,
-      :os_ver => Uname.version,
-      :os_release => Uname.release,
-      :boot_time => Uptime.boot_time,
-      :uptime => Uptime.dhms,
-      :load => CPU.load_avg,
+      :os_name => Sys::Uname.sysname,
+      :node_name => Sys::Uname.nodename,
+      :os_arch => Sys::Uname.machine,
+      :os_ver => Sys::Uname.version,
+      :os_release => Sys::Uname.release,
+      :boot_time => Sys::Uptime.boot_time,
+      :uptime => Sys::Uptime.dhms,
+      :load => Sys::CPU.load_avg,
     }
     
     @cpus = []
@@ -41,16 +41,16 @@ class System::HealthController < ApplicationController
     when /darwin/
       # NOTE: it would be nice to have stats for CPUs 
       cpu0 = {
-        :freq => (CPU.freq rescue 0),
-        :arch => CPU.architecture,
-        :machine => CPU.machine,
-        :model => CPU.model,
+        :freq => (Sys::CPU.freq rescue 0),
+        :arch => Sys::CPU.architecture,
+        :machine => Sys::CPU.machine,
+        :model => Sys::CPU.model,
         :cores => 0
       }
-      num_cpus = CPU.num_cpu
-      @cpus = (0...(CPU.num_cpu)).map { |i| cpu0 }     
+      num_cpus = Sys::CPU.num_cpu
+      @cpus = (0...(Sys::CPU.num_cpu)).map { |i| cpu0 }     
     when /win/
-      CPU.processors do |p|
+      Sys::CPU.processors do |p|
         @cpus << {
           :freq => p.freq,
           :model => p.description,
@@ -60,7 +60,7 @@ class System::HealthController < ApplicationController
         }
       end
     else
-      CPU.processors do |p|
+      Sys::CPU.processors do |p|
         @cpus << {
           :freq => p.cpu_mhz,
           :model => p.model_name,
