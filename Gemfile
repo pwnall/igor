@@ -3,10 +3,11 @@ source 'http://rubygems.org'
 # gem 'rails', '3.0.0.beta4'
 
 ## Bundle edge rails instead:
-gem 'rails', :git => 'git://github.com/rails/rails.git'
+gem 'rails', :git => 'git://github.com/rails/rails.git',
+             :branch => '3-0-stable'
 
 gem 'sqlite3-ruby', :require => 'sqlite3'
-gem 'mysql'
+gem 'mysql2'
 
 ## Bundle the gems you use:
 # gem 'bj'
