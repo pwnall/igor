@@ -31,7 +31,8 @@ class User < ActiveRecord::Base
   
   # The user name.
   validates_length_of :name, :in => 2..64, :allow_nil => false
-  validates_format_of :name, :with => /^\w+$/, :message => 'can only contain letters, numbers, and _'  
+  validates_format_of :name, :with => /^\w+$/,
+      :message => 'can only contain letters, numbers, and _'  
   validates_uniqueness_of :name  
   
   # Random string preventing dictionary attacks on the password database.
@@ -54,17 +55,21 @@ class User < ActiveRecord::Base
   validates_inclusion_of :active, :in => [true, false]
   
   # Virtual attribute: the user's password.
-  validates_presence_of :password, :on => :create
   attr_reader :password
-  attr_accessor :password_confirmation
   def password=(new_password)
     @password = new_password
-    self.password_salt = (0...16).map { |i| 1 + rand(255) }.pack('C*')
-    self.password_hash = User.hash_password new_password, password_salt
+    if new_password
+      self.password_salt = [(0...12).map { |i| 1 + rand(255) }.pack('C*')].
+                                     pack('m').strip
+      self.password_hash = User.hash_password new_password, password_salt
+    else
+      self.password_salt = self.password_hash = nil
+    end
   end
   
   # Virtual attribute: confirmation for the user's password.
-  validates_confirmation_of :password
+  attr_accessor :password_confirmation
+  validates_confirmation_of :password, :allow_nil => true
   
   # Compares the given password against the user's stored password.
   #
@@ -80,7 +85,7 @@ class User < ActiveRecord::Base
   
   # Resets the virtual password attributes.
   def reset_password
-    @password = @password_confirmation = nil
+    self.password = self.password_confirmation = nil
   end
   
   # The authenticated user or nil.
