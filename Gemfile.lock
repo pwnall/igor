@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/rails/rails.git
-  revision: 6f478b0
+  revision: d0e3323
   branch: 3-0-stable
   specs:
     actionmailer (3.0.0.rc)
@@ -13,9 +13,9 @@ GIT
       erubis (~> 2.6.6)
       i18n (~> 0.4.1)
       rack (~> 1.2.1)
-      rack-mount (~> 0.6.9)
+      rack-mount (~> 0.6.10)
       rack-test (~> 0.5.4)
-      tzinfo (~> 0.3.22)
+      tzinfo (~> 0.3.23)
     activemodel (3.0.0.rc)
       activesupport (= 3.0.0.rc)
       builder (~> 2.1.2)
@@ -24,7 +24,7 @@ GIT
       activemodel (= 3.0.0.rc)
       activesupport (= 3.0.0.rc)
       arel (~> 0.4.0)
-      tzinfo (~> 0.3.22)
+      tzinfo (~> 0.3.23)
     activeresource (3.0.0.rc)
       activemodel (= 3.0.0.rc)
       activesupport (= 3.0.0.rc)
@@ -45,10 +45,10 @@ GIT
 
 GIT
   remote: git://github.com/sandal/prawn.git
-  revision: 3f5bd62
+  revision: f380831
   submodules: true
   specs:
-    prawn (0.10.0)
+    prawn (0.11.1.pre)
       pdf-reader (>= 0.8.1)
 
 GEM
@@ -77,12 +77,12 @@ GEM
     memcache-client (1.8.5)
     mime-types (1.16)
     mit_stalker (1.0.3)
-    mysql2 (0.2.1)
+    mysql2 (0.2.2)
     pdf-reader (0.8.5)
       Ascii85 (>= 0.9)
     polyglot (0.3.1)
     rack (1.2.1)
-    rack-mount (0.6.9)
+    rack-mount (0.6.11)
       rack (>= 1.0.0)
     rack-test (0.5.4)
       rack (>= 1.0)
@@ -97,7 +97,7 @@ GEM
     thor (0.14.0)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
-    tzinfo (0.3.22)
+    tzinfo (0.3.23)
     zerg_support (0.1.5)
 
 PLATFORMS
