@@ -17,7 +17,7 @@
 
 # A profile's avatar.
 class ProfilePhoto < ActiveRecord::Base
-  # The profile who's avatar is stored by this.
+  # The profile whose avatar is stored by this.
   belongs_to :profile
   validates_presence_of :profile
   

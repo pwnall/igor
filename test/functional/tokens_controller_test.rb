@@ -1,11 +1,8 @@
 require 'test_helper'
 
-require 'flexmock/test_unit'
-
 class TokensControllerTest < ActionController::TestCase
   def test_dispatch_with_spend
-    flexmock(@controller).should_receive(:charge).with(:amount => 100).once.
-                          and_return(true)
+    @controller.expects(:charge).with(:amount => 100).once.returns(true)
     
     assert_difference 'Token.count', -1 do
       get :spend, :token => tokens(:fictional_charge).token
@@ -14,8 +11,7 @@ class TokensControllerTest < ActionController::TestCase
   end
   
   def test_dispatch_without_spend
-    flexmock(@controller).should_receive(:charge).with(:amount => 100).once.
-                          and_return(false)
+    @controller.expects(:charge).with(:amount => 100).once.returns(false)
     
     assert_no_difference 'Token.count' do
       get :spend, :token => tokens(:fictional_charge).token

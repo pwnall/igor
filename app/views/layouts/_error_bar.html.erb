@@ -5,7 +5,15 @@
   </span>
 	<%= flash[:error] %>
 </div>
+<% elsif flash[:notice] %>
+<div class="error-bar">
+  <span class="actions">
+  <%= link_to 'Hide', '#', :class => 'error-bar-hide' %>
+  </span>
+  <%= flash[:notice] %>
+</div>
 <% end %>
+
 <%= javascript_tag <<JS_END
   $$('.error-bar-hide').each(function(element) {
     element.observe('click', function(event) {

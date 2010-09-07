@@ -27,9 +27,8 @@ class TokensController < ApplicationController
     user = @token.user
     user.active = true
     
-    if user.save    
-      flash[:notice] =
-          "Confirmed address #{user.email} for #{user.name}. You can login now."
+    if user.save
+      session[:user_id] = user.id
       return true
     else
       flash[:error] = "Unexpected error :("

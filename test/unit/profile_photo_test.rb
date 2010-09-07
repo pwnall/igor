@@ -1,8 +1,14 @@
 require 'test_helper'
 
 class ProfilePhotoTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  include ActionDispatch::TestProcess
+  
+  setup do
+    @photo = ProfilePhoto.new :profile => profiles(:solo),
+        :pic => fixture_file_upload('profile_pics/costan.png','image/png')
+  end
+  
+  test 'setup' do
+    assert @photo.valid?
   end
 end

@@ -1,7 +1,5 @@
 require 'test_helper'
 
-require 'flexmock/test_unit'
-
 class RecitationAssignerControllerTest < ActionController::TestCase
   # This actually tests RecitationAssigner, but needs to fire requests against
   # the API controller.
@@ -9,8 +7,7 @@ class RecitationAssignerControllerTest < ActionController::TestCase
   
   def test_conflicts_info
     get :conflict_info, :format => 'json'
-    flexmock(RecitationAssigner).should_receive(:raw_conflicts_info).
-                                 and_return(@response.body)
+    RecitationAssigner.expects(:raw_conflicts_info).returns(@response.body)
                               
     golden_info = [{:athena=>"genius", :conflicts=>{
       130 => {"timeslot" => 130, "class" => "6.001"},

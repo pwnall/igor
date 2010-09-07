@@ -6,7 +6,6 @@ gem 'rails', '3.0.0'
 # gem 'rails', :git => 'git://github.com/rails/rails.git',
 #              :branch => '3-0-stable'
 
-gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'mysql2'
 
 ## Bundle the gems you use:
@@ -34,5 +33,5 @@ gem 'zerg_support'
 ## Bundle gems for certain environments:
 # gem 'rspec', :group => :test
 group :test do
-  gem 'flexmock'  
+  gem 'mocha'  
 end

@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class TokenTest < ActiveSupport::TestCase
-  def setup
+  setup do
     @token = Token.new :action => 'confirm_email', :argument => nil
   end
   
