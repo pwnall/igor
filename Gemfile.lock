@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/sandal/prawn.git
-  revision: 8ebce836d5846bf351ebea9d7fe886467100c07e
+  revision: bf7973c5491558d474c0542ef11b18984580c6f5
   submodules: true
   specs:
     prawn (0.11.1.pre)
