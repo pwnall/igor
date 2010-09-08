@@ -103,13 +103,13 @@ class RegistrationsController < ApplicationController
     end
     
     if @new_record = @registration.new_record?
-      success = @registration.save!
+      success = @registration.save
     else
       # Disallow structural changes to the record.
       params[:registration].delete :user_id
       params[:registration].delete :course_id
       
-      success = @registration.update_attributes(params[:registration])
+      success = @registration.update_attributes params[:registration]
     end
     
     respond_to do |format|

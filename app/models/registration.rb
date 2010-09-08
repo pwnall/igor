@@ -35,7 +35,7 @@ class Registration < ActiveRecord::Base
 
   # Why is the student taking the class.
   # TODO(costan): this should be rolled into the registration survey.
-  validates_length_of :motivation, :in => 0..(32.kilobytes), :allow_nil => false
+  validates_length_of :motivation, :in => 1..(32.kilobytes), :allow_nil => false
   
   # Returns true if the given user is allowed to edit this registration.
   def editable_by_user?(user)
