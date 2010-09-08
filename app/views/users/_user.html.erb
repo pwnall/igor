@@ -23,7 +23,8 @@
   </li>
   <li>
     <%= link_to((user.admin ? 'Strip Admin' : 'Make Admin'),
-                set_admin_user_path(user, :to => !user.admin)) %>
+                set_admin_user_path(user, :to => !user.admin),
+                :method => :put) %>
   </li>
   <li>
     <%= link_to 'Destroy', user, :confirm => 'Are you sure?',
