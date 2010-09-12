@@ -43,6 +43,7 @@ GEM
     daemonz (0.3.2)
       simple-daemon
       zerg_support
+    diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
     eventmachine (0.12.10)
@@ -57,8 +58,6 @@ GEM
     memcache-client (1.8.5)
     mime-types (1.16)
     mit_stalker (1.0.3)
-    mocha (0.9.8)
-      rake
     mysql2 (0.2.3)
     pdf-reader (0.8.6)
       Ascii85 (>= 0.9)
@@ -83,6 +82,16 @@ GEM
       thor (~> 0.14.0)
     rake (0.8.7)
     rmagick (2.13.1)
+    rspec (2.0.0.beta.20)
+      rspec-core (= 2.0.0.beta.20)
+      rspec-expectations (= 2.0.0.beta.20)
+      rspec-mocks (= 2.0.0.beta.20)
+    rspec-core (2.0.0.beta.20)
+    rspec-expectations (2.0.0.beta.20)
+      diff-lcs (>= 1.1.2)
+    rspec-mocks (2.0.0.beta.20)
+    rspec-rails (2.0.0.beta.20)
+      rspec (= 2.0.0.beta.20)
     simple-daemon (0.1.2)
     starling (0.10.1)
       eventmachine (>= 0.12.0)
@@ -103,11 +112,11 @@ DEPENDENCIES
   gravtastic
   json
   mit_stalker
-  mocha
   mysql2
   prawn!
   rails (= 3.0.0)
   rmagick
+  rspec-rails (>= 2.0.0.beta.20)
   simple-daemon
   starling
   system_timer

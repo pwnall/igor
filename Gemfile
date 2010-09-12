@@ -32,6 +32,6 @@ gem 'zerg_support'
 
 ## Bundle gems for certain environments:
 # gem 'rspec', :group => :test
-group :test do
-  gem 'mocha'  
+group :development, :test do
+  gem "rspec-rails", ">= 2.0.0.beta.20"
 end
