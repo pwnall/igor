@@ -20,6 +20,6 @@ class RecitationConflict < ActiveRecord::Base
   belongs_to :registration
   
   # TODO(costan): figure out a way to check that the registration is valid
-  validates_presence_of :registration_id
+  #validates_presence_of :registration_id
   #validates_uniqueness_of :timeslot, :scope => [:registration_id]
 end
