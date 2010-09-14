@@ -6,6 +6,13 @@ GIT
     prawn (0.11.1.pre)
       pdf-reader (>= 0.8.1)
 
+PATH
+  remote: /home/pwnall/workspace/paperclip
+  specs:
+    paperclip (2.3.3)
+      activerecord
+      activesupport
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -113,6 +120,7 @@ DEPENDENCIES
   json
   mit_stalker
   mysql2
+  paperclip!
   prawn!
   rails (= 3.0.0)
   rmagick

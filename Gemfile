@@ -18,6 +18,9 @@ gem 'fastercsv'
 gem 'gravtastic'
 gem 'json'
 gem 'mit_stalker'
+gem 'paperclip', :path => '../paperclip'
+# gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
+#                  :ref => '9f80659a9873  3765ce5f3cb2a44d748b54522502'
 gem 'prawn', :git => 'git://github.com/sandal/prawn.git',
              :submodules => true
 gem 'rmagick'
