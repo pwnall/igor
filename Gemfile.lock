@@ -1,17 +1,18 @@
 GIT
-  remote: git://github.com/sandal/prawn.git
-  revision: bf7973c5491558d474c0542ef11b18984580c6f5
-  submodules: true
-  specs:
-    prawn (0.11.1.pre)
-      pdf-reader (>= 0.8.1)
-
-PATH
-  remote: /home/pwnall/workspace/paperclip
+  remote: git://github.com/pwnall/paperclip.git
+  revision: d6ab5f27fd6d11377f589ec582eea6ffaff04723
   specs:
     paperclip (2.3.3)
       activerecord
       activesupport
+
+GIT
+  remote: git://github.com/sandal/prawn.git
+  revision: a2790955ac302ec1121ae11c2cae96d8f4560d96
+  submodules: true
+  specs:
+    prawn (0.11.1.pre)
+      pdf-reader (>= 0.8.1)
 
 GEM
   remote: http://rubygems.org/
@@ -58,14 +59,14 @@ GEM
     gravtastic (2.2.0)
     i18n (0.4.1)
     json (1.4.6)
-    mail (2.2.5)
+    mail (2.2.6.1)
       activesupport (>= 2.3.6)
       mime-types
       treetop (>= 1.4.5)
     memcache-client (1.8.5)
     mime-types (1.16)
     mit_stalker (1.0.3)
-    mysql2 (0.2.3)
+    mysql2 (0.2.4)
     pdf-reader (0.8.6)
       Ascii85 (>= 0.9)
     polyglot (0.3.1)
@@ -89,22 +90,24 @@ GEM
       thor (~> 0.14.0)
     rake (0.8.7)
     rmagick (2.13.1)
-    rspec (2.0.0.beta.20)
-      rspec-core (= 2.0.0.beta.20)
-      rspec-expectations (= 2.0.0.beta.20)
-      rspec-mocks (= 2.0.0.beta.20)
-    rspec-core (2.0.0.beta.20)
-    rspec-expectations (2.0.0.beta.20)
+    rspec (2.0.0.beta.22)
+      rspec-core (= 2.0.0.beta.22)
+      rspec-expectations (= 2.0.0.beta.22)
+      rspec-mocks (= 2.0.0.beta.22)
+    rspec-core (2.0.0.beta.22)
+    rspec-expectations (2.0.0.beta.22)
       diff-lcs (>= 1.1.2)
-    rspec-mocks (2.0.0.beta.20)
-    rspec-rails (2.0.0.beta.20)
-      rspec (= 2.0.0.beta.20)
+    rspec-mocks (2.0.0.beta.22)
+      rspec-core (= 2.0.0.beta.22)
+      rspec-expectations (= 2.0.0.beta.22)
+    rspec-rails (2.0.0.beta.22)
+      rspec (= 2.0.0.beta.22)
     simple-daemon (0.1.2)
     starling (0.10.1)
       eventmachine (>= 0.12.0)
       memcache-client (>= 1.7.0)
     system_timer (1.0)
-    thor (0.14.0)
+    thor (0.14.1)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
