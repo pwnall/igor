@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/sandal/prawn.git
-  revision: a2790955ac302ec1121ae11c2cae96d8f4560d96
+  revision: fe79c39f3f12f59397e8fb6835f2d1a520d9978d
   submodules: true
   specs:
     prawn (0.11.1.pre)
@@ -67,13 +67,14 @@ GEM
     mime-types (1.16)
     mit_stalker (1.0.3)
     mysql2 (0.2.4)
+    nokogiri (1.4.3.1)
     pdf-reader (0.8.6)
       Ascii85 (>= 0.9)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
-    rack-test (0.5.4)
+    rack-test (0.5.5)
       rack (>= 1.0)
     rails (3.0.0)
       actionmailer (= 3.0.0)
@@ -107,10 +108,14 @@ GEM
       eventmachine (>= 0.12.0)
       memcache-client (>= 1.7.0)
     system_timer (1.0)
-    thor (0.14.1)
+    thor (0.14.2)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
+    webrat (0.7.1)
+      nokogiri (>= 1.2.0)
+      rack (>= 1.0)
+      rack-test (>= 0.5.3)
     zerg_support (0.1.5)
 
 PLATFORMS
@@ -127,8 +132,9 @@ DEPENDENCIES
   prawn!
   rails (= 3.0.0)
   rmagick
-  rspec-rails (>= 2.0.0.beta.20)
+  rspec-rails (>= 2.0.0.beta.22)
   simple-daemon
   starling
   system_timer
+  webrat
   zerg_support

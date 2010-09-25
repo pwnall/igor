@@ -1,15 +1,29 @@
 require 'spec_helper'
 
-# Specs in this file have access to a helper object that includes
-# the User2sHelper. For example:
-#
-# describe User2sHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       helper.concat_strings("this","that").should == "this that"
-#     end
-#   end
-# end
 describe UsersHelper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  fixtures :users
+  
+  let(:dexter) { users(:dexter) }
+  let(:lurker) { users(:inactive) }
+  
+  describe 'display_name' do
+    it 'should look up profile name' do
+      helper.display_name_for_user(dexter).should ==
+          'Dexter Boy Genius <genius@mit>'
+    end
+  end
+  
+  describe 'user_image_tag' do
+    it "should point to the profile's photo if there is one" do
+      helper.user_image_tag(dexter).should have_selector('img',
+          :alt => 'avatar for dexter',
+          :src => thumb_profile_photo_path(dexter.profile.photo))
+    end
+    
+    it "should point to the Gravatar if there's no profile photo" do
+      helper.user_image_tag(lurker).should have_selector('img',
+          :alt => 'avatar for lurker',
+          :src => 'https://secure.gravatar.com/avatar/cfe07d554ff4da258e53acf07aad4abb.png?r=G&amp;s=36')
+    end
+  end
 end
