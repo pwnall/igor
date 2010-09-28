@@ -1,0 +1,44 @@
+# == Schema Information
+# Schema version: 20100504203833
+#
+# Table name: grades
+#
+#  id           :integer(4)      not null, primary key
+#  metric_id    :integer(4)      not null
+#  subject_type :string(64)      not null
+#  subject_id   :integer(4)      not null
+#  grader_id    :integer(4)      not null
+#  score        :decimal(8, 2)   not null
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
+awesome_ps1_p1:
+  metric: ps1_p1
+  subject: awesome_pset (Team)
+  grader: admin
+  score: 10.0
+  
+boo_ps1_p1:
+  metric: ps1_p1
+  subject: boo_pset (Team)
+  grader: admin
+  score: 1.0
+
+awesome_project:
+  metric: project_overall
+  subject: awesome_project (Team)
+  grader: admin
+  score: 100.0
+  
+boo_project:
+  metric: project_overall
+  subject: boo_project (Team)
+  grader: admin
+  score: 42.0
+
+dexter_assessment:
+  metric: assessment_overall
+  subject: dexter (User)
+  grader: admin
+  score: 42.0
