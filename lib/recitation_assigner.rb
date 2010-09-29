@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-
+ENV['RAILS_ENV'] ||= 'development'
 require File.join(File.dirname(__FILE__), '..', 'config', 'environment.rb')
 
 module RecitationAssigner
@@ -83,7 +83,7 @@ module RecitationAssigner
       break unless path
       augment_flow_graph! graph, path
     end    
-    matching_in_graph graph, source, sink
+    matching_in graph, source, sink
   end
   
   # Finds an augmenting path in a flow graph.
@@ -129,7 +129,7 @@ module RecitationAssigner
   end
   
   # The matching currently found in a matching graph.
-  def self.matching_in_graph(graph, source = :source, sink = :sink)
+  def self.matching_in(graph, source = :source, sink = :sink)
     Hash[*((graph[:edges][sink] || {}).keys.map { |matched_vertex|
       [graph[:edges][matched_vertex].keys.first, matched_vertex]
     }.flatten)]
