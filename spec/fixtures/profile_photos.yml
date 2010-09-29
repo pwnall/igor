@@ -20,8 +20,8 @@
 dexter:
   profile: dexter
   pic_file_name: admin_project.pdf
-  pic_file_size: <%= File.read("#{Rails.root}/test/fixtures/profile_pics/costan.png").length %>
+  pic_file_size: <%= File.read("#{Rails.root}/spec/fixtures/profile_pics/costan.png").length %>
   pic_content_type: application/pdf
-  pic_file: !binary | <%= [File.read("#{Rails.root}/test/fixtures/profile_pics/costan.png")].pack('m').gsub(/\n/,"\n    ").strip %>
-  pic_profile_file: !binary | <%= [File.read("#{Rails.root}/test/fixtures/profile_pics/costan_profile.png")].pack('m').gsub(/\n/,"\n    ").strip %>
-  pic_thumb_file: !binary | <%= [File.read("#{Rails.root}/test/fixtures/profile_pics/costan_thumb.png")].pack('m').gsub(/\n/,"\n    ").strip %>
+  pic_file: !binary | <%= [File.read("#{Rails.root}/spec/fixtures/profile_pics/costan.png")].pack('m').gsub(/\n/,"\n    ").strip %>
+  pic_profile_file: !binary | <%= [File.read("#{Rails.root}/spec/fixtures/profile_pics/costan_profile.png")].pack('m').gsub(/\n/,"\n    ").strip %>
+  pic_thumb_file: !binary | <%= [File.read("#{Rails.root}/spec/fixtures/profile_pics/costan_thumb.png")].pack('m').gsub(/\n/,"\n    ").strip %>
