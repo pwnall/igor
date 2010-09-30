@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/sandal/prawn.git
-  revision: fe79c39f3f12f59397e8fb6835f2d1a520d9978d
+  revision: 0e9df5cd022300a50061f3b6382aaa1eb5f9a43e
   submodules: true
   specs:
     prawn (0.11.1.pre)
@@ -55,7 +55,6 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     eventmachine (0.12.10)
-    fastercsv (1.5.3)
     gravtastic (2.2.0)
     i18n (0.4.1)
     json (1.4.6)
@@ -74,7 +73,7 @@ GEM
     rack (1.2.1)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
-    rack-test (0.5.5)
+    rack-test (0.5.6)
       rack (>= 1.0)
     rails (3.0.0)
       actionmailer (= 3.0.0)
@@ -122,7 +121,6 @@ PLATFORMS
 
 DEPENDENCIES
   daemonz
-  fastercsv
   gravtastic
   json
   mit_stalker
