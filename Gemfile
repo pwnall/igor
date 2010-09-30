@@ -26,7 +26,6 @@ gem 'prawn', :git => 'git://github.com/sandal/prawn.git',
 gem 'rmagick'
 gem 'simple-daemon'
 gem 'starling'
-gem 'system_timer'
 # gem 'sys-cpu', :require => 'sys/cpu'
 # gem 'sys-proctable', :require => 'sys/proctable'
 # gem 'sys-uname', :require => 'sys/uname'
