@@ -1,8 +1,11 @@
 require 'spec_helper'
 
 describe Deliverable do
-  fixtures :deliverables, :submissions, :users, :team_partitions, :teams,
-           :team_memberships
+#  fixtures :deliverables, :submissions, :users, :team_partitions, :teams,
+#           :team_memberships
+
+  # NOTE: specifying individual fixtures makes specs fail on MRI 1.9.2
+  fixtures :all
            
   let(:admin) { users(:admin) }
   let(:dexter) { users(:dexter) }

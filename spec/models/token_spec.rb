@@ -8,7 +8,7 @@ describe Token do
   end
   
   it 'should validate the standard setup' do
-    email_token be_valid    
+    email_token.should be_valid    
   end
   
   it 'should validate when built off an account' do

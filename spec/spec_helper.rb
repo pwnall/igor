@@ -7,6 +7,20 @@ require 'rspec/rails'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+# :nodoc: add session modification
+module AuthpwnRSpecExtensions
+  # Sets the authenticated user in the test session.
+  def set_session_current_user(user)
+    request.session[:user_id] = user ? user.to_param : nil
+  end
+  
+  # The authenticated user in the test session.
+  def session_current_user
+    return nil unless user_param = request.session[:user_id]
+    User.find_by_id user_param
+  end
+end
+
 RSpec.configure do |config|
   # == Mock Framework
   #
@@ -23,4 +37,6 @@ RSpec.configure do |config|
   # examples within a transaction, comment the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
+  
+  config.include AuthpwnRSpecExtensions
 end

@@ -1,9 +1,14 @@
 require 'spec_helper'
 
 describe UsersController do
+  fixtures :users
 
   def mock_user(stubs={})
     @mock_user ||= mock_model(User, stubs).as_null_object
+  end
+  
+  before do
+    set_session_current_user users(:admin)
   end
 
   describe "GET index" do
