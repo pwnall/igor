@@ -19,15 +19,15 @@ describe User do
   it 'should reject users with no names' do
     dvdjohn.name = nil
     dvdjohn.should_not be_valid
-  end  
+  end
   it 'should reject short names' do
     dvdjohn.name = 'a'
     dvdjohn.should_not be_valid
-  end  
+  end
   it 'should reject overly long names' do
     dvdjohn.name = 'abcde' * 13
     dvdjohn.should_not be_valid
-  end  
+  end
   ['pwn$', 'l@@k', 'awe some'].each do |name|
     it "should reject funny name #{name}" do    
       dvdjohn.name = name
@@ -42,7 +42,7 @@ describe User do
   it 'should reject users without password salts' do
     dvdjohn.password_salt = nil
     dvdjohn.should_not be_valid
-  end  
+  end
   it 'should reject overly long password salts' do
     dvdjohn.password_salt = '12345' * 4
     dvdjohn.should_not be_valid
@@ -59,7 +59,7 @@ describe User do
   it 'should reject overly long password hashes' do
     dvdjohn.password_hash = '12345' * 13
     dvdjohn.should_not be_valid
-  end  
+  end
   it 'should reject empty password hashes' do
     dvdjohn.password_hash = ''
     dvdjohn.should_not be_valid

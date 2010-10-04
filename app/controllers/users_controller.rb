@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   def index
-    @users = User.find(:all)
+    @users = User.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -53,13 +53,13 @@ class UsersController < ApplicationController
     @user.admin = (@user.name == 'admin')
 
     respond_to do |format|
-      if @user.save        
+      if @user.save
         flash[:error] = 'Please check your e-mail to activate your account.'
         token = @user.tokens.create :action => 'confirm_email'
         TokenMailer.account_confirmation(token, root_url, 
             spend_token_url(:token => token.token)).deliver
         
-        format.html { redirect_to(:controller => :sessions, :action => :index) }
+        format.html { redirect_to sessions_path }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
         @user.reset_password
