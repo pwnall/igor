@@ -1,12 +1,12 @@
 class TokensController < ApplicationController
   def spend
-    @token = Token.find_by_token(params[:token])    
+    @token = Token.where(:token => params[:token]).first
     
     if @token.nil?
       flash[:error] = 'Invalid token (did you click this link before?)'
     else
-    spent = self.send @token.action.to_sym, @token.argument
-    @token.destroy if spent
+      spent = self.send @token.action.to_sym, @token.argument
+      @token.destroy if spent
     end
         
     unless performed?
@@ -18,7 +18,7 @@ class TokensController < ApplicationController
           else
             render :xml => nil, :status => :unprocessable_entity
           end
-        end        
+        end
       end
     end
   end
