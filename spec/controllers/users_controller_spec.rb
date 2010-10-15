@@ -8,7 +8,10 @@ describe UsersController do
   end
   
   before do
-    set_session_current_user users(:admin)
+    request.session[:user_id] = 42
+    mock_admin = mock_model(User,
+        {:active => true, :admin => true, :real_name => 'Admin'})
+    User.stub(:find).with(42) { mock_admin }
   end
 
   describe "GET index" do
@@ -55,7 +58,7 @@ describe UsersController do
       it "redirects to the created user" do
         User.stub(:new) { mock_user(:save => true) }
         post :create, :user => {}
-        response.should redirect_to(user_url(mock_user))
+        response.should redirect_to(sessions_url)
       end
     end
 
