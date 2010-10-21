@@ -108,8 +108,7 @@ class GradesController < ApplicationController
     end
     
     # generate the CSV
-    
-    csv_text = FasterCSV.generate do |csv|
+    csv_text = (defined?(FasterCSV) ? FasterCSV : CSV).generate do |csv|
       @ordered_metrics = @assignments_by_aid.values.sort { |a, b| a.deadline <=> b.deadline }.map { |a| @metrics_by_aid[a.id].sort_by { |m| m.name } }.flatten
       
       csv << ['GRADES']
