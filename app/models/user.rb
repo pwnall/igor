@@ -149,7 +149,8 @@ class User < ActiveRecord::Base
   end
   
   # Configure gravatars.
-  is_gravtastic :email, :secure => true, :rating => 'G', :filetype => 'png'
+  include Gravtastic
+  gravtastic :email, :secure => true, :rating => 'G', :filetype => 'png'
     
   # TODO(costan): move query processing in another class
   
