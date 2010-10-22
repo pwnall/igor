@@ -16,21 +16,19 @@ class GradesController < ApplicationController
   end
   
   def missing
-    assignments = Assignment.includes(:deliverables,
-                                      {:assignment_metrics => :assignment})
+    assignments = Assignment.includes :deliverables, { :metrics => :assignment }
     @assignments = assignments
     if params[:filter_aid]
       assignments = assignments.where(:id => params[:filter_aid])
     end
     
-    @metrics_by_id =
-        assignments.map(&:assignment_metrics).flatten.index_by(&:id)
+    @metrics_by_id = assignments.map(&:metrics).flatten.index_by(&:id)
     
     gradeless_users = {}
     @users_by_id = {}
   
     assignments.each do |assignment|
-      metrics = assignment.assignment_metrics
+      metrics = assignment.metrics
       metrics.select!(&:published) if params[:filtered_published]
       metric_ids = metrics.map(&:id)
 

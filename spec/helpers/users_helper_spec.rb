@@ -24,7 +24,7 @@ describe UsersHelper do
       # NOTE: there shouldn't be an &amp; in the URL; it's a Gravatar bug
       helper.user_image_tag(lurker).should have_selector('img',
           :alt => 'avatar for lurker',
-          :src => 'https://secure.gravatar.com/avatar/cfe07d554ff4da258e53acf07aad4abb.png?r=G&amp;s=36')
+          :src => 'https://secure.gravatar.com/avatar/cfe07d554ff4da258e53acf07aad4abb.png?r=G&s=36')
     end
   end
 end
