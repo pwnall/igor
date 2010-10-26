@@ -44,7 +44,7 @@ class GradesController < ApplicationController
           
       # find those without all the grades
       users.index_by(&:id).each do |user_id, user|
-        user_grades = user.grades.select { |g| metric_ids.include g.metric_id }
+        user_grades = user.grades.select { |g| metric_ids.include? g.metric_id }
         next if user_grades.length == metric_ids.length
         
         # user found: add to list
