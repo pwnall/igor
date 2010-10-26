@@ -32,14 +32,19 @@ class GradesController < ApplicationController
       metrics.select!(&:published) if params[:filtered_published]
       metric_ids = metrics.map(&:id)
 
-      # get the users who submitted
-      deliverable_ids = assignment.deliverables.map(&:id)
-      users = Submission.where(:deliverable_id => deliverable_ids).
-                         includes(:user).map(&:user).index_by(&:id)
+      if assignment.deliverables.empty?
+        # No deliverables (quiz?). Include all registered students.
+        users = Profile.includes(:user).all.map(&:user).reject(&:admin?)
+      else
+        # Only consider students who submitted something for the assignment.
+        deliverable_ids = assignment.deliverables.map(&:id)
+        users = Submission.where(:deliverable_id => deliverable_ids).
+                           includes(:user).map(&:user).index_by(&:id)
+      end
           
       # find those without all the grades
       users.each do |user_id, user|
-        user_grades = user.grades.where(:assignment_metric_id => metric_ids)
+        user_grades = user.grades.select { |g| metric_ids.include g.assignment_metric_id }
         next if user_grades.length == metric_ids.length
         
         # user found: add to list
