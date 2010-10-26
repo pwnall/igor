@@ -39,11 +39,11 @@ class GradesController < ApplicationController
         # Only consider students who submitted something for the assignment.
         deliverable_ids = assignment.deliverables.map(&:id)
         users = Submission.where(:deliverable_id => deliverable_ids).
-                           includes(:user).map(&:user).index_by(&:id)
+                           includes(:user).map(&:user)
       end
           
       # find those without all the grades
-      users.each do |user_id, user|
+      users.index_by(&:id).each do |user_id, user|
         user_grades = user.grades.select { |g| metric_ids.include g.assignment_metric_id }
         next if user_grades.length == metric_ids.length
         
