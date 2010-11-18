@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/pwnall/paperclip.git
-  revision: d6ab5f27fd6d11377f589ec582eea6ffaff04723
+  revision: a626a924c9a22d8d69ee9dc8337e5024e47cb6bb
   specs:
-    paperclip (2.3.3)
+    paperclip (2.3.5)
       activerecord
       activesupport
 
