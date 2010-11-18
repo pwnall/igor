@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe UsersHelper do
-  fixtures :users
+  fixtures :users, :profiles
   
   let(:dexter) { users(:dexter) }
   let(:lurker) { users(:inactive) }
