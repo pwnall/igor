@@ -21,8 +21,8 @@ class Course < ActiveRecord::Base
   # The contact e-mail for course staff.
   validates :email, :length => 1..64, :presence => true
   # True if the course has recitation sections.
-  validates :has_recitations, :inclusion => { :in => [true, false] },
-                              :presence => true
+  validates :has_recitations,
+      :inclusion => { :in => [true, false], :allow_nil => false }
   
   # The Google Analytics account ID for the course.
   validates :ga_account, :length => 1..32, :presence => true
