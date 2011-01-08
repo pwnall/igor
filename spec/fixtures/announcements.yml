@@ -1,15 +1,15 @@
 # == Schema Information
-# Schema version: 20100504203833
+# Schema version: 20100503235401
 #
 # Table name: announcements
 #
 #  id               :integer(4)      not null, primary key
 #  headline         :string(128)     not null
 #  contents         :string(8192)    not null
-#  created_at       :datetime
-#  updated_at       :datetime
 #  author_id        :integer(4)      not null
 #  open_to_visitors :boolean(1)      not null
+#  created_at       :datetime
+#  updated_at       :datetime
 #
 
 guest_lecture:

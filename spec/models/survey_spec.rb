@@ -1,3 +1,14 @@
+# == Schema Information
+# Schema version: 20100503235401
+#
+# Table name: surveys
+#
+#  id         :integer(4)      not null, primary key
+#  name       :string(128)     not null
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 require 'spec_helper'
 
 describe Survey do

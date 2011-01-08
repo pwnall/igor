@@ -1,16 +1,16 @@
 # == Schema Information
-# Schema version: 20100504203833
+# Schema version: 20100503235401
 #
 # Table name: registrations
 #
 #  id         :integer(4)      not null, primary key
 #  user_id    :integer(4)      not null
-#  for_credit :boolean(1)      not null
-#  motivation :string(32768)
+#  course_id  :integer(4)      not null
+#  dropped    :boolean(1)      not null
+#  for_credit :boolean(1)      default(TRUE), not null
+#  motivation :text(16777215)
 #  created_at :datetime
 #  updated_at :datetime
-#  dropped    :boolean(1)      not null
-#  course_id  :integer(4)      not null
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

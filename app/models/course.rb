@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100504203833
+# Schema version: 20100503235401
 #
 # Table name: courses
 #
@@ -7,6 +7,7 @@
 #  number          :string(16)      not null
 #  title           :string(256)     not null
 #  ga_account      :string(32)      not null
+#  email           :string(64)      not null
 #  has_recitations :boolean(1)      default(TRUE), not null
 #  created_at      :datetime
 #  updated_at      :datetime

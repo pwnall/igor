@@ -1,3 +1,19 @@
+# == Schema Information
+# Schema version: 20100503235401
+#
+# Table name: users
+#
+#  id            :integer(4)      not null, primary key
+#  name          :string(64)      not null
+#  password_salt :string(16)      not null
+#  password_hash :string(64)      not null
+#  email         :string(64)      not null
+#  active        :boolean(1)      not null
+#  admin         :boolean(1)      not null
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+
 require 'spec_helper'
 
 describe User do
