@@ -4,29 +4,24 @@ class ProfilesController < ApplicationController
   before_filter :authenticated_as_admin, :only => [:index, :destroy]
 
   # GET /profiles
-  # GET /profiles.xml
   def index
     @profiles = Profile.find(:all)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @profiles }
     end
   end
   
   # GET /profiles/1
-  # GET /profiles/1.xml
   def show
     @profile = Profile.find(params[:id])
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @profile }
     end
   end
   
   # GET /profiles/new
-  # GET /profiles/new.xml
   def new
     user = User.find(params[:user_id])
     @profile = Profile.new :user => user,
@@ -51,20 +46,17 @@ class ProfilesController < ApplicationController
     respond_to do |format|
       format.html { render :action => :new_edit }
       format.js   { render :action => :edit }
-      format.xml  { render :xml => @profile }
     end    
   end
   private :new_edit
 
   # POST /profiles
-  # POST /profiles.xml
   def create
     @profile = Profile.new(params[:profile])
     create_update
   end
 
   # PUT /profiles/1
-  # PUT /profiles/1.xml
   def update
     @profile = Profile.find(params[:id])
     create_update
@@ -90,31 +82,21 @@ class ProfilesController < ApplicationController
         flash[:notice] = "Profile successfully #{@profile.new_record? ? 'created' : 'updated'}."
         format.html { redirect_to @profile.user }
         format.js   { render :action => :create_update }
-        format.xml do
-          if @new_profile
-            render :xml => @profile, :status => :created, :location => @profile
-          else
-            head :ok
-          end  
-        end  
       else
         format.html { render :action => :new_edit }
         format.js   { render :action => :edit }
-        format.xml  { render :xml => @profile.errors, :status => :unprocessable_entity }
       end
     end    
   end
   private :create_update
   
   # DELETE /profiles/1
-  # DELETE /profiles/1.xml
   def destroy
     @profile = Profile.find(params[:id])
     @profile.destroy
 
     respond_to do |format|
       format.html { redirect_to(profiles_url) }
-      format.xml  { head :ok }
     end
   end
   

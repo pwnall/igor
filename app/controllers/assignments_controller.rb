@@ -5,29 +5,24 @@ class AssignmentsController < ApplicationController
 
 
   # GET /assignments
-  # GET /assignments.xml
   def index
     @assignments = Assignment.find(:all, :order => 'id DESC')
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @assignments }
     end
   end
 
   # GET /assignments/1
-  # GET /assignments/1.xml
   def show
     @assignment = Assignment.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @assignment }
     end
   end
 
   # GET /assignments/new
-  # GET /assignments/new.xml
   def new
     @assignment = Assignment.new
     new_edit
@@ -43,7 +38,6 @@ class AssignmentsController < ApplicationController
     respond_to do |format|
       format.html { render :action => :new_edit } # new_edit.html.erb
       format.js   { render :action => :new_edit } # new_edit.js.rjs 
-      format.xml  { render :xml => @assignment }
     end    
   end
   
@@ -61,35 +55,29 @@ class AssignmentsController < ApplicationController
           flash[:notice] = "Assignment was successfully #{@new_record ? 'created' : 'updated'}."
           redirect_to assignments_path
         end
-        if @new_record then format.xml { render :xml => @assignment, :status => :created, :location => @assignment }          
-        else format.xml { head :ok } end
       else
         format.html do
           flash[:notice] = "Assignment #{@new_record ? 'creation' : 'update'} failed."
           render :action => :new_edit
         end
-        format.xml { render :xml => @assignment.errors, :status => :unprocessable_entity }        
       end
     end
   end
 
 
   # POST /assignments
-  # POST /assignments.xml
   def create
     @assignment = Assignment.new(params[:assignment])
     create_update
   end
   
   # PUT /assignments/1
-  # PUT /assignments/1.xml
   def update
     @assignment = Assignment.find(params[:id])
     create_update
   end
   
   # DELETE /assignments/1
-  # DELETE /assignments/1.xml
   def destroy
     @assignment = Assignment.find(params[:id])
     @assignment.destroy
@@ -102,7 +90,6 @@ class AssignmentsController < ApplicationController
           page.visual_effect :fade, "assignment_row_#{@assignment.id}"
         end
       end
-      format.xml  { head :ok }
     end
   end
 end

@@ -12,13 +12,6 @@ class TokensController < ApplicationController
     unless performed?
       respond_to do |format|
         format.html { redirect_to sessions_path }
-        format.xml do
-          if token
-            head :ok
-          else
-            render :xml => nil, :status => :unprocessable_entity
-          end
-        end
       end
     end
   end
