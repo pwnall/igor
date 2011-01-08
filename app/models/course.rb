@@ -12,17 +12,20 @@
 #  updated_at      :datetime
 #
 
-# A course is bunch of work that ends up with grades for registered students.
+# A bunch of work that results in with grades for registered students.
 class Course < ActiveRecord::Base
   # The course number (e.g. "6.006")
-  validates_length_of :number, :in => 1..16, :allow_nil => false
+  validates :number, :length => 1..16, :presence => true
   # The course title (e.g. "Introoduction to Algorithms").
-  validates_length_of :title, :in => 1..256, :allow_nil => false
+  validates :title, :length => 1..256, :presence => true
+  # The contact e-mail for course staff.
+  validates :email, :length => 1..64, :presence => true
   # True if the course has recitation sections.
-  validates_inclusion_of :has_recitations, :in => [true, false]
+  validates :has_recitations, :inclusion => { :in => [true, false] },
+                              :presence => true
   
   # The Google Analytics account ID for the course.
-  validates_length_of :ga_account, :in => 1..32, :allow_nil => false
+  validates :ga_account, :length => 1..32, :presence => true
   
   # The student registrations for this course.
   has_many :registrations, :dependent => :destroy

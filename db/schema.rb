@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20100503235401) do
     t.string   "number",          :limit => 16,                    :null => false
     t.string   "title",           :limit => 256,                   :null => false
     t.string   "ga_account",      :limit => 32,                    :null => false
+    t.string   "email",           :limit => 64,                    :null => false
     t.boolean  "has_recitations",                :default => true, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"

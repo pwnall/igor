@@ -1,0 +1,17 @@
+<%= form_for @course do |f| %>
+  <dl>
+    <dt><%= f.label :number, 'Course number' %></dt>
+    <dd><%= f.text_field :number %></dd>
+    <dt><%= f.label :title, 'Course name' %></dt>
+    <dd><%= f.text_field :title %></dd>
+    <dt><%= f.label :email, 'Staff e-mail' %></dt>
+    <dd><%= f.text_field :email %></dd>
+    <dt><%= f.label :ga_account, 'Google Analytics account' %></dt>
+    <dd><%= f.text_field :ga_account %></dd>
+    <dt><%= f.label :has_recitations, 'Recitation sections' %></dt>
+    <dd><%= f.check_box :has_recitations %></dd>
+  </dl>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>

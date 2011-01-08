@@ -73,7 +73,7 @@ describe User do
     dvdjohn.email = 'abcde' * 12 + '@mit.edu'
     dvdjohn.should_not be_valid
   end
-  ['costan@gmail.com', 'cos tan@gmail.com', 'costan@x@mit.edu'].each do |email|
+  ['costan@gmail.com', 'cos tan@gmail.com', 'costan@x@mit.edu', 'costan@mitZedu'].each do |email|
     it "should reject invalid e-mail #{email}" do 
       dvdjohn.email = email
       dvdjohn.should_not be_valid
