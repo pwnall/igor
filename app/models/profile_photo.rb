@@ -33,7 +33,7 @@ class ProfilePhoto < ActiveRecord::Base
           :geometry => '100x100#', :format => 'png'
         }
       }
-  validates_attachment_size :pic, :less_than => 16.megabytes
+  validates_attachment_size :pic, :less_than => 1.megabyte
 
   # TODO(costan): filesystem-based caching
 end

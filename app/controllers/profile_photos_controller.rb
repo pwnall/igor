@@ -62,7 +62,7 @@ class ProfilePhotosController < ApplicationController
     end
     
     if @profile_photo.new_record?
-      success = @profile_photo.save!
+      success = @profile_photo.save
     else
       success = @profile_photo.update_attributes(params[:profile_photo])
     end

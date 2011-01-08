@@ -30,6 +30,7 @@ class Submission < ActiveRecord::Base
   # The submitted file (presumably code).
   has_attached_file :code, :storage => :database
   validates_attachment_presence :code
+  validates_attachment_size :code, :less_than => 8.megabytes
   
   # The assignment that this submission is for.
   has_one :assignment, :through => :deliverable

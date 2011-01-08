@@ -172,11 +172,11 @@ ActiveRecord::Schema.define(:version => 20100503235401) do
   add_index "recitation_sections", ["serial"], :name => "index_recitation_sections_on_serial", :unique => true
 
   create_table "registrations", :force => true do |t|
-    t.integer  "user_id",                                        :null => false
-    t.integer  "course_id",                                      :null => false
-    t.boolean  "dropped",                     :default => false, :null => false
-    t.boolean  "for_credit",                  :default => true,  :null => false
-    t.string   "motivation", :limit => 32768
+    t.integer  "user_id",                                           :null => false
+    t.integer  "course_id",                                         :null => false
+    t.boolean  "dropped",                        :default => false, :null => false
+    t.boolean  "for_credit",                     :default => true,  :null => false
+    t.text     "motivation", :limit => 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
   end

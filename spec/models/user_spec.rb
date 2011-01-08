@@ -77,7 +77,14 @@ describe User do
     it "should reject invalid e-mail #{email}" do 
       dvdjohn.email = email
       dvdjohn.should_not be_valid
-    end    
+    end
+  end
+  ['costan+alias@mit.edu', 'mba@harvard.edu'].each do |email|
+    it "should accept e-mail #{email}" do 
+      dvdjohn.email = email
+      dvdjohn.save!
+      dvdjohn.should be_valid
+    end
   end
   it 'should reject duplicate e-mail addresses' do
     dvdjohn.email = users(:admin).email
