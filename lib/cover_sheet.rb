@@ -93,7 +93,7 @@ module CoverSheet
       table.column_widths = [170, 70, 100, 110, 80]
       table.row_colors = ['ffffff', 'f3f3f3']
       table.cells.size = 12
-      table.row(0).style = :bold
+      table.row(0).font_style = :bold
       [:left, :right, :left, :center, :center].each_with_index do |a, i|      
         table.column(i).align = a
       end
@@ -120,7 +120,7 @@ module CoverSheet
       table.column_widths = [140, 70, 70, 70, 180]
       table.cells.size = 12
       table.row_colors = ['ffffff', 'f3f3f3']
-      table.row(0).style = :bold
+      table.row(0).font_style = :bold
       [:left, :right, :center, :right, :center].each_with_index do |a, i|
         table.column(i).align = a
       end
