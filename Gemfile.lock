@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/sandal/prawn.git
-  revision: a157686d43462444b670ac1187cb76a4a6a867ca
+  revision: 5e59fa7829129f3c1ccc87ba1ac332c284bb9fa6
   submodules: true
   specs:
     prawn (0.11.1.pre)
@@ -45,7 +45,7 @@ GEM
       activemodel (= 3.0.3)
       activesupport (= 3.0.3)
     activesupport (3.0.3)
-    arel (2.0.6)
+    arel (2.0.7)
     builder (2.1.2)
     daemonz (0.3.2)
       simple-daemon
@@ -57,8 +57,8 @@ GEM
     fastercsv (1.5.4)
     gravtastic (3.1.0)
     i18n (0.5.0)
-    json (1.4.6)
-    mail (2.2.14)
+    json (1.5.1)
+    mail (2.2.15)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -111,7 +111,7 @@ GEM
     thor (0.14.6)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
-    tzinfo (0.3.23)
+    tzinfo (0.3.24)
     webrat (0.7.3)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
