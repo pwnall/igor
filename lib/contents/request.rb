@@ -32,10 +32,13 @@ class Request
       requests << request
     end
     unless user.registration
+      contents = Course.main.has_recitations ? 
+          'You must register to get a recitation assignment and have your ' +
+          'homework graded.' : 'You must register to have your homework graded.'
+
       request = Request.new :author => User.first,
           :headline => 'wants you to register for the course',
-          :contents => 'You must register to get a recitation assignment ' +
-                       'and have your homework graded.',
+          :contents => contents,
           :actions => [
             ['Register', [:new_registration_path, { :user_id => user.id,
                           :course_id => Course.main.id }]]

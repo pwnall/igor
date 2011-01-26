@@ -18,12 +18,12 @@ end
 
 require 'simple-daemon'
 class StarlingConsumer < SimpleDaemon::Base
-  SimpleDaemon::WORKING_DIRECTORY = ARGV[3] || "#{RAILS_ROOT}/log"
+  SimpleDaemon::WORKING_DIRECTORY = ARGV[3] || "#{Rails.root}/log"
   
   def self.start
     STDOUT.sync = true
     @logger = Logger.new(STDOUT)
-    @logger.level = RAILS_ENV =~ /prod/ ? Logger::INFO : Logger::DEBUG
+    @logger.level = Rails.env =~ /prod/ ? Logger::INFO : Logger::DEBUG
 
     starling = nil
     

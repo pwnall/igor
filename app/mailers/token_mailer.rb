@@ -9,7 +9,7 @@ class TokenMailer < ActionMailer::Base
     @token, @root_url, @token_url = token, root_url, token_url
 
     mail :subject => "#{Course.main.number} server email confirmation token",
-         :from => "#{Course.main.number}-tas@mit.edu",
+         :from => Course.main.email,
          :to => @token.user.email do |format|
       format.html  # token_mailer/account_confirmation.text.html.erb
       format.text  # token_mailer/account_confirmation.text.plain.erb
@@ -27,7 +27,7 @@ class TokenMailer < ActionMailer::Base
     @token = token
 
     mail :subject => "#{Course.main.number} server username/password recovery",
-         :from => "#{Course.main.number}-tas@mit.edu",
+         :from => Course.main.email,
          :to => @token.user.email do |format|
       format.html  # token_mailer/password_recovery.text.html.erb
       format.text  # token_mailer/password_recovery.text.plain.erb      

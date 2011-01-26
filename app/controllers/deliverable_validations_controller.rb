@@ -43,14 +43,11 @@ class DeliverableValidationsController < ApplicationController
           flash[:notice] = 'Deliverable validation was successfully updated.'
           redirect_to :controller => :assignments, :action => :index
         end
-        if @new_record then format.xml { render :xml => @deliverable_validation, :status => :created, :location => @deliverable_validation }          
-        else format.xml { head :ok } end
       else
         format.html do
           flash[:error] = 'Failed to update deliverable validation.'
           redirect_to :controller => :assignments, :action => :index
         end
-        format.xml { render :xml => @deliverable.errors, :status => :unprocessable_entity }        
       end
     end
     

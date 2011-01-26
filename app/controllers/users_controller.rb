@@ -8,35 +8,29 @@ class UsersController < ApplicationController
                                                   :show]
    
   # GET /users
-  # GET /users.xml
   def index
     @users = User.all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @users }
     end
   end
 
   # GET /users/1
-  # GET /users/1.xml
   def show
     @user = User.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @user }
     end
   end
   
   # GET /users/new
-  # GET /users/new.xml
   def new
     @user = User.new
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @user }
     end
   end
 
@@ -46,7 +40,6 @@ class UsersController < ApplicationController
   end
 
   # POST /users
-  # POST /users.xml
   def create
     @user = User.new(params[:user])
     # "admin" becomes an administrator by default
@@ -60,18 +53,15 @@ class UsersController < ApplicationController
             spend_token_url(:token => token.token)).deliver
         
         format.html { redirect_to sessions_path }
-        format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
         @user.reset_password
         
         format.html { render :action => :new }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end
   end
   
   # PUT /users/1
-  # PUT /users/1.xml
   def update
     # TODO(costan): figure out the usefulness of this, maybe drop it
     
@@ -81,23 +71,19 @@ class UsersController < ApplicationController
       if @user.update_attributes(params[:user])
         flash[:notice] = 'User was successfully updated.'
         format.html { redirect_to(@user) }
-        format.xml  { head :ok }
       else
         format.html { render :action => :edit }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # DELETE /users/1
-  # DELETE /users/1.xml
   def destroy
     @user = User.find(params[:id])
     @user.destroy
 
     respond_to do |format|
       format.html { redirect_to(users_url) }
-      format.xml  { head :ok }
     end
   end    
 
@@ -117,7 +103,6 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.js { render :layout => false } # lookup.js.erb
       format.html # nothing so far
-      format.xml { render :xml => @users }
     end
   end
   
@@ -132,7 +117,6 @@ class UsersController < ApplicationController
   end
   
   # GET /users/logout
-  # GET /users/logout.xml
   def edit_password
     @user = @s_user
   end
@@ -148,10 +132,8 @@ class UsersController < ApplicationController
       if @user.save
         flash[:notice] = 'Password successfully updated.'
         format.html { redirect_to root_path }
-        format.xml  { head :ok }
       else
         format.html { render :action => :edit_password }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -197,7 +179,6 @@ class UsersController < ApplicationController
     session[:user_id] = @user.id
     respond_to do |format|
       format.html { redirect_to root_path }
-      format.xml { head :ok }
     end
   end
 end

@@ -7,9 +7,10 @@
 		<%= controller.controller_name.capitalize %>:
     <%= controller.action_name.capitalize %>
   </title>
-  <%= javascript_include_tag :all, :cache => true %>
-  <%= stylesheet_link_tag :all, :cache => true %>
   <%= csrf_meta_tag %>
+  <%= stylesheet_link_tag :all, :cache => true %>
+  <%= javascript_include_tag :all, :cache => true %>
+<%= render 'layouts/google_analytics' %>
 </head>
 <body>
 	<div id="page_wrapper">
@@ -26,7 +27,5 @@
     </div>
 <%= render 'layouts/footer' %>
 	</div>
-
-<%= render 'layouts/google_analytics' %>
 </body>
 </html>

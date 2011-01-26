@@ -6,29 +6,24 @@ class PrerequisitesController < ApplicationController
   end
   
   # GET /prerequisites
-  # GET /prerequisites.xml
   def index
     @prerequisites = Prerequisite.find(:all)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @prerequisites }
     end
   end
 
   # GET /prerequisites/1
-  # GET /prerequisites/1.xml
   def show
     @prerequisite = Prerequisite.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @prerequisite }
     end
   end
 
   # GET /prerequisites/new
-  # GET /prerequisites/new.xml
   def new
     @prerequisite = Prerequisite.new
     new_edit
@@ -43,20 +38,17 @@ class PrerequisitesController < ApplicationController
   def new_edit
     respond_to do |format|
       format.html { render :action => :new_edit }
-      format.xml  { render :xml => @prerequisite }
     end
   end
   private :new_edit
 
   # POST /prerequisites
-  # POST /prerequisites.xml
   def create
     @prerequisite = Prerequisite.new(params[:prerequisite])
     create_update
   end
 
   # PUT /prerequisites/1
-  # PUT /prerequisites/1.xml
   def update
     @prerequisite = Prerequisite.find(params[:id])
     create_update
@@ -75,19 +67,8 @@ class PrerequisitesController < ApplicationController
         flash[:notice] = 'Prerequisite successfully ' +
                          (@is_new_record ? 'submitted.' : 'updated.')
         format.html { redirect_to :action => :index }
-        format.xml do
-          if is_new_record
-            render :xml => @prerequisite, :status => :created,
-                   :location => @prerequisite
-          else
-            head :ok
-          end  
-        end  
       else
         format.html { render :action => :new_edit }
-        format.xml do
-          render :xml => @prerequisite.errors, :status => :unprocessable_entity
-        end
       end
     end    
   end
@@ -95,14 +76,12 @@ class PrerequisitesController < ApplicationController
   
 
   # DELETE /prerequisites/1
-  # DELETE /prerequisites/1.xml
   def destroy
     @prerequisite = Prerequisite.find(params[:id])
     @prerequisite.destroy
 
     respond_to do |format|
       format.html { redirect_to(prerequisites_url) }
-      format.xml  { head :ok }
     end
   end
 end

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100504203833
+# Schema version: 20100503235401
 #
 # Table name: users
 #
@@ -42,8 +42,9 @@ class User < ActiveRecord::Base
   validates_length_of :password_hash, :in => 1..64, :allow_nil => false
   
   # @mit.edu e-mail address used to endorse the user account.
-  validates_format_of :email, :with => /^[A-Za-z0-9.+_]+@mit.edu$/,
-                      :message => 'needs to be an @mit.edu e-mail address',
+  validates_format_of :email,
+                      :with => /\A[A-Za-z0-9.+_-]+\@[A-Za-z0-9.\-]+\.edu\Z/,
+                      :message => 'needs to be a .edu e-mail address',
                       :allow_nil => false
   validates_length_of :email, :in => 1..64
   validates_uniqueness_of :email

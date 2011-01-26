@@ -3,19 +3,16 @@ class RegistrationsController < ApplicationController
   before_filter :authenticated_as_admin, :only => [:index, :show, :destroy]
    
   # GET /registrations
-  # GET /registrations.xml
   def index
     @prerequisites = Prerequisite.all
     @registrations = Registration.all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @registrations }
     end
   end
 
   # GET /registrations/1
-  # GET /registrations/1.xml
   def show
     @registration = Registration.find(params[:id])
     @recitation_conflicts =
@@ -23,7 +20,6 @@ class RegistrationsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @registration }
     end
   end
 
@@ -40,7 +36,6 @@ class RegistrationsController < ApplicationController
     respond_to do |format|
       format.html { render :action => :new_edit }
       format.js   { render :action => :edit }
-      format.xml  { render :xml => @registration }
     end    
   end
   private :new_edit
@@ -59,7 +54,6 @@ class RegistrationsController < ApplicationController
   private :prepare_for_editing
     
   # GET /registrations/new
-  # GET /registrations/new.xml
   def new
     user = User.find params[:user_id]
     course = Course.find params[:course_id]
@@ -117,45 +111,33 @@ class RegistrationsController < ApplicationController
         flash[:notice] = "Student Information successfully #{@new_record ? 'submitted' : 'updated'}."
         format.html { redirect_to @registration.user }
         format.js   { render :action => :create_update }
-        format.xml do
-          if is_new_record
-            render :xml => @registration, :status => :created, :location => @registration
-          else
-            head :ok
-          end  
-        end  
       else
         prepare_for_editing
         format.html { render :action => :new_edit }
         format.js   { render :action => :edit }
-        format.xml  { render :xml => @registration.errors, :status => :unprocessable_entity }
       end
     end    
   end
 
   # POST /registrations
-  # POST /registrations.xml
   def create
     @registration = Registration.new(params[:registration])
     create_update
   end
 
   # PUT /registrations/1
-  # PUT /registrations/1.xml
   def update
     @registration = Registration.find(params[:id])
     create_update
   end
   
   # DELETE /registrations/1
-  # DELETE /registrations/1.xml
   def destroy
     @registration = Registration.find(params[:id])
     @registration.destroy
 
     respond_to do |format|
       format.html { redirect_to(registrations_url) }
-      format.xml  { head :ok }
     end
   end
 end

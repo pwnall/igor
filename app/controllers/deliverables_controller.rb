@@ -7,18 +7,15 @@ class DeliverablesController < ApplicationController
   in_place_edit_for :deliverable, :description
 
   # GET /deliverables/1
-  # GET /deliverables/1.xml
   def show
     @deliverable = Deliverable.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @deliverable }
     end
   end
 
   # GET /deliverables/new
-  # GET /deliverables/new.xml
   def new
     @deliverable = Deliverable.new
     @deliverable.assignment = Assignment.find(params[:assignment_id]) 
@@ -34,7 +31,6 @@ class DeliverablesController < ApplicationController
   def new_edit
     respond_to do |format|
       format.js   { render :action => 'new_edit' } # new_edit.js.rjs 
-      format.xml  { render :xml => @deliverable }
     end    
   end
   
@@ -51,34 +47,28 @@ class DeliverablesController < ApplicationController
         format.html do
           flash[:notice] = 'Deliverable was successfully created.'
         end
-        if @new_record then format.xml { render :xml => @deliverable, :status => :created, :location => @deliverable }          
-        else format.xml { head :ok } end
       else
         format.html do
           flash[:notice] = 'Deliverable was successfully updated.'
         end
-        format.xml { render :xml => @deliverable.errors, :status => :unprocessable_entity }        
       end
     end
   end
 
 
   # POST /deliverables
-  # POST /deliverables.xml
   def create
     @deliverable = Deliverable.new(params[:deliverable])
     create_update
   end
   
   # PUT /deliverables/1
-  # PUT /deliverables/1.xml
   def update
     @deliverable = Deliverable.find(params[:id])
     create_update
   end
   
   # DELETE /deliverables/1
-  # DELETE /deliverables/1.xml
   def destroy
     @deliverable = Deliverable.find(params[:id])
     @deliverable.destroy
@@ -91,7 +81,6 @@ class DeliverablesController < ApplicationController
           page.visual_effect :fade, "deliverable_row_#{@deliverable.id}"
         end
       end
-      format.xml  { head :ok }
     end
   end  
 end

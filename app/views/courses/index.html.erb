@@ -14,26 +14,16 @@
     <tr>
       <th style="text-align: left; width: 150px;">Number</th>
       <th style="text-align: left; width: 250px;">Title</th>
-			<th style="text-align: left; width: 150px;">Google Analytics</th>
-      <th style="text-align: left;">Has Recitations</th>
+      <th style="text-align: left; "></th>
     </tr>
   
   <% for @course in @courses %>
     <tr>
+      <td><%= @course.number %></td>
+      <td><%= @course.title %></td>
       <td>
-        <%= in_place_editor_field(:course, :number, {}, :cols => 10, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
-			</td>
-      <td>
-        <%= in_place_editor_field(:course, :title, {}, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
-			</td>
-      <td>
-        <%= in_place_editor_field(:course, :ga_account, {}, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
+        <%= link_to 'Edit', edit_course_path(@course) %>
       </td>
-      <td style="text-align: center;">
-        <%= in_place_checkbox(:course, :has_recitations, :checked => true, :unchecked => false) %>
-      </td>
-      <td><%= link_to 'Destroy', @course, :confirm => 'Are you sure?', :method => :delete %></td>
-    </tr>
   <% end %>
   </table>
 </div>

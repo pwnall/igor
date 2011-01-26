@@ -65,10 +65,12 @@
 		</dd>
 	  <% end %>
 
+    <% unless @registration.prerequisite_answers.empty? %>
     <dt>Have taken</dt>
 		<dd>
 			<span id="prereq_inject_target"></span>
 		</dd>
+		<% end %>
 
     <%= f.fields_for :prerequisite_answers do |p| %>
     <dt>

@@ -31,7 +31,6 @@ class SubmissionsController < ApplicationController
   end
   
   # GET /submissions
-  # GET /submissions.xml
   def index
     @deliverables = Deliverable.find(:all, :order => 'deliverables.id DESC', :include => :assignment)
     @assignments = Assignment.find(:all, :order => 'assignments.id DESC')
@@ -46,14 +45,11 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @submissions }
     end
   end
 
   # GET /submissions/new
-  # GET /submissions/new.xml
   # GET /submissions/new?submission[deliverable_id]=3
-  # GET /submissions/new.xml?submission[deliverable_id]=3
   def new
     if params[:submission] and params[:submission][:deliverable_id]
       deliverable = Deliverable.find(params[:submission][:deliverable_id])
@@ -66,12 +62,10 @@ class SubmissionsController < ApplicationController
     respond_to do |format|
       format.html # new.html.erb
       format.js   # new.js.rjs
-      format.xml  { render :xml => @submission }
     end
   end  
 
   # POST /submissions
-  # POST /submissions.xml
   def create    
     @submission = Submission.where(:user_id => @s_user.id,
         :deliverable_id => params[:submission][:deliverable_id]).first
@@ -82,7 +76,6 @@ class SubmissionsController < ApplicationController
   end
   
   # PUT /submissions/1
-  # PUT /submissions/1.xml
   def update
     create
   end
@@ -102,7 +95,6 @@ class SubmissionsController < ApplicationController
     flash[:notice] = "Re-validating #{@submission.code.original_filename} from #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}. "
     respond_to do |format|
       format.html { redirect_to submissions_path }
-      format.xml { head :ok }
     end    
   end
   
@@ -123,17 +115,9 @@ class SubmissionsController < ApplicationController
         
         flash[:notice] = "Uploaded #{@submission.code.original_filename} for #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}."
         format.html { redirect_to root_path }
-        format.xml do
-          if is_new_record
-            render :xml => @submission, :status => :created, :location => @submission
-          else
-            head :ok
-          end  
-        end  
       else
         flash[:notice] = "Submission for #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name} failed."
         format.html { redirect_to root_path }
-        format.xml  { render :xml => @submission.errors, :status => :unprocessable_entity }
       end
     end    
   end

@@ -4,29 +4,24 @@ class ProfilePhotosController < ApplicationController
   before_filter :authenticated_as_admin, :only => [:index, :destroy]
   
   # GET /profile_photos
-  # GET /profile_photos.xml
   def index
     @profile_photos = ProfilePhoto.all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @profile_photos }
     end
   end
 
   # GET /profile_photos/1
-  # GET /profile_photos/1.xml
   def show
     @profile_photo = ProfilePhoto.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @profile_photo }
     end
   end
 
   # GET /profile_photos/new
-  # GET /profile_photos/new.xml
   def new
     @profile_photo =
         ProfilePhoto.where(:profile_id => params[:profile_id]).first ||
@@ -41,12 +36,10 @@ class ProfilePhotosController < ApplicationController
     respond_to do |format|
       format.html { render :action => :edit }
       format.js   { render :action => :edit }
-      format.xml  { render :xml => @profile_photo }
     end
   end
 
   # POST /profile_photos
-  # POST /profile_photos.xml
   def create
     @profile_photo =
         ProfilePhoto.where(:profile_id => params[:profile_photo][:profile_id]).
@@ -56,7 +49,6 @@ class ProfilePhotosController < ApplicationController
   end
   
   # PUT /profile_photos/1
-  # PUT /profile_photos/1.xml
   def update
     @profile_photo = ProfilePhoto.find params[:id]
     create_update
@@ -70,7 +62,7 @@ class ProfilePhotosController < ApplicationController
     end
     
     if @profile_photo.new_record?
-      success = @profile_photo.save!
+      success = @profile_photo.save
     else
       success = @profile_photo.update_attributes(params[:profile_photo])
     end
@@ -78,10 +70,8 @@ class ProfilePhotosController < ApplicationController
     respond_to do |format|
       if success 
         format.html { redirect_to(@profile_photo.profile.user, :notice => 'Profile photo was successfully changed.') }
-        format.xml  { render :xml => @profile_photo, :status => :created, :location => @profile_photo }
       else
         format.html { render :action => :new }
-        format.xml  { render :xml => @profile_photo.errors, :status => :unprocessable_entity }
       end
     end    
   end
@@ -102,14 +92,12 @@ class ProfilePhotosController < ApplicationController
   end
 
   # DELETE /profile_photos/1
-  # DELETE /profile_photos/1.xml
   def destroy
     @profile_photo = ProfilePhoto.find(params[:id])
     @profile_photo.destroy
 
     respond_to do |format|
       format.html { redirect_to @profile_photo.profile.user }
-      format.xml  { head :ok }
     end
   end
 end

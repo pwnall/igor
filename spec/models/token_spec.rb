@@ -1,3 +1,16 @@
+# == Schema Information
+# Schema version: 20100503235401
+#
+# Table name: tokens
+#
+#  id         :integer(4)      not null, primary key
+#  user_id    :integer(4)      not null
+#  token      :string(64)      not null
+#  action     :string(32)      not null
+#  argument   :string(1024)
+#  created_at :datetime
+#
+
 require 'spec_helper'
 
 describe Token do

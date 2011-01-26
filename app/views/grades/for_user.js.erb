@@ -46,7 +46,7 @@
 					<% metric_table[row].length.times do |column| %>
 						<% if metric_table[row][column] %>
 							<td>
-								<%= text_field_tag "grades[#{metric_table[row][column].id}]", @grades_by_mid[metric_table[row][column].id] ? @grades_by_mid[metric_table[row][column].id].score : '', :size => 3, :id => "grades_#{metric_table[row][column].id}"  %>
+								<%= text_field_tag "grades[#{metric_table[row][column].id}]", @grades_by_mid[metric_table[row][column].id].try(:score) || '', :size => 3, :id => "grades_#{metric_table[row][column].id}"  %>
 								/
 								<%= metric_table[row][column].max_score %>
 								<%= observe_field "grades_#{metric_table[row][column].id}",
