@@ -49,7 +49,7 @@ module SubmissionValidator
     File.open(File.join(random_dir, submission.filename), 'w') do |f|
       f.write submission.code.file_contents
     end    
-    script_filename = deliverable_validation.file_name.split('/').last
+    script_filename = deliverable_validation.original_filename.split('/').last
     
     tls = deliverable_validation.time_limit
     time_limit = tls.nil? ? nil : tls.to_f

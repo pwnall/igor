@@ -18,7 +18,7 @@
 				Script: <%= f.file_field :pkg, :class => 'form_field', :id => "deliverable_validation_file_#{deliverable.id}" %>
 				<% if deliverable.deliverable_validation.instance_of? UploadedScriptValidation %>
 					<br />
-					Old script: <%= link_to "#{deliverable.deliverable_validation.pkg_file_name} (#{number_to_human_size deliverable.deliverable_validation.pkg_file_size})", :controller => :deliverable_validations, :action => :contents, :id => deliverable.id %>
+					Old script: <%= link_to "#{deliverable.deliverable_validation.pkg.original_filename} (#{number_to_human_size deliverable.deliverable_validation.pkg.size})", contents_deliverable_validation(deliverable_validation) %>
 				<% end %>
 			</div>
 			<div id="deliverable_validation_rupkg_<%= deliverable.id %>" style="display: none">
