@@ -68,6 +68,7 @@ Seven::Application.routes.draw do |map|
   end
   resources :deliverable_validations do
     member do
+      get :contents
       put :update_deliverable
     end
   end

@@ -1,5 +1,5 @@
 class DeliverableValidationsController < ApplicationController
-  before_filter :authenticated_as_admin, :only => [:update_deliverable]
+  before_filter :authenticated_as_admin
 
   def update_deliverable
     # find the proper params hash
@@ -49,7 +49,14 @@ class DeliverableValidationsController < ApplicationController
           redirect_to :controller => :assignments, :action => :index
         end
       end
-    end
-    
+    end    
+  end
+
+  # GET /deliverable_validations/1/contents
+  def contents
+    @deliverable_validation = DeliverableValidation.find params[:id]
+    send_data @deliverable_validation.pkg.file_contents,
+              :filename => @deliverable_validation.pkg.original_filename,
+              :type => @deliverable_validation.pkg_content_type
   end
 end
