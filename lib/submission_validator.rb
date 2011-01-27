@@ -46,7 +46,7 @@ module SubmissionValidator
     # setup
     random_dir = '/tmp/' + (0...16).map { rand(256).to_s(16) }.join
     Dir.mkdir(random_dir)     
-    File.open(File.join(random_dir, submission.filename), 'w') do |f|
+    File.open(File.join(random_dir, submission.code.original_filename), 'w') do |f|
       f.write submission.code.file_contents
     end    
     script_filename = deliverable_validation.original_filename.split('/').last
