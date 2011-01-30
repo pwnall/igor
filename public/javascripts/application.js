@@ -55,3 +55,29 @@ function submission_packager_update_fe(target_elem, base, prefix_elem, suffix_el
 	var fsuffix = $(suffix_elem).value;
 	$(target_elem).update(fprefix + base + fsuffix);
 }
+
+// Windows renders custom fonts very badly, so we disable them.
+if (/win/i.test(navigator.platform)) {
+  Event.observe(window, 'load', function() {
+    if (!document.styleSheets) { return; }
+    
+    for (var i = 0; i < document.styleSheets.length; i++) {
+      var sheet = document.styleSheets[i];
+      var rules = sheet.cssRules || sheet.rules;
+      var fontRules = [];
+      for (var j = 0; j < rules.length; j++) {
+        var rule = rules[j];
+        if (rule.type == 5) {  // @font-face rule
+          fontRules.push(j);
+        }
+      }
+      for (var j = fontRules.length - 1; j >= 0; j--) {
+        if (sheet.deleteRule) {
+          sheet.deleteRule(fontRules[j]);
+        } else if (sheet.removeRule) {
+          sheet.removeRule(fontRules[j]);
+        }
+      }
+    }  
+  });  
+}
