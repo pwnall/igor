@@ -46,10 +46,6 @@ module SubmissionValidator
     # setup
     random_dir = '/tmp/' + (0...16).map { rand(256).to_s(16) }.join
     Dir.mkdir(random_dir)     
-    File.open(File.join(random_dir, submission.deliverable.filename), 'w') do |f|
-      f.write submission.code.file_contents
-    end    
-    script_filename = deliverable_validation.pkg.original_filename.split('/').last
     
     tls = deliverable_validation.time_limit
     time_limit = tls.nil? ? nil : tls.to_f
@@ -72,6 +68,7 @@ module SubmissionValidator
     # lengthy setup
     #      
     # fetch package
+    script_filename = deliverable_validation.pkg.original_filename.split('/').last
     File.open(script_filename, 'w') do |f|
       if deliverable_validation.pkg.file_contents
         f.write deliverable_validation.pkg.file_contents
@@ -94,7 +91,12 @@ module SubmissionValidator
       Kernel.system "unzip #{script_filename}"
       File.unlink script_filename if File.exist?(script_filename)
     end
-    
+
+    # inject submission into package
+    File.open(File.join(random_dir, submission.deliverable.filename), 'w') do |f|
+      f.write submission.code.file_contents
+    end    
+
     # mark files as executable, so the shell script can be run (and so it can run whatever it likes)
     Dir.foreach('.') do |entry|
       next if entry == '.' || entry == '..'
