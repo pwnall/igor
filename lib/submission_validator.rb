@@ -86,9 +86,13 @@ module SubmissionValidator
     case script_filename
     when /\.tar.gz$/
       Kernel.system "tar -xzf #{script_filename}"
-      # File.rm script_filename
+      File.rm script_filename if File.exist?(script_filename)
     when /\.tar.bz2$/
       Kernel.system "tar -xjf #{script_filename}"
+      File.rm script_filename if File.exist?(script_filename)
+    when /\.zip$/
+      Kernel.system "unzip #{script_filename}"
+      File.rm script_filename if File.exist?(script_filename)
     end
     
     # mark files as executable, so the shell script can be run (and so it can run whatever it likes)
@@ -119,7 +123,7 @@ module SubmissionValidator
     Process.detach(killer_pid)
     Process.wait(runner_pid)
     # If the runner died due to SIGTERM or SIGKILL...
-    # XXX magic numbers
+    # HACK: magic numbers
     if $?.signaled? and ($?.termsig == 15 or $?.termsig == 9)
       killed = true
     elsif $?.exited? and ($?.exitstatus == 143 or $?.exitstatus == 137)
