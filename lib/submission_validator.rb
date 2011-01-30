@@ -86,13 +86,13 @@ module SubmissionValidator
     case script_filename
     when /\.tar.gz$/
       Kernel.system "tar -xzf #{script_filename}"
-      File.rm script_filename if File.exist?(script_filename)
+      File.unlink script_filename if File.exist?(script_filename)
     when /\.tar.bz2$/
       Kernel.system "tar -xjf #{script_filename}"
-      File.rm script_filename if File.exist?(script_filename)
+      File.unlink script_filename if File.exist?(script_filename)
     when /\.zip$/
       Kernel.system "unzip #{script_filename}"
-      File.rm script_filename if File.exist?(script_filename)
+      File.unlink script_filename if File.exist?(script_filename)
     end
     
     # mark files as executable, so the shell script can be run (and so it can run whatever it likes)
