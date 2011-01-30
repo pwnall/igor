@@ -23,6 +23,8 @@ class Deliverable < ActiveRecord::Base
   validates_length_of :description, :in => 1..(2.kilobytes), :allow_nil => false
   # If true, regular users can see this deliverable and submit to it.
   validates_inclusion_of :published, :in => [true, false]
+  # Standard filename of the deliverable (e.g. writeup.pdf, trees.py)
+  validates_length_of :filename, :in => 1..256, :allow_nil => false
 
   # The method used to verify students' submissions for this deliverable.
   has_one :deliverable_validation, :dependent => :destroy
