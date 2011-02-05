@@ -1,11 +1,10 @@
 class UsersController < ApplicationController
   before_filter :authenticated_as_admin, :except =>
       [:new, :create, :show, :check_email, :edit_password, :update_password,
-       :recover_password, :recovery_email]
+       :reset_password, :recovery_email]
   
   before_filter :authenticated_as_user, :only => [:edit_password,
-                                                  :update_password,
-                                                  :show]
+                                                  :update_password, :show]
    
   # GET /users
   def index
@@ -138,8 +137,8 @@ class UsersController < ApplicationController
     end
   end
   
-  # GET /users/recover_password
-  def recover_password
+  # GET /users/reset_password
+  def reset_password
     @user = User.new
   end
   

@@ -18,7 +18,7 @@ Seven::Application.routes.draw do |map|
   
   resources :users do
     collection do
-      get :lookup, :recover_password
+      get :lookup, :reset_password
       post :check_email, :recovery_email
     end
     member do
