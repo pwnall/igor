@@ -15,7 +15,7 @@
 	<ul class="account-panel">
     <li class="user-name">
       <%= user_image_tag @s_user %>      
-      <%= link_to @s_user.name, @s_user %>
+      <%= link_to @s_user.email, @s_user %>
     </li>
 		<li class="action">
 	    <%= link_to 'Settings', edit_password_user_path(@s_user) %>			

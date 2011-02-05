@@ -131,7 +131,8 @@ class SubmissionsController < ApplicationController
       return
     end
     
-    filename = @submission.user.name + '_' + @submission.code.original_filename
+    filename = @submission.user.email.gsub(/[^A-Za-z0-9]/, '_') + '_' +
+        @submission.code.original_filename
     send_data @submission.code.file_contents, :filename => filename,
               :type => @submission.code.content_type,
               :disposition => params[:inline] ? 'inline' : 'attachment'

@@ -21,7 +21,7 @@ class Assignment < ActiveRecord::Base
   has_many :metrics, :class_name => 'AssignmentMetric', :dependent => :destroy
   
   # The user-visible assignment name (e.g., "PSet 1").
-  validates :name, :length => 1..64, :uniqueness => true, :presence => false
+  validates :name, :length => 1..64, :uniqueness => true, :presence => true
   
   # The time when all the deliverables of the assignment are due.
   validates :deadline, :presence => true

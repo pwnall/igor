@@ -1,7 +1,7 @@
 <% if @users.empty? %>
 <ol>
 	<li>
-		No matching user
+		No user matching 
 		<span class="username"></span>
 	</li>
 </ol>
@@ -13,7 +13,7 @@
 		<span class="name">
     <%= user.display_name_for @s_user %>
 		</span>
-		<span class="username"><%= user.name %></span>
+		<span class="username"><%= user.email %></span>
   </li>
 	<% end %>
 </ol>

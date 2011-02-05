@@ -9,7 +9,9 @@
 		  	<td>User</td>
 		    <td>Real Name</td>
 		    <td>Athena ID</td>
-		    <td>Section</td>
+		    <% if Course.main.has_recitations %>
+		    <td>Section</td>		    
+		    <% end %>
 		    <td>AIM</td>
 		    <td>Jabber</td>
 		    <td>Phone</td>
@@ -19,10 +21,12 @@
 		<tbody>
 			<% for @profile in @profiles %>
 			  <tr>
-			    <td><%=link_to h(@profile.user.name), :controller => :users, :action => :show, :id => @profile.user.id %></td>
+			    <td><%=link_to h(@profile.user.email), @profile.user %></td>
 			    <td><%=h @profile.real_name %></td>
 			    <td><%=h @profile.athena_username %></td>
+          <% if Course.main.has_recitations %>
 					<td><%=h 'R%02d' % (@profile.recitation_section ? @profile.recitation_section.serial : 0) %>
+          <% end %>
 			    <td><%= @profile.aim_name || 'No' %></td>
 			    <td><%= @profile.jabber_name || 'No' %></td>
 			    <td><%= @profile.phone_number || 'No' %></td>

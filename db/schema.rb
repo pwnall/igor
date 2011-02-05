@@ -133,19 +133,18 @@ ActiveRecord::Schema.define(:version => 20100503235401) do
   add_index "profile_photos", ["profile_id"], :name => "index_profile_photos_on_profile_id", :unique => true
 
   create_table "profiles", :force => true do |t|
-    t.integer  "user_id",                                                 :null => false
-    t.string   "real_name",             :limit => 128,                    :null => false
-    t.string   "nickname",              :limit => 64,                     :null => false
-    t.string   "university",            :limit => 64,                     :null => false
-    t.string   "department",            :limit => 64,                     :null => false
-    t.string   "year",                  :limit => 4,                      :null => false
-    t.string   "athena_username",       :limit => 32,                     :null => false
-    t.string   "about_me",              :limit => 4096, :default => "",   :null => false
-    t.boolean  "allows_publishing",                     :default => true, :null => false
-    t.string   "phone_number",          :limit => 64
-    t.string   "aim_name",              :limit => 64
-    t.string   "jabber_name",           :limit => 64
-    t.integer  "recitation_section_id"
+    t.integer  "user_id",                                             :null => false
+    t.string   "real_name",         :limit => 128,                    :null => false
+    t.string   "nickname",          :limit => 64,                     :null => false
+    t.string   "university",        :limit => 64,                     :null => false
+    t.string   "department",        :limit => 64,                     :null => false
+    t.string   "year",              :limit => 4,                      :null => false
+    t.string   "athena_username",   :limit => 32,                     :null => false
+    t.string   "about_me",          :limit => 4096, :default => "",   :null => false
+    t.boolean  "allows_publishing",                 :default => true, :null => false
+    t.string   "phone_number",      :limit => 64
+    t.string   "aim_name",          :limit => 64
+    t.string   "jabber_name",       :limit => 64
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -172,11 +171,12 @@ ActiveRecord::Schema.define(:version => 20100503235401) do
   add_index "recitation_sections", ["serial"], :name => "index_recitation_sections_on_serial", :unique => true
 
   create_table "registrations", :force => true do |t|
-    t.integer  "user_id",                                           :null => false
-    t.integer  "course_id",                                         :null => false
-    t.boolean  "dropped",                        :default => false, :null => false
-    t.boolean  "for_credit",                     :default => true,  :null => false
-    t.text     "motivation", :limit => 16777215
+    t.integer  "user_id",                                                      :null => false
+    t.integer  "course_id",                                                    :null => false
+    t.boolean  "dropped",                                   :default => false, :null => false
+    t.boolean  "for_credit",                                :default => true,  :null => false
+    t.text     "motivation",            :limit => 16777215
+    t.integer  "recitation_section_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -300,7 +300,6 @@ ActiveRecord::Schema.define(:version => 20100503235401) do
   add_index "tokens", ["user_id", "action"], :name => "index_tokens_on_user_id_and_action"
 
   create_table "users", :force => true do |t|
-    t.string   "name",          :limit => 64,                    :null => false
     t.string   "password_salt", :limit => 16,                    :null => false
     t.string   "password_hash", :limit => 64,                    :null => false
     t.string   "email",         :limit => 64,                    :null => false
@@ -311,6 +310,5 @@ ActiveRecord::Schema.define(:version => 20100503235401) do
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["name"], :name => "index_users_on_name", :unique => true
 
 end

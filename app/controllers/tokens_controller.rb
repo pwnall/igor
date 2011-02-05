@@ -34,11 +34,11 @@ class TokensController < ApplicationController
     user.password = "\0"
     user.password_confirmation = "\0"
     # user.active = true  # The user confirmed a token, should be good to go.
-      
+    
     if user.save
       session[:user_id] = user.id
-      flash[:notice] = "Logged in as #{user.name}. Please change your password now."
-      redirect_to edit_password_user_path(user)
+      redirect_to edit_password_user_path(user), :notice => 
+          "Logged in as #{user.email}. Please change your password now."
       return true
     else
       flash[:error] = "Unexpected error :("

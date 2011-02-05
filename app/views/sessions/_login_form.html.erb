@@ -1,15 +1,17 @@
-<!-- sessions/login_form -->
-
 <%= form_for(@login || User.new, :url => sessions_url, :method => :post,
             :html => {:class => 'login-form', :id => 'login_form'}) do |f| %>
   <%= f.error_messages %>
 	
 	<dl>
-		<dt><%= f.label :name, 'Username' %></dt>
-		<dd><%= f.text_field :name, :id => 'login_name' %></dd>
-    <dt><%= f.label :password, 'Password' %></dt>
+		<dt><%= f.label :email, 'Email', :for => 'login_email' %></dt>
+		<dd>
+		  <%= f.text_field :email, :id => 'login_email', :required => true,
+		                   :placeholder => 'you@mit.edu' %>
+		</dd>
+    <dt><%= f.label :password, 'Password', :for => 'login_password' %></dt>
     <dd>
-    	<%= f.password_field :password, :id => nil, :id => 'login_password' %>
+    	<%= f.password_field :password, :id => 'login_password',
+    	          :placeholder => 'not your e-mail password' %>
 		</dd>
 	</dl>
 	<p>

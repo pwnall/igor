@@ -14,6 +14,7 @@
 #  updated_at    :datetime
 #
 
+# Credentials for a user in the system.
 class User < ActiveRecord::Base
   has_many :tokens, :dependent => :destroy
   has_many :registrations, :dependent => :destroy
@@ -29,31 +30,22 @@ class User < ActiveRecord::Base
 
   attr_protected :admin, :active
   
-  # The user name.
-  validates_length_of :name, :in => 2..64, :allow_nil => false
-  validates_format_of :name, :with => /^\w+$/,
-      :message => 'can only contain letters, numbers, and _'  
-  validates_uniqueness_of :name  
-  
   # Random string preventing dictionary attacks on the password database.
-  validates_length_of :password_salt, :in => 1..16, :allow_nil => false
+  validates :password_salt, :length => 1..16, :presence => true
     
   # SHA-256 of (salt + password).
-  validates_length_of :password_hash, :in => 1..64, :allow_nil => false
+  validates :password_hash, :length => 1..64, :presence => true
   
-  # @mit.edu e-mail address used to endorse the user account.
-  validates_format_of :email,
-                      :with => /\A[A-Za-z0-9.+_-]+\@[A-Za-z0-9.\-]+\.edu\Z/,
-                      :message => 'needs to be a .edu e-mail address',
-                      :allow_nil => false
-  validates_length_of :email, :in => 1..64
-  validates_uniqueness_of :email
+  # .edu e-mail address used to identify and endorse the user account.
+  validates :email, :length => 1..64, :presence => true, :uniqueness => true,
+      :format => { :with => /\A[A-Za-z0-9.+_-]+\@[A-Za-z0-9.\-]+\.edu\Z/,
+                   :message => 'needs to be an .edu e-mail address' }
   
   # Administrators are staff members.  
-  validates_inclusion_of :admin, :in => [true, false]
+  validates :admin, :inclusion => { :in => [true, false], :allow_nil => false }
   
   # Prevents logins from un-confirmed accounts.
-  validates_inclusion_of :active, :in => [true, false]
+  validates :active, :inclusion => { :in => [true, false], :allow_nil => false }
   
   # Virtual attribute: the user's password.
   attr_reader :password
@@ -90,8 +82,8 @@ class User < ActiveRecord::Base
   end
   
   # The authenticated user or nil.
-  def self.authenticate(user_name, password)
-    @user = User.find :first, :conditions => {:name => user_name }    
+  def self.authenticate(email, password)
+    @user = User.find :first, :conditions => { :email => email }
     (@user && @user.check_password(password)) ? @user : nil
   end  
   
@@ -119,14 +111,14 @@ class User < ActiveRecord::Base
   #
   # Returns the email username if the user has not created a profile.
   def real_name
-    profile ? profile.real_name : email[0, email.index(?@)]
+    (profile && profile.real_name) || email[0, email.index(?@)]
   end
   
   # The user's athena ID.
   #
   # Returns the email username if the user has not created a profile.
   def athena_id
-    profile ? profile.athena_username : email[0, email.index(?@)]
+    (profile && profile.athena_username) || email[0, email.index(?@)]
   end
   
   # The user's name, suitable to be displayed to the given user.
@@ -207,10 +199,6 @@ class User < ActiveRecord::Base
     score = 0
     query = User.parse_freeform_query query
     
-    # Username matching: 10 points.
-    score += User.score_query_part query[:string], name,
-                                   10, 5, 3, 2
-      
     # Real name matching: 4 points.               
     score += User.score_query_part query[:name], real_name,
                                    4, 2, 1, 0.2

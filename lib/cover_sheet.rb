@@ -42,7 +42,7 @@ module CoverSheet
     end
     pdf.text section_title, :align => :left, :size => 24
     
-    # MIT name and real name
+    # MIT e-mail and real name
     pdf.font "Courier"
     target_title = target.respond_to?(:email) ?
          target.email.split('@', 2).first : target.name
@@ -50,10 +50,7 @@ module CoverSheet
     pdf.font "Times-Roman"
     if target.respond_to?(:users)
       target.users.each do |user|
-        pdf.text((user.profile.nil? ? user.name :
-                  user.profile.real_name),
-                 :align => :left, :size => 24)
-        
+        pdf.text(user.email, :align => :left, :size => 24)
       end
       v_offset = 24 * target.users.length
     else
@@ -79,8 +76,7 @@ module CoverSheet
             'on time' : 'late by ' +
             distance_of_time_in_words(d.assignment.deadline, s.updated_at)
         if target.respond_to?(:users)
-          submitted_text += ' by ' +
-              (user.profile.nil? ? user.name : user.profile.real_name)
+          submitted_text += ' by ' + user.real_name
         end
         [d.name, 
          number_to_human_size(s.code.size),

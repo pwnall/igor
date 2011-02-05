@@ -13,25 +13,26 @@
 	</thead>
 	
 	<tbody>
-		<% for registration in @registrations %>
-		  <tr>
-		    <td><%=link_to h(registration.user.name), registration.user %></td>
-		    <td><%= registration.for_credit ? 'Yes' : 'No' %></td>
-				<% registration.prerequisite_answers.
-                        sort_by(&:prerequisite_id).each do |answer| %>
-					<td>
-					<% if answer.took_course? %>
-					  <%= ok_image_tag %>
-					<% else %>
-					  <%= answer.waiver_answer %>
-					<% end %>
-					</td>
+	<% @registrations.each do |registration| %>
+	  <tr>
+	    <td><%=link_to h(registration.user.email), registration.user %></td>
+	    <td><%= registration.for_credit ? 'Yes' : 'No' %></td>
+			<% registration.prerequisite_answers.
+                      sort_by(&:prerequisite_id).each do |answer| %>
+				<td>
+				<% if answer.took_course? %>
+				  <%= ok_image_tag %>
+				<% else %>
+				  <%= answer.waiver_answer %>
 				<% end %>
-		    <td><%=h registration.motivation %></td>
-		    <td><%= link_to 'Show', registration %></td>
-		    <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
-		    <td><%= link_to 'Destroy', registration, :confirm => 'Are you sure?', :method => :delete %></td>
-		  </tr>
-		<% end %>		
+				</td>
+			<% end %>
+	    <td><%=h registration.motivation %></td>
+	    <td><%= link_to 'Show', registration %></td>
+	    <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
+	    <td><%= link_to 'Destroy', registration,
+	                :confirm => 'Are you sure?', :method => :delete %></td>
+	  </tr>
+	<% end %>
 	</tbody>
 </table>

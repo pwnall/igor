@@ -40,14 +40,14 @@ class SessionsControllerTest < ActionController::TestCase
   end
   
   test "login with good credentials" do
-    post :create, :user => { :name => @user.name, :password => @password }
+    post :create, :user => { :email => @user.email, :password => @password }
     assert_redirected_to root_path
     assert_equal @user.id, session[:user_id]
     assert_equal @user, assigns(:s_user)
   end
   
   test "login with wrong password" do
-    post :create, :user => { :name => @user.name, :password => 'wrong' }
+    post :create, :user => { :email => @user.email, :password => 'wrong' }
     assert_equal "Invalid user/password combination", flash[:error]
     assert_equal nil, session[:user_id],
                  "User entered incorrect password but session was still set"
@@ -55,12 +55,12 @@ class SessionsControllerTest < ActionController::TestCase
                  "User entered incorrect password but @s_user was still set"                 
 
     assert_template :index
-    assert_equal @user.name, assigns(:login).name,
-                 "User input (name) not retained"
+    assert_equal @user.email, assigns(:login).email,
+                 "User input (email) not retained"
   end
   
   test "login with inexistent username" do
-    post :create, :user => { :name => "wrong", :password => 'wrong' }
+    post :create, :user => { :email => "wrong", :password => 'wrong' }
     assert_equal "Invalid user/password combination", flash[:error]
     assert_equal nil, session[:user_id],
                  "Nonexistent user but session was still set"

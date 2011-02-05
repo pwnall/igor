@@ -5,7 +5,7 @@
         "method":"POST",
         "path":"/sessions/",
         "params": {
-          "username":"user[name]",
+          "username":"user[email]",
           "password":"user[password]"
         }
       },
@@ -13,7 +13,7 @@
         "method":"POST",
         "path":"/sessions/logout",
         "params": {
-          "username":"user[name]",
+          "username":"user[email]",
           "password":"user[password]"
         }
       },
@@ -24,7 +24,7 @@
           "poco":"http://portablecontacts/ns/1.0"
         },
         "params": {
-          "username":"user[name]",
+          "username":"user[email]",
           "password":"user[password]",
           "password_verify":"user[password_confirmation]",
           "poco": {
@@ -38,10 +38,10 @@
         "method":"POST",
         "path":"/user/update_password",
         "params": {
-          "username":"user[name]",
+          "username":"user[email]",
           "old_password":"old_pwd",
-          "password":"pwd",
-          "password_verify":"pwd2"
+          "new_password":"pwd",
+          "new_password_verify":"pwd2"
         }
       },
       "sessionstatus": {

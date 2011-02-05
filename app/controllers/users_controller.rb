@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :authenticated_as_admin, :except =>
-      [:new, :create, :show, :check_name, :edit_password, :update_password,
+      [:new, :create, :show, :check_email, :edit_password, :update_password,
        :recover_password, :recovery_email]
   
   before_filter :authenticated_as_user, :only => [:edit_password,
@@ -42,8 +42,8 @@ class UsersController < ApplicationController
   # POST /users
   def create
     @user = User.new(params[:user])
-    # "admin" becomes an administrator by default
-    @user.admin = (@user.name == 'admin')
+    # The first user becomes an administrator by default.
+    @user.admin = (User.count == 0)
 
     respond_to do |format|
       if @user.save
@@ -87,10 +87,10 @@ class UsersController < ApplicationController
     end
   end    
 
-  # XHR /users/check_name?name=...
-  def check_name
-    @name = params[:name]
-    @user = User.find(:first, :conditions => { :name => @name })
+  # XHR /users/check_email?email=...
+  def check_email
+    @email = params[:email]
+    @user = User.find(:first, :conditions => { :email => @email })
     
     render :layout => false
   end
@@ -112,7 +112,7 @@ class UsersController < ApplicationController
     @user.admin = params[:to] || false
     @user.save!
     
-    flash[:notice] = "#{@user.name} is #{@user.admin ? 'an admin now' : 'no longer an admin'}."
+    flash[:notice] = "#{@user.email} is #{@user.admin ? 'an admin now' : 'no longer an admin'}."
     redirect_to :controller => :users, :action => :index
   end
   

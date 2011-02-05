@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
   def create
     session[:user_id] = nil
     @login = User.new params[:user]    
-    user = User.authenticate @login.name, @login.password
+    user = User.authenticate @login.email, @login.password
     if user.nil?
       flash[:error] = 'Invalid user/password combination'
     elsif !user.active

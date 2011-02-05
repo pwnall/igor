@@ -83,6 +83,6 @@
 </div>
 
 <% if @updated %>
-	<%= add_site_status "New grades recorded for #{@user.name}", true %>
+	<%= add_site_status "New grades recorded for #{@user.email}", true %>
 	<%= javascript_tag '$("query").focus();' %>
 <% end %>

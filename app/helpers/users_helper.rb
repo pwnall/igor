@@ -9,7 +9,7 @@ module UsersHelper
     else
       url = user.gravatar_url(:size => size_pixels)
     end
-    image_tag url, :alt => "avatar for #{user.name}",
+    image_tag url, :alt => "avatar for #{user.real_name}",
               :style => "width: #{size_pixels}px; height: #{size_pixels}px;"
   end
   
@@ -19,10 +19,6 @@ module UsersHelper
   def display_name_for_user(user, format = :short)
     return user.real_name if format == :really_short
       
-    base = user.profile ?
-        "#{user.profile.real_name} <#{user.athena_id}@mit>" :
-        "<#{user.athena_id}@mit>"
-    base = "#{user.name} [#{base}]" if format == :long
-    return base
-  end  
+    "#{user.real_name} [#{user.email}]" if format == :long
+  end
 end
