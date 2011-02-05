@@ -15,8 +15,6 @@ class CreateProfiles < ActiveRecord::Migration
       t.string :aim_name, :limit => 64, :null => true
       t.string :jabber_name, :limit => 64, :null => true
       
-      t.integer :recitation_section_id, :null => true
-
       t.timestamps
     end
     

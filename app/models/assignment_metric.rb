@@ -19,7 +19,7 @@
 class AssignmentMetric < ActiveRecord::Base
   # The assignment that this metric is for.
   belongs_to :assignment  
-  validates_presence_of :assignment
+  validates :assignment, :presence => true
   
   # The grades issued for this metric.
   has_many :grades, :foreign_key => :metric_id
@@ -30,17 +30,19 @@ class AssignmentMetric < ActiveRecord::Base
   #
   # This decision was taken to allow for "bonus" points, e.g. a score of 11 out
   # of 10 for excellent work  
-  validates_numericality_of :max_score, :allow_nil => false, :greater_than => 0
+  validates :max_score, :numericality => { :greater_than => 0 },
+                        :presence => true
 
   # If true, non-admins can see this metric, as well as their scores on it.
-  validates_inclusion_of :published, :in => [true, false]
+  validates :published, :inclusion => { :in => [true, false],
+                                        :allow_nil => false }
   
   # The metric's weight when computing total class scores.
   #
   # This is computed manually by the admins, by taking into account each
   # assignment's maximum score, as well as its weight in the final class grade.
   # For example, exam scores usually weigh heavier than pset scores.
-  validates_numericality_of :weight, :in => [true, false]
+  validates :weight, :numericality => true
   
   # True if the given user should be allowed to see the metric.
   def visible_for_user?(user)

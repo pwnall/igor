@@ -25,6 +25,6 @@ class DeliverableValidation < ActiveRecord::Base
   # The maximum time to run the validation for.
   #
   # This was mainly intended for running user programs.
-  validates_numericality_of :time_limit, :only_integer => true,
-                                         :allow_nil => true
+  validates :time_limit, :presence => true,
+                         :numericality => { :only_integer => true }
 end

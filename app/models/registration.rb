@@ -23,20 +23,25 @@ class Registration < ActiveRecord::Base
   
   # The student who registered.
   belongs_to :user
-  validates_presence_of :user
+  validates :user, :presence => true
   # The course for which the student registered.
   belongs_to :course
-  validates_uniqueness_of :course_id, :scope => [:user_id], :allow_nil => false
-  validates_presence_of :course
+  validates :course, :presence => true
+  validates :course_id, :uniqueness => { :scope => [:user_id] }
   # True if the student is taking the class for credit.
-  validates_inclusion_of :for_credit, :in => [true, false]
+  validates :for_credit, :inclusion => { :in => [true, false] }
   # True if the student dropped the class.
-  validates_inclusion_of :dropped, :in => [true, false]
+  validates :dropped, :inclusion => { :in => [true, false] }
 
   # Why is the student taking the class.
   # TODO(costan): this should be rolled into the registration survey.
-  validates_length_of :motivation, :in => 1..(32.kilobytes), :allow_nil => false
+  validates :motivation, :length => 1..(32.kilobytes), :presence => true
   
+  # The user's recitation section.
+  #
+  # This is only used if the user is a student and the course has recitations.
+  belongs_to :recitation_section
+
   # Returns true if the given user is allowed to edit this registration.
   def editable_by_user?(user)
     user and (user == self.user or user.admin?)

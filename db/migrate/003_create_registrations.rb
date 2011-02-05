@@ -8,6 +8,8 @@ class CreateRegistrations < ActiveRecord::Migration
 
       t.string :motivation, :limit => 32.kilobytes
 
+      t.integer :recitation_section_id, :null => true
+
       t.timestamps
     end
     

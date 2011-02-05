@@ -16,16 +16,16 @@
 class Announcement < ActiveRecord::Base
   # The post's author.
   belongs_to :author, :class_name => 'User'
-  validates_presence_of :author
+  validates :author, :presence => true
   
   # True if the post can be displayed to visitors who haven't logged in.
-  validates_inclusion_of :open_to_visitors, :in => [true, false]
+  validates :open_to_visitors, :inclusion => { :in => [true, false] }
   
   # The announcement's headline.
-  validates_length_of :headline, :in=> 1..128
+  validates :headline, :length => 1..128
   
   # The announcement's contents.
-  validates_length_of :contents, :in => 1..(8.kilobytes)
+  validates :contents, :length => 1..(8.kilobytes)
   
   # TODO(costan): the table is deprecated, remove.
   has_many :notice_statuses, :dependent => :destroy  

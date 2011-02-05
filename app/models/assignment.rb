@@ -21,11 +21,10 @@ class Assignment < ActiveRecord::Base
   has_many :metrics, :class_name => 'AssignmentMetric', :dependent => :destroy
   
   # The user-visible assignment name (e.g., "PSet 1").
-  validates_length_of :name, :in => 1..64, :allow_nil => false
-  validates_uniqueness_of :name
+  validates :name, :length => 1..64, :uniqueness => true, :presence => false
   
   # The time when all the deliverables of the assignment are due.
-  validates_presence_of :deadline
+  validates :deadline, :presence => true
 
   # The partition of teams used for this assignment.
   belongs_to :team_partition
