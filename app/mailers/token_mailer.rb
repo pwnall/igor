@@ -26,7 +26,7 @@ class TokenMailer < ActionMailer::Base
     @token, @root_url, @token_url = token, root_url, token_url
     @token = token
 
-    mail :subject => "#{Course.main.number} server username/password recovery",
+    mail :subject => "#{Course.main.number} server password reset",
          :from => Course.main.email,
          :to => @token.user.email do |format|
       format.html  # token_mailer/password_recovery.text.html.erb
