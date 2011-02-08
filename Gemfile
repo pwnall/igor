@@ -19,13 +19,11 @@ gem 'fastercsv', :platforms => [:mri_18]
 gem 'gravtastic'
 gem 'json'
 gem 'mit_stalker'
-gem 'paperclip', :git => 'git://github.com/pwnall/paperclip.git'
-# gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
-#                  :ref => '9f80659a98733765ce5f3cb2a44d748b54522502'
+gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
+                 :ref => '942a2b43383fd04c0434ca4b27379a114cb28a50'
 gem 'prawn', :git => 'git://github.com/sandal/prawn.git',
              :submodules => true
 gem 'rmagick'
-gem 'simple-daemon'
 # gem 'sys-cpu', :require => 'sys/cpu'
 # gem 'sys-proctable', :require => 'sys/proctable'
 # gem 'sys-uname', :require => 'sys/uname'

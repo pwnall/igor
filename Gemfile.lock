@@ -1,8 +1,9 @@
 GIT
-  remote: git://github.com/pwnall/paperclip.git
-  revision: a626a924c9a22d8d69ee9dc8337e5024e47cb6bb
+  remote: git://github.com/patshaughnessy/paperclip.git
+  revision: 942a2b43383fd04c0434ca4b27379a114cb28a50
+  ref: 942a2b43383fd04c0434ca4b27379a114cb28a50
   specs:
-    paperclip (2.3.5)
+    paperclip (2.3.6)
       activerecord
       activesupport
 
@@ -135,6 +136,5 @@ DEPENDENCIES
   rails (>= 3.0.0)
   rmagick
   rspec-rails (>= 2.0.0.beta.22)
-  simple-daemon
   webrat
   zerg_support
