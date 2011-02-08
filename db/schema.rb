@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100503235401) do
+ActiveRecord::Schema.define(:version => 20110208012638) do
 
   create_table "announcements", :force => true do |t|
     t.string   "headline",         :limit => 128,                     :null => false
@@ -52,6 +52,21 @@ ActiveRecord::Schema.define(:version => 20100503235401) do
   end
 
   add_index "courses", ["number"], :name => "index_courses_on_number", :unique => true
+
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "deliverable_validations", :force => true do |t|
     t.string   "type",             :limit => 128,        :null => false

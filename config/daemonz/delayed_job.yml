@@ -1,0 +1,15 @@
+---
+delayed_job: 
+  :binary: script/delayed_job
+  :absolute_binary: false
+  :start_args: -n 4 start
+  :stop_args: stop
+  # Pattern for the PID file(s) used by the daemon.
+  :pids: tmp/pids/delayed_job.*.pid
+  # Time to wait after sending the stop command, before killing the daemon.
+  :delay_before_kill: 0.2
+  # Override the daemon startup order. Starling consumer daemons should have
+  # their start_order set to 2, so starling is running when they start.
+  :start_order: 1
+  # daemonz will ignore this daemon configuration when this flag is true
+  :disabled: false

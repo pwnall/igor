@@ -14,6 +14,7 @@ gem 'mysql2'
 # gem 'sqlite3-ruby', :require => 'sqlite3'
 # gem 'aws-s3', :require => 'aws/s3'
 gem 'daemonz'
+gem 'delayed_job'
 gem 'fastercsv', :platforms => [:mri_18]
 gem 'gravtastic'
 gem 'json'
@@ -25,7 +26,6 @@ gem 'prawn', :git => 'git://github.com/sandal/prawn.git',
              :submodules => true
 gem 'rmagick'
 gem 'simple-daemon'
-gem 'starling'
 # gem 'sys-cpu', :require => 'sys/cpu'
 # gem 'sys-proctable', :require => 'sys/proctable'
 # gem 'sys-uname', :require => 'sys/uname'
@@ -35,6 +35,7 @@ gem 'zerg_support'
 ## Bundle gems for certain environments:
 # gem 'rspec', :group => :test
 group :development, :test do
+  gem 'railroady'
   gem 'rspec-rails', '>= 2.0.0.beta.22'
   gem 'webrat'
 end
