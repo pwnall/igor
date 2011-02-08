@@ -4,6 +4,13 @@ Course homework submission website.
 
 == Installation
 
+Follow the standard steps for setting up a Rails development environment.
+    bundle install
+    rake db:migrate
+
+The command below runs the development server. Ctrl+C stops it.
+    rails s
+
 The first user registered on the system automatically receives administrative
 privileges. Course specifics can be configured by selecting Setup > Course in
 the left-side menu.
