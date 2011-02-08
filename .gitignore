@@ -2,6 +2,7 @@
 .loadpath
 *~
 db/*.sqlite3
+doc/*.svg
 log/*.log
 tmp/**/*
 tmp/pushes
