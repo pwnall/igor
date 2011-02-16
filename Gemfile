@@ -23,6 +23,9 @@ gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
                  :ref => '942a2b43383fd04c0434ca4b27379a114cb28a50'
 gem 'prawn', :git => 'git://github.com/sandal/prawn.git',
              :submodules => true
+# TODO(pwnall): remove ttfunk from git once it's released; it's a prawn
+#               dependency and not used directly
+gem 'ttfunk', :git => 'https://github.com/yob/ttfunk.git'
 gem 'rmagick'
 # gem 'sys-cpu', :require => 'sys/cpu'
 # gem 'sys-proctable', :require => 'sys/proctable'

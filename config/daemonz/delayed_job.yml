@@ -2,10 +2,13 @@
 delayed_job: 
   :binary: script/delayed_job
   :absolute_binary: false
-  :start_args: -n 4 start
+  # The File.read expression computes the number of CPU cores in the system.
+  :start_args: --prefix <%= Rails.root %> -n <%= File.read("/proc/cpuinfo").scan(/^processor\s*:/).length - 1 %> start
   :stop_args: stop
   # Pattern for the PID file(s) used by the daemon.
   :pids: tmp/pids/delayed_job.*.pid
+  # Override for the patterns used to identify the daemon's processes.
+  :kill_patterns: <%= Rails.root.join 'delayed_job' %>
   # Time to wait after sending the stop command, before killing the daemon.
   :delay_before_kill: 0.2
   # Override the daemon startup order. Starling consumer daemons should have
