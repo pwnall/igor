@@ -2,10 +2,17 @@ body {
 	margin: 0;
 	padding: 0;
 	border: none;
+	min-width: 1000px;
 }
 
-#page_wrapper {
-	min-width: 1000px;
+header {
+  display: block;
+  margin: 0;
+}
+
+footer {
+  display: block;
+  margin: 24px 0 0 0;
 }
 
 #content_wrapper {

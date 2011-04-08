@@ -1,23 +1,61 @@
 @font-face {
-  font-family: "Lucida Grande";
+  font-family: "Droid Serif";
+  font-style: normal;
   font-weight: normal;
-  src: url("../fonts/LucidaGrande_Regular.otf") format("opentype");
+  src: url("../fonts/DroidSerif.ttf") format("truetype");
 }
-
 @font-face {
-  font-family: "Lucida Grande";
+  font-family: "Droid Serif";
+  font-style: normal;
   font-weight: bold;
-  src: url("../fonts/LucidaGrande_Bold.otf") format("opentype");
+  src: url("../fonts/DroidSerif-Bold.ttf") format("truetype");
 }
-
 @font-face {
-  font-family: "Myriad Pro";
+  font-family: "Droid Serif";
+  font-style: italic;
   font-weight: normal;
-  src: url("../fonts/MyriadPro_Regular.otf") format("opentype");
+  src: url("../fonts/DroidSerif-Italic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Droid Serif";
+  font-style: italic;
+  font-weight: bold;
+  src: url("../fonts/DroidSerif-BoldItalic.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Myriad Pro";
+  font-family: "Ubuntu";
+  font-style: normal;
+  font-weight: normal;
+  src: url("../fonts/Ubuntu.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Ubuntu";
+  font-style: italic;
+  font-weight: normal;
+  src: url("../fonts/Ubuntu-Italic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Ubuntu";
+  font-style: normal;
+  font-weight: lighter;
+  src: url("../fonts/Ubuntu-Light.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Ubuntu";
+  font-style: italic;
+  font-weight: lighter;
+  src: url("../fonts/Ubuntu-LightItalic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Ubuntu";
+  font-style: normal;
   font-weight: bold;
-  src: url("../fonts/MyriadPro_Bold.otf") format("opentype");
+  src: url("../fonts/Ubuntu-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Ubuntu";
+  font-style: italic;
+  font-weight: bold;
+  src: url("../fonts/Ubuntu-BoldItalic.ttf") format("truetype");
 }

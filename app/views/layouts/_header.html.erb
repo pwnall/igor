@@ -1,25 +1,43 @@
 <header>
   <hgroup>
     <h1>
-      <%= link_to image_tag('mit-blackred-footer3.gif'), 'http://web.mit.edu' %>
+      <%= image_tag 'mit-blackred-footer3.gif', :alt => '' %>
       <span class="course-number">
         <%= link_to Course.main.number, root_path %>
       </span>
     </h1>
   
     <% if @s_user %>
-  	<ul class="account-panel">
-      <li class="user-name">
-        <%= user_image_tag @s_user %>
-        <%= link_to @s_user.email, @s_user %>
-      </li>
-  		<li class="action">
-  	    <%= link_to 'Settings', edit_password_user_path(@s_user) %>			
-  		</li>
-  		<li>
-  	    <%= link_to 'Logout', session_path(@s_user), :method => :delete %>			
-  		</li>		
-  	</ul>
+  	<nav>
+      <ul>
+        <li>
+          <a>Announcements</a>
+        </li>
+        <li>
+          <a>Homework</a>
+        </li>
+        <li>
+          <a>Grades</a>
+        </li>
+        <li>
+          <%= link_to @s_user do %>
+            <%= user_image_tag @s_user %>
+            <span>
+              <%= @s_user.email %> &#x25bc;
+            </span>
+          <% end %>
+          <ul>
+            <li>
+              <%= link_to 'Settings', edit_password_user_path(@s_user) %>
+            </li>
+            <li>
+              <%= link_to 'Sign out', session_path(@s_user),
+                                      :method => :delete %>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
     <% end %>
   </hgroup>
 </header>

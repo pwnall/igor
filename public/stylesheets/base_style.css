@@ -1,15 +1,18 @@
 body {
-  font-family: Helvetica, Verdana, Geneva, Arial, sans-serif;
+  font-family: "Droid Serif", Arial, Times, serif;
   font-size: 12pt;
   font-weight: normal;  
 }
 
+a {
+  cursor: pointer;
+}
 a, a:visited {
-  color: #0013d7;
+  color: #7E3300;
   text-decoration: none;
 }
 a:hover, a:active {
-  color: #0013d7;
+  color: #975C33;
   text-decoration: underline;
 }
 a img {
@@ -19,17 +22,19 @@ a img {
 h2 {
   margin: 8px 0 2px 0;
   padding: 0;	
-  font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, Verdana, sans-serif;
+  font-family: Ubuntu, Helvetica, Tahoma, sans-serif;
   font-size: 16pt;
-	color: #652900;
+  font-weight: bold;
+	color: #5E2600;
 }
 
 h3 {
   margin: 8px 0 2px 0;
   padding: 0; 
-  font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, Verdana, sans-serif;
+  font-family: Ubuntu, Helvetica, Tahoma, sans-serif;
   font-size: 14pt;
-  color: #652900;
+  font-weight: bold;
+  color: #5E2600;
 }
 
 th {

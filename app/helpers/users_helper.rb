@@ -1,7 +1,7 @@
 module UsersHelper
   def user_image_tag(user, options = {})
     size = options[:size] || :small
-    size_pixels = {:small => 36, :large => 100}[size]
+    size_pixels = {:small => 20, :large => 100}[size]
         
     if user.profile and user.profile.photo
       url = user.profile.photo.pic.
