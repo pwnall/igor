@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-
 <html>
 <head>
-  <title>
-    <%= Course.main.number %>: <%= Course.main.title %> -
-		<%= controller.controller_name.capitalize %>:
-    <%= controller.action_name.capitalize %>
-  </title>
-  <%= csrf_meta_tag %>
-  <%= stylesheet_link_tag :all, :cache => true %>
-  <%= javascript_include_tag :all, :cache => true %>
+<title>
+  MIT <%= Course.main.number %>
+</title>
+<%= csrf_meta_tag %>
+<%= stylesheet_link_tag :all, :cache => true %>
+<%= javascript_include_tag :all, :cache => true %>
 <%= render 'layouts/google_analytics' %>
 </head>
 <body>
-	<div id="page_wrapper">
 <%= render 'layouts/header' %>
-    <div id="content_wrapper">
+
+  <div id="content_wrapper">
 <%= render 'layouts/menu' %>
       <div id="content_main">
 <%= render 'layouts/sidebar' %>
@@ -26,6 +23,5 @@
       </div>
     </div>
 <%= render 'layouts/footer' %>
-	</div>
 </body>
 </html>

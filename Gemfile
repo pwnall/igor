@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '>= 3.0.0'
+gem 'rails', '>= 3.0.6'
 
 ## Bundle edge rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git',
@@ -37,6 +37,6 @@ gem 'zerg_support'
 # gem 'rspec', :group => :test
 group :development, :test do
   gem 'railroady'
-  gem 'rspec-rails', '>= 2.0.0.beta.22'
+  gem 'rspec-rails', '>= 2.5.0'
   gem 'webrat'
 end

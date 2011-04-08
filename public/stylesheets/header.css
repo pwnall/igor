@@ -1,48 +1,48 @@
-#header {
+header {
+  display: block;
   margin: 0;
-  padding: 0 8px;
-  height: 38px;
-  background-color: #CA5200;
-  color: #ffffff;
+  padding: 0;
+  background-color: #F4DCCC;
+  
+  border: 1px solid #EABA99;
+}
+header hgroup {
+  width: 1000px;
+  margin: 0 auto;
+  padding: 0;
+  color: #000000;
+  
   font-family: "Myriad Pro", Helvetica, Tahoma, sans-serif;
   font-weight: bold;
   overflow: hidden;
-  
-  border: 1px solid #CA5200;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  -moz-border-radius-bottomleft: 4px;
-  -moz-border-radius-bottomright: 4px;
-  -webkit-border-bottom-left-radius: 4px;
-  -webkit-border-bottom-right-radius: 4px;
 }
-#header > a {
-  float: left;
-  margin-right: 8px;
-}
-#header h1 {
+header h1 {
 	padding: 0;
 	margin: 0;
+
   font-family: "Myriad Pro", Helvetica, Tahoma, sans-serif;
-	font-weight: bold;
-  float: left;
-  line-height: 36px;
-  font-size: 32px;
-  position: relative;
-  top: 6px;
+  font-weight: bold;
+  font-size: 16pt;
+
+  vertical-align: middle;
 }
-#header .course-title {
+header .course-title {
 	display: none;
 }
-#header a, #header a:visited, #header a:hover, #header a:active {
-  color: #ffffff;
-  text-decoration: none;
+header h1 > a:first-child {
   display: inline-block;
 }
-#header .account-panel a:hover, #header .account-panel a:active {
+header h1 img {
+  display: inline-block;
+}
+header h1 a, header h1 a:visited, header h1 a:hover, header h1 a:active {
+  color: #000000;
+  text-decoration: none;
+}
+header .account-panel a:hover, header h1 .account-panel a:active {
 	color: #3F1900;
 }
-#header ul.account-panel {
+header ul.account-panel {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -51,19 +51,19 @@
   font-size: 12pt;
   font-weight: normal;
 }
-#header .account-panel li {
+header .account-panel li {
   height: 36px;
   float: left;
 	margin: 0;
 	padding: 0;
 }
-#header .account-panel li a {
+header .account-panel li a {
   display: inline-block;  
 	padding: 18px 8px 0 0;
 	height: 36px;
 	line-height: 18px;
 }
-#header ul.account-panel li img {
+header ul.account-panel li img {
   display: inline-block;
 	float: left;
   width: 36px;
