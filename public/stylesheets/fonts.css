@@ -38,18 +38,6 @@
 @font-face {
   font-family: "Ubuntu";
   font-style: normal;
-  font-weight: lighter;
-  src: url("../fonts/Ubuntu-Light.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Ubuntu";
-  font-style: italic;
-  font-weight: lighter;
-  src: url("../fonts/Ubuntu-LightItalic.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Ubuntu";
-  font-style: normal;
   font-weight: bold;
   src: url("../fonts/Ubuntu-Bold.ttf") format("truetype");
 }

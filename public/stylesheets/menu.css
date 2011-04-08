@@ -1,58 +1,78 @@
-#menu, #sidebar {
-  font-size: 11pt;	
-  font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, Verdana, sans-serif;
+nav#menu {
+  display: inline-block;
+  height: 100%;
+  font-size: 18px;
+  font-weight: normal;
+  line-height: 24px;
 }
-#menu h2, #sidebar h2 {
-  margin: 8px 0 2px 0;
-  padding: 0;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, Verdana, sans-serif;
-  font-size: 11pt;
-	font-weight: 600;
+
+nav#menu ol a {
   color: #652900;
+  text-decoration: none;
 }
-#menu h2 a, #menu h2 a:visited, #sidebar h2 a, #sidebar h2 a:visited {
-	display: block;
-  color: #652900;	
-  font-weight: 600;
+nav#menu ol a:hover, nav#menu ol a:active {
+  background-color: #EABA99;
+  color: #652900;
+  text-decoration: none;
 }
-#menu h2 a:hover, #sidebar h2 a:hover {
-  background-color: #F4DCCC;	
-}
-#menu ol {
+nav#menu ol {
+  margin: 0;
+  padding: 0;
+
   list-style: none;
+  height: 100%;
+  line-height: 28px;
+}
+nav#menu ol li {
+  display: block;
+  float: left;
+  height: 100%;
   margin: 0;
   padding: 0;
 }
-#menu a, #menu a:visited {
-  color: #000000;
+nav#menu > ol > li:last-child {
+  position: absolute;
+  right: 0;
 }
-#menu a:hover, #menu a:active {
-  text-decoration: none; 
+nav#menu ol li a {
+  display: inline-block;
+  padding: 12px 0.5em 0 0.5em;
 }
-#menu li:hover {
-  background-color: #F4DCCC;
+nav#menu > ol > li:last-child a {
+  vertical-align: bottom;
+}
+nav#menu ol li:last-child a span {
+  display: inline-block;
 }
 
-#menu dl {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
+nav#menu ol ol {
+  display: none;
+  height: auto;
+  line-height: 24px;
+  background-color: #F4DCCC;
+  border: 1px solid #EABA99;
+  border-top: none;
+  z-index: 2;
 }
-#menu dt {
+nav#menu ol li:hover ol {
+  display: block;
+}
+nav#menu ol ol li {
+  float: none;
+  height: auto;
+}
+nav#menu ol li ol li a {
+  display: block;
+  padding: 0 2px;
+}
+
+nav#menu ol li img {
+  display: block;
+  position: relative;
+  top: 2px;
   float: left;
-	margin: 0;
-	padding: 0;
-}
-#menu dd {
-  float: left;
-	margin: 0;
-	padding: 0;
-}
-#menu input[type=text], #menu input[type=password] {
-  width: 168px;
-}
-#menu p {
-	margin: 0;
-	padding: 2px 0 0 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0 4px;
 }

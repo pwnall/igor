@@ -1,0 +1,54 @@
+<nav id="menu">
+  <ol>
+    <li>
+      <%= link_to 'Announcements', root_path(:flavor => :announcement) %>
+    </li>
+    <li>
+      <%= link_to 'Homework', root_path(:flavor => :deliverable) %>
+    </li>
+    <li>
+      <%= link_to 'Grades', reveal_mine_grades_path %>
+    </li>
+    <li>
+      <%= link_to 'Surveys', root_path(:flavor => :survey_answer) %>
+    </li>
+    <% if @s_user.admin? %>
+    <li>
+      <%= link_to 'Teacher' %>
+      <%= render 'sessions/admin_menu' %>
+    </li>
+    <% end %>
+    <li>
+      <%= link_to @s_user do %>
+        <%= user_image_tag @s_user %>
+        <span>
+          <%= @s_user.email %> &#x25bc;
+        </span>
+      <% end %>
+      <ol>
+        <li>
+          <%= link_to 'Profile', @s_user %>
+        </li>
+        <li>
+          <%= link_to 'Settings', edit_password_user_path(@s_user) %>
+        </li>
+        <li>
+          <%= link_to 'Sign out', session_path(@s_user), :method => :delete %>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<% if !@s_user %>
+  <h2>Login</h2>
+	<%= render 'sessions/login_form' %>
+	
+  <h2>Account</h2>
+	<ol>
+		<li><%= link_to 'Register', new_user_path %></li>
+		<li>
+			<%= link_to 'Reset password', reset_password_users_path %>
+    </li>
+	</ol>
+<% end %>

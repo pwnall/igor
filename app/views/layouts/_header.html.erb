@@ -8,36 +8,7 @@
     </h1>
   
     <% if @s_user %>
-  	<nav>
-      <ul>
-        <li>
-          <a>Announcements</a>
-        </li>
-        <li>
-          <a>Homework</a>
-        </li>
-        <li>
-          <a>Grades</a>
-        </li>
-        <li>
-          <%= link_to @s_user do %>
-            <%= user_image_tag @s_user %>
-            <span>
-              <%= @s_user.email %> &#x25bc;
-            </span>
-          <% end %>
-          <ul>
-            <li>
-              <%= link_to 'Settings', edit_password_user_path(@s_user) %>
-            </li>
-            <li>
-              <%= link_to 'Sign out', session_path(@s_user),
-                                      :method => :delete %>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
+    <%= render 'sessions/menu' %>
     <% end %>
   </hgroup>
 </header>

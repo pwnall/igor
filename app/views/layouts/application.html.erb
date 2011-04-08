@@ -5,23 +5,17 @@
   MIT <%= Course.main.number %>
 </title>
 <%= csrf_meta_tag %>
+<%= favicon_link_tag %>
 <%= stylesheet_link_tag :all, :cache => true %>
 <%= javascript_include_tag :all, :cache => true %>
 <%= render 'layouts/google_analytics' %>
 </head>
 <body>
 <%= render 'layouts/header' %>
-
-  <div id="content_wrapper">
-<%= render 'layouts/menu' %>
-      <div id="content_main">
-<%= render 'layouts/sidebar' %>
-        <div id="contents">
+<article>
 <%= render 'layouts/error_bar' %>
 <%= yield %>
-        </div>
-      </div>
-    </div>
+</article>
 <%= render 'layouts/footer' %>
 </body>
 </html>

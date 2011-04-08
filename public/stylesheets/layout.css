@@ -15,18 +15,11 @@ footer {
   margin: 24px 0 0 0;
 }
 
-#content_wrapper {
+article {
   margin: 0 auto;
 	padding: 0;
   width: 1000px;
   overflow: hidden;
-}
-
-#menu {
-  float: left;
-  margin: 0 10px 0 0;
-  padding: 0;
-  width: 180px;
 }
 
 #content_main {
@@ -40,12 +33,5 @@ footer {
   float: right;
   width: 240px;
 	margin: 0 0 0 10px;
-	padding: 0;
-}
-
-#contents {
-	float: left;
-	width: 550px;
-	margin: 0;
 	padding: 0;
 }
