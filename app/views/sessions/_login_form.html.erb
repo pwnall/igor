@@ -5,8 +5,8 @@
   	<p class="field">
       <%= f.label :email, 'Email', :for => 'login_email' %>
       <span class="value">
-        <%= f.text_field :email, :id => 'login_email', :required => true,
-                         :placeholder => 'you@mit.edu', :autofocus => true %>
+        <%= f.email_field :email, :id => 'login_email', :required => true,
+                          :placeholder => 'you@mit.edu', :autofocus => true %>
       </span>
   	</p>
     <p class="field">
@@ -18,6 +18,6 @@
     </p>
   </section>
 	<p class="action">
-		<%= f.submit "Login", :id => 'login_submit' %>
+	  <button>Sign in</button>
 	</p>
 <% end %>

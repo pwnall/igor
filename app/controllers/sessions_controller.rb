@@ -19,7 +19,10 @@ class SessionsController < ApplicationController
       if session[:user_id]
         format.html { redirect_to root_path }
       else
-        format.html { @login.reset_password; render :action => :index }
+        format.html do
+          @login.reset_password
+          render :action => :welcome
+        end
       end
     end    
   end
