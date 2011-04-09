@@ -1,7 +1,9 @@
 module UserFilters
   # (before-filter) extracts the logged in user from the session
   def extract_user_filter
-    if current_user = session[:user_id] && User.where(:id => session[:user_id]).first
+    @current_user = session[:user_id] &&
+                    User.where(:id => session[:user_id]).first
+    if @current_user
       response.headers['X-Account-Management-Status'] =
           "active; name=\"#{current_user.real_name}\""
     else
@@ -23,7 +25,7 @@ module UserFilters
     
     # inactive user
     session[:user_id] = nil
-    return bounce_user("Your account is inactive (did you validate your #{current_user.email} e-mail?)")
+    bounce_user("Your account is inactive (did you validate your #{current_user.email} e-mail?)")
   end
   
   # (before-filter) ensures that the session belongs to an administrator
@@ -32,6 +34,6 @@ module UserFilters
     return true if current_user.admin
     
     # not an administrator
-    return bounce_user("You'd need to be an admin for this. Your attempt has been logged.")
+    bounce_user("You'd need to be a teacher for this. Your attempt has been logged.")
   end
 end

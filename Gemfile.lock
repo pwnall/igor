@@ -68,6 +68,9 @@ GEM
     fastercsv (1.5.4)
     gravtastic (3.1.0)
     i18n (0.5.0)
+    jquery-rails (0.2.7)
+      rails (~> 3.0)
+      thor (~> 0.14.4)
     json (1.5.1)
     mail (2.2.15)
       activesupport (>= 2.3.6)
@@ -134,6 +137,7 @@ DEPENDENCIES
   delayed_job
   fastercsv
   gravtastic
+  jquery-rails
   json
   mit_stalker
   mysql2

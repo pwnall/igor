@@ -23,10 +23,10 @@ nav#menu ol {
   height: 100%;
   line-height: 28px;
 }
+
 nav#menu ol li {
   display: block;
   float: left;
-  height: 100%;
   margin: 0;
   padding: 0;
 }
@@ -35,8 +35,8 @@ nav#menu > ol > li:last-child {
   right: 0;
 }
 nav#menu ol li a {
-  display: inline-block;
-  padding: 12px 0.5em 0 0.5em;
+  display: block;
+  padding: 12px 0.5em 0;
 }
 nav#menu > ol > li:last-child a {
   vertical-align: bottom;
@@ -51,19 +51,17 @@ nav#menu ol ol {
   line-height: 24px;
   background-color: #F4DCCC;
   border: 1px solid #EABA99;
-  border-top: none;
-  z-index: 2;
+  position: absolute;
+  z-index: 5;
 }
 nav#menu ol li:hover ol {
   display: block;
 }
 nav#menu ol ol li {
   float: none;
-  height: auto;
 }
 nav#menu ol li ol li a {
-  display: block;
-  padding: 0 2px;
+  padding: 0 0.5em;
 }
 
 nav#menu ol li img {

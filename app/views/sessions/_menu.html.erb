@@ -1,10 +1,17 @@
 <nav id="menu">
   <ol>
     <li>
-      <%= link_to 'Announcements', root_path(:flavor => :announcement) %>
+      <%= link_to 'News', root_path %>
     </li>
     <li>
       <%= link_to 'Homework', root_path(:flavor => :deliverable) %>
+      <ol>
+        <% assignments_for(current_user).each do |assignment| %>
+        <li>
+          <%= link_to assignment.name, assignment %>
+        </li>
+        <% end %>
+      </ol>
     </li>
     <li>
       <%= link_to 'Grades', reveal_mine_grades_path %>
