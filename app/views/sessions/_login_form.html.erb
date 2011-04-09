@@ -1,20 +1,23 @@
-<%= form_for(@login || User.new, :url => sessions_url, :method => :post,
-            :html => {:class => 'login-form', :id => 'login_form'}) do |f| %>
+<%= form_for(@login || User.new, :url => sessions_url, :method => :post) do |f| %>
   <%= f.error_messages %>
-	
-	<dl>
-		<dt><%= f.label :email, 'Email', :for => 'login_email' %></dt>
-		<dd>
-		  <%= f.text_field :email, :id => 'login_email', :required => true,
-		                   :placeholder => 'you@mit.edu' %>
-		</dd>
-    <dt><%= f.label :password, 'Password', :for => 'login_password' %></dt>
-    <dd>
-    	<%= f.password_field :password, :id => 'login_password',
-    	          :placeholder => 'not your e-mail password' %>
-		</dd>
-	</dl>
-	<p>
+
+  <section class="fields">
+  	<p class="field">
+      <%= f.label :email, 'Email', :for => 'login_email' %>
+      <span class="value">
+        <%= f.text_field :email, :id => 'login_email', :required => true,
+                         :placeholder => 'you@mit.edu', :autofocus => true %>
+      </span>
+  	</p>
+    <p class="field">
+      <%= f.label :password, 'Password', :for => 'login_password' %>
+      <span class="value">
+        <%= f.password_field :password, :id => 'login_password',
+                :placeholder => 'not your e-mail password' %>
+      </span>
+    </p>
+  </section>
+	<p class="action">
 		<%= f.submit "Login", :id => 'login_submit' %>
 	</p>
 <% end %>

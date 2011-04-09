@@ -1,6 +1,11 @@
-.login-form input[type=submit] {
-	margin: 4px 0 0 0;
+section.login, section.register-hint {
+  font-size: 18pt;
+  line-height: 22pt;
 }
-.login-form p {
-	overflow: hidden;
+section.login h2, section.register-hint h2 {
+  font-size: 24pt;
+  line-height: 30pt;
+}
+section.login form, section.register-hint form {
+  padding: 1em 2em;
 }

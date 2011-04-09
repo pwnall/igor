@@ -1,27 +1,45 @@
 /* Forms. */
-form {
-  overflow: hidden;
+form .fields {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
 }
-form dl {
+form .fields .field {
+  display: table-row;
+  margin: 0;
+  padding: 0 0 0.2em 0;
+}
+form .fields .field > * {
+  display: table-cell;
+  vertical-align: baseline;
+  margin: 0;
+}
+form .fields .field label {
+  padding: 0 0.5em 0 0;
+}
+form .fields .field .value {
+  display: table-cell;
+  padding: 0 0 0.25em 0;
+}
+form .fields .field input {
+  font-size: inherit;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+form .action {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  text-align: center;
 }
-form dt {
-  clear: both;	
-  margin: 1px 0;
-  padding: 0;
-  float: left;
-  width: 100px;
-}
-form dd {
-  margin: 1px 0;
-  padding: 0;
-  float: left;
+form .action input[type=submit], form .action input[type=button], form .action button {
+  min-width: 7em;
 }
 
+
 /* Form buttons. */
-input[type=submit], input[type=button] {
+input[type=submit], input[type=button], button {
 	margin: 0;
 	padding: 1px 6px;	
   border-radius: 4px;
@@ -34,14 +52,13 @@ input[type=submit], input[type=button] {
   background-color: #CA5200;
   border: 1px solid #983E00;
   color: #FFFFFF;
-  font-size: 11pt;
+  font-size: 1.1em;
   font-weight: bold;
-	float: right;
 }
-input[type=submit]:hover, input[type=button]:hover {
+input[type=submit]:hover, input[type=button]:hover, button:hover {
   color: #F4DCCC;
 }
-input[type=submit]:active, input[type=button]:active {
+input[type=submit]:active, input[type=button]:active, button:active {
   background-color: #CA5200;
   box-shadow: inset 0px 2px 2px #983E00;
   -moz-box-shadow: inset 0px 2px 2px #983E00;

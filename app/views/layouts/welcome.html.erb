@@ -10,19 +10,13 @@
 <%= javascript_include_tag :all, :cache => true %>
 <%= render 'layouts/google_analytics' %>
 </head>
-<body class="user">
+<body class="nouser">
 <header>
 <%= render 'layouts/header' %>
 </header>
 
 <div id="content-wrapper">
-<article id="main">
-<%= render 'layouts/error_bar' %>
 <%= yield %>
-</article>
-<article id="sidebar">
-<%= render 'sessions/sidebar' %>
-</article>
 </div>
 
 <footer>

@@ -63,6 +63,10 @@ nav#menu ol ol li {
 nav#menu ol li ol li a {
   padding: 0 0.5em;
 }
+nav#menu ol li:last-child ol {
+  position: relative;
+}
+
 
 nav#menu ol li img {
   display: block;

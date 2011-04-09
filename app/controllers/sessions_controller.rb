@@ -48,6 +48,11 @@ class SessionsController < ApplicationController
   
   # GET /sessions
   def index
-    @news_flavor = params[:flavor] ? params[:flavor].to_sym : nil
+    if current_user
+      @news_flavor = params[:flavor] ? params[:flavor].to_sym : nil
+      render :action => :home
+    else
+      render :action => :welcome
+    end
   end
 end

@@ -1,0 +1,25 @@
+<article id="main">
+  <section class="login">
+    <h2>Log in</h2>
+    <%= render 'sessions/login_form' %>
+  </section>
+
+  <section class="register-hint">
+    <h2>No account?</h2>
+    <%= form_tag new_user_path, :method => :get do %>
+      <p class="action">
+        <button>Register</button>
+      </p>
+    <% end %>
+  </section>
+</article>
+
+<article id="sidebar">
+  <h2>Welcome</h2>
+  <p>
+    This is the homework submission website for MIT course
+    <%= Course.main.number %>, <%= Course.main.title %>.
+  </p>
+  
+<%= render :partial => 'sessions/deadlines' %>
+</article>
