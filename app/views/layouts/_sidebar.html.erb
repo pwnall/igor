@@ -1,9 +1,7 @@
-<div id="sidebar">
-	<%= render :partial => 'layouts/requests' %>
-	
+<article id="sidebar">
   <%= render :partial => 'layouts/deadlines' %>
-	
-	<% if @s_user %>
-	<%= render :partial => 'layouts/groups' %>
-	<% end %>
-</div>
+  
+  <% if @s_user %>
+  <%= render :partial => 'layouts/groups' %>
+  <% end %>
+</article>

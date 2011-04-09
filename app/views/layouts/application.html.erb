@@ -11,11 +11,22 @@
 <%= render 'layouts/google_analytics' %>
 </head>
 <body>
+<header>
 <%= render 'layouts/header' %>
-<article>
+</header>
+
+<div id="content_wrapper">
+<article id="main">
 <%= render 'layouts/error_bar' %>
 <%= yield %>
 </article>
+<article id="sidebar">
+<%= render 'layouts/sidebar' %>
+</article>
+</div>
+
+<footer>
 <%= render 'layouts/footer' %>
+</footer>
 </body>
 </html>

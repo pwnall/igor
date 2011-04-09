@@ -15,23 +15,23 @@ footer {
   margin: 24px 0 0 0;
 }
 
-article {
+#content_wrapper {
   margin: 0 auto;
 	padding: 0;
   width: 1000px;
   overflow: hidden;
 }
 
-#content_main {
+article#main {
   float: left;
-  width: 800px;
-	margin: 0 5px 0 0;
+  width: 640px;
+	margin: 0;
 	padding: 0;
 }
 
-#sidebar {
+article#sidebar {
   float: right;
-  width: 240px;
-	margin: 0 0 0 10px;
+  width: 330px;
+	margin: 0;
 	padding: 0;
 }
