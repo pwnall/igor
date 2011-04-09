@@ -154,12 +154,12 @@ class GradesController < ApplicationController
   
   # GET /grades/reveal_mine
   def reveal_mine
-    grades_by_mid = @s_user.grades.index_by &:metric_id
+    grades_by_mid = current_user.grades.index_by &:metric_id
     
     @grades = []
     Assignment.includes(:metrics).order('deadline DESC').each do |assignment|
       metrics = assignment.metrics.
-          select { |metric| metric.visible_for_user? @s_user }.
+          select { |metric| metric.visible_for_user? current_user }.
           map { |metric| [metric, grades_by_mid[metric.id]] }
       @grades << [assignment, metrics] unless metrics.empty?
     end
@@ -205,7 +205,7 @@ class GradesController < ApplicationController
         end
         if @grades_by_mid[mid].score != grade_score.to_f
           @grades_by_mid[mid].score = grade_score
-          @grades_by_mid[mid].grader = @s_user
+          @grades_by_mid[mid].grader = current_user
           @grades_by_mid[mid].save!
         end
       end

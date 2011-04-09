@@ -6,7 +6,8 @@ class SubmissionsController < ApplicationController
   
   # XHR /submissions/xhr_update_deliverables/0?assignment_id=1
   def xhr_update_deliverables
-    @assignment = Assignment.find(:first, :conditions => {:id => params[:assignment_id]}, :include => :deliverables)
+    @assignment = Assignment.where(:id => params[:assignment_id]).
+                             includes(:deliverables).first
     respond_to do |format|
       format.js do
         return if @assignment # xhr_update_deliverables.html.erb
@@ -67,10 +68,10 @@ class SubmissionsController < ApplicationController
 
   # POST /submissions
   def create    
-    @submission = Submission.where(:user_id => @s_user.id,
+    @submission = Submission.where(:user_id => current_user.id,
         :deliverable_id => params[:submission][:deliverable_id]).first
     @submission ||= Submission.new(params[:submission])
-    @submission.user = @s_user
+    @submission.user = current_user
     
     create_update
   end
@@ -126,7 +127,7 @@ class SubmissionsController < ApplicationController
   # GET /submissions/1/file
   def file
     @submission = Submission.find(params[:id])
-    if @s_user.id != @submission.user_id && !@s_user.admin?
+    if current_user.id != @submission.user_id && !current_user.admin?
       bounce_user "That's not yours to play with. Your attempt has been logged."
       return
     end

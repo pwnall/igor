@@ -11,7 +11,7 @@
 	<li class="user-result">
     <%= user_image_tag user %>
 		<span class="name">
-    <%= user.display_name_for @s_user %>
+    <%= user.display_name_for current_user %>
 		</span>
 		<span class="username"><%= user.email %></span>
   </li>

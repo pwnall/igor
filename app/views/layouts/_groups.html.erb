@@ -1,7 +1,7 @@
 <h2>Groups</h2>
 
 <dl class="groups">
-<% @s_user.teams.includes(:partition, :users => :profile).sort_by(&:created_at).
+<% current_user.teams.includes(:partition, :users => :profile).sort_by(&:created_at).
            reverse.each do |team| %>
  	<%= render team %>
 <% end %>

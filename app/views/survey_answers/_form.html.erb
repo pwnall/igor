@@ -3,7 +3,7 @@
   <dl>
     <dt><%= f.label :assignment_id, 'For' %></dt>
     <dd>
-      <%= f.select :assignment_id, SurveyAnswer.assignments_for_user(@s_user).
+      <%= f.select :assignment_id, SurveyAnswer.assignments_for_user(current_user).
                                                 map { |a| [a.name, a.id] } %>
     </dd>
 		<span id="survey-assignment-ajax-indicator"></span>
@@ -35,7 +35,7 @@
 	</dl>
 	<h3>
 	 	<%= user_image_tag last_target_user %>				
-	  <%= last_target_user.display_name_for @s_user %>
+	  <%= last_target_user.display_name_for current_user %>
 	</h3>
 	<dl>
 	<% end %>

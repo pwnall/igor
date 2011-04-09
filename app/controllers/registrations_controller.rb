@@ -16,7 +16,7 @@ class RegistrationsController < ApplicationController
   def show
     @registration = Registration.find(params[:id])
     @recitation_conflicts =
-        @registration.recitation_conflicts.index_by &:timeslot
+        @registration.recitation_conflicts.index_by(&:timeslot)
 
     respond_to do |format|
       format.html
@@ -27,7 +27,7 @@ class RegistrationsController < ApplicationController
     prepare_for_editing
 
     # Disallow random record updates.
-    unless @registration.editable_by_user? @s_user
+    unless @registration.editable_by_user? current_user
       notice[:error] = 'That is not yours to play with! Attempt logged.'
       redirect_to root_path
       return
@@ -41,7 +41,8 @@ class RegistrationsController < ApplicationController
   private :new_edit
   
   def prepare_for_editing
-    @prerequisites = @registration.prerequisite_answers.index_by &:prerequisite_id
+    @prerequisites = @registration.prerequisite_answers.
+                                   index_by(&:prerequisite_id)
     Prerequisite.all.each do |prereq|
       next if @prerequisites.has_key? prereq.id
       @prerequisites[prereq.id] =
@@ -68,7 +69,7 @@ class RegistrationsController < ApplicationController
   end
   
   def create_update
-    if !@registration.editable_by_user?(@s_user)
+    unless @registration.editable_by_user? current_user
       # Disallow random record updates.
       notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
       redirect_to root_path

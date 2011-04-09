@@ -1,7 +1,7 @@
 <h2>Deadlines</h2>
 
 <dl class="deadlines">
-<% Contents::Deadline.for(@s_user).each do |deadline| %>
+<% Contents::Deadline.for(current_user).each do |deadline| %>
   <dt class="deadline-<%= deadline.state %>">
     <%= deadline.due.to_s(:deadline_short) %>
   </dt>

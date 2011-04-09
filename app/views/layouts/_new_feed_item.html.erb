@@ -2,7 +2,7 @@
 	<div class="new-feed-item-type-selector">
 	  <h2>New </h2>
 	  <ul>
-      <% if @s_user.admin? %>
+      <% if current_user.admin? %>
       <li>
         <%= link_to_remote 'Announcement', :url => new_announcement_path,
               :method => :get,

@@ -22,7 +22,7 @@
 	<dt>Publish my work</dt>
 	<dd><%= profile.allows_publishing ? 'Yes' : 'No' %></dd>
 	
-	<% if profile.editable_by_user? @s_user %>
+	<% if profile.editable_by_user? current_user %>
 	<% if profile.phone_number %>
   <dt>Phone</dt>
 	<dd><%= profile.phone_number %></dd>

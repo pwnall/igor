@@ -42,14 +42,14 @@ class AnnouncementsController < ApplicationController
 
   # POST /announcements
   def create
-    params[:announcement][:author_id] = @s_user.id
+    params[:announcement][:author_id] = current_user.id
     @announcement = Announcement.new(params[:announcement])
     create_update
   end
 
   # PUT /announcements/1
   def update
-    params[:announcement][:author_id] = @s_user.id
+    params[:announcement][:author_id] = current_user.id
     @announcement = Announcement.find(params[:id])
     create_update
   end

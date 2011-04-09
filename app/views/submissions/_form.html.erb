@@ -3,7 +3,7 @@
   <dl>
   	<dt><%= f.label :deliverable_id, 'Deliverable' %></dt>
 		<dd>
-		  <%= f.select :deliverable_id, Deliverable.submittable_by_user(@s_user).
+		  <%= f.select :deliverable_id, Deliverable.submittable_by_user(current_user).
            order('id DESC').
            map {|d| ["#{d.assignment.name} : #{d.name}", d.id]},
 		       :include_blank => '(pick one)' %>

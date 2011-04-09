@@ -1,10 +1,6 @@
-<h2>Newsfeed</h2>
+<h2>Announcements</h2>
 
-<% if @s_user %>
-<%= render 'layouts/new_feed_item' %>
-<% end %>
-
-<% Contents::FeedItem.for(@s_user).each do |item| %>
+<% Contents::FeedItem.for(current_user).each do |item| %>
 <% next if @news_flavor and item.flavor != @news_flavor %>
 <%= render 'layouts/feed_item', :feed_item => item %>
 <% end %>

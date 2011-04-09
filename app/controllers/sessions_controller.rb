@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       flash[:error] = "Your account is not active (did you confirm your #{@login.email} e-mail address?)"
     else
       session[:user_id] = user.id
-      @s_user = user
+      @current_user = user
     end
     
     respond_to do |format|

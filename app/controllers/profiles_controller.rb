@@ -37,7 +37,7 @@ class ProfilesController < ApplicationController
   
   def new_edit
     # Disallow random record updates.
-    if !@profile.editable_by_user? @s_user
+    unless @profile.editable_by_user? current_user
       notice[:error] = 'That is not yours to play with! Attempt logged.'
       redirect_to root_path
       return
@@ -64,7 +64,7 @@ class ProfilesController < ApplicationController
 
   def create_update
     # Disallow random record updates.
-    if !@profile.editable_by_user? @s_user
+    unless @profile.editable_by_user? current_user
       notice[:error] = 'That is not yours to play with! Attempt logged.'
       redirect_to root_path
       return

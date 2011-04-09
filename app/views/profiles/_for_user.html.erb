@@ -3,7 +3,7 @@
 <% else %>
 <div class="profile-container">
 <h3>No profile
-	<% if Profile.new(:user => user).editable_by_user?(@s_user) %>
+	<% if Profile.new(:user => user).editable_by_user?(current_user) %>
   <%= link_to_remote 'Create profile',
         :url => new_profile_path(:user_id => user),
         :method => :get, :before => update_page { |p|

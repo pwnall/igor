@@ -1,7 +1,7 @@
 <article id="sidebar">
   <%= render :partial => 'layouts/deadlines' %>
   
-  <% if @s_user %>
+  <% if current_user %>
   <%= render :partial => 'layouts/groups' %>
   <% end %>
 </article>

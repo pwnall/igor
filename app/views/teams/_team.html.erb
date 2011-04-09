@@ -1,7 +1,7 @@
 <dt>
 	<%= team.partition.name %>:
 	
-	<% if @s_user.admin? %>
+	<% if current_user.admin? %>
 	<% old_team_value, @team = @team, team %>
 	<%= in_place_editor_field(:team, :name, {},
         :url => set_team_name_team_path(team),
@@ -13,24 +13,24 @@
 </dt>
 <dd>
 	<ul>
-	<% team.memberships.includes(:user).sort_by { |m| m.user.display_name_for @s_user }.each do |membership| %>
+	<% team.memberships.includes(:user).sort_by { |m| m.user.display_name_for current_user }.each do |membership| %>
 	  <li>
 	    <%= user_image_tag membership.user %>
-	    <%= link_to membership.user.display_name_for(@s_user), membership.user,
+	    <%= link_to membership.user.display_name_for(current_user), membership.user,
                   :class => 'name' %>
-	    <% if @s_user.admin? and membership.user.registration %>
+	    <% if current_user.admin? and membership.user.registration %>
 			<span class="status">			
 	    <%= membership.user.registration.for_credit ? 'Credit' : 'Listener' %>
 			</span>
 			<% end %>
-      <% if team.editable_by_user? @s_user %>
+      <% if team.editable_by_user? current_user %>
 	    <%= link_to 'Remove', membership, :method => :delete,
 	            :confirm => "Remove #{membership.user.real_name} from #{team.name}" %>
 	    <% end %>
 	  </li>
 	<% end %>
 	</ul>
-	<% if team.editable_by_user? @s_user %>
+	<% if team.editable_by_user? current_user %>
 	<%= form_for TeamMembership.new(:team => team),
                :html => { :class => 'group-membership-form' } do |f| %>
 	  <%= f.hidden_field :team_id %>

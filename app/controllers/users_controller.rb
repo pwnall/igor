@@ -117,12 +117,15 @@ class UsersController < ApplicationController
   
   # GET /users/logout
   def edit_password
-    @user = @s_user
+    @user = current_user
   end
   
   def update_password
     @user = User.find(params[:id])
-    return bounce_user('That\'s not yours to play with! Your attempt was logged.') if @user.id != @s_user.id && @s_user.admin == false
+    if @user != current_user && !current_user.admin
+      bounce_user "That's not yours to play with! Your attempt was logged."
+      return
+    end
     
     @user.password = params[:user][:password]
     @user.password_confirmation = params[:user][:password_confirmation]

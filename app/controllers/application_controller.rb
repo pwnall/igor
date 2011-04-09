@@ -3,5 +3,7 @@ class ApplicationController < ActionController::Base
 
   include UserFilters
   
+  include AuthpwnHelper
+  
   before_filter :extract_user_filter
 end

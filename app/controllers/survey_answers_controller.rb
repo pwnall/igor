@@ -34,17 +34,17 @@ class SurveyAnswersController < ApplicationController
     if params[:survey_answer] and params[:survey_answer][:assignment_id]
       assignment = Assignment.find params[:survey_answer][:assignment_id]
 
-      @survey_answer = @s_user.survey_answers.
-                               where(:assignment_id => assignment.id).first
+      @survey_answer = current_user.survey_answers.
+                                    where(:assignment_id => assignment.id).first
         
       unless @survey_answer
         @survey_answer = SurveyAnswer.new :assignment => assignment,
-                                          :user => @s_user
+                                          :user => current_user
         @survey_answer.create_question_answers
       end
     else
       assignment = nil
-      @survey_answer = SurveyAnswer.new :user => @s_user
+      @survey_answer = SurveyAnswer.new :user => current_user
     end
   
     new_edit
@@ -53,7 +53,7 @@ class SurveyAnswersController < ApplicationController
   # GET /survey_answers/1/edit
   def edit
     @survey_answer = SurveyAnswer.find(params[:id])
-    if @survey_answer.user_id != @s_user.id
+    if @survey_answer.user_id != current_user.id
       return bounce_user("This isn't yours to play with! Your attempt has been logged.")
     end
     
@@ -70,14 +70,14 @@ class SurveyAnswersController < ApplicationController
   # POST /survey_answers
   def create
     @survey_answer = SurveyAnswer.new(params[:survey_answer])
-    @survey_answer.user = @s_user
+    @survey_answer.user = current_user
     create_update    
   end
 
   # PUT /survey_answerss/1
   def update
     @survey_answer = SurveyAnswer.find(params[:id])
-    if @survey_answer.user_id != @s_user.id
+    if @survey_answer.user_id != current_user.id
       return bounce_user("This isn't yours to play with! Your attempt has been logged.")
     end
 

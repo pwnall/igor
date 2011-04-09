@@ -51,8 +51,8 @@ class SessionsControllerTest < ActionController::TestCase
     assert_equal "Invalid user/password combination", flash[:error]
     assert_equal nil, session[:user_id],
                  "User entered incorrect password but session was still set"
-    assert_equal nil, assigns(:s_user),
-                 "User entered incorrect password but @s_user was still set"                 
+    assert_equal nil, assigns(:current_user),
+        "User entered incorrect password but @current_user was still set"
 
     assert_template :index
     assert_equal @user.email, assigns(:login).email,
@@ -64,8 +64,8 @@ class SessionsControllerTest < ActionController::TestCase
     assert_equal "Invalid user/password combination", flash[:error]
     assert_equal nil, session[:user_id],
                  "Nonexistent user but session was still set"
-    assert_equal nil, assigns(:s_user),
-                 "Nonexistent user but @s_user was still set"                 
+    assert_equal nil, assigns(:current_user),
+                 "Nonexistent user but @current_user was still set"
   end
   
   test "logout" do

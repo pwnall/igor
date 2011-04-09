@@ -50,7 +50,7 @@ class Deadline
                order('deadline DESC').each do |assignment|
       include_feedback = user ? false : true
       assignment.deliverables.each do |deliverable|
-        next unless deliverable.visible_for_user?(@s_user)
+        next unless deliverable.visible_for_user?(nil)
         d = Deadline.new :due => assignment.deadline, :done => false,
                          :active => true, :source => assignment,
                          :headline =>

@@ -1,6 +1,6 @@
 <h3 class="user-info">
   <%= user_image_tag user %>
-  <%= link_to user.display_name_for(@s_user), user %>  
+  <%= link_to user.display_name_for(current_user), user %>  
 </h3>
 <dl class="user-info">
   <dt>E-mail</dt>
@@ -17,7 +17,7 @@
 	</dd>
 </dl>
 <ul class="user-info-actions">
-	<% if @s_user.admin? %>
+	<% if current_user.admin? %>
   <li>
     <%= link_to 'Impersonate', impersonate_user_path(user), :method => :post %>
   </li>
