@@ -1,12 +1,8 @@
-<h1>Editing user</h1>
-
-<%= error_messages_for :user %>
+<h2>Editing user</h2>
 
 <%= form_for(@user) do |f| %>
+  <% f.error_messages %>
   <p>
     <%= f.submit "Update" %>
   </p>
 <% end %>
-
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>

@@ -32,6 +32,9 @@ PwnFx.wireAll = function () {
 PwnFx.wireRefresh = function (element) {
   var jElement = $(element);
   var xhrUrl = jElement.attr('data-pwnfx-refresh-url');
+  jElement.attr('data-pwnfx-refresh-url-done', xhrUrl);
+  jElement.removeAttr('data-pwnfx-refresh-url');
+  
   var targetSelector = '#' + jElement.attr('data-pwnfx-refresh-target');
   var refreshInterval =
       parseInt(jElement.attr('data-pwnfx-refresh-ms') || '200');
@@ -108,6 +111,9 @@ PwnFx.wireConfirm = function (element) {
 PwnFx.wireMove = function (element) {
   var jElement = $(element);
   var identifier = jElement.attr('data-pwnfx-move');
+  jElement.attr('data-pwnfx-move-done', identifier);
+  jElement.removeAttr('data-pwnfx-move');
+
   var targetSelector = '[data-pwnfx-move-target="' + identifier + '"]';
   var jTarget = $(targetSelector).first();
   jElement.detach();
@@ -118,6 +124,9 @@ PwnFx.wireMove = function (element) {
 PwnFx.wireReveal = function (element) {
   var jElement = $(element);
   var identifier = jElement.attr('data-pwnfx-reveal');
+  jElement.attr('data-pwnfx-reveal-done', identifier);
+  jElement.removeAttr('data-pwnfx-reveal');
+
   var trigger = jElement.attr('data-pwnfx-reveal-trigger') || 'click';
   var showOnCheck = true;
   if (trigger == 'uncheck') {
