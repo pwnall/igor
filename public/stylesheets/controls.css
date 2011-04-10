@@ -14,26 +14,33 @@ form .fields .field > * {
   vertical-align: baseline;
   margin: 0;
 }
-form .fields .field label {
+form .fields .field > label {
   padding: 0 0.5em 0 0;
 }
-form .fields .field .value {
-  display: table-cell;
+form .fields .field > .value {
   padding: 0 0 0.25em 0;
 }
-form .fields .field input {
+form .fields .field > .comment {
+  padding: 0 0 0 0.5em;
+}
+form .fields .field input, form .fields .field textarea {
   font-size: inherit;
   width: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+form .fields .field input[type=radio],
+    form .fields .field input[type=checkbox] {
+  width: auto;
+}
 form .action {
   margin: 0;
   padding: 0;
   text-align: center;
 }
-form .action input[type=submit], form .action input[type=button], form .action button {
+form .action input[type=submit], form .action input[type=button],
+    form .action button {
   min-width: 7em;
 }
 
@@ -41,7 +48,7 @@ form .action input[type=submit], form .action input[type=button], form .action b
 /* Form buttons. */
 input[type=submit], input[type=button], button {
 	margin: 0;
-	padding: 1px 6px;	
+	padding: 0.1em 1ex;
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
@@ -68,7 +75,9 @@ input[type=submit]:active, input[type=button]:active, button:active {
 /* Text fields. */
 input[type=text], input[type=email], input[type=password], textarea {
   margin: 0;
-  padding: 3px 4px;
+  padding: 0.1em 0.5ex;
+  font-size: inherit;
+  line-height: inherit;
   border: 1px solid #652900;
   border-radius: 4px;
   -moz-border-radius: 4px;
@@ -76,8 +85,6 @@ input[type=text], input[type=email], input[type=password], textarea {
   box-shadow: inset 0px 2px 2px #F4DCCC;
   -moz-box-shadow: inset 0px 2px 2px #F4DCCC;
   -webkit-box-shadow: inset 0px 2px 2px #F4DCCC;
-  background-color: #FFFFFF;
-	color: #000000;
 }
 input[type=text]:hover, input[type=email]:hover, input[type=password]:hover,
     textarea:hover {

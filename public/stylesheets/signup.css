@@ -1,34 +1,15 @@
-.signup-form dl {
-	margin: 1em 0 0 1em;
-	padding: 0;
+section.signup {
+  font-size: 14pt;
+  line-height: 18pt;
 }
-.signup-form dt {
-  margin: 0;
-  padding: 0 0 8px 0;
-	float: left;
-	width: 10em;
-	clear: both;
-	color: #331400;
+section.signup h2 {
+  font-size: 24pt;
+  line-height: 30pt;
 }
-.signup-form dd {
-	margin: 0;
-	padding: 0 0 8px 0;
+
+section.signup label {
+  width: 12em;
 }
-.signup-form input[type=text], .signup-form input[type=password] {
-	width: 250px;
-}
-.signup-form .error-text {
-	display: inline-block;	
-	padding: 0 0 0 4px;
-	color: red;
-}
-.signup-form img {
-	padding: 0 0 0 4px;
-}
-.signup-form p {
-	margin: 0;
-	padding: 8px 0 0 0;
-	text-align: center;
-}
-.signup-form input[type=submit] {
+section.signup .comment {
+  width: 20em;
 }

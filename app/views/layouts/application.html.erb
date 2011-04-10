@@ -16,12 +16,12 @@
 </header>
 
 <div id="content-wrapper">
+<article id="sidebar">
+<%= render 'sessions/sidebar' %>
+</article>
 <article id="main">
 <%= render 'layouts/error_bar' %>
 <%= yield %>
-</article>
-<article id="sidebar">
-<%= render 'sessions/sidebar' %>
 </article>
 </div>
 

@@ -16,8 +16,13 @@
 # Credentials for a user in the system.
 class User < ActiveRecord::Base
   has_many :tokens, :dependent => :destroy
+  
   has_many :registrations, :dependent => :destroy
+  accepts_nested_attributes_for :registrations
+  
   has_one :profile, :dependent => :destroy
+  accepts_nested_attributes_for :profile
+  
   has_many :direct_grades, :class_name => 'Grade', :dependent => :destroy,
            :as => :subject
   has_many :submissions, :dependent => :destroy

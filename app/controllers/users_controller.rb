@@ -27,6 +27,8 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    @user.build_profile
+    @user.registrations.build :course => Course.main
 
     respond_to do |format|
       format.html # new.html.erb
@@ -88,7 +90,7 @@ class UsersController < ApplicationController
 
   # XHR /users/check_email?email=...
   def check_email
-    @email = params[:email]
+    @email = params[:user][:email]
     @user = User.find(:first, :conditions => { :email => @email })
     
     render :layout => false

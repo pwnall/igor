@@ -9,18 +9,12 @@ GIT
 
 GIT
   remote: git://github.com/sandal/prawn.git
-  revision: 9cfce94633da5091c3aacc35c56e5cf0e4fcf8c0
+  revision: acac824e47352f5bf507b44a5546d55e90c91529
   submodules: true
   specs:
     prawn (0.11.1)
       pdf-reader (>= 0.9.0)
       ttfunk (~> 1.0.0)
-
-GIT
-  remote: https://github.com/yob/ttfunk.git
-  revision: c467d86c74eeffecb1f0887d11e5aacf08202507
-  specs:
-    ttfunk (1.0.0)
 
 GEM
   remote: http://rubygems.org/
@@ -63,9 +57,14 @@ GEM
       activesupport (~> 3.0)
       daemons
     diff-lcs (1.1.2)
+    dynamic_form (1.1.4)
     erubis (2.6.6)
       abstract (>= 1.0.0)
     fastercsv (1.5.4)
+    formtastic (1.2.3)
+      actionpack (>= 2.3.7)
+      activesupport (>= 2.3.7)
+      i18n (~> 0.4)
     gravtastic (3.1.0)
     i18n (0.5.0)
     jquery-rails (0.2.7)
@@ -122,6 +121,7 @@ GEM
     thor (0.14.6)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
+    ttfunk (1.0.1)
     tzinfo (0.3.26)
     webrat (0.7.3)
       nokogiri (>= 1.2.0)
@@ -133,20 +133,22 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  daemonz
-  delayed_job
-  fastercsv
-  gravtastic
-  jquery-rails
-  json
-  mit_stalker
-  mysql2
+  daemonz (>= 0.3.2)
+  delayed_job (>= 2.1.4)
+  dynamic_form (>= 1.1.4)
+  fastercsv (>= 1.5.4)
+  formtastic (>= 1.2.3)
+  gravtastic (>= 3.1.0)
+  jquery-rails (>= 0.2.7)
+  json (>= 1.5.1)
+  mit_stalker (>= 1.0.3)
+  mysql2 (>= 0.2.7)
   paperclip!
   prawn!
   railroady
   rails (>= 3.0.6)
-  rmagick
+  rmagick (>= 2.13.1)
   rspec-rails (>= 2.5.0)
-  ttfunk!
+  ttfunk (>= 1.0.1)
   webrat
-  zerg_support
+  zerg_support (>= 0.1.5)

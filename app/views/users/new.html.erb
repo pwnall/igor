@@ -1,56 +1,7 @@
-<h2>Register New Account</h2>
+<article id="main">
+  <h2>New Account</h2>
 
-<%= form_for(@user, :html => {:class => 'signup-form'}) do |f| %>
-  <%= f.error_messages %>
-
-  <dl>
-  	<dt><%= f.label :email, 'School e-mail' %></dt>
-		<dd>
-			<%= f.text_field :email, :placeholder => 'you@mit.edu',
-			                         :required => true %>
-      <span id="user_form_email_availability"></span>
-		</dd>
-    <dt><%= f.label :password, 'Password' %></dt>
-    <dd>
-      <%= f.password_field :password, :placeholder => 'be clever',
-                                      :required => true %>
-    </dd>
-    <dt><%= f.label :password_confirmation, 'Re-enter password' %></dt>
-    <dd>
-      <%= f.password_field :password_confirmation,
-                :placeholder => 'can you type it again without mistakes?',
-                :required => true %>
-      <span id="user_form_password_correctness"></span>
-    </dd>
-  </dl>
-	
-	<p><%= f.submit 'Create my account' %></p>
-<% end %>
-
-<%= observe_field :user_email,
-  :frequency => 0.5,
-  :update => 'user_form_email_availability',
-  :before => "$('user_form_email_availability').update('#{loading_image_tag}')",
-  :complete => "", :url => check_email_users_path,
-  :with => "'email=' + encodeURIComponent(value)" %>
-
-<%
-password_js = <<JS_END
-	var password = $('user_password').value;
-	var confirmation = $('user_password_confirmation').value;
-	var resultElem = $('user_form_password_correctness');
-	var submitElem = $('user_submit');
-	if(password == confirmation) {
-	  resultElem.update('#{ok_image_tag}');
-	  submitElem.appear();
-	}
-	else {
-	  resultElem.update('<span class="error-text">doesn\\'t match</span>');
-	  submitElem.hide();
-	}
-JS_END
-%>
-<%= observe_field :user_password,
-        :frequency => 0.5, :function => password_js %>
-<%= observe_field :user_password_confirmation,
-        :frequency => 0.5, :function => password_js %>
+  <section class="signup">
+<%= render 'users/new', :user => @user %>
+  </section>
+</article>

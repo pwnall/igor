@@ -22,16 +22,23 @@ footer {
   overflow: hidden;
 }
 
-article#main {
+article#sidebar {
+  float: right;
+  width: 330px;
+  margin: 0;
+  padding: 0;
+}
+
+article#sidebar + article#main {
   float: left;
   width: 640px;
 	margin: 0;
 	padding: 0;
 }
 
-article#sidebar {
-  float: right;
-  width: 330px;
-	margin: 0;
-	padding: 0;
+article#main {
+  float: left;
+  width: 1000px;
+  margin: 0;
+  padding: 0;
 }

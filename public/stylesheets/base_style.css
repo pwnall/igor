@@ -29,7 +29,7 @@ h2 {
 }
 
 h3 {
-  margin: 8px 0 2px 0;
+  margin: 1ex 0 0 0;
   padding: 0; 
   font-family: Ubuntu, Helvetica, Tahoma, sans-serif;
   font-size: 14pt;
@@ -39,4 +39,8 @@ h3 {
 
 th {
 	text-align: left;
+}
+
+.hidden {
+  display: none;
 }

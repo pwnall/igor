@@ -1,0 +1,88 @@
+<section class="fields">
+  <p class="field">
+    <%= f.label :athena_username, 'Athena username' %>
+    <span class="value">
+      <%= f.text_field :athena_username, :autocomplete => :off %>
+    </span>
+    <span class="comment">
+    </span>
+  </p>
+  
+  <p class="field">
+    <%= f.label :real_name, 'Full name' %>
+    <span class="value">
+      <%= f.text_field :real_name %>
+    </span>
+    <span class="comment" />
+  </p>
+  <p class="field">
+    <%= f.label :nickname, 'Call me' %>
+    <span class="value">
+      <%= f.text_field :nickname %>
+    </span>
+    <span class="comment" />
+  </p>
+  <p class="field">
+    <%= f.label :university, 'School' %>
+    <span class="value">
+      <%= f.text_field :university %>
+    </span>
+    <span class="comment" />
+  </p>
+  <p class="field">
+    <%= f.label :department %>
+    <span class="value">
+      <%= f.text_field :department %>
+    </span>
+    <span class="comment" />
+  </p>
+  <p class="field">
+    <%= f.label :year, 'Year' %>
+    <span class="value">
+      <%= f.select :year, profile_year_options(f.object) %>
+    </span>
+    <span class="comment" />
+  </p>
+  <p class="field">
+    <%= f.label :allows_publishing, 'Publish my work' %>
+    <span class="value">
+      <%= f.check_box :allows_publishing %>
+      course staff may publish my homework, and I will be credited
+    </span>
+    <span class="comment">
+    </span>
+  </p>
+
+  <% if Course.main.has_recitations? %>
+  <p class="field">
+    <%= f.label :recitation_section_id, 'Recitation' %>
+    <span class="value">
+      <%= f.select :recitation_section_id,
+                   profile_recitation_section_options(f.object) %>
+    </span>
+    <span class="comment" />
+  </p>
+  <% end %>
+
+  <p class="field">
+    <%= f.label :nickname, 'Phone' %>
+    <span class="value">
+      <%= f.text_field :phone_number %>
+    </span>
+    <span class="comment" />
+  </p>
+  <p class="field">
+    <%= f.label :nickname, 'AIM screen name' %>
+    <span class="value">
+      <%= f.text_field :aim_name %>
+    </span>
+    <span class="comment" />
+  </p>
+  <p class="field">
+    <%= f.label :nickname, 'Jabber / GTalk' %>
+    <span class="value">
+      <%= f.text_field :jabber_name %>
+    </span>
+    <span class="comment" />
+  </p>
+</section>

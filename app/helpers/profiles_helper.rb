@@ -9,8 +9,7 @@ module ProfilesHelper
       return 'Massachusetts Institute of Technology'  
     end
     
-    # Wellesley College studens usually live at Wellesley. Attempt to generalize
-    # into keyword scanning.
+    # Wellesley College studens usually live at Wellesley.
     keywords = [
       ['Wellesley College', [/Wellesley/]],
       ['Harvard University', [/Harvard/]]  # Can add streets near Harvard etc.

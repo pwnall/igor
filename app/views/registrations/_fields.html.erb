@@ -1,0 +1,88 @@
+<%= f.hidden_field :course_id %>
+
+<section class="fields">
+  <p class="field">
+    <%= f.label :for_credit, 'For credit' %>
+    <span class="value">
+      <%= f.check_box :for_credit %>
+      intending to take <%= f.object.course.number %> for credit / grades
+    </span>
+    <span class="comment" />
+  </p>
+  <p class="field">
+    <%= f.label :motivation,
+                "Why do you want to take #{f.object.course.number}" %>
+    <span class="value">
+      <%= f.text_area :motivation %>
+    </span>
+    <span class="comment" />
+  </p>
+  
+  <% if Course.main.has_recitations? %>
+  <span class="label">
+    Availability
+  </span>
+  <span class="value">
+    <span class="instructions">
+      Please only enter numbers for courses that you are registered for, or
+      that you will be registered for by the time recitations are assigned.
+      If a course covers half an hour, enter it as if it would take up the
+      entire hour. Enter a single course number per time slot.
+    </span>
+    <table class="timetable">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <% ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].each do |day| %>
+          <th><%= day %></th>
+          <% end %>
+        </tr>           
+      </thead>
+      <tbody>
+        <% ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm'].zip((9..17).to_a).each do |hour, dhour| %>
+        <tr>
+          <th><%= hour %></th>
+          <% (0...5).each do |day| %>
+          <td>
+            <% timeslot = day + dhour * 10 %>
+            <%= fields_for("recitation_conflicts[#{timeslot}]",
+                  @recitation_conflicts[timeslot] ||
+                  RecitationConflict.new(:timeslot => timeslot)) do |r|  %>
+              <%= r.text_field :class_name, :class => 'form_field', :id => "recitation_conflicts_#{timeslot}_class_name", :size => 8 %>
+              <%= r.hidden_field :timeslot, :id => "recitation_conflicts_#{timeslot}_timeslot" %>
+            <% end %>
+          </td>
+          <% end %>
+        </tr>
+        <% end %>           
+      </tbody>
+    </table>
+  </span>
+  <% end %>
+
+  <% unless f.object.prerequisite_answers.empty? %>
+  <p class="field">
+    <span class="label">
+      Have taken
+    <span>
+    <span class="value" id="prereq_inject_target" />
+    <span class="comment" />
+  </p>
+
+  <%= f.fields_for :prerequisite_answers do |p| %>
+  <p class="field">
+    <%= p.label :waiver_answer, p.object.prerequisite.waiver_question %>
+    <span class="value">
+      <%= p.text_area :waiver_answer, :rows => 3 %>
+    </span>
+    <span class="comment">
+      <span class="prereq_inject">
+        <%= p.check_box :took_course, :class => 'prereq_inject_trigger' %>
+        <%= p.object.prerequisite.course_number %>        
+        <%= p.hidden_field :prerequisite_id %>
+      </span>
+    </span>
+  </p>
+  <% end %>
+  <% end %>
+</section>
