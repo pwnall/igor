@@ -1,7 +1,17 @@
+/**
+ * PwnFx: AJAX sprinkles via unobtrusive JavaScript.
+ * @author Victor Costan
+ * 
+ * The author sorely misses Rails' AJAX helpers such as observe_field. This
+ * library provides a replacement that adheres to the new philosophy of
+ * unobtrusive JavaScript triggered by HTML5 data- attributes.
+ */
+
+
 /** Namespace. */
 var PwnFx = {};
 
-/** Wires JS to elements with data-pwn attributes. */
+/** Wires JS to elements with data-pwnfx attributes. */
 PwnFx.wireAll = function () {
   $('[data-pwnfx-move]').each(function (_, element) {
     PwnFx.wireMove(element);
@@ -25,7 +35,7 @@ PwnFx.wireRefresh = function (element) {
   var targetSelector = '#' + jElement.attr('data-pwnfx-refresh-target');
   var refreshInterval =
       parseInt(jElement.attr('data-pwnfx-refresh-ms') || '200');
-  var xhrMethod = jElement.attr('data-pwnfx-refresh-method') || 'GET';
+  var xhrMethod = jElement.attr('data-pwnfx-refresh-method') || 'POST';
   var form = $(jElement.parents('form')[0]);
   var onXhrSuccessFn = function (data) {
     $(targetSelector).html(data);

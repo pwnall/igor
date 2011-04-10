@@ -1,6 +1,6 @@
 class ProfilesController < ApplicationController
   before_filter :authenticated_as_user,
-      :only => [:new, :create, :edit, :show, :update, :websis_lookup]
+      :only => [:new, :create, :edit, :show, :update]
   before_filter :authenticated_as_admin, :only => [:index, :destroy]
 
   # GET /profiles
@@ -100,12 +100,19 @@ class ProfilesController < ApplicationController
     end
   end
   
-  # XHR GET /profiles/websis_lookup?athena_id=costan
+  # XHR POST /profiles/websis_lookup
   def websis_lookup
-    @athena_username = params[:athena_id]
+    @athena_username = if params[:user]
+      params[:user][:profile_attributes][:athena_username]
+    elsif params[:profile]
+      params[:profile][:athena_username]
+    else
+      params[:athena_username]
+    end
+    
     @athena_info = MitStalker.from_user_name @athena_username
     respond_to do |format|
-      format.js # websis_lookup.js.rjs
+      format.html { render :layout => false }  # websis_lookup.html.erb
     end
   end
 end
