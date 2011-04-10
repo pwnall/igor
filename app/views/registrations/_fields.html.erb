@@ -74,10 +74,9 @@
       <%= p.text_area :waiver_answer, :rows => 3 %>
     </span>
     <span class="comment">
-      <span data-pwn-move-source="prerequisites">
-        <%= p.check_box :took_course,
-                'data-pwn-reveal-trigger' => p.object_name,
-                'data-pwn-reveal-oncheck' => 'false' %>
+      <span data-pwn-move="prerequisites">
+        <%= p.check_box :took_course, 'data-pwn-reveal' => p.object_name,
+                'data-pwn-reveal-trigger' => 'uncheck' %>
         <%= p.label :took_course, p.object.prerequisite.prerequisite_number %>
         <%= p.hidden_field :prerequisite_id %>
       </span>

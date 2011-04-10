@@ -15,12 +15,12 @@
 <%= render 'layouts/header' %>
 </header>
 
+<%= render 'layouts/status_bar' %>
 <div id="content-wrapper">
 <article id="sidebar">
 <%= render 'sessions/sidebar' %>
 </article>
 <article id="main">
-<%= render 'layouts/error_bar' %>
 <%= yield %>
 </article>
 </div>

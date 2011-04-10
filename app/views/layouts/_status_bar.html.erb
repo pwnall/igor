@@ -1,0 +1,19 @@
+<% if flash[:error] %>
+<p class="status-bar error" data-pwn-reveal-target="status-bar">
+  <%= flash[:error] %>
+
+  <span class="actions">
+  <%= link_to 'Hide', '#', 'data-pwn-reveal' => 'status-bar',
+                           'data-pwn-reveal-trigger' => 'click-hide' %>
+  </span>
+</p>
+<% elsif flash[:notice] %>
+<p class="status-bar notice" data-pwn-reveal-target="status-bar">
+  <%= flash[:notice] %>
+
+  <span class="actions">
+  <%= link_to 'Hide', '#', 'data-pwn-reveal' => 'status-bar',
+                           'data-pwn-reveal-trigger' => 'click-hide' %>
+  </span>
+</p>
+<% end %>

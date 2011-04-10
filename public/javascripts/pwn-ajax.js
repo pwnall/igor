@@ -3,17 +3,17 @@ var PwnAjax = {};
 
 /** Wires JS to elements with data-pwn attributes. */
 PwnAjax.wireAll = function () {
-  $('[data-pwn-move-source]').each(function (_, element) {
+  $('[data-pwn-move]').each(function (_, element) {
     PwnAjax.wireMove(element);
   });
 
   $('[data-pwn-refresh-url]').each(function (_, element) {
     PwnAjax.wireRefresh(element);
   });
-  $('[data-pwn-confirm-source]').each(function (_, element) {
+  $('[data-pwn-confirm]').each(function (_, element) {
     PwnAjax.wireConfirm(element);
   });
-  $('[data-pwn-reveal-trigger]').each(function (_, element) {
+  $('[data-pwn-reveal]').each(function (_, element) {
     PwnAjax.wireReveal(element);
   });
 };
@@ -60,12 +60,12 @@ PwnAjax.wireRefresh = function (element) {
 };
 
 /**
- * Wires JS to an AJAX confirmation check element using data-pwn-confirm-source.
+ * Wires JS to an AJAX confirmation check element using data-pwn-confirm.
  */
 PwnAjax.wireConfirm = function (element) {
   var jElement = $(element);
-  var identifier = jElement.attr('data-pwn-confirm-source');
-  var sourceSelector = '[data-pwn-confirm-source="' + identifier + '"]'
+  var identifier = jElement.attr('data-pwn-confirm');
+  var sourceSelector = '[data-pwn-confirm="' + identifier + '"]'
   var winSelector = '[data-pwn-confirm-win="' + identifier + '"]';
   var failSelector = '[data-pwn-confirm-fail="' + identifier + '"]';
   
@@ -93,36 +93,47 @@ PwnAjax.wireConfirm = function (element) {
   onChangeFn();
 };
 
-/** Moves an element using data-pwn-move-source. */
+/** Moves an element using data-pwn-move. */
 PwnAjax.wireMove = function (element) {
   var jElement = $(element);
-  var identifier = jElement.attr('data-pwn-move-source');
+  var identifier = jElement.attr('data-pwn-move');
   var targetSelector = '[data-pwn-move-target="' + identifier + '"]';
   var jTarget = $(targetSelector).first();
   jElement.detach();
   jTarget.append(jElement);
 };
 
-/** Wires JS to an AJAX show/hide trigger using data-pwn-reveal-trigger. */
+/** Wires JS to an AJAX show/hide trigger using data-pwn-reveal. */
 PwnAjax.wireReveal = function (element) {
   var jElement = $(element);
-  var identifier = jElement.attr('data-pwn-reveal-trigger');
-  var showOnCheck = (jElement.attr('data-pwn-reveal-oncheck') || 'true') !=
-                    'false';
+  var identifier = jElement.attr('data-pwn-reveal');
+  var trigger = jElement.attr('data-pwn-reveal-trigger') || 'click';
+  var showOnCheck = true;
+  if (trigger == 'uncheck') {
+    trigger = 'check';
+    showOnCheck = false;
+  } else if (trigger == 'click-hide') {
+    trigger = 'click';
+    showOnCheck = false;
+  }
   var targetSelector = '[data-pwn-reveal-target="' + identifier + '"]';
   
   var onChangeFn = function () {
-    var checked = jElement.is(':checked');
+    var checked = (trigger == 'click') || jElement.is(':checked');
     var willShow = (checked == showOnCheck);
-    console.log([checked, willShow, targetSelector]);
     if (willShow) {
       $(targetSelector).removeClass('hidden');
     } else {
       $(targetSelector).addClass('hidden');
     }
   };
-  jElement.bind('change', onChangeFn);
-  onChangeFn();
+  
+  if (trigger == 'click') {
+    jElement.bind('click', onChangeFn);
+  } else if (trigger = 'check') {
+    jElement.bind('change', onChangeFn);
+    onChangeFn();
+  }
 };
 
 // Wire JS to elements when the document is loaded.

@@ -2,7 +2,8 @@ header {
   padding: 0;
   background-color: #F4DCCC;
   
-  border: 1px solid #EABA99;
+  border: none;
+  border-bottom: 1px solid #EABA99;
 }
 header hgroup {
   width: 1000px;
@@ -37,7 +38,7 @@ header h1 img {
 header h1 span {
   display: block;
   float: left;
-  padding: 0 0 0 4px;
+  padding: 0 0.5em 0 0.5em;
   height: 100%;
 }
 

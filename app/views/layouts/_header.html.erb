@@ -3,6 +3,9 @@
     <%= image_tag 'mit-blackred-footer3.gif', :alt => '' %>
     <span class="course-number">
       <%= link_to Course.main.number, root_path %>
+      <% unless current_user %>
+      <%= link_to Course.main.title, root_path %>
+      <% end %>
     </span>
   </h1>
 
