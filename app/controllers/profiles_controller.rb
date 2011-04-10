@@ -110,7 +110,11 @@ class ProfilesController < ApplicationController
       params[:athena_username]
     end
     
-    @athena_info = MitStalker.from_user_name @athena_username
+    if @athena_username.blank?
+      @athena_info = nil
+    else
+      @athena_info = MitStalker.from_user_name @athena_username
+    end
     respond_to do |format|
       format.html { render :layout => false }  # websis_lookup.html.erb
     end

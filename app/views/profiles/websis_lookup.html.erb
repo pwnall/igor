@@ -1,9 +1,11 @@
+<script type="text/javascript">
 <% if @athena_info.nil? %>
-<script type="text/javascript">
+  <% if @athena_username.blank? %>
+  $('#profile-athena-success').html('');
+  <% else %>
   $('#profile-athena-success').html('<span style="color: red;"><%= @athena_username %> not found</span>');
-</script>
+  <% end %>
 <% else %>
-<script type="text/javascript">
   $('#profile-athena-success').html('<span style="color: green;"><%= @athena_username %> found</span>');
   $('#profile_real_name').val('<%= @athena_info[:full_name].html_safe %>');
   $('#profile_nickname').val('<%= @athena_info[:full_name].split(' ').first.html_safe %>');
@@ -11,5 +13,5 @@
   $('#profile_university').val('<%= guess_university_from_athena(@athena_info).html_safe %>');
   $('#profile_year').val('<%= @athena_info[:year].html_safe %>');
   $('#profile_phone_number').val('<%= @athena_info[:phone].html_safe %>');
-</script>
 <% end %>
+</script>
