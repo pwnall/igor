@@ -17,10 +17,10 @@
 class User < ActiveRecord::Base
   has_many :tokens, :dependent => :destroy
   
-  has_many :registrations, :dependent => :destroy
+  has_many :registrations, :dependent => :destroy, :inverse_of => :user
   accepts_nested_attributes_for :registrations
   
-  has_one :profile, :dependent => :destroy
+  has_one :profile, :dependent => :destroy, :inverse_of => :user
   accepts_nested_attributes_for :profile
   
   has_many :direct_grades, :class_name => 'Grade', :dependent => :destroy,

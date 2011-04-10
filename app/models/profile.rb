@@ -32,13 +32,13 @@ class Profile < ActiveRecord::Base
   validates :year, :inclusion => { :in => %w(1 2 3 4 G) }, :presence => true
 
   # The user's school (e.g., "Massachusetts Institute of Technology").
-  validates :school, :length => 1..64, :presence => true
+  validates :university, :length => 1..64, :presence => true
   
   # The user's department (e.g., "Electrical Eng & Computer Sci").
   validates :department, :length => 1..64, :presence => true
   
   # The user's account.
-  belongs_to :user
+  belongs_to :user, :inverse_of => :profile
   validates :user, :presence => true
   validates :user_id, :uniqueness => true
   
@@ -46,16 +46,16 @@ class Profile < ActiveRecord::Base
   validates :allows_publishing, :inclusion => { :in => [true, false] }
   
   # The phone number the student will use to contact us.
-  validates :phone_number, :length => 1..64, :presence => true
+  validates :phone_number, :length => { :in => 1..64, :allow_nil => true }
   
   # The AIM name the student will use to contact us.
-  validates :aim_name, :length => 1..64, :presence => true
+  validates :aim_name, :length => { :in => 1..64, :allow_nil => true }
 
   # The Jabber name the student will use to contact us.
-  validates :jabber_name, :length => 1..64, :presence => true
+  validates :jabber_name, :length => { :in => 1..64, :allow_nil => true }
   
   # Self-description that the site admins can see.
-  validates :about_me, :length => 0..(4.kilobytes), :presence => true
+  validates :about_me, :length => 0..(4.kilobytes)
   
   # The user's avatar.
   has_one :photo, :class_name => 'ProfilePhoto'

@@ -23,6 +23,9 @@ form .fields .field > label {
 form .fields .field > .value {
   padding: 0 0 0.25em 0;
 }
+form .fields .field > .value > .field_with_errors {
+  display: block;
+}
 form .fields .field > .comment {
   padding: 0 0 0 0.5em;
 }
@@ -101,9 +104,11 @@ input[type=text]:focus, input[type=email]:focus, input[type=tel]:focus,
 textarea {
 	height: 5.25em;
 }
-div.field_with_errors input[type=text],
-    div.field_with_errors input[type=password],
-		div.field_with_errors textarea {
+.field_with_errors input[type=text],
+    .field_with_errors input[type=email],
+    .field_with_errors input[type=tel],
+    .field_with_errors input[type=password],
+		.field_with_errors textarea {
   border: 1px solid #FF0000;
   box-shadow: inset 0px 1px 2px #FF8888;
   -moz-box-shadow: inset 0px 1px 2px #FF8888;
@@ -118,17 +123,11 @@ input[type=radio], input[type=checkbox] {
   -webkit-box-shadow: inset 0px 1px 2px #F4DCCC;
   background-color: #FFFFFF;	
 }
-div.field_with_errors input[type=radio],
-    div.field_with_errors input[type=checkbox] {
+.field_with_errors input[type=radio],
+    .field_with_errors input[type=checkbox] {
   border: 1px solid #FF0000;    	
   box-shadow: inset 0px 1px 2px #FF8888;
   -moz-box-shadow: inset 0px 1px 2px #FF8888;
   -webkit-box-shadow: inset 0px 1px 2px #FF8888;
   background-color: #FFEEEE;
-}
-
-/* Prevent error fields from messing up the layout. */
-div.field_with_errors {
-	display: inline-block;
-	background-color: #FFEEEE;
 }
