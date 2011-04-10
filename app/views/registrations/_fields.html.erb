@@ -63,20 +63,20 @@
   <% unless f.object.prerequisite_answers.empty? %>
   <p class="field">
     <span class="label">Have taken</span>
-    <span class="value" data-pwn-move-target="prerequisites" />
+    <span class="value" data-pwnfx-move-target="prerequisites" />
     <span class="comment" />
   </p>
 
   <%= f.fields_for :prerequisite_answers do |p| %>
-  <p class="field" data-pwn-reveal-target="<%= p.object_name %>">
+  <p class="field" data-pwnfx-reveal-target="<%= p.object_name %>">
     <%= p.label :waiver_answer, p.object.prerequisite.waiver_question %>
     <span class="value">
       <%= p.text_area :waiver_answer, :rows => 3 %>
     </span>
     <span class="comment">
-      <span data-pwn-move="prerequisites">
-        <%= p.check_box :took_course, 'data-pwn-reveal' => p.object_name,
-                'data-pwn-reveal-trigger' => 'uncheck' %>
+      <span data-pwnfx-move="prerequisites">
+        <%= p.check_box :took_course, 'data-pwnfx-reveal' => p.object_name,
+                'data-pwnfx-reveal-trigger' => 'uncheck' %>
         <%= p.label :took_course, p.object.prerequisite.prerequisite_number %>
         <%= p.hidden_field :prerequisite_id %>
       </span>

@@ -1,30 +1,31 @@
 /** Namespace. */
-var PwnAjax = {};
+var PwnFx = {};
 
 /** Wires JS to elements with data-pwn attributes. */
-PwnAjax.wireAll = function () {
-  $('[data-pwn-move]').each(function (_, element) {
-    PwnAjax.wireMove(element);
+PwnFx.wireAll = function () {
+  $('[data-pwnfx-move]').each(function (_, element) {
+    PwnFx.wireMove(element);
   });
 
-  $('[data-pwn-refresh-url]').each(function (_, element) {
-    PwnAjax.wireRefresh(element);
+  $('[data-pwnfx-refresh-url]').each(function (_, element) {
+    PwnFx.wireRefresh(element);
   });
-  $('[data-pwn-confirm]').each(function (_, element) {
-    PwnAjax.wireConfirm(element);
+  $('[data-pwnfx-confirm]').each(function (_, element) {
+    PwnFx.wireConfirm(element);
   });
-  $('[data-pwn-reveal]').each(function (_, element) {
-    PwnAjax.wireReveal(element);
+  $('[data-pwnfx-reveal]').each(function (_, element) {
+    PwnFx.wireReveal(element);
   });
 };
 
-/** Wires JS to an AJAX refresh element that uses data-pwn-refresh-url. */
-PwnAjax.wireRefresh = function (element) {
+/** Wires JS to an AJAX refresh element that uses data-pwnfx-refresh-url. */
+PwnFx.wireRefresh = function (element) {
   var jElement = $(element);
-  var xhrUrl = jElement.attr('data-pwn-refresh-url');
-  var targetSelector = '#' + jElement.attr('data-pwn-refresh-target');
-  var refreshInterval = parseInt(jElement.attr('data-pwn-refresh-ms') || '200');
-  var xhrMethod = jElement.attr('data-pwn-refresh-method') || 'GET';
+  var xhrUrl = jElement.attr('data-pwnfx-refresh-url');
+  var targetSelector = '#' + jElement.attr('data-pwnfx-refresh-target');
+  var refreshInterval =
+      parseInt(jElement.attr('data-pwnfx-refresh-ms') || '200');
+  var xhrMethod = jElement.attr('data-pwnfx-refresh-method') || 'GET';
   var form = $(jElement.parents('form')[0]);
   var onXhrSuccessFn = function (data) {
     $(targetSelector).html(data);
@@ -60,14 +61,14 @@ PwnAjax.wireRefresh = function (element) {
 };
 
 /**
- * Wires JS to an AJAX confirmation check element using data-pwn-confirm.
+ * Wires JS to an AJAX confirmation check element using data-pwnfx-confirm.
  */
-PwnAjax.wireConfirm = function (element) {
+PwnFx.wireConfirm = function (element) {
   var jElement = $(element);
-  var identifier = jElement.attr('data-pwn-confirm');
-  var sourceSelector = '[data-pwn-confirm="' + identifier + '"]'
-  var winSelector = '[data-pwn-confirm-win="' + identifier + '"]';
-  var failSelector = '[data-pwn-confirm-fail="' + identifier + '"]';
+  var identifier = jElement.attr('data-pwnfx-confirm');
+  var sourceSelector = '[data-pwnfx-confirm="' + identifier + '"]'
+  var winSelector = '[data-pwnfx-confirm-win="' + identifier + '"]';
+  var failSelector = '[data-pwnfx-confirm-fail="' + identifier + '"]';
   
   var onChangeFn = function () {
     var value = null;
@@ -93,21 +94,21 @@ PwnAjax.wireConfirm = function (element) {
   onChangeFn();
 };
 
-/** Moves an element using data-pwn-move. */
-PwnAjax.wireMove = function (element) {
+/** Moves an element using data-pwnfx-move. */
+PwnFx.wireMove = function (element) {
   var jElement = $(element);
-  var identifier = jElement.attr('data-pwn-move');
-  var targetSelector = '[data-pwn-move-target="' + identifier + '"]';
+  var identifier = jElement.attr('data-pwnfx-move');
+  var targetSelector = '[data-pwnfx-move-target="' + identifier + '"]';
   var jTarget = $(targetSelector).first();
   jElement.detach();
   jTarget.append(jElement);
 };
 
-/** Wires JS to an AJAX show/hide trigger using data-pwn-reveal. */
-PwnAjax.wireReveal = function (element) {
+/** Wires JS to an AJAX show/hide trigger using data-pwnfx-reveal. */
+PwnFx.wireReveal = function (element) {
   var jElement = $(element);
-  var identifier = jElement.attr('data-pwn-reveal');
-  var trigger = jElement.attr('data-pwn-reveal-trigger') || 'click';
+  var identifier = jElement.attr('data-pwnfx-reveal');
+  var trigger = jElement.attr('data-pwnfx-reveal-trigger') || 'click';
   var showOnCheck = true;
   if (trigger == 'uncheck') {
     trigger = 'check';
@@ -116,7 +117,7 @@ PwnAjax.wireReveal = function (element) {
     trigger = 'click';
     showOnCheck = false;
   }
-  var targetSelector = '[data-pwn-reveal-target="' + identifier + '"]';
+  var targetSelector = '[data-pwnfx-reveal-target="' + identifier + '"]';
   
   var onChangeFn = function () {
     var checked = (trigger == 'click') || jElement.is(':checked');
@@ -137,4 +138,4 @@ PwnAjax.wireReveal = function (element) {
 };
 
 // Wire JS to elements when the document is loaded.
-$(PwnAjax.wireAll);
+$(PwnFx.wireAll);
