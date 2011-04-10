@@ -60,17 +60,6 @@
     </span>
   </p>
 
-  <% if Course.main.has_recitations? %>
-  <p class="field">
-    <%= f.label :recitation_section_id, 'Recitation' %>
-    <span class="value">
-      <%= f.select :recitation_section_id,
-                   profile_recitation_section_options(f.object) %>
-    </span>
-    <span class="comment" />
-  </p>
-  <% end %>
-
   <p class="field">
     <%= f.label :nickname, 'Phone' %>
     <span class="value">
