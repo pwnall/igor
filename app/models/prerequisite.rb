@@ -10,18 +10,22 @@
 #  updated_at      :datetime
 #
 
-# A prerequisite for the course.
+# A prerequisite for a course.
 class Prerequisite < ActiveRecord::Base
   has_many :prerequisite_answers, :dependent => :destroy
+  
+  # The course that this prerequisite applies to.
+  belongs_to :course
+  validates :course, :presence => true
   
   # The course number(s) required for the class.
   #
   # This field can contain multiple numbers, if there are multiple courses
   # satisfying the same prerequisite (e.g. 6.01 / 1.00 could conceivably satisfy
   # a programming prerequisite).
-  validates_length_of :course_number, :allow_nil => false, :in => 1..64
+  validates :prerequisite_number, :length => 1..64, :presence => true,
+                                  :uniqueness => { :scope => :course }
   
-  # The text for a question that students must answer if they indicate they
-  # haven't taken the required course.
-  validates_length_of :waiver_question, :allow_nil => false, :in => 1..256
+  # Question that students must answer if they haven't taken the prerequisite.
+  validates :waiver_question, :length => 1..256, :presence => true
 end

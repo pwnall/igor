@@ -47,6 +47,13 @@ class Registration < ActiveRecord::Base
   # Answers to the course's prerequisites questions.
   has_many :prerequisite_answers, :dependent => :destroy
   accepts_nested_attributes_for :prerequisite_answers, :allow_destroy => false
+  
+  # Populates prerequisite_answers for a new registration
+  def build_prerequisite_answers
+    course.prerequisites.each do |p|
+      prerequisite_answers.build :registration => self, :prerequisite => p
+    end
+  end
 
   # Returns true if the given user is allowed to edit this registration.
   def editable_by_user?(user)

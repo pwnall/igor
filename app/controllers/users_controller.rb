@@ -29,6 +29,7 @@ class UsersController < ApplicationController
     @user = User.new
     @user.build_profile
     @user.registrations.build :course => Course.main
+    @user.registrations.first.build_prerequisite_answers
 
     respond_to do |format|
       format.html # new.html.erb

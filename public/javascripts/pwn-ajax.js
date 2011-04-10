@@ -3,11 +3,18 @@ var PwnAjax = {};
 
 /** Wires JS to elements with data-pwn attributes. */
 PwnAjax.wireAll = function () {
+  $('[data-pwn-move-source]').each(function (_, element) {
+    PwnAjax.wireMove(element);
+  });
+
   $('[data-pwn-refresh-url]').each(function (_, element) {
     PwnAjax.wireRefresh(element);
   });
   $('[data-pwn-confirm-source]').each(function (_, element) {
     PwnAjax.wireConfirm(element);
+  });
+  $('[data-pwn-reveal-trigger]').each(function (_, element) {
+    PwnAjax.wireReveal(element);
   });
 };
 
@@ -58,9 +65,9 @@ PwnAjax.wireRefresh = function (element) {
 PwnAjax.wireConfirm = function (element) {
   var jElement = $(element);
   var identifier = jElement.attr('data-pwn-confirm-source');
-  var sourceSelector = '[data-pwn-confirm-source=' + identifier + ']'
-  var winSelector = '[data-pwn-confirm-win=' + identifier + ']';
-  var failSelector = '[data-pwn-confirm-fail=' + identifier + ']';
+  var sourceSelector = '[data-pwn-confirm-source="' + identifier + '"]'
+  var winSelector = '[data-pwn-confirm-win="' + identifier + '"]';
+  var failSelector = '[data-pwn-confirm-fail="' + identifier + '"]';
   
   var onChangeFn = function () {
     var value = null;
@@ -83,6 +90,38 @@ PwnAjax.wireConfirm = function (element) {
   jElement.bind('change', onChangeFn);
   jElement.bind('keydown', onChangeFn);
   jElement.bind('keyup', onChangeFn);
+  onChangeFn();
+};
+
+/** Moves an element using data-pwn-move-source. */
+PwnAjax.wireMove = function (element) {
+  var jElement = $(element);
+  var identifier = jElement.attr('data-pwn-move-source');
+  var targetSelector = '[data-pwn-move-target="' + identifier + '"]';
+  var jTarget = $(targetSelector).first();
+  jElement.detach();
+  jTarget.append(jElement);
+};
+
+/** Wires JS to an AJAX show/hide trigger using data-pwn-reveal-trigger. */
+PwnAjax.wireReveal = function (element) {
+  var jElement = $(element);
+  var identifier = jElement.attr('data-pwn-reveal-trigger');
+  var showOnCheck = (jElement.attr('data-pwn-reveal-oncheck') || 'true') !=
+                    'false';
+  var targetSelector = '[data-pwn-reveal-target="' + identifier + '"]';
+  
+  var onChangeFn = function () {
+    var checked = jElement.is(':checked');
+    var willShow = (checked == showOnCheck);
+    console.log([checked, willShow, targetSelector]);
+    if (willShow) {
+      $(targetSelector).removeClass('hidden');
+    } else {
+      $(targetSelector).addClass('hidden');
+    }
+  };
+  jElement.bind('change', onChangeFn);
   onChangeFn();
 };
 

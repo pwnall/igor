@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110208012638) do
+ActiveRecord::Schema.define(:version => 20110410102943) do
 
   create_table "announcements", :force => true do |t|
     t.string   "headline",         :limit => 128,                     :null => false
@@ -127,11 +127,14 @@ ActiveRecord::Schema.define(:version => 20110208012638) do
   add_index "prerequisite_answers", ["registration_id", "prerequisite_id"], :name => "prerequisites_for_a_registration", :unique => true
 
   create_table "prerequisites", :force => true do |t|
-    t.string   "course_number",   :limit => 64,  :null => false
-    t.string   "waiver_question", :limit => 256, :null => false
+    t.string   "prerequisite_number", :limit => 64,  :null => false
+    t.string   "waiver_question",     :limit => 256, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "course_id",                          :null => false
   end
+
+  add_index "prerequisites", ["course_id", "prerequisite_number"], :name => "index_prerequisites_on_course_id_and_prerequisite_number", :unique => true
 
   create_table "profile_photos", :force => true do |t|
     t.integer  "profile_id",                           :null => false

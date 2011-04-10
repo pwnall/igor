@@ -30,6 +30,9 @@ class Course < ActiveRecord::Base
   
   # The student registrations for this course.
   has_many :registrations, :dependent => :destroy
+  
+  # The prerequisite courses for this course.
+  has_many :prerequisites, :dependent => :destroy
 
   # The main (and only) course on the website.
   def self.main
