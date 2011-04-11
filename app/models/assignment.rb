@@ -48,7 +48,7 @@ class Assignment < ActiveRecord::Base
   # The assignment deadline, customized to a specific user.
   #
   # This method will eventually account for deadline extensions. 
-  def deadline_for_user(user)
+  def deadline_for(user)
     deadline
   end
   
@@ -56,7 +56,12 @@ class Assignment < ActiveRecord::Base
   #
   # This method takes an user as an argument so that we can later account for
   # deadline extensions.
-  def deadline_passed_for_user?(user)
+  def deadline_passed_for?(user)
     deadline < Time.now
+  end
+  
+  # Deliverables that a user can submit files for.
+  def deliverables_for(user)
+    deliverables.select { |d| d.visible_for? user }
   end
 end

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+  MIT <%= Course.main.number %>
+</title>
+<%= csrf_meta_tag %>
+<%= favicon_link_tag %>
+<%= stylesheet_link_tag :all, :cache => true %>
+<%= javascript_include_tag :all, :cache => true %>
+<%= render 'layouts/google_analytics' %>
+</head>
+<body class="user">
+<header>
+<%= render 'layouts/header' %>
+</header>
+
+<%= render 'layouts/status_bar' %>
+<div id="content-wrapper">
+<article id="main">
+<%= yield %>
+</article>
+</div>
+
+<footer>
+<%= render 'layouts/footer' %>
+</footer>
+</body>
+</html>

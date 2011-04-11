@@ -1,3 +1,0 @@
-div_id = @assignment.new_record? ? ((0...16).map { rand(256).to_s(16) }.join) : @assignment.id
-page.insert_html :top, 'assignments_listing', :partial => 'edit', :object => @assignment, :locals => {:div_id =>  div_id}
-page["assignment_row_#{div_id}"].hide.appear :duration => 0.2

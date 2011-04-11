@@ -1,0 +1,47 @@
+section.assignment > p:first-child {
+  margin: 0.5ex 0 1em 0;
+}
+
+ul.deliverables {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+ul.deliverables li {
+  padding: 0;
+  margin: 1ex 0;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid #983E00;
+}
+ul.deliverables li .name {
+  display: block;
+  float: left;
+  font-size: 1.1em;
+  width: 640px;
+}
+ul.deliverables li .new {
+  display: block;
+  float: right;
+  width: 320px;
+  
+  text-align: right;
+}
+ul.deliverables li .description {
+  float: left;
+  width: 640px;
+
+  color: #666666;
+  clear: left;
+  margin: 0;
+  padding: 0.2ex 0 0 0;
+}
+ul.deliverables li .submission {
+  clear: both;
+  margin: 0;
+  padding: 0.3ex 0 0.5ex 0;
+}
+ul.deliverables li .submission .submission-info {
+  margin: 0;
+  padding: 0;
+}

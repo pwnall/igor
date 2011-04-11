@@ -49,7 +49,7 @@ class AssignmentMetric < ActiveRecord::Base
   validates :weight, :numericality => true
   
   # True if the given user should be allowed to see the metric.
-  def visible_for_user?(user)
+  def visible_for?(user)
     published? or (user and user.admin?)
   end
 end

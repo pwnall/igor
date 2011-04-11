@@ -1,54 +1,5 @@
-<%= form_for(@submission, :html => {:multipart => true,
-                                       :class => 'submission-form'}) do |f| %>
-  <dl>
-  	<dt><%= f.label :deliverable_id, 'Deliverable' %></dt>
-		<dd>
-		  <%= f.select :deliverable_id, Deliverable.submittable_by_user(current_user).
-           order('id DESC').
-           map {|d| ["#{d.assignment.name} : #{d.name}", d.id]},
-		       :include_blank => '(pick one)' %>
-		  <span id="submission-deliverable-ajax-indicator"></span>
-		</dd>
-		<dt>Instructions</dt>
-		<dd id="submission_description_text">
-			<% if @submission.deliverable %>
-			<%= @submission.deliverable.description %>
-			<% else %>
-	    Select a deliverable for instructions.
-			<% end %>
-		</dd>
-		
-		<% if @submission.deliverable %>
-		<dt><%= f.label :code, 'File' %></dt>
-		<dd>
-		  <%= f.file_field :code %>
-		  8 megabytes max.
-		</dd>
-		<% end %>
-  </dl>
-				
-  <p class="privacy-policy">
-    Only you and <%= Course.main.number %> Staff can see this.
-  </p>
-	<% if @submission.deliverable %>
-  <%= f.submit "Submit" %>
-  <% end %>
+<%= form_for(submission, :html => {:multipart => true}) do |f| %>
+  <%= f.file_field :code %>
+  <%= f.submit "Upload" %>
+  <%= f.hidden_field :deliverable_id %>
 <% end %>
-
-<%= observe_field 'submission_deliverable_id',
-      :url => new_submission_path, :method => :get, :frequency => 0.5,
-      :before => update_page { |p|
-        p.replace_html 'submission-deliverable-ajax-indicator',
-                       loading_image_tag
-      },
-      :with => "'submission[deliverable_id]=' + encodeURIComponent(value)" %>
-
-<%= javascript_tag <<JS_END   
-$('submission_submit').observe('click', function(event) {
-  if ($('submission_code').value == '') {
-    alert('You need to give me a file to work with');
-    event.stop();
-  }
-});
-JS_END
-  %>

@@ -159,7 +159,7 @@ class GradesController < ApplicationController
     @grades = []
     Assignment.includes(:metrics).order('deadline DESC').each do |assignment|
       metrics = assignment.metrics.
-          select { |metric| metric.visible_for_user? current_user }.
+          select { |metric| metric.visible_for? current_user }.
           map { |metric| [metric, grades_by_mid[metric.id]] }
       @grades << [assignment, metrics] unless metrics.empty?
     end

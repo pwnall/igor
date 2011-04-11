@@ -3,6 +3,7 @@ class AssignmentsController < ApplicationController
     
   in_place_edit_for :assignment, :name
 
+  layout 'full'
 
   # GET /assignments
   def index

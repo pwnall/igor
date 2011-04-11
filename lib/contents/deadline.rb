@@ -50,7 +50,7 @@ class Deadline
                order('deadline DESC').each do |assignment|
       include_feedback = user ? false : true
       assignment.deliverables.each do |deliverable|
-        next unless deliverable.visible_for_user?(nil)
+        next unless deliverable.visible_for?(nil)
         d = Deadline.new :due => assignment.deadline, :done => false,
                          :active => true, :source => assignment,
                          :headline =>
@@ -61,7 +61,7 @@ class Deadline
                             {:remote => true}
                          ]
 
-        if user and deliverable.submission_for_user(user)
+        if user and deliverable.submission_for(user)
           # TODO(costan): make deadline inactive if we posted grades or admin disabled submissions
           d.done = true
           include_feedback = true

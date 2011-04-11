@@ -68,12 +68,34 @@ class SubmissionsController < ApplicationController
 
   # POST /submissions
   def create    
-    @submission = Submission.where(:user_id => current_user.id,
-        :deliverable_id => params[:submission][:deliverable_id]).first
-    @submission ||= Submission.new(params[:submission])
+    deliverable = Deliverable.find params[:submission][:deliverable_id]
+    @submission = deliverable.submission_for current_user
+    @submission ||= Submission.new params[:submission]
     @submission.user = current_user
     
-    create_update
+    @submission.run_result ||= RunResult.new(:submission => @submission)
+    %w(stdout stderr score diagnostic).each do |field|
+      @submission.run_result.send :"#{field}=", nil
+    end
+    @submission.run_result.diagnostic = 'queued'
+    success = if @submission.new_record?
+      @submission.save
+    else
+      @submission.update_attributes(params[:submission])
+    end
+    
+    respond_to do |format|
+      if success
+        @submission.run_result.save!
+        OfflineTasks.validate_submission @submission
+        
+        flash[:notice] = "Uploaded #{@submission.code.original_filename} for #{@submission.assignment.name}: #{@submission.deliverable.name}."
+        format.html { redirect_to @submission.assignment || root_path }
+      else
+        flash[:notice] = "Submission for #{@submission.assignment.name}: #{@submission.deliverable.name} failed."
+        format.html { redirect_to @submission.assignment || root_path }
+      end
+    end    
   end
   
   # PUT /submissions/1
@@ -85,9 +107,8 @@ class SubmissionsController < ApplicationController
   def revalidate
     @submission = Submission.find(params[:id])
     @submission.run_result ||= RunResult.new(:submission => @submission)
-    unless @submission.run_result.new_record?
-      # reset the run result fields
-      [:stdout=, :stderr=, :score=, :diagnostic=].each { |msg| @submission.run_result.send msg, nil }
+    %w(stdout stderr score diagnostic).each do |field|
+      @submission.run_result.send :"#{field}=", nil
     end
     @submission.run_result.diagnostic = 'queued'
     @submission.run_result.save!
@@ -98,31 +119,6 @@ class SubmissionsController < ApplicationController
       format.html { redirect_to submissions_path }
     end    
   end
-  
-  def create_update
-    @new_record = @submission.new_record?
-    @submission.run_result ||= RunResult.new(:submission => @submission)
-    unless @submission.run_result.new_record?
-      # reset the run result fields
-      [:stdout=, :stderr=, :score=, :diagnostic=].each { |msg| @submission.run_result.send msg, nil }
-    end
-    @submission.run_result.diagnostic = 'queued'
-    @success = @new_record ? @submission.save : @submission.update_attributes(params[:submission])
-    
-    respond_to do |format|
-      if @success
-        @submission.run_result.save!
-        OfflineTasks.validate_submission @submission        
-        
-        flash[:notice] = "Uploaded #{@submission.code.original_filename} for #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}."
-        format.html { redirect_to root_path }
-      else
-        flash[:notice] = "Submission for #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name} failed."
-        format.html { redirect_to root_path }
-      end
-    end    
-  end
-  private :create_update
   
   # GET /submissions/1/file
   def file

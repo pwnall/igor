@@ -91,7 +91,7 @@ class FeedItem
   # Generates feed items for the published grades.
   def self.add_grades(items, user, options)
     Assignment.includes(:metrics).each do |assignment|
-      metrics = assignment.metrics.select { |m| m.visible_for_user?(user) }
+      metrics = assignment.metrics.select { |m| m.visible_for?(user) }
       next if metrics.empty?
       
       last_metric = metrics.sort_by(&:updated_at).last
@@ -112,7 +112,7 @@ class FeedItem
   # Generates feed items for the published deliverables.   
   def self.add_deliverables(items, user, options)
     Deliverable.includes(:assignment).each do |deliverable|
-      next unless deliverable.visible_for_user?(user)
+      next unless deliverable.visible_for?(user)
       
       # TODO(costan): get authors on deliverables
       with_teammates = deliverable.assignment.team_partition_id ?
@@ -128,8 +128,8 @@ class FeedItem
           :replies => []
       items << item
       
-      if deliverable.deadline_passed_for_user? user
-        reply = FeedItem.new :time => deliverable.deadline_for_user(user),
+      if deliverable.deadline_passed_for? user
+        reply = FeedItem.new :time => deliverable.deadline_for(user),
             :author => User.first, :flavor => :announcement,
             :contents => "The deadline has passed.",
             :actions => [], :replies => []

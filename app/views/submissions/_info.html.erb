@@ -1,0 +1,19 @@
+<% if submission %>
+<span class="submission-info">
+  <span class="author">
+    <%= user_image_tag submission.user %>
+    <%= link_to submission.user.display_name_for(current_user),
+                submission.user %>
+  </span>
+  submitted a
+  <%= link_to file_submission_path(submission, :inline => false) do %>
+    <%= number_to_human_size submission.code.size %> file
+  <% end %>
+  <%= time_ago_in_words submission.updated_at %>
+  ago.
+</span>
+<% else %>
+<span class="no-submission">
+  No submission yet
+</span>
+<% end %>

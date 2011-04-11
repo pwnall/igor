@@ -1,9 +1,0 @@
-if @success
-  status = @new_record ? 'Assignment created' : 'Assignment updated'
-  #page.insert_html add_site_status(status, true), 'site_status_container'
-  page.replace "assignment_row_#{@div_id}", :partial => 'show', :object => @assignment 
-else
-  status = @new_record ? 'Failed to create assignment' : 'Failed to update assignment'
-  #page.insert_html add_site_status(status, false), 'site_status_container'
-  page.replace "assignment_row_#{@div_id}", :partial => 'edit', :object => @assignment, :locals => { :div_id => @div_id }   
-end
