@@ -18,11 +18,11 @@
 class Submission < ActiveRecord::Base
   # The deliverable that the submission is for.
   belongs_to :deliverable
-  validates_presence_of :deliverable
+  validates :deliverable, :presence => true
   
   # The user doing the submission.
-  belongs_to :user
-  validates_presence_of :user
+  belongs_to :user, :inverse_of => :submissions
+  validates :user, :presence => true
   
   # The result of checking the submission.
   has_one :run_result, :dependent => :destroy

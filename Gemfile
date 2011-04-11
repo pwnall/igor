@@ -32,6 +32,7 @@ gem 'rmagick', '>= 2.13.1'
 # gem 'sys-proctable', :require => 'sys/proctable'
 # gem 'sys-uname', :require => 'sys/uname'
 # gem 'sys-uptime', :require => 'sys/uptime'
+gem 'validates_timeliness', '>= 3.0.0'
 gem 'zerg_support', '>= 0.1.5'
 
 ## Bundle gems for certain environments:

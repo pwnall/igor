@@ -13,24 +13,31 @@
 #  updated_at    :datetime
 #
 
+# The description of a file that students must submit for an assignment.
 class Deliverable < ActiveRecord::Base
-  # The assignment that the deliverable is a part of.
-  belongs_to :assignment
-    
-  # The user-visible assignment name.
-  validates_length_of :name, :in => 1..64, :allow_nil => false
+  # The user-visible deliverable name.
+  validates :name, :length => 1..64, :presence => true,
+                   :uniqueness => { :scope => [:assignment_id] }
+  
   # Instructions on preparing submissions for this deliverable.
-  validates_length_of :description, :in => 1..(2.kilobytes), :allow_nil => false
+  validates :description, :length => 1..(2.kilobytes), :presence => true
+  
   # If true, regular users can see this deliverable and submit to it.
-  validates_inclusion_of :published, :in => [true, false]
+  validates :published, :inclusion => { :in => [true, false],
+                                        :allow_nil => false }
+  
   # Standard filename of the deliverable (e.g. writeup.pdf, trees.py)
-  validates_length_of :filename, :in => 1..256, :allow_nil => false
+  validates :filename, :length => 1..256, :presence => true
 
+  # The assignment that the deliverable is a part of.
+  belongs_to :assignment, :inverse_of => :deliverables
+  
   # The method used to verify students' submissions for this deliverable.
-  has_one :deliverable_validation, :dependent => :destroy
+  has_one :deliverable_validation, :dependent => :destroy,
+                                   :inverse_of => :deliverable
   
   # All the student submissions for this deliverable.
-  has_many :submissions, :dependent => :destroy
+  has_many :submissions, :dependent => :destroy, :inverse_of => :deliverable
   
   # True if the given user should be allowed to see the deliverable.
   def visible_for_user?(user)

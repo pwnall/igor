@@ -11,26 +11,24 @@
 #  created_at :datetime
 #
 
-require 'digest/sha2'
 
+# Random strings used for password-less authentication.
 class Token < ActiveRecord::Base
-  # The user that the token is linked to.
-  belongs_to :user
-  
   # Random hexadecimal string with the secret token.
-  validates_length_of :token, :in => 1..64, :allow_nil => false
-  validates_uniqueness_of :token
+  validates :token, :length => 1..64, :presence => :true, :uniqueness => :true
   
   # The TokenController method to be called when the token is spent.
-  validates_length_of :action, :in => 1..32, :allow_nil => false
+  validates :action, :length => 1..32, :presence => true
 
   # An argument for the TokenController method called when the token is spent.
   serialize :argument
 
-  before_validation :generate_token
-  
+  # The user that the token is linked to.
+  belongs_to :user, :inverse_of => :tokens
+
   # Generates a random string for the token.
   def generate_token
     self.token ||= Digest::SHA2.hexdigest OpenSSL::Random.random_bytes(32)
   end
+  before_validation :generate_token
 end

@@ -15,24 +15,10 @@
 
 # Credentials for a user in the system.
 class User < ActiveRecord::Base
-  has_many :tokens, :dependent => :destroy
-  
-  has_many :registrations, :dependent => :destroy, :inverse_of => :user
-  accepts_nested_attributes_for :registrations
-  
-  has_one :profile, :dependent => :destroy, :inverse_of => :user
-  accepts_nested_attributes_for :profile
-  
-  has_many :direct_grades, :class_name => 'Grade', :dependent => :destroy,
-           :as => :subject
-  has_many :submissions, :dependent => :destroy
-  has_many :notice_statuses, :dependent => :destroy
-  has_many :notices, :through => :notice_statuses
-  has_many :team_memberships, :dependent => :destroy
-  has_many :teams, :through => :team_memberships
-  has_many :survey_answers
-
-  attr_protected :admin, :active
+  # .edu e-mail address used to identify and endorse the user account.
+  validates :email, :length => 1..64, :presence => true, :uniqueness => true,
+      :format => { :with => /\A[A-Za-z0-9.+_-]+\@[A-Za-z0-9.\-]+\.edu\Z/,
+                   :message => 'needs to be an .edu e-mail address' }
   
   # Random string preventing dictionary attacks on the password database.
   validates :password_salt, :length => 1..16, :presence => true
@@ -40,17 +26,41 @@ class User < ActiveRecord::Base
   # SHA-256 of (salt + password).
   validates :password_hash, :length => 1..64, :presence => true
   
-  # .edu e-mail address used to identify and endorse the user account.
-  validates :email, :length => 1..64, :presence => true, :uniqueness => true,
-      :format => { :with => /\A[A-Za-z0-9.+_-]+\@[A-Za-z0-9.\-]+\.edu\Z/,
-                   :message => 'needs to be an .edu e-mail address' }
-  
-  # Administrators are staff members.  
+  # Administrators are staff members.
   validates :admin, :inclusion => { :in => [true, false], :allow_nil => false }
+  attr_protected :admin
   
   # Prevents logins from un-confirmed accounts.
   validates :active, :inclusion => { :in => [true, false], :allow_nil => false }
+  attr_protected :active
   
+  # Random strings used for password-less authentication.
+  has_many :tokens, :dependent => :destroy, :inverse_of => :user
+  
+  # Personal information, e.g. full name and contact info.
+  has_one :profile, :dependent => :destroy, :inverse_of => :user
+  accepts_nested_attributes_for :profile
+
+  # Class registration info, e.g. survey answers and credit / listener status.
+  has_many :registrations, :dependent => :destroy, :inverse_of => :user
+  accepts_nested_attributes_for :registrations
+  
+  # Files uploaded by the user to meet assignment deliverables.
+  has_many :submissions, :dependent => :destroy, :inverse_of => :user
+  
+  # The user's answers to homework surveys.
+  has_many :survey_answers, :dependent => :destroy, :inverse_of => :user
+
+  # Grades assigned to the user, not to a team that the user belongs to.
+  has_many :direct_grades, :class_name => 'Grade', :dependent => :destroy,
+           :as => :subject
+
+  # Backing model for the teams association.
+  has_many :team_memberships, :dependent => :destroy, :inverse_of => :user
+  
+  # Teams that this user belongs to.
+  has_many :teams, :through => :team_memberships, :inverse_of => :users
+
   # Virtual attribute: the user's password.
   attr_reader :password
   def password=(new_password)

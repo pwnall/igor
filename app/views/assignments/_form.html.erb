@@ -1,0 +1,7 @@
+<%= form_for assignment do |f| %>
+  <%= f.error_messages %>
+<%= render 'assignments/fields', :f => f %>
+  <p class="action">
+    <%= f.submit %>
+  </p>
+<% end %>

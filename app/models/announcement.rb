@@ -27,9 +27,6 @@ class Announcement < ActiveRecord::Base
   # The announcement's contents.
   validates :contents, :length => 1..(8.kilobytes)
   
-  # TODO(costan): the table is deprecated, remove.
-  has_many :notice_statuses, :dependent => :destroy  
-
   # Returns true if the given user is allowed to edit this announcement.
   def editable_by_user?(user)
     user and (user == self.author or user.admin?)

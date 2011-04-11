@@ -1,0 +1,89 @@
+<li>
+  <%= link_to 'Teacher', root_path %>
+  <ol>
+    <li>
+      <%= link_to 'Get Submissions', request_package_submissions_path %>
+    </li>
+    <li>
+      <%= link_to 'Post Grades', grades_path %>
+    </li>
+    
+    <li>
+      <%= link_to 'Assignments', assignments_path %>
+    </li>
+    <li>
+      <%= link_to 'Metrics', assignment_metrics_path %>
+    </li>
+    <li>
+      <%= link_to 'Recitations', recitation_sections_path %>
+    </li>
+    <li>
+      <%= link_to 'Surveys', survey_questions_path %>
+    </li>
+    <li>
+      <%= link_to 'Teams', team_partitions_path %>
+    </li>
+    
+    <li>
+      <%= link_to 'Course Info', courses_path %>
+    </li>         
+    <li>
+      <%= link_to 'Prerequisites', prerequisites_path %>
+    </li>
+    
+    <li>
+      <%= link_to 'Submissions', submissions_path %>
+    </li>
+    <li>
+      <%= link_to 'Survey Answers', survey_answers_path %>
+    </li>
+    <li>
+      <%= link_to 'Grades', request_report_grades_path %>
+    </li>
+    <li>
+      <%= link_to 'Missing Grades', request_missing_grades_path %>
+    </li>
+    <li>
+      <%= link_to 'Registrations', registrations_path %>
+    </li>
+    
+    <li>
+      <%= link_to 'Users', users_path %>
+    </li>
+    <li>
+      <%= link_to 'Profiles', profiles_path %>
+    </li>
+    
+    <li>
+      <%= link_to 'System', system_root_path %>
+    </li>
+    <li>
+      <%= link_to 'Processes', system_processes_path %>
+    </li>
+  </ol>
+</li>
+<li>
+  <%= link_to 'News', root_path %>
+</li>
+<li>
+  <%= link_to 'Homework', root_path(:flavor => :deliverable) %>
+  <ol>
+    <li>
+      <%= link_to new_assignment_path do %>
+        <%= image_tag 'menu_add.png' %>
+        Add Homework
+      <% end %>
+    </li>
+    <% assignments_for(current_user).each do |assignment| %>
+    <li>
+      <%= link_to assignment.name, assignment %>
+    </li>
+    <% end %>
+  </ol>
+</li>
+<li>
+  <%= link_to 'Grades', reveal_mine_grades_path %>
+</li>
+<li>
+  <%= link_to 'Surveys', root_path(:flavor => :survey_answer) %>
+</li>

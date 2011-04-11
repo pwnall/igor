@@ -15,22 +15,23 @@
 
 # An assignment for the course students. (e.g., a problem set or a project)
 class Assignment < ActiveRecord::Base
-  # The deliverables that students need to submit to complete the assignment.
-  has_many :deliverables, :dependent => :destroy
-  # The metrics that the students are graded on for this assignment.
-  has_many :metrics, :class_name => 'AssignmentMetric', :dependent => :destroy
-  
   # The user-visible assignment name (e.g., "PSet 1").
   validates :name, :length => 1..64, :uniqueness => true, :presence => true
   
   # The time when all the deliverables of the assignment are due.
-  validates :deadline, :presence => true
+  validates :deadline, :presence => true, :timeliness => true
 
   # The partition of teams used for this assignment.
-  belongs_to :team_partition
+  belongs_to :team_partition, :inverse_of => :assignments
   
   # The set of survey questions for getting feedback on this assignment. 
   belongs_to :feedback_survey, :class_name => 'Survey'
+
+  # The deliverables that students need to submit to complete the assignment.
+  has_many :deliverables, :dependent => :destroy, :inverse_of => :assignment
+  
+  # The metrics that the students are graded on for this assignment.
+  has_many :metrics, :class_name => 'AssignmentMetric', :dependent => :destroy
   
   # The questions in the feedback survey for this assignment. 
   def feedback_questions

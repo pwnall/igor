@@ -13,7 +13,7 @@
 # A user's response to a set of questions.
 class SurveyAnswer < ActiveRecord::Base
   # The user responding to the survey.
-  belongs_to :user
+  belongs_to :user, :inverse_of => :survey_answers
   
   # The subject of this feedback.
   # TODO(costan): make this polymorphic, rename to subject

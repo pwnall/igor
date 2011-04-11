@@ -1,0 +1,39 @@
+<section class="fields">
+  <p class="field">
+    <%= f.label :name %>
+    <span class="field">
+      <%= f.text_field :name, :placeholder => 'PS 1', :required => true,
+              :autofocus => true %>
+    </span>
+  </p>
+  <p class="field">
+    <%= f.label :deadline %>
+    <span class="field">
+      <%= f.datetime_select :deadline, :use_short_month => true,
+             :minute_step => 15, :datetime_separator => ' at ',
+             :time_separator => ':' %>
+    </span>
+  </p>
+  <p class="field">
+    <%= f.label :team_partition_id, 'Teams' %>
+    <span class="field">
+      <%= f.select :team_partition_id,
+              ([['(none)', nil]] + TeamPartition.all.map { |p| [p.name, p.id] }),
+              :class => 'form_field' %>
+    </span>
+  </p>
+  <p class="field">
+    <%= f.label :feedback_survey_id, 'Feedback survey' %>
+    <span class="field">
+     <%= f.select :feedback_survey_id, Survey.all.map { |s| [s.name, s.id] },
+                  :include_blank => '(none)', :class => 'form_field' %>
+    </span>
+  </p>
+  <p class="field">
+    <%= f.label :accepts_feedback, 'Survey open' %>
+    <span class="field">
+      <%= f.check_box :accepts_feedback %>
+      students can submit feedback
+    </span>
+  </p>
+</section>

@@ -15,18 +15,20 @@
 # A partitioning of students into teams.
 class TeamPartition < ActiveRecord::Base
   # True if this partitioning is visible to the students.
-  validates_inclusion_of :published, :in => [true, false], :allow_nil => false
+  validates :published, :inclusion => { :in => [true, false],
+                                       :allow_nil => false }
   
   # True if this partitioning was automatically generated. If false, the
   # students are allowed to pair up via a Web UI.
-  validates_inclusion_of :automated, :in => [true, false], :allow_nil => false
+  validates :automated, :inclusion => { :in => [true, false],
+                                       :allow_nil => false }
 
   # True if the teams in this partitioning can still be changed.
-  validates_inclusion_of :editable, :in => [true, false], :allow_nil => false
+  validates :editable, :inclusion => { :in => [true, false],
+                                       :allow_nil => false }
 
   # The admin-visible name for the partitioning.
-  validates_length_of :name, :in => 1..64, :allow_nil => false
-  validates_uniqueness_of :name
+  validates :name, :length => 1..64, :presence => true, :uniqueness => true
 
   # The teams in this partitioning.
   has_many :teams, :foreign_key => 'partition_id', :dependent => :destroy
@@ -35,7 +37,7 @@ class TeamPartition < ActiveRecord::Base
   has_many :memberships, :through => :teams
   
   # The assignments using this partitioning.
-  has_many :assignments, :dependent => :nullify
+  has_many :assignments, :dependent => :nullify, :inverse_of => :team_partition
   
   # The deliverables for the assignments using this partitioning.
   has_many :deliverables, :through => :assignments

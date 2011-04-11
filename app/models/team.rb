@@ -14,19 +14,20 @@
 #
 # The system supports multiple partitions of students into teams. 
 class Team < ActiveRecord::Base
-  # The partition that this team is part of.
-  belongs_to :partition, :class_name => 'TeamPartition'
-  validates_presence_of :partition
-  
   # The team's user-visible name.
-  validates_length_of :name, :in => 1..64
-  validates_uniqueness_of :name, :scope => [:partition_id]
+  validates :name, :length => 1..64, :presence => true,
+                   :uniqueness => { :scope => [:partition_id] }
+  
+  # The partition that this team is part of.
+  belongs_to :partition, :class_name => 'TeamPartition', :inverse_of => :teams
+  validates :partition, :presence => true
   
   # The memberships connecting users to this team.
-  has_many :memberships, :class_name => 'TeamMembership', :dependent => :destroy
+  has_many :memberships, :class_name => 'TeamMembership',
+                         :dependent => :destroy
   
   # The users in this team.  
-  has_many :users, :through => :memberships
+  has_many :users, :through => :memberships, :inverse_of => :teams
   
   # The grades assigned to this team.
   has_many :grades, :dependent => :destroy, :as => :subject

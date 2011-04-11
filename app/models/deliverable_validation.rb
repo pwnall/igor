@@ -18,9 +18,11 @@
 #  updated_at       :datetime
 #
 
+# Describes a method to check students' submissions for a deliverable.
 class DeliverableValidation < ActiveRecord::Base
   # The deliverable whose submissions are validated by this validation.
-  belongs_to :deliverable
+  belongs_to :deliverable, :inverse_of => :deliverable_validation
+  validates :deliverable, :presence => true
 
   # The maximum time to run the validation for.
   #

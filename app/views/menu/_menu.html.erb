@@ -1,0 +1,29 @@
+<nav id="menu">
+  <ol>
+  <% if current_user.admin? %>
+<%= render 'menu/admin' %>
+  <% else %>
+<%= render 'menu/user' %>
+  <% end %>
+  
+    <li>
+      <%= link_to current_user do %>
+        <%= user_image_tag current_user %>
+        <span>
+          <%= current_user.email %> &#x25bc;
+        </span>
+      <% end %>
+      <ol>
+        <li>
+          <%= link_to 'Profile', current_user %>
+        </li>
+        <li>
+          <%= link_to 'Settings', edit_password_user_path(current_user) %>
+        </li>
+        <li>
+          <%= link_to 'Sign out', session_path(current_user), :method => :delete %>
+        </li>
+      </ul>
+    </li>
+  </ol>
+</nav>
