@@ -1,0 +1,23 @@
+<section class="fields">
+  <p class="field">
+    <%= f.label :name %>
+    <span class="field">
+      <%= f.text_field :name, :placeholder => 'Problem 1', :required => true,
+              :autofocus => true %>
+    </span>
+  </p>
+  <p class="field">
+    <%= f.label :max_score, 'Points' %>
+    <span class="field">
+      <%= f.number_field :max_score, :min => 0, :required => true,
+                                     :placeholder => 10 %>
+    </span>
+  </p>
+  <p class="field">
+    <%= f.label :weight, 'Weight' %>
+    <span class="field">
+      <%= f.number_field :weight, :min => 0, :required => true,
+                                  :placeholder => 1.0 %>
+    </span>
+  </p>
+</section>

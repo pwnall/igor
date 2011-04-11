@@ -25,58 +25,52 @@ class AssignmentsController < ApplicationController
   # GET /assignments/new
   def new
     @assignment = Assignment.new
-    new_edit
+    @assignment.deliverables.build
+    @assignment.metrics.build
+    
+    respond_to do |format|
+      format.html  # new.html.erb
+    end    
   end
 
   # GET /assignments/1/edit
   def edit
     @assignment = Assignment.find(params[:id])
-    new_edit
+    @assignment.deliverables.build
+    @assignment.metrics.build
   end
   
-  def new_edit
+  # POST /assignments
+  def create
+    @assignment = Assignment.new(params[:assignment])
+
     respond_to do |format|
-      format.html { render :action => :new_edit } # new_edit.html.erb
-      format.js   { render :action => :new_edit } # new_edit.js.rjs 
-    end    
-  end
-  
-  def create_update
-    @new_record = @assignment.new_record?
-    @div_id = @new_record ? params[:div_id] : @assignment.id
-    
-    @success = @new_record ? @assignment.save : @assignment.update_attributes(params[:assignment])
-    respond_to do |format|
-      format.js do
-        render :action => 'create_update'          
-      end
-      if @success
+      if @assignment.save
         format.html do
-          flash[:notice] = "Assignment was successfully #{@new_record ? 'created' : 'updated'}."
-          redirect_to assignments_path
+          redirect_to @assignment, :notice => 'Assignment successfully created.'
         end
       else
+        format.html { render :action => :new }
+      end
+    end
+  end
+
+  # PUT /assignments/1
+  def update
+    @assignment = Assignment.find(params[:id])
+
+    respond_to do |format|
+      if @assignment.update_attributes(params[:assignment])
         format.html do
-          flash[:notice] = "Assignment #{@new_record ? 'creation' : 'update'} failed."
-          render :action => :new_edit
+          redirect_to @assignment, :notice => 'Assignment successfully updated.'
         end
+      else
+        format.html { render :action => :edit }
       end
     end
   end
 
 
-  # POST /assignments
-  def create
-    @assignment = Assignment.new(params[:assignment])
-    create_update
-  end
-  
-  # PUT /assignments/1
-  def update
-    @assignment = Assignment.find(params[:id])
-    create_update
-  end
-  
   # DELETE /assignments/1
   def destroy
     @assignment = Assignment.find(params[:id])

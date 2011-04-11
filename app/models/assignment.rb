@@ -29,9 +29,14 @@ class Assignment < ActiveRecord::Base
 
   # The deliverables that students need to submit to complete the assignment.
   has_many :deliverables, :dependent => :destroy, :inverse_of => :assignment
+  accepts_nested_attributes_for :deliverables, :allow_destroy => true,
+      :reject_if => lambda { |attributes| attributes[:name].nil? }
   
   # The metrics that the students are graded on for this assignment.
-  has_many :metrics, :class_name => 'AssignmentMetric', :dependent => :destroy
+  has_many :metrics, :class_name => 'AssignmentMetric', :dependent => :destroy,
+                     :inverse_of => :assignment
+  accepts_nested_attributes_for :metrics, :allow_destroy => true,
+      :reject_if => lambda { |attributes| attributes[:name].nil? }
   
   # The questions in the feedback survey for this assignment. 
   def feedback_questions

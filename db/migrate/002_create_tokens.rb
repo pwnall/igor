@@ -10,9 +10,9 @@ class CreateTokens < ActiveRecord::Migration
     end
     
     # find the token by its content
-    add_index :tokens, :token, :unique => true
+    add_index :tokens, :token, :null => false, :unique => true
     # find tokens by their users [and what they do]
-    add_index :tokens, [:user_id, :action]
+    add_index :tokens, [:user_id, :action], :null => false, :unique => false
   end
 
   def self.down

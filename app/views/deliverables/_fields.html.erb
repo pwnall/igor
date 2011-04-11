@@ -1,0 +1,28 @@
+<section class="fields">
+  <p class="field">
+    <%= f.label :name %>
+    <span class="value">
+      <%= f.text_field :name, :placeholder => 'PDF Write-up',
+                       :required => true %>
+    </span>
+  </p>
+  <p class="field">
+    <%= f.label :filename, 'File name' %>
+    <span class="value">
+      <%= f.text_field :filename, :placeholder => 'writeup.pdf' %>
+    </span>
+  </p>
+  <p class="field">
+    <%= f.label :published, 'Published' %>
+    <span class="value">
+      <%= f.check_box :published %>
+      students can upload solutions
+    </span>
+  </p>
+  <p class="field">
+    <%= f.label :description, 'Description' %>
+    <span class="value">
+      <%= f.text_area :description %>
+    </span>
+  </p>
+</section>

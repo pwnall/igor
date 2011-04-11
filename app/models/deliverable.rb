@@ -22,7 +22,7 @@ class Deliverable < ActiveRecord::Base
   # Instructions on preparing submissions for this deliverable.
   validates :description, :length => 1..(2.kilobytes), :presence => true
   
-  # If true, regular users can see this deliverable and submit to it.
+  # If true, students (non-admins) can see this deliverable and submit to it.
   validates :published, :inclusion => { :in => [true, false],
                                         :allow_nil => false }
   

@@ -18,11 +18,15 @@
 # For example, "the score for Problem 1".
 class AssignmentMetric < ActiveRecord::Base
   # The assignment that this metric is for.
-  belongs_to :assignment  
+  belongs_to :assignment, :inverse_of => :metrics
   validates :assignment, :presence => true
   
   # The grades issued for this metric.
   has_many :grades, :foreign_key => :metric_id
+  
+  # The user-friendly name for this metric.
+  validates :name, :length => 1..64, :presence => true,
+                   :uniqueness => { :scope => [:assignment_id] }
   
   # The maximum score (grade) that can be received on this metric.
   #

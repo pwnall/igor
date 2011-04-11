@@ -9,6 +9,8 @@ class CreateAssignments < ActiveRecord::Migration
 
       t.timestamps
     end
+    
+    add_index :assignments, :name, :null => false, :unique => true
   end
 
   def self.down

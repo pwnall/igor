@@ -1,6 +1,17 @@
 <%= form_for assignment do |f| %>
   <%= f.error_messages %>
-<%= render 'assignments/fields', :f => f %>
+  <%= render 'assignments/fields', :f => f %>
+  
+  <h3>Required Files</h3>
+  <%= f.fields_for :deliverables do |df| %>
+    <%= render 'deliverables/fields', :f => df %>
+  <% end %>
+  
+  <h3>Grades</h3>
+  <%= f.fields_for :metrics do |mf| %>
+    <%= render 'assignment_metrics/fields', :f => mf %>
+  <% end %>
+
   <p class="action">
     <%= f.submit %>
   </p>
