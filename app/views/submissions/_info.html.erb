@@ -12,8 +12,15 @@
   <%= time_ago_in_words submission.updated_at %>
   ago.
 </span>
+<span class="submission-result">
+<% if submission.run_result %>
+  <%= link_to submission.run_result.diagnostic,
+              submission.run_result %>
+  <% end %>
+</span>
 <% else %>
 <span class="no-submission">
+  <%= image_tag 'missing.png' %>
   No submission yet
 </span>
 <% end %>
