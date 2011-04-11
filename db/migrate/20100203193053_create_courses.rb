@@ -11,7 +11,7 @@ class CreateCourses < ActiveRecord::Migration
     end
     
     # Resolve a course by its number. We might use that in URLs.
-    add_index :courses, :number, :unique => :true, :null => false
+    add_index :courses, :number, :unique => true, :null => false
 
     # Pre-populate with 6.006, since this is the course that founded the site.
     Course.create! :number => '6.006',

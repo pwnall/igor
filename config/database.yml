@@ -34,9 +34,6 @@ development:
 test:
   <<: *test_mysql
 
-# This section is rewritten by rpwn, don't bother :)
+# This section is rewritten by rpwn, don't get your hopes up :)
 production:
-  adapter: mysql2
-  database: six_prod
-  username: six
-  password: superpass
+  <<: *dev_mysql

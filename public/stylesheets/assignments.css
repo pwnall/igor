@@ -45,3 +45,8 @@ ul.deliverables li .submission .submission-info {
   margin: 0;
   padding: 0;
 }
+ul.deliverables li .submission img {
+  display: inline-block;
+  position: relative;
+  top: 4px;
+}

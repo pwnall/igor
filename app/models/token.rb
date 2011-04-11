@@ -15,7 +15,7 @@
 # Random strings used for password-less authentication.
 class Token < ActiveRecord::Base
   # Random hexadecimal string with the secret token.
-  validates :token, :length => 1..64, :presence => :true, :uniqueness => :true
+  validates :token, :length => 1..64, :presence => true, :uniqueness => true
   
   # The TokenController method to be called when the token is spent.
   validates :action, :length => 1..32, :presence => true
