@@ -10,6 +10,7 @@ class SessionsController < ApplicationController
       flash[:error] = 'Invalid user/password combination'
     elsif !user.active
       bounce_user("Your account is inactive (did you confirm your #{@login.email} e-mail address?)")
+      return
     else
       session[:user_id] = user.id
       @current_user = user
