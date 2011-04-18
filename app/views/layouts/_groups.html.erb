@@ -1,3 +1,4 @@
+<% unless current_user.teams.empty? %>
 <h2>Groups</h2>
 
 <dl class="groups">
@@ -6,3 +7,4 @@
  	<%= render team %>
 <% end %>
 </dl>
+<% end %>
