@@ -3,7 +3,7 @@
   <% if current_user.admin? %>
 <%= render 'menu/admin' %>
   <% else %>
-<%= render 'menu/user' %>
+<%= render 'menu/nonadmin' %>
   <% end %>
   
     <li>
