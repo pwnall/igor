@@ -134,10 +134,6 @@ Seven::Application.routes.draw do |map|
       delete :remove_question
     end
   end
-  namespace :system do
-    root :to => 'system/health#stat_system'
-    resources :processes, :controller => 'health'
-  end
   resources :team_partitions
   resources :teams do
     member do

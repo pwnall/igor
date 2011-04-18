@@ -97,8 +97,8 @@ class User < ActiveRecord::Base
   
   # The authenticated user or nil.
   def self.authenticate(email, password)
-    @user = User.find :first, :conditions => { :email => email }
-    (@user && @user.check_password(password)) ? @user : nil
+    user = User.where(:email => email).first
+    (user && user.check_password(password)) ? user : nil
   end  
   
   # Submissions connected to this user.

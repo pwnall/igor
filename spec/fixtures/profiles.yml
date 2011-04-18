@@ -32,7 +32,6 @@ dexter:
   allows_publishing: true
   phone_number: (617) 808-0808
   aim_name: boygenius
-  recitation_section: victor_10am
 
 solo:
   user: solo
@@ -45,4 +44,3 @@ solo:
   about_me: "Leave me alone"
   allows_publishing: false
   phone_number: (617) 900-0000
-  recitation_section: victor_10am

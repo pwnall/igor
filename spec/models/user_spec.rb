@@ -31,29 +31,6 @@ describe User do
     dvdjohn.should be_valid
   end
   
-  it 'should reject users with no names' do
-    dvdjohn.name = nil
-    dvdjohn.should_not be_valid
-  end
-  it 'should reject short names' do
-    dvdjohn.name = 'a'
-    dvdjohn.should_not be_valid
-  end
-  it 'should reject overly long names' do
-    dvdjohn.name = 'abcde' * 13
-    dvdjohn.should_not be_valid
-  end
-  ['pwn$', 'l@@k', 'awe some'].each do |name|
-    it "should reject funny name #{name}" do    
-      dvdjohn.name = name
-      dvdjohn.should_not be_valid
-    end
-  end
-  it 'should reject duplicate names' do
-    dvdjohn.name = users(:admin).name
-    dvdjohn.should_not be_valid
-  end
-    
   it 'should reject users without password salts' do
     dvdjohn.password_salt = nil
     dvdjohn.should_not be_valid
@@ -150,14 +127,14 @@ describe User do
   
   describe 'authenticate' do
     it 'should work with good credentials' do
-      User.authenticate('admin', 'password').should == admin
-      User.authenticate('dexter', 'pa55w0rd').should == dexter
+      User.authenticate('costan@mit.edu', 'password').should == admin
+      User.authenticate('genius+6006@mit.edu', 'pa55w0rd').should == dexter
     end
     it "should reject dexter's password on admin's account" do
-      User.authenticate('admin', 'pa55w0rd').should be_nil
+      User.authenticate('costan@mit.edu', 'pa55w0rd').should be_nil
     end
     it 'should reject bogus passwords' do
-      User.authenticate('dexter', 'awesome').should be_nil
+      User.authenticate('genius+6006@mit.edu', 'awesome').should be_nil
     end
   end
   

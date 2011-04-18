@@ -13,9 +13,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 math:
-  course_number: "6.042"
+  course: main
+  prerequisite_number: "6.042"
   waiver_question: "What is your mathematics background?"
 
 python:
-  course_number: "6.01"
+  course: main
+  prerequisite_number: "6.01"
   waiver_question: "What is your experience with Python?"
