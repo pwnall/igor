@@ -4,21 +4,23 @@
 	<comment></comment>
 	<projects>
 	</projects>
-  <buildSpec>
-    <buildCommand>
-      <name>org.rubypeople.rdt.core.rubybuilder</name>
-      <arguments>
-      </arguments>
-    </buildCommand>
-    <buildCommand>
-      <name>com.aptana.ide.core.unifiedBuilder</name>
-      <arguments>
-      </arguments>
-    </buildCommand>
-  </buildSpec>
-  <natures>
-    <nature>com.aptana.ide.project.nature.web</nature>
-    <nature>org.rubypeople.rdt.core.rubynature</nature>
-    <nature>org.radrails.rails.core.railsnature</nature>
-  </natures>
+	<buildSpec>
+		<buildCommand>
+			<name>org.rubypeople.rdt.core.rubybuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>com.aptana.ide.core.unifiedBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.aptana.projects.webnature</nature>
+		<nature>com.aptana.ide.project.nature.web</nature>
+		<nature>com.aptana.ruby.core.rubynature</nature>
+		<nature>org.rubypeople.rdt.core.rubynature</nature>
+		<nature>org.radrails.rails.core.railsnature</nature>
+	</natures>
 </projectDescription>
