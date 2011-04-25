@@ -1,0 +1,61 @@
+// Include in an ul or ol to make it a two-level menu.
+@mixin menu-list($hover-color: $menu-hover-color, $last-item-right: false) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  
+  > li {
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 0;
+    background-color: inherit;
+    > ol, > ul {
+      display: none;
+      background-color: inherit;
+      border: 1px solid $hover-color;
+      position: absolute;
+      z-index: 5;
+    }
+  }
+  > li:hover {
+    > ol, > ul {
+      display: block;
+      background-color: inherit;
+    }
+  }
+
+  a {
+    display: block;
+    padding: 0 0.5em;
+    text-decoration: none;
+    color: inherit;
+  }
+  a:hover, a:active {
+    background-color: $hover-color;
+  }
+  li > img {
+    display: block;
+    position: relative;
+    top: 2px;
+    float: left;
+    margin: 0;
+    padding: 0 4px;
+  }
+
+  @if $last-item-right == true {
+    > li:last-child {
+      position: absolute;
+      right: 0;
+    }
+    > li:last-child > ol {
+      position: relative;
+    }
+    > li:last-child a {
+      vertical-align: bottom;
+    }
+    > li:last-child a span {
+      display: inline-block;
+    }
+  }
+}

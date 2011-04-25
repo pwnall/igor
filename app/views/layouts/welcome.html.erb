@@ -6,7 +6,7 @@
 </title>
 <%= csrf_meta_tag %>
 <%= favicon_link_tag %>
-<%= stylesheet_link_tag :all, :cache => true %>
+<%= stylesheet_link_tag :pwnstyles, :cache => true %>
 <%= javascript_include_tag :all, :cache => true %>
 <%= render 'layouts/google_analytics' %>
 </head>
@@ -16,8 +16,10 @@
 </header>
 
 <%= render 'layouts/status_bar' %>
+<div id="real-body">
 <div id="content-wrapper">
 <%= yield %>
+</div>
 </div>
 
 <footer>

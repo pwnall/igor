@@ -1,0 +1,59 @@
+// Main colors used in the application.
+// Do not change the values here. Instead, override them in _app.scss
+
+// Primary colors used in the app.
+$colors: 3 !default;
+$main-color1: hsl(240deg, 100%, 50%) !default;
+$main-color2: adjust-hue($main-color1, 360 / $colors) !default;
+$main-color3: adjust-hue($main-color1, 360 / $colors) !default;
+$main-color4: adjust-hue($main-color1, 360 / $colors) !default;
+$main-color5: adjust-hue($main-color1, 360 / $colors) !default;
+
+$header-background-color: change-color($main-color1,
+    $saturation: 66%, $lightness: 88%) !default;
+$header-border-color: change-color($main-color1,
+    $saturation: 66%, $lightness: 76%) !default;
+$header-title-color: change-color($main-color1,
+    $saturation: 100%, $lightness: 1%) !default;
+$header-text-color: change-color($main-color1,
+    $saturation: 100%, $lightness: 20%) !default;
+
+$footer-background-color1: change-color($main-color1,
+    $saturation: 66%, $lightness: 88%) !default;
+$footer-background-color2: change-color($main-color1,
+    $saturation: 66%, $lightness: 97%) !default;
+$footer-border-color: change-color($main-color1,
+    $saturation: 66%, $lightness: 76%) !default;
+$footer-text-color: change-color($main-color1,
+    $saturation: 54%, $lightness: 16%) !default;
+
+$button-base-color: $main-color1 !default;
+$button-color: change-color($button-base-color, $lightness: 40%);
+$button-border-color: change-color($button-base-color,
+    $saturation: 100%, $lightness: 33%) !default;
+$button-font-color: change-color($button-base-color,
+    $saturation: 66%, $lightness: 99%) !default;
+$button-shadow-color: change-color($button-base-color,
+    $saturation: 66%, $lightness: 76%) !default;
+$button-hover-font-color: change-color($button-base-color,
+    $saturation: 66%, $lightness: 88%) !default;
+$button-active-shadow-color: change-color($button-base-color,
+    $saturation: 100%, $lightness: 33%) !default;
+
+$input-base-color: $main-color1 !default;
+$input-border-color: change-color($input-base-color,
+    $saturation: 100%, $lightness: 20%) !default;
+$input-shadow-color: change-color($input-base-color,
+    $saturation: 66%, $lightness: 88%) !default;
+$input-background-color: change-color($input-base-color,
+    $saturation: 66%, $lightness: 99%) !default;
+$button-hover-border-color: change-color($button-base-color,
+    $saturation: 100%, $lightness: 33%) !default;
+$button-focus-font-color: change-color($button-base-color,
+    $saturation: 100%, $lightness: 33%) !default;
+
+$menu-hover-color: change-color($main-color1,
+    $saturation: 66%, $lightness: 76%) !default;
+
+$link-color: change-color($main-color1,
+    $saturation: 66%, $lightness: 16%) !default;

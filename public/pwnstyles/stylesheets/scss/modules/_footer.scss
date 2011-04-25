@@ -1,0 +1,50 @@
+footer {
+  margin: 0;
+  border-top: 6px solid $footer-border-color;
+
+  color: $footer-text-color;
+  font-size: 11pt;
+  
+  background: -moz-linear-gradient(top, $footer-background-color1 0%,
+                                   $footer-background-color2 100%)
+              left top no-repeat, $footer-background-color2;
+  background: -webkit-gradient(linear, left top, left bottom,
+                               color-stop(0%, $footer-background-color1),
+                               color-stop(100%, $footer-background-color2))
+              left top no-repeat, $footer-background-color2;
+}
+footer nav {
+  margin: 0 auto;
+  padding: 5px 8px 0 8px;
+  width: $page-width;
+}
+footer p {
+  margin: 0;
+}
+footer p.copyright img {
+  float: left;
+  margin-right: 5px;
+}
+footer p.copyright {
+  line-height: 16px;
+}
+footer p.design {
+  font-size: 9pt;
+  display: block;
+  padding: 36px 0 4px 0;
+  text-align: center;
+}
+footer a {
+  color: $footer-text-color;
+}
+footer nav ul {
+  margin: 0;
+  padding: 0 0 8px 0;
+}
+footer nav ul li {
+  display: inline-block;
+}
+footer nav ul a {
+  display: inline-block;
+  padding: 5px;
+}

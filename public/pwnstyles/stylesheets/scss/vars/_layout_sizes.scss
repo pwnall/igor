@@ -1,0 +1,17 @@
+// Sizes of various elements of the page layout.
+
+// Vertical grid.
+$column-width: 30px !default;
+$column-margin: 10px !default;
+
+// Page elements, expressed in terms of the grid.
+$page-columns: 25 !default;
+$sidebar-columns: 9 !default;
+
+$header-height: 40px;
+
+// Derived quantities that can't be changed without breaking things.
+$column-total: $column-width + $column-margin; 
+
+$page-width: ($column-total * $page-columns - $column-margin);
+$sidebar-width: ($column-total * $sidebar-columns - $column-margin);

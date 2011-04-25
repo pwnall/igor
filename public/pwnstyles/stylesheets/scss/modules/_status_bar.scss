@@ -1,0 +1,29 @@
+.status-bar {
+  width: $page-width;
+  margin: 0.2em auto;
+  padding: 0.5ex 0.5em;
+  
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+
+  font-size: 14pt;
+
+  .actions {
+    display: inline-block;
+    float: right;
+  }
+  a, a:hover, a:active, a:visited {
+    color: inherit;
+  }
+  &.error {
+    border: 1px solid #D8000C;
+    background-color: #FFBABA;
+    color: #D8000C;
+  }
+  &.notice {
+    border: 1px solid #9F6000;
+    background-color: #FEEFB3;
+    color: #9F6000;
+  }
+}

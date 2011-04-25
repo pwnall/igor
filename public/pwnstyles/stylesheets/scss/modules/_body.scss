@@ -1,0 +1,14 @@
+body {
+  border: none;
+  min-width: $page-width;
+  background: $footer-background-color2;
+}
+
+#content-wrapper {
+  margin: 0 auto;
+  padding: 0 0 24px 0;
+  width: $page-width;
+  overflow: hidden;
+  background: #ffffff;
+}
+

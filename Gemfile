@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '>= 3.0.6'
+gem 'rails', '>= 3.0.7'
 
 ## Bundle edge rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git',
@@ -24,14 +24,10 @@ gem 'json', '>= 1.5.1'
 gem 'mit_stalker', '>= 1.0.3'
 gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
                  :ref => '942a2b43383fd04c0434ca4b27379a114cb28a50'
-gem 'prawn', :git => 'git://github.com/sandal/prawn.git',
-             :submodules => true
+gem 'prawn', '~> 0.11.1'
+gem 'pwnstyles_rails', :path => '../pwnstyles_rails'
 gem 'ttfunk', '>= 1.0.1'
 gem 'rmagick', '>= 2.13.1'
-# gem 'sys-cpu', :require => 'sys/cpu'
-# gem 'sys-proctable', :require => 'sys/proctable'
-# gem 'sys-uname', :require => 'sys/uname'
-# gem 'sys-uptime', :require => 'sys/uptime'
 gem 'validates_timeliness', '>= 3.0.0'
 gem 'zerg_support', '>= 0.1.5'
 

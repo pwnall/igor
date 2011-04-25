@@ -1,0 +1,7 @@
+a {
+  text-decoration: underline;
+}
+a, a:hover, a:active, a:visited {
+  color: $link-color;
+  background-color: transparent;
+}

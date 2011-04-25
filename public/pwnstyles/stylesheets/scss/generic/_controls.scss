@@ -1,0 +1,139 @@
+// Submit buttons.
+input[type=submit], input[type=button], button, a.button {
+  margin: 0;
+  padding: 0.1em 1ex;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -moz-box-shadow: 0px 1px 3px $button-shadow-color;
+  -webkit-box-shadow: 0px 1px 3px $button-shadow-color;
+  box-shadow: 0px 1px 3px $button-shadow-color;
+  
+  background-color: $button-color;
+  border: 1px solid $button-border-color;
+  color: $button-font-color;
+  font-size: 1.1em;
+  font-weight: bold;
+
+  &:hover {
+    color: $button-hover-font-color;
+  }
+  &:active {
+    background-color: $button-color;
+    -moz-box-shadow: inset 0px 2px 2px $button-active-shadow-color;
+    -webkit-box-shadow: inset 0px 2px 2px $button-active-shadow-color;
+    box-shadow: inset 0px 2px 2px $button-active-shadow-color;
+  }
+}
+
+// Text fields.
+input[type=text], input[type=email], input[type=tel], input[type=password],
+    textarea {
+  margin: 0;
+  padding: 0.1em 0.5ex;
+  border: 1px solid $input-border-color;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -moz-box-shadow: inset 0px 2px 2px $input-shadow-color;
+  -webkit-box-shadow: inset 0px 2px 2px $input-shadow-color;
+  box-shadow: inset 0px 2px 2px $input-shadow-color;
+  background-color: $input-background-color;
+
+  &:hover {
+    border: 1px solid $button-hover-border-color;
+  }
+  &:focus {
+    color: #331400;
+  }
+}
+textarea {
+  height: 5.25em;
+}
+
+// Multiple-choice fields.
+input[type=radio], input[type=checkbox] {
+  border: 1px solid $input-border-color;
+  box-shadow: inset 0px 1px 2px $input-shadow-color;
+  -moz-box-shadow: inset 0px 1px 2px $input-shadow-color;
+  -webkit-box-shadow: inset 0px 1px 2px $input-shadow-color;
+  background-color: $input-background-color;
+}
+
+// Error highlighting.
+.field_with_errors {
+  input[type=text], input[type=email], input[type=tel], input[type=password],
+  textarea {
+    border: 1px solid #FF0000;
+    box-shadow: inset 0px 1px 2px #FF8888;
+    -moz-box-shadow: inset 0px 1px 2px #FF8888;
+    -webkit-box-shadow: inset 0px 1px 2px #FF8888;
+    background-color: #FFEEEE;
+  }
+  
+  input[type=radio], input[type=checkbox] {
+    border: 1px solid #FF0000;      
+    box-shadow: inset 0px 1px 2px #FF8888;
+    -moz-box-shadow: inset 0px 1px 2px #FF8888;
+    -webkit-box-shadow: inset 0px 1px 2px #FF8888;
+    background-color: #FFEEEE;
+  }
+}
+
+
+// Forms.
+form {
+  .fields {
+    display: table;
+    border-collapse: collapse;
+    width: 100%;
+  
+    .field {
+      display: table-row;
+      margin: 0;
+      padding: 0 0 0.2em 0;
+      &.hidden {
+        display: none;
+      }
+  
+      > * {
+        display: table-cell;
+        vertical-align: baseline;
+        margin: 0;
+      }
+      > label {
+        padding: 0 0.5em 0 0;
+      }
+      > .value {
+        padding: 0 0 0.25em 0;
+        > .field_with_errors {
+         display: block;
+        }
+      }
+      > .comment {
+        padding: 0 0 0 0.5em;
+      }
+      
+      input, textarea {
+        font-size: inherit;
+        width: 100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      input[type=radio], input[type=checkbox] {
+        width: auto;
+      }
+    }
+  }
+  
+  .action {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    
+    input[type=submit], input[type=button], button {
+      min-width: 7em;
+    }
+  }
+}
