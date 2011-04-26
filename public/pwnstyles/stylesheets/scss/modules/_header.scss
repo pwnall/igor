@@ -11,7 +11,7 @@ header {
     
     position: relative;
     
-    font-family: Ubuntu, Helvetica, Tahoma, sans-serif;
+    font-family: $heading-font;
     font-weight: bold;
   }
   
@@ -34,9 +34,14 @@ header {
     
     span {
       display: block;
+      padding-right: 0.5em;
       float: left;
-      padding: 0 0.5em 0 0.5em;
       height: 100%;
+    }
+    
+    // Padding between the image and the title.
+    img > span {
+      padding-left: 0.5em;
     }
     
     a, a:visited, a:hover, a:active {

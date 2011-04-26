@@ -1,0 +1,24 @@
+// Sizes of various elements of the page layout.
+// Do not change the values here. Instead, override them in _app.scss
+
+
+// Standard text
+$main-font: Georgia, serif !default;
+$main-font-size: 12px !default;
+$main-line-height: 1.2 !default;
+
+// Headings.
+$heading-font: Helvetica, sans-serif !default;
+
+$h1-font-size: $main-font-size * 5 !default;
+$h1-line-height: $main-line-height !default;
+$h2-font-size: $main-font-size * 4 !default;
+$h2-line-height: $main-line-height !default;
+$h3-font-size: $main-font-size * 3 !default;
+$h3-line-height: $main-line-height !default;
+$h4-font-size: $main-font-size * 2 !default;
+$h4-line-height: $main-line-height !default;
+$h5-font-size: $main-font-size * 1.2 !default;
+$h5-line-height: $main-line-height !default;
+$h6-font-size: $main-font-size * 1.2 !default;
+$h6-line-height: $main-line-height !default;

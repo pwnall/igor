@@ -1,11 +1,13 @@
 @import 'vars/app.scss';
 @import 'vars/color_scheme.scss';
+@import 'vars/fonts.scss';
 @import 'vars/layout_sizes.scss';
 
 @import 'generic/reset.scss';
 @import 'generic/controls.scss';
 @import 'generic/links.scss';
 @import 'generic/menu.scss';
+@import 'generic/text.scss';
 
 @import 'modules/body.scss';
 @import 'modules/footer.scss';

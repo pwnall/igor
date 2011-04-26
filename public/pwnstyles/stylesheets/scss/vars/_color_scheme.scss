@@ -1,6 +1,7 @@
 // Main colors used in the application.
 // Do not change the values here. Instead, override them in _app.scss
 
+
 // Primary colors used in the app.
 $colors: 3 !default;
 $main-color1: hsl(240deg, 100%, 50%) !default;
@@ -9,6 +10,7 @@ $main-color3: adjust-hue($main-color1, 360 / $colors) !default;
 $main-color4: adjust-hue($main-color1, 360 / $colors) !default;
 $main-color5: adjust-hue($main-color1, 360 / $colors) !default;
 
+// Modules.
 $header-background-color: change-color($main-color1,
     $saturation: 66%, $lightness: 88%) !default;
 $header-border-color: change-color($main-color1,
@@ -27,6 +29,7 @@ $footer-border-color: change-color($main-color1,
 $footer-text-color: change-color($main-color1,
     $saturation: 54%, $lightness: 16%) !default;
 
+// Elements.
 $button-base-color: $main-color1 !default;
 $button-color: change-color($button-base-color, $lightness: 40%);
 $button-border-color: change-color($button-base-color,
@@ -57,3 +60,18 @@ $menu-hover-color: change-color($main-color1,
 
 $link-color: change-color($main-color1,
     $saturation: 66%, $lightness: 16%) !default;
+
+// Text.
+$heading-main-color: $main-color1 !default;
+$h1-text-color: change-color($heading-main-color,
+    $saturation: 100%, $lightness: 25%) !default;
+$h2-text-color: change-color($heading-main-color,
+    $saturation: 100%, $lightness: 23%) !default;
+$h3-text-color: change-color($heading-main-color,
+    $saturation: 100%, $lightness: 21%) !default;
+$h4-text-color: change-color($heading-main-color,
+    $saturation: 100%, $lightness: 19%) !default;
+$h5-text-color: change-color($heading-main-color,
+    $saturation: 100%, $lightness: 17%) !default;
+$h6-text-color: change-color($heading-main-color,
+    $saturation: 100%, $lightness: 15%) !default;

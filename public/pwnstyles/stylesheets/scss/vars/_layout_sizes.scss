@@ -1,4 +1,6 @@
 // Sizes of various elements of the page layout.
+// Do not change the values here. Instead, override them in _app.scss
+
 
 // Vertical grid.
 $column-width: 30px !default;
@@ -6,7 +8,7 @@ $column-margin: 10px !default;
 
 // Page elements, expressed in terms of the grid.
 $page-columns: 25 !default;
-$sidebar-columns: 9 !default;
+$sidebar-columns: 8 !default;
 
 $header-height: 40px;
 

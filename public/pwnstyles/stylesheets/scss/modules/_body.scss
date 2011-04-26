@@ -4,11 +4,28 @@ body {
   background: $footer-background-color2;
 }
 
+#real-body {
+  background-color: #ffffff;
+}
+
 #content-wrapper {
   margin: 0 auto;
   padding: 0 0 24px 0;
   width: $page-width;
   overflow: hidden;
-  background: #ffffff;
 }
 
+article#sidebar {
+  float: right;
+  width: $sidebar-width;
+}
+
+article#main {
+  float: left;
+  width: $page-width;
+}
+
+article#sidebar + article#main {
+  float: left;
+  width: ($page-width - $sidebar-width - $column-total - $column-margin);
+}
