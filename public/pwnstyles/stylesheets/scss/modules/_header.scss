@@ -18,6 +18,7 @@ header {
   h1 {
     display: inline-block;
     overflow: hidden;
+    margin: 0;
   
     font-size: ($header-height - 4px);
     line-height: $header-height;

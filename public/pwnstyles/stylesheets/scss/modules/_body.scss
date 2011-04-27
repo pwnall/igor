@@ -1,6 +1,6 @@
 body {
   border: none;
-  min-width: $page-width;
+  min-width: ($page-width + 2 * $column-margin);
   background: $footer-background-color2;
 }
 
