@@ -1,3 +1,14 @@
+<% if !current_user %>
+  <section class="register-hint">
+    <h2>No account?</h2>
+    <%= form_tag new_user_path, :method => :get do %>
+      <p class="action">
+        <button>Register</button>
+      </p>
+    <% end %>
+  </section>
+<% end %>
+
 <%= render :partial => 'sessions/deadlines' %>
 
 <% if current_user %>

@@ -6,7 +6,7 @@ gem 'rails', '>= 3.0.7'
 # gem 'rails', :git => 'git://github.com/rails/rails.git',
 #              :branch => '3-0-stable'
 
-gem 'mysql2', '>= 0.2.7'
+gem 'mysql2', '~> 0.2.7'
 
 ## Bundle the gems you use:
 # gem 'bj'
@@ -17,7 +17,6 @@ gem 'daemonz', '>= 0.3.2'
 gem 'delayed_job', '>= 2.1.4'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'fastercsv', '>= 1.5.4', :platforms => [:mri_18]
-gem 'formtastic', '>= 1.2.3'
 gem 'gravtastic', '>= 3.1.0'
 gem 'jquery-rails', '>= 0.2.7'
 gem 'json', '>= 1.5.1'
