@@ -75,3 +75,7 @@ $h5-text-color: change-color($heading-main-color,
     $saturation: 100%, $lightness: 17%) !default;
 $h6-text-color: change-color($heading-main-color,
     $saturation: 100%, $lightness: 15%) !default;
+
+// Tables.
+$table-heading-text-color: change-color($main-color1,
+    $saturation: 100%, $lightness: 25%) !default;

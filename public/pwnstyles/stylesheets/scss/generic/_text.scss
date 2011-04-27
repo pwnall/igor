@@ -49,3 +49,8 @@ h6 {
   line-height: $h6-line-height;
   color: $h6-text-color;
 }
+
+thead, th {
+  font-weight: bold;
+  color: $table-heading-text-color;
+}
