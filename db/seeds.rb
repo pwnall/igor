@@ -37,9 +37,9 @@ depts = File.read('db/seeds/depts.txt').split("\n").
 users = []
 names.each_with_index do |name, i|
   first_name = name.split(' ').first
-  short_name = (name.split(' ').last + first_name[0, 1]).downcase
-  user = User.create :email => short_name + '@mit.edu', 
-       :password => 'password', :password_confirmation => 'password'
+  short_name = (first_name[0, 1] + name.split(' ').last).downcase
+  user = User.create :email => short_name + '@mit.edu',  :password => 'mit',
+                     :password_confirmation => 'mit'
   user.active = true
   user.save!
   users << user
@@ -51,7 +51,7 @@ names.each_with_index do |name, i|
 
   registration = Registration.create! :user => user, :course => course,
       :dropped => false, :for_credit => (i % 2 == 0),
-      :motivation => "Test subject #{i + 1}"
+      :motivation => "Test subject #{i + 1}"  
 
   PrerequisiteAnswer.create! :registration => registration,
       :prerequisite => prereq1, :took_course => (i % 2 == 0),
@@ -63,7 +63,31 @@ names.each_with_index do |name, i|
                         'Bronze medal at IMO 2011, A+ in 18.something'
 end
 
-# Homework.
+# Exams.
+
+exams = (1..3).map do |i|
+  exam = Assignment.create! :course => course, :name => "Exam #{i}",
+      :deadline => Time.now - 2.weeks - 6.weeks + i * 4.weeks
+  metrics = (1..(5 + i)).map do |j|
+    AssignmentMetric.create! :assignment => exam, :name => "Problem #{j}",
+      :published => (exam.deadline < Time.now), :weight => 1.0,
+      :max_score => 6 + (i + j) % 6
+  end
+  exam
+end
+
+([admin] + users).each_with_index do |user, i|
+  exams.each_with_index do |exam, j|
+    next unless exam.deadline < Time.now
+    exam.metrics.each_with_index do |metric, k|
+      next if j == k
+      Grade.create! :subject => user, :grader => admin, :metric => metric,
+          :score => metric.max_score * (0.1 * (i + j + k) % 10)
+    end
+  end
+end
+
+# Psets.
 
 psets = (1..8).map do |i|
   pset = Assignment.create! :course => course, :name => "Problem Set #{i}",
@@ -77,14 +101,42 @@ psets = (1..8).map do |i|
   Deliverable.create! :assignment => pset, :name => 'PDF write-up',
       :description => 'Please upoad your write-up, in PDF format.',
       :published => i < 8, :filename => 'writeup.pdf'
+  pset
 end
 
-exams = (1..3).map do |i|
-  exam = Assignment.create! :course => course, :name => "Exam #{i}",
-      :deadline => Time.now - 2.weeks - 6.weeks + i * 4.weeks
-  metrics = (1..(5 + i)).map do |j|
-    AssignmentMetric.create! :assignment => exam, :name => "Problem #{j}",
-      :published => (exam.deadline < Time.now), :weight => 1.0,
-      :max_score => 6 + (i + j) % 6
+
+([admin] + users).each_with_index do |user, i|
+  psets.each_with_index do |pset, j|
+    next unless pset.deadline < Time.now
+    
+    writeup = pset.deliverables.first
+    pdf = Prawn::Document.new :page_size => 'LETTER', :page_layout => :portrait
+    pdf.y = 792 - 36
+    pdf.font "Times-Roman"
+    pdf.text user.email, :align => :left, :size => 24
+    pdf.text user.profile.real_name, :align => :left, :size => 24
+    pdf.text pset.name, :align => :left, :size => 24
+    pdf_contents = pdf.render
+    
+    next if i + j % 20 == 1
+    time = pset.deadline - 1.day + i * 1.minute
+    Submission.create! :deliverable => writeup, :user => user,
+         :code_file_name => 'writeup.pdf', :code_file => pdf_contents,
+         :code_file_size => pdf_contents.length,
+         :code_content_type => 'application/pdf',
+         :created_at => time, :updated_at => time
+    
+    pset.metrics.each_with_index do |metric, k|
+      next if j == k
+      Grade.create! :subject => user, :grader => admin, :metric => metric,
+          :score => metric.max_score * (0.1 * (i + j + k) % 10),
+          :created_at => pset.deadline + 1.day,
+          :updated_at => pset.deadline + 1.day
+    end
   end
 end
+
+
+
+# TODO: Projects.
+

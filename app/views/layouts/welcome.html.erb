@@ -6,7 +6,7 @@
 </title>
 <%= csrf_meta_tag %>
 <%= favicon_link_tag %>
-<%= stylesheet_link_tag :pwnstyles, :cache => true %>
+<%= stylesheet_link_tag :pwnstyles, 'application', :cache => true %>
 <%= javascript_include_tag :all, :cache => true %>
 <%= render 'layouts/google_analytics' %>
 </head>

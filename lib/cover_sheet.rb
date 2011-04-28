@@ -135,7 +135,7 @@ module CoverSheet
     pdf.start_new_page
     
     if file_name.nil?
-      pdf.to_s
+      pdf.render
     else
       pdf.render_file file_name
     end
