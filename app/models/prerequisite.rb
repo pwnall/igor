@@ -24,7 +24,7 @@ class Prerequisite < ActiveRecord::Base
   # satisfying the same prerequisite (e.g. 6.01 / 1.00 could conceivably satisfy
   # a programming prerequisite).
   validates :prerequisite_number, :length => 1..64, :presence => true,
-                                  :uniqueness => { :scope => :course }
+                                  :uniqueness => { :scope => :course_id }
   
   # Question that students must answer if they haven't taken the prerequisite.
   validates :waiver_question, :length => 1..256, :presence => true

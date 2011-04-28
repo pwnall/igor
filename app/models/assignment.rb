@@ -15,8 +15,13 @@
 
 # An assignment for the course students. (e.g., a problem set or a project)
 class Assignment < ActiveRecord::Base
+  # The course that this assignment is a part of.
+  belongs_to :course
+  validates :course, :presence => true
+  
   # The user-visible assignment name (e.g., "PSet 1").
-  validates :name, :length => 1..64, :uniqueness => true, :presence => true
+  validates :name, :length => 1..64, :uniqueness => { :scope => :course_id },
+                   :presence => true
   
   # The time when all the deliverables of the assignment are due.
   validates :deadline, :presence => true, :timeliness => true

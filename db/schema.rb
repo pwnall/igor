@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(:version => 20110208012638) do
   add_index "assignment_metrics", ["assignment_id", "name"], :name => "index_assignment_metrics_on_assignment_id_and_name", :unique => true
 
   create_table "assignments", :force => true do |t|
+    t.integer  "course_id",                                           :null => false
     t.datetime "deadline",                                            :null => false
     t.string   "name",               :limit => 64,                    :null => false
     t.integer  "team_partition_id"

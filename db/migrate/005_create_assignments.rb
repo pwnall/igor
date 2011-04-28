@@ -1,6 +1,7 @@
 class CreateAssignments < ActiveRecord::Migration
   def self.up
     create_table :assignments do |t|
+      t.integer :course_id, :null => false
       t.datetime :deadline, :null => false
       t.string :name, :limit => 64, :null => false
       t.integer :team_partition_id, :null => true

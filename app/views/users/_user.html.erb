@@ -7,14 +7,6 @@
   <dd><%= user.email %></dd>
   <dt>Admin</dt>
   <dd><%= user.admin? ? 'Yes' : 'No' %></dd>
-	<dt>Profile</dt>
-	<dd>
-		<%= user.profile ? ok_image_tag : 'No' %>		
-	</dd>
-	<dt>Registration</dt>
-	<dd>
-		<%= user.registration ? ok_image_tag : 'No' %>
-	</dd>
 </dl>
 <ul class="user-info-actions">
 	<% if current_user.admin? %>
