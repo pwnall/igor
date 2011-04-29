@@ -4,10 +4,10 @@ class DeliverableValidationsController < ApplicationController
   def update_deliverable
     # find the proper params hash
     params_hash = params[:uploaded_script_validation] || params[:proc_validation] || params[:deliverable_validation]
-    # identify the appropriate class (yes, reflection can probably do a better job...)
+    # NOTE: not using reflection for security
     case params_hash[:type]
-    when 'UploadedScriptValidation'
-      new_class = UploadedScriptValidation
+    when 'ScriptValidation'
+      new_class = ScriptValidation
     when 'ProcValidation'
       new_class = ProcValidation
     else

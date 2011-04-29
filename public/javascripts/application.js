@@ -37,7 +37,7 @@ function submission_validation_update_visiblity(id_suffix) {
 	v_upkg.hide();
 	v_rupkg.hide();
 	v_bin.hide();
-	if (vtype == 'UploadedScriptValidation') {
+	if (vtype == 'ScriptValidation') {
 		v_upkg.show();
 		v_rupkg.show();
 	}

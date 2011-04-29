@@ -20,8 +20,8 @@
 
 require 'digest/sha2'
 
-# Submission validation that runs a script uploaded to the app server.
-class UploadedScriptValidation < DeliverableValidation
+# Submission validation that runs an external script.
+class ScriptValidation < DeliverableValidation
   # The maximum time to run the validation for.
   validates :time_limit, :presence => true,
                          :numericality => { :only_integer => true }

@@ -19,7 +19,7 @@ module SubmissionValidator
     case deliverable_validation
     when ProcValidation
       SubmissionValidator.send deliverable_validation.message_name.to_sym, submission, deliverable_validation
-    when UploadedScriptValidation
+    when ScriptValidation
       SubmissionValidator.validate_script submission, deliverable_validation
     else
       submission.run_result.diagnostic = 'not implemented'
