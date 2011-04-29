@@ -28,10 +28,31 @@ class Submission < ActiveRecord::Base
   # The deliverable that the submission is for.
   belongs_to :deliverable
   validates :deliverable, :presence => true
-
+  
   # The assignment that this submission is for.
   has_one :assignment, :through => :deliverable
 
   # Diagnostic issued by the deliverable's SubmissionChecker.
   has_one :check_result, :dependent => :destroy, :inverse_of => :submission
+
+  # Can performs an automated health-check for this submission.
+  has_one :submission_checker, :through => :deliverable
+  
+  # Queues up an automated health-check for this submission.
+  def queue_checker
+    self.check_result ||= CheckResult.new :submission => self
+    self.check_result.queued!
+    self.delay.run_checker
+  end
+  
+  # Runs an automated health-check for this submission.
+  def run_checker
+    self.check_result ||= CheckResult.new :submission => self
+    if submission_checker
+      self.check_result.running!
+      submission_checker.check self
+    else
+      self.check_result.no_checker!
+    end
+  end
 end

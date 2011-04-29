@@ -30,6 +30,6 @@ class SubmissionChecker < ActiveRecord::Base
   #
   # Returns the CheckResults produced.
   def check(submission)
-    
+    raise "Subclass #{self.class.name} did not override #check(submission)."
   end
 end

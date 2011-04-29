@@ -98,12 +98,15 @@ psets = (1..8).map do |i|
       :published => published, :weight => 1.0, :max_score => 6 + (i + j) % 6
   end
   
-  Deliverable.create! :assignment => pset, :name => 'PDF write-up',
+  deliverable = Deliverable.create! :assignment => pset,
+      :name => 'PDF write-up',
       :description => 'Please upoad your write-up, in PDF format.',
       :published => i < 8, :filename => 'writeup.pdf'
+  ProcChecker.create! :deliverable => deliverable,
+      :message_name => :validate_pdf
+
   pset
 end
-
 
 ([admin] + users).each_with_index do |user, i|
   psets.each_with_index do |pset, j|
@@ -120,11 +123,14 @@ end
     
     next if i + j % 20 == 1
     time = pset.deadline - 1.day + i * 1.minute
-    Submission.create! :deliverable => writeup, :user => user,
+    submission = Submission.create! :deliverable => writeup, :user => user,
          :code_file_name => 'writeup.pdf', :code_file => pdf_contents,
          :code_file_size => pdf_contents.length,
          :code_content_type => 'application/pdf',
          :created_at => time, :updated_at => time
+    submission.run_checker
+    submission.check_result.update_attributes! :created_at => time + 1.second,
+                                               :updated_at => time + 5.seconds
     
     pset.metrics.each_with_index do |metric, k|
       next if j == k

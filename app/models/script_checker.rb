@@ -16,8 +16,6 @@
 #  updated_at       :datetime
 #
 
-require 'digest/sha2'
-
 # Submission checker that runs an external script.
 class ScriptChecker < SubmissionChecker
   # The maximum time that the checker script is allowed to run.
@@ -27,4 +25,125 @@ class ScriptChecker < SubmissionChecker
   # The uploaded checler script.
   has_attached_file :pkg, :storage => :database
   validates_attachment_presence :pkg
+  
+  # :nodoc: overrides SubmissionChecker#check
+  def check(submission)
+    random_dir = '/tmp/' + (0...16).map { rand(256).to_s(16) }.join
+    FileUtils.mkdir_p random_dir
+    Dir.chdir random_dir do
+      setup_script
+      setup_submission submission
+      setup_permissions
+      run_checker_script
+      
+    end
+    FileUtils.rm_r random_dir
+  end
+  
+  # Copies the checker script data into the current directory.
+  #
+  # This should be run in a temporary directory.
+  def setup_script
+    script_filename = checker.pkg.original_filename.split('/').last
+    File.open(script_filename, 'wb') do |f|
+      f.write checker.pkg.file_contents
+    end
+    
+    case script_filename
+    when /\.tar.gz$/
+      Kernel.system "tar -xzf #{script_filename}"
+    when /\.tar.bz2$/
+      Kernel.system "tar -xjf #{script_filename}"
+    when /\.zip$/
+      Kernel.system "unzip #{script_filename}"
+    end
+    File.unlink script_filename if File.exist?(script_filename)
+  end
+  
+  # Copies a submission into the current directory.
+  #
+  # This should be run in a temporary directory.
+  def setup_submission(submission)
+    File.open(deliverable.filename, 'wb') do |f|
+      f.write submission.code.file_contents
+    end
+  end
+  
+  # Configures the current directory so that every file can be executed.
+  #
+  # This should be run in a temporary directory meant for script execution.
+  def setup_permissions
+    Dir.foreach('.') do |entry|
+      next if File.directory?(entry)
+      File.chmod(500, entry)  
+    end
+  end
+  
+  # Runs the checker's script, assuming it is in the current directory.
+  def run_checker_script
+    # Fork off the runner.
+    runner_pid = Kernel.fork do
+      # Lobotomize ActiveRecord so it doesn't drop its connections
+      ActiveRecord::Base.connection_handler.instance_variable_set :@connection_pools, {}
+      
+      Kernel.exec 'nice ./run.sh > ./.stdout 2> ./.stderr'
+    end
+    
+    time_limit_seconds = (self.time_limit || 300.0).to_f
+    
+    # Fork off the process that enforces the time limit.
+    killer_pid = Kernel.fork do
+      # Lobotomize ActiveRecord so it doesn't drop its connections
+      ActiveRecord::Base.connection_handler.instance_variable_set :@connection_pools, {}
+      
+      sleep_start = Time.now
+      while (Time.now - sleep_start) < time_limit_seconds
+        Kernel.sleep [2, (Time.now - sleep_start)].min
+      end
+      
+      Zerg::Support::Process.kill_tree runner_pid
+    end
+    Process.detach killer_pid
+    Process.wait runner_pid
+    
+    # Check for time-limit exceeded.
+    # HACK: magic numbers
+    if $?.signaled? and ($?.termsig == 15 or $?.termsig == 9)
+      killed = true
+    elsif $?.exited? and ($?.exitstatus == 143 or $?.exitstatus == 137)
+      killed = true
+    end
+
+    # Extract score.
+    stdout_text = File.read('./.stdout')
+    stderr_text = File.read('./.stderr')
+    begin
+      stderr_diags = stderr_text.slice(0, stderr_text.index(/[\n\r]{2}/m)).split(/[\n\r]+/m)
+      tests = stderr_diags.length
+      passed = stderr_diags.select { |d| !(d =~ /FAIL/ || d =~ /ERROR/) }.length 
+      score = "#{passed}"
+      runtime = stderr_text.scan(/^Ran [0-9]* tests in ([0-9.]*)s$/)[-1]
+      diagnostic = "#{passed == tests ? 'ok' : 'needs work'} (#{passed} / #{tests})"
+      if runtime != nil
+        diagnostic += " in %.1fs" % runtime[0]
+      end
+    rescue
+      score = '0'
+      # Check both ways that we might know about the runner getting killed
+      if killed
+        diagnostic = 'time limit exceeded (%.2f s)' % time_limit_seconds
+      else
+        diagnostic = 'runtime errors'
+      end
+    end
+    
+    # update results
+    ActiveRecord::Base.verify_active_connections!
+    result = submission.check_result
+    result.stdout = stdout_text
+    result.stderr = stderr_text
+    result.diagnostic = diagnostic
+    result.score = score
+    result.save!
+  end
 end

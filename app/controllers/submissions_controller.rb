@@ -4,6 +4,8 @@ class SubmissionsController < ApplicationController
   before_filter :authenticated_as_user, :only => [:new, :create, :update, :file]
   before_filter :authenticated_as_admin, :except => [:new, :create, :update, :file]
   
+  layout 'full'
+  
   # XHR /submissions/xhr_update_deliverables/0?assignment_id=1
   def xhr_update_deliverables
     @assignment = Assignment.where(:id => params[:assignment_id]).
@@ -73,11 +75,6 @@ class SubmissionsController < ApplicationController
     @submission ||= Submission.new params[:submission]
     @submission.user = current_user
     
-    @submission.check_result ||= CheckResult.new(:submission => @submission)
-    %w(stdout stderr score diagnostic).each do |field|
-      @submission.check_result.send :"#{field}=", nil
-    end
-    @submission.check_result.diagnostic = 'queued'
     success = if @submission.new_record?
       @submission.save
     else
@@ -86,7 +83,7 @@ class SubmissionsController < ApplicationController
     
     respond_to do |format|
       if success
-        @submission.check_result.save!
+        @submission.queue_checker
         OfflineTasks.validate_submission @submission
         
         flash[:notice] = "Uploaded #{@submission.code.original_filename} for #{@submission.assignment.name}: #{@submission.deliverable.name}."
@@ -106,14 +103,8 @@ class SubmissionsController < ApplicationController
   # POST /submissions/revalidate/1
   def revalidate
     @submission = Submission.find(params[:id])
-    @submission.check_result ||= CheckResult.new(:submission => @submission)
-    %w(stdout stderr score diagnostic).each do |field|
-      @submission.check_result.send :"#{field}=", nil
-    end
-    @submission.check_result.diagnostic = 'queued'
-    @submission.check_result.save!
-
-    OfflineTasks.validate_submission(@submission)
+    @submission.queue_checker
+    
     flash[:notice] = "Re-validating #{@submission.code.original_filename} from #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}. "
     respond_to do |format|
       format.html { redirect_to submissions_path }

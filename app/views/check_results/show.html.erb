@@ -29,7 +29,7 @@
 		<div class="form_entry">
 			<div class="form_label">Stderr</div>
 			<div class="form_field_box">
-				<pre><%= word_wrap(@check_result || 'Not available'.stderr, 80) %></pre>
+				<pre><%= word_wrap(@check_result.stderr || 'Not available', 80) %></pre>
 			</div>
 		</div>
 		<div class="form_submit_box">
