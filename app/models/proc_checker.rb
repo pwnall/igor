@@ -16,8 +16,8 @@
 #  updated_at       :datetime
 #
 
-# Submission validation that calls a method in SubmissionCheckersController.
-class ProcValidation < SubmissionChecker
+# Submission checker that calls a method in SubmissionCheckersController.
+class ProcChecker < SubmissionChecker
   # The name of the message to be sent to the controller.
   validates_presence_of :message_name
 end

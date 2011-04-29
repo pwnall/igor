@@ -8,7 +8,7 @@
 			<%= f.hidden_field :deliverable_id, :id => "submission_checker_id_#{deliverable.id}" %>
 		</div>
 		<div class="deliverable_name">
-			Validator: <%= f.select :type, [['Built-in', 'ProcValidation'], ['Uploaded Package', 'ScriptValidation']], {}, :id => "submission_checker_type_#{deliverable.id}", :class => 'form_field' %>			
+			Validator: <%= f.select :type, [['Built-in', 'ProcChecker'], ['Script Package', 'ScriptChecker']], {}, :id => "submission_checker_type_#{deliverable.id}", :class => 'form_field' %>			
 		</div>
 		<div class="deliverable_description">
 			<div id="submission_checker_rpkg_<%= deliverable.id %>" style="display: none;">
@@ -16,7 +16,7 @@
 			</div>
 			<div id="submission_checker_upkg_<%= deliverable.id %>" style="display: none;">
 				Script: <%= f.file_field :pkg, :class => 'form_field', :id => "submission_checker_file_#{deliverable.id}" %>
-				<% if deliverable.submission_checker.instance_of? ScriptValidation %>
+				<% if deliverable.submission_checker.instance_of? ScriptChecker %>
 					<br />
 					Old script: <%= link_to "#{deliverable.submission_checker.pkg.original_filename} (#{number_to_human_size deliverable.submission_checker.pkg.size})", contents_submission_checker_path(deliverable.submission_checker) %>
 				<% end %>
@@ -32,7 +32,7 @@
 		</div>
 
 <%= javascript_tag <<JS_END
-	submission_validation_update_visiblity('#{deliverable.id}');
+	submission_checker_update_visiblity('#{deliverable.id}');
 JS_END
 %>
 

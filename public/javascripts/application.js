@@ -37,11 +37,11 @@ function submission_checker_update_visiblity(id_suffix) {
 	v_upkg.hide();
 	v_rupkg.hide();
 	v_bin.hide();
-	if (vtype == 'ScriptValidation') {
+	if (vtype == 'ScriptChecker') {
 		v_upkg.show();
 		v_rupkg.show();
 	}
-	else if (vtype == 'ProcValidation') {
+	else if (vtype == 'ProcChecker') {
 		v_bin.show();
 	}
 }

@@ -14,15 +14,11 @@ module SubmissionChecker
       return
     end
     
-    # delegate to validation-specific code
     case checker
-    when ProcValidation
+    when ProcChecker
       SubmissionChecker.send checker.message_name.to_sym, submission, checker
-    when ScriptValidation
+    when ScriptChecker
       SubmissionChecker.run_checker_script submission, checker
-    else
-      submission.check_result.diagnostic = 'not implemented'
-      submission.check_result.save!
     end
   end
 

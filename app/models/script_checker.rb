@@ -18,15 +18,13 @@
 
 require 'digest/sha2'
 
-# Submission validation that runs an external script.
-class ScriptValidation < SubmissionChecker
-  # The maximum time to run the validation for.
+# Submission checker that runs an external script.
+class ScriptChecker < SubmissionChecker
+  # The maximum time that the checker script is allowed to run.
   validates :time_limit, :presence => true,
                          :numericality => { :only_integer => true }
 
-  # The uploaded validation script.
+  # The uploaded checler script.
   has_attached_file :pkg, :storage => :database
-  
-  # The uploaded validation script.
   validates_attachment_presence :pkg
 end

@@ -4,15 +4,15 @@ class SubmissionCheckersController < ApplicationController
   # XHR POST /submission_checkers/1/update_deliverable
   def update_deliverable
     # find the proper params hash
-    params_hash = params[:uploaded_script_validation] ||
-                  params[:proc_validation] || params[:submission_checker]
+    params_hash = params[:script_checker] || params[:proc_checker] ||
+                  params[:submission_checker]
 
     # NOTE: not using reflection for security
     case params_hash[:type]
-    when 'ScriptValidation'
-      new_class = ScriptValidation
-    when 'ProcValidation'
-      new_class = ProcValidation
+    when 'ScriptChecker'
+      new_class = ScriptChecker
+    when 'ProcChecker'
+      new_class = ProcChecker
     else
       flash[:error] = "Invalid checker type."
       redirect_to root_path
@@ -24,6 +24,7 @@ class SubmissionCheckersController < ApplicationController
     @deliverable = Deliverable.find(params[:id])
     @deliverable.transaction do       
       if @deliverable.submission_checker && @deliverable.submission_checker.class != new_class
+        @deliverable.submission_checker.destroy
         @deliverable.submission_checker = nil
       end
         
