@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110429095601
+# Schema version: 20110429122654
 #
 # Table name: registrations
 #

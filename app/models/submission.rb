@@ -1,26 +1,18 @@
 # == Schema Information
-# Schema version: 20110429095601
+# Schema version: 20110429122654
 #
 # Table name: submissions
 #
-#  id                :integer(4)      not null, primary key
-#  deliverable_id    :integer(4)      not null
-#  user_id           :integer(4)      not null
-#  code_file_name    :string(256)
-#  code_content_type :string(64)
-#  code_file_size    :integer(4)
-#  code_file         :binary(16777215
-#  created_at        :datetime
-#  updated_at        :datetime
+#  id             :integer(4)      not null, primary key
+#  deliverable_id :integer(4)      not null
+#  user_id        :integer(4)      not null
+#  db_file_id     :integer(4)      not null
+#  created_at     :datetime
+#  updated_at     :datetime
 #
 
 # A file submitted by a student for an assignment.
 class Submission < ActiveRecord::Base
-  # The submitted file (presumably code).
-  has_attached_file :code, :storage => :database
-  validates_attachment_presence :code
-  validates_attachment_size :code, :less_than => 8.megabytes
-
   # The user doing the submission.
   belongs_to :user, :inverse_of => :submissions
   validates :user, :presence => true
@@ -28,6 +20,11 @@ class Submission < ActiveRecord::Base
   # The deliverable that the submission is for.
   belongs_to :deliverable
   validates :deliverable, :presence => true
+  
+  # The database-backed file holding the submission.
+  belongs_to :db_file, :dependent => :destroy, :autosave => true
+  validates :db_file, :presence => true
+  accepts_nested_attributes_for :db_file
   
   # The assignment that this submission is for.
   has_one :assignment, :through => :deliverable

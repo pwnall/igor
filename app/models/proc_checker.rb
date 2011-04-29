@@ -1,19 +1,16 @@
 # == Schema Information
-# Schema version: 20110429095601
+# Schema version: 20110429122654
 #
 # Table name: submission_checkers
 #
-#  id               :integer(4)      not null, primary key
-#  type             :string(32)      not null
-#  deliverable_id   :integer(4)      not null
-#  message_name     :string(64)
-#  pkg_file_name    :string(256)
-#  pkg_content_type :string(64)
-#  pkg_file_size    :integer(4)
-#  pkg_file         :binary(21474836
-#  time_limit       :integer(4)
-#  created_at       :datetime
-#  updated_at       :datetime
+#  id             :integer(4)      not null, primary key
+#  type           :string(32)      not null
+#  deliverable_id :integer(4)      not null
+#  message_name   :string(64)
+#  db_file_id     :integer(4)
+#  time_limit     :integer(4)
+#  created_at     :datetime
+#  updated_at     :datetime
 #
 
 # Submission checker that calls a method in SubmissionCheckersController.
@@ -28,7 +25,7 @@ class ProcChecker < SubmissionChecker
 
   # Checks that a submitted file looks like a PDF.
   def validate_pdf(submission)
-    bytes = submission.code.file_contents
+    bytes = submission.db_file.f.file_contents
     result = submission.check_result
     if bytes[0, 5] == '%PDF-'
       if bytes[([0, bytes.length - 1024].max)..-1] =~ /\%\%EOF/

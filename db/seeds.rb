@@ -124,9 +124,9 @@ end
     next if i + j % 20 == 1
     time = pset.deadline - 1.day + i * 1.minute
     submission = Submission.create! :deliverable => writeup, :user => user,
-         :code_file_name => 'writeup.pdf', :code_file => pdf_contents,
-         :code_file_size => pdf_contents.length,
-         :code_content_type => 'application/pdf',
+         :db_file_attributes => { :f_file_name => 'writeup.pdf',
+             :f_file => pdf_contents, :f_file_size => pdf_contents.length,
+             :f_content_type => 'application/pdf' },
          :created_at => time, :updated_at => time
     submission.run_checker
     submission.check_result.update_attributes! :created_at => time + 1.second,

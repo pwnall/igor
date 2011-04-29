@@ -1,31 +1,29 @@
 # == Schema Information
-# Schema version: 20110429095601
+# Schema version: 20110429122654
 #
 # Table name: submission_checkers
 #
-#  id               :integer(4)      not null, primary key
-#  type             :string(32)      not null
-#  deliverable_id   :integer(4)      not null
-#  message_name     :string(64)
-#  pkg_file_name    :string(256)
-#  pkg_content_type :string(64)
-#  pkg_file_size    :integer(4)
-#  pkg_file         :binary(21474836
-#  time_limit       :integer(4)
-#  created_at       :datetime
-#  updated_at       :datetime
+#  id             :integer(4)      not null, primary key
+#  type           :string(32)      not null
+#  deliverable_id :integer(4)      not null
+#  message_name   :string(64)
+#  db_file_id     :integer(4)
+#  time_limit     :integer(4)
+#  created_at     :datetime
+#  updated_at     :datetime
 #
 
 # Submission checker that runs an external script.
 class ScriptChecker < SubmissionChecker
+  # The database-backed file holding the checker script.
+  belongs_to :db_file, :dependent => :destroy
+  validates :db_file, :presence => true
+  accepts_nested_attributes_for :db_file
+  
   # The maximum time that the checker script is allowed to run.
   validates :time_limit, :presence => true,
                          :numericality => { :only_integer => true }
 
-  # The uploaded checler script.
-  has_attached_file :pkg, :storage => :database
-  validates_attachment_presence :pkg
-  
   # :nodoc: overrides SubmissionChecker#check
   def check(submission)
     random_dir = '/tmp/' + (0...16).map { rand(256).to_s(16) }.join
@@ -44,9 +42,9 @@ class ScriptChecker < SubmissionChecker
   #
   # This should be run in a temporary directory.
   def setup_script
-    script_filename = checker.pkg.original_filename.split('/').last
+    script_filename = checker.db_file.f.original_filename.split('/').last
     File.open(script_filename, 'wb') do |f|
-      f.write checker.pkg.file_contents
+      f.write checker.db_file.f.file_contents
     end
     
     case script_filename
@@ -65,7 +63,7 @@ class ScriptChecker < SubmissionChecker
   # This should be run in a temporary directory.
   def setup_submission(submission)
     File.open(deliverable.filename, 'wb') do |f|
-      f.write submission.code.file_contents
+      f.write submission.db_file.f.file_contents
     end
   end
   

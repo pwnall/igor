@@ -52,8 +52,5 @@ module Seven
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
-    
-    # Filtering out file uploads due to log size, not for confidentiality.
-    config.filter_parameters += [:code, :pic, :pkg]
   end
 end

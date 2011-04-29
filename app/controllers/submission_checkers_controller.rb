@@ -58,8 +58,8 @@ class SubmissionCheckersController < ApplicationController
   # GET /submission_checkers/1/contents
   def contents
     @checker = SubmissionChecker.find params[:id]
-    send_data @checker.pkg.file_contents,
-              :filename => @checker.pkg.original_filename,
-              :type => @checker.pkg_content_type
+    db_file = @checker.db_file
+    send_data db_file.f.file_contents, :filename => db_file.f.original_filename,
+              :type => db_file.f.content_type
   end
 end

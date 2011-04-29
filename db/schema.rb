@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110429095601) do
+ActiveRecord::Schema.define(:version => 20110429122654) do
 
   create_table "announcements", :force => true do |t|
     t.string   "headline",         :limit => 128,                     :null => false
@@ -69,6 +69,13 @@ ActiveRecord::Schema.define(:version => 20110429095601) do
   end
 
   add_index "courses", ["number"], :name => "index_courses_on_number", :unique => true
+
+  create_table "db_files", :force => true do |t|
+    t.text    "f_file_name",                          :null => false
+    t.string  "f_content_type",                       :null => false
+    t.integer "f_file_size",                          :null => false
+    t.binary  "f_file",         :limit => 2147483647, :null => false
+  end
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -197,13 +204,10 @@ ActiveRecord::Schema.define(:version => 20110429095601) do
   add_index "registrations", ["user_id", "course_id"], :name => "index_registrations_on_user_id_and_course_id", :unique => true
 
   create_table "submission_checkers", :force => true do |t|
-    t.string   "type",             :limit => 32,         :null => false
-    t.integer  "deliverable_id",                         :null => false
-    t.string   "message_name",     :limit => 64
-    t.string   "pkg_file_name",    :limit => 256
-    t.string   "pkg_content_type", :limit => 64
-    t.integer  "pkg_file_size"
-    t.binary   "pkg_file",         :limit => 2147483647
+    t.string   "type",           :limit => 32, :null => false
+    t.integer  "deliverable_id",               :null => false
+    t.string   "message_name",   :limit => 64
+    t.integer  "db_file_id"
     t.integer  "time_limit"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -212,12 +216,9 @@ ActiveRecord::Schema.define(:version => 20110429095601) do
   add_index "submission_checkers", ["deliverable_id"], :name => "index_submission_checkers_on_deliverable_id", :unique => true
 
   create_table "submissions", :force => true do |t|
-    t.integer  "deliverable_id",                        :null => false
-    t.integer  "user_id",                               :null => false
-    t.string   "code_file_name",    :limit => 256
-    t.string   "code_content_type", :limit => 64
-    t.integer  "code_file_size"
-    t.binary   "code_file",         :limit => 16777215
+    t.integer  "deliverable_id", :null => false
+    t.integer  "user_id",        :null => false
+    t.integer  "db_file_id",     :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

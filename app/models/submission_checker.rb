@@ -1,19 +1,16 @@
 # == Schema Information
-# Schema version: 20110429095601
+# Schema version: 20110429122654
 #
 # Table name: submission_checkers
 #
-#  id               :integer(4)      not null, primary key
-#  type             :string(32)      not null
-#  deliverable_id   :integer(4)      not null
-#  message_name     :string(64)
-#  pkg_file_name    :string(256)
-#  pkg_content_type :string(64)
-#  pkg_file_size    :integer(4)
-#  pkg_file         :binary(21474836
-#  time_limit       :integer(4)
-#  created_at       :datetime
-#  updated_at       :datetime
+#  id             :integer(4)      not null, primary key
+#  type           :string(32)      not null
+#  deliverable_id :integer(4)      not null
+#  message_name   :string(64)
+#  db_file_id     :integer(4)
+#  time_limit     :integer(4)
+#  created_at     :datetime
+#  updated_at     :datetime
 #
 
 # Method for sanity-checking student submissions.
@@ -25,7 +22,7 @@ class SubmissionChecker < ActiveRecord::Base
   belongs_to :deliverable, :inverse_of => :submission_checker
   validates :deliverable, :presence => true
   validates :deliverable_id, :uniqueness => true
-
+  
   # Runs the sanity checks for a student's submission.
   #
   # Returns the CheckResults produced.

@@ -86,7 +86,7 @@ class SubmissionsController < ApplicationController
         @submission.queue_checker
         OfflineTasks.validate_submission @submission
         
-        flash[:notice] = "Uploaded #{@submission.code.original_filename} for #{@submission.assignment.name}: #{@submission.deliverable.name}."
+        flash[:notice] = "Uploaded #{@submission.db_file.f.original_filename} for #{@submission.assignment.name}: #{@submission.deliverable.name}."
         format.html { redirect_to @submission.assignment || root_path }
       else
         flash[:notice] = "Submission for #{@submission.assignment.name}: #{@submission.deliverable.name} failed."
@@ -105,7 +105,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
     @submission.queue_checker
     
-    flash[:notice] = "Re-validating #{@submission.code.original_filename} from #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}. "
+    flash[:notice] = "Re-validating #{@submission.db_file.f.original_filename} from #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}. "
     respond_to do |format|
       format.html { redirect_to submissions_path }
     end    
@@ -119,10 +119,11 @@ class SubmissionsController < ApplicationController
       return
     end
     
+    db_file = @submission.db_file
     filename = @submission.user.email.gsub(/[^A-Za-z0-9]/, '_') + '_' +
-        @submission.code.original_filename
-    send_data @submission.code.file_contents, :filename => filename,
-              :type => @submission.code.content_type,
+        db_file.f.original_filename
+    send_data db_file.f.file_contents, :filename => filename,
+              :type => db_file.f.content_type,
               :disposition => params[:inline] ? 'inline' : 'attachment'
   end
 
@@ -186,9 +187,9 @@ class SubmissionsController < ApplicationController
           else
             s.user.email.split('@').first
           end
-          extension = s.code.original_filename.split('.').last
+          extension = s.db_file.f.original_filename.split('.').last
           fname = "#{tempdir}/#{prefix}#{basename}#{suffix}.#{extension}"
-          File.open(fname, 'w') { |f| f.write s.code.file_contents }      
+          File.open(fname, 'w') { |f| f.write s.db_file.f.file_contents }      
         end
       end
       

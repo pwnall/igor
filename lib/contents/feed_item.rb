@@ -67,8 +67,8 @@ class FeedItem
           :author => submission.user, :flavor => :submission,
           :headline => "submitted a #{submission.deliverable.name} for " +
                        submission.deliverable.assignment.name,
-          :contents => number_to_human_size(submission.code.size) +
-                       " #{submission.code_content_type} file",
+          :contents => number_to_human_size(submission.db_file.f.size) +
+                       " #{submission.db_file.f_content_type} file",
           :actions => [
             ['View', [:file_submission_path, submission, {:inline => true}]],
             ['Download', [:file_submission_path, submission, {:inline => false}]]

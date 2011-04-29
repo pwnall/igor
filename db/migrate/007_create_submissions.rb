@@ -3,11 +3,7 @@ class CreateSubmissions < ActiveRecord::Migration
     create_table :submissions do |t|
       t.integer :deliverable_id, :null => false
       t.integer :user_id, :null => false
-
-      t.string :code_file_name, :limit => 256
-      t.string :code_content_type, :limit => 64
-      t.integer :code_file_size
-      t.binary :code_file, :limit => 1.megabyte
+      t.integer :db_file_id, :null => false
 
       t.timestamps
     end
