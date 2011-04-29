@@ -1,9 +1,10 @@
 # == Schema Information
-# Schema version: 20110208012638
+# Schema version: 20110429095601
 #
 # Table name: assignments
 #
 #  id                 :integer(4)      not null, primary key
+#  course_id          :integer(4)      not null
 #  deadline           :datetime        not null
 #  name               :string(64)      not null
 #  team_partition_id  :integer(4)
@@ -16,7 +17,7 @@
 # An assignment for the course students. (e.g., a problem set or a project)
 class Assignment < ActiveRecord::Base
   # The course that this assignment is a part of.
-  belongs_to :course
+  belongs_to :course, :inverse_of => :assignments
   validates :course, :presence => true
   
   # The user-visible assignment name (e.g., "PSet 1").
@@ -42,6 +43,9 @@ class Assignment < ActiveRecord::Base
                      :inverse_of => :assignment
   accepts_nested_attributes_for :metrics, :allow_destroy => true,
       :reject_if => lambda { |attributes| attributes[:name].nil? }
+      
+  # All students' submissions for this assignment.
+  has_many :submissions, :through => :deliverables, :inverse_of => :assignment
   
   # The questions in the feedback survey for this assignment. 
   def feedback_questions

@@ -42,7 +42,7 @@ class SubmissionsController < ApplicationController
       assignment_id = params[:assignment_id].to_i      
       submissions_conditions[:deliverable_id] = @assignments.find { |a| a.id == assignment_id }.deliverables.map { |a| a.id }
     end
-    @submissions = Submission.find(:all, :conditions => submissions_conditions, :order => 'submissions.updated_at DESC', :include => [{:deliverable => :assignment, :user => :profile}, :run_result])
+    @submissions = Submission.find(:all, :conditions => submissions_conditions, :order => 'submissions.updated_at DESC', :include => [{:deliverable => :assignment, :user => :profile}, :check_result])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -73,11 +73,11 @@ class SubmissionsController < ApplicationController
     @submission ||= Submission.new params[:submission]
     @submission.user = current_user
     
-    @submission.run_result ||= RunResult.new(:submission => @submission)
+    @submission.check_result ||= CheckResult.new(:submission => @submission)
     %w(stdout stderr score diagnostic).each do |field|
-      @submission.run_result.send :"#{field}=", nil
+      @submission.check_result.send :"#{field}=", nil
     end
-    @submission.run_result.diagnostic = 'queued'
+    @submission.check_result.diagnostic = 'queued'
     success = if @submission.new_record?
       @submission.save
     else
@@ -86,7 +86,7 @@ class SubmissionsController < ApplicationController
     
     respond_to do |format|
       if success
-        @submission.run_result.save!
+        @submission.check_result.save!
         OfflineTasks.validate_submission @submission
         
         flash[:notice] = "Uploaded #{@submission.code.original_filename} for #{@submission.assignment.name}: #{@submission.deliverable.name}."
@@ -106,12 +106,12 @@ class SubmissionsController < ApplicationController
   # POST /submissions/revalidate/1
   def revalidate
     @submission = Submission.find(params[:id])
-    @submission.run_result ||= RunResult.new(:submission => @submission)
+    @submission.check_result ||= CheckResult.new(:submission => @submission)
     %w(stdout stderr score diagnostic).each do |field|
-      @submission.run_result.send :"#{field}=", nil
+      @submission.check_result.send :"#{field}=", nil
     end
-    @submission.run_result.diagnostic = 'queued'
-    @submission.run_result.save!
+    @submission.check_result.diagnostic = 'queued'
+    @submission.check_result.save!
 
     OfflineTasks.validate_submission(@submission)
     flash[:notice] = "Re-validating #{@submission.code.original_filename} from #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}. "

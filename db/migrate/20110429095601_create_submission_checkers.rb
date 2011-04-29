@@ -1,14 +1,10 @@
-class CreateDeliverableValidations < ActiveRecord::Migration
+class CreateSubmissionCheckers < ActiveRecord::Migration
   def self.up
-    create_table :deliverable_validations do |t|
-      # Single-Table Inheritance (STI).
-      t.string :type, :limit => 128, :null => false
-      
+    create_table :submission_checkers do |t|
+      t.string :type, :limit => 32, :null => false
+
       t.integer :deliverable_id, :null => false
       t.string :message_name, :limit => 64
-      t.string :pkg_uri, :limit => 1024
-      t.string :pkg_tag, :limit => 64
-      
       
       t.string :pkg_file_name, :limit => 256
       t.string :pkg_content_type, :limit => 64
@@ -19,9 +15,12 @@ class CreateDeliverableValidations < ActiveRecord::Migration
 
       t.timestamps
     end
+    
+    add_index :submission_checkers, :deliverable_id, :null => false,
+                                                     :unique => true
   end
 
   def self.down
-    drop_table :deliverable_validations
+    drop_table :submission_checkers
   end
 end

@@ -1,0 +1,18 @@
+<h1>Listing Submission Checker Results</h1>
+
+<table>
+  <tr>
+    <th>Submission</th>
+    <th>Score</th>
+    <th>Diagnostic</th>
+  </tr>
+
+<% @check_results.each do |check_result| %>
+  <tr>
+    <td><%=h check_result.submission_id %></td>
+    <td><%=h check_result.score %></td>
+    <td><%=h check_result.diagnostic %></td>
+    <td><%= link_to 'Details', check_result %></td>
+  </tr>
+<% end %>
+</table>

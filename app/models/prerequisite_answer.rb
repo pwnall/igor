@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110208012638
+# Schema version: 20110429095601
 #
 # Table name: prerequisite_answers
 #
@@ -14,9 +14,10 @@
 
 class PrerequisiteAnswer < ActiveRecord::Base
   # The registration containing this answer to a prerequisite class question.
-  belongs_to :registration
+  belongs_to :registration, :inverse_of => :prerequisite_answers
+  
   # The prerequisite that this answer covers.
-  belongs_to :prerequisite
+  belongs_to :prerequisite, :inverse_of => :prerequisite_answers
   
   # True if the student took the prerequisite course, false otherwise.
   #

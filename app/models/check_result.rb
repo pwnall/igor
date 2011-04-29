@@ -1,7 +1,7 @@
 # == Schema Information
-# Schema version: 20110208012638
+# Schema version: 20110429095601
 #
-# Table name: run_results
+# Table name: check_results
 #
 #  id            :integer(4)      not null, primary key
 #  submission_id :integer(4)      not null
@@ -13,6 +13,7 @@
 #  updated_at    :datetime
 #
 
-class RunResult < ActiveRecord::Base
-  belongs_to :submission
+# Diagnostic issued by a SubmissionChecker for a Submission.
+class CheckResult < ActiveRecord::Base
+  belongs_to :submission, :inverse_of => :check_result
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110208012638) do
+ActiveRecord::Schema.define(:version => 20110429095601) do
 
   create_table "announcements", :force => true do |t|
     t.string   "headline",         :limit => 128,                     :null => false
@@ -46,6 +46,18 @@ ActiveRecord::Schema.define(:version => 20110208012638) do
 
   add_index "assignments", ["name"], :name => "index_assignments_on_name", :unique => true
 
+  create_table "check_results", :force => true do |t|
+    t.integer  "submission_id",                     :null => false
+    t.integer  "score"
+    t.string   "diagnostic",    :limit => 256
+    t.binary   "stdout",        :limit => 16777215
+    t.binary   "stderr",        :limit => 16777215
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "check_results", ["submission_id"], :name => "index_check_results_on_submission_id", :unique => true
+
   create_table "courses", :force => true do |t|
     t.string   "number",          :limit => 16,                    :null => false
     t.string   "title",           :limit => 256,                   :null => false
@@ -72,21 +84,6 @@ ActiveRecord::Schema.define(:version => 20110208012638) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
-
-  create_table "deliverable_validations", :force => true do |t|
-    t.string   "type",             :limit => 128,        :null => false
-    t.integer  "deliverable_id",                         :null => false
-    t.string   "message_name",     :limit => 64
-    t.string   "pkg_uri",          :limit => 1024
-    t.string   "pkg_tag",          :limit => 64
-    t.string   "pkg_file_name",    :limit => 256
-    t.string   "pkg_content_type", :limit => 64
-    t.integer  "pkg_file_size"
-    t.binary   "pkg_file",         :limit => 2147483647
-    t.integer  "time_limit"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "deliverables", :force => true do |t|
     t.integer  "assignment_id",                                    :null => false
@@ -199,17 +196,20 @@ ActiveRecord::Schema.define(:version => 20110208012638) do
   add_index "registrations", ["course_id", "user_id"], :name => "index_registrations_on_course_id_and_user_id", :unique => true
   add_index "registrations", ["user_id", "course_id"], :name => "index_registrations_on_user_id_and_course_id", :unique => true
 
-  create_table "run_results", :force => true do |t|
-    t.integer  "submission_id",                     :null => false
-    t.integer  "score"
-    t.string   "diagnostic",    :limit => 256
-    t.binary   "stdout",        :limit => 16777215
-    t.binary   "stderr",        :limit => 16777215
+  create_table "submission_checkers", :force => true do |t|
+    t.string   "type",             :limit => 32,         :null => false
+    t.integer  "deliverable_id",                         :null => false
+    t.string   "message_name",     :limit => 64
+    t.string   "pkg_file_name",    :limit => 256
+    t.string   "pkg_content_type", :limit => 64
+    t.integer  "pkg_file_size"
+    t.binary   "pkg_file",         :limit => 2147483647
+    t.integer  "time_limit"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "run_results", ["submission_id"], :name => "index_run_results_on_submission_id", :unique => true
+  add_index "submission_checkers", ["deliverable_id"], :name => "index_submission_checkers_on_deliverable_id", :unique => true
 
   create_table "submissions", :force => true do |t|
     t.integer  "deliverable_id",                        :null => false

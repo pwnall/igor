@@ -75,12 +75,12 @@ class FeedItem
           ],
           :replies => []
       items << item
-      if run_result = submission.run_result
-        reply = FeedItem.new :time => run_result.updated_at,
+      if check_result = submission.check_result
+        reply = FeedItem.new :time => check_result.updated_at,
             :author => User.first, :flavor => :announcement,
-            :contents => run_result.diagnostic,
+            :contents => check_result.diagnostic,
             :actions => [
-              ['Details', [:url_for, run_result]]
+              ['Details', [:url_for, check_result]]
             ],
             :replies => []
         item.replies << reply

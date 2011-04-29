@@ -26,12 +26,12 @@ function grades_compute_total(target_id, field_ids) {
 	$(target_id).update(total + '')
 }	
 
-function submission_validation_update_visiblity(id_suffix) {
-	var vtype = $('deliverable_validation_type_' + id_suffix).value;
-	var v_rpkg = $('deliverable_validation_rpkg_' + id_suffix);
-	var v_upkg = $('deliverable_validation_upkg_' + id_suffix);
-	var v_rupkg = $('deliverable_validation_rupkg_' + id_suffix);
-	var v_bin = $('deliverable_validation_bin_' + id_suffix);
+function submission_checker_update_visiblity(id_suffix) {
+	var vtype = $('submission_checker_type_' + id_suffix).value;
+	var v_rpkg = $('submission_checker_rpkg_' + id_suffix);
+	var v_upkg = $('submission_checker_upkg_' + id_suffix);
+	var v_rupkg = $('submission_checker_rupkg_' + id_suffix);
+	var v_bin = $('submission_checker_bin_' + id_suffix);
 	
 	v_rpkg.hide();
 	v_upkg.hide();

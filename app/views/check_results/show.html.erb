@@ -1,38 +1,37 @@
-<!-- run_results/show -->
 <div class="full_section">
 	
 <h1 class="full_section">
-	Run results for <%= @run_result.submission.deliverable.assignment.name %>:
-	<%= @run_result.submission.deliverable.name %>
+	Run results for <%= @check_result.submission.deliverable.assignment.name %>:
+	<%= @check_result.submission.deliverable.name %>
 </h1>
 
-<%= form_for(@run_result, :url => '#',
+<%= form_for(@check_result, :url => '#',
              :html => {:class => 'user_form'}) do |f| %>
 	<div class="form_box">
 		<div class="form_entry">
 			<div class="form_label">Result</div>
 			<div class="form_field_box">
-				<%=h @run_result.diagnostic %>
+				<%=h @check_result.diagnostic %>
 			</div>
 		</div>				
 		<div class="form_entry">
 			<div class="form_label">Score</div>
 			<div class="form_field_box">
-				<%=h @run_result.score || 'Not available' %>
+				<%=h @check_result.score || 'Not available' %>
 			</div>
 		</div>				
 		<div class="form_entry">
 			<div class="form_label">Stdout</div>
 			<div class="form_field_box">
-				<pre><%= @run_result.stdout.nil? ? 'Not available' : word_wrap(@run_result.stdout, 80) %></pre>
+				<pre><%= word_wrap(@check_result.stdout || 'Not available', 80) %></pre>
 			</div>
 		</div>				
 		<div class="form_entry">
 			<div class="form_label">Stderr</div>
 			<div class="form_field_box">
-				<pre><%= @run_result.stderr.nil? ? 'Not available' : word_wrap(@run_result.stderr, 80) %></pre>
+				<pre><%= word_wrap(@check_result || 'Not available'.stderr, 80) %></pre>
 			</div>
-		</div>				
+		</div>
 		<div class="form_submit_box">
 				<%= link_to 'Go home', root_path %>
 		</div>

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110208012638
+# Schema version: 20110429095601
 #
 # Table name: courses
 #
@@ -25,14 +25,17 @@ class Course < ActiveRecord::Base
   validates :has_recitations,
       :inclusion => { :in => [true, false], :allow_nil => false }
   
-  # The Google Analytics account ID for the course.
+  # Google Analytics account ID for the course.
   validates :ga_account, :length => 1..32, :presence => true
   
-  # The student registrations for this course.
-  has_many :registrations, :dependent => :destroy
+  # Student registrations for this course.
+  has_many :registrations, :dependent => :destroy, :inverse_of => :course
   
-  # The prerequisite courses for this course.
-  has_many :prerequisites, :dependent => :destroy
+  # Prerequisite courses for this course.
+  has_many :prerequisites, :dependent => :destroy, :inverse_of => :course
+  
+  # Assignments issued for this course.
+  has_many :assignments, :dependent => :destroy, :inverse_of => :course
 
   # The main (and only) course on the website.
   def self.main

@@ -1,14 +1,12 @@
 # == Schema Information
-# Schema version: 20110208012638
+# Schema version: 20110429095601
 #
-# Table name: deliverable_validations
+# Table name: submission_checkers
 #
 #  id               :integer(4)      not null, primary key
-#  type             :string(128)     not null
+#  type             :string(32)      not null
 #  deliverable_id   :integer(4)      not null
 #  message_name     :string(64)
-#  pkg_uri          :string(1024)
-#  pkg_tag          :string(64)
 #  pkg_file_name    :string(256)
 #  pkg_content_type :string(64)
 #  pkg_file_size    :integer(4)
@@ -21,7 +19,7 @@
 require 'digest/sha2'
 
 # Submission validation that runs an external script.
-class ScriptValidation < DeliverableValidation
+class ScriptValidation < SubmissionChecker
   # The maximum time to run the validation for.
   validates :time_limit, :presence => true,
                          :numericality => { :only_integer => true }

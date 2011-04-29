@@ -3,4 +3,4 @@ if @success
 else
   add_site_status page, (@new_record ? 'Failed to create deliverable' : 'Failed to update deliverable'), false
 end
-page.replace "deliverable_validation_#{@deliverable.id}", :partial => 'show_for_deliverable', :locals => {:deliverable => @deliverable} 
+page.replace "submission_checker_#{@deliverable.id}", :partial => 'show_for_deliverable', :locals => {:deliverable => @deliverable} 

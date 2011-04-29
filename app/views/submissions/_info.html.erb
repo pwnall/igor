@@ -13,9 +13,9 @@
   ago.
 </span>
 <span class="submission-result">
-<% if submission.run_result %>
-  <%= link_to submission.run_result.diagnostic,
-              submission.run_result %>
+<% if submission.check_result %>
+  <%= link_to submission.check_result.diagnostic,
+              submission.check_result %>
   <% end %>
 </span>
 <% else %>

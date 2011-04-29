@@ -1,9 +1,10 @@
 # == Schema Information
-# Schema version: 20110208012638
+# Schema version: 20110429095601
 #
 # Table name: assignments
 #
 #  id                 :integer(4)      not null, primary key
+#  course_id          :integer(4)      not null
 #  deadline           :datetime        not null
 #  name               :string(64)      not null
 #  team_partition_id  :integer(4)

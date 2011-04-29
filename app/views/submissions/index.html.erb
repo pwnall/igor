@@ -61,9 +61,9 @@
 						<%=h (submission.updated_at < submission.deliverable.assignment.deadline) ? 'on time' : "late by #{distance_of_time_in_words(submission.deliverable.assignment.deadline, submission.updated_at)}" %>
 					</td>
 					<td>
-						<% if submission.run_result %>
-						<%= link_to submission.run_result.diagnostic,
-                        submission.run_result %>
+						<% if submission.check_result %>
+						<%= link_to submission.check_result.diagnostic,
+                        submission.check_result %>
 						<% else %>
 						no status
 						<% end %>

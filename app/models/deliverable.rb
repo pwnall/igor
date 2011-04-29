@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110208012638
+# Schema version: 20110429095601
 #
 # Table name: deliverables
 #
@@ -33,8 +33,8 @@ class Deliverable < ActiveRecord::Base
   belongs_to :assignment, :inverse_of => :deliverables
   
   # The method used to verify students' submissions for this deliverable.
-  has_one :deliverable_validation, :dependent => :destroy,
-                                   :inverse_of => :deliverable
+  has_one :submission_checker, :dependent => :destroy,
+                               :inverse_of => :deliverable
   
   # All the student submissions for this deliverable.
   has_many :submissions, :dependent => :destroy, :inverse_of => :deliverable

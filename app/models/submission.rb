@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110208012638
+# Schema version: 20110429095601
 #
 # Table name: submissions
 #
@@ -32,6 +32,6 @@ class Submission < ActiveRecord::Base
   # The assignment that this submission is for.
   has_one :assignment, :through => :deliverable
 
-  # The result of checking the submission.
-  has_one :run_result, :dependent => :destroy
+  # Diagnostic issued by the deliverable's SubmissionChecker.
+  has_one :check_result, :dependent => :destroy, :inverse_of => :submission
 end

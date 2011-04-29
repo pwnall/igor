@@ -12,7 +12,7 @@ Seven::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-  resources :run_results
+  resources :check_results
   resources :survey_questions
   resources :team_memberships
   
@@ -66,7 +66,7 @@ Seven::Application.routes.draw do
       post :set_deliverable_published      
     end
   end
-  resources :deliverable_validations do
+  resources :submission_checkers do
     member do
       get :contents
       put :update_deliverable

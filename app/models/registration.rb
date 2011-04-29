@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110208012638
+# Schema version: 20110429095601
 #
 # Table name: registrations
 #
@@ -21,7 +21,7 @@ class Registration < ActiveRecord::Base
   validates :user, :presence => true
   
   # The course for which the student registered.
-  belongs_to :course
+  belongs_to :course, :inverse_of => :registrations
   validates :course, :presence => true
   validates :course_id, :uniqueness => { :scope => [:user_id] }
 
@@ -45,7 +45,8 @@ class Registration < ActiveRecord::Base
   has_many :recitation_conflicts, :dependent => :destroy
 
   # Answers to the course's prerequisites questions.
-  has_many :prerequisite_answers, :dependent => :destroy
+  has_many :prerequisite_answers, :dependent => :destroy,
+                                  :inverse_of => :registration
   accepts_nested_attributes_for :prerequisite_answers, :allow_destroy => false
   
   # Populates prerequisite_answers for a new registration

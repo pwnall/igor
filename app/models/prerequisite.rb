@@ -1,21 +1,24 @@
 # == Schema Information
-# Schema version: 20110208012638
+# Schema version: 20110429095601
 #
 # Table name: prerequisites
 #
-#  id              :integer(4)      not null, primary key
-#  course_number   :string(64)      not null
-#  waiver_question :string(256)     not null
-#  created_at      :datetime
-#  updated_at      :datetime
+#  id                  :integer(4)      not null, primary key
+#  course_id           :integer(4)      not null
+#  prerequisite_number :string(64)      not null
+#  waiver_question     :string(256)     not null
+#  created_at          :datetime
+#  updated_at          :datetime
 #
 
 # A prerequisite for a course.
 class Prerequisite < ActiveRecord::Base
-  has_many :prerequisite_answers, :dependent => :destroy
+  # Answers to this prerequisite from all students enrolled in the course.
+  has_many :prerequisite_answers, :dependent => :destroy,
+                                  :inverse_of => :prerequisite
   
   # The course that this prerequisite applies to.
-  belongs_to :course
+  belongs_to :course, :inverse_of => :prerequisites
   validates :course, :presence => true
   
   # The course number(s) required for the class.
