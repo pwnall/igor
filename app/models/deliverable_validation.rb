@@ -23,10 +23,4 @@ class DeliverableValidation < ActiveRecord::Base
   # The deliverable whose submissions are validated by this validation.
   belongs_to :deliverable, :inverse_of => :deliverable_validation
   validates :deliverable, :presence => true
-
-  # The maximum time to run the validation for.
-  #
-  # This was mainly intended for running user programs.
-  validates :time_limit, :presence => true,
-                         :numericality => { :only_integer => true }
 end

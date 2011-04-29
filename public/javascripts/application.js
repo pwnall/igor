@@ -37,11 +37,7 @@ function submission_validation_update_visiblity(id_suffix) {
 	v_upkg.hide();
 	v_rupkg.hide();
 	v_bin.hide();
-	if (vtype == 'RemoteScriptValidation') {
-		v_rpkg.show();
-		v_rupkg.show();
-	}
-	else if (vtype == 'UploadedScriptValidation') {
+	if (vtype == 'UploadedScriptValidation') {
 		v_upkg.show();
 		v_rupkg.show();
 	}

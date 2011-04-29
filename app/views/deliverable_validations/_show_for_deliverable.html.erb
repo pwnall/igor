@@ -8,7 +8,7 @@
 			<%= f.hidden_field :deliverable_id, :id => "deliverable_validation_id_#{deliverable.id}" %>
 		</div>
 		<div class="deliverable_name">
-			Validator: <%= f.select :type, [['Built-in', 'ProcValidation'], ['Remote Package', 'RemoteScriptValidation'], ['Uploaded Package', 'UploadedScriptValidation']], {}, :id => "deliverable_validation_type_#{deliverable.id}", :class => 'form_field' %>			
+			Validator: <%= f.select :type, [['Built-in', 'ProcValidation'], ['Uploaded Package', 'UploadedScriptValidation']], {}, :id => "deliverable_validation_type_#{deliverable.id}", :class => 'form_field' %>			
 		</div>
 		<div class="deliverable_description">
 			<div id="deliverable_validation_rpkg_<%= deliverable.id %>" style="display: none;">
