@@ -1,34 +1,48 @@
-dl.grades {
+ol.grades {
   margin: 0;
 	padding: 0 0 2px 0;
 	overflow: hidden;
   border-bottom: 1px solid #EABA99;
+  
+  -moz-column-width: ($column-total * 7 - $column-margin);
+  -moz-column-gap: $column-total;
+  -webkit-column-width: ($column-total * 7 - $column-margin);
+  -webkit-column-gap: $column-total;
+  column-width: ($column-total * 7 - $column-margin);
+  column-gap :$column-total;
 }
-dl.grades:last-child {
+ol.grades:last-child {
 	padding: 0;
 	border-bottom: none;
 }
-dl.grades dt {
-	float: left;
-	width: 9em;
-	margin: 0;
-	padding: 0;
-	color: #595959;
+ol.grades li {
+  color: #595959;
 }
-dl.grades dd {
-	float: left;
-	width: 6em;
-	margin: 0;
-	padding: 0 0.6em 0 0;
+ol.grades li.total {
+  font-weight: bold;
+  color: #292929;
+}
+ol.grades span.assignment-name {
+  display: inline-block;
+	width: ($column-total * 4 - $column-margin);
+	margin: 0 $column-margin 0 0;
+}
+ol.grades span.scores {
+  display: inline-block;
+  width: ($column-total * 3 - $column-margin);
+	text-align: right;
+  color: #595959;
+}
+ol.grades span.score {
+	display: inline-block;
+  text-align: right;
+  width: $column-width;
   color: #5E2600;
 }
-dl.grades span.score {
+
+ol.grades span.max-score {
 	display: inline-block;
 	text-align: right;
-	width: 3em;
-}
-dl.grades span.max-score {
-	display: inline-block;
-	text-align: right;
-	width: 1.7em;
+  width: $column-width;
+	color: change-color(#5E2600, $saturation: 40%, $lightness: 35%);
 }

@@ -41,7 +41,7 @@ header {
     }
     
     // Padding between the image and the title.
-    img > span {
+    img + span {
       padding-left: 0.5em;
     }
     

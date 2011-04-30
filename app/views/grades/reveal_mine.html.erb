@@ -2,24 +2,29 @@
 
 <% @grades.each do |assignment, metrics| %>
   <h3 class="grades"><%= assignment.name %></h3>
-	<dl class="grades">
+	<ol class="grades">
+    <li class="total">
+      <span class="assignment-name">Total</span>
+      <span class="scores">
+        <span class="score">
+          <%= metrics.map { |metric, grade| grade ? grade.score : 0 }.sum %>
+        </span>
+        /
+        <span class="max-score">
+          <%= metrics.map { |metric, grade| metric.max_score }.sum %>
+        </span>
+      </span>
+    </li>
     <% metrics.each do |metric, grade| %>
-		<dt><%= metric.name %></dt>
-		<dd>
-			<span class="score"><%= grade ? grade.score : 'N' %></span>
-			/
-		  <span class="max-score"><%= metric.max_score %></span>
-		</dd>
+		<li>
+      <span class="assignment-name"><%= metric.name %></span>
+
+      <span class="scores">
+        <span class="score"><%= grade ? grade.score : 'N' %></span>
+        /
+        <span class="max-score"><%= metric.max_score %></span>
+      </span>
+    </li>
   	<% end %>
-	  <dt>Total</dt>
-		<dd>
-			<span class="score">
-				<%= metrics.map { |metric, grade| grade ? grade.score : 0 }.sum %>
-			</span>
-			/
-      <span class="max-score">
-      	<%= metrics.map { |metric, grade| metric.max_score }.sum %>
-			</span>
-		</dd>
-	</dl>
+	</ol>
 <% end %>
