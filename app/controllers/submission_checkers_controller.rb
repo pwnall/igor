@@ -59,7 +59,8 @@ class SubmissionCheckersController < ApplicationController
   def contents
     @checker = SubmissionChecker.find params[:id]
     db_file = @checker.db_file
-    send_data db_file.f.file_contents, :filename => db_file.f.original_filename,
+    send_data full_db_file.f.file_contents,
+              :filename => db_file.f.original_filename,
               :type => db_file.f.content_type
   end
 end

@@ -1,9 +1,6 @@
 class AssignmentMetricsController < ApplicationController
   before_filter :authenticated_as_admin
   
-  in_place_edit_for_boolean :assignment_metric, :published
-  [:name, :max_score, :weight, :assignment_id].each { |field| in_place_edit_for :assignment_metric, field }
-  
   # GET /assignment_metrics
   def index
     @assignments = Assignment.find(:all)

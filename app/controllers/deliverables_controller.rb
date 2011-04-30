@@ -1,11 +1,6 @@
 class DeliverablesController < ApplicationController
   before_filter :authenticated_as_admin
 
-  in_place_edit_for_boolean :deliverable, :published
-  in_place_edit_for :deliverable, :filename
-  in_place_edit_for :deliverable, :name
-  in_place_edit_for :deliverable, :description
-
   # GET /deliverables/1
   def show
     @deliverable = Deliverable.find(params[:id])

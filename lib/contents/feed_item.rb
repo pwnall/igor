@@ -56,7 +56,7 @@ class FeedItem
           :contents => '',
           :actions => [['Edit', [:edit_survey_answer_path, answer]]],
           :replies => []
-      items << item      
+      items << item
     end
   end
 
@@ -102,7 +102,7 @@ class FeedItem
            :headline => "released the grades for #{assignment.name}",
            :contents => '',
            :actions => [
-             ['View', [:reveal_mine_grades_path]]
+             ['View', [:grades_path]]
            ],
            :replies => []
       items << item

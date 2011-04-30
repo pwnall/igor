@@ -15,4 +15,6 @@ class DbFile < ActiveRecord::Base
   has_attached_file :f, :storage => :database
   validates_attachment_presence :f
   validates_attachment_size :f, :less_than => 16.megabytes
+  
+  default_scope select([:f_file_name, :f_content_type, :f_file_size])
 end

@@ -25,7 +25,7 @@ class ProcChecker < SubmissionChecker
 
   # Checks that a submitted file looks like a PDF.
   def validate_pdf(submission)
-    bytes = submission.db_file.f.file_contents
+    bytes = submission.full_db_file.f.file_contents
     result = submission.check_result
     if bytes[0, 5] == '%PDF-'
       if bytes[([0, bytes.length - 1024].max)..-1] =~ /\%\%EOF/

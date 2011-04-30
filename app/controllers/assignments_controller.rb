@@ -1,7 +1,5 @@
 class AssignmentsController < ApplicationController
   before_filter :authenticated_as_admin
-    
-  in_place_edit_for :assignment, :name
 
   layout 'full'
 

@@ -1,8 +1,6 @@
 class TeamsController < ApplicationController
   before_filter :authenticated_as_admin
 
-  [:name].each { |field| in_place_edit_for :team, field }
-
   # GET /teams
   def index
     @teams = Team.all

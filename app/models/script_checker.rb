@@ -20,6 +20,11 @@ class ScriptChecker < SubmissionChecker
   validates :db_file, :presence => true
   accepts_nested_attributes_for :db_file
   
+  # Database-backed file association, including the file contents.
+  def full_db_file
+    DbFile.unscoped.where(:id => db_file_id).first
+  end
+  
   # The maximum time that the checker script is allowed to run.
   validates :time_limit, :presence => true,
                          :numericality => { :only_integer => true }
@@ -42,9 +47,9 @@ class ScriptChecker < SubmissionChecker
   #
   # This should be run in a temporary directory.
   def setup_script
-    script_filename = checker.db_file.f.original_filename.split('/').last
+    script_filename = db_file.f.original_filename.split('/').last
     File.open(script_filename, 'wb') do |f|
-      f.write checker.db_file.f.file_contents
+      f.write full_db_file.f.file_contents
     end
     
     case script_filename
@@ -63,7 +68,7 @@ class ScriptChecker < SubmissionChecker
   # This should be run in a temporary directory.
   def setup_submission(submission)
     File.open(deliverable.filename, 'wb') do |f|
-      f.write submission.db_file.f.file_contents
+      f.write submission.full_db_file.f.file_contents
     end
   end
   

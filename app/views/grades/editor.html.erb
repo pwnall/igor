@@ -1,0 +1,28 @@
+<h2>Post Grades</h2>
+
+<%= form_tag for_user_grades_path, :update => :user_grades_div do %>
+  <dl>
+  	<dt><%= label_tag :filter_aid, 'Assignment' %></dt>
+		<dd>
+			<%= select_tag :filter_aid,
+            options_for_select([['(all)', nil]] + Assignment.find(:all).map { |a| [a.name, a.id] })
+      %>
+		</dd>
+		<dt><%= label_tag :query, 'User' %></dt>
+		<dd>
+	    <%= text_field_tag :query, '', :autocomplete => false %>
+      <span id="query-ajax-indicator" style="display: none;">
+        <%= loading_image_tag %>
+      </span>
+	    <div class="auto_complete" id="query_auto_complete" style="width: 600px;">
+	    </div>
+		</dd>
+	</dl>
+	<p>
+    <%= submit_tag "Display" %>
+	</p>
+<% end %>
+
+<div id="user_grades_div">
+
+</div>

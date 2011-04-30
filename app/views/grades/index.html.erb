@@ -1,32 +1,30 @@
-<h2>Post Grades</h2>
+<h2>Grades</h2>
 
-<%= remote_form_for User.new, :url => for_user_grades_path,
-                              :update => :user_grades_div do |f| %>
-  <dl>
-  	<dt><%= label_tag :filter_aid, 'Assignment' %></dt>
-		<dd>
-			<%= select_tag :filter_aid,
-            options_for_select([['(all)', nil]] + Assignment.find(:all).map { |a| [a.name, a.id] })
-      %>
-		</dd>
-		<dt><%= label_tag :query, 'User' %></dt>
-		<dd>
-	    <%= text_field_tag :query, '', :autocomplete => false %>
-      <span id="query-ajax-indicator" style="display: none;">
-        <%= loading_image_tag %>
+<% @grades.each do |assignment, metrics| %>
+  <h3 class="grades"><%= assignment.name %></h3>
+	<ol class="grades">
+    <li class="total">
+      <span class="assignment-name">Total</span>
+      <span class="scores">
+        <span class="score">
+          <%= metrics.map { |metric, grade| grade ? grade.score : 0 }.sum %>
+        </span>
+        /
+        <span class="max-score">
+          <%= metrics.map { |metric, grade| metric.max_score }.sum %>
+        </span>
       </span>
-	    <div class="auto_complete" id="query_auto_complete" style="width: 600px;">
-	    </div>
-		</dd>
-	</dl>
-	<p>
-    <%= f.submit "Display" %>		
-	</p>
+    </li>
+    <% metrics.each do |metric, grade| %>
+		<li>
+      <span class="assignment-name"><%= metric.name %></span>
+
+      <span class="scores">
+        <span class="score"><%= grade ? grade.score : 'N' %></span>
+        /
+        <span class="max-score"><%= metric.max_score %></span>
+      </span>
+    </li>
+  	<% end %>
+	</ol>
 <% end %>
-<%= auto_complete_field :query, :url => lookup_users_path,
-      :method => :get, :frequency => 0.2, :select => 'username',
-      :indicator => 'query-ajax-indicator' %>
-
-<div id="user_grades_div">
-
-</div>

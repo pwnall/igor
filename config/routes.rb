@@ -74,7 +74,8 @@ Seven::Application.routes.draw do
   end
   resources :grades do
     collection do
-      get :request_report, :request_missing, :reveal_mine
+      get :editor
+      get :request_report, :request_missing
       post :for_user, :missing, :report
     end
     member do

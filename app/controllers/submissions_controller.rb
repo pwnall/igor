@@ -28,23 +28,30 @@ class SubmissionsController < ApplicationController
   
   # GET /submissions/request_package
   def request_package
-    @deliverables = Deliverable.find :all, :order => 'deliverables.id DESC',
-                                     :include => :assignment
-    @assignments = Assignment.find :all, :order => 'assignments.id DESC'
+    @assignments = Assignment.order('deadline DESC').includes(:deliverables).all
+    @deliverables = @assignments.map(&:deliverables).flatten
   end
   
   # GET /submissions
   def index
-    @deliverables = Deliverable.find(:all, :order => 'deliverables.id DESC', :include => :assignment)
-    @assignments = Assignment.find(:all, :order => 'assignments.id DESC')
+    @assignments = Assignment.order('deadline DESC').includes(:deliverables).
+        all.reject { |assignment| assignment.deliverables.empty? }
+    @deliverables = @assignments.map(&:deliverables).flatten
     
-    submissions_conditions = {}
-    submissions_conditions[:deliverable_id] = params[:deliverable_id] if params.has_key? :deliverable_id
-    if params.has_key? :assignment_id
-      assignment_id = params[:assignment_id].to_i      
-      submissions_conditions[:deliverable_id] = @assignments.find { |a| a.id == assignment_id }.deliverables.map { |a| a.id }
+    query = Submission.order('updated_at DESC').
+        includes(:db_file, :check_result,
+                 {:deliverable => :assignment, :user => :profile})
+    
+    if params.has_key? :deliverable_id
+      query = query.where(:deliverable_id => params[:deliverable_id])
     end
-    @submissions = Submission.find(:all, :conditions => submissions_conditions, :order => 'submissions.updated_at DESC', :include => [{:deliverable => :assignment, :user => :profile}, :check_result])
+    if params.has_key? :assignment_id
+      assignment_id = params[:assignment_id].to_i
+      deliverable_ids = @assignments.find { |a| a.id == assignment_id }.
+          deliverables.map(&:id)
+      query = query.where(:deliverable_id => deliverable_ids)
+    end
+    @submissions = query.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -119,7 +126,7 @@ class SubmissionsController < ApplicationController
       return
     end
     
-    db_file = @submission.db_file
+    db_file = @submission.full_db_file
     filename = @submission.user.email.gsub(/[^A-Za-z0-9]/, '_') + '_' +
         db_file.f.original_filename
     send_data db_file.f.file_contents, :filename => filename,
@@ -187,9 +194,10 @@ class SubmissionsController < ApplicationController
           else
             s.user.email.split('@').first
           end
-          extension = s.db_file.f.original_filename.split('.').last
+          db_file = s.full_db_file
+          extension = db_file.f.original_filename.split('.').last
           fname = "#{tempdir}/#{prefix}#{basename}#{suffix}.#{extension}"
-          File.open(fname, 'w') { |f| f.write s.db_file.f.file_contents }      
+          File.open(fname, 'w') { |f| f.write db_file.f.file_contents }
         end
       end
       

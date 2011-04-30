@@ -2,13 +2,6 @@
   <%= link_to 'Teacher', root_path %>
   <ol>
     <li>
-      <%= link_to 'Get Submissions', request_package_submissions_path %>
-    </li>
-    <li>
-      <%= link_to 'Post Grades', grades_path %>
-    </li>
-    
-    <li>
       <%= link_to 'Assignments', assignments_path %>
     </li>
     <li>
@@ -38,7 +31,7 @@
       <%= link_to 'Survey Answers', survey_answers_path %>
     </li>
     <li>
-      <%= link_to 'Grades', request_report_grades_path %>
+      <%= link_to 'Grade Spreadsheet', request_report_grades_path %>
     </li>
     <li>
       <%= link_to 'Missing Grades', request_missing_grades_path %>
@@ -75,7 +68,15 @@
   </ol>
 </li>
 <li>
-  <%= link_to 'Grades', reveal_mine_grades_path %>
+  <%= link_to 'Grading', editor_grades_path %>
+  <ol>
+    <li>
+      <%= link_to 'Post Grades', editor_grades_path %>
+    </li>
+    <li>
+      <%= link_to 'Get Submissions', request_package_submissions_path %>
+    </li>
+  </ol>
 </li>
 <li>
   <%= link_to 'Surveys', root_path(:flavor => :survey_answer) %>

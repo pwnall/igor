@@ -1,8 +1,6 @@
 class RecitationSectionsController < ApplicationController
   before_filter :authenticated_as_admin
 
-  [:leader_id, :time, :location, :serial].each { |field| in_place_edit_for :recitation_section, field }
-
   # GET /recitation_sections
   def index
     @recitation_sections = RecitationSection.find(:all, :include => :leader)

@@ -1,18 +1,32 @@
 class GradesController < ApplicationController
-  before_filter :authenticated_as_admin, :except => [:reveal_mine]
-  before_filter :authenticated_as_user, :only => [:reveal_mine]
+  before_filter :authenticated_as_admin, :except => [:index]
+  before_filter :authenticated_as_user, :only => [:index]
   
   # GET /grades
   def index
+    grades_by_metric_id = current_user.grades.index_by &:metric_id
+    
+    @grades = []
+    Assignment.includes(:metrics).order('deadline DESC').each do |assignment|
+      metrics = assignment.metrics.
+          select { |metric| metric.visible_for? current_user }.
+          map { |metric| [metric, grades_by_metric_id[metric.id]] }
+      @grades << [assignment, metrics] unless metrics.empty?
+    end
   end
 
-  # GET /grades/reveal_mine/0
-  def request_report    
+  # GET /grades/editor
+  def editor
+    @targets = Course.main.registrations.map(&:user)
   end
 
   # GET /grades/request_missing/0
   def request_missing
     @assignments = Assignment.all
+  end
+
+  # GET /grades/request_report/0
+  def request_report
   end
   
   def missing
@@ -150,19 +164,6 @@ class GradesController < ApplicationController
 
     # push the CSV
     send_data csv_text, :filename => 'grades.csv', :type => 'text/csv', :disposition => 'inline'
-  end
-  
-  # GET /grades/reveal_mine
-  def reveal_mine
-    grades_by_mid = current_user.grades.index_by &:metric_id
-    
-    @grades = []
-    Assignment.includes(:metrics).order('deadline DESC').each do |assignment|
-      metrics = assignment.metrics.
-          select { |metric| metric.visible_for? current_user }.
-          map { |metric| [metric, grades_by_mid[metric.id]] }
-      @grades << [assignment, metrics] unless metrics.empty?
-    end
   end
   
   # XHR /grades/for_user/uid

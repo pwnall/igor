@@ -1,10 +1,6 @@
 class PrerequisitesController < ApplicationController  
   before_filter :authenticated_as_admin, :except => [:new, :index, :show] 
   
-  [:course_number, :waiver_question].each do |field|
-    in_place_edit_for :prerequisite, field
-  end
-  
   # GET /prerequisites
   def index
     @prerequisites = Prerequisite.find(:all)

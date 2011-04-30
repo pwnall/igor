@@ -26,6 +26,11 @@ class Submission < ActiveRecord::Base
   validates :db_file, :presence => true
   accepts_nested_attributes_for :db_file
   
+  # Database-backed file association, including the file contents.
+  def full_db_file
+    DbFile.unscoped.where(:id => db_file_id).first
+  end
+  
   # The assignment that this submission is for.
   has_one :assignment, :through => :deliverable
 
