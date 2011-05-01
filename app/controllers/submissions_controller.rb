@@ -91,7 +91,6 @@ class SubmissionsController < ApplicationController
     respond_to do |format|
       if success
         @submission.queue_checker
-        OfflineTasks.validate_submission @submission
         
         flash[:notice] = "Uploaded #{@submission.db_file.f.original_filename} for #{@submission.assignment.name}: #{@submission.deliverable.name}."
         format.html { redirect_to @submission.assignment || root_path }
