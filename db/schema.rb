@@ -153,7 +153,7 @@ ActiveRecord::Schema.define(:version => 20110429122654) do
 
   create_table "profiles", :force => true do |t|
     t.integer  "user_id",                                             :null => false
-    t.string   "real_name",         :limit => 128,                    :null => false
+    t.string   "name",              :limit => 128,                    :null => false
     t.string   "nickname",          :limit => 64,                     :null => false
     t.string   "university",        :limit => 64,                     :null => false
     t.string   "department",        :limit => 64,                     :null => false

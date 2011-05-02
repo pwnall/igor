@@ -55,7 +55,7 @@ module CoverSheet
       v_offset = 24 * target.users.length
     else
       pdf.text((target.profile.nil? ? 'no real name on file' :
-                target.profile.real_name),
+                target.profile.name),
                :align => :left, :size => 24)
       v_offset = 24
     end
@@ -76,7 +76,7 @@ module CoverSheet
             'on time' : 'late by ' +
             distance_of_time_in_words(d.assignment.deadline, s.updated_at)
         if target.respond_to?(:users)
-          submitted_text += ' by ' + user.real_name
+          submitted_text += ' by ' + user.name
         end
         [d.name, 
          number_to_human_size(s.db_file.f.size),

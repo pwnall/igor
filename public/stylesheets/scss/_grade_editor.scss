@@ -1,0 +1,54 @@
+table.grades-table {
+  height: 600px;
+  position: relative;
+}
+
+table.grades-table tbody {
+  overflow: auto;
+}
+
+table.grades-table input[type=number] {
+  width: 4em;
+  text-align: right;
+  border: 1px solid #999999;
+}
+
+table.grades-table td {
+  text-align: right;
+}
+
+table.grades-table tr.focused {
+  background-color: change-color(#F5DCCC, $lightness: 90%);
+}
+
+table.grades-table tr:hover {
+  background-color: change-color(#F5DCCC, $lightness: 95%);
+}
+
+span.progress-indicators {
+  display: inline-block;
+  vertical-align: middle;
+}
+.progress-indicators img {
+  display: inline-block;
+  position: absolute;
+  opacity: 1;
+}
+.progress-indicators img:last-child {
+  position: static;
+}
+.progress-indicators img.hidden {
+  opacity: 0;
+}
+
+.progress-indicators img.flash {
+  -moz-transition-duration: 1000ms;
+  -moz-transition-property: opacity;
+  -moz-transition-timing-function: ease-in-out;
+  -webkit-transition-property: opacity;
+  -webkit-transition-timing-function: ease-in-out;
+  -webkit-transition-duration: 1000ms;
+  transition-duration: 1000ms;
+  transition-property: opacity;
+  transition-timing-function: ease-in-out;
+}

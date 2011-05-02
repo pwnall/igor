@@ -121,11 +121,12 @@ class User < ActiveRecord::Base
               map(&:grades).flatten
   end
   
-  # The user's real name.
+  # The user's real-life name.
   #
-  # Returns the email username if the user has not created a profile.
-  def real_name
-    (profile && profile.real_name) || email[0, email.index(?@)]
+  # May return the user's e-mail if the user managed to register without
+  # creating a profile.
+  def name
+    (profile && profile.name) || email
   end
   
   # The user's athena ID.
@@ -139,15 +140,13 @@ class User < ActiveRecord::Base
   def display_name_for(other_user = nil, identity_value = 'You')
     if self == other_user
       identity_value
-    elsif profile and profile.real_name
-      # TODO(costan): look at the other user's network, and if we're the only
+    elsif profile
+      # TODO(pwnall): look at the other user's network, and if we're the only
       #               user with a given first name, return the first name
-      profile.real_name
-    elsif profile and profile.athena_username
-      profile.athena_username
+      name
     else
-      email[0, email.index(?@)]
-    end      
+      name
+    end
   end
 
   # The user's registration for the main class on this site.
@@ -214,10 +213,8 @@ class User < ActiveRecord::Base
     query = User.parse_freeform_query query
     
     # Real name matching: 4 points.               
-    score += User.score_query_part query[:name], real_name,
-                                   4, 2, 1, 0.2
-    score += User.score_query_part query[:string], real_name,
-                                   2, 1, 0.5, 0.1
+    score += User.score_query_part query[:name], name, 4, 2, 1, 0.2
+    score += User.score_query_part query[:string], name, 2, 1, 0.5, 0.1
 
     # Email matching: 6 points.
     score += User.score_query_part query[:email], "#{athena_id}@mit.edu",
@@ -231,8 +228,8 @@ class User < ActiveRecord::Base
   def self.find_all_by_query!(query)
     query.gsub!(/ \[.*/, '')
     sql_query = '%' + query.strip + '%'
-    matching_profiles = Profile.find(:all, :conditions => ['(real_name LIKE ?) OR (athena_username LIKE ?)', sql_query, sql_query], :include => :user)
-    unscored_users = User.find(:all, :conditions => ['(name LIKE ?) OR (email LIKE ?)', sql_query, sql_query], :include => :profile) | matching_profiles.map { |i| i.user }
+    matching_profiles = Profile.find(:all, :conditions => ['(name LIKE ?) OR (athena_username LIKE ?)', sql_query, sql_query], :include => :user)
+    unscored_users = User.find(:all, :conditions => ['(email LIKE ?)', sql_query, sql_query], :include => :profile) | matching_profiles.map { |i| i.user }
     unscored_users.map { |u| [u.query_score(query), u] }.sort_by { |v| [-v[0], v[1].name] }[0, 10].map(&:last)
   end
   

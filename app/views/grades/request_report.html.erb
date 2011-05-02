@@ -11,7 +11,7 @@
     </dd>
     <dt><%= label_tag :name_by, 'Name students by' %></dt>
     <dd>
-      <%= select_tag :name_by, options_for_select([['Real name', 'real_name'], ['Athena ID', 'athena_username'], ['alg.csail.mit.edu ID', 'username'], ['@mit e-mail', 'email']]) %>      
+      <%= select_tag :name_by, options_for_select([['Real name', 'name'], ['Athena ID', 'athena_username'], ['.edu e-mail', 'email']]) %>      
     </dd>
     <dt><%= label_tag :use_weights, 'Weight totals' %></dt>
     <dd>

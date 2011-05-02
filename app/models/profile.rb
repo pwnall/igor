@@ -23,7 +23,7 @@
 # User data, asides from credentials which are stored in the User model.
 class Profile < ActiveRecord::Base 
   # The user's full legal name.
-  validates :real_name, :length => 1..128, :presence => true
+  validates :name, :length => 1..128, :presence => true
   
   # The way the user prefers to be called.
   validates :nickname, :length => 1..64, :presence => true

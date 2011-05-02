@@ -17,7 +17,72 @@ class GradesController < ApplicationController
 
   # GET /grades/editor
   def editor
-    @targets = Course.main.registrations.map(&:user)
+    @subjects = Course.main.students.includes(:profile).sort_by(&:name)
+    query = Course.main.assignments
+    if params[:assignment_id]
+      query = query.where(:id => params[:assignment_id])
+    else
+      query = query.where(['deadline < ?', Time.now]).order('deadline DESC')
+    end
+    
+    @assignment = query.first
+    @metrics = @assignment.metrics
+    @grades = @assignment.grades.group_by { |g| [g.subject, g.metric] }
+    
+    respond_to do |format|
+      format.html do
+        render :layout => 'full'
+      end
+    end
+  end
+  
+  # POST /grades
+  def create
+    @grade = Grade.new params[:grade]
+    @grade.grader = current_user
+    if @grade.save
+      if request.xhr?
+        render :action => 'edit', :layout => false
+      else
+        render :action => 'edit'
+      end
+    else
+      respond_to do |format|
+        if request.xhr?
+          head :not_acceptable
+        else
+          render :action => 'edit'
+        end
+      end
+    end
+  end
+  
+  # PUT /grades
+  def update
+    @grade = Grade.find params[:id]
+    if params[:grade][:score].blank?
+      @grade.destroy
+      @grade = Grade.new params[:grade]
+      success = true
+    else
+      @grade.grader = current_user
+      success = @grade.update_attributes params[:grade]
+    end
+    if success
+      if request.xhr?
+        render :action => 'edit', :layout => false, :format => 'html'
+      else
+        render :action => 'edit'
+      end
+    else
+      respond_to do |format|
+        if request.xhr?
+          head :not_acceptable
+        else
+          render :action => 'edit'
+        end
+      end
+    end
   end
 
   # GET /grades/request_missing/0
@@ -91,8 +156,8 @@ class GradesController < ApplicationController
     end
     @names_by_uid = Hash[*((
       case params[:name_by]
-      when 'real_name'
-         @users.map { |u| [u.id, u.real_name] }
+      when 'name'
+         @users.map { |u| [u.id, u.name] }
       when 'athena_username'
         @users.map { |u| [u.id, u.athena_id] }
       when 'username'
@@ -166,61 +231,6 @@ class GradesController < ApplicationController
     send_data csv_text, :filename => 'grades.csv', :type => 'text/csv', :disposition => 'inline'
   end
   
-  # XHR /grades/for_user/uid
-  # XHR /grades/for_user/0?query=...
-  def for_user
-    if(params[:id].to_i != 0)
-      @user = User.find(params[:id])
-    else
-      @user = User.find_first_by_query!(params[:query])
-    end
-
-    @updated = false    
-    pull_grades @user
-    show_or_update_for_user    
-  end
-
-  # XHR PUT /grades/1/update_for_user
-  def update_for_user
-    @user = User.find(params[:id])
-    pull_grades @user
-    
-    params[:grades].each do |mid_text, grade_score|
-      mid = mid_text.to_i
-      if grade_score.blank?
-        # erase grade
-        if @grades_by_mid.has_key? mid
-          @grades_by_mid[mid].destroy
-          @grades_by_mid.delete mid
-        end
-      else
-        # add grade
-        unless @grades_by_mid.has_key? mid
-          if partition = AssignmentMetric.find(mid).assignment.team_partition
-            subject = partition.team_for_user @user
-          else
-            subject = @user
-          end
-          @grades_by_mid[mid] = Grade.new :metric_id => mid,
-                                          :subject => subject
-        end
-        if @grades_by_mid[mid].score != grade_score.to_f
-          @grades_by_mid[mid].score = grade_score
-          @grades_by_mid[mid].grader = current_user
-          @grades_by_mid[mid].save!
-        end
-      end
-    end
-    
-    @updated = true    
-    show_or_update_for_user
-  end
-  
-  def pull_grades(user)
-    @grades_by_mid = user.grades.index_by(&:metric_id)
-  end
-  private :pull_grades
-  
   def pull_metrics(only_published = true)
     @metrics = AssignmentMetric.includes :assignment
     @metrics = @metrics.where(:published => true) if only_published
@@ -237,13 +247,4 @@ class GradesController < ApplicationController
     end    
   end  
   private :pull_metrics
-  
-  def show_or_update_for_user
-    pull_metrics false
-        
-    respond_to do |format|
-      format.js { render :action => :for_user, :layout => false }
-    end    
-  end
-  private :show_or_update_for_user
 end

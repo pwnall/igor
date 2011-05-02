@@ -36,6 +36,9 @@ class Course < ActiveRecord::Base
   
   # Assignments issued for this course.
   has_many :assignments, :dependent => :destroy, :inverse_of => :course
+  
+  # Students registered for this course.
+  has_many :students, :through => :registrations, :source => :user
 
   # The main (and only) course on the website.
   def self.main

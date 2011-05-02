@@ -4,10 +4,7 @@
 <title>
   MIT <%= Course.main.number %>
 </title>
-<%= csrf_meta_tag %>
-<%= favicon_link_tag %>
-<%= stylesheet_link_tag :pwnstyles, 'application', :cache => true %>
-<%= javascript_include_tag :all, :cache => true %>
+<%= head_resources_tags %>
 <%= render 'layouts/google_analytics' %>
 </head>
 <body class="user">

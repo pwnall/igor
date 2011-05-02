@@ -47,6 +47,9 @@ class Assignment < ActiveRecord::Base
   # All students' submissions for this assignment.
   has_many :submissions, :through => :deliverables, :inverse_of => :assignment
   
+  # All students' grades for this assignment.
+  has_many :grades, :through => :metrics
+  
   # The questions in the feedback survey for this assignment. 
   def feedback_questions
     # NOTE: this should be a has_many :through association, except ActiveRecord

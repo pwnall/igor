@@ -17,7 +17,7 @@
 	<% for announcement in @announcements %>
 	  <tr>
 	    <td><%= announcement.headline %></td>
-	    <td><%= announcement.author.real_name %></td>
+	    <td><%= announcement.author.name %></td>
 	    <td><%= link_to 'Edit', edit_announcement_path(announcement) %></td>
 	    <td><%= link_to 'Destroy', announcement, :confirm => 'Are you sure?', :method => :delete %></td>
 	  </tr>

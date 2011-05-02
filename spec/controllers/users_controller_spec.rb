@@ -10,7 +10,7 @@ describe UsersController do
   before do
     request.session[:user_id] = 42
     mock_admin = mock_model(User,
-        {:active => true, :admin => true, :real_name => 'Admin'})
+        {:active => true, :admin => true, :name => 'Admin'})
     User.stub(:find).with(42) { mock_admin }
   end
 
