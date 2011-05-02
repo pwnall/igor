@@ -82,7 +82,7 @@ end
     exam.metrics.each_with_index do |metric, k|
       next if j == k
       Grade.create! :subject => user, :grader => admin, :metric => metric,
-          :score => metric.max_score * (0.1 * (i + j + k) % 10)
+          :score => metric.max_score * (0.1 * ((i + j + k) % 10))
     end
   end
 end

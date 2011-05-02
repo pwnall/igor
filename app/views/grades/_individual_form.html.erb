@@ -1,5 +1,8 @@
 <%= form_for grade, :remote => true, :format => 'html' do |f| %>
-  <%= f.number_field :score, :min => 0 %> / <%= f.object.metric.max_score %>
+  <%= f.number_field :score, :min => 0 %>
+  <span class="max-points">
+    / <%= f.object.metric.max_score %>
+  </span>
   <span class="progress-indicators">
     <%= image_tag 'ajax-loader.gif', :alt => 'server request', :class => 'upload-pending hidden' %>
     <%= image_tag 'upload_win.png', :alt => 'server request succeeded', :class => 'upload-win flash hidden' %>

@@ -28,7 +28,7 @@ input[type=submit], input[type=button], button, a.button {
 
 // Text fields.
 input[type=text], input[type=email], input[type=tel], input[type=password],
-    textarea {
+    input[type=search], textarea {
   margin: 0;
   padding: 0.1em 0.5ex;
   border: 1px solid $input-border-color;
@@ -63,7 +63,7 @@ input[type=radio], input[type=checkbox] {
 // Error highlighting.
 .field_with_errors {
   input[type=text], input[type=email], input[type=tel], input[type=password],
-  textarea {
+      input[type=search], textarea {
     border: 1px solid #FF0000;
     box-shadow: inset 0px 1px 2px #FF8888;
     -moz-box-shadow: inset 0px 1px 2px #FF8888;

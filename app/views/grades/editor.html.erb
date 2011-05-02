@@ -1,18 +1,12 @@
-<h2>Grade Entry</h2>
+<h2>Grade Entry for <%= @assignment.name %></h2>
 
 <%= form_tag editor_grades_path, :method => :get do %>
-  <section class="fields">
-    <p class="field">
-      <%= label_tag :assignment_id, 'Assignment' %>
-      <span class="value">
-      <%= select_tag :assignment_id,
-            options_for_select(Course.main.assignments.order('deadline DESC').map { |a| [a.name, a.id] }, @assignment.id)
-      %>
-      </span>
-    </p>
-  </section>
-	<p class="action">
-    <%= submit_tag "Filter" %>
+  <p>
+    <%= label_tag :assignment_id, 'Switch assignment' %>
+    <%= select_tag :assignment_id,
+          options_for_select(Course.main.assignments.order('deadline DESC').map { |a| [a.name, a.id] }, @assignment.id)
+    %>
+    <%= submit_tag "Switch" %>
 	</p>
 <% end %>
 

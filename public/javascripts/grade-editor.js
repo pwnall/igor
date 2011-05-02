@@ -70,10 +70,41 @@ GradeEditor.redoSummary = function(row) {
   $('span.grade-sum', row).text(sum.toFixed(2));
 };
 
+/** Hides and shows grade rows to reflect searchbox changes. */
+GradeEditor.onSearchChange = function(event) {
+  var search = $(event.target);
+  var nameFilter = (search.val() || '').toLowerCase();
+  if (nameFilter == GradeEditor.onSearchChange.oldNameFilter) {
+    return;
+  }
+  GradeEditor.onSearchChange.oldNameFilter = nameFilter;
+  
+  var table = search.parents('table').first();
+  $('tr[data-subject-name]', table).each(function (index, e) {
+    var element = $(e);
+    var name = $(e).attr('data-subject-name');
+    if (nameFilter === '' || name.toLowerCase().indexOf(nameFilter) != -1) {
+      element.removeClass('hidden');
+    } else {
+      element.addClass('hidden');
+    }
+  });
+};
+/** Avoids applying the same name filter twice. */
+GradeEditor.onSearchChange.oldNameFilter = "";
+
 /** Wires event listeners into the DOM. */
 GradeEditor.onLoad = function () {
   $('table.grades-table input[type=number]').live('blur', GradeEditor.onBlur);
   $('table.grades-table input[type=number]').live('focus', GradeEditor.onFocus);
+  $('table.grades-table input[type=search]').bind('change',
+                                                  GradeEditor.onSearchChange);
+  $('table.grades-table input[type=search]').bind('textInput',
+                                                  GradeEditor.onSearchChange);
+  $('table.grades-table input[type=search]').bind('input',
+                                                  GradeEditor.onSearchChange);
+  $('table.grades-table input[type=search]').bind('keydown',
+                                                  GradeEditor.onSearchChange);
   $('table.grades-table form').live('ajax:success', GradeEditor.onAjaxSuccess);
   $('table.grades-table form').live('ajax:error', GradeEditor.onAjaxError);
   $('table.grades-table tbody tr').each(function (index, row) {
