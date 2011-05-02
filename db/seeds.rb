@@ -9,6 +9,9 @@
 # Course.
 
 course = Course.main
+course.update_attributes! :number => '1.337', :title => 'Intro to Pwnage',
+                          :has_recitations => false, :has_surveys => false,
+                          :has_teams => false
 prereq1 = Prerequisite.create! :course => course,
     :prerequisite_number => '6.01', :waiver_question => 'Programming experience'
 prereq2 = Prerequisite.create! :course => course,
@@ -80,7 +83,7 @@ end
   exams.each_with_index do |exam, j|
     next unless exam.deadline < Time.now
     exam.metrics.each_with_index do |metric, k|
-      next if j == k
+      next if i + j == k
       Grade.create! :subject => user, :grader => admin, :metric => metric,
           :score => metric.max_score * (0.1 * ((i + j + k) % 10))
     end

@@ -12,18 +12,18 @@
 var PwnFx = {};
 
 /** Wires JS to elements with data-pwnfx attributes. */
-PwnFx.wireAll = function () {
-  $('[data-pwnfx-move]').each(function (_, element) {
+PwnFx.wireAll = function (scope) {
+  $('[data-pwnfx-move]', scope).each(function (_, element) {
     PwnFx.wireMove(element);
   });
 
-  $('[data-pwnfx-refresh-url]').each(function (_, element) {
+  $('[data-pwnfx-refresh-url]', scope).each(function (_, element) {
     PwnFx.wireRefresh(element);
   });
-  $('[data-pwnfx-confirm]').each(function (_, element) {
+  $('[data-pwnfx-confirm]', scope).each(function (_, element) {
     PwnFx.wireConfirm(element);
   });
-  $('[data-pwnfx-reveal]').each(function (_, element) {
+  $('[data-pwnfx-reveal]', scope).each(function (_, element) {
     PwnFx.wireReveal(element);
   });
 };
@@ -41,7 +41,9 @@ PwnFx.wireRefresh = function (element) {
   var xhrMethod = jElement.attr('data-pwnfx-refresh-method') || 'POST';
   var form = $(jElement.parents('form')[0]);
   var onXhrSuccessFn = function (data) {
-    $(targetSelector).html(data);
+    var target = $(targetSelector);
+    target.html(data);
+    PwnFx.wireAll(target);  // Wire any new data-pwnfx- elements.
   };
   var refreshPending = false;
   var refreshOldValue = null;
@@ -157,4 +159,4 @@ PwnFx.wireReveal = function (element) {
 };
 
 // Wire JS to elements when the document is loaded.
-$(PwnFx.wireAll);
+$(function() { PwnFx.wireAll(document) });

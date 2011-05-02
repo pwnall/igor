@@ -7,15 +7,21 @@
     <li>
       <%= link_to 'Metrics', assignment_metrics_path %>
     </li>
+    <% if Course.main.has_recitations? %>
     <li>
       <%= link_to 'Recitations', recitation_sections_path %>
     </li>
+    <% end %>
+    <% if Course.main.has_surveys? %>
     <li>
       <%= link_to 'Surveys', survey_questions_path %>
     </li>
+    <% end %>
+    <% if Course.main.has_teams? %>
     <li>
       <%= link_to 'Teams', team_partitions_path %>
     </li>
+    <% end %>
     
     <li>
       <%= link_to 'Course Info', courses_path %>
@@ -27,9 +33,11 @@
     <li>
       <%= link_to 'Submissions', submissions_path %>
     </li>
+    <% if Course.main.has_surveys? %>
     <li>
       <%= link_to 'Survey Answers', survey_answers_path %>
     </li>
+    <% end %>
     <li>
       <%= link_to 'Grade Spreadsheet', request_report_grades_path %>
     </li>

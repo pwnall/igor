@@ -1,53 +1,40 @@
 <h2>Package Submissions</h2>
 <%= form_tag package_assignment_submissions_path do %>
-  <dl>
-  	<dt><%= label_tag :submission_assignment_id, 'Assignment' %></dt>
-		<dd>
-      <%= select_tag :assignment_id,
-            options_for_select(@assignments.map { |a| [a.name, a.id] }, nil),
-            :id => 'submission_assignment_id' %>			
-		</dd>
-		<dt>
-			<%= label_tag :submission_cutoff_enable, 'Only late' %>
-		</dt>
-		<dd>
-      <%= check_box_tag :cutoff_enable, '1', false, :id => 'submission_cutoff_enable' %>
-      <div id="submission_cutoff_container">
+  <section class="fields">
+    <p class="field">
+      <%= label_tag :assignment_id, 'Assignment' %>
+      <span class="value">
+        <%= select_tag :assignment_id,
+              options_for_select(@assignments.map { |a| [a.name, a.id] }),
+              'data-pwnfx-refresh-target' => 'submission-deliverables-container',
+              'data-pwnfx-refresh-url' => xhr_update_deliverables_submissions_path %>
+      </span>
+		</p>
+		<p class="field">
+			<%= label_tag :cutoff_enable, 'Only late' %>
+      <span class="value">
+        <%= check_box_tag :cutoff_enable, '1', false,
+              :id => 'submission_cutoff_enable',
+              'data-pwnfx-reveal' => 'submission-cutoff',
+              'data-pwnfx-reveal-trigger' => 'uncheck' %>
+        get submissions after the deadline
+      </span>
+    </p>
+    <p class="field" id="submission_cutoff_container"
+                     data-pwnfx-reveal-target="submission-cutoff">
+      <%= label_tag :submission_cutoff %>
+      <span class="value">
         <%= select_datetime (@assignments.first ? @assignments.first.deadline : Time.now - 1.day),
                             :prefix => 'cutoff', :use_short_month => true, :minute_step => 15,
                             :datetime_separator => ' at ', :time_separator => ':' %>
-      </div>
-		</dd>		
-  </dl>
+      </span>
+		</p>
+  </section>
 
-  <div id="submission_deliverables_container">
-    &nbsp;
+  <div id="submission-deliverables-container">
   </div>
 
-  <p>
+  <p class="action">
   	<%= submit_tag "Build package" %>
   </p>
 <% end %> 
-			
-<%= javascript_tag "show_div_on_checkbox_setting('submission_cutoff_container', 'submission_cutoff_enable', true);" %>			
-		
-<%= observe_field :submission_assignment_id,
-	:url => xhr_update_deliverables_submissions_path,
-	:with => '"assignment_id=" + encodeURIComponent($("submission_assignment_id").value)',
-	:update => 'submission_deliverables_container',
-	:before => "$('submission_deliverables_container').update('#{loading_image_tag}')"
-%>
-
-<%= observe_field :submission_assignment_id,
-	:url => xhr_update_cutoff_submissions_path,
-	:with => '"assignment_id=" + encodeURIComponent($("submission_assignment_id").value)',
-	:update => 'submission_cutoff_container',
-  :before => "$('submission_cutoff_container').update('#{loading_image_tag}')"
-%>
-
-<%= javascript_tag remote_function(
-	:url => xhr_update_deliverables_submissions_path,
-	:with => '"assignment_id=" + encodeURIComponent($("submission_assignment_id").value)',
-	:update => 'submission_deliverables_container',
-  :before => "$('submission_deliverables_container').update('#{loading_image_tag}')"
-) %>

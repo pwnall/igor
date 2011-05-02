@@ -6,6 +6,8 @@ class CreateCourses < ActiveRecord::Migration
       t.string :ga_account, :limit => 32, :null => false
       t.string :email, :limit => 64, :null => false
       t.boolean :has_recitations, :null => false, :default => true
+      t.boolean :has_surveys, :null => false, :default => true
+      t.boolean :has_teams, :null => false, :default => true
 
       t.timestamps
     end

@@ -31,7 +31,7 @@ module CoverSheet
     pdf.font "Times-Roman"
     user = target.respond_to?(:users) ? target.users.first : target
     if Course.main.has_recitations?
-      if user.profile and user.profile.recitation_section
+      if user.registration and user.registration.recitation_section
         section_title =
             display_name_for_recitation_section user.profile.recitation_section
       else

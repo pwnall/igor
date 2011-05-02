@@ -4,11 +4,11 @@ table.grades-table {
   tbody {
     overflow: auto;
   
-    tr.focused {
-      background-color: change-color(#F5DCCC, $lightness: 90%);
-    }
     tr:hover {
       background-color: change-color(#F5DCCC, $lightness: 95%);
+    }
+    tr.focused {
+      background-color: change-color(#F5DCCC, $lightness: 90%);
     }
     tr.hidden {
       display: none;
