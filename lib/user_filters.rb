@@ -5,7 +5,7 @@ module UserFilters
                     User.where(:id => session[:user_id]).first
     if @current_user
       response.headers['X-Account-Management-Status'] =
-          "active; name=\"#{current_user.real_name}\""
+          "active; name=\"#{current_user.name}\""
     else
       response.headers['X-Account-Management-Status'] = "none"
     end

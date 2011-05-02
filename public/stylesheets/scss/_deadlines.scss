@@ -1,24 +1,28 @@
-dl.deadlines {
-  margin: 0;
-  padding: 0;
-}
-dl.deadlines dt {
-  float: left;
-  padding: 0;
-  width: 50px;
-  color: #99A0EF;
-}
-dl.deadlines dd {
-  margin: 0;
-  padding: 0 0 0 50px;
-}
-dl.deadlines dt.deadline-overdue, dl.deadlines dd.deadline-overdue a {
-  color: #7E3300;
-}
-dl.deadlines dd.deadline-done, dl.deadlines dd.deadline-done a {
-  color: #99A0EF;
-}
-dl.deadlines dt.deadline-missed, dl.deadlines dd.deadline-missed {
-  color: #EABA99;
-  text-decoration: line-through;
+ol.deadlines {
+  display: table;
+  width: 100%;
+  
+  li {
+    display: table-row;
+  }
+  li span {
+    display: table-cell;
+  }
+  li span.date {
+    width: (2 * $column-total);
+  }
+
+  li.deadline-overdue {
+    color: #7E3300;
+  }
+  li.deadline-done {
+    color: #99A0EF;
+  }
+  li.deadline-missed {
+    color: #EABA99;
+    text-decoration: line-through;
+  }
+  li a {
+    color: inherit;
+  }
 }

@@ -22,7 +22,7 @@
 			<% for @profile in @profiles %>
 			  <tr>
 			    <td><%=link_to h(@profile.user.email), @profile.user %></td>
-			    <td><%=h @profile.real_name %></td>
+			    <td><%=h @profile.name %></td>
 			    <td><%=h @profile.athena_username %></td>
           <% if Course.main.has_recitations %>
 					<td><%=h 'R%02d' % (@profile.recitation_section ? @profile.recitation_section.serial : 0) %>

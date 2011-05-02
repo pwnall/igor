@@ -24,6 +24,12 @@ class Course < ActiveRecord::Base
   # True if the course has recitation sections.
   validates :has_recitations,
       :inclusion => { :in => [true, false], :allow_nil => false }
+  # True if the course has homework surveys.
+  validates :has_surveys,
+      :inclusion => { :in => [true, false], :allow_nil => false }
+  # True if the course has homework teams.
+  validates :has_teams,
+      :inclusion => { :in => [true, false], :allow_nil => false }
   
   # Google Analytics account ID for the course.
   validates :ga_account, :length => 1..32, :presence => true
@@ -36,6 +42,9 @@ class Course < ActiveRecord::Base
   
   # Assignments issued for this course.
   has_many :assignments, :dependent => :destroy, :inverse_of => :course
+  
+  # Students registered for this course.
+  has_many :students, :through => :registrations, :source => :user
 
   # The main (and only) course on the website.
   def self.main

@@ -64,6 +64,8 @@ ActiveRecord::Schema.define(:version => 20110429122654) do
     t.string   "ga_account",      :limit => 32,                    :null => false
     t.string   "email",           :limit => 64,                    :null => false
     t.boolean  "has_recitations",                :default => true, :null => false
+    t.boolean  "has_surveys",                    :default => true, :null => false
+    t.boolean  "has_teams",                      :default => true, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -153,7 +155,7 @@ ActiveRecord::Schema.define(:version => 20110429122654) do
 
   create_table "profiles", :force => true do |t|
     t.integer  "user_id",                                             :null => false
-    t.string   "real_name",         :limit => 128,                    :null => false
+    t.string   "name",              :limit => 128,                    :null => false
     t.string   "nickname",          :limit => 64,                     :null => false
     t.string   "university",        :limit => 64,                     :null => false
     t.string   "department",        :limit => 64,                     :null => false

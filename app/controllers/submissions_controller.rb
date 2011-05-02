@@ -6,7 +6,7 @@ class SubmissionsController < ApplicationController
   
   layout 'full'
   
-  # XHR /submissions/xhr_update_deliverables/0?assignment_id=1
+  # XHR /submissions/xhr_update_deliverables?assignment_id=1
   def xhr_update_deliverables
     @assignment = Assignment.where(:id => params[:assignment_id]).
                              includes(:deliverables).first

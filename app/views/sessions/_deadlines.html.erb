@@ -1,17 +1,19 @@
 <h2>Deadlines</h2>
 
-<dl class="deadlines">
+<ol class="deadlines">
 <% Contents::Deadline.for(current_user).each do |deadline| %>
-  <dt class="deadline-<%= deadline.state %>">
-    <%= deadline.due.to_s(:deadline_short) %>
-  </dt>
-  <dd class="deadline-<%= deadline.state %>">
-  <% if deadline.active? %>
-    <%= link_to deadline.headline, self.send(*deadline.link[0]),
-                deadline.link[1] || {} %>
-	<% else %>
-	  <%= deadline.headline %>
-	<% end %>
-  </dd>
+  <li class="deadline-<%= deadline.state %>">
+    <span class="date">
+      <%= deadline.due.to_s(:deadline_short) %>
+    </span>
+    <span class="title">
+      <% if deadline.active? %>
+        <%= link_to deadline.headline, self.send(*deadline.link[0]),
+                    deadline.link[1] || {} %>
+      <% else %>
+        <%= deadline.headline %>
+      <% end %>
+    </span>
+  </li>
 <% end %>
-</dl>
+</ol>

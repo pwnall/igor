@@ -31,7 +31,7 @@ module CoverSheet
     pdf.font "Times-Roman"
     user = target.respond_to?(:users) ? target.users.first : target
     if Course.main.has_recitations?
-      if user.profile and user.profile.recitation_section
+      if user.registration and user.registration.recitation_section
         section_title =
             display_name_for_recitation_section user.profile.recitation_section
       else
@@ -55,7 +55,7 @@ module CoverSheet
       v_offset = 24 * target.users.length
     else
       pdf.text((target.profile.nil? ? 'no real name on file' :
-                target.profile.real_name),
+                target.profile.name),
                :align => :left, :size => 24)
       v_offset = 24
     end
@@ -76,7 +76,7 @@ module CoverSheet
             'on time' : 'late by ' +
             distance_of_time_in_words(d.assignment.deadline, s.updated_at)
         if target.respond_to?(:users)
-          submitted_text += ' by ' + user.real_name
+          submitted_text += ' by ' + user.name
         end
         [d.name, 
          number_to_human_size(s.db_file.f.size),

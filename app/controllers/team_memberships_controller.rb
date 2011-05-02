@@ -38,11 +38,11 @@ class TeamMembershipsController < ApplicationController
       if @team_membership.save
         format.html do
           redirect_to @team_membership.team.partition,
-                      :notice => "#{@user.real_name} added to #{@team_membership.team.name}"
+                      :notice => "#{@user.name} added to #{@team_membership.team.name}"
         end
       else
         format.html do
-          flash[:error] = "#{@user.real_name} already belongs to a team in #{@team_membership.team.partition.name}"
+          flash[:error] = "#{@user.name} already belongs to a team in #{@team_membership.team.partition.name}"
           redirect_to @team_membership.team.partition
         end
       end
@@ -57,7 +57,7 @@ class TeamMembershipsController < ApplicationController
     respond_to do |format|
       format.html do
         redirect_to @team_membership.team.partition,
-                    :notice => "#{@team_membership.user.real_name} removed from #{@team_membership.team.name}"
+                    :notice => "#{@team_membership.user.name} removed from #{@team_membership.team.name}"
       end
     end
   end

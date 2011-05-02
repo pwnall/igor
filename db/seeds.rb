@@ -9,6 +9,9 @@
 # Course.
 
 course = Course.main
+course.update_attributes! :number => '1.337', :title => 'Intro to Pwnage',
+                          :has_recitations => false, :has_surveys => false,
+                          :has_teams => false
 prereq1 = Prerequisite.create! :course => course,
     :prerequisite_number => '6.01', :waiver_question => 'Programming experience'
 prereq2 = Prerequisite.create! :course => course,
@@ -22,7 +25,7 @@ admin.active = true
 admin.admin = true
 admin.save!
 
-admin_profile = Profile.create! :user => admin, :real_name => 'Victor Costan',
+admin_profile = Profile.create! :user => admin, :name => 'Victor Costan',
     :nickname => 'Victor', :university => 'MIT', :department => 'EECS',
     :year => 'G', :athena_username => 'costan', :about_me => "I'm the boss",
     :allows_publishing => true
@@ -44,7 +47,7 @@ names.each_with_index do |name, i|
   user.save!
   users << user
   
-  Profile.create! :user => user, :real_name => name,
+  Profile.create! :user => user, :name => name,
       :nickname => first_name, :university => 'MIT', :allows_publishing => true,
       :department => depts[i % depts.length], :year => (1 + (i % 4)).to_s,
       :athena_username => short_name, :about_me => "Test subject #{i + 1}"
@@ -80,9 +83,9 @@ end
   exams.each_with_index do |exam, j|
     next unless exam.deadline < Time.now
     exam.metrics.each_with_index do |metric, k|
-      next if j == k
+      next if i + j == k
       Grade.create! :subject => user, :grader => admin, :metric => metric,
-          :score => metric.max_score * (0.1 * (i + j + k) % 10)
+          :score => metric.max_score * (0.1 * ((i + j + k) % 10))
     end
   end
 end
@@ -117,7 +120,7 @@ end
     pdf.y = 792 - 36
     pdf.font "Times-Roman"
     pdf.text user.email, :align => :left, :size => 24
-    pdf.text user.profile.real_name, :align => :left, :size => 24
+    pdf.text user.name, :align => :left, :size => 24
     pdf.text pset.name, :align => :left, :size => 24
     pdf_contents = pdf.render
     
@@ -133,9 +136,9 @@ end
                                                :updated_at => time + 5.seconds
     
     pset.metrics.each_with_index do |metric, k|
-      next if j == k
+      next if i + j == k
       Grade.create! :subject => user, :grader => admin, :metric => metric,
-          :score => metric.max_score * (0.1 * (i + j + k) % 10),
+          :score => metric.max_score * (0.1 * ((i + j + k) % 10)),
           :created_at => pset.deadline + 1.day,
           :updated_at => pset.deadline + 1.day
     end

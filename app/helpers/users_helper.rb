@@ -9,7 +9,7 @@ module UsersHelper
     else
       url = user.gravatar_url(:size => size_pixels)
     end
-    image_tag url, :alt => "avatar for #{user.real_name}",
+    image_tag url, :alt => "avatar for #{user.name}",
               :style => "width: #{size_pixels}px; height: #{size_pixels}px;"
   end
   
@@ -17,8 +17,8 @@ module UsersHelper
   #               yes, it's important enough that it should be a part of the
   #               model
   def display_name_for_user(user, format = :short)
-    return user.real_name if format == :really_short
+    return user.name if format == :really_short
       
-    "#{user.real_name} [#{user.email}]" if format == :long
+    "#{user.name} [#{user.email}]" if format == :long
   end
 end

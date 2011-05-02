@@ -156,12 +156,12 @@ describe User do
     end
   end
   
-  describe 'real_name' do
-    it 'should report user name if no profile is available' do
-      admin.real_name.should == 'costan'
+  describe 'name' do
+    it 'should report .edu e-mail if no profile is available' do
+      admin.name.should == 'costan@mit.edu'
     end    
     it 'should use name on profile if available' do
-      dexter.real_name.should == 'Dexter Boy Genius'
+      dexter.name.should == 'Dexter Boy Genius'
     end
   end
   
