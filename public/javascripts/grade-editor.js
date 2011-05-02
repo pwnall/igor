@@ -47,6 +47,27 @@ GradeEditor.onFocus = function (event) {
   target.parents('tr').first().addClass('focused');
 };
 
+/** Tabs to the next window if the user presses Enter. */
+GradeEditor.onKeyDown = function (event) {
+  if (event.which === 13) {
+    event.preventDefault();
+    
+    var table = $(event.target).parents('table').first();
+    var fields = [];
+    var myIndex = null;
+    $('tr:not(.hidden) input[type=number]').each(function (index, e) {
+      fields[index] = e;
+      if (event.target === e) {
+        myIndex = index;
+      }
+    });
+    // Cycle to the beginning after reaching the last field.
+    var nextField = fields[myIndex + 1] || fields[0];
+    $(nextField).focus();
+    return false;
+  }
+};
+
 /** Reflects a successful grade save. */
 GradeEditor.onAjaxSuccess = function (event, data, status, xhr) {
   var container = $(event.target).parent();
@@ -97,6 +118,8 @@ GradeEditor.onSearchChange.oldNameFilter = "";
 GradeEditor.onLoad = function () {
   $('table.grades-table input[type=number]').live('blur', GradeEditor.onBlur);
   $('table.grades-table input[type=number]').live('focus', GradeEditor.onFocus);
+  $('table.grades-table input[type=number]').live('keydown',
+                                                  GradeEditor.onKeyDown);
   $('table.grades-table input[type=search]').bind('change',
                                                   GradeEditor.onSearchChange);
   $('table.grades-table input[type=search]').bind('textInput',
