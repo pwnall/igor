@@ -6,12 +6,9 @@
   No registration for <%= Course.main.number %>
   <% if Registration.new(:user => user, :course => Course.main).
                      editable_by_user?(current_user) %>
-  <%= link_to_remote 'Register',
-        :url => new_registration_path(:user_id => user.id,
-                                      :course_id => Course.main.id),
-        :method => :get, :before => update_page { |p|
-           p.replace_html 'registration-ajax-indicator', loading_image_tag
-        } %>
+  <%= link_to 'Register', :method => :get, :remote => true,
+          :url => new_registration_path(:user_id => user.id,
+                                        :course_id => Course.main.id) %>
   <% end %>
   <span id="registration-ajax-indicator"></span>
 </h3>
