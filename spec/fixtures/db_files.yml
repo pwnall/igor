@@ -10,16 +10,27 @@
 #  f_file         :binary(21474836 default(""), not null
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+admin_ps1:
+  f_file_name: admin_ps1.pdf
+  f_file_size: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").length %>
+  f_content_type: application/pdf
+  f_file: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").inspect %>
 
-one:
-  f_file_name: MyString
-  f_content_type: MyString
-  f_file_size: 1
-  f_file: 
+admin_project:
+  f_file_name: admin_project.pdf
+  f_file_size: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").length %>
+  f_content_type: application/pdf
+  f_file: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").inspect %>
 
-two:
-  f_file_name: MyString
-  f_content_type: MyString
-  f_file_size: 1
-  f_file: 
+admin_assessment:
+  f_file_name: admin_assessment.pdf
+  f_file_size: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").length %>
+  f_content_type: application/pdf
+  f_file: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").inspect %>
+
+submission_catch_all:
+  f_file_name: catch_all.pdf
+  f_file_size: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").length %>
+  f_content_type: application/pdf
+  f_file: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").inspect %>
+

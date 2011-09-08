@@ -14,7 +14,6 @@
 #
 
 admin:
-  name: admin
   password_salt: 1234
   password_hash: <%= User.hash_password('password', '1234').inspect %>
   email: costan@mit.edu
@@ -22,7 +21,6 @@ admin:
   admin: true
 
 dexter:
-  name: dexter
   password_salt: 5678
   password_hash: <%= User.hash_password('pa55w0rd', '5678').inspect %>
   email: genius+6006@mit.edu
@@ -30,7 +28,6 @@ dexter:
   admin: false
 
 inactive:
-  name: lurker
   password_salt: 1234
   password_hash: <%= User.hash_password('password', '1234').inspect %>
   email: costan+lurker@mit.edu
@@ -38,7 +35,6 @@ inactive:
   admin: false
 
 solo:
-  name: solo
   password_salt: 1234
   password_hash: <%= User.hash_password('password', '1234').inspect %>
   email: costan+solo@mit.edu

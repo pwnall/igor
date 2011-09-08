@@ -14,39 +14,24 @@
 admin_ps1:
   deliverable: ps1_writeup
   user: admin
-  code_file_name: admin_ps1.pdf
-  code_file_size: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").length %>
-  code_content_type: application/pdf
-  code_file: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").inspect %>
+  db_file: admin_ps1
 
 admin_project:
   deliverable: project_writeup
   user: admin
-  code_file_name: admin_project.pdf
-  code_file_size: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").length %>
-  code_content_type: application/pdf
-  code_file: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").inspect %>
+  db_file: admin_project
 
 admin_assessment:
   deliverable: assessment_writeup
   user: admin
-  code_file_name: admin_assessment.pdf
-  code_file_size: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").length %>
-  code_content_type: application/pdf
-  code_file: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").inspect %>
+  db_file: admin_assessment
 
 inactive_project:
   deliverable: project_writeup
   user: inactive
-  code_file_name: inactive_project.pdf
-  code_file_size: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").length %>
-  code_content_type: application/pdf
-  code_file: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").inspect %>
+  db_file: submission_catch_all
 
 solo_ps1:
   deliverable: ps1_writeup
   user: solo
-  code_file_name: solo_ps1.pdf
-  code_file_size: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").length %>
-  code_content_type: application/pdf
-  code_file: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").inspect %>
+  db_file: submission_catch_all

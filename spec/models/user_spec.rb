@@ -19,8 +19,8 @@ describe User do
   fixtures :users, :grades, :submissions
   
   let(:dvdjohn) do
-    @dvdjohn = User.new :name => 'dvdjohn', :password => 'awesome',
-             :password_confirmation => 'awesome', :email => 'dvdjohn@mit.edu',
+    @dvdjohn = User.new :email => 'dvdjohn@mit.edu', :password => 'awesome',
+             :password_confirmation => 'awesome', 
              :active => true, :admin => true
   end
   let(:dexter) { users(:dexter) }

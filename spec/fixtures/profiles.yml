@@ -22,7 +22,7 @@
 
 dexter:
   user: dexter
-  real_name: Dexter Boy Genius
+  name: Dexter Boy Genius
   nickname: Dex
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
@@ -35,7 +35,7 @@ dexter:
 
 solo:
   user: solo
-  real_name: Always Going Solo
+  name: Always Going Solo
   nickname: Solo
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
