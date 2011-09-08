@@ -23,7 +23,7 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments/new
   def new
-    @assignment = Assignment.new
+    @assignment = Assignment.new :course => Course.main
     @assignment.deliverables.build
     @assignment.metrics.build
     
@@ -42,6 +42,7 @@ class AssignmentsController < ApplicationController
   # POST /assignments
   def create
     @assignment = Assignment.new(params[:assignment])
+    @assignment.course = Course.main
 
     respond_to do |format|
       if @assignment.save

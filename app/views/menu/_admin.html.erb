@@ -86,6 +86,8 @@
     </li>
   </ol>
 </li>
+<% if Course.main.has_surveys? %>
 <li>
   <%= link_to 'Surveys', root_path(:flavor => :survey_answer) %>
 </li>
+<% end %>

@@ -14,6 +14,8 @@
              :time_separator => ':' %>
     </span>
   </p>
+  
+  <% if f.object.course.has_teams? %>
   <p class="field">
     <%= f.label :team_partition_id, 'Teams' %>
     <span class="field">
@@ -22,6 +24,9 @@
               :class => 'form_field' %>
     </span>
   </p>
+  <% end %>
+  
+  <% if f.object.course.has_surveys? %>
   <p class="field">
     <%= f.label :feedback_survey_id, 'Feedback survey' %>
     <span class="field">
@@ -36,4 +41,6 @@
       students can submit feedback
     </span>
   </p>
+  <% end %>
+
 </section>
