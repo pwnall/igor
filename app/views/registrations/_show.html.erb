@@ -2,10 +2,8 @@
 <h3>
   Registration for <%= registration.course.number %>
   <% if registration.editable_by_user?(current_user) %>
-  <%= link_to_remote 'Edit', :url => edit_registration_path(registration),
-        :method => :get, :before => update_page { |p|
-           p.replace_html 'registration-ajax-indicator', loading_image_tag
-        } %>
+  <%= link_to 'Edit', :url => edit_registration_path(registration),
+        :method => :get, :remote => true %>
   <% end %>
   <span id="registration-ajax-indicator"></span>
 </h3>
