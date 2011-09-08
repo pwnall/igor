@@ -15,6 +15,8 @@ group :assets do
   gem 'sass-rails', "  ~> 3.1.0"
   gem 'coffee-rails', "~> 3.1.0"
   gem 'uglifier'
+  
+  gem 'therubyracer'
 end
 
 gem 'jquery-rails', '>= 1.0.13'
@@ -28,12 +30,11 @@ gem 'jquery-rails', '>= 1.0.13'
 # To use debugger
 # gem 'ruby-debug'
 
-gem 'backports', '>= 2.3.0', :require => 'backports/1.9'
 gem 'daemonz', '>= 0.3.2'
 gem 'delayed_job', '>= 2.1.4'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'fastercsv', '>= 1.5.4', :platforms => [:mri_18]
-gem 'gravtastic', '>= 3.1.0'
+gem 'gravtastic', '>= 3.2.6'
 gem 'mit_stalker', '>= 1.0.3'
 gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
                  :ref => '942a2b43383fd04c0434ca4b27379a114cb28a50'
