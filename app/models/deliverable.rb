@@ -1,18 +1,3 @@
-# == Schema Information
-# Schema version: 20110429122654
-#
-# Table name: deliverables
-#
-#  id            :integer(4)      not null, primary key
-#  assignment_id :integer(4)      not null
-#  name          :string(80)      not null
-#  description   :string(2048)    not null
-#  published     :boolean(1)      not null
-#  filename      :string(256)     default(""), not null
-#  created_at    :datetime
-#  updated_at    :datetime
-#
-
 # The description of a file that students must submit for an assignment.
 class Deliverable < ActiveRecord::Base
   # The user-visible deliverable name.
@@ -74,3 +59,18 @@ class Deliverable < ActiveRecord::Base
     assignment.deadline_passed_for? user
   end  
 end
+
+# == Schema Information
+#
+# Table name: deliverables
+#
+#  id            :integer(4)      not null, primary key
+#  assignment_id :integer(4)      not null
+#  name          :string(80)      not null
+#  description   :string(2048)    not null
+#  published     :boolean(1)      default(FALSE), not null
+#  filename      :string(256)     default(""), not null
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+

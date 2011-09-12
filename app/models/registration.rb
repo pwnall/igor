@@ -1,19 +1,3 @@
-# == Schema Information
-# Schema version: 20110429122654
-#
-# Table name: registrations
-#
-#  id                    :integer(4)      not null, primary key
-#  user_id               :integer(4)      not null
-#  course_id             :integer(4)      not null
-#  dropped               :boolean(1)      not null
-#  for_credit            :boolean(1)      default(TRUE), not null
-#  motivation            :text(16777215)
-#  recitation_section_id :integer(4)
-#  created_at            :datetime
-#  updated_at            :datetime
-#
-
 # A student's commitment to participate in a class.
 class Registration < ActiveRecord::Base
   # The student who registered.
@@ -61,3 +45,19 @@ class Registration < ActiveRecord::Base
     user and (user == self.user or user.admin?)
   end
 end
+
+# == Schema Information
+#
+# Table name: registrations
+#
+#  id                    :integer(4)      not null, primary key
+#  user_id               :integer(4)      not null
+#  course_id             :integer(4)      not null
+#  dropped               :boolean(1)      default(FALSE), not null
+#  for_credit            :boolean(1)      default(TRUE), not null
+#  motivation            :text(16777215)
+#  recitation_section_id :integer(4)
+#  created_at            :datetime
+#  updated_at            :datetime
+#
+

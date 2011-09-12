@@ -1,17 +1,3 @@
-# == Schema Information
-# Schema version: 20110429122654
-#
-# Table name: announcements
-#
-#  id               :integer(4)      not null, primary key
-#  headline         :string(128)     not null
-#  contents         :string(8192)    not null
-#  author_id        :integer(4)      not null
-#  open_to_visitors :boolean(1)      not null
-#  created_at       :datetime
-#  updated_at       :datetime
-#
-
 # An announcement published to the entire class.
 class Announcement < ActiveRecord::Base
   # The post's author.
@@ -32,3 +18,17 @@ class Announcement < ActiveRecord::Base
     user and (user == self.author or user.admin?)
   end
 end
+
+# == Schema Information
+#
+# Table name: announcements
+#
+#  id               :integer(4)      not null, primary key
+#  headline         :string(128)     not null
+#  contents         :string(8192)    not null
+#  author_id        :integer(4)      not null
+#  open_to_visitors :boolean(1)      default(FALSE), not null
+#  created_at       :datetime
+#  updated_at       :datetime
+#
+

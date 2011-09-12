@@ -1,18 +1,3 @@
-# == Schema Information
-# Schema version: 20110429122654
-#
-# Table name: deliverables
-#
-#  id            :integer(4)      not null, primary key
-#  assignment_id :integer(4)      not null
-#  name          :string(80)      not null
-#  description   :string(2048)    not null
-#  published     :boolean(1)      not null
-#  filename      :string(256)     default(""), not null
-#  created_at    :datetime
-#  updated_at    :datetime
-#
-
 require 'spec_helper'
 
 describe Deliverable do
@@ -55,3 +40,18 @@ describe Deliverable do
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: deliverables
+#
+#  id            :integer(4)      not null, primary key
+#  assignment_id :integer(4)      not null
+#  name          :string(80)      not null
+#  description   :string(2048)    not null
+#  published     :boolean(1)      default(FALSE), not null
+#  filename      :string(256)     default(""), not null
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+

@@ -1,19 +1,3 @@
-# == Schema Information
-# Schema version: 20110429122654
-#
-# Table name: assignments
-#
-#  id                 :integer(4)      not null, primary key
-#  course_id          :integer(4)      not null
-#  deadline           :datetime        not null
-#  name               :string(64)      not null
-#  team_partition_id  :integer(4)
-#  feedback_survey_id :integer(4)
-#  accepts_feedback   :boolean(1)      not null
-#  created_at         :datetime
-#  updated_at         :datetime
-#
-
 # An assignment for the course students. (e.g., a problem set or a project)
 class Assignment < ActiveRecord::Base
   # The course that this assignment is a part of.
@@ -77,3 +61,19 @@ class Assignment < ActiveRecord::Base
     deliverables.select { |d| d.visible_for? user }
   end
 end
+
+# == Schema Information
+#
+# Table name: assignments
+#
+#  id                 :integer(4)      not null, primary key
+#  course_id          :integer(4)      not null
+#  deadline           :datetime        not null
+#  name               :string(64)      not null
+#  team_partition_id  :integer(4)
+#  feedback_survey_id :integer(4)
+#  accepts_feedback   :boolean(1)      default(FALSE), not null
+#  created_at         :datetime
+#  updated_at         :datetime
+#
+

@@ -1,17 +1,3 @@
-# == Schema Information
-# Schema version: 20110429122654
-#
-# Table name: team_partitions
-#
-#  id         :integer(4)      not null, primary key
-#  name       :string(64)      not null
-#  automated  :boolean(1)      default(TRUE), not null
-#  editable   :boolean(1)      default(TRUE), not null
-#  published  :boolean(1)      not null
-#  created_at :datetime
-#  updated_at :datetime
-#
-
 require 'spec_helper'
 
 describe TeamPartition do
@@ -57,3 +43,17 @@ describe TeamPartition do
     end    
   end
 end
+
+# == Schema Information
+#
+# Table name: team_partitions
+#
+#  id         :integer(4)      not null, primary key
+#  name       :string(64)      not null
+#  automated  :boolean(1)      default(TRUE), not null
+#  editable   :boolean(1)      default(TRUE), not null
+#  published  :boolean(1)      default(FALSE), not null
+#  created_at :datetime
+#  updated_at :datetime
+#
+

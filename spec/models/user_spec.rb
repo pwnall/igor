@@ -1,18 +1,3 @@
-# == Schema Information
-# Schema version: 20110429122654
-#
-# Table name: users
-#
-#  id            :integer(4)      not null, primary key
-#  password_salt :string(16)      not null
-#  password_hash :string(64)      not null
-#  email         :string(64)      not null
-#  active        :boolean(1)      not null
-#  admin         :boolean(1)      not null
-#  created_at    :datetime
-#  updated_at    :datetime
-#
-
 require 'spec_helper'
 
 describe User do
@@ -243,3 +228,18 @@ describe User do
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id            :integer(4)      not null, primary key
+#  password_salt :string(16)      not null
+#  password_hash :string(64)      not null
+#  email         :string(64)      not null
+#  active        :boolean(1)      default(FALSE), not null
+#  admin         :boolean(1)      default(FALSE), not null
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+

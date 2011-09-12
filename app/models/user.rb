@@ -1,18 +1,3 @@
-# == Schema Information
-# Schema version: 20110429122654
-#
-# Table name: users
-#
-#  id            :integer(4)      not null, primary key
-#  password_salt :string(16)      not null
-#  password_hash :string(64)      not null
-#  email         :string(64)      not null
-#  active        :boolean(1)      not null
-#  admin         :boolean(1)      not null
-#  created_at    :datetime
-#  updated_at    :datetime
-#
-
 # Credentials for a user in the system.
 class User < ActiveRecord::Base
   # .edu e-mail address used to identify and endorse the user account.
@@ -237,3 +222,18 @@ class User < ActiveRecord::Base
     find_all_by_query!(query).first    
   end
 end
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id            :integer(4)      not null, primary key
+#  password_salt :string(16)      not null
+#  password_hash :string(64)      not null
+#  email         :string(64)      not null
+#  active        :boolean(1)      default(FALSE), not null
+#  admin         :boolean(1)      default(FALSE), not null
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+

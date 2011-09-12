@@ -1,5 +1,10 @@
+guest_lecture:
+  headline: Guest lecture on Wed
+  contents: "This Wed, we're having a guest lecture. Please come!"
+  author: admin
+  open_to_visitors: true
+
 # == Schema Information
-# Schema version: 20110429122654
 #
 # Table name: announcements
 #
@@ -7,13 +12,8 @@
 #  headline         :string(128)     not null
 #  contents         :string(8192)    not null
 #  author_id        :integer(4)      not null
-#  open_to_visitors :boolean(1)      not null
+#  open_to_visitors :boolean(1)      default(FALSE), not null
 #  created_at       :datetime
 #  updated_at       :datetime
 #
 
-guest_lecture:
-  headline: Guest lecture on Wed
-  contents: "This Wed, we're having a guest lecture. Please come!"
-  author: admin
-  open_to_visitors: true

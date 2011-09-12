@@ -4,7 +4,5 @@
 db/*.sqlite3
 doc/*.svg
 log/*.log
-tmp/**/*
-tmp/pushes
-tmp/pulls
-
+tmp/
+.sass-cache/

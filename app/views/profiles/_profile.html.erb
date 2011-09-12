@@ -1,42 +1,65 @@
-<dl class="profile">
-  <dt>Athena username</dt>
-	<dd><%= profile.athena_username %></dd>
-  <dt>Full name</dt>
-	<dd><%= profile.name %></dd>
-  <dt>Call me</dt>
-  <dd><%= profile.nickname %></dd>
-  <dt>School</dt>
-  <dd><%= profile.university %></dd>
-  <dt>Department</dt>
-  <dd><%= profile.department %></dd>
-	<dt>Year</dt>
-	<dd><%= profile.year %></dd>
-	
+<table class="profile-info">
+  <tr>
+    <th>Athena username</th>
+    <td><%= profile.athena_username %></td>
+  </tr>
+  <tr>
+    <th>Full name</th>
+  	<td><%= profile.name %></td>
+  </tr>
+  <tr>
+    <th>Call me</th>
+    <td><%= profile.nickname %></td>
+  </tr>
+  <tr>
+    <th>School</th>
+    <td><%= profile.university %></td>
+  </tr>
+  <tr>
+    <th>Department</th>
+    <td><%= profile.department %></td>
+  </tr>
+  <tr>
+  	<th>Year</th>
+  	<td><%= profile.year %></td>
+  </tr>	
   <% if false %>
-  <dt>Recitation</dt>
-	<dd>
-  	<%= display_name_for_recitation_section(profile.recitation_section) %>
-	</dd>
+  <tr>
+    <th>Recitation</th>
+  	<td>
+    	<%= display_name_for_recitation_section(profile.recitation_section) %>
+  	</td>
+  </tr>
 	<% end %>
 	
-	<dt>Publish my work</dt>
-	<dd><%= profile.allows_publishing ? 'Yes' : 'No' %></dd>
+  <tr>
+  	<th>Publish my work</th>
+  	<td><%= profile.allows_publishing ? 'Yes' : 'No' %></td>
+  </tr>
 	
 	<% if profile.editable_by_user? current_user %>
 	<% if profile.phone_number %>
-  <dt>Phone</dt>
-	<dd><%= profile.phone_number %></dd>
+  <tr>
+    <th>Phone</th>
+  	<td><%= profile.phone_number %></td>
+  </tr>
 	<% end %>
   <% if profile.aim_name %>
-  <dt>AIM</dt>
-  <dd><%= profile.aim_name %></dd>
+  <tr>
+    <th>AIM</th>
+    <td><%= profile.aim_name %></td>
+  </tr>
   <% end %>
   <% if profile.jabber_name %>
-  <dt>Jabber</dt>
-  <dd><%= profile.jabber_name %></dd>
+  <tr>
+    <th>Jabber</th>
+    <td><%= profile.jabber_name %></td>
+  </tr>
   <% end %>
 	<% end %>
 
-  <dt>About</dt>
-	<dd><%= profile.about_me %></dd>
-</dl>
+  <tr>
+    <th>About</th>
+  	<td><%= profile.about_me %></td>
+  </tr>
+</table>
