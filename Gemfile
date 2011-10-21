@@ -40,7 +40,7 @@ gem 'mit_stalker', '>= 1.0.3'
 gem 'nokogiri', '>= 1.5.0'
 gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
                  :ref => '942a2b43383fd04c0434ca4b27379a114cb28a50'
-gem 'prawn', '~> 0.11.1'
+gem 'prawn', '~> 0.12.0'
 gem 'pwnstyles_rails', '>= 0.1.1'
 gem 'ttfunk', '>= 1.0.1'
 gem 'rmagick', '>= 2.13.1'
