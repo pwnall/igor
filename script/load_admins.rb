@@ -2,7 +2,7 @@
 
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
 
-
+course = Course.main
 [
   ['Yafim', 'landa@mit.edu'], ['Ying', 'yingyin@mit.edu'],
   ['Kevin', 'kelleyk@mit.edu'], ['Sarah', 'seisenst@mit.edu']

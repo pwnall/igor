@@ -28,6 +28,7 @@ GradeEditor.setIndicator = function (indicators, activeClass, temporary) {
 GradeEditor.onBlur = function (event) {
   var target = $(event.target);
   target.parents('tr').first().removeClass('focused');
+  GradeEditor.redoSummary(target.parents('tr').first());
 
   var value = target.val();
   var oldValue = target.attr('data-old-value');
