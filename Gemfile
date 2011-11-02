@@ -34,6 +34,7 @@ gem 'annotate', '>= 2.4.0'
 gem 'daemonz', '>= 0.3.2'
 gem 'delayed_job', '>= 2.1.4'
 gem 'dynamic_form', '>= 1.1.4'
+gem 'exec_sandbox', '>= 0.1.2'
 gem 'fastercsv', '>= 1.5.4', :platforms => [:mri_18]
 gem 'gravtastic', '>= 3.2.6'
 gem 'mit_stalker', '>= 1.0.3'
@@ -46,6 +47,13 @@ gem 'ttfunk', '>= 1.0.1'
 gem 'rmagick', '>= 2.13.1'
 gem 'validates_timeliness', '>= 3.0.0'
 gem 'zerg_support', '>= 0.1.5'
+
+# Stellar integration pending new Mechanize release.
+# gem 'mechanize', '>= 2.0.2',
+#     :git => 'git://github.com/tenderlove/mechanize.git',
+#     :ref => '3736fd0f0e2ef547fe9b904003dbce14d39a9c4e'
+# gem 'stellar', '>= 0.3.0'
+
 
 ## Bundle gems for certain environments:
 # gem 'rspec', :group => :test
