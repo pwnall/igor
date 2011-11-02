@@ -7,7 +7,6 @@ dexter:
   year: 1
   athena_username: genius
   about_me: "I am Dexter, boy genius!"
-  allows_publishing: true
 
 solo:
   user: solo
@@ -18,44 +17,3 @@ solo:
   year: 4
   athena_username: solo
   about_me: "Leave me alone"
-  allows_publishing: false
-
-# == Schema Information
-#
-# Table name: profiles
-#
-#  id                :integer(4)      not null, primary key
-#  user_id           :integer(4)      not null
-#  name              :string(128)     not null
-#  nickname          :string(64)      not null
-#  university        :string(64)      not null
-#  department        :string(64)      not null
-#  year              :string(4)       not null
-#  athena_username   :string(32)      not null
-#  about_me          :string(4096)    default(""), not null
-#  allows_publishing :boolean(1)      default(TRUE), not null
-#  created_at        :datetime
-#  updated_at        :datetime
-#
-
-# == Schema Information
-#
-# Table name: profiles
-#
-#  id                :integer(4)      not null, primary key
-#  user_id           :integer(4)      not null
-#  name              :string(128)     not null
-#  nickname          :string(64)      not null
-#  university        :string(64)      not null
-#  department        :string(64)      not null
-#  year              :string(4)       not null
-#  athena_username   :string(32)      not null
-#  about_me          :string(4096)    default(""), not null
-#  allows_publishing :boolean(1)      default(TRUE), not null
-#  phone_number      :string(64)
-#  aim_name          :string(64)
-#  jabber_name       :string(64)
-#  created_at        :datetime
-#  updated_at        :datetime
-#
-

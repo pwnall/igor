@@ -25,11 +25,11 @@ users.each do |name, email|
 
   first_name = name.split(' ', 2).first
   Profile.create! :user => user, :name => name,
-      :nickname => first_name, :university => 'MIT', :allows_publishing => true,
+      :nickname => first_name, :university => 'MIT',
       :department => 'Electrical Eng & Computer Sci', :year => 1.to_s,
       :athena_username => email.split('@', 2).first,
       :about_me => "Imported from Stellar"
 
   registration = Registration.create! :user => user, :course => course,
-      :dropped => false, :for_credit => true  
+      :dropped => false, :for_credit => true, :allows_publishing => true
 end

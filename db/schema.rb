@@ -155,15 +155,14 @@ ActiveRecord::Schema.define(:version => 20110429122654) do
   add_index "profile_photos", ["profile_id"], :name => "index_profile_photos_on_profile_id", :unique => true
 
   create_table "profiles", :force => true do |t|
-    t.integer  "user_id",                                             :null => false
-    t.string   "name",              :limit => 128,                    :null => false
-    t.string   "nickname",          :limit => 64,                     :null => false
-    t.string   "university",        :limit => 64,                     :null => false
-    t.string   "department",        :limit => 64,                     :null => false
-    t.string   "year",              :limit => 4,                      :null => false
-    t.string   "athena_username",   :limit => 32,                     :null => false
-    t.string   "about_me",          :limit => 4096, :default => "",   :null => false
-    t.boolean  "allows_publishing",                 :default => true, :null => false
+    t.integer  "user_id",                                         :null => false
+    t.string   "name",            :limit => 128,                  :null => false
+    t.string   "nickname",        :limit => 64,                   :null => false
+    t.string   "university",      :limit => 64,                   :null => false
+    t.string   "department",      :limit => 64,                   :null => false
+    t.string   "year",            :limit => 4,                    :null => false
+    t.string   "athena_username", :limit => 32,                   :null => false
+    t.string   "about_me",        :limit => 4096, :default => "", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -194,6 +193,7 @@ ActiveRecord::Schema.define(:version => 20110429122654) do
     t.integer  "course_id",                                :null => false
     t.boolean  "dropped",               :default => false, :null => false
     t.boolean  "for_credit",            :default => true,  :null => false
+    t.boolean  "allows_publishing",     :default => true,  :null => false
     t.integer  "recitation_section_id"
     t.datetime "created_at"
     t.datetime "updated_at"

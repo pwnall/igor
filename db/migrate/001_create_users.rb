@@ -1,7 +1,7 @@
 require 'digest/sha2'
 
 class CreateUsers < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :users do |t|
       t.string :password_salt, :limit => 16, :null => false
       t.string :password_hash, :limit => 64, :null => false
@@ -14,9 +14,5 @@ class CreateUsers < ActiveRecord::Migration
 
     # Login and password recovery: find a user by e-mail address.
     add_index :users, :email, :unique => true, :null => false
-  end
-
-  def self.down
-    drop_table :users
   end
 end

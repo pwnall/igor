@@ -16,6 +16,9 @@ class Registration < ActiveRecord::Base
   validates :dropped, :inclusion => { :in => [true, false] }
   attr_protected :dropped
   
+  # True if the user consents to having their work published.
+  validates :allows_publishing, :inclusion => { :in => [true, false] }  
+  
   # The user's recitation section.
   #
   # This is only used if the user is a student and the course has recitations.

@@ -27,8 +27,7 @@ admin.save!
 
 admin_profile = Profile.create! :user => admin, :name => 'Victor Costan',
     :nickname => 'Victor', :university => 'MIT', :department => 'EECS',
-    :year => 'G', :athena_username => 'costan', :about_me => "I'm the boss",
-    :allows_publishing => true
+    :year => 'G', :athena_username => 'costan', :about_me => "I'm the boss"
 
 # Students.
 
@@ -48,12 +47,13 @@ names.each_with_index do |name, i|
   users << user
   
   Profile.create! :user => user, :name => name,
-      :nickname => first_name, :university => 'MIT', :allows_publishing => true,
+      :nickname => first_name, :university => 'MIT',
       :department => depts[i % depts.length], :year => (1 + (i % 4)).to_s,
       :athena_username => short_name, :about_me => "Test subject #{i + 1}"
 
   registration = Registration.create! :user => user, :course => course,
-      :dropped => false, :for_credit => (i % 2 == 0)
+      :dropped => false, :for_credit => (i % 2 == 0),
+      :allows_publishing => (i % 2 == 0)
 
   PrerequisiteAnswer.create! :registration => registration,
       :prerequisite => prereq1, :took_course => (i % 2 == 0),

@@ -25,11 +25,11 @@ course = Course.main
 
   first_name = name.split(' ', 2).first
   Profile.create! :user => user, :name => name,
-      :nickname => first_name, :university => 'MIT', :allows_publishing => true,
+      :nickname => first_name, :university => 'MIT',
       :department => 'Electrical Eng & Computer Sci', :year => 'G',
       :athena_username => email.split('@', 2).first,
       :about_me => "Scripted"
 
   registration = Registration.create! :user => user, :course => course,
-      :dropped => false, :for_credit => true  
+      :dropped => false, :for_credit => true, :allows_publishing => true
 end

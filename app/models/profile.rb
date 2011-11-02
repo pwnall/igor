@@ -20,9 +20,6 @@ class Profile < ActiveRecord::Base
   validates :user, :presence => true
   validates :user_id, :uniqueness => true
   
-  # True if the user consents to having their work published on the Web.
-  validates :allows_publishing, :inclusion => { :in => [true, false] }
-  
   # Self-description that the site admins can see.
   validates :about_me, :length => 0..(4.kilobytes)
   

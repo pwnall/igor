@@ -3,6 +3,10 @@
 	<dd>
 		<%= registration.for_credit? ? 'Yes' : 'No' %>
 	</dd>
+  <dt>Publish my work</dt>
+  <dd>
+    <%= registration.allows_publishing? ? 'Yes' : 'No' %>
+  </dd>
 	<dt>Dropped class</dt>
   <dd>
     <%= registration.dropped? ? 'Yes' : 'No' %>
