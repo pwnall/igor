@@ -37,27 +37,6 @@
   	<td><%= profile.allows_publishing ? 'Yes' : 'No' %></td>
   </tr>
 	
-	<% if profile.editable_by_user? current_user %>
-	<% if profile.phone_number %>
-  <tr>
-    <th>Phone</th>
-  	<td><%= profile.phone_number %></td>
-  </tr>
-	<% end %>
-  <% if profile.aim_name %>
-  <tr>
-    <th>AIM</th>
-    <td><%= profile.aim_name %></td>
-  </tr>
-  <% end %>
-  <% if profile.jabber_name %>
-  <tr>
-    <th>Jabber</th>
-    <td><%= profile.jabber_name %></td>
-  </tr>
-  <% end %>
-	<% end %>
-
   <tr>
     <th>About</th>
   	<td><%= profile.about_me %></td>

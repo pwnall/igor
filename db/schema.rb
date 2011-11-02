@@ -164,9 +164,6 @@ ActiveRecord::Schema.define(:version => 20110429122654) do
     t.string   "athena_username",   :limit => 32,                     :null => false
     t.string   "about_me",          :limit => 4096, :default => "",   :null => false
     t.boolean  "allows_publishing",                 :default => true, :null => false
-    t.string   "phone_number",      :limit => 64
-    t.string   "aim_name",          :limit => 64
-    t.string   "jabber_name",       :limit => 64
     t.datetime "created_at"
     t.datetime "updated_at"
   end

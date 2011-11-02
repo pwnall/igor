@@ -23,30 +23,11 @@ class Profile < ActiveRecord::Base
   # True if the user consents to having their work published on the Web.
   validates :allows_publishing, :inclusion => { :in => [true, false] }
   
-  # The phone number the student will use to contact us.
-  validates :phone_number, :length => { :in => 1..64, :allow_nil => true }
-  
-  # The AIM name the student will use to contact us.
-  validates :aim_name, :length => { :in => 1..64, :allow_nil => true }
-
-  # The Jabber name the student will use to contact us.
-  validates :jabber_name, :length => { :in => 1..64, :allow_nil => true }
-  
   # Self-description that the site admins can see.
   validates :about_me, :length => 0..(4.kilobytes)
   
   # The user's avatar.
   has_one :photo, :class_name => 'ProfilePhoto'
-  
-  def phone_number=(new_number)
-    super(new_number.blank? ? nil : new_number)    
-  end
-  def aim_name=(new_name)
-    super(new_name.blank? ? nil : new_name)    
-  end
-  def jabber_name=(new_name)
-    super(new_name.blank? ? nil : new_name)    
-  end
 
   # Returns true if the given user is allowed to edit this profile.
   def editable_by_user?(user)
@@ -68,9 +49,6 @@ end
 #  athena_username   :string(32)      not null
 #  about_me          :string(4096)    default(""), not null
 #  allows_publishing :boolean(1)      default(TRUE), not null
-#  phone_number      :string(64)
-#  aim_name          :string(64)
-#  jabber_name       :string(64)
 #  created_at        :datetime
 #  updated_at        :datetime
 #

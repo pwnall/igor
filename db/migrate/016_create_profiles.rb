@@ -11,10 +11,6 @@ class CreateProfiles < ActiveRecord::Migration
       t.string :about_me, :null => false, :default => '', :limit => 4.kilobytes
       t.boolean :allows_publishing, :null => false, :default => true
       
-      t.string :phone_number, :limit => 64, :null => true
-      t.string :aim_name, :limit => 64, :null => true
-      t.string :jabber_name, :limit => 64, :null => true
-      
       t.timestamps
     end
     

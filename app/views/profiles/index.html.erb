@@ -12,9 +12,6 @@
 		    <% if Course.main.has_recitations %>
 		    <td>Section</td>		    
 		    <% end %>
-		    <td>AIM</td>
-		    <td>Jabber</td>
-		    <td>Phone</td>
 		  </tr>
 		</thead>
 		
@@ -27,9 +24,6 @@
           <% if Course.main.has_recitations %>
 					<td><%=h 'R%02d' % (@profile.recitation_section ? @profile.recitation_section.serial : 0) %>
           <% end %>
-			    <td><%= @profile.aim_name || 'No' %></td>
-			    <td><%= @profile.jabber_name || 'No' %></td>
-			    <td><%= @profile.phone_number || 'No' %></td>
 			    <td><%= link_to 'Edit', edit_profile_path(@profile) %></td>
 			    <td><%= link_to 'Destroy', @profile, :confirm => 'Are you sure?', :method => :delete %></td>
 			  </tr>
