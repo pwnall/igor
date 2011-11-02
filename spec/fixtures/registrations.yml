@@ -1,34 +1,8 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
 dexter:
   course: main
-  motivation: I will pwn this class.
   user: dexter
   dropped: false
   for_credit: true
-  
-#one:
-#  real_name: MyString
-#  year: MyString
-#  athena_username: MyString
-#  wants_credit: false
-#  has_python: false
-#  has_math: false
-#  python_experience: MyString
-#  math_experience: MyString
-#  comments: MyString
-#
-#two:
-#  real_name: MyString
-#  year: MyString
-#  athena_username: MyString
-#  wants_credit: false
-#  has_python: false
-#  has_math: false
-#  python_experience: MyString
-#  math_experience: MyString
-#  comments: MyString
-
 # == Schema Information
 #
 # Table name: registrations
@@ -38,7 +12,6 @@ dexter:
 #  course_id             :integer(4)      not null
 #  dropped               :boolean(1)      default(FALSE), not null
 #  for_credit            :boolean(1)      default(TRUE), not null
-#  motivation            :text(16777215)
 #  recitation_section_id :integer(4)
 #  created_at            :datetime
 #  updated_at            :datetime

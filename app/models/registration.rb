@@ -14,10 +14,6 @@ class Registration < ActiveRecord::Base
   
   # True if the student dropped the class.
   validates :dropped, :inclusion => { :in => [true, false] }
-
-  # Why is the student taking the class.
-  # TODO(costan): this should be rolled into the registration survey.
-  validates :motivation, :length => 1..(32.kilobytes), :presence => true
   attr_protected :dropped
   
   # The user's recitation section.
@@ -55,7 +51,6 @@ end
 #  course_id             :integer(4)      not null
 #  dropped               :boolean(1)      default(FALSE), not null
 #  for_credit            :boolean(1)      default(TRUE), not null
-#  motivation            :text(16777215)
 #  recitation_section_id :integer(4)
 #  created_at            :datetime
 #  updated_at            :datetime

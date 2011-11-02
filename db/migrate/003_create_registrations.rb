@@ -6,8 +6,6 @@ class CreateRegistrations < ActiveRecord::Migration
       t.boolean :dropped, :null => false, :default => false
       t.boolean :for_credit, :null => false, :default => true
 
-      t.string :motivation, :limit => 32.kilobytes
-
       t.integer :recitation_section_id, :null => true
 
       t.timestamps

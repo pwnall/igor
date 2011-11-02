@@ -53,8 +53,7 @@ names.each_with_index do |name, i|
       :athena_username => short_name, :about_me => "Test subject #{i + 1}"
 
   registration = Registration.create! :user => user, :course => course,
-      :dropped => false, :for_credit => (i % 2 == 0),
-      :motivation => "Test subject #{i + 1}"  
+      :dropped => false, :for_credit => (i % 2 == 0)
 
   PrerequisiteAnswer.create! :registration => registration,
       :prerequisite => prereq1, :took_course => (i % 2 == 0),

@@ -31,5 +31,5 @@ course = Course.main
       :about_me => "Scripted"
 
   registration = Registration.create! :user => user, :course => course,
-      :dropped => false, :for_credit => true, :motivation => "TA"  
+      :dropped => false, :for_credit => true  
 end

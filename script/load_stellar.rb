@@ -31,5 +31,5 @@ users.each do |name, email|
       :about_me => "Imported from Stellar"
 
   registration = Registration.create! :user => user, :course => course,
-      :dropped => false, :for_credit => true, :motivation => "_"  
+      :dropped => false, :for_credit => true  
 end

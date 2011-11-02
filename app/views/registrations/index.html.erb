@@ -8,7 +8,6 @@
 			<% @prerequisites.sort_by(&:id).each do |prereq| %>
 			<td><%= prereq.course_number %></td>
 			<% end %>
-	    <td>Comments</td>
 	  </tr>
 	</thead>
 	
@@ -27,7 +26,6 @@
 				<% end %>
 				</td>
 			<% end %>
-	    <td><%=h registration.motivation %></td>
 	    <td><%= link_to 'Show', registration %></td>
 	    <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
 	    <td><%= link_to 'Destroy', registration,

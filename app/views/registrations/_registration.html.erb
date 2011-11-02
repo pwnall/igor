@@ -19,13 +19,6 @@
   </dd>
   <% end %>
 	
-	<% unless registration.motivation.blank? %>
-	<dt>Motivation</dt>
-	<dd>	
-		<%= registration.motivation %>
-	</dd>
-	<% end %>
-	
   <% if Course.main.has_recitations? %>	
 	<dt>Availability</dt>
   <dd>

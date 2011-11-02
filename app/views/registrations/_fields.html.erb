@@ -9,14 +9,6 @@
     </span>
     <span class="comment" />
   </p>
-  <p class="field">
-    <%= f.label :motivation,
-                "Why do you want to take #{f.object.course.number}" %>
-    <span class="value">
-      <%= f.text_area :motivation %>
-    </span>
-    <span class="comment" />
-  </p>
   
   <% unless f.object.prerequisite_answers.empty? %>
   <p class="field">
