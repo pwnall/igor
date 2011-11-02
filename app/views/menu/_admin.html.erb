@@ -1,9 +1,20 @@
 <li>
-  <%= link_to 'Teacher', root_path %>
+  <%= link_to 'Design', root_path %>
   <ol>
+    <li>
+      <%= link_to 'Course Info', courses_path %>
+    </li>         
+    <li>
+      <%= link_to 'Prerequisites', prerequisites_path %>
+    </li>
     <li>
       <%= link_to 'Assignments', assignments_path %>
     </li>
+  </ol>
+</li>
+<li>
+  <%= link_to 'Toolbox', root_path %>
+  <ol>
     <li>
       <%= link_to 'Metrics', assignment_metrics_path %>
     </li>
@@ -22,14 +33,7 @@
       <%= link_to 'Teams', team_partitions_path %>
     </li>
     <% end %>
-    
-    <li>
-      <%= link_to 'Course Info', courses_path %>
-    </li>         
-    <li>
-      <%= link_to 'Prerequisites', prerequisites_path %>
-    </li>
-    
+        
     <li>
       <%= link_to 'Submissions', submissions_path %>
     </li>
@@ -76,7 +80,7 @@
   </ol>
 </li>
 <li>
-  <%= link_to 'Grading', editor_grades_path %>
+  <%= link_to 'Grades', editor_grades_path %>
   <ol>
     <li>
       <%= link_to 'Post Grades', editor_grades_path %>
