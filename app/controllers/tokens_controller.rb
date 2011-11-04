@@ -11,7 +11,7 @@ class TokensController < ApplicationController
         
     unless performed?
       respond_to do |format|
-        format.html { redirect_to sessions_path }
+        format.html { redirect_to session_path }
       end
     end
   end

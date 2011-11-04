@@ -1,4 +1,4 @@
-<%= form_for(@login || User.new, :url => sessions_url, :method => :post) do |f| %>
+<%= form_for(@login || User.new, :url => session_path, :method => :post) do |f| %>
   <%= f.error_messages %>
 
   <section class="fields">

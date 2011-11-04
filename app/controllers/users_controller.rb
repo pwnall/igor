@@ -54,7 +54,7 @@ class UsersController < ApplicationController
         TokenMailer.account_confirmation(token, root_url, 
             spend_token_url(:token => token.token)).deliver
         
-        format.html { redirect_to sessions_path }
+        format.html { redirect_to session_url }
       else
         @user.reset_password
         
@@ -136,7 +136,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         flash[:notice] = 'Password successfully updated.'
-        format.html { redirect_to root_path }
+        format.html { redirect_to root_url }
       else
         format.html { render :action => :edit_password }
       end

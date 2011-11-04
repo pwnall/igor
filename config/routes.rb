@@ -107,15 +107,7 @@ Seven::Application.routes.draw do
     end
   end
   resources :registrations  
-  resources :sessions do
-    collection do
-      # TODO(costan): remove the "get" once Firefox Account Manager gets its bug
-      #               fixed
-      get :logout
-      # TODO(costan): remove the "post" once Account manager can DELETE
-      post :logout
-    end
-  end
+  resource :session, :controller => 'Session'
   resources :submissions do
     member do
       get :file
@@ -177,7 +169,7 @@ Seven::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => "sessions#index"
+  root :to => "session#index"
 
   # See how all your routes lay out with "rake routes"
 

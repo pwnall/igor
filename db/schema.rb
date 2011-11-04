@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(:version => 20110429122654) do
     t.datetime "updated_at"
   end
 
+  add_index "assignments", ["course_id", "deadline", "name"], :name => "index_assignments_on_course_id_and_deadline_and_name", :unique => true
   add_index "assignments", ["course_id", "name"], :name => "index_assignments_on_course_id_and_name", :unique => true
 
   create_table "check_results", :force => true do |t|
@@ -193,6 +194,7 @@ ActiveRecord::Schema.define(:version => 20110429122654) do
     t.integer  "user_id",                                  :null => false
     t.integer  "course_id",                                :null => false
     t.boolean  "dropped",               :default => false, :null => false
+    t.boolean  "teacher",               :default => false, :null => false
     t.boolean  "for_credit",            :default => true,  :null => false
     t.boolean  "allows_publishing",     :default => true,  :null => false
     t.integer  "recitation_section_id"

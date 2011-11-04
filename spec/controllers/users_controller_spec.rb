@@ -58,7 +58,7 @@ describe UsersController do
       it "redirects to the created user" do
         User.stub(:new) { mock_user(:save => true) }
         post :create, :user => {}
-        response.should redirect_to(sessions_url)
+        response.should redirect_to(session_url)
       end
     end
 

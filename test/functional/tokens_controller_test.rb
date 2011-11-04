@@ -7,7 +7,7 @@ class TokensControllerTest < ActionController::TestCase
     assert_difference 'Token.count', -1 do
       get :spend, :token => tokens(:fictional_charge).token
     end    
-    assert_redirected_to sessions_path
+    assert_redirected_to session_path
   end
   
   def test_dispatch_without_spend
@@ -16,14 +16,14 @@ class TokensControllerTest < ActionController::TestCase
     assert_no_difference 'Token.count' do
       get :spend, :token => tokens(:fictional_charge).token
     end
-    assert_redirected_to sessions_path
+    assert_redirected_to session_path
   end
   
   def test_invalid_token
     assert_no_difference 'Token.count' do
       get :spend, :token => 'z' * 16
     end
-    assert_redirected_to sessions_path    
+    assert_redirected_to session_path    
     assert_operator /invalid token/i, :=~, flash[:error], 'Error flash not set'
   end
 
@@ -33,7 +33,7 @@ class TokensControllerTest < ActionController::TestCase
     assert_difference 'Token.count', -1 do
       get :spend, :token => tokens(:inactive_email_confirmation).token
     end
-    assert_redirected_to sessions_path
+    assert_redirected_to session_path
     
     assert users(:inactive).reload.active, 'User still inactive'
   end
