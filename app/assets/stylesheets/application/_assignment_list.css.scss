@@ -1,16 +1,19 @@
 ol.assignments-summary {
-  font-size: 1.2em;
-  line-height: 1.2em;
+  font-size: 1.1em;
+  line-height: 1.31em;
         
   li {
     .name {
       font-size: 1.2em;
-      line-height: 1.2em;
+      line-height: 1.44em;
       font-weight: bold;
       display: block;
     }
     .weight {
       float: right;
     }
+  }
+  li:nth-child(even) {
+    background-color: change-color($table-even-row-background-color, $saturation: 50%, $lightness: 98%);
   }
 }

@@ -8,7 +8,13 @@
 <%= javascript_include_tag 'application' %>
 <%= render 'layouts/google_analytics' %>
 </head>
+
+<% if current_user %>
 <body class="user">
+<% else %>
+<body class="nouser">
+<% end %>
+
 <header>
 <%= render 'layouts/header' %>
 </header>
@@ -16,9 +22,7 @@
 <div id="real-body">
 <%= render 'layouts/status_bar' %>
 <div id="content-wrapper">
-<article id="sidebar">
-<%= render 'session/sidebar' %>
-</article>
+<%= yield :sidebar %>
 <article id="main">
 <%= yield %>
 </article>
@@ -28,5 +32,6 @@
 <footer>
 <%= render 'layouts/footer' %>
 </footer>
+
 </body>
 </html>

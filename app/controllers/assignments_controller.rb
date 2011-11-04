@@ -1,8 +1,6 @@
 class AssignmentsController < ApplicationController
   before_filter :authenticated_as_admin
 
-  layout 'full'
-
   # GET /assignments
   def index
     @assignments = Assignment.by_deadline(Course.main)

@@ -6,10 +6,4 @@ class ApplicationController < ActionController::Base
   include AuthpwnHelper
   
   before_filter :extract_user_filter
-  
-  layout :layout_decider
-  
-  def layout_decider
-    current_user ? 'application' : 'welcome'
-  end
 end
