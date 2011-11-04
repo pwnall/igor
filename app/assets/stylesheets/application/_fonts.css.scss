@@ -2,48 +2,48 @@
   font-family: "Droid Serif";
   font-style: normal;
   font-weight: normal;
-  src: url("../../fonts/DroidSerif.ttf") format("truetype");
+  src: font-url("DroidSerif.ttf") format("truetype");
 }
 @font-face {
   font-family: "Droid Serif";
   font-style: normal;
   font-weight: bold;
-  src: url("../../fonts/DroidSerif-Bold.ttf") format("truetype");
+  src: font-url("DroidSerif-Bold.ttf") format("truetype");
 }
 @font-face {
   font-family: "Droid Serif";
   font-style: italic;
   font-weight: normal;
-  src: url("../../fonts/DroidSerif-Italic.ttf") format("truetype");
+  src: font-url("DroidSerif-Italic.ttf") format("truetype");
 }
 @font-face {
   font-family: "Droid Serif";
   font-style: italic;
   font-weight: bold;
-  src: url("../../fonts/DroidSerif-BoldItalic.ttf") format("truetype");
+  src: font-url("DroidSerif-BoldItalic.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Ubuntu";
   font-style: normal;
   font-weight: normal;
-  src: url("../../fonts/Ubuntu.ttf") format("truetype");
+  src: font-url("Ubuntu.ttf") format("truetype");
 }
 @font-face {
   font-family: "Ubuntu";
   font-style: italic;
   font-weight: normal;
-  src: url("../../fonts/Ubuntu-Italic.ttf") format("truetype");
+  src: font-url("Ubuntu-Italic.ttf") format("truetype");
 }
 @font-face {
   font-family: "Ubuntu";
   font-style: normal;
   font-weight: bold;
-  src: url("../../fonts/Ubuntu-Bold.ttf") format("truetype");
+  src: font-url("Ubuntu-Bold.ttf") format("truetype");
 }
 @font-face {
   font-family: "Ubuntu";
   font-style: italic;
   font-weight: bold;
-  src: url("../../fonts/Ubuntu-BoldItalic.ttf") format("truetype");
+  src: font-url("Ubuntu-BoldItalic.ttf") format("truetype");
 }

@@ -5,7 +5,7 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments
   def index
-    @assignments = Assignment.order('id DESC').all
+    @assignments = Assignment.by_deadline(Course.main)
 
     respond_to do |format|
       format.html # index.html.erb

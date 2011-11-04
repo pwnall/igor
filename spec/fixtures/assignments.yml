@@ -1,24 +1,33 @@
 ps1:
   deadline: 2010-02-01 00:00:01
-  name: "PSet 1"
+  name: PSet 1
   team_partition: psets
   feedback_survey: psets
+  weight: 1.0
 
 ps2:
   deadline: 2010-02-15 00:00:01
-  name: "PSet 2"
+  name: PSet 2
   team_partition: psets
   feedback_survey: psets
+  weight: 1.0
 
 project:
   deadline: 2010-04-30 17:00:00
-  name: "Final Project"
+  name: Final Project
   team_partition: project
   feedback_survey: projects
+  weight: 5.0
+  
+exam:
+  deadline: 2010-04-24 21:00:00
+  name: Quiz 1
+  weight: 10.0
   
 assessment:
   deadline: 2010-05-01 17:00:00
-  name: "Individual Assessment"
+  name: Individual Assessment
+  weight: 0.0
 
 # == Schema Information
 #

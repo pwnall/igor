@@ -4,6 +4,7 @@ class CreateRegistrations < ActiveRecord::Migration
       t.integer :user_id, :null => false
       t.integer :course_id, :null => false
       t.boolean :dropped, :null => false, :default => false
+      t.boolean :teacher, :null => false, :default => false
 
       t.boolean :for_credit, :null => false, :default => true
       t.boolean :allows_publishing, :null => false, :default => true

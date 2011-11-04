@@ -1,7 +1,7 @@
-class SessionsController < ApplicationController
+class SessionController < ApplicationController
   protect_from_forgery :except => [:create, :destroy, :logout]
     
-  # POST /sessions
+  # POST /session
   def create
     session[:user_id] = nil
     @login = User.new params[:user]    
@@ -28,7 +28,7 @@ class SessionsController < ApplicationController
     end    
   end
   
-  # DELETE /sessions
+  # DELETE /session
   def destroy
     session[:user_id] = nil
     response.headers['X-Account-Management-Status'] = "none"
@@ -38,19 +38,13 @@ class SessionsController < ApplicationController
     end    
   end
   
-  # GET /sessions/logout
-  # POST /sessions/logout
+  # GET /session/logout
+  # POST /session/logout
   def logout
     destroy
   end
   
-  # GET /sessions/1
-  def show
-    # This is for Firefox Account Manager.
-    render :text => ''
-  end
-  
-  # GET /sessions
+  # GET /session
   def index
     if current_user
       @news_flavor = params[:flavor] ? params[:flavor].to_sym : nil

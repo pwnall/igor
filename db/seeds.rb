@@ -69,7 +69,7 @@ end
 
 exams = (1..3).map do |i|
   exam = Assignment.create! :course => course, :name => "Exam #{i}",
-      :deadline => Time.now - 2.weeks - 6.weeks + i * 4.weeks
+      :deadline => Time.now - 2.weeks - 6.weeks + i * 4.weeks, :weight => 5.0
   metrics = (1..(5 + i)).map do |j|
     AssignmentMetric.create! :assignment => exam, :name => "Problem #{j}",
       :published => (exam.deadline < Time.now), :weight => 1.0,
@@ -93,7 +93,7 @@ end
 
 psets = (1..8).map do |i|
   pset = Assignment.create! :course => course, :name => "Problem Set #{i}",
-      :deadline => Time.now - 1.day - 5.weeks + i * 1.week
+      :deadline => Time.now - 1.day - 5.weeks + i * 1.week, :weight => 1.0
   published = pset.deadline < Time.now
   metrics = (1..(2 + i)).map do |j|
     AssignmentMetric.create! :assignment => pset, :name => "Problem #{j}",

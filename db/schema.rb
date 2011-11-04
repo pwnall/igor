@@ -35,17 +35,18 @@ ActiveRecord::Schema.define(:version => 20110429122654) do
   add_index "assignment_metrics", ["assignment_id", "name"], :name => "index_assignment_metrics_on_assignment_id_and_name", :unique => true
 
   create_table "assignments", :force => true do |t|
-    t.integer  "course_id",                                           :null => false
-    t.datetime "deadline",                                            :null => false
-    t.string   "name",               :limit => 64,                    :null => false
+    t.integer  "course_id",                                                                         :null => false
+    t.datetime "deadline",                                                                          :null => false
+    t.decimal  "weight",                           :precision => 9, :scale => 6
+    t.string   "name",               :limit => 64,                                                  :null => false
     t.integer  "team_partition_id"
     t.integer  "feedback_survey_id"
-    t.boolean  "accepts_feedback",                 :default => false, :null => false
+    t.boolean  "accepts_feedback",                                               :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "assignments", ["name"], :name => "index_assignments_on_name", :unique => true
+  add_index "assignments", ["course_id", "name"], :name => "index_assignments_on_course_id_and_name", :unique => true
 
   create_table "check_results", :force => true do |t|
     t.integer  "submission_id",                     :null => false

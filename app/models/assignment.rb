@@ -1,4 +1,6 @@
-# An assignment for the course students. (e.g., a problem set or a project)
+# A piece of work that students have to complete.
+#
+# Examples: problem set, project, exam.
 class Assignment < ActiveRecord::Base
   # The course that this assignment is a part of.
   belongs_to :course, :inverse_of => :assignments
@@ -10,6 +12,10 @@ class Assignment < ActiveRecord::Base
   
   # The time when all the deliverables of the assignment are due.
   validates :deadline, :presence => true, :timeliness => true
+  
+  # The weight of the assignment's score in the overall course score.
+  validates :weight, :numericality => { :greater_than_or_equal_to => 0,
+      :less_than_or_equal_to => 100, :allow_nil => true }
 
   # The partition of teams used for this assignment.
   belongs_to :team_partition, :inverse_of => :assignments
@@ -60,6 +66,11 @@ class Assignment < ActiveRecord::Base
   def deliverables_for(user)
     deliverables.select { |d| d.visible_for? user }
   end
+
+  # A course's assignments, ordered by their deadline.
+  scope :by_deadline, lambda { |course|
+    where(:course_id => course.id).order('deadline DESC').order(:name)
+  }
 end
 
 # == Schema Information

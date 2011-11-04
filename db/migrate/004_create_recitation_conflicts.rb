@@ -1,5 +1,5 @@
 class CreateRecitationConflicts < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :recitation_conflicts do |t|
       t.integer :registration_id, :null => false
       t.integer :timeslot, :null => false
@@ -7,9 +7,5 @@ class CreateRecitationConflicts < ActiveRecord::Migration
     end
     add_index :recitation_conflicts, [:registration_id, :timeslot],
                                      :unique => true, :null => false
-  end
-
-  def self.down
-    drop_table :recitation_conflicts
   end
 end

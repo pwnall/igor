@@ -1,5 +1,10 @@
 # Credentials for a user in the system.
 class User < ActiveRecord::Base
+  # Forms can only change a user's email and password.
+  attr_accessible :email, :password, :password_confirmation
+  # Admins can bless other admins and activate blocked users.
+  attr_accessible :active, :admin, :as => :admin
+  
   # .edu e-mail address used to identify and endorse the user account.
   validates :email, :length => 1..64, :presence => true, :uniqueness => true,
       :format => { :with => /\A[A-Za-z0-9.+_-]+\@[A-Za-z0-9.\-]+\.edu\Z/,
@@ -11,13 +16,11 @@ class User < ActiveRecord::Base
   # SHA-256 of (salt + password).
   validates :password_hash, :length => 1..64, :presence => true
   
-  # Administrators are staff members.
+  # Site staff members. Not the same as teaching staff.
   validates :admin, :inclusion => { :in => [true, false], :allow_nil => false }
-  attr_protected :admin
   
   # Prevents logins from un-confirmed accounts.
   validates :active, :inclusion => { :in => [true, false], :allow_nil => false }
-  attr_protected :active
   
   # Random strings used for password-less authentication.
   has_many :tokens, :dependent => :destroy, :inverse_of => :user
