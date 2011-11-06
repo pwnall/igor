@@ -16,9 +16,9 @@ GIT
 PATH
   remote: ../pwnstyles_rails
   specs:
-    pwnstyles_rails (0.1.3)
-      rails (>= 3.1.0)
-      sass-rails (>= 3.1.0)
+    pwnstyles_rails (0.1.4)
+      rails (>= 3.1.1)
+      sass-rails (>= 3.1.4)
 
 GEM
   remote: http://rubygems.org/
@@ -162,7 +162,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     ttfunk (1.0.3)
-    tzinfo (0.3.30)
+    tzinfo (0.3.31)
     uglifier (1.0.4)
       execjs (>= 0.3.0)
       multi_json (>= 1.0.2)
