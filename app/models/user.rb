@@ -25,30 +25,6 @@ class User < ActiveRecord::Base
   # Random strings used for password-less authentication.
   has_many :tokens, :dependent => :destroy, :inverse_of => :user
   
-  # Personal information, e.g. full name and contact info.
-  has_one :profile, :dependent => :destroy, :inverse_of => :user
-  accepts_nested_attributes_for :profile
-
-  # Class registration info, e.g. survey answers and credit / listener status.
-  has_many :registrations, :dependent => :destroy, :inverse_of => :user
-  accepts_nested_attributes_for :registrations
-  
-  # Files uploaded by the user to meet assignment deliverables.
-  has_many :submissions, :dependent => :destroy, :inverse_of => :user
-  
-  # The user's answers to homework surveys.
-  has_many :survey_answers, :dependent => :destroy, :inverse_of => :user
-
-  # Grades assigned to the user, not to a team that the user belongs to.
-  has_many :direct_grades, :class_name => 'Grade', :dependent => :destroy,
-           :as => :subject
-
-  # Backing model for the teams association.
-  has_many :team_memberships, :dependent => :destroy, :inverse_of => :user
-  
-  # Teams that this user belongs to.
-  has_many :teams, :through => :team_memberships, :inverse_of => :users
-
   # Virtual attribute: the user's password.
   attr_reader :password
   def password=(new_password)
@@ -88,26 +64,17 @@ class User < ActiveRecord::Base
     user = User.where(:email => email).first
     (user && user.check_password(password)) ? user : nil
   end  
+end
+
+# :nodoc: site identity and class membership
+class User
+  # Personal information, e.g. full name and contact info.
+  has_one :profile, :dependent => :destroy, :inverse_of => :user
+  accepts_nested_attributes_for :profile
   
-  # Submissions connected to this user.
-  #
-  # Returns the submissions authored by the user, as well as the submissions
-  # authored by the user's teammates.
-  def connected_submissions
-    submissions = self.submissions.all
-    teams.each { |team| submissions += team.submissions.all }
-    submissions.uniq
-  end
-  
-  # All the grades connected to a user.
-  #
-  # The returned set includes the user's direct grades, as well as grades
-  # recorded for a team that the user is a part of.
-  def grades
-    direct_grades.includes(:metric => :assignment) +
-        teams.includes(:grades => {:metric => :assignment}).
-              map(&:grades).flatten
-  end
+  # Configure gravatars.
+  include Gravtastic
+  gravtastic :email, :secure => true, :rating => 'G', :filetype => 'png'
   
   # The user's real-life name.
   #
@@ -137,16 +104,79 @@ class User < ActiveRecord::Base
     end
   end
 
+  # Class registration info, e.g. survey answers and credit / listener status.
+  has_many :registrations, :dependent => :destroy, :inverse_of => :user
+  accepts_nested_attributes_for :registrations
+  
   # The user's registration for the main class on this site.
   def registration
     registrations.where(:course_id => Course.main.id).first
   end
+end
+
+# :nodoc: homework submission feature.
+class User  
+  # Files uploaded by the user to meet assignment deliverables.
+  has_many :submissions, :dependent => :destroy, :inverse_of => :user
+
+  # Submissions connected to this user.
+  #
+  # Returns the submissions authored by the user, as well as the submissions
+  # authored by the user's teammates.
+  def connected_submissions
+    submissions = self.submissions.all
+    teams.each { |team| submissions += team.submissions.all }
+    submissions.uniq
+  end
+end
+
+# :nodoc: grade submission and publishing feature.
+class User
+  # Grades assigned to the user, not to a team that the user belongs to.
+  has_many :direct_grades, :class_name => 'Grade', :dependent => :destroy,
+           :as => :subject
+
+  # All the grades connected to a user.
+  #
+  # The returned set includes the user's direct grades, as well as grades
+  # recorded for a team that the user is a part of.
+  def grades
+    direct_grades.includes(:metric => :assignment) +
+        teams.includes(:grades => {:metric => :assignment}).
+              map(&:grades).flatten
+  end
+end
+
+# :nodoc: teams feature.
+class User  
+  # Backing model for the teams association.
+  has_many :team_memberships, :dependent => :destroy, :inverse_of => :user
   
-  # Configure gravatars.
-  include Gravtastic
-  gravtastic :email, :secure => true, :rating => 'G', :filetype => 'png'
-    
+  # Teams that this user belongs to.
+  has_many :teams, :through => :team_memberships, :inverse_of => :users
+end
+
+# :nodoc: feedback survey integration.
+class User
+  # The user's answers to homework surveys.
+  has_many :survey_answers, :dependent => :destroy, :inverse_of => :user
+end  
+  
+# :nodoc: search integration.
+class User
   # TODO(costan): move query processing in another class
+
+  def self.find_all_by_query!(query)
+    query.gsub!(/ \[.*/, '')
+    sql_query = '%' + query.strip + '%'
+    matching_profiles = Profile.find(:all, :conditions => ['(name LIKE ?) OR (athena_username LIKE ?)', sql_query, sql_query], :include => :user)
+    unscored_users = User.find(:all, :conditions => ['(email LIKE ?)', sql_query, sql_query], :include => :profile) | matching_profiles.map { |i| i.user }
+    unscored_users.map { |u| [u.query_score(query), u] }.sort_by { |v| [-v[0], v[1].name] }[0, 10].map(&:last)
+  end
+  
+  def self.find_first_by_query!(query)
+    find_all_by_query!(query).first    
+  end
   
   # Parses a free-form user search query.
   #
@@ -211,18 +241,6 @@ class User < ActiveRecord::Base
                                    2, 1, 0.5, 0.1
 
     score / 20.0
-  end
-
-  def self.find_all_by_query!(query)
-    query.gsub!(/ \[.*/, '')
-    sql_query = '%' + query.strip + '%'
-    matching_profiles = Profile.find(:all, :conditions => ['(name LIKE ?) OR (athena_username LIKE ?)', sql_query, sql_query], :include => :user)
-    unscored_users = User.find(:all, :conditions => ['(email LIKE ?)', sql_query, sql_query], :include => :profile) | matching_profiles.map { |i| i.user }
-    unscored_users.map { |u| [u.query_score(query), u] }.sort_by { |v| [-v[0], v[1].name] }[0, 10].map(&:last)
-  end
-  
-  def self.find_first_by_query!(query)
-    find_all_by_query!(query).first    
   end
 end
 

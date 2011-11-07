@@ -10,42 +10,32 @@ class Assignment < ActiveRecord::Base
   validates :name, :length => 1..64, :uniqueness => { :scope => :course_id },
                    :presence => true
   
+  # True if the user is allowed to see this assignment.
+  def visible_for?(user)
+    user.admin? || assignment.deliverables.any? { |d| d.visible_for? user }
+  end
+
+  # A course's assignments, ordered by their deadline.
+  scope :by_deadline, order('deadline DESC').order(:name)
+  
+  # The assignments in a course that are visible to a user.
+  def self.for(user, course)
+    course.assignments.by_deadline.select { |a| a.visible_for?(user) }
+  end
+end
+
+# :nodoc: homework submission feature.
+class Assignment
   # The time when all the deliverables of the assignment are due.
   validates :deadline, :presence => true, :timeliness => true
   
-  # The weight of the assignment's score in the overall course score.
-  validates :weight, :numericality => { :greater_than_or_equal_to => 0,
-      :less_than_or_equal_to => 100, :allow_nil => true }
-
-  # The partition of teams used for this assignment.
-  belongs_to :team_partition, :inverse_of => :assignments
-  
-  # The set of survey questions for getting feedback on this assignment. 
-  belongs_to :feedback_survey, :class_name => 'Survey'
-
   # The deliverables that students need to submit to complete the assignment.
   has_many :deliverables, :dependent => :destroy, :inverse_of => :assignment
   accepts_nested_attributes_for :deliverables, :allow_destroy => true,
       :reject_if => lambda { |attributes| attributes[:name].nil? }
-  
-  # The metrics that the students are graded on for this assignment.
-  has_many :metrics, :class_name => 'AssignmentMetric', :dependent => :destroy,
-                     :inverse_of => :assignment
-  accepts_nested_attributes_for :metrics, :allow_destroy => true,
-      :reject_if => lambda { |attributes| attributes[:name].nil? }
-      
+        
   # All students' submissions for this assignment.
   has_many :submissions, :through => :deliverables, :inverse_of => :assignment
-  
-  # All students' grades for this assignment.
-  has_many :grades, :through => :metrics
-  
-  # The questions in the feedback survey for this assignment. 
-  def feedback_questions
-    # NOTE: this should be a has_many :through association, except ActiveRecord
-    #       doesn't support nested :through associations 
-    feedback_survey.questions
-  end
   
   # The assignment deadline, customized to a specific user.
   #
@@ -66,11 +56,41 @@ class Assignment < ActiveRecord::Base
   def deliverables_for(user)
     deliverables.select { |d| d.visible_for? user }
   end
+end
 
-  # A course's assignments, ordered by their deadline.
-  scope :by_deadline, lambda { |course|
-    where(:course_id => course.id).order('deadline DESC').order(:name)
-  }
+# :nodoc: grade collection and publishing feature.
+class Assignment
+  # The weight of the assignment's score in the overall course score.
+  validates :weight, :numericality => { :greater_than_or_equal_to => 0,
+      :less_than_or_equal_to => 100, :allow_nil => true }
+
+  # All students' grades for this assignment.
+  has_many :grades, :through => :metrics
+  
+  # The metrics that the students are graded on for this assignment.
+  has_many :metrics, :class_name => 'AssignmentMetric', :dependent => :destroy,
+                     :inverse_of => :assignment
+  accepts_nested_attributes_for :metrics, :allow_destroy => true,
+      :reject_if => lambda { |attributes| attributes[:name].nil? }
+end
+
+# :nodoc: team integration.
+class Assignment
+  # The partition of teams used for this assignment.
+  belongs_to :team_partition, :inverse_of => :assignments
+end
+
+# :nodoc: feedback survey integration.
+class Assignment
+  # The set of survey questions for getting feedback on this assignment. 
+  belongs_to :feedback_survey, :class_name => 'Survey'
+
+  # The questions in the feedback survey for this assignment. 
+  def feedback_questions
+    # NOTE: this should be a has_many :through association, except ActiveRecord
+    #       doesn't support nested :through associations 
+    feedback_survey.questions
+  end
 end
 
 # == Schema Information

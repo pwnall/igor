@@ -2,11 +2,13 @@
 
 Course homework submission website.
 
+
 == Installation
 
 Follow the standard steps for setting up a Rails development environment.
+    git clone
     bundle install
-    rake db:migrate
+    rake db:create db:migrate
 
 The command below runs the development server. Ctrl+C stops it.
     rails s
@@ -14,3 +16,11 @@ The command below runs the development server. Ctrl+C stops it.
 The first user registered on the system automatically receives administrative
 privileges. Course specifics can be configured by selecting Setup > Course in
 the left-side menu.
+
+
+== Development
+
+Much of the CSS running this site is at https://github.com/pwnstyles. If you
+want to change it, clone the repository in a sibling directory to seven, and
+bundler will find the clone and use it. Refreshing the page will reflect any
+CSS changes that you make.

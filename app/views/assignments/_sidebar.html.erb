@@ -1,3 +1,6 @@
-<%= link_to 'New Assignment', new_assignment_path, :class => 'button' %>
+<p>
+  <%= link_to 'New Assignment', new_assignment_path, :class => 'button' %>  
+</p>
 
-<%= render 'assignments/list', :assignments => @assignments %>
+<%= render 'assignments/list',
+           :assignments => Assignment.for(current_user, Course.main) %>
