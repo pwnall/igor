@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '>= 3.1.1'
+gem 'rails', '>= 3.1.2'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -12,14 +12,14 @@ gem 'json', '>= 1.5.4'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails', '>= 3.1.0'
+  gem 'sass-rails', '>= 3.1.5'
   gem 'coffee-rails', '>= 3.1.1'
   gem 'uglifier'
   
-  gem 'therubyracer', '>= 0.9.8'
+  gem 'therubyracer', '>= 0.9.9'
 end
 
-gem 'jquery-rails', '>= 1.0.13'
+gem 'jquery-rails', '>= 1.0.14'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -43,7 +43,7 @@ gem 'nokogiri', '>= 1.5.0'
 gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
                  :ref => '942a2b43383fd04c0434ca4b27379a114cb28a50'
 gem 'prawn', '~> 0.12.0'
-gem 'pwnstyles_rails', '>= 0.1.3', :path => '../pwnstyles_rails'
+gem 'pwnstyles_rails', '>= 0.1.4', :path => '../pwnstyles_rails'
 gem 'ttfunk', '>= 1.0.1'
 gem 'rmagick', '>= 2.13.1'
 gem 'validates_timeliness', '>= 3.0.0'
