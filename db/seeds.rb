@@ -21,7 +21,7 @@ prereq2 = Prerequisite.create! :course => course,
 
 admin = User.create :email => 'costan@mit.edu', :password => 'mit',
     :password_confirmation => 'mit', :active => true, :admin => true
-admin.active = true
+admin.email_credential.key = '1'
 admin.admin = true
 admin.save!
 
@@ -42,7 +42,7 @@ names.each_with_index do |name, i|
   short_name = (first_name[0, 1] + name.split(' ').last).downcase
   user = User.create :email => short_name + '@mit.edu',  :password => 'mit',
                      :password_confirmation => 'mit'
-  user.active = true
+  user.email_credential.key = '1'
   user.save!
   users << user
   

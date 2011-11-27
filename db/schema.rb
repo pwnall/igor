@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110429122654) do
+ActiveRecord::Schema.define(:version => 20111127034203) do
 
   create_table "announcements", :force => true do |t|
     t.string   "headline",         :limit => 128,                     :null => false
@@ -74,6 +74,17 @@ ActiveRecord::Schema.define(:version => 20110429122654) do
   end
 
   add_index "courses", ["number"], :name => "index_courses_on_number", :unique => true
+
+  create_table "credentials", :force => true do |t|
+    t.integer "user_id",                                    :null => false
+    t.string  "type",     :limit => 32,                     :null => false
+    t.string  "name",     :limit => 128
+    t.boolean "verified",                :default => false, :null => false
+    t.binary  "key"
+  end
+
+  add_index "credentials", ["type", "name"], :name => "index_credentials_on_type_and_name", :unique => true
+  add_index "credentials", ["user_id", "type"], :name => "index_credentials_on_user_id_and_type"
 
   create_table "db_files", :force => true do |t|
     t.text    "f_file_name",                          :null => false
@@ -318,15 +329,12 @@ ActiveRecord::Schema.define(:version => 20110429122654) do
   add_index "tokens", ["user_id", "action"], :name => "index_tokens_on_user_id_and_action"
 
   create_table "users", :force => true do |t|
-    t.string   "password_salt", :limit => 16,                    :null => false
-    t.string   "password_hash", :limit => 64,                    :null => false
-    t.string   "email",         :limit => 64,                    :null => false
-    t.boolean  "active",                      :default => false, :null => false
-    t.boolean  "admin",                       :default => false, :null => false
+    t.string   "exuid",      :limit => 32,                    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "admin",                    :default => false, :null => false
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["exuid"], :name => "index_users_on_exuid", :unique => true
 
 end

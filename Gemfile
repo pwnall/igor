@@ -32,7 +32,8 @@ gem 'jquery-rails', '>= 1.0.14'
 
 gem 'annotate', '>= 2.4.1.beta',
     :git => 'git://github.com/ctran/annotate_models.git'
-gem 'daemonz', '>= 0.3.2'
+gem 'authpwn_rails', '>= 0.10.3', :path => '../authpwn_rails'
+gem 'daemonz', '>= 0.3.3'
 gem 'delayed_job', '>= 2.1.4'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'exec_sandbox', '>= 0.1.2'

@@ -1,23 +1,32 @@
-<%= form_for(@login || User.new, :url => session_path, :method => :post) do |f| %>
-  <%= f.error_messages %>
+<% if @redirect_url %>
+<p>
+  We need you to log in before we can show you the page that you are trying to
+  view.
+</p>
+<% end %>
 
+<%= form_tag session_path do %>
   <section class="fields">
-  	<p class="field">
-      <%= f.label :email, 'Email', :for => 'login_email' %>
-      <span class="value">
-        <%= f.email_field :email, :id => 'login_email', :required => true,
-                          :placeholder => 'you@mit.edu', :autofocus => true %>
-      </span>
-  	</p>
-    <p class="field">
-      <%= f.label :password, 'Password', :for => 'login_password' %>
-      <span class="value">
-        <%= f.password_field :password, :id => 'login_password',
-                :placeholder => 'not your e-mail password' %>
-      </span>
-    </p>
+  <div class="field">
+    <%= label_tag :email, 'Email Address' %><br />
+    <span class="value">
+      <%= email_field_tag :email, @email %>
+    </span>
+  </div>
+  
+  <div class="field">
+    <%= label_tag :password %><br />
+    <span class="value">
+      <%= password_field_tag :password %>
+    </span
+  </div>
   </section>
-	<p class="action">
-	  <button>Sign in</button>
-	</p>
+  
+  <p class="action">
+    <%= submit_tag 'Log in' %>
+    
+    <% if @redirect_url %>
+    <%= hidden_field_tag :redirect_url, @redirect_url %>
+    <% end %>
+  </p>
 <% end %>

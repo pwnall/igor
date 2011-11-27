@@ -1,43 +1,22 @@
 admin:
-  password_salt: 1234
-  password_hash: <%= User.hash_password('password', '1234').inspect %>
-  email: costan@mit.edu
-  active: true
-  admin: true
+  exuid: 12345
 
 dexter:
-  password_salt: 5678
-  password_hash: <%= User.hash_password('pa55w0rd', '5678').inspect %>
-  email: genius+6006@mit.edu
-  active: true
-  admin: false
+  exuid: 56789
 
 inactive:
-  password_salt: 1234
-  password_hash: <%= User.hash_password('password', '1234').inspect %>
-  email: costan+lurker@mit.edu
-  active: false
-  admin: false
+  exuid: 66666
 
 solo:
-  password_salt: 1234
-  password_hash: <%= User.hash_password('password', '1234').inspect %>
-  email: costan+solo@mit.edu
-  active: true
-  admin: false
-  
-
+  exuid: 98765
 # == Schema Information
 #
 # Table name: users
 #
-#  id            :integer(4)      not null, primary key
-#  password_salt :string(16)      not null
-#  password_hash :string(64)      not null
-#  email         :string(64)      not null
-#  active        :boolean(1)      default(FALSE), not null
-#  admin         :boolean(1)      default(FALSE), not null
-#  created_at    :datetime
-#  updated_at    :datetime
+#  id         :integer(4)      not null, primary key
+#  exuid      :string(32)      not null
+#  created_at :datetime
+#  updated_at :datetime
+#  admin      :boolean(1)      default(FALSE), not null
 #
 

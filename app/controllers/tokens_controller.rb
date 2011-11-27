@@ -11,16 +11,17 @@ class TokensController < ApplicationController
         
     unless performed?
       respond_to do |format|
-        format.html { redirect_to session_path }
+        format.html { redirect_to session_url }
       end
     end
   end
   
   def confirm_email(dummy)
     user = @token.user
-    user.active = true
-    
-    if user.save
+    user.email_credential.key = '1'
+        
+    if user.email_credential.save
+      flash[:notice] = "E-mail address #{user.email} confirmed!"
       session[:user_id] = user.id
       return true
     else

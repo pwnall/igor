@@ -4,3 +4,19 @@ dexter:
   dropped: false
   for_credit: true
   allows_publishing: true
+# == Schema Information
+#
+# Table name: registrations
+#
+#  id                    :integer(4)      not null, primary key
+#  user_id               :integer(4)      not null
+#  course_id             :integer(4)      not null
+#  dropped               :boolean(1)      default(FALSE), not null
+#  teacher               :boolean(1)      default(FALSE), not null
+#  for_credit            :boolean(1)      default(TRUE), not null
+#  allows_publishing     :boolean(1)      default(TRUE), not null
+#  recitation_section_id :integer(4)
+#  created_at            :datetime
+#  updated_at            :datetime
+#
+

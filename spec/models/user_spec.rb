@@ -1,55 +1,21 @@
 require 'spec_helper'
 
 describe User do
-  fixtures :users, :grades, :submissions
+  fixtures :users, :credentials, :profiles, :grades, :submissions
   
   let(:dvdjohn) do
-    @dvdjohn = User.new :email => 'dvdjohn@mit.edu', :password => 'awesome',
-             :password_confirmation => 'awesome', 
-             :active => true, :admin => true
+    User.new :email => 'dvdjohn@mit.edu', :password => 'awesome',
+             :password_confirmation => 'awesome', :admin => true
   end
   let(:dexter) { users(:dexter) }
   let(:admin) { users(:admin) }
   let(:solo) { users(:solo) }
+  let(:inactive) { users(:inactive) }
   
   it 'should accept valid user construction' do
     dvdjohn.should be_valid
   end
   
-  it 'should reject users without password salts' do
-    dvdjohn.password_salt = nil
-    dvdjohn.should_not be_valid
-  end
-  it 'should reject overly long password salts' do
-    dvdjohn.password_salt = '12345' * 4
-    dvdjohn.should_not be_valid
-  end
-  it 'should reject empty password salts' do
-    dvdjohn.password_salt = ''
-    dvdjohn.should_not be_valid
-  end
-  it 'should reject users without password hashes' do
-    dvdjohn.password_hash = nil
-    dvdjohn.should_not be_valid
-  end
-  
-  it 'should reject overly long password hashes' do
-    dvdjohn.password_hash = '12345' * 13
-    dvdjohn.should_not be_valid
-  end
-  it 'should reject empty password hashes' do
-    dvdjohn.password_hash = ''
-    dvdjohn.should_not be_valid
-  end
-  
-  it 'should reject users without e-mail addresses' do
-    dvdjohn.email = nil
-    dvdjohn.should_not be_valid
-  end
-  it 'should reject overly long e-mail addresses' do
-    dvdjohn.email = 'abcde' * 12 + '@mit.edu'
-    dvdjohn.should_not be_valid
-  end
   ['costan@gmail.com', 'cos tan@gmail.com', 'costan@x@mit.edu', 'costan@mitZedu'].each do |email|
     it "should reject invalid e-mail #{email}" do 
       dvdjohn.email = email
@@ -63,8 +29,8 @@ describe User do
       dvdjohn.should be_valid
     end
   end
-  it 'should reject duplicate e-mail addresses' do
-    dvdjohn.email = users(:admin).email
+  it 'should reject non-.edu e-mail addresses' do
+    dvdjohn.email = 'dvdjohn@gmail.com'
     dvdjohn.should_not be_valid
   end
   
@@ -74,53 +40,6 @@ describe User do
   end  
   it 'should not mass-assign admin' do
     dvdjohn.admin.should == false
-  end
-  
-  it 'should reject users without an active flag' do
-    dvdjohn.active = nil
-    dvdjohn.should_not be_valid
-  end
-  it 'should not mass-asign active' do
-    dvdjohn.active.should == false
-  end
-  
-  it 'should check for password confirmation' do
-    dvdjohn.password_confirmation = 'not awesome'
-    dvdjohn.should_not be_valid    
-  end
-  
-  describe 'reset_password' do
-    it 'should blank the password fields' do
-      dvdjohn.reset_password
-      dvdjohn.should_not be_valid
-      dvdjohn.password_salt.should be_nil
-      dvdjohn.password_hash.should be_nil
-    end
-  end
-  
-  describe 'check_password' do
-    it 'should work for the right password' do
-      dvdjohn.check_password('awesome').should be_true
-    end
-    it 'should reject bogus password' do
-      dvdjohn.check_password('not awesome').should be_false
-    end
-    it "should reject another user's password" do
-      dvdjohn.check_password('password').should be_false
-    end
-  end
-  
-  describe 'authenticate' do
-    it 'should work with good credentials' do
-      User.authenticate('costan@mit.edu', 'password').should == admin
-      User.authenticate('genius+6006@mit.edu', 'pa55w0rd').should == dexter
-    end
-    it "should reject dexter's password on admin's account" do
-      User.authenticate('costan@mit.edu', 'pa55w0rd').should be_nil
-    end
-    it 'should reject bogus passwords' do
-      User.authenticate('genius+6006@mit.edu', 'awesome').should be_nil
-    end
   end
   
   describe 'connected_submissions' do
@@ -217,8 +136,7 @@ describe User do
 
   describe 'find_all_by_query' do
     it 'should rank all users for i' do
-      User.find_all_by_query!('i').should == [users(:admin), users(:dexter),
-                                              users(:solo), users(:inactive)]
+      User.find_all_by_query!('i').should == [admin, dexter, solo, inactive]
     end
   end
   
@@ -233,13 +151,10 @@ end
 #
 # Table name: users
 #
-#  id            :integer(4)      not null, primary key
-#  password_salt :string(16)      not null
-#  password_hash :string(64)      not null
-#  email         :string(64)      not null
-#  active        :boolean(1)      default(FALSE), not null
-#  admin         :boolean(1)      default(FALSE), not null
-#  created_at    :datetime
-#  updated_at    :datetime
+#  id         :integer(4)      not null, primary key
+#  exuid      :string(32)      not null
+#  created_at :datetime
+#  updated_at :datetime
+#  admin      :boolean(1)      default(FALSE), not null
 #
 

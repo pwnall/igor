@@ -23,8 +23,7 @@ describe ProfilePhoto do
   
   let(:photo) do
     ProfilePhoto.new :profile => profiles(:solo),
-        :pic => fixture_file_upload('spec/fixtures/profile_pics/costan.png',
-                                    'image/png')
+        :pic => fixture_file_upload('/profile_pics/costan.png', 'image/png')
   end
   
   it 'should validate proper uploads' do

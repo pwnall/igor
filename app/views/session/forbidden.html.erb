@@ -1,0 +1,15 @@
+<% if current_user %>
+<p>
+  You are not allowed to perform this action.  
+  Please  <%= link_to 'sign off', session_path, :method => :destroy %>, and 
+  sign in as a different user.  
+</p>
+<% else %>
+<p>
+  Unfortunately, you have disabled JavaScript in your browser. Please go to the
+  <%= link_to 'home page', new_session_path %> manually.
+</p>
+<script type="text/javascript">
+window.location = "<%= new_session_path %>";
+</script>
+<% end %>

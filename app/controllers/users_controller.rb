@@ -56,8 +56,6 @@ class UsersController < ApplicationController
         
         format.html { redirect_to session_url }
       else
-        @user.reset_password
-        
         format.html { render :action => :new }
       end
     end
@@ -92,7 +90,7 @@ class UsersController < ApplicationController
   # XHR /users/check_email?email=...
   def check_email
     @email = params[:user][:email]
-    @user = User.find(:first, :conditions => { :email => @email })
+    @user = User.with_email @email
     
     render :layout => false
   end

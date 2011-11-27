@@ -106,8 +106,8 @@ Seven::Application.routes.draw do
       post :set_recitation_section_time
     end
   end
-  resources :registrations  
-  resource :session, :controller => 'Session'
+  resources :registrations
+  resource :session, :controller => 'session'
   resources :submissions do
     member do
       get :file
@@ -169,7 +169,7 @@ Seven::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => "session#index"
+  root :to => "session#show"
 
   # See how all your routes lay out with "rake routes"
 

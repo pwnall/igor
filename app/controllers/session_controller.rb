@@ -1,56 +1,21 @@
+# Manages logging in and out of the application.
 class SessionController < ApplicationController
-  protect_from_forgery :except => [:create, :destroy, :logout]
-    
-  # POST /session
-  def create
-    session[:user_id] = nil
-    @login = User.new params[:user]    
-    user = User.authenticate @login.email, @login.password
-    if user.nil?
-      flash[:error] = 'Invalid user/password combination'
-    elsif !user.active
-      bounce_user("Your account is inactive (did you confirm your #{@login.email} e-mail address?)")
-      return
-    else
-      session[:user_id] = user.id
-      @current_user = user
-    end
-    
-    respond_to do |format|
-      if session[:user_id]
-        format.html { redirect_to root_path }
-      else
-        format.html do
-          @login.reset_password
-          render :action => :welcome
-        end
-      end
-    end    
-  end
+  include Authpwn::SessionController
   
-  # DELETE /session
-  def destroy
-    session[:user_id] = nil
-    response.headers['X-Account-Management-Status'] = "none"
-    flash[:notice] = 'You have been logged out'
-    respond_to do |format|
-      format.html { redirect_to root_path }
-    end    
+  # Sets up the 'session/welcome' view. No user is logged in.
+  def welcome
+    render :action => :new
   end
+  private :welcome
+
+  # Sets up the 'session/home' view. A user is logged in.
+  def home
+    # Pull information about the current user.
+    @news_flavor = params[:flavor] ? params[:flavor].to_sym : nil
+  end
+  private :home
   
-  # GET /session/logout
-  # POST /session/logout
-  def logout
-    destroy
-  end
-  
-  # GET /session
-  def index
-    if current_user
-      @news_flavor = params[:flavor] ? params[:flavor].to_sym : nil
-      render :action => :home
-    else
-      render :action => :welcome
-    end
-  end
+  # You shouldn't extend the session controller, so you can benefit from future
+  # features, like Facebook / Twitter / OpenID integration. But, if you must,
+  # you can do it here.
 end

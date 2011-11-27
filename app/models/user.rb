@@ -1,69 +1,31 @@
-# Credentials for a user in the system.
+# An user account.
+# An user account.
 class User < ActiveRecord::Base
-  # Forms can only change a user's email and password.
-  attr_accessible :email, :password, :password_confirmation
+  include Authpwn::UserModel
+
+  # Virtual email attribute, with validation.
+  include Authpwn::UserExtensions::EmailField
+  # Virtual password attribute, with confirmation validation.
+  include Authpwn::UserExtensions::PasswordField
+  # Convenience Facebook accessors.
+  # include Authpwn::UserExtensions::FacebookFields
+
+
+  # Add your extensions to the User class here.
+  
+  # Additional restrictuion: .edu e-mails only.
+  validates :email, :format => {
+      :with => /\A[A-Za-z0-9.+_-]+\@[A-Za-z0-9.\-]+\.edu\Z/,
+      :message => 'needs to be an .edu e-mail address' }
+  
   # Admins can bless other admins and activate blocked users.
   attr_accessible :active, :admin, :as => :admin
-  
-  # .edu e-mail address used to identify and endorse the user account.
-  validates :email, :length => 1..64, :presence => true, :uniqueness => true,
-      :format => { :with => /\A[A-Za-z0-9.+_-]+\@[A-Za-z0-9.\-]+\.edu\Z/,
-                   :message => 'needs to be an .edu e-mail address' }
-  
-  # Random string preventing dictionary attacks on the password database.
-  validates :password_salt, :length => 1..16, :presence => true
-    
-  # SHA-256 of (salt + password).
-  validates :password_hash, :length => 1..64, :presence => true
   
   # Site staff members. Not the same as teaching staff.
   validates :admin, :inclusion => { :in => [true, false], :allow_nil => false }
   
-  # Prevents logins from un-confirmed accounts.
-  validates :active, :inclusion => { :in => [true, false], :allow_nil => false }
-  
   # Random strings used for password-less authentication.
   has_many :tokens, :dependent => :destroy, :inverse_of => :user
-  
-  # Virtual attribute: the user's password.
-  attr_reader :password
-  def password=(new_password)
-    @password = new_password
-    if new_password
-      self.password_salt = [(0...12).map { |i| 1 + rand(255) }.pack('C*')].
-                                     pack('m').strip
-      self.password_hash = User.hash_password new_password, password_salt
-    else
-      self.password_salt = self.password_hash = nil
-    end
-  end
-  
-  # Virtual attribute: confirmation for the user's password.
-  attr_accessor :password_confirmation
-  validates_confirmation_of :password, :allow_nil => true
-  
-  # Compares the given password against the user's stored password.
-  #
-  # Returns +true+ for a match, +false+ otherwise.
-  def check_password(passwd)
-    password_hash == User.hash_password(passwd, password_salt)
-  end
-  
-  # Computes a password hash from a raw password and a salt.
-  def self.hash_password(password, salt)
-    Digest::SHA2.hexdigest(password + salt)
-  end
-  
-  # Resets the virtual password attributes.
-  def reset_password
-    self.password = self.password_confirmation = nil
-  end
-  
-  # The authenticated user or nil.
-  def self.authenticate(email, password)
-    user = User.where(:email => email).first
-    (user && user.check_password(password)) ? user : nil
-  end  
 end
 
 # :nodoc: site identity and class membership
@@ -169,8 +131,8 @@ class User
   def self.find_all_by_query!(query)
     query.gsub!(/ \[.*/, '')
     sql_query = '%' + query.strip + '%'
-    matching_profiles = Profile.find(:all, :conditions => ['(name LIKE ?) OR (athena_username LIKE ?)', sql_query, sql_query], :include => :user)
-    unscored_users = User.find(:all, :conditions => ['(email LIKE ?)', sql_query, sql_query], :include => :profile) | matching_profiles.map { |i| i.user }
+    matching_profiles = Profile.where('(name LIKE ?) OR (athena_username LIKE ?)', sql_query, sql_query).includes(:user).all
+    unscored_users = Credentials::Email.where('name LIKE ?', sql_query).includes(:user => :profile).map(&:user) | matching_profiles.map { |i| i.user }
     unscored_users.map { |u| [u.query_score(query), u] }.sort_by { |v| [-v[0], v[1].name] }[0, 10].map(&:last)
   end
   
@@ -231,16 +193,28 @@ class User
     query = User.parse_freeform_query query
     
     # Real name matching: 4 points.               
-    score += User.score_query_part query[:name], name, 4, 2, 1, 0.2
-    score += User.score_query_part query[:string], name, 2, 1, 0.5, 0.1
+    if query[:name]
+      score += User.score_query_part query[:name], name, 4, 2, 1, 0.2
+    end
+    if query[:string]
+      score += User.score_query_part query[:string], name, 2, 1, 0.5, 0.1
+    end
 
     # Email matching: 6 points.
-    score += User.score_query_part query[:email], "#{athena_id}@mit.edu",
-                                   6, 3, 1.5, 0.3
-    score += User.score_query_part query[:string], "#{athena_id}@mit.edu",
-                                   2, 1, 0.5, 0.1
+    if query[:email]
+      score += User.score_query_part query[:email], "#{athena_id}@mit.edu",
+                                     6, 3, 1.5, 0.3
+    end
+    if query[:string]
+      score += User.score_query_part query[:string], "#{athena_id}@mit.edu",
+                                     2, 1, 0.5, 0.1
+    end
 
     score / 20.0
+  end
+  
+  def inspect
+    "<#{self.class} email: #{email.inspect} id: #{id} admin: #{admin.inspect}>"
   end
 end
 
@@ -256,5 +230,15 @@ end
 #  admin         :boolean(1)      default(FALSE), not null
 #  created_at    :datetime
 #  updated_at    :datetime
+#
+# == Schema Information
+#
+# Table name: users
+#
+#  id         :integer(4)      not null, primary key
+#  exuid      :string(32)      not null
+#  created_at :datetime
+#  updated_at :datetime
+#  admin      :boolean(1)      default(FALSE), not null
 #
 
