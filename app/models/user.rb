@@ -1,5 +1,4 @@
 # An user account.
-# An user account.
 class User < ActiveRecord::Base
   include Authpwn::UserModel
 
@@ -26,6 +25,12 @@ class User < ActiveRecord::Base
   
   # Random strings used for password-less authentication.
   has_many :tokens, :dependent => :destroy, :inverse_of => :user
+  
+  # Reject un-verified e-mails.
+  def auth_bounce_reason(credential)
+    (credential.is_a?(Credentials::Email) && !credential.verified?) ?
+        :blocked : nil  
+  end
 end
 
 # :nodoc: site identity and class membership
