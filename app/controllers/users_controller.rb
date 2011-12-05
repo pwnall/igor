@@ -115,37 +115,7 @@ class UsersController < ApplicationController
     flash[:notice] = "#{@user.email} is #{@user.admin ? 'an admin now' : 'no longer an admin'}."
     redirect_to :controller => :users, :action => :index
   end
-  
-  # GET /users/logout
-  def edit_password
-    @user = current_user
-  end
-  
-  def update_password
-    @user = User.find(params[:id])
-    if @user != current_user && !current_user.admin
-      bounce_user "That's not yours to play with! Your attempt was logged."
-      return
-    end
     
-    @user.password = params[:user][:password]
-    @user.password_confirmation = params[:user][:password_confirmation]
-
-    respond_to do |format|
-      if @user.save
-        flash[:notice] = 'Password successfully updated.'
-        format.html { redirect_to root_url }
-      else
-        format.html { render :action => :edit_password }
-      end
-    end
-  end
-  
-  # GET /users/reset_password
-  def reset_password
-    @user = User.new
-  end
-  
   # POST /users/recovery_email
   def recovery_email
     @user = User.new params[:user]

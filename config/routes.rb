@@ -12,6 +12,8 @@ Seven::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
+  authpwn_session
+  
   resources :check_results
   resources :survey_questions
   resources :team_memberships
@@ -107,7 +109,6 @@ Seven::Application.routes.draw do
     end
   end
   resources :registrations
-  resource :session, :controller => 'session'
   resources :submissions do
     member do
       get :file
