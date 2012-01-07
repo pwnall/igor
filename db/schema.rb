@@ -11,15 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111127034203) do
+ActiveRecord::Schema.define(:version => 20120107095004) do
 
   create_table "announcements", :force => true do |t|
     t.string   "headline",         :limit => 128,                     :null => false
     t.string   "contents",         :limit => 8192,                    :null => false
     t.integer  "author_id",                                           :null => false
     t.boolean  "open_to_visitors",                 :default => false, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
   end
 
   create_table "assignment_metrics", :force => true do |t|
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.integer  "max_score"
     t.boolean  "published",                                                  :default => false
     t.decimal  "weight",                      :precision => 16, :scale => 8, :default => 1.0,   :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                                                    :null => false
+    t.datetime "updated_at",                                                                    :null => false
   end
 
   add_index "assignment_metrics", ["assignment_id", "name"], :name => "index_assignment_metrics_on_assignment_id_and_name", :unique => true
@@ -42,8 +42,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.integer  "team_partition_id"
     t.integer  "feedback_survey_id"
     t.boolean  "accepts_feedback",                                               :default => false, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                                                        :null => false
+    t.datetime "updated_at",                                                                        :null => false
   end
 
   add_index "assignments", ["course_id", "deadline", "name"], :name => "index_assignments_on_course_id_and_deadline_and_name", :unique => true
@@ -55,8 +55,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.string   "diagnostic",    :limit => 256
     t.binary   "stdout",        :limit => 16777215
     t.binary   "stderr",        :limit => 16777215
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
   end
 
   add_index "check_results", ["submission_id"], :name => "index_check_results_on_submission_id", :unique => true
@@ -69,8 +69,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.boolean  "has_recitations",                :default => true, :null => false
     t.boolean  "has_surveys",                    :default => true, :null => false
     t.boolean  "has_teams",                      :default => true, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
   end
 
   add_index "courses", ["number"], :name => "index_courses_on_number", :unique => true
@@ -102,8 +102,9 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.datetime "locked_at"
     t.datetime "failed_at"
     t.string   "locked_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "queue"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
@@ -114,8 +115,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.string   "description",   :limit => 2048,                    :null => false
     t.boolean  "published",                     :default => false, :null => false
     t.string   "filename",      :limit => 256,  :default => "",    :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
   end
 
   add_index "deliverables", ["assignment_id", "name"], :name => "index_deliverables_on_assignment_id_and_name", :unique => true
@@ -126,8 +127,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.integer  "subject_id",                                               :null => false
     t.integer  "grader_id",                                                :null => false
     t.decimal  "score",                      :precision => 8, :scale => 2, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                               :null => false
+    t.datetime "updated_at",                                               :null => false
   end
 
   add_index "grades", ["subject_type", "subject_id", "metric_id"], :name => "grades_by_subject_and_metric_id", :unique => true
@@ -137,8 +138,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.integer  "prerequisite_id", :null => false
     t.boolean  "took_course",     :null => false
     t.text     "waiver_answer"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   add_index "prerequisite_answers", ["registration_id", "prerequisite_id"], :name => "prerequisites_for_a_registration", :unique => true
@@ -147,8 +148,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.integer  "course_id",                          :null => false
     t.string   "prerequisite_number", :limit => 64,  :null => false
     t.string   "waiver_question",     :limit => 256, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   add_index "prerequisites", ["course_id", "prerequisite_number"], :name => "index_prerequisites_on_course_id_and_prerequisite_number", :unique => true
@@ -161,8 +162,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.binary   "pic_file",         :limit => 16777215, :null => false
     t.binary   "pic_profile_file", :limit => 16777215, :null => false
     t.binary   "pic_thumb_file",   :limit => 16777215, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
   end
 
   add_index "profile_photos", ["profile_id"], :name => "index_profile_photos_on_profile_id", :unique => true
@@ -176,8 +177,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.string   "year",            :limit => 4,                    :null => false
     t.string   "athena_username", :limit => 32,                   :null => false
     t.string   "about_me",        :limit => 4096, :default => "", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id", :unique => true
@@ -195,8 +196,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.integer  "leader_id",                :null => false
     t.string   "time",       :limit => 64, :null => false
     t.string   "location",   :limit => 64, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
   end
 
   add_index "recitation_sections", ["serial"], :name => "index_recitation_sections_on_serial", :unique => true
@@ -209,8 +210,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.boolean  "for_credit",            :default => true,  :null => false
     t.boolean  "allows_publishing",     :default => true,  :null => false
     t.integer  "recitation_section_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
   end
 
   add_index "registrations", ["course_id", "user_id"], :name => "index_registrations_on_course_id_and_user_id", :unique => true
@@ -222,8 +223,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.string   "message_name",   :limit => 64
     t.integer  "db_file_id"
     t.integer  "time_limit"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
   end
 
   add_index "submission_checkers", ["deliverable_id"], :name => "index_submission_checkers_on_deliverable_id", :unique => true
@@ -232,8 +233,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.integer  "deliverable_id", :null => false
     t.integer  "user_id",        :null => false
     t.integer  "db_file_id",     :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   add_index "submissions", ["deliverable_id", "updated_at"], :name => "index_submissions_on_deliverable_id_and_updated_at"
@@ -243,8 +244,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
   create_table "survey_answers", :force => true do |t|
     t.integer  "user_id",       :null => false
     t.integer  "assignment_id", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   add_index "survey_answers", ["assignment_id"], :name => "index_survey_answers_on_assignment_id"
@@ -256,8 +257,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.integer  "target_user_id"
     t.float    "number",                           :null => false
     t.string   "comment",          :limit => 1024
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
   end
 
   add_index "survey_question_answers", ["survey_answer_id", "question_id", "target_user_id"], :name => "survey_question_answers_by_answer_question_user", :unique => true
@@ -280,14 +281,14 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.integer  "scale_max",                       :default => 5,       :null => false
     t.string   "scale_min_label", :limit => 64,   :default => "Small", :null => false
     t.string   "scale_max_label", :limit => 64,   :default => "Large", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
   end
 
   create_table "surveys", :force => true do |t|
     t.string   "name",       :limit => 128, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "team_memberships", :force => true do |t|
@@ -304,15 +305,15 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
     t.boolean  "automated",                :default => true,  :null => false
     t.boolean  "editable",                 :default => true,  :null => false
     t.boolean  "published",                :default => false, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
   end
 
   create_table "teams", :force => true do |t|
     t.integer  "partition_id",               :null => false
     t.string   "name",         :limit => 64, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   add_index "teams", ["partition_id", "name"], :name => "index_teams_on_partition_id_and_name", :unique => true
@@ -330,8 +331,8 @@ ActiveRecord::Schema.define(:version => 20111127034203) do
 
   create_table "users", :force => true do |t|
     t.string   "exuid",      :limit => 32,                    :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
     t.boolean  "admin",                    :default => false, :null => false
   end
 

@@ -30,33 +30,42 @@ gem 'jquery-rails', '>= 2.0.0'
 # To use debugger
 # gem 'ruby-debug'
 
-gem 'annotate', '>= 2.4.1.beta',
-    :git => 'git://github.com/ctran/annotate_models.git'
+# Core.
 gem 'authpwn_rails', '>= 0.10.5', :path => '../authpwn_rails'
-gem 'daemonz', '>= 0.3.3'
-gem 'delayed_job', '>= 2.1.4'
 gem 'dynamic_form', '>= 1.1.4'
-gem 'exec_sandbox', '>= 0.1.2'
 gem 'fastercsv', '>= 1.5.4', :platforms => [:mri_18]
-gem 'gravtastic', '>= 3.2.6'
-gem 'mit_stalker', '>= 1.0.3'
 gem 'nokogiri', '>= 1.5.0'
 gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
-                 :ref => '942a2b43383fd04c0434ca4b27379a114cb28a50'
-gem 'prawn', '~> 0.12.0'
+                 :ref => 'c295bc4e78b84044296f3a03157c097b50161bc5'
 gem 'pwnstyles_rails', '>= 0.1.4', :path => '../pwnstyles_rails'
-gem 'ttfunk', '>= 1.0.1'
 gem 'rmagick', '>= 2.13.1'
-gem 'validates_timeliness', '>= 3.0.0'
+gem 'validates_timeliness', '>= 3.0.8'
+
+# Background processing.
+gem 'daemonz', '>= 0.3.3'
+gem 'daemons'  # Required by delayed_job.
+gem 'delayed_job', '>= 3.0.0'
+gem 'delayed_job_active_record'  # Required by delayed_job.
 gem 'zerg_support', '>= 0.1.5'
 
-# Stellar integration pending new Mechanize release.
-# gem 'mechanize', '>= 2.0.2',
-#     :git => 'git://github.com/tenderlove/mechanize.git',
-#     :ref => '3736fd0f0e2ef547fe9b904003dbce14d39a9c4e'
-# gem 'stellar', '>= 0.3.0'
+# PDF cover sheets.
+gem 'prawn', '~> 0.12.0'
+
+# Code grading.
+gem 'exec_sandbox', '>= 0.1.2'
+
+# Gravatar fall-back avatars.
+gem 'gravtastic', '>= 3.2.6'
+
+# MIT WebSIS student lookup.
+gem 'mit_stalker', '>= 1.0.3'
+
+# MIT Stellar integration.
+gem 'stellar', '>= 0.3.1'
 
 group :development, :test do
+  gem 'annotate', '>= 2.4.1.beta',
+      :git => 'git://github.com/ctran/annotate_models.git'
   gem 'rspec-rails', '>= 2.8.1'
   gem 'webrat'
 end
