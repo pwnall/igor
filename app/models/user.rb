@@ -23,9 +23,6 @@ class User < ActiveRecord::Base
   # Site staff members. Not the same as teaching staff.
   validates :admin, :inclusion => { :in => [true, false], :allow_nil => false }
   
-  # Random strings used for password-less authentication.
-  has_many :tokens, :dependent => :destroy, :inverse_of => :user
-  
   # Reject un-verified e-mails.
   def auth_bounce_reason(credential)
     (credential.is_a?(Credentials::Email) && !credential.verified?) ?

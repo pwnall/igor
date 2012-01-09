@@ -318,17 +318,6 @@ ActiveRecord::Schema.define(:version => 20120107095004) do
 
   add_index "teams", ["partition_id", "name"], :name => "index_teams_on_partition_id_and_name", :unique => true
 
-  create_table "tokens", :force => true do |t|
-    t.integer  "user_id",                    :null => false
-    t.string   "token",      :limit => 64,   :null => false
-    t.string   "action",     :limit => 32,   :null => false
-    t.string   "argument",   :limit => 1024
-    t.datetime "created_at"
-  end
-
-  add_index "tokens", ["token"], :name => "index_tokens_on_token", :unique => true
-  add_index "tokens", ["user_id", "action"], :name => "index_tokens_on_user_id_and_action"
-
   create_table "users", :force => true do |t|
     t.string   "exuid",      :limit => 32,                    :null => false
     t.datetime "created_at",                                  :null => false
