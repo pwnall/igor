@@ -123,6 +123,4 @@ Seven::Application.routes.draw do
   end
 
   root :to => "session#show"
-  
-  match '/tokens/:token' => 'tokens#spend', :as => 'spend_token'
 end

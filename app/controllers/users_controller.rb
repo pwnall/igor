@@ -48,12 +48,14 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        flash[:error] = 'Please check your e-mail to activate your account.'
-        token = @user.tokens.create :action => 'confirm_email'
-        TokenMailer.account_confirmation(token, root_url, 
-            spend_token_url(:token => token.token)).deliver
+        token = Tokens::EmailVerification.random_for @user.email_credential
+        SessionMailer.email_verification_email(token, request.host_with_port).
+                      deliver
         
-        format.html { redirect_to session_url }
+        format.html do
+          redirect_to new_session_url,
+              :error => 'Please check your e-mail to verify your account.'
+        end
       else
         format.html { render :action => :new }
       end
