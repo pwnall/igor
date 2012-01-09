@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   before_filter :authenticated_as_admin, :except =>
-      [:new, :create, :show, :check_email, :edit_password, :update_password,
-       :reset_password, :recovery_email]
+      [:new, :create, :show, :check_email, :edit_password, :update_password]
   
   before_filter :authenticated_as_user, :only => [:edit_password,
                                                   :update_password, :show]
@@ -116,35 +115,6 @@ class UsersController < ApplicationController
     redirect_to :controller => :users, :action => :index
   end
     
-  # POST /users/recovery_email
-  def recovery_email
-    @user = User.new params[:user]
-    
-    template = User.where(:email => params[:user][:email])
-    
-    # First, try to find an active user matching the e-mail.
-    @real_user = template.where(:active => true).first
-    unless @real_user
-      # If there's none, get the first user trying to register.
-      @real_user = template.first
-    end
-    
-    unless @real_user
-      flash[:notice] = "No account for e-mail #{params[:user][:email]}. Are you sure you registered?"
-      render :action => :recover_password
-      return
-    end
-    
-    # Generate one-time login token and e-mail it.
-    token = @real_user.tokens.create :action => 'login_once'
-    TokenMailer.password_recovery(token, root_url,
-        spend_token_url(:token => token.token)).deliver
-
-    # go home
-    flash[:notice] = "Please check your e-mail at #{params[:user][:email]} for next steps."
-    redirect_to root_path
-  end
-  
   def impersonate
     @user = User.find(params[:id])
     return bounce_user('Cannot impersonate another admin.') if @user.admin?

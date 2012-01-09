@@ -15,22 +15,4 @@ class TokenMailer < ActionMailer::Base
       format.text  # token_mailer/account_confirmation.text.plain.erb
     end
   end
-
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.actionmailer.token_mailer.password_recovery.subject
-  #
-  def password_recovery(token, root_url, token_url)
-    @course = Course.main
-    @token, @root_url, @token_url = token, root_url, token_url
-    @token = token
-
-    mail :subject => "#{Course.main.number} server password reset",
-         :from => Course.main.email,
-         :to => @token.user.email do |format|
-      format.html  # token_mailer/password_recovery.text.html.erb
-      format.text  # token_mailer/password_recovery.text.plain.erb      
-    end
-  end
 end

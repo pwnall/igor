@@ -23,7 +23,9 @@
   </section>
   
   <p class="action">
-    <%= submit_tag 'Log in' %>
+    <%= button_tag 'Log in', :name => 'login', :value => 'requested' %>
+    <%= button_tag 'Reset Password', :name => 'reset_password',
+          :value => 'requested', :formaction => reset_password_session_path %>
     
     <% if @redirect_url %>
     <%= hidden_field_tag :redirect_url, @redirect_url %>
