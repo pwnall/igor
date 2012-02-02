@@ -1,27 +1,91 @@
 @font-face {
-  font-family: "Droid Serif";
+  font-family: "Droid Sans";
   font-style: normal;
   font-weight: normal;
-  src: font-url("DroidSerif.ttf") format("truetype");
+  src: font-url("Droid_Sans/DroidSans.ttf") format("truetype");
 }
 @font-face {
   font-family: "Droid Serif";
   font-style: normal;
   font-weight: bold;
-  src: font-url("DroidSerif-Bold.ttf") format("truetype");
+  src: font-url("Droid_Sans/DroidSans-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Droid Serif";
+  font-style: normal;
+  font-weight: normal;
+  src: font-url("Droid_Serif/DroidSerif.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Droid Serif";
+  font-style: normal;
+  font-weight: bold;
+  src: font-url("Droid_Serif/DroidSerif-Bold.ttf") format("truetype");
 }
 @font-face {
   font-family: "Droid Serif";
   font-style: italic;
   font-weight: normal;
-  src: font-url("DroidSerif-Italic.ttf") format("truetype");
+  src: font-url("Droid_Serif/DroidSerif-Italic.ttf") format("truetype");
 }
 @font-face {
   font-family: "Droid Serif";
   font-style: italic;
   font-weight: bold;
-  src: font-url("DroidSerif-BoldItalic.ttf") format("truetype");
+  src: font-url("Droid_Serif/DroidSerif-BoldItalic.ttf") format("truetype");
 }
+
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: normal;
+  src: font-url("Open_Sans/OpenSans-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: bold;
+  src: font-url("Open_Sans/OpenSans-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Open Sans";
+  font-style: italic;
+  font-weight: normal;
+  src: font-url("Open_Sans/OpenSans-Italic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Open Sans";
+  font-style: italic;
+  font-weight: bold;
+  src: font-url("Open_Sans/OpenSans-BoldItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Tinos";
+  font-style: normal;
+  font-weight: normal;
+  src: font-url("Tinos/Tinos-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Tinos";
+  font-style: normal;
+  font-weight: bold;
+  src: font-url("Tinos/Tinos-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Tinos";
+  font-style: italic;
+  font-weight: normal;
+  src: font-url("Tinos/Tinos-Italic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Tinos";
+  font-style: italic;
+  font-weight: bold;
+  src: font-url("Tinos/Tinos-BoldItalic.ttf") format("truetype");
+}
+
 
 @font-face {
   font-family: "Ubuntu";
