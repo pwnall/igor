@@ -22,62 +22,51 @@ class PrerequisitesController < ApplicationController
   # GET /prerequisites/new
   def new
     @prerequisite = Prerequisite.new
-    new_edit
   end
 
   # GET /prerequisites/1/edit
   def edit
-    @prerequisite = Prerequisite.find(params[:id])
-    new_edit
+    @prerequisite = Prerequisite.find params[:id]
   end
   
-  def new_edit
-    respond_to do |format|
-      format.html { render :action => :new_edit }
-    end
-  end
-  private :new_edit
-
   # POST /prerequisites
   def create
-    @prerequisite = Prerequisite.new(params[:prerequisite])
-    create_update
+    @prerequisite = Prerequisite.new params[:prerequisite]
+    @prerequisite.course = Course.main
+    respond_to do |format|
+      if @prerequisite.save
+        format.html do
+          redirect_to prerequisites_url, :notice => 'Prerequisite created.'
+        end
+      else
+        format.html { render :action => :new }
+      end
+    end
   end
 
   # PUT /prerequisites/1
   def update
-    @prerequisite = Prerequisite.find(params[:id])
-    create_update
-  end
-  
-  def create_update
-    @is_new_record = @prerequisite.new_record?
-    if @is_new_record
-      success = @prerequisite.save
-    else
-      success = @prerequisite.update_attributes(params[:prerequisite])
-    end
-    
+    @prerequisite = Prerequisite.find params[:id]
     respond_to do |format|
-      if success
-        flash[:notice] = 'Prerequisite successfully ' +
-                         (@is_new_record ? 'submitted.' : 'updated.')
-        format.html { redirect_to :action => :index }
+      if @prerequisite.update_attributes params[:prerequisite]
+        format.html do
+          redirect_to prerequisites_url, :notice => 'Prerequisite updated.'
+        end
       else
-        format.html { render :action => :new_edit }
+        format.html { render :action => :edit }
       end
-    end    
+    end
   end
-  private :create_update
-  
 
   # DELETE /prerequisites/1
   def destroy
     @prerequisite = Prerequisite.find(params[:id])
     @prerequisite.destroy
 
+    notice = "Prerequisite #{@prerequisite.prerequisite_number} removed."
+
     respond_to do |format|
-      format.html { redirect_to(prerequisites_url) }
+      format.html { redirect_to prerequisites_url, :notice => notice }
     end
   end
 end

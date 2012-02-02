@@ -24,25 +24,42 @@
         <%= f.text_field :ga_account %>
       </span>
     </p>
+  </section>
+  
+  <h3>Advanced Features</h3>
+  <section class="fields">
     <p class="field">
       <%= f.label :has_recitations, 'Recitation sections' %>
       <span class="value">
         <%= f.check_box :has_recitations %>
+        <%= f.label :has_recitations do %>
+          students are assigned to recitation sections which show up on their
+          cover sheets
+        <% end %>
       </span>
     </p>
     <p class="field">
       <%= f.label :has_recitations, 'Homework surveys' %>
       <span class="value">
         <%= f.check_box :has_surveys %>
+        <%= f.label :has_surveys do %>
+          course staff can create one survey for each assignment, and get
+          feedback from students
+        <% end %>
       </span>
     </p>
     <p class="field">
       <%= f.label :has_recitations, 'Homework teams' %>
       <span class="value">
         <%= f.check_box :has_teams %>
+        <%= f.label :has_teams do %>
+          course staff can assign students to teams; any student in a team can
+          submit an assignment for the entire team
+        <% end %>
       </span>
     </p>
   </section>
+  
   <p class="action">
     <%= f.submit %>
   </p>

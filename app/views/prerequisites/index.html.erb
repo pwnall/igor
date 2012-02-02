@@ -1,30 +1,34 @@
-<!-- prerequisites/index -->
 <div class="full_section">
   <div style="z-index: 10; float: right; width: 100px; text-align: right;">
     <h1 class="full_section"><%= link_to 'New', new_prerequisite_path %></h1>
   </div>
   <h1 class="full_section" style="margin-right: 100px; ">Prerequisites</h1>
   <table>
-    <tr>
-      <th style="text-align: left; width: 250px;">
-        Course number(s)
-      </th>
-      <th style="text-align: left;">
-        Waiver question
-      </th>
-    </tr>
-    <% for @prerequisite in @prerequisites %>
-    <tr>
-      <td>
-        <%= in_place_editor_field(:prerequisite, :course_number, {}, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
-      </td>
-      <td>
-        <%= in_place_editor_field(:prerequisite, :waiver_question, {}, :rows => 3, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
-      </td>
-      <td>
-        <%= link_to 'Destroy', @prerequisite, :confirm => 'Are you sure?', :method => :delete %>
-      </td>
-    </tr>
-    <% end %>
+    <thead>
+      <tr>
+        <th>
+          Course Number(s)
+        </th>
+        <th>
+          Question if Missing Prerequisite
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @prerequisites.each do |prerequisite| %>
+      <tr>
+        <td>
+          <%= prerequisite.prerequisite_number %>
+        </td>
+        <td>
+          <%= prerequisite.waiver_question %>
+        </td>
+        <td>
+          <%= link_to 'Edit', edit_prerequisite_path(prerequisite) %>
+          <%= link_to 'Remove', prerequisite, :method => :delete %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
   </table>
 </div>

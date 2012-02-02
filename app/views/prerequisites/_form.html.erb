@@ -1,0 +1,21 @@
+<%= form_for @prerequisite do |f| %>
+  <%= f.error_messages %>
+
+  <section class="fields">
+    <p class="field">
+      <%= f.label :prerequisite_number, 'Course number(s)' %>
+      <span class="value">
+        <%= f.text_field :prerequisite_number %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :waiver_question, 'Question if Missing Prerequisite' %>
+      <span class="value">
+        <%= f.text_field :waiver_question %>
+      </span>
+    </p>
+  </section>
+  <p class="action">
+    <%= f.submit %>
+  </p>
+<% end %>

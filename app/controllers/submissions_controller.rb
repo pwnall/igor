@@ -4,8 +4,6 @@ class SubmissionsController < ApplicationController
   before_filter :authenticated_as_user, :only => [:new, :create, :update, :file]
   before_filter :authenticated_as_admin, :except => [:new, :create, :update, :file]
   
-  layout 'full'
-  
   # XHR /submissions/xhr_update_deliverables?assignment_id=1
   def xhr_update_deliverables
     @assignment = Assignment.where(:id => params[:assignment_id]).

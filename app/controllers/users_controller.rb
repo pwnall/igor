@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    @user = User.find(params[:id])
+    @user = User.find_by_param params[:id]
 
     respond_to do |format|
       format.html # show.html.erb
@@ -37,12 +37,12 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    @user = User.find_by_param params[:id]
   end
 
   # POST /users
   def create
-    @user = User.new(params[:user])
+    @user = User.new params[:user]
     # The first user becomes an administrator by default.
     @user.admin = (User.count == 0)
 

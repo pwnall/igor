@@ -30,9 +30,7 @@ class GradesController < ApplicationController
     @grades = @assignment.grades.group_by { |g| [g.subject, g.metric] }
     
     respond_to do |format|
-      format.html do
-        render :layout => 'full'
-      end
+      format.html
     end
   end
   
