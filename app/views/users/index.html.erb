@@ -1,2 +1,45 @@
-<h2>Users</h2>
-<%= render @users %>
+<h2>Site Users</h2>
+
+<table>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td>
+          <% if user.admin? %>
+            <%= role_icon_tag :staff %> staff
+          <% else %>
+            <%= role_icon_tag :student %> student
+          <% end %>
+        </td>
+        <td>
+          <% if user.email_credential.verified? %>
+            <%= valid_icon_tag %>
+          <% else %>
+            <%= invalid_icon_tag %>
+          <% end %>
+          <%= user.email %>
+        </td>
+        <td>
+          <% if user.admin? %>
+            <%= link_to set_admin_user_path(user, :to => false),
+                    :method => :put, :class => 'button' do %>
+              Student
+            <% end %>
+          <% else %>
+            <%= link_to set_admin_user_path(user, :to => true),
+                    :method => :put, :class => 'button' do %>
+              Staff
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to user, :confirm => "Completely wipe #{user.email}'s data?",
+                  :method => :delete, :class => 'button', do %>
+            Remove
+          <% end %>
+        </td>
+      </tr>
+    <% end %>   
+  </tbody>
+</table>

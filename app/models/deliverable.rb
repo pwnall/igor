@@ -7,10 +7,6 @@ class Deliverable < ActiveRecord::Base
   # Instructions on preparing submissions for this deliverable.
   validates :description, :length => 1..(2.kilobytes), :presence => true
   
-  # If true, students (non-admins) can see this deliverable and submit to it.
-  validates :published, :inclusion => { :in => [true, false],
-                                        :allow_nil => false }
-  
   # Standard filename of the deliverable (e.g. writeup.pdf, trees.py)
   validates :filename, :length => 1..256, :presence => true
 
@@ -26,7 +22,7 @@ class Deliverable < ActiveRecord::Base
   
   # True if the given user should be allowed to see the deliverable.
   def visible_for?(user)
-    published? or (user and user.admin?)
+    assignment.deliverables_ready? || (user && user.admin?)
   end
 
   # This deliverable's submission for the given user.

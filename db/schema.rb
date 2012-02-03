@@ -23,27 +23,27 @@ ActiveRecord::Schema.define(:version => 20120107095004) do
   end
 
   create_table "assignment_metrics", :force => true do |t|
-    t.string   "name",          :limit => 64,                                                   :null => false
-    t.integer  "assignment_id",                                                                 :null => false
+    t.integer  "assignment_id",               :null => false
+    t.string   "name",          :limit => 64, :null => false
     t.integer  "max_score"
-    t.boolean  "published",                                                  :default => false
-    t.decimal  "weight",                      :precision => 16, :scale => 8, :default => 1.0,   :null => false
-    t.datetime "created_at",                                                                    :null => false
-    t.datetime "updated_at",                                                                    :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
   add_index "assignment_metrics", ["assignment_id", "name"], :name => "index_assignment_metrics_on_assignment_id_and_name", :unique => true
 
   create_table "assignments", :force => true do |t|
-    t.integer  "course_id",                                                                         :null => false
-    t.datetime "deadline",                                                                          :null => false
-    t.decimal  "weight",                           :precision => 9, :scale => 6
-    t.string   "name",               :limit => 64,                                                  :null => false
+    t.integer  "course_id",                                                                          :null => false
     t.integer  "team_partition_id"
     t.integer  "feedback_survey_id"
-    t.boolean  "accepts_feedback",                                               :default => false, :null => false
-    t.datetime "created_at",                                                                        :null => false
-    t.datetime "updated_at",                                                                        :null => false
+    t.datetime "deadline",                                                                           :null => false
+    t.decimal  "weight",                           :precision => 16, :scale => 8, :default => 1.0,   :null => false
+    t.string   "name",               :limit => 64,                                                   :null => false
+    t.boolean  "deliverables_ready",                                              :default => false, :null => false
+    t.boolean  "metrics_ready",                                                   :default => false, :null => false
+    t.boolean  "accepts_feedback",                                                :default => false, :null => false
+    t.datetime "created_at",                                                                         :null => false
+    t.datetime "updated_at",                                                                         :null => false
   end
 
   add_index "assignments", ["course_id", "deadline", "name"], :name => "index_assignments_on_course_id_and_deadline_and_name", :unique => true
@@ -110,13 +110,12 @@ ActiveRecord::Schema.define(:version => 20120107095004) do
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "deliverables", :force => true do |t|
-    t.integer  "assignment_id",                                    :null => false
-    t.string   "name",          :limit => 80,                      :null => false
-    t.string   "description",   :limit => 2048,                    :null => false
-    t.boolean  "published",                     :default => false, :null => false
-    t.string   "filename",      :limit => 256,  :default => "",    :null => false
-    t.datetime "created_at",                                       :null => false
-    t.datetime "updated_at",                                       :null => false
+    t.integer  "assignment_id",                                 :null => false
+    t.string   "name",          :limit => 80,                   :null => false
+    t.string   "description",   :limit => 2048,                 :null => false
+    t.string   "filename",      :limit => 256,  :default => "", :null => false
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
   end
 
   add_index "deliverables", ["assignment_id", "name"], :name => "index_deliverables_on_assignment_id_and_name", :unique => true

@@ -1,19 +1,13 @@
 class CreateAssignmentMetrics < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :assignment_metrics do |t|
+      t.references :assignment, :null => false
       t.string :name, :limit => 64, :null => false
-      t.integer :assignment_id, :null => false
       t.integer :max_score, :null => true
-      t.boolean :published, :nil => false, :default => false
-      t.decimal :weight, :precision => 16, :scale => 8, :null => false, :default => 1.0
 
       t.timestamps
     end
     add_index :assignment_metrics, [:assignment_id, :name],
                                    :null => false, :unique => true
-  end
-
-  def self.down
-    drop_table :assignment_metrics
   end
 end

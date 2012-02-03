@@ -1,46 +1,7 @@
-<!-- assignment_metrics/new_edit -->
-<div class="full_section">
-	
 <% if @assignment_metric.new_record? %>
 	<h1 class="full_section">New Assignment Metric</h1>
 <% else %>
 	<h1 class="full_section">Editing Assignment Metric</h1>
 <% end %>
 
-<%= error_messages_for :assignment_metric %>
-
-<%= form_for(@assignment_metric, :html => {:class => 'student_form'}) do |f| %>
-	<div class="form_box">
-		<div class="form_entry">
-			<div class="form_label">Name</div>
-			<div class="form_field_box">
-				<%= f.text_field :name, :class => 'form_field' %>
-			</div>
-		</div>
-		<div class="form_entry">
-			<div class="form_label">Assignment</div>
-			<div class="form_field_box">
-				<%= f.select :assignment_id, Assignment.find(:all).map { |a| [a.name, a.id] }, :class => 'form_field' %>
-			</div>
-		</div>
-		<div class="form_entry">
-			<div class="form_label">Maximum score</div>
-			<div class="form_field_box">
-				<%= f.text_field :max_score, :size => 3, :class => 'form_field' %>
-			</div>
-		</div>
-		<div class="form_entry">
-			<div class="form_label">Weight</div>
-			<div class="form_field_box">
-				<%= f.text_field :weight, :size => 6, :class => 'form_field' %>
-			</div>
-		</div>
-		<div class="form_submit_box">
-		    <%= f.submit @assignment_metric.new_record? ? "Create" : "Update", :class => 'form_submit' %>
-			or
-			<%= link_to 'Go back', :controller => :assignment_metrics, :action => :index %>
-		</div>
-	</div>
-<% end %>
-
-</div>
+<%= render 'form' %>

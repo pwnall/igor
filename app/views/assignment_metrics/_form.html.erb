@@ -1,0 +1,9 @@
+<%= form_for(@assignment_metric, :html => {:class => 'student_form'}) do |f| %>
+  <%= f.error_messages %>
+  
+  <%= render 'fields', :f => f %>
+
+  <p class="action">
+     <%= f.submit %>
+  </p>
+<% end %>

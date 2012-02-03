@@ -30,10 +30,10 @@
     </span>
     <span class="comment">
       <span data-pwnfx-confirm-win="new-password">
-        <%= ok_image_tag %>
+        <%= valid_icon_tag %>
       </span>
       <span data-pwnfx-confirm-fail="new-password">
-        does not match
+        <span class="error-text"><%= invalid_icon_tag %> does not match</span>
       </span>
     </span>
   </p>

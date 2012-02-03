@@ -1,5 +1,5 @@
 class CreateCourses < ActiveRecord::Migration
-  def self.up
+  def up
     create_table :courses do |t|
       t.string :number, :limit => 16, :null => false
       t.string :title, :limit => 256, :null => false      
@@ -23,7 +23,7 @@ class CreateCourses < ActiveRecord::Migration
                    :ga_account => 'UA-2624215-2'
   end
 
-  def self.down
+  def down
     drop_table :courses
   end
 end

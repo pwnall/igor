@@ -1,3 +1,12 @@
 <h2>New Assignment</h2>
 
-<%= render 'assignments/form', :assignment => @assignment %>
+<%= form_for @assignment do |f| %>
+  <%= f.error_messages %>
+  <%= render 'assignments/fields', :f => f %>
+  
+  <p class="action">
+    <%= button_tag do %>
+      <%= next_step_icon_tag %> Build Assignment
+    <% end %>
+  </p>
+<% end %>

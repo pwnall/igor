@@ -4,7 +4,6 @@ class CreateDeliverables < ActiveRecord::Migration
       t.integer :assignment_id, :null => false
       t.string :name, :limit => 80, :null => false
       t.string :description, :limit => 2.kilobytes, :null => false
-      t.boolean :published, :null => false, :default => false
       t.string :filename, :limit => 256, :null => false, :default => ''
       
       t.timestamps

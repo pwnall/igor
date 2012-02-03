@@ -12,10 +12,15 @@ course = Course.main
 course.update_attributes! :number => '1.337', :title => 'Intro to Pwnage',
                           :has_recitations => false, :has_surveys => false,
                           :has_teams => false
-prereq1 = Prerequisite.create! :course => course,
-    :prerequisite_number => '6.01', :waiver_question => 'Programming experience'
-prereq2 = Prerequisite.create! :course => course,
-    :prerequisite_number => '6.042', :waiver_question => 'Math experience'
+prereq1 = Prerequisite.new :prerequisite_number => '6.01',
+    :waiver_question => 'Programming experience'
+prereq1.course = course
+prereq1.save!
+
+prereq2 = Prerequisite.new :prerequisite_number => '6.042',
+    :waiver_question => 'Math experience'
+prereq2.course = course
+prereq2.save!
 
 # Staff.
 
@@ -68,12 +73,15 @@ end
 # Exams.
 
 exams = (1..3).map do |i|
-  exam = Assignment.create! :course => course, :name => "Exam #{i}",
-      :deadline => Time.now - 2.weeks - 6.weeks + i * 4.weeks, :weight => 5.0
+  exam = Assignment.new :name => "Exam #{i}", :weight => 5.0,
+      :deadline => Time.now - 2.weeks - 6.weeks + i * 4.weeks
+  exam.deliverables_ready = exam.deadline < Time.now
+  exam.metrics_ready = exam.deadline < Time.now 
+  exam.course = course
+  exam.save!
   metrics = (1..(5 + i)).map do |j|
     AssignmentMetric.create! :assignment => exam, :name => "Problem #{j}",
-      :published => (exam.deadline < Time.now), :weight => 1.0,
-      :max_score => 6 + (i + j) % 6
+                             :max_score => 6 + (i + j) % 6
   end
   exam
 end
@@ -92,18 +100,21 @@ end
 # Psets.
 
 psets = (1..8).map do |i|
-  pset = Assignment.create! :course => course, :name => "Problem Set #{i}",
-      :deadline => Time.now - 1.day - 5.weeks + i * 1.week, :weight => 1.0
-  published = pset.deadline < Time.now
+  pset = Assignment.new :name => "Problem Set #{i}", :weight => 1.0,
+      :deadline => Time.now - 1.day - 5.weeks + i * 1.week
+  pset.course = course
+  pset.save!
+  pset.deliverables_ready = i < 8
+  pset.metrics_ready = pset.deadline < Time.now
   metrics = (1..(2 + i)).map do |j|
     AssignmentMetric.create! :assignment => pset, :name => "Problem #{j}",
-      :published => published, :weight => 1.0, :max_score => 6 + (i + j) % 6
+                             :max_score => 6 + (i + j) % 6
   end
   
   deliverable = Deliverable.create! :assignment => pset,
       :name => 'PDF write-up',
-      :description => 'Please upoad your write-up, in PDF format.',
-      :published => i < 8, :filename => 'writeup.pdf'
+      :description => 'Please upload your write-up, in PDF format.',
+      :filename => 'writeup.pdf'
   ProcChecker.create! :deliverable => deliverable,
       :message_name => :validate_pdf
 

@@ -30,7 +30,8 @@
   <p class="field" data-pwnfx-reveal-target="<%= p.object_name %>">
     <%= p.label :waiver_answer, p.object.prerequisite.waiver_question %>
     <span class="value">
-      <%= p.text_area :waiver_answer, :rows => 3 %>
+      <%= p.text_area :waiver_answer, :rows => 3, :placeholder =>
+             "How did you learn the material in #{p.object.prerequisite.prerequisite_number}?" %>
     </span>
     <span class="comment">
       <span data-pwnfx-move="prerequisites">

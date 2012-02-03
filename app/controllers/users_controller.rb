@@ -109,7 +109,7 @@ class UsersController < ApplicationController
   
   # POST /users/set_admin/1?to=true
   def set_admin
-    @user = User.find(params[:id])
+    @user = User.find_by_param params[:id]
     @user.admin = params[:to] || false
     @user.save!
     

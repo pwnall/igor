@@ -3,10 +3,6 @@ module ApplicationHelper
     image_tag 'ajax-loader.gif', :alt => 'Loading...'
   end
   
-  def ok_image_tag
-    image_tag 'checkmark.png', :alt => 'OK'
-  end
-  
   def add_site_status(message, is_notice)
     render :partial => 'layouts/status', :object => message,
            :locals => { :is_notice => is_notice }

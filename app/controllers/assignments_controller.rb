@@ -21,9 +21,8 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments/new
   def new
-    @assignment = Assignment.new :course => Course.main
-    @assignment.deliverables.build
-    @assignment.metrics.build
+    @assignment = Assignment.new
+    @assignment.course = Course.main
     
     respond_to do |format|
       format.html  # new.html.erb
@@ -39,14 +38,12 @@ class AssignmentsController < ApplicationController
   
   # POST /assignments
   def create
-    @assignment = Assignment.new(params[:assignment])
+    @assignment = Assignment.new params[:assignment]
     @assignment.course = Course.main
 
     respond_to do |format|
       if @assignment.save
-        format.html do
-          redirect_to @assignment, :notice => 'Assignment successfully created.'
-        end
+        format.html { redirect_to edit_assignment_path(@assignment) }
       else
         format.html { render :action => :new }
       end

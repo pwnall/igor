@@ -1,13 +1,18 @@
 class CreateAssignments < ActiveRecord::Migration
   def change
     create_table :assignments do |t|
-      t.integer :course_id, :null => false
+      t.references :course, :null => false
+      t.references :team_partition, :null => true
+      t.references :feedback_survey, :null => true
+
       t.datetime :deadline, :null => false
-      t.decimal :weight, :null => true, :precision => 9, :scale => 6
+      t.decimal :weight, :precision => 16, :scale => 8, :null => false,
+                        :default => 1.0
+
       t.string :name, :limit => 64, :null => false
       
-      t.integer :team_partition_id, :null => true
-      t.integer :feedback_survey_id, :null => true
+      t.boolean :deliverables_ready, :null => false, :default => false
+      t.boolean :metrics_ready, :null => false, :default => false
       t.boolean :accepts_feedback, :null => false, :default => false
 
       t.timestamps

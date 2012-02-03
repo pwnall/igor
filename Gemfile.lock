@@ -239,7 +239,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate (>= 2.4.1.beta)!
-  authpwn_rails (>= 0.10.5)!
+  authpwn_rails (>= 0.10.7)!
   coffee-rails (>= 3.2.1)
   daemons
   daemonz (>= 0.3.3)

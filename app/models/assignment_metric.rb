@@ -22,20 +22,14 @@ class AssignmentMetric < ActiveRecord::Base
   validates :max_score, :numericality => { :greater_than => 0 },
                         :presence => true
 
-  # If true, non-admins can see this metric, as well as their scores on it.
-  validates :published, :inclusion => { :in => [true, false],
-                                        :allow_nil => false }
-  
-  # The metric's weight when computing total class scores.
-  #
-  # This is computed manually by the admins, by taking into account each
-  # assignment's maximum score, as well as its weight in the final class grade.
-  # For example, exam scores usually weigh heavier than pset scores.
-  validates :weight, :numericality => true
-  
   # True if the given user should be allowed to see the metric.
   def visible_for?(user)
-    published? or (user and user.admin?)
+    assignment.metrics_ready? || (user && user.admin?)
+  end
+  
+  # True if this metric can be destroyed without a warning.
+  def safe_to_destroy?
+    grades.empty?
   end
 end
 

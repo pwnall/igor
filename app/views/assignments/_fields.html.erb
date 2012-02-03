@@ -7,13 +7,45 @@
     </span>
   </p>
   <p class="field">
-    <%= f.label :deadline %>
+    <%= f.label :deadline, 'Submission Deadline' %>
     <span class="field">
       <%= f.datetime_select :deadline, :use_short_month => true,
              :minute_step => 15, :datetime_separator => ' at ',
              :time_separator => ':' %>
     </span>
   </p>
+  <p class="field">
+    <%= f.label :weight, 'Grade Weight' %>
+    <span class="field">
+      <%= f.number_field :weight, :min => 0, :step => 0.1, :required => true,
+                                  :placeholder => 1.0 %>
+    </span>
+  </p>
+  
+  
+  <% if f.object.deliverables.length > 0 %>
+  <p class="field">
+    <%= f.label :deliverables_ready, 'Deliverables Ready' %>
+    <span class="value">
+      <%= f.check_box :deliverables_ready %>
+      <%= f.label :deliverables_ready do %>
+        students can see the deliverables and upload solutions
+      <% end %>
+    </span>
+  </p>
+  <% end %>
+
+  <% if f.object.metrics.length > 0 %>
+  <p class="field">
+    <%= f.label :metrics_ready, 'Grades Ready' %>
+    <span class="value">
+      <%= f.check_box :metrics_ready %>
+      <%= f.label :metrics_ready do %>
+        students can see their grades
+      <% end %>
+    </span>
+  </p>
+  <% end %>
   
   <% if f.object.course.has_teams? %>
   <p class="field">
@@ -42,5 +74,4 @@
     </span>
   </p>
   <% end %>
-
 </section>

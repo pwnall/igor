@@ -27,7 +27,8 @@ class GradesController < ApplicationController
     
     @assignment = query.first
     @metrics = @assignment.metrics
-    @grades = @assignment.grades.group_by { |g| [g.subject, g.metric] }
+    @grades = @assignment.grades.includes(:subject).
+                          group_by { |g| [g.subject, g.metric] }
     
     respond_to do |format|
       format.html
