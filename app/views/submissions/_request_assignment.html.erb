@@ -16,12 +16,12 @@
         <%= check_box_tag :cutoff_enable, '1', false,
               :id => 'submission_cutoff_enable',
               'data-pwnfx-reveal' => 'submission-cutoff',
-              'data-pwnfx-reveal-trigger' => 'uncheck' %>
+              'data-pwnfx-reveal-trigger' => 'check' %>
         get submissions after the deadline
       </span>
     </p>
     <p class="field" id="submission_cutoff_container"
-                     data-pwnfx-reveal-target="submission-cutoff">
+                     data-pwnfx-reveal-negative="submission-cutoff">
       <%= label_tag :submission_cutoff %>
       <span class="value">
         <%= select_datetime (@assignments.first ? @assignments.first.deadline : Time.now - 1.day),

@@ -1,19 +1,17 @@
 <% if flash[:error] %>
-<p class="status-bar error" data-pwnfx-reveal-target="status-bar">
+<p class="status-bar error" data-pwnfx-reveal-negative="status-bar">
   <%= flash[:error] %>
 
   <span class="actions">
-  <%= link_to 'Hide', '#', 'data-pwnfx-reveal' => 'status-bar',
-                           'data-pwnfx-reveal-trigger' => 'click-hide' %>
+  <%= link_to 'Hide', '#', 'data-pwnfx-reveal' => 'status-bar' %>
   </span>
 </p>
 <% elsif flash[:notice] %>
-<p class="status-bar notice" data-pwnfx-reveal-target="status-bar">
+<p class="status-bar notice" data-pwnfx-reveal-negative="status-bar">
   <%= flash[:notice] %>
 
   <span class="actions">
-  <%= link_to 'Hide', '#', 'data-pwnfx-reveal' => 'status-bar',
-                           'data-pwnfx-reveal-trigger' => 'click-hide' %>
+  <%= link_to 'Hide', '#', 'data-pwnfx-reveal' => 'status-bar' %>
   </span>
 </p>
 <% end %>

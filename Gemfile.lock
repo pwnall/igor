@@ -15,13 +15,6 @@ GIT
       cocaine (>= 0.0.2)
       mime-types
 
-PATH
-  remote: ../pwnstyles_rails
-  specs:
-    pwnstyles_rails (0.1.5)
-      rails (>= 3.1.1)
-      sass-rails (>= 3.1.4)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -149,6 +142,9 @@ GEM
     prawn (0.12.0)
       pdf-reader (>= 0.9.0)
       ttfunk (~> 1.0.2)
+    pwnstyles_rails (0.1.6)
+      rails (>= 3.2.0)
+      sass-rails (>= 3.2.4)
     rack (1.4.1)
     rack-cache (1.1)
       rack (>= 0.4)
@@ -255,7 +251,7 @@ DEPENDENCIES
   nokogiri (>= 1.5.0)
   paperclip!
   prawn (~> 0.12.0)
-  pwnstyles_rails (>= 0.1.5)!
+  pwnstyles_rails (>= 0.1.6)
   rails (>= 3.2.1)
   rmagick (>= 2.13.1)
   rspec-rails (>= 2.8.1)
