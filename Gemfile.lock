@@ -15,6 +15,13 @@ GIT
       cocaine (>= 0.0.2)
       mime-types
 
+PATH
+  remote: ../pwnstyles_rails
+  specs:
+    pwnstyles_rails (0.1.5)
+      rails (>= 3.1.1)
+      sass-rails (>= 3.1.4)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -61,9 +68,11 @@ GEM
       execjs
     coffee-script-source (1.2.0)
     daemons (1.1.6)
-    daemonz (0.3.3)
-      simple-daemon
-      zerg_support
+    daemonz (0.3.4)
+      posix-spawn (>= 0.3.6)
+      rails (>= 3.2.0)
+      simple-daemon (>= 0.1.2)
+      zerg_support (>= 0.1.5)
     delayed_job (3.0.1)
       activesupport (~> 3.0)
     delayed_job_active_record (0.3.2)
@@ -136,12 +145,10 @@ GEM
       Ascii85 (~> 1.0.0)
       ruby-rc4
     polyglot (0.3.3)
+    posix-spawn (0.3.6)
     prawn (0.12.0)
       pdf-reader (>= 0.9.0)
       ttfunk (~> 1.0.2)
-    pwnstyles_rails (0.1.4)
-      rails (>= 3.1.1)
-      sass-rails (>= 3.1.4)
     rack (1.4.1)
     rack-cache (1.1)
       rack (>= 0.4)
@@ -234,7 +241,7 @@ DEPENDENCIES
   authpwn_rails (>= 0.10.7)
   coffee-rails (>= 3.2.1)
   daemons
-  daemonz (>= 0.3.3)
+  daemonz (>= 0.3.4)
   delayed_job (>= 3.0.0)
   delayed_job_active_record
   dynamic_form (>= 1.1.4)
@@ -248,7 +255,7 @@ DEPENDENCIES
   nokogiri (>= 1.5.0)
   paperclip!
   prawn (~> 0.12.0)
-  pwnstyles_rails (>= 0.1.4)
+  pwnstyles_rails (>= 0.1.5)!
   rails (>= 3.2.1)
   rmagick (>= 2.13.1)
   rspec-rails (>= 2.8.1)
@@ -259,4 +266,3 @@ DEPENDENCIES
   uglifier
   validates_timeliness (>= 3.0.8)
   webrat
-  zerg_support (>= 0.1.5)

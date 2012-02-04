@@ -21,6 +21,16 @@
           <%= user.email %>
         </td>
         <td>
+          <%= link_to 'Impersonate', impersonate_user_path(user),
+                  :method => :post, :class => 'button' %>
+        </td>
+        <td>
+          <%= link_to user, :confirm => "Completely wipe #{user.email}'s data?",
+                  :method => :delete, :class => 'button', do %>
+            Remove
+          <% end %>
+        </td>
+        <td>
           <% if user.admin? %>
             <%= link_to set_admin_user_path(user, :to => false),
                     :method => :put, :class => 'button' do %>
@@ -31,12 +41,6 @@
                     :method => :put, :class => 'button' do %>
               Staff
             <% end %>
-          <% end %>
-        </td>
-        <td>
-          <%= link_to user, :confirm => "Completely wipe #{user.email}'s data?",
-                  :method => :delete, :class => 'button', do %>
-            Remove
           <% end %>
         </td>
       </tr>
