@@ -16,7 +16,9 @@ class CoursesController < ApplicationController
     
     respond_to do |format|
       if @course.update_attributes params[:course]
-        format.html { redirect_to courses_url }
+        format.html do
+          redirect_to root_url, :notice => "#{@course.number} course settings updated"
+        end
       else
         format.html { render :action => :edit }
       end
