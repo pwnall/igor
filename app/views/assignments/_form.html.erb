@@ -1,16 +1,22 @@
 <%= form_for assignment do |f| %>
   <%= f.error_messages %>
-  <%= render 'assignments/fields', :f => f %>
+  <%= render 'assignments/fields', f: f %>
   
-  <h3>Required Files</h3>
+  <h3>Files to be Submitted</h3>
   <%= f.fields_for :deliverables do |df| %>
-    <%= render 'deliverables/fields', :f => df %>
+    <%= render 'deliverables/fields', f: df %>
   <% end %>
   
-  <h3>Grades</h3>
-  <%= f.fields_for :metrics do |mf| %>
-    <%= render 'assignment_metrics/fields', :f => mf %>
-  <% end %>
+  <h3>Grading Breakdown</h3>
+  <div pwnfx-render-target="assignment-<%= f.object.id %>-metrics">
+    <%= f.fields_for :metrics do |mf| %>
+      <%= render 'assignment_metrics/fields', f: mf %>
+    <% end %>
+    <%= button_tag :type => :button,
+            'pwnfx-render' => "assignment-#{f.object.id}-metrics" do %>
+      <%= create_icon_tag %> Add
+    <% end %>
+  </div>
 
   <p class="action">
     <%= f.submit %>
