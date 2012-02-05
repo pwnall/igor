@@ -1,9 +1,13 @@
 <li>
-  <%= link_to 'News', root_path %>
+  <%= link_to root_path do %>
+    <%= feed_icon_tag %> Feed
+  <% end %>
 </li>
 <%= render 'menu/homework' %>
 <li>
-  <%= link_to 'Grades', editor_grades_path %>
+  <%= link_to editor_grades_path do %>
+    <%= grades_icon_tag %> Grades
+  <% end %>
   <ol>
     <li>
       <%= link_to 'Post Grades', editor_grades_path %>
@@ -19,7 +23,9 @@
 </li>
 <% end %>
 <li>
-  <%= link_to 'Design', root_path %>
+  <%= link_to root_path do %>
+    <%= role_icon_tag(:staff) %> Course
+  <% end %>
   <ol>
     <li>
       <%= link_to 'Course Info', edit_course_path(Course.main) %>
@@ -33,7 +39,9 @@
   </ol>
 </li>
 <li>
-  <%= link_to 'Toolbox', root_path %>
+  <%= link_to root_path do %>
+    <%= toolbox_icon_tag %> Toolbox
+  <% end %>
   <ol>
     <li>
       <%= link_to 'Metrics', assignment_metrics_path %>

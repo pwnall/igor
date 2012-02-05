@@ -87,7 +87,7 @@ class Assignment
   has_many :grades, :through => :metrics
 end
 
-# :nodoc: metrics
+# :nodoc: lifecycle
 class Assignment
   # This assignment's position in the assignment lifecycle.
   # 

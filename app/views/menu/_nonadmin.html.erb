@@ -1,8 +1,13 @@
 <li>
-  <%= link_to 'News', root_path %>
+  <%= link_to root_path do %>
+    <%= feed_icon_tag %> Feed
+  <% end %>
 </li>
+<%= render 'menu/homework' %>
 <li>
-  <%= link_to 'Grades', grades_path %>
+  <%= link_to grades_path do %>
+    <%= grades_icon_tag %> Grades
+  <% end %>
 </li>
 <% if Course.main.has_surveys %>
 <li>

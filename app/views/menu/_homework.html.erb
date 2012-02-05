@@ -1,16 +1,21 @@
 <li>
-  <%= link_to 'Homework', root_path(:flavor => :deliverable) %>
+  <%= link_to root_path(:flavor => :deliverable) do %>
+    <%= homework_icon_tag %> Homework
+  <% end %>
   <ol>
     <li>
       <%= link_to new_assignment_path do %>
-        <%= image_tag 'menu_add.png' %>
-        Add Homework
+        <%= create_icon_tag %> Add Homework
       <% end %>
     </li>
     <% assignments_for(current_user).each do |assignment| %>
     <li>
       <%= assignment_state_icon_tag assignment.ui_state_for(current_user) %>
-      <%= link_to assignment.name, assignment %>
+      <% if current_user.admin? %>
+        <%= link_to assignment.name, edit_assignment_path(assignment) %>
+      <% else %>
+        <%= link_to assignment.name, assignment %>
+      <% end %>
     </li>
     <% end %>
   </ol>

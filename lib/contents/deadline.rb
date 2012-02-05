@@ -66,6 +66,7 @@ class Deadline
           d.done = true
           include_feedback = true
         end
+        next if d.done  # Exclude completed deadlines.
         deadlines << d
       end
     
@@ -79,6 +80,7 @@ class Deadline
                          :source => assignment,
                          :active => assignment.accepts_feedback
         d.done = true if answers_by_aid[assignment.id]
+        next if d.done  # Exclude completed deadlines.
         deadlines << d
       end
     end

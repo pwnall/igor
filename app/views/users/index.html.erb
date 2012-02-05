@@ -22,24 +22,24 @@
         </td>
         <td>
           <%= link_to 'Impersonate', impersonate_user_path(user),
-                  :method => :post, :class => 'button' %>
+                  method: :post, class: 'button' %>
         </td>
         <td>
           <%= link_to user, :confirm => "Completely wipe #{user.email}'s data?",
-                  :method => :delete, :class => 'button', do %>
-            Remove
+                  method: :delete, class: 'button' do %>
+            <%= destroy_icon_tag %> Remove
           <% end %>
         </td>
         <td>
           <% if user.admin? %>
             <%= link_to set_admin_user_path(user, :to => false),
-                    :method => :put, :class => 'button' do %>
-              Student
+                    method: :put, class: 'button' do %>
+              <%= role_icon_tag :student %> Student
             <% end %>
           <% else %>
             <%= link_to set_admin_user_path(user, :to => true),
-                    :method => :put, :class => 'button' do %>
-              Staff
+                    method: :put, class: 'button' do %>
+              <%= role_icon_tag :staff %> Staff
             <% end %>
           <% end %>
         </td>

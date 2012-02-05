@@ -72,17 +72,27 @@ end
 
 # Exams.
 
-exams = (1..3).map do |i|
+exam_data = [
+  { :deadline => -6.weeks - 5.days, :state => :graded },
+  { :deadline => -5.days, :state => :draft },
+  { :deadline => 8.weeks - 5.days, :state => :draft }
+]
+
+exams = exam_data.map.with_index do |data, index|
+  i = index + 1
+  
   exam = Assignment.new :name => "Exam #{i}", :weight => 5.0,
-      :deadline => Time.now - 2.weeks - 6.weeks + i * 4.weeks
-  exam.deliverables_ready = exam.deadline < Time.now
-  exam.metrics_ready = exam.deadline < Time.now 
+      :deadline => Time.now + data[:deadline]
   exam.course = course
+  exam.deliverables_ready = data[:state] != :draft
+  exam.metrics_ready = data[:state] == :graded
   exam.save!
   metrics = (1..(5 + i)).map do |j|
     AssignmentMetric.create! :assignment => exam, :name => "Problem #{j}",
                              :max_score => 6 + (i + j) % 6
   end
+
+  raise "Exam #{i} seeding bug" unless exam.ui_state_for(admin) == data[:state]
   exam
 end
 
@@ -99,12 +109,24 @@ end
 
 # Psets.
 
-psets = (1..8).map do |i|
+pset_data = [
+  { :deadline => -12.weeks - 1.day, :state => :graded },
+  { :deadline => -9.weeks - 1.day, :state => :graded },
+  { :deadline => -6.weeks - 1.day, :state => :graded },
+  { :deadline => -3.weeks - 1.day, :state => :grading },
+  { :deadline => -1.day, :state => :grading },
+  { :deadline => 3.weeks - 1.day, :state => :open },
+  { :deadline => 6.weeks - 1.day, :state => :open },
+  { :deadline => 9.weeks - 1.day, :state => :draft }
+]
+
+psets = pset_data.map.with_index do |data, index|
+  i = index + 1
   pset = Assignment.new :name => "Problem Set #{i}", :weight => 1.0,
-      :deadline => Time.now - 1.day - 5.weeks + i * 1.week
+      :deadline => Time.now + data[:deadline]
   pset.course = course
-  pset.deliverables_ready = i < 8
-  pset.metrics_ready = pset.deadline < Time.now
+  pset.deliverables_ready = data[:state] != :draft
+  pset.metrics_ready = data[:state] == :graded
   pset.save!
   metrics = (1..(2 + i)).map do |j|
     AssignmentMetric.create! :assignment => pset, :name => "Problem #{j}",
@@ -118,6 +140,7 @@ psets = (1..8).map do |i|
   ProcChecker.create! :deliverable => deliverable,
       :message_name => :validate_pdf
 
+  raise "Pset #{i} seeding bug" unless pset.ui_state_for(admin) == data[:state]
   pset
 end
 

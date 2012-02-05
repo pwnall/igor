@@ -1,5 +1,5 @@
 class AssignmentsController < ApplicationController
-  before_filter :authenticated_as_admin
+  before_filter :authenticated_as_admin, :except => :show
 
   # GET /assignments
   def index
