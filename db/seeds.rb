@@ -103,9 +103,9 @@ psets = (1..8).map do |i|
   pset = Assignment.new :name => "Problem Set #{i}", :weight => 1.0,
       :deadline => Time.now - 1.day - 5.weeks + i * 1.week
   pset.course = course
-  pset.save!
   pset.deliverables_ready = i < 8
   pset.metrics_ready = pset.deadline < Time.now
+  pset.save!
   metrics = (1..(2 + i)).map do |j|
     AssignmentMetric.create! :assignment => pset, :name => "Problem #{j}",
                              :max_score => 6 + (i + j) % 6

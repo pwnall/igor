@@ -1,0 +1,17 @@
+<li>
+  <%= link_to 'Homework', root_path(:flavor => :deliverable) %>
+  <ol>
+    <li>
+      <%= link_to new_assignment_path do %>
+        <%= image_tag 'menu_add.png' %>
+        Add Homework
+      <% end %>
+    </li>
+    <% assignments_for(current_user).each do |assignment| %>
+    <li>
+      <%= assignment_state_icon_tag assignment.ui_state_for(current_user) %>
+      <%= link_to assignment.name, assignment %>
+    </li>
+    <% end %>
+  </ol>
+</li>

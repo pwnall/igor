@@ -87,6 +87,27 @@ class Assignment
   has_many :grades, :through => :metrics
 end
 
+# :nodoc: metrics
+class Assignment
+  # This assignment's position in the assignment lifecycle.
+  # 
+  # :draft -- under construction, not available to students
+  # :open -- the assignment accepts submissions from students
+  # :grading -- the assignment doesn't accept submissions, grades are not ready
+  # :graded -- grades have been released to students
+  def ui_state_for(user)
+    if deliverables_ready?
+      if deadline_passed_for? user
+        metrics_ready? ? :graded : :grading
+      else
+        (deliverables.length > 0) ? :open : :grading
+      end
+    else
+      :draft
+    end
+  end
+end
+
 # :nodoc: team integration.
 class Assignment
   # The partition of teams used for this assignment.

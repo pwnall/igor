@@ -1,22 +1,7 @@
 <li>
   <%= link_to 'News', root_path %>
 </li>
-<li>
-  <%= link_to 'Homework', root_path(:flavor => :deliverable) %>
-  <ol>
-    <li>
-      <%= link_to new_assignment_path do %>
-        <%= image_tag 'menu_add.png' %>
-        Add Homework
-      <% end %>
-    </li>
-    <% assignments_for(current_user).each do |assignment| %>
-    <li>
-      <%= link_to assignment.name, assignment %>
-    </li>
-    <% end %>
-  </ol>
-</li>
+<%= render 'menu/homework' %>
 <li>
   <%= link_to 'Grades', editor_grades_path %>
   <ol>

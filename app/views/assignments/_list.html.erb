@@ -8,6 +8,7 @@
   <li>
     <span class="weight">
       <%= assignment.weight %>
+      <%= assignment_state_icon_tag assignment.ui_state_for(current_user) %>
     </span>
     <span class="name">
       <%= link_to assignment.name, edit_assignment_path(assignment) %>

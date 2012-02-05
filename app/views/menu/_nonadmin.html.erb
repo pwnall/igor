@@ -2,16 +2,6 @@
   <%= link_to 'News', root_path %>
 </li>
 <li>
-  <%= link_to 'Homework', root_path(:flavor => :deliverable) %>
-  <ol>
-    <% assignments_for(current_user).each do |assignment| %>
-    <li>
-      <%= link_to assignment.name, assignment %>
-    </li>
-    <% end %>
-  </ol>
-</li>
-<li>
   <%= link_to 'Grades', grades_path %>
 </li>
 <% if Course.main.has_surveys %>
