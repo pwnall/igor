@@ -1,15 +1,16 @@
 class CreateRegistrations < ActiveRecord::Migration
   def change
     create_table :registrations do |t|
-      t.integer :user_id, :null => false
-      t.integer :course_id, :null => false
+      t.references :user, :null => false
+      t.references :course, :null => false
       t.boolean :dropped, :null => false, :default => false
       t.boolean :teacher, :null => false, :default => false
 
       t.boolean :for_credit, :null => false, :default => true
       t.boolean :allows_publishing, :null => false, :default => true
 
-      t.integer :recitation_section_id, :null => true
+      # TODO: move this to some partition class.
+      t.references :recitation_section, :null => true
 
       t.timestamps
     end

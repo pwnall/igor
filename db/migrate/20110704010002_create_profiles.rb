@@ -1,7 +1,7 @@
 class CreateProfiles < ActiveRecord::Migration 
   def change
     create_table :profiles do |t|
-      t.integer :user_id, :null => false
+      t.references :user, :null => false
       t.string :name, :null => false, :limit => 128
       t.string :nickname, :null => false, :limit => 64
       t.string :university, :null => false, :limit => 64

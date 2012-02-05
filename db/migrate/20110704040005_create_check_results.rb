@@ -1,7 +1,8 @@
 class CreateCheckResults < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :check_results do |t|
-      t.integer :submission_id, :null => false
+      t.references :submission, :null => false
+      
       t.integer :score, :null => true, :default => nil
       t.string :diagnostic, :limit => 256, :null => true, :default => nil
       t.binary :stdout, :limit => 64.kilobytes, :null => true, :default => nil
@@ -10,7 +11,7 @@ class CreateCheckResults < ActiveRecord::Migration
       t.timestamps
     end
     
-    add_index :check_results, :submission_id, :null => false, :unique => true
+    add_index :check_results, :submission_id, :unique => true, :null => false
   end
 
   def self.down

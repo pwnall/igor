@@ -1,7 +1,7 @@
 class CreateProfilePhotos < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :profile_photos do |t|
-      t.integer :profile_id, :null => false
+      t.references :profile, :null => false
       
       t.string :pic_file_name, :limit => 256, :null => false
       t.string :pic_content_type, :limit => 64, :null => false
@@ -14,9 +14,5 @@ class CreateProfilePhotos < ActiveRecord::Migration
     end
     
     add_index :profile_photos, :profile_id, :unique => true
-  end
-
-  def self.down
-    drop_table :profile_photos
   end
 end

@@ -14,9 +14,9 @@
 ActiveRecord::Schema.define(:version => 20110704070001) do
 
   create_table "announcements", :force => true do |t|
+    t.integer  "author_id",                                           :null => false
     t.string   "headline",         :limit => 128,                     :null => false
     t.string   "contents",         :limit => 8192,                    :null => false
-    t.integer  "author_id",                                           :null => false
     t.boolean  "open_to_visitors",                 :default => false, :null => false
     t.datetime "created_at",                                          :null => false
     t.datetime "updated_at",                                          :null => false
@@ -121,16 +121,16 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
   add_index "deliverables", ["assignment_id", "name"], :name => "index_deliverables_on_assignment_id_and_name", :unique => true
 
   create_table "grades", :force => true do |t|
-    t.integer  "metric_id",                                                :null => false
-    t.string   "subject_type", :limit => 64,                               :null => false
-    t.integer  "subject_id",                                               :null => false
-    t.integer  "grader_id",                                                :null => false
-    t.decimal  "score",                      :precision => 8, :scale => 2, :null => false
-    t.datetime "created_at",                                               :null => false
-    t.datetime "updated_at",                                               :null => false
+    t.integer  "metric_id",                                  :null => false
+    t.integer  "grader_id",                                  :null => false
+    t.integer  "subject_id",                                 :null => false
+    t.string   "subject_type",                               :null => false
+    t.decimal  "score",        :precision => 8, :scale => 2, :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
   end
 
-  add_index "grades", ["subject_type", "subject_id", "metric_id"], :name => "grades_by_subject_and_metric_id", :unique => true
+  add_index "grades", ["subject_id", "subject_type", "metric_id"], :name => "grades_by_subject_and_metric", :unique => true
 
   create_table "prerequisite_answers", :force => true do |t|
     t.integer  "registration_id", :null => false
@@ -217,11 +217,11 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
   add_index "registrations", ["user_id", "course_id"], :name => "index_registrations_on_user_id_and_course_id", :unique => true
 
   create_table "submission_checkers", :force => true do |t|
-    t.string   "type",           :limit => 32, :null => false
     t.integer  "deliverable_id",               :null => false
-    t.string   "message_name",   :limit => 64
     t.integer  "db_file_id"
     t.integer  "time_limit"
+    t.string   "message_name",   :limit => 64
+    t.string   "type",           :limit => 32, :null => false
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
   end
@@ -272,12 +272,12 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
   add_index "survey_question_memberships", ["survey_question_id", "survey_id"], :name => "surveys_to_survey_questions", :unique => true
 
   create_table "survey_questions", :force => true do |t|
-    t.string   "human_string",    :limit => 1024,                      :null => false
-    t.boolean  "targets_user",                    :default => false,   :null => false
-    t.boolean  "allows_comments",                 :default => false,   :null => false
-    t.boolean  "scaled",                          :default => false,   :null => false
     t.integer  "scale_min",                       :default => 1,       :null => false
     t.integer  "scale_max",                       :default => 5,       :null => false
+    t.boolean  "scaled",                          :default => false,   :null => false
+    t.boolean  "targets_user",                    :default => false,   :null => false
+    t.boolean  "allows_comments",                 :default => false,   :null => false
+    t.string   "human_string",    :limit => 1024,                      :null => false
     t.string   "scale_min_label", :limit => 64,   :default => "Small", :null => false
     t.string   "scale_max_label", :limit => 64,   :default => "Large", :null => false
     t.datetime "created_at",                                           :null => false
@@ -307,6 +307,8 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
     t.datetime "created_at",                                  :null => false
     t.datetime "updated_at",                                  :null => false
   end
+
+  add_index "team_partitions", ["name"], :name => "index_team_partitions_on_name", :unique => true
 
   create_table "teams", :force => true do |t|
     t.integer  "partition_id",               :null => false

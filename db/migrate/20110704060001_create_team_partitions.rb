@@ -1,5 +1,5 @@
 class CreateTeamPartitions < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :team_partitions do |t|
       t.string :name, :limit => 64, :null => false
       t.boolean :automated, :null => false, :default => true
@@ -8,9 +8,8 @@ class CreateTeamPartitions < ActiveRecord::Migration
 
       t.timestamps
     end
-  end
-
-  def self.down
-    drop_table :team_partitions
+    
+    # Enforce name uniqueness.
+    add_index :team_partitions, :name, :unique => true, :null => false
   end
 end

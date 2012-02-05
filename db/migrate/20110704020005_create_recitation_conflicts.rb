@@ -1,7 +1,7 @@
 class CreateRecitationConflicts < ActiveRecord::Migration
   def change
     create_table :recitation_conflicts do |t|
-      t.integer :registration_id, :null => false
+      t.references :registration, :null => false
       t.integer :timeslot, :null => false
       t.string :class_name, :null => false
     end
