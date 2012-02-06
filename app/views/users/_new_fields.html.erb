@@ -3,8 +3,7 @@
     <%= f.label :email, 'School e-mail' %>
     <span class="value">
       <%= f.text_field :email, :placeholder => 'you@mit.edu', :required => true,
-              :autofocus => true,
-              'data-pwnfx-refresh-url' => check_email_users_url,
+              :autofocus => true, 'data-pwnfx-refresh' => check_email_users_url,
               'data-pwnfx-refresh-method' => 'POST',
               'data-pwnfx-refresh-target' => 'user_form_email_availability' %>
     </span>

@@ -1,4 +1,4 @@
-<p class="item" data-pwnfx-reveal="assignment-metric-new"
+<p class="item" data-pwnfx-hide-positive="assignment-metric-old"
    data-pwnfx-scope="assignment-metric">
   <span class="name">
     <%= f.text_field :name, :placeholder => 'Problem 1', :required => true,
@@ -9,16 +9,12 @@
                                    :placeholder => 10 %>
   </span>
   <span class="destroy">
-    <% if f.object.new_record? %>
-      <%= button_tag :type => :button,
-              'data-pwnfx-reveal' => 'assignment-metric-new' do %>
-        <%= destroy_icon_tag %> 
-      <% end %>
-    <% else %>
-      <%= f.check_box :_destroy %>
-      <%= f.label :_destroy do %>
-        <%= destroy_icon_tag %> Remove
-      <% end %>
+    <%= f.check_box :_destroy, 'data-pwnfx-hide' => 'assignment-metric-old',
+              'data-pwnfx-hide-scope' => 'assignment-metric',
+              'data-pwnfx-hide-class' => 'destroyed-blur',
+              'data-pwnfx-hide-trigger' => 'checked' %>
+    <%= f.label :_destroy do %>
+      <%= destroy_icon_tag %> Remove
     <% end %>
   </span>
 </p>

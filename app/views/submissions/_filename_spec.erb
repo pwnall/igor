@@ -1,11 +1,11 @@
 <h3>
   <%= check_box_tag "package_include[#{id}]", "1", true,
-        'data-pwnfx-reveal' => "submission_package_#{id}",
-        'data-pwnfx-reveal-trigger' => 'check' %>
+        'data-pwnfx-hide' => "submission_package_#{id}",
+        'data-pwnfx-hide-trigger' => 'checked' %>
 	<%= label_tag "submission_package_#{id}", title %>
 </h3>
 
-<section class="fields" data-pwnfx-reveal-target="submission_package_<%= id %>">
+<section class="fields" data-pwnfx-hide-negative="submission_package_<%= id %>">
   <p class="field">
     <%= label_tag :filename, 'Filename' %>
     <span class="value">

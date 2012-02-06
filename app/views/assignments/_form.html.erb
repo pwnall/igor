@@ -15,13 +15,14 @@
   <%= render 'deliverables/fields', f: df %>
 <% end %>    
 </script>
-    <%= button_tag :type => :button, 'data-pwnfx-render-scope' => 'assignment',
-            'data-pwnfx-render-randomize' => 'IDID',
+    <%= link_to new_deliverable_path(assignment_id: f.object.id),
+            :class => 'button', 'data-pwnfx-render-randomize' => 'IDID',
+            'data-pwnfx-render-scope' => 'assignment',
             'data-pwnfx-render' => "assignment-deliverables" do %>
-      <%= create_icon_tag %> Add
+      <%= create_icon_tag %> Add File
     <% end %>
     
-    <h3>Grade Breakdown</h3>
+    <h3>Grading Breakdown</h3>
     <div data-pwnfx-render-target="assignment-metrics">
       <%= f.fields_for :metrics do |mf| %>
         <%= render 'assignment_metrics/fields', f: mf %>
@@ -33,14 +34,17 @@
   <%= render 'assignment_metrics/fields', f: mf %>
 <% end %>    
 </script>
-    <%= button_tag :type => :button, 'data-pwnfx-render-scope' => 'assignment',
-            'data-pwnfx-render-randomize' => 'IDID',
+    <%= link_to new_assignment_metric_path(assignment_id: f.object.id),
+            :class => 'button', 'data-pwnfx-render-randomize' => 'IDID',
+            'data-pwnfx-render-scope' => 'assignment',
             'data-pwnfx-render' => "assignment-metrics" do %>
-      <%= create_icon_tag %> Add
+      <%= create_icon_tag %> Add Item
     <% end %>
   
     <p class="action">
-      <%= f.submit %>
+      <%= button_tag do %>
+        <%= save_icon_tag %> Update Assignment
+      <% end %>
     </p>
   <% end %>
 </div>

@@ -7,7 +7,7 @@
         <%= select_tag :assignment_id,
               options_for_select(@assignments.map { |a| [a.name, a.id] }),
               'data-pwnfx-refresh-target' => 'submission-deliverables-container',
-              'data-pwnfx-refresh-url' => xhr_update_deliverables_submissions_path %>
+              'data-pwnfx-refresh' => xhr_update_deliverables_submissions_path %>
       </span>
 		</p>
 		<p class="field">
@@ -15,13 +15,13 @@
       <span class="value">
         <%= check_box_tag :cutoff_enable, '1', false,
               :id => 'submission_cutoff_enable',
-              'data-pwnfx-reveal' => 'submission-cutoff',
-              'data-pwnfx-reveal-trigger' => 'check' %>
+              'data-pwnfx-hide' => 'submission-cutoff',
+              'data-pwnfx-hide-trigger' => 'checked' %>
         get submissions after the deadline
       </span>
     </p>
     <p class="field" id="submission_cutoff_container"
-                     data-pwnfx-reveal-negative="submission-cutoff">
+                     data-pwnfx-hide-positive="submission-cutoff">
       <%= label_tag :submission_cutoff %>
       <span class="value">
         <%= select_datetime (@assignments.first ? @assignments.first.deadline : Time.now - 1.day),
