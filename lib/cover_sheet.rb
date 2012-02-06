@@ -80,7 +80,7 @@ module CoverSheet
         end
         [d.name, 
          number_to_human_size(s.db_file.f.size),
-         (s.check_result.nil? ? 'no diagnostic' : s.check_result.diagnostic),
+         (s.analysis.nil? ? 'no diagnostic' : s.analysis.diagnostic),
          submitted_text,
          (s.updated_at < d.assignment.deadline) ? 'not needed' : '']
       end

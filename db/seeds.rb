@@ -25,8 +25,8 @@ prereq2.save!
 # Staff.
 
 admin = User.create :email => 'costan@mit.edu', :password => 'mit',
-    :password_confirmation => 'mit', :active => true, :admin => true
-admin.email_credential.key = '1'
+                    :password_confirmation => 'mit'
+admin.email_credential.verified = true
 admin.admin = true
 admin.save!
 
@@ -47,7 +47,7 @@ names.each_with_index do |name, i|
   short_name = (first_name[0, 1] + name.split(' ').last).downcase
   user = User.create :email => short_name + '@mit.edu',  :password => 'mit',
                      :password_confirmation => 'mit'
-  user.email_credential.key = '1'
+  user.email_credential.verified = true
   user.save!
   users << user
   
@@ -57,8 +57,7 @@ names.each_with_index do |name, i|
       :athena_username => short_name, :about_me => "Test subject #{i + 1}"
 
   registration = Registration.create! :user => user, :course => course,
-      :dropped => false, :for_credit => (i % 2 == 0),
-      :allows_publishing => (i % 2 == 0)
+      :for_credit => (i % 2 == 0), :allows_publishing => (i % 2 == 0)
 
   PrerequisiteAnswer.create! :registration => registration,
       :prerequisite => prereq1, :took_course => (i % 2 == 0),
@@ -165,7 +164,7 @@ end
              :f_content_type => 'application/pdf' },
          :created_at => time, :updated_at => time
     submission.run_checker
-    submission.check_result.update_attributes! :created_at => time + 1.second,
+    submission.analysis.update_attributes! :created_at => time + 1.second,
                                                :updated_at => time + 5.seconds
     
     pset.metrics.each_with_index do |metric, k|

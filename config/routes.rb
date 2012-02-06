@@ -1,7 +1,9 @@
 Seven::Application.routes.draw do
+  resources :analyses
+
   authpwn_session
   
-  resources :check_results
+  resources :analysiss
   resources :survey_questions
   resources :team_memberships
   

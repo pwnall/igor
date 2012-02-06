@@ -34,27 +34,27 @@ class Submission < ActiveRecord::Base
   # The assignment that this submission is for.
   has_one :assignment, :through => :deliverable
 
-  # Diagnostic issued by the deliverable's SubmissionChecker.
-  has_one :check_result, :dependent => :destroy, :inverse_of => :submission
+  # Diagnostic issued by the deliverable's Analyzer.
+  has_one :analysis, :dependent => :destroy, :inverse_of => :submission
 
   # Can performs an automated health-check for this submission.
   has_one :submission_checker, :through => :deliverable
   
   # Queues up an automated health-check for this submission.
   def queue_checker
-    self.check_result ||= CheckResult.new :submission => self
-    self.check_result.queued!
+    self.analysis ||= Analysis.new :submission => self
+    self.analysis.queued!
     self.delay.run_checker
   end
   
   # Runs an automated health-check for this submission.
   def run_checker
-    self.check_result ||= CheckResult.new :submission => self
+    self.analysis ||= Analysis.new :submission => self
     if submission_checker
-      self.check_result.running!
+      self.analysis.running!
       submission_checker.check self
     else
-      self.check_result.no_checker!
+      self.analysis.no_checker!
     end
   end
 end

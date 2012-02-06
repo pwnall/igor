@@ -1,0 +1,41 @@
+<div class="full_section">
+  
+<h2 class="full_section">
+  Analysis for <%= @analysis.submission.deliverable.assignment.name %>:
+  <%= @analysis.submission.deliverable.name %>
+</h2>
+
+<%= form_for(@analysis, :url => '#',
+             :html => {:class => 'user_form'}) do |f| %>
+  <div class="form_box">
+    <div class="form_entry">
+      <div class="form_label">Result</div>
+      <div class="form_field_box">
+        <%=h @analysis.diagnostic %>
+      </div>
+    </div>        
+    <div class="form_entry">
+      <div class="form_label">Score</div>
+      <div class="form_field_box">
+        <%=h @analysis.score || 'Not available' %>
+      </div>
+    </div>        
+    <div class="form_entry">
+      <div class="form_label">Stdout</div>
+      <div class="form_field_box">
+        <pre><%= word_wrap(@analysis.stdout || 'Not available', 80) %></pre>
+      </div>
+    </div>        
+    <div class="form_entry">
+      <div class="form_label">Stderr</div>
+      <div class="form_field_box">
+        <pre><%= word_wrap(@analysis.stderr || 'Not available', 80) %></pre>
+      </div>
+    </div>
+    <div class="form_submit_box">
+        <%= link_to 'Go home', root_path %>
+    </div>
+  </div>
+<% end %>
+
+</div>

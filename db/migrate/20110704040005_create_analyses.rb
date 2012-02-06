@@ -1,6 +1,6 @@
-class CreateCheckResults < ActiveRecord::Migration
+class CreateAnalyses < ActiveRecord::Migration
   def change
-    create_table :check_results do |t|
+    create_table :analyses do |t|
       t.references :submission, :null => false
       
       t.integer :score, :null => true, :default => nil
@@ -11,10 +11,6 @@ class CreateCheckResults < ActiveRecord::Migration
       t.timestamps
     end
     
-    add_index :check_results, :submission_id, :unique => true, :null => false
-  end
-
-  def self.down
-    drop_table :check_results
+    add_index :analyses, :submission_id, :unique => true, :null => false
   end
 end

@@ -25,7 +25,7 @@ class SubmissionChecker < ActiveRecord::Base
   
   # Runs the sanity checks for a student's submission.
   #
-  # Returns the CheckResults produced.
+  # Returns the Analysiss produced.
   def check(submission)
     raise "Subclass #{self.class.name} did not override #check(submission)."
   end

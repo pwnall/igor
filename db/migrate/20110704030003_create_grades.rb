@@ -3,7 +3,7 @@ class CreateGrades < ActiveRecord::Migration
     create_table :grades do |t|
       t.references :metric, :null => false
       t.references :grader, :null => false
-      t.references :subject, :polymorphic => true, :null => false
+      t.references :subject, :polymorphic => { :limit => 64 }, :null => false
       t.decimal :score, :precision => 8, :scale => 2, :null => false
 
       t.timestamps

@@ -14,7 +14,7 @@ gem 'json', '>= 1.5.4'
 group :assets do
   gem 'sass-rails', '>= 3.2.3'
   gem 'coffee-rails', '>= 3.2.1'
-  gem 'uglifier'
+  gem 'uglifier', '>= 1.2.3'
   
   gem 'therubyracer', '>= 0.9.9'
 end
@@ -42,10 +42,10 @@ gem 'rmagick', '>= 2.13.1'
 gem 'validates_timeliness', '>= 3.0.8'
 
 # Background processing.
-gem 'daemonz', '>= 0.3.4'
+gem 'daemonz', '>= 0.3.5'
 gem 'daemons'  # Required by delayed_job.
-gem 'delayed_job', '>= 3.0.0'
-gem 'delayed_job_active_record'  # Required by delayed_job.
+gem 'delayed_job', '>= 3.0.1'
+gem 'delayed_job_active_record', '>= 0.3.2'  # Required by delayed_job.
 
 # PDF cover sheets.
 gem 'prawn', '~> 0.12.0'

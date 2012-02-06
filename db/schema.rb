@@ -13,6 +13,18 @@
 
 ActiveRecord::Schema.define(:version => 20110704070001) do
 
+  create_table "analyses", :force => true do |t|
+    t.integer  "submission_id",                     :null => false
+    t.integer  "score"
+    t.string   "diagnostic",    :limit => 256
+    t.binary   "stdout",        :limit => 16777215
+    t.binary   "stderr",        :limit => 16777215
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+  end
+
+  add_index "analyses", ["submission_id"], :name => "index_analyses_on_submission_id", :unique => true
+
   create_table "announcements", :force => true do |t|
     t.integer  "author_id",                                           :null => false
     t.string   "headline",         :limit => 128,                     :null => false
@@ -48,18 +60,6 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
 
   add_index "assignments", ["course_id", "deadline", "name"], :name => "index_assignments_on_course_id_and_deadline_and_name", :unique => true
   add_index "assignments", ["course_id", "name"], :name => "index_assignments_on_course_id_and_name", :unique => true
-
-  create_table "check_results", :force => true do |t|
-    t.integer  "submission_id",                     :null => false
-    t.integer  "score"
-    t.string   "diagnostic",    :limit => 256
-    t.binary   "stdout",        :limit => 16777215
-    t.binary   "stderr",        :limit => 16777215
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
-  end
-
-  add_index "check_results", ["submission_id"], :name => "index_check_results_on_submission_id", :unique => true
 
   create_table "courses", :force => true do |t|
     t.string   "number",          :limit => 16,                    :null => false
@@ -121,13 +121,13 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
   add_index "deliverables", ["assignment_id", "name"], :name => "index_deliverables_on_assignment_id_and_name", :unique => true
 
   create_table "grades", :force => true do |t|
-    t.integer  "metric_id",                                  :null => false
-    t.integer  "grader_id",                                  :null => false
-    t.integer  "subject_id",                                 :null => false
-    t.string   "subject_type",                               :null => false
-    t.decimal  "score",        :precision => 8, :scale => 2, :null => false
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
+    t.integer  "metric_id",                                                :null => false
+    t.integer  "grader_id",                                                :null => false
+    t.integer  "subject_id",                                               :null => false
+    t.string   "subject_type", :limit => 64
+    t.decimal  "score",                      :precision => 8, :scale => 2, :null => false
+    t.datetime "created_at",                                               :null => false
+    t.datetime "updated_at",                                               :null => false
   end
 
   add_index "grades", ["subject_id", "subject_type", "metric_id"], :name => "grades_by_subject_and_metric", :unique => true

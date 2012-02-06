@@ -37,7 +37,7 @@ class SubmissionsController < ApplicationController
     @deliverables = @assignments.map(&:deliverables).flatten
     
     query = Submission.order('updated_at DESC').
-        includes(:db_file, :check_result,
+        includes(:db_file, :analysis,
                  {:deliverable => :assignment, :user => :profile})
     
     if params.has_key? :deliverable_id

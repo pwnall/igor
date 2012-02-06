@@ -7,12 +7,12 @@
     <th>Diagnostic</th>
   </tr>
 
-<% @check_results.each do |check_result| %>
+<% @analysiss.each do |analysis| %>
   <tr>
-    <td><%=h check_result.submission_id %></td>
-    <td><%=h check_result.score %></td>
-    <td><%=h check_result.diagnostic %></td>
-    <td><%= link_to 'Details', check_result %></td>
+    <td><%=h analysis.submission_id %></td>
+    <td><%=h analysis.score %></td>
+    <td><%=h analysis.diagnostic %></td>
+    <td><%= link_to 'Details', analysis %></td>
   </tr>
 <% end %>
 </table>

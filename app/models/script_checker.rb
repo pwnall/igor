@@ -142,7 +142,7 @@ class ScriptChecker < SubmissionChecker
     
     # update results
     ActiveRecord::Base.verify_active_connections!
-    result = submission.check_result
+    result = submission.analysis
     result.stdout = stdout_text
     result.stderr = stderr_text
     result.diagnostic = diagnostic

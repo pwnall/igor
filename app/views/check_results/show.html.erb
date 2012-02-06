@@ -1,35 +1,35 @@
 <div class="full_section">
 	
 <h1 class="full_section">
-	Run results for <%= @check_result.submission.deliverable.assignment.name %>:
-	<%= @check_result.submission.deliverable.name %>
+	Run results for <%= @analysis.submission.deliverable.assignment.name %>:
+	<%= @analysis.submission.deliverable.name %>
 </h1>
 
-<%= form_for(@check_result, :url => '#',
+<%= form_for(@analysis, :url => '#',
              :html => {:class => 'user_form'}) do |f| %>
 	<div class="form_box">
 		<div class="form_entry">
 			<div class="form_label">Result</div>
 			<div class="form_field_box">
-				<%=h @check_result.diagnostic %>
+				<%=h @analysis.diagnostic %>
 			</div>
 		</div>				
 		<div class="form_entry">
 			<div class="form_label">Score</div>
 			<div class="form_field_box">
-				<%=h @check_result.score || 'Not available' %>
+				<%=h @analysis.score || 'Not available' %>
 			</div>
 		</div>				
 		<div class="form_entry">
 			<div class="form_label">Stdout</div>
 			<div class="form_field_box">
-				<pre><%= word_wrap(@check_result.stdout || 'Not available', 80) %></pre>
+				<pre><%= word_wrap(@analysis.stdout || 'Not available', 80) %></pre>
 			</div>
 		</div>				
 		<div class="form_entry">
 			<div class="form_label">Stderr</div>
 			<div class="form_field_box">
-				<pre><%= word_wrap(@check_result.stderr || 'Not available', 80) %></pre>
+				<pre><%= word_wrap(@analysis.stderr || 'Not available', 80) %></pre>
 			</div>
 		</div>
 		<div class="form_submit_box">
