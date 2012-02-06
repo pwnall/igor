@@ -1,0 +1,46 @@
+<div id="analyzer_for_submission_<%= deliverable.id %>">
+	<%= form_for(deliverable.analyzer ||
+               Analyzer.new(:deliverable => deliverable),
+               :url => update_deliverable_analyzer_path(deliverable),
+               :html => {:multipart => true, :method => :put,
+                         :id => "analyzer_#{deliverable.id}"}) do |f| %>
+		<div style="display: none;">
+			<%= f.hidden_field :deliverable_id, :id => "analyzer_id_#{deliverable.id}" %>
+		</div>
+		<div class="deliverable_name">
+			Validator: <%= f.select :type, [['Built-in', 'ProcAnalyzer'], ['Script Package', 'ScriptAnalyzer']], {}, :id => "analyzer_type_#{deliverable.id}", :class => 'form_field' %>			
+		</div>
+		<div class="deliverable_description">
+			<div id="analyzer_rpkg_<%= deliverable.id %>" style="display: none;">
+				URL: <%= f.text_field :pkg_uri, :class => 'form_field', :id => "analyzer_uri_#{deliverable.id}" %>
+			</div>
+			<div id="analyzer_upkg_<%= deliverable.id %>" style="display: none;">
+				Script: <%= f.file_field :pkg, :class => 'form_field', :id => "analyzer_file_#{deliverable.id}" %>
+				<% if deliverable.analyzer.instance_of? ScriptAnalyzer %>
+					<br />
+					Old script: <%= link_to "#{deliverable.analyzer.db_file.f.original_filename} (#{number_to_human_size deliverable.analyzer.db_file.f.size})", contents_analyzer_path(deliverable.analyzer) %>
+				<% end %>
+			</div>
+			<div id="analyzer_rupkg_<%= deliverable.id %>" style="display: none">
+				<div>
+					Timelimit: <%= f.text_field :time_limit, :class => 'form_field', :id => "analyzer_timeout_#{deliverable.id}", :size => 3 %> s 
+				</div>									
+			</div>
+			<div id="analyzer_bin_<%= deliverable.id %>" style="display: none;">
+					<%= f.select :message_name, [['PDF analyzer', 'analyze_pdf']], {}, :class => 'form_field', :id => "analyzer_message_#{deliverable.id}" %>
+			</div>
+		</div>
+
+<%= javascript_tag <<JS_END
+	analyzer_update_visiblity('#{deliverable.id}');
+JS_END
+%>
+
+	<%= observe_field "analyzer_type_#{deliverable.id}", :frequency => 0.2, :function => "analyzer_update_visiblity('#{deliverable.id}');" %>
+
+		<div>
+			<%= f.submit 'Save', :id => "analyzer_submit_#{deliverable.id}" %>
+		</div>
+		<div class="float_clearer"></div>
+	<% end %>
+</div>

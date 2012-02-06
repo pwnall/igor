@@ -1,7 +1,7 @@
 # == Schema Information
 # Schema version: 20110429122654
 #
-# Table name: submission_checkers
+# Table name: analyzers
 #
 #  id             :integer(4)      not null, primary key
 #  type           :string(32)      not null

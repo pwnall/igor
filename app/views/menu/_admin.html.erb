@@ -15,6 +15,9 @@
     <li>
       <%= link_to 'Get Submissions', request_package_submissions_path %>
     </li>
+    <li>
+      <%= link_to 'Missing Grades', request_missing_grades_path %>
+    </li>    
   </ol>
 </li>
 <% if Course.main.has_surveys? %>
@@ -69,9 +72,6 @@
     <% end %>
     <li>
       <%= link_to 'Grade Spreadsheet', request_report_grades_path %>
-    </li>
-    <li>
-      <%= link_to 'Missing Grades', request_missing_grades_path %>
     </li>
     <li>
       <%= link_to 'Registrations', registrations_path %>

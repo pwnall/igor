@@ -1,7 +1,7 @@
 # == Schema Information
 # Schema version: 20110429122654
 #
-# Table name: submission_checkers
+# Table name: analyzers
 #
 #  id             :integer(4)      not null, primary key
 #  type           :string(32)      not null
@@ -13,19 +13,19 @@
 #  updated_at     :datetime
 #
 
-# Method for sanity-checking student submissions.
+# Performs an automated sanity check on submissions and offers instant feedback.
 #
-# The sanity-checks can range from a exhaustive test suite to a simple header
-# format check.
-class SubmissionChecker < ActiveRecord::Base
+# The sanity check can range from a exhaustive test suite to a simple search for
+# the right magic number in the file header. The result 
+class Analyzer < ActiveRecord::Base
   # The deliverable whose submissions are sanity-checked.
-  belongs_to :deliverable, :inverse_of => :submission_checker
+  belongs_to :deliverable, :inverse_of => :analyzer
   validates :deliverable, :presence => true
   validates :deliverable_id, :uniqueness => true
   
-  # Runs the sanity checks for a student's submission.
+  # Analyzes a student's submission.
   #
-  # Returns the Analysiss produced.
+  # Returns the Analysis instance containing the result.
   def check(submission)
     raise "Subclass #{self.class.name} did not override #check(submission)."
   end

@@ -1,7 +1,7 @@
 # == Schema Information
 # Schema version: 20110429122654
 #
-# Table name: submission_checkers
+# Table name: analyzers
 #
 #  id             :integer(4)      not null, primary key
 #  type           :string(32)      not null
@@ -13,18 +13,19 @@
 #  updated_at     :datetime
 #
 
-# Submission checker that calls a method in SubmissionCheckersController.
-class ProcChecker < SubmissionChecker
-  # The name of the message to be sent to the controller.
-  validates_presence_of :message_name
+# Submission analyzer that calls a method on itself.
+class ProcAnalyzer < Analyzer
+  # The name of the method to be called.
+  validates :message_name, :presence => true, :length => 1..64,
+      :inclusion => { :in => %w(analyze_pdf) }
   
-  # :nodoc: overrides SubmissionChecker#check
+  # :nodoc: overrides Analyzer#check
   def check(submission)
     send self.message_name.to_sym, submission
   end
 
   # Checks that a submitted file looks like a PDF.
-  def validate_pdf(submission)
+  def analyze_pdf(submission)
     bytes = submission.full_db_file.f.file_contents
     result = submission.analysis
     if bytes[0, 5] == '%PDF-'

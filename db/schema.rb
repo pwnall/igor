@@ -25,6 +25,18 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
 
   add_index "analyses", ["submission_id"], :name => "index_analyses_on_submission_id", :unique => true
 
+  create_table "analyzers", :force => true do |t|
+    t.integer  "deliverable_id",               :null => false
+    t.integer  "db_file_id"
+    t.integer  "time_limit"
+    t.string   "message_name",   :limit => 64
+    t.string   "type",           :limit => 32, :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "analyzers", ["deliverable_id"], :name => "index_analyzers_on_deliverable_id", :unique => true
+
   create_table "announcements", :force => true do |t|
     t.integer  "author_id",                                           :null => false
     t.string   "headline",         :limit => 128,                     :null => false
@@ -215,18 +227,6 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
 
   add_index "registrations", ["course_id", "user_id"], :name => "index_registrations_on_course_id_and_user_id", :unique => true
   add_index "registrations", ["user_id", "course_id"], :name => "index_registrations_on_user_id_and_course_id", :unique => true
-
-  create_table "submission_checkers", :force => true do |t|
-    t.integer  "deliverable_id",               :null => false
-    t.integer  "db_file_id"
-    t.integer  "time_limit"
-    t.string   "message_name",   :limit => 64
-    t.string   "type",           :limit => 32, :null => false
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
-  end
-
-  add_index "submission_checkers", ["deliverable_id"], :name => "index_submission_checkers_on_deliverable_id", :unique => true
 
   create_table "submissions", :force => true do |t|
     t.integer  "deliverable_id", :null => false

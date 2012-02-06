@@ -1,6 +1,0 @@
-if @success
-  add_site_status page, 'Submission checker configured', true
-else
-  add_site_status page, 'Failed to configure checker', false
-end
-page.replace "submission_checker_#{@deliverable.id}", :partial => 'show_for_deliverable', :deliverable => @deliverable

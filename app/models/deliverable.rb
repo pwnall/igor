@@ -14,7 +14,7 @@ class Deliverable < ActiveRecord::Base
   belongs_to :assignment, :inverse_of => :deliverables
   
   # The method used to verify students' submissions for this deliverable.
-  has_one :submission_checker, :dependent => :destroy,
+  has_one :analyzer, :dependent => :destroy,
                                :inverse_of => :deliverable
   
   # All the student submissions for this deliverable.

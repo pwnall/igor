@@ -1,6 +1,6 @@
-class CreateSubmissionCheckers < ActiveRecord::Migration
+class CreateAnalyzers < ActiveRecord::Migration
   def change
-    create_table :submission_checkers do |t|
+    create_table :analyzers do |t|
       t.references :deliverable, :null => false
 
       t.references :db_file, :null => true            
@@ -13,7 +13,6 @@ class CreateSubmissionCheckers < ActiveRecord::Migration
       t.timestamps
     end
     
-    add_index :submission_checkers, :deliverable_id, :null => false,
-                                                     :unique => true
+    add_index :analyzers, :deliverable_id, :unique => true, :null => false
   end
 end

@@ -136,8 +136,8 @@ psets = pset_data.map.with_index do |data, index|
       :name => 'PDF write-up',
       :description => 'Please upload your write-up, in PDF format.',
       :filename => 'writeup.pdf'
-  ProcChecker.create! :deliverable => deliverable,
-      :message_name => :validate_pdf
+  ProcAnalyzer.create! :deliverable => deliverable,
+      :message_name => 'analyze_pdf'
 
   raise "Pset #{i} seeding bug" unless pset.ui_state_for(admin) == data[:state]
   pset
@@ -163,7 +163,7 @@ end
              :f_file => pdf_contents, :f_file_size => pdf_contents.length,
              :f_content_type => 'application/pdf' },
          :created_at => time, :updated_at => time
-    submission.run_checker
+    submission.run_analysis
     submission.analysis.update_attributes! :created_at => time + 1.second,
                                                :updated_at => time + 5.seconds
     

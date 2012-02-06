@@ -1,7 +1,7 @@
 # == Schema Information
 # Schema version: 20110429122654
 #
-# Table name: submission_checkers
+# Table name: analyzers
 #
 #  id             :integer(4)      not null, primary key
 #  type           :string(32)      not null
@@ -14,7 +14,7 @@
 #
 
 # Submission checker that runs an external script.
-class ScriptChecker < SubmissionChecker
+class ScriptAnalyzer < Analyzer
   # The database-backed file holding the checker script.
   belongs_to :db_file, :dependent => :destroy
   validates :db_file, :presence => true
@@ -29,7 +29,7 @@ class ScriptChecker < SubmissionChecker
   validates :time_limit, :presence => true,
                          :numericality => { :only_integer => true }
 
-  # :nodoc: overrides SubmissionChecker#check
+  # :nodoc: overrides Analyzer#check
   def check(submission)
     random_dir = '/tmp/' + (0...16).map { rand(256).to_s(16) }.join
     FileUtils.mkdir_p random_dir

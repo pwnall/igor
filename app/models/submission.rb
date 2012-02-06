@@ -38,23 +38,23 @@ class Submission < ActiveRecord::Base
   has_one :analysis, :dependent => :destroy, :inverse_of => :submission
 
   # Can performs an automated health-check for this submission.
-  has_one :submission_checker, :through => :deliverable
+  has_one :analyzer, :through => :deliverable
   
-  # Queues up an automated health-check for this submission.
-  def queue_checker
+  # Queues up a request to run an automated health-check for this submission.
+  def queue_analysis
     self.analysis ||= Analysis.new :submission => self
     self.analysis.queued!
-    self.delay.run_checker
+    self.delay.run_analysis
   end
   
-  # Runs an automated health-check for this submission.
-  def run_checker
+  # Performs an automated health-check for this submission.
+  def run_analysis
     self.analysis ||= Analysis.new :submission => self
-    if submission_checker
+    if analyzer
       self.analysis.running!
-      submission_checker.check self
+      analyzer.check self
     else
-      self.analysis.no_checker!
+      self.analysis.no_analyzer!
     end
   end
 end

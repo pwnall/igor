@@ -57,7 +57,7 @@ Seven::Application.routes.draw do
       post :set_deliverable_published      
     end
   end
-  resources :submission_checkers do
+  resources :analyzers do
     member do
       get :contents
       put :update_deliverable

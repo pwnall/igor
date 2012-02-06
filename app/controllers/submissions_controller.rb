@@ -88,7 +88,7 @@ class SubmissionsController < ApplicationController
     
     respond_to do |format|
       if success
-        @submission.queue_checker
+        @submission.queue_analysis
         
         flash[:notice] = "Uploaded #{@submission.db_file.f.original_filename} for #{@submission.assignment.name}: #{@submission.deliverable.name}."
         format.html { redirect_to @submission.assignment || root_path }
@@ -107,9 +107,9 @@ class SubmissionsController < ApplicationController
   # POST /submissions/revalidate/1
   def revalidate
     @submission = Submission.find(params[:id])
-    @submission.queue_checker
+    @submission.queue_analysis
     
-    flash[:notice] = "Re-validating #{@submission.db_file.f.original_filename} from #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}. "
+    flash[:notice] = "Reanalyzing #{@submission.db_file.f.original_filename} from #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}. "
     respond_to do |format|
       format.html { redirect_to submissions_path }
     end    
