@@ -1,24 +1,46 @@
-<%= form_for assignment do |f| %>
-  <%= f.error_messages %>
-  <%= render 'assignments/fields', f: f %>
-  
-  <h3>Files to be Submitted</h3>
-  <%= f.fields_for :deliverables do |df| %>
-    <%= render 'deliverables/fields', f: df %>
-  <% end %>
-  
-  <h3>Grading Breakdown</h3>
-  <div pwnfx-render-target="assignment-<%= f.object.id %>-metrics">
-    <%= f.fields_for :metrics do |mf| %>
-      <%= render 'assignment_metrics/fields', f: mf %>
+<div data-pwnfx-scope="assignment">
+  <%= form_for assignment do |f| %>
+    <%= f.error_messages %>
+    <%= render 'assignments/fields', f: f %>
+    
+    <h3>Files to be Submitted</h3>
+    <div data-pwnfx-render-target="assignment-deliverables">
+    <%= f.fields_for :deliverables do |df| %>
+      <%= render 'deliverables/fields', f: df %>
     <% end %>
-    <%= button_tag :type => :button,
-            'pwnfx-render' => "assignment-#{f.object.id}-metrics" do %>
+    </div>
+  
+<script type="text/html" data-pwnfx-render-source="assignment-deliverables">
+<%= f.fields_for :deliverables, Deliverable.new, child_index: 'IDID' do |df| %>
+  <%= render 'deliverables/fields', f: df %>
+<% end %>    
+</script>
+    <%= button_tag :type => :button, 'data-pwnfx-render-scope' => 'assignment',
+            'data-pwnfx-render-randomize' => 'IDID',
+            'data-pwnfx-render' => "assignment-deliverables" do %>
       <%= create_icon_tag %> Add
     <% end %>
-  </div>
-
-  <p class="action">
-    <%= f.submit %>
-  </p>
-<% end %>
+    
+    <h3>Grade Breakdown</h3>
+    <div data-pwnfx-render-target="assignment-metrics">
+      <%= f.fields_for :metrics do |mf| %>
+        <%= render 'assignment_metrics/fields', f: mf %>
+      <% end %>
+    </div>
+  
+<script type="text/html" data-pwnfx-render-source="assignment-metrics">
+<%= f.fields_for :metrics, AssignmentMetric.new, child_index: 'IDID' do |mf| %>
+  <%= render 'assignment_metrics/fields', f: mf %>
+<% end %>    
+</script>
+    <%= button_tag :type => :button, 'data-pwnfx-render-scope' => 'assignment',
+            'data-pwnfx-render-randomize' => 'IDID',
+            'data-pwnfx-render' => "assignment-metrics" do %>
+      <%= create_icon_tag %> Add
+    <% end %>
+  
+    <p class="action">
+      <%= f.submit %>
+    </p>
+  <% end %>
+</div>

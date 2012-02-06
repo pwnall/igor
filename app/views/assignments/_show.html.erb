@@ -18,11 +18,11 @@
 <% assignment.deliverables_for(current_user).each do |deliverable| %>
   <li>
     <div class="summary">
-      <span class="name"><%= deliverable.name %></span>
       <div class="new">
         <%= render 'submissions/form',
               :submission => Submission.new(:deliverable => deliverable) %>
       </div>
+      <span class="name"><%= deliverable.name %></span>
     </div>
     <p class="description"><%= deliverable.description %></p>
     <p class="submission">

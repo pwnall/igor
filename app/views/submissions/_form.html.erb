@@ -1,8 +1,10 @@
-<%= form_for submission, :html => {:multipart => true} do |f| %>
+<%= form_for submission, html: { multipart: true } do |f| %>
   <% f.object.build_db_file unless f.object.db_file %>
   <%= f.fields_for :db_file do |fu| %>
     <%= fu.file_field :f %>
   <% end %>
-  <%= f.submit "Upload" %>
+  <%= button_tag class: 'image_button' do %>
+    <%= save_icon_tag %>
+  <% end %>
   <%= f.hidden_field :deliverable_id %>
 <% end %>

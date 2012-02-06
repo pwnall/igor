@@ -25,6 +25,11 @@ module IconsHelper
     image_tag 'icons/destroy.png', alt: 'Remove', class: 'ui-icon'
   end
   
+  # Show this icon on buttons that commit information to the database.
+  def save_icon_tag
+    image_tag 'icons/save.png', alt: 'Save', class: 'ui-icon'
+  end
+  
   # Access levels / roles throughout the site.
   def role_icon_tag(role = :student)
     case role

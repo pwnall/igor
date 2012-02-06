@@ -1,12 +1,18 @@
 class AssignmentsController < ApplicationController
-  before_filter :authenticated_as_admin, :except => :show
+  before_filter :authenticated_as_admin, :except => [:index, :show]
 
   # GET /assignments
   def index
     @assignments = Assignment.by_deadline(Course.main)
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html do
+        if current_user.admin?
+         render  # index.html.erb
+        else
+          render :layout => 'application'  # index.html.erb
+        end
+      end
     end
   end
 
@@ -32,8 +38,6 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1/edit
   def edit
     @assignment = Assignment.find(params[:id])
-    @assignment.deliverables.build
-    @assignment.metrics.build
   end
   
   # POST /assignments

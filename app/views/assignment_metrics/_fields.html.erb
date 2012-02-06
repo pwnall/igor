@@ -1,16 +1,24 @@
-<section class="fields">
-  <p class="field">
-    <%= f.label :name %>
-    <span class="field">
-      <%= f.text_field :name, :placeholder => 'Problem 1', :required => true,
-              :autofocus => true %>
-    </span>
-  </p>
-  <p class="field">
-    <%= f.label :max_score, 'Points' %>
-    <span class="field">
-      <%= f.number_field :max_score, :min => 0, :required => true,
-                                     :placeholder => 10 %>
-    </span>
-  </p>
-</section>
+<p class="item" data-pwnfx-reveal="assignment-metric-new"
+   data-pwnfx-scope="assignment-metric">
+  <span class="name">
+    <%= f.text_field :name, :placeholder => 'Problem 1', :required => true,
+            :autofocus => true %>
+  </span>
+  <span class="value">
+    <%= f.number_field :max_score, :min => 0, :required => true,
+                                   :placeholder => 10 %>
+  </span>
+  <span class="destroy">
+    <% if f.object.new_record? %>
+      <%= button_tag :type => :button,
+              'data-pwnfx-reveal' => 'assignment-metric-new' do %>
+        <%= destroy_icon_tag %> 
+      <% end %>
+    <% else %>
+      <%= f.check_box :_destroy %>
+      <%= f.label :_destroy do %>
+        <%= destroy_icon_tag %> Remove
+      <% end %>
+    <% end %>
+  </span>
+</p>

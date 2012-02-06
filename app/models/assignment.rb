@@ -39,7 +39,8 @@ class Assignment
   # The deliverables that students need to submit to complete the assignment.
   has_many :deliverables, :dependent => :destroy, :inverse_of => :assignment
   accepts_nested_attributes_for :deliverables, :allow_destroy => true,
-      :reject_if => lambda { |attributes| attributes[:name].nil? }
+                                               :reject_if => :all_blank
+  attr_accessible :deliverables_attributes
 
   # All students' submissions for this assignment.
   has_many :submissions, :through => :deliverables, :inverse_of => :assignment
@@ -81,8 +82,9 @@ class Assignment
   has_many :metrics, :class_name => 'AssignmentMetric', :dependent => :destroy,
                      :inverse_of => :assignment
   accepts_nested_attributes_for :metrics, :allow_destroy => true,
-      :reject_if => lambda { |attributes| attributes[:name].nil? }
-
+                                          :reject_if => :all_blank
+  attr_accessible :metrics_attributes
+  
   # All students' grades for this assignment.
   has_many :grades, :through => :metrics
 end

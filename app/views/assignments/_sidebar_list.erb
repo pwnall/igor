@@ -1,0 +1,23 @@
+<% if assignments.empty? %>
+<p>
+  No assignments defined yet.
+</p>
+<% else %>
+<ol class="assignments-summary">
+  <% assignments.each do |assignment| %>
+  <li>
+    <span class="weight">
+      <%= assignment.weight %>
+      <%= assignment_state_icon_tag assignment.ui_state_for(current_user) %>
+    </span>
+    <span class="name">
+      <%= link_to assignment.name, edit_assignment_path(assignment) %>
+    </span>
+    <span class="deadline">
+      <%= time_tag assignment.deadline,
+                   assignment.deadline.to_s(:deadline_long) %>
+    </span>
+  </li>
+  <% end %>
+</ol>
+<% end %>
