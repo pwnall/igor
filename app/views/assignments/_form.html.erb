@@ -4,23 +4,26 @@
     <%= render 'assignments/fields', f: f %>
     
     <h3>Files to be Submitted</h3>
-    <div data-pwnfx-render-target="assignment-deliverables">
-    <%= f.fields_for :deliverables do |df| %>
-      <%= render 'deliverables/fields', f: df %>
-    <% end %>
+    <div class="assignment-builder-deliverables"
+         data-pwnfx-render-target="assignment-deliverables">
+      <%= f.fields_for :deliverables do |df| %>
+        <%= render 'deliverables/fields', f: df %>
+      <% end %>
     </div>
+    <p class="assignment-builder-actions">
+      <%= link_to new_deliverable_path(assignment_id: f.object.id),
+              :class => 'button', 'data-pwnfx-render-randomize' => 'IDID',
+              'data-pwnfx-render-scope' => 'assignment',
+              'data-pwnfx-render' => "assignment-deliverables" do %>
+        <%= create_icon_tag %> Add File
+      <% end %>
+    </p>
   
 <script type="text/html" data-pwnfx-render-source="assignment-deliverables">
 <%= f.fields_for :deliverables, Deliverable.new, child_index: 'IDID' do |df| %>
   <%= render 'deliverables/fields', f: df %>
 <% end %>    
 </script>
-    <%= link_to new_deliverable_path(assignment_id: f.object.id),
-            :class => 'button', 'data-pwnfx-render-randomize' => 'IDID',
-            'data-pwnfx-render-scope' => 'assignment',
-            'data-pwnfx-render' => "assignment-deliverables" do %>
-      <%= create_icon_tag %> Add File
-    <% end %>
     
     <h3>Grading Breakdown</h3>
     <div class="assignment-builder-metrics"

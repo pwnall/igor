@@ -1,21 +1,28 @@
-<section class="fields">
-  <p class="field">
-    <%= f.label :name %>
-    <span class="value">
+<div data-pwnfx-hide-positive="deliverable-div" data-pwnfx-scope="deliverable">
+  <p class="header">
+    <span class="name">
       <%= f.text_field :name, :placeholder => 'PDF Write-up',
                        :required => true %>
     </span>
-  </p>
-  <p class="field">
-    <%= f.label :filename, 'File name' %>
-    <span class="value">
-      <%= f.text_field :filename, :placeholder => 'writeup.pdf' %>
+    <span class="file_name">
+      <span class="value">
+        <%= f.text_field :filename, :placeholder => 'writeup.pdf' %>
+      </span>
+    </span>
+    <span class="destroy">
+      <%= f.check_box :_destroy, 'data-pwnfx-hide' => 'deliverable-div',
+              'data-pwnfx-hide-scope' => 'deliverable',
+              'data-pwnfx-hide-class' => 'destroyed-blur',
+              'data-pwnfx-hide-trigger' => 'checked' %>
+      <%= f.label :_destroy do %>
+        <%= destroy_icon_tag %> Remove
+      <% end %>
     </span>
   </p>
-  <p class="field">
-    <%= f.label :description, 'Description' %>
-    <span class="value">
-      <%= f.text_area :description %>
+  <p class="description">
+    <span class="description">
+      <%= f.text_area :description,
+              :placeholder => 'Please upload your write-up, in PDF format.' %>
     </span>
   </p>
-</section>
+</div>

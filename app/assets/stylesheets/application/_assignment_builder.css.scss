@@ -1,4 +1,8 @@
-.assignment-builder-metrics {
+.assignment-builder-actions {
+  padding: 0 0 0 4em;
+}
+
+@mixin assignment-builder-table {
   display: table;
   width: 100%;
 
@@ -16,9 +20,24 @@
         width: 100%;
       }
     }
+  }  
+}
+
+.assignment-builder-deliverables {
+  @include assignment-builder-table;
+  
+  p.description {
+    display: block;
+    span {
+      display: block;
+      textarea {
+        box-sizing: border-box;
+        width: 100%;
+      }
+    }
   }
 }
 
-.assignment-builder-actions {
-  padding: 0 0 0 4em;
+.assignment-builder-metrics {
+  @include assignment-builder-table;
 }
