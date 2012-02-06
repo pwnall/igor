@@ -1,25 +1,6 @@
 class AssignmentMetricsController < ApplicationController
   before_filter :authenticated_as_admin
   
-  # GET /assignment_metrics
-  def index
-    @assignments = Assignment.find(:all)
-    @assignment_metrics = AssignmentMetric.find(:all, :include => :assignment)
-
-    respond_to do |format|
-      format.html # index.html.erb
-    end
-  end
-
-  # GET /assignment_metrics/1
-  def show
-    @assignment_metric = AssignmentMetric.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-    end
-  end
-
   # GET /assignment_metrics/new
   def new
     @assignment_metric = AssignmentMetric.new
@@ -70,22 +51,6 @@ class AssignmentMetricsController < ApplicationController
   end
   private :create_update
   
-  # POST /assignment_metrics/set_published/1?to=true
-  def set_published
-    @assignment_metric = AssignmentMetric.find(params[:id])
-    @assignment_metric.published = params[:to]
-    
-    respond_to do |format|
-      if @assignment_metric.save
-        flash[:notice] = "Grades for #{@assignment_metric.name} in #{@assignment_metric.assignment.name} successfully #{@assignment_metric.published ? 'published' : 'un-published'}."
-      else
-        flash[:error] = "Failed to #{@assignment_metric.published ? 'publish' : 'un-publish'} grades for #{@assignment_metric.name} in #{@assignment_metric.assignment.assignment}."
-      end    
-      format.html { redirect_to(:controller => :assignment_metrics, :action => :index) }
-    end
-  end
-  
-
   # DELETE /assignment_metrics/1
   def destroy
     @assignment_metric = AssignmentMetric.find(params[:id])

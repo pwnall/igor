@@ -6,7 +6,7 @@
 	  	<td>User</td>
 	    <td>Credit</td>
 			<% @prerequisites.sort_by(&:id).each do |prereq| %>
-			<td><%= prereq.course_number %></td>
+			<td><%= prereq.prerequisite_number %></td>
 			<% end %>
 	  </tr>
 	</thead>
@@ -20,7 +20,7 @@
                       sort_by(&:prerequisite_id).each do |answer| %>
 				<td>
 				<% if answer.took_course? %>
-				  <%= ok_image_tag %>
+				  <%= valid_icon_tag %>
 				<% else %>
 				  <%= answer.waiver_answer %>
 				<% end %>
