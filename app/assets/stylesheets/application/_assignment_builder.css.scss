@@ -1,0 +1,24 @@
+.assignment-builder-metrics {
+  display: table;
+  width: 100%;
+
+  p {
+    display: table-row;
+    
+    span {
+      display: table-cell;
+      padding: 1px;
+      
+      > input[type=text], input[type=email], input[type=tel], input[type=password],
+          input[type=search], input[type=number], textarea {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box; 
+        width: 100%;
+      }
+    }
+  }
+}
+
+.assignment-builder-actions {
+  padding: 0 0 0 4em;
+}

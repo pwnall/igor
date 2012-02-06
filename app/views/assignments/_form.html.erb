@@ -23,23 +23,27 @@
     <% end %>
     
     <h3>Grading Breakdown</h3>
-    <div data-pwnfx-render-target="assignment-metrics">
+    <div class="assignment-builder-metrics"
+         data-pwnfx-render-target="assignment-metrics">
       <%= f.fields_for :metrics do |mf| %>
         <%= render 'assignment_metrics/fields', f: mf %>
       <% end %>
     </div>
+    <p class="assignment-builder-actions">
+      <%= link_to new_assignment_metric_path(assignment_id: f.object.id),
+              :class => 'button', 'data-pwnfx-render-randomize' => 'IDID',
+              'data-pwnfx-render-scope' => 'assignment',
+              'data-pwnfx-render' => "assignment-metrics" do %>
+        <%= create_icon_tag %> Add Item
+      <% end %>
+    </p>
+    
   
 <script type="text/html" data-pwnfx-render-source="assignment-metrics">
 <%= f.fields_for :metrics, AssignmentMetric.new, child_index: 'IDID' do |mf| %>
   <%= render 'assignment_metrics/fields', f: mf %>
 <% end %>    
 </script>
-    <%= link_to new_assignment_metric_path(assignment_id: f.object.id),
-            :class => 'button', 'data-pwnfx-render-randomize' => 'IDID',
-            'data-pwnfx-render-scope' => 'assignment',
-            'data-pwnfx-render' => "assignment-metrics" do %>
-      <%= create_icon_tag %> Add Item
-    <% end %>
   
     <p class="action">
       <%= button_tag do %>
