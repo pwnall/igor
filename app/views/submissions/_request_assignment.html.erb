@@ -1,4 +1,4 @@
-<h2>Package Submissions</h2>
+<h2>Grading Kit Builder</h2>
 <%= form_tag package_assignment_submissions_path do %>
   <section class="fields">
     <p class="field">
@@ -35,6 +35,8 @@
   </div>
 
   <p class="action">
-  	<%= submit_tag "Build package" %>
+  	<%= button_tag do %>
+  	  <%= download_icon_tag %> Download Grading Kit
+  	<% end %>
   </p>
 <% end %> 

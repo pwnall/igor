@@ -1,6 +1,21 @@
 <div class="assignment-builder" data-pwnfx-scope="assignment">
   <%= form_for assignment do |f| %>
-    <%= f.error_messages %>
+    <% if @assignment.errors.any? %>
+      <div class="error-explanation">
+        <p>
+          <%= invalid_icon_tag %>
+          <%= pluralize(@assignment.errors.count, "error") %>
+          prohibited this assignment from being saved:
+        </p>
+  
+        <ul>
+        <% @assignment.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
     <%= render 'assignments/fields', f: f %>
     
     <h3>Files to be Submitted</h3>

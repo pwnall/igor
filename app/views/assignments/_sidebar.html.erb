@@ -1,6 +1,8 @@
 <p>
-  <%= link_to 'New Assignment', new_assignment_path, :class => 'button' %>  
+  <%= link_to new_assignment_path, class: 'button' do %>
+    <%= create_icon_tag %> New Assignment
+  <% end %>  
 </p>
 
 <%= render 'assignments/sidebar_list',
-           :assignments => Assignment.for(current_user, Course.main) %>
+           assignments: Assignment.for(current_user, Course.main) %>

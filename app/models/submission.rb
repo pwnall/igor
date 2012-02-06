@@ -37,7 +37,7 @@ class Submission < ActiveRecord::Base
   # Diagnostic issued by the deliverable's Analyzer.
   has_one :analysis, :dependent => :destroy, :inverse_of => :submission
 
-  # Can performs an automated health-check for this submission.
+  # Analyzer used to perform an automated health-check for this submission.
   has_one :analyzer, :through => :deliverable
   
   # Queues up a request to run an automated health-check for this submission.

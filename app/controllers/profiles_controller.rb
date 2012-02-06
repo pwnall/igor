@@ -3,15 +3,6 @@ class ProfilesController < ApplicationController
       :only => [:new, :create, :edit, :show, :update]
   before_filter :authenticated_as_admin, :only => [:index, :destroy]
 
-  # GET /profiles
-  def index
-    @profiles = Profile.find(:all)
-
-    respond_to do |format|
-      format.html # index.html.erb
-    end
-  end
-  
   # GET /profiles/1
   def show
     @profile = Profile.find(params[:id])
@@ -21,21 +12,9 @@ class ProfilesController < ApplicationController
     end
   end
   
-  # GET /profiles/new
-  def new
-    user = User.find(params[:user_id])
-    @profile = Profile.new :user => user,
-                           :athena_username => user.email.split('@')[0]
-    new_edit
-  end
-
   # GET /profiles/1/edit
   def edit
     @profile = Profile.find(params[:id])
-    new_edit
-  end
-  
-  def new_edit
     # Disallow random record updates.
     unless @profile.editable_by_user? current_user
       notice[:error] = 'That is not yours to play with! Attempt logged.'
@@ -44,9 +23,12 @@ class ProfilesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render :action => :new_edit }
-      format.js   { render :action => :edit }
+      format.html # edit.html.erb
+      format.js   # edit.js.rjs
     end    
+  end
+  
+  def new_edit
   end
   private :new_edit
 

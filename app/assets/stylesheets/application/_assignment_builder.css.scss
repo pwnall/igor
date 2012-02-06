@@ -9,11 +9,16 @@
   p {
     display: table-row;
     
-    span {
+    > span {
       display: table-cell;
       padding: 1px 2px;
       
-      > input[type=text], input[type=email], input[type=tel], input[type=password],
+      > span.field_with_errors {
+        display: block;
+        width: 100%;
+      }
+      
+      input[type=text], input[type=email], input[type=tel], input[type=password],
           input[type=search], input[type=number], textarea {
         box-sizing: border-box;
         -moz-box-sizing: border-box; 
@@ -42,6 +47,9 @@
   @include assignment-builder-table;
 }
 
+.assignment-builder .error-explanation {
+  margin: 0 0.5em 1em;
+}
 
 // Uncomment to hide the "Assignment Builder" heading.
 // We're keeping it in for now, because the UI is confusing without it.

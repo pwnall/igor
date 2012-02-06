@@ -22,31 +22,6 @@
     </span>
   </p>
   
-  
-  <% if f.object.deliverables.length > 0 %>
-  <p class="field">
-    <%= f.label :deliverables_ready, 'Deliverables Ready' %>
-    <span class="value">
-      <%= f.check_box :deliverables_ready %>
-      <%= f.label :deliverables_ready do %>
-        students can see the deliverables and upload solutions
-      <% end %>
-    </span>
-  </p>
-  <% end %>
-
-  <% if f.object.metrics.length > 0 %>
-  <p class="field">
-    <%= f.label :metrics_ready, 'Grades Ready' %>
-    <span class="value">
-      <%= f.check_box :metrics_ready %>
-      <%= f.label :metrics_ready do %>
-        students can see their grades
-      <% end %>
-    </span>
-  </p>
-  <% end %>
-  
   <% if f.object.course.has_teams? %>
   <p class="field">
     <%= f.label :team_partition_id, 'Teams' %>
