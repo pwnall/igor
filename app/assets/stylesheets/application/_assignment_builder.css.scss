@@ -11,7 +11,7 @@
     
     span {
       display: table-cell;
-      padding: 1px;
+      padding: 1px 2px;
       
       > input[type=text], input[type=email], input[type=tel], input[type=password],
           input[type=search], input[type=number], textarea {
@@ -41,3 +41,14 @@
 .assignment-builder-metrics {
   @include assignment-builder-table;
 }
+
+
+// Uncomment to hide the "Assignment Builder" heading.
+// We're keeping it in for now, because the UI is confusing without it.
+// 
+// .assignment-builder-heading {
+//   display: none;
+// }
+// .assignment-builder {
+//   margin: 1em 0 0 0;
+// }
