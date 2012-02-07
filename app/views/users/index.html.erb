@@ -1,6 +1,15 @@
 <h2>Site Users</h2>
 
 <table>
+  <tfoot>
+    <tr>
+      <th><%= pluralize @users.length, 'user' %></th>
+      <th>
+        <%= pluralize @users.select { |u| u.email_credential.verified? }.length,
+                      'verified e-mails' %>
+      </th>
+    </tr>
+  </tfoot>
   <tbody>
     <% @users.sort_by { |u| [u.admin? ? 0 : 1, u.name] }.each do |user| %>
       <tr>
@@ -53,6 +62,6 @@
           <% end %>
         </td>
       </tr>
-    <% end %>   
+    <% end %>
   </tbody>
 </table>

@@ -7,7 +7,7 @@ class UsersController < ApplicationController
    
   # GET /users
   def index
-    @users = User.all
+    @users = User.includes([:credentials, :profile]).all
 
     respond_to do |format|
       format.html # index.html.erb
