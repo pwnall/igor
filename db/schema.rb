@@ -122,16 +122,6 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
-  create_table "deliverables", :force => true do |t|
-    t.integer  "assignment_id",                 :null => false
-    t.string   "name",          :limit => 80,   :null => false
-    t.string   "description",   :limit => 2048, :null => false
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-  end
-
-  add_index "deliverables", ["assignment_id", "name"], :name => "index_deliverables_on_assignment_id_and_name", :unique => true
-
   create_table "grades", :force => true do |t|
     t.integer  "metric_id",                                                :null => false
     t.integer  "grader_id",                                                :null => false
