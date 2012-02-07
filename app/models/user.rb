@@ -35,6 +35,7 @@ class User
   # Personal information, e.g. full name and contact info.
   has_one :profile, :dependent => :destroy, :inverse_of => :user
   accepts_nested_attributes_for :profile
+  attr_accessible :profile_attributes
   
   # Configure gravatars.
   include Gravtastic
@@ -71,6 +72,7 @@ class User
   # Class registration info, e.g. survey answers and credit / listener status.
   has_many :registrations, :dependent => :destroy, :inverse_of => :user
   accepts_nested_attributes_for :registrations
+  attr_accessible :registrations_attributes
   
   # The user's registration for the main class on this site.
   def registration
