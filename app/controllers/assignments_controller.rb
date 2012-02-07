@@ -42,8 +42,7 @@ class AssignmentsController < ApplicationController
   
   # POST /assignments
   def create
-    @assignment = Assignment.new params[:assignment]
-    @assignment.course = Course.main
+    @assignment = Course.main.assignments.build params[:assignment]
 
     respond_to do |format|
       if @assignment.save

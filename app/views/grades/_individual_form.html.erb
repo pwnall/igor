@@ -1,5 +1,5 @@
 <%= form_for grade, :remote => true, :format => 'html' do |f| %>
-  <%= f.number_field :score, :min => 0 %>
+  <%= f.number_field :score, :min => 0, :step => :any %>
   <span class="max-points">
     / <%= f.object.metric.max_score %>
   </span>

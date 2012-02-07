@@ -8,7 +8,7 @@
         <%= create_icon_tag %> Add Homework
       <% end %>
     </li>
-    <% assignments_for(current_user).each do |assignment| %>
+    <% Assignment.for(current_user, Course.main).each do |assignment| %>
     <li>
       <%= assignment_state_icon_tag assignment.ui_state_for(current_user) %>
       <% if current_user.admin? %>
