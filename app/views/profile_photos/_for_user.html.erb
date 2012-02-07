@@ -1,7 +1,14 @@
 <% if user.profile and user.profile.editable_by_user?(current_user) %>
 <div class="profile-photo-container">
-  <%= link_to 'Change photo', :remote => true, :method => :get,
-        :url => new_profile_photo_path(:profile_id => user.profile.id) %>
+<% if false %>
+  <%= link_to new_profile_photo_path(profile_id: user.profile.id), remote: true,
+              method: :get, class: 'button' do %>
+    <%= edit_icon_tag %> Change Photo
+  <% end %>
   <span id="profile-ajax-indicator"></span>
+<% end %>
+  <%= link_to gravatar_signup_url(current_user) do %>
+    Change Photo
+  <% end %>
 </div>
 <% end %>

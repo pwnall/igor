@@ -1,7 +1,0 @@
-if @new_record
-  page.redirect_to @profile.user
-else
-  page.select('.profile-container').each do |element|
-    element.replace render('profiles/show', :profile => @profile)
-  end
-end

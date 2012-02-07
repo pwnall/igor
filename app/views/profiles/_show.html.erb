@@ -1,12 +1,12 @@
 <div class="profile-container">
-<h3>
-  Profile
-  <% if profile.editable_by_user?(current_user) %>
+<% if profile.editable_by_user?(current_user) %>
+<p>
   <%= link_to edit_profile_path(profile), :class => 'button' do %>
-    <%= image_tag('pencil_16.png') %> Edit
-  <% end %>
+    <%= image_tag('pencil_16.png') %> Edit Profile
   <% end %>
   <span id="profile-ajax-indicator"></span>
-</h3>
+</p>
+<% end %>
+
 <%= render profile %>
 </div>

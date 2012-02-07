@@ -1,3 +1,0 @@
-page.select('.profile-container').each do |element|
-  element.replace render('profiles/form')
-end

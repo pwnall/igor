@@ -2,14 +2,6 @@
 	<%= user_image_tag @user, :size => :large %>
 	<%= @user.name %>
 </h2>
-
-<dl class="user-info">
-	<dt>E-mail</dt>
-	<dd><%= mail_to @user.email %></dd>
-</dl>
-
 <%= render 'profile_photos/for_user', :user => @user %>
 
 <%= render 'profiles/for_user', :user => @user %>
-
-<%= render 'registrations/for_user', :user => @user %>
