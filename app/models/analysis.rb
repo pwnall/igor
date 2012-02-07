@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: analyses
+#
+#  id            :integer(4)      not null, primary key
+#  submission_id :integer(4)      not null
+#  score         :integer(4)
+#  diagnostic    :string(256)
+#  stdout        :binary(16777215
+#  stderr        :binary(16777215
+#  created_at    :datetime        not null
+#  updated_at    :datetime        not null
+#
+
 # The result of analyzing a Submission. 
 class Analysis < ActiveRecord::Base
   belongs_to :submission, :inverse_of => :analysis

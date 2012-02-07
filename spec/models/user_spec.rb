@@ -153,8 +153,8 @@ end
 #
 #  id         :integer(4)      not null, primary key
 #  exuid      :string(32)      not null
-#  created_at :datetime
-#  updated_at :datetime
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
 #  admin      :boolean(1)      default(FALSE), not null
 #
 

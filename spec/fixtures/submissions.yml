@@ -1,5 +1,4 @@
 # == Schema Information
-# Schema version: 20110429122654
 #
 # Table name: submissions
 #
@@ -7,8 +6,8 @@
 #  deliverable_id :integer(4)      not null
 #  user_id        :integer(4)      not null
 #  db_file_id     :integer(4)      not null
-#  created_at     :datetime
-#  updated_at     :datetime
+#  created_at     :datetime        not null
+#  updated_at     :datetime        not null
 #
 
 admin_ps1:

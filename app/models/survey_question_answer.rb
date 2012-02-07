@@ -1,5 +1,4 @@
 # == Schema Information
-# Schema version: 20110429122654
 #
 # Table name: survey_question_answers
 #
@@ -9,8 +8,8 @@
 #  target_user_id   :integer(4)
 #  number           :float           not null
 #  comment          :string(1024)
-#  created_at       :datetime
-#  updated_at       :datetime
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
 #
 
 # An answer to a question in a survey.

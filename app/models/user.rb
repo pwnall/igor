@@ -226,23 +226,10 @@ end
 #
 # Table name: users
 #
-#  id            :integer(4)      not null, primary key
-#  password_salt :string(16)      not null
-#  password_hash :string(64)      not null
-#  email         :string(64)      not null
-#  active        :boolean(1)      default(FALSE), not null
-#  admin         :boolean(1)      default(FALSE), not null
-#  created_at    :datetime
-#  updated_at    :datetime
-#
-# == Schema Information
-#
-# Table name: users
-#
 #  id         :integer(4)      not null, primary key
 #  exuid      :string(32)      not null
-#  created_at :datetime
-#  updated_at :datetime
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
 #  admin      :boolean(1)      default(FALSE), not null
 #
 

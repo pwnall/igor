@@ -1,16 +1,16 @@
 # == Schema Information
-# Schema version: 20110429122654
 #
 # Table name: analyzers
 #
 #  id             :integer(4)      not null, primary key
-#  type           :string(32)      not null
 #  deliverable_id :integer(4)      not null
-#  message_name   :string(64)
+#  type           :string(32)      not null
+#  input_file     :string(64)
+#  exec_limits    :text
 #  db_file_id     :integer(4)
-#  time_limit     :integer(4)
-#  created_at     :datetime
-#  updated_at     :datetime
+#  message_name   :string(64)
+#  created_at     :datetime        not null
+#  updated_at     :datetime        not null
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

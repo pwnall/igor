@@ -1,5 +1,4 @@
 # == Schema Information
-# Schema version: 20110429122654
 #
 # Table name: recitation_sections
 #
@@ -8,8 +7,8 @@
 #  leader_id  :integer(4)      not null
 #  time       :string(64)      not null
 #  location   :string(64)      not null
-#  created_at :datetime
-#  updated_at :datetime
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
 #
 
 class RecitationSection < ActiveRecord::Base

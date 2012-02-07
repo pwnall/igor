@@ -16,7 +16,7 @@ dexter:
 #  for_credit            :boolean(1)      default(TRUE), not null
 #  allows_publishing     :boolean(1)      default(TRUE), not null
 #  recitation_section_id :integer(4)
-#  created_at            :datetime
-#  updated_at            :datetime
+#  created_at            :datetime        not null
+#  updated_at            :datetime        not null
 #
 

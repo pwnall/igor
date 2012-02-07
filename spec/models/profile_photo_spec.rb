@@ -1,5 +1,4 @@
 # == Schema Information
-# Schema version: 20110429122654
 #
 # Table name: profile_photos
 #
@@ -11,8 +10,8 @@
 #  pic_file         :binary(16777215 default(""), not null
 #  pic_profile_file :binary(16777215 default(""), not null
 #  pic_thumb_file   :binary(16777215 default(""), not null
-#  created_at       :datetime
-#  updated_at       :datetime
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
 #
 
 require 'spec_helper'

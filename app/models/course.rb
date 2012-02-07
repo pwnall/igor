@@ -49,7 +49,7 @@ end
 #  has_recitations :boolean(1)      default(TRUE), not null
 #  has_surveys     :boolean(1)      default(TRUE), not null
 #  has_teams       :boolean(1)      default(TRUE), not null
-#  created_at      :datetime
-#  updated_at      :datetime
+#  created_at      :datetime        not null
+#  updated_at      :datetime        not null
 #
 

@@ -1,16 +1,15 @@
 # == Schema Information
-# Schema version: 20110429122654
 #
 # Table name: grades
 #
 #  id           :integer(4)      not null, primary key
 #  metric_id    :integer(4)      not null
-#  subject_type :string(64)      not null
-#  subject_id   :integer(4)      not null
 #  grader_id    :integer(4)      not null
+#  subject_id   :integer(4)      not null
+#  subject_type :string(64)
 #  score        :decimal(8, 2)   not null
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :datetime        not null
+#  updated_at   :datetime        not null
 #
 
 class Grade < ActiveRecord::Base

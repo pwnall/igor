@@ -1,13 +1,12 @@
 # == Schema Information
-# Schema version: 20110429122654
 #
 # Table name: teams
 #
 #  id           :integer(4)      not null, primary key
 #  partition_id :integer(4)      not null
 #  name         :string(64)      not null
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :datetime        not null
+#  updated_at   :datetime        not null
 #
 
 require 'spec_helper'

@@ -1,5 +1,4 @@
 # == Schema Information
-# Schema version: 20110429122654
 #
 # Table name: prerequisite_answers
 #
@@ -8,8 +7,8 @@
 #  prerequisite_id :integer(4)      not null
 #  took_course     :boolean(1)      not null
 #  waiver_answer   :text
-#  created_at      :datetime
-#  updated_at      :datetime
+#  created_at      :datetime        not null
+#  updated_at      :datetime        not null
 #
 
 class PrerequisiteAnswer < ActiveRecord::Base

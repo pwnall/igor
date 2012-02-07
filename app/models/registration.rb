@@ -53,9 +53,11 @@ end
 #  user_id               :integer(4)      not null
 #  course_id             :integer(4)      not null
 #  dropped               :boolean(1)      default(FALSE), not null
+#  teacher               :boolean(1)      default(FALSE), not null
 #  for_credit            :boolean(1)      default(TRUE), not null
+#  allows_publishing     :boolean(1)      default(TRUE), not null
 #  recitation_section_id :integer(4)
-#  created_at            :datetime
-#  updated_at            :datetime
+#  created_at            :datetime        not null
+#  updated_at            :datetime        not null
 #
 
