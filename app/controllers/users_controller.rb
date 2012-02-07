@@ -53,7 +53,7 @@ class UsersController < ApplicationController
         
         format.html do
           redirect_to new_session_url,
-              :error => 'Please check your e-mail to verify your account.'
+              :alert => 'Please check your e-mail to verify your account.'
         end
       else
         format.html { render :action => :new }
