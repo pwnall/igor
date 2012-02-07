@@ -5,21 +5,21 @@ ps1_writeup:
   name: PDF Write-Up
   description: "Your team's write-up for PS1, in PDF format."
   published: true
-  filename: ps1.pdf
+  file_ext: ps1.pdf
 
 project_writeup:
   assignment: project
   name: PDF Write-Up
   description: "Your team's write-up for the final project, in PDF format."
   published: true
-  filename: project.pdf
+  file_ext: project.pdf
 
 assessment_writeup:
   assignment: assessment
   name: PDF Write-Up
   description: "Your self-assessment, in PDF format."
   published: true
-  filename: assessment.pdf
+  file_ext: assessment.pdf
 
 # == Schema Information
 #

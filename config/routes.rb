@@ -1,9 +1,7 @@
 Seven::Application.routes.draw do
-  resources :analyses
-
   authpwn_session
   
-  resources :analysiss
+  resources :analyses
   resources :survey_questions
   resources :team_memberships
   
@@ -23,37 +21,12 @@ Seven::Application.routes.draw do
   resource :api, :controller => 'api' do
     get :conflict_info
   end
-  resources :assignment_metrics do
-    member do
-      post :set_assignment_metric_assignment_id
-      post :set_assignment_metric_max_score
-      post :set_assignment_metric_name
-      post :set_assignment_metric_published
-      post :set_assignment_metric_weight
-    end
-  end
-  resources :assignments do
-    member do
-      post :set_assignment_name
-    end
-  end
-  resources :courses do
-    member do
-      post :set_course_ga_account
-      post :set_course_has_recitations
-      post :set_course_number
-      post :set_course_title
-    end    
-  end
+  resources :assignment_metrics
+  resources :assignments
+  resources :courses
   resources :deliverables do
     collection do
       post :xhr_description
-    end
-    member do
-      post :set_deliverable_description
-      post :set_deliverable_filename
-      post :set_deliverable_name
-      post :set_deliverable_published      
     end
   end
   resources :analyzers do
@@ -72,12 +45,7 @@ Seven::Application.routes.draw do
       put :update_for_user
     end
   end
-  resources :prerequisites do
-    member do
-      post :set_prerequisite_course_number
-      post :set_prerequisite_waiver_question
-    end
-  end
+  resources :prerequisites
   resources :profile_photos do
     member do
       get :profile, :thumb
@@ -88,14 +56,7 @@ Seven::Application.routes.draw do
       post :websis_lookup
     end
   end
-  resources :recitation_sections do
-    member do
-      post :set_recitation_section_leader_id
-      post :set_recitation_section_location
-      post :set_recitation_section_serial
-      post :set_recitation_section_time
-    end
-  end
+  resources :recitation_sections
   resources :registrations
   resources :submissions do
     member do
@@ -117,11 +78,7 @@ Seven::Application.routes.draw do
     end
   end
   resources :team_partitions
-  resources :teams do
-    member do
-      post :set_team_name
-    end
-  end
+  resources :teams
 
   root :to => "session#show"
 end
