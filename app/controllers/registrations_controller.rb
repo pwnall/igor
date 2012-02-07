@@ -27,7 +27,7 @@ class RegistrationsController < ApplicationController
     prepare_for_editing
 
     # Disallow random record updates.
-    unless @registration.editable_by_user? current_user
+    unless @registration.can_edit? current_user
       notice[:error] = 'That is not yours to play with! Attempt logged.'
       redirect_to root_path
       return
@@ -69,7 +69,7 @@ class RegistrationsController < ApplicationController
   end
   
   def create_update
-    unless @registration.editable_by_user? current_user
+    unless @registration.can_edit? current_user
       # Disallow random record updates.
       notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
       redirect_to root_path

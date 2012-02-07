@@ -119,8 +119,8 @@ class SubmissionsController < ApplicationController
   def file
     @submission = Submission.find(params[:id])
     if current_user.id != @submission.user_id && !current_user.admin?
-      bounce_user "That's not yours to play with. Your attempt has been logged."
-      return
+      
+      
     end
     
     db_file = @submission.full_db_file

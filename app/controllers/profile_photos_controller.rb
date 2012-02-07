@@ -27,7 +27,7 @@ class ProfilePhotosController < ApplicationController
         ProfilePhoto.where(:profile_id => params[:profile_id]).first ||
         ProfilePhoto.new(:profile_id => params[:profile_id])
     
-    unless @profile_photo.profile.editable_by_user?(current_user)
+    unless @profile_photo.profile.can_edit?(current_user)
       notice[:error] = 'That is not yours to play with! Attempt logged.'
       redirect_to root_url
       return      
@@ -55,7 +55,7 @@ class ProfilePhotosController < ApplicationController
   end
   
   def create_update
-    unless @profile_photo.profile.editable_by_user?(current_user)
+    unless @profile_photo.profile.can_edit?(current_user)
       notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
       redirect_to root_url
       return      

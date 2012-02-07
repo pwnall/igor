@@ -23,14 +23,14 @@
 	    <%= membership.user.registration.for_credit ? 'Credit' : 'Listener' %>
 			</span>
 			<% end %>
-      <% if team.editable_by_user? current_user %>
+      <% if team.can_edit? current_user %>
 	    <%= link_to 'Remove', membership, :method => :delete,
 	            :confirm => "Remove #{membership.user.name} from #{team.name}" %>
 	    <% end %>
 	  </li>
 	<% end %>
 	</ul>
-	<% if team.editable_by_user? current_user %>
+	<% if team.can_edit? current_user %>
 	<%= form_for TeamMembership.new(:team => team),
                :html => { :class => 'group-membership-form' } do |f| %>
 	  <%= f.hidden_field :team_id %>

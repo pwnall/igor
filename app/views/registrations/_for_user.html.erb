@@ -5,7 +5,7 @@
 <h3>
   No registration for <%= Course.main.number %>
   <% if Registration.new(:user => user, :course => Course.main).
-                     editable_by_user?(current_user) %>
+                     can_edit?(current_user) %>
   <%= link_to 'Register', :method => :get, :remote => true,
           :url => new_registration_path(:user_id => user.id,
                                         :course_id => Course.main.id) %>

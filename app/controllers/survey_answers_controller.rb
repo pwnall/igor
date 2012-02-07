@@ -53,8 +53,8 @@ class SurveyAnswersController < ApplicationController
   # GET /survey_answers/1/edit
   def edit
     @survey_answer = SurveyAnswer.find(params[:id])
-    if @survey_answer.user_id != current_user.id
-      return bounce_user("This isn't yours to play with! Your attempt has been logged.")
+    return bounce_user if @survey_answer.user_id != current_user.id
+      
     end
     
     new_edit
@@ -77,9 +77,7 @@ class SurveyAnswersController < ApplicationController
   # PUT /survey_answerss/1
   def update
     @survey_answer = SurveyAnswer.find(params[:id])
-    if @survey_answer.user_id != current_user.id
-      return bounce_user("This isn't yours to play with! Your attempt has been logged.")
-    end
+    return bounce_user if @survey_answer.user_id != current_user.id
 
     # updating is not allowed to move feedback around assignments
     params[:survey_answer].delete :assignment_id 

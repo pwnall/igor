@@ -153,7 +153,7 @@ class FeedItem
           :actions => [],
           :replies => []
       
-      if announcement.editable_by_user? user
+      if announcement.can_edit? user
         item.actions = [
           ['Edit', [:edit_announcement_path, announcement],
                    {:remote => true}],

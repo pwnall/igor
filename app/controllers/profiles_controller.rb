@@ -16,11 +16,7 @@ class ProfilesController < ApplicationController
   def edit
     @profile = Profile.find(params[:id])
     # Disallow random record updates.
-    unless @profile.editable_by_user? current_user
-      notice[:error] = 'That is not yours to play with! Attempt logged.'
-      redirect_to root_path
-      return
-    end
+    return bounce_user unless @profile.can_edit?(current_user)
 
     respond_to do |format|
       format.html # edit.html.erb
@@ -46,11 +42,7 @@ class ProfilesController < ApplicationController
 
   def create_update
     # Disallow random record updates.
-    unless @profile.editable_by_user? current_user
-      notice[:error] = 'That is not yours to play with! Attempt logged.'
-      redirect_to root_path
-      return
-    end
+    return bounce_user unless @profile.can_edit?(current_user)
     
     if @new_record = @profile.new_record?
       success = @profile.save

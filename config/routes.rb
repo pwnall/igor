@@ -54,6 +54,7 @@ Seven::Application.routes.draw do
   resources :profiles do
     collection do
       post :websis_lookup
+      put :websis_lookup
     end
   end
   resources :recitation_sections

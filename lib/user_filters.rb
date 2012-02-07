@@ -1,7 +1,7 @@
 module UserFilters
   # (before-filter) ensures that the session belongs to a registered user
   def authenticated_as_user    
-    return bounce_user('Login required') if current_user.nil?
+    return bounce_user if current_user.nil?
     return true if current_user.email_credential.verified?
     
     # Inactive user.

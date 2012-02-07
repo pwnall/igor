@@ -14,7 +14,7 @@ class Announcement < ActiveRecord::Base
   validates :contents, :length => 1..(8.kilobytes)
   
   # Returns true if the given user is allowed to edit this announcement.
-  def editable_by_user?(user)
+  def can_edit?(user)
     user and (user == self.author or user.admin?)
   end
 end

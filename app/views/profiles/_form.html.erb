@@ -1,5 +1,7 @@
-<%= form_for profile do |f| %>
-<%= render 'profiles/fields', f: f %>
+<%= form_for profile.user do |fu| %>
+  <%= fu.fields_for :profile do |f| %>
+    <%= render 'profiles/fields', f: f %>
+  <% end %>
   <p class="action">
     <%= button_tag do %>
       <%= save_icon_tag %> Update Profile

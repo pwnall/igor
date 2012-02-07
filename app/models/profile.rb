@@ -27,8 +27,8 @@ class Profile < ActiveRecord::Base
   has_one :photo, :class_name => 'ProfilePhoto'
 
   # Returns true if the given user is allowed to edit this profile.
-  def editable_by_user?(user)
-    user and (user == self.user or user.admin?)
+  def can_edit?(user)
+    self.user.can_edit? user
   end
 end
 

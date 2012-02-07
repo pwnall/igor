@@ -1,9 +1,7 @@
 class UsersController < ApplicationController
   before_filter :authenticated_as_admin, :except =>
-      [:new, :create, :show, :check_email, :edit_password, :update_password]
-  
-  before_filter :authenticated_as_user, :only => [:edit_password,
-                                                  :update_password, :show]
+      [:new, :create, :show, :check_email]
+  before_filter :authenticated_as_user, :only => [:update, :show]
    
   # GET /users
   def index
@@ -63,13 +61,12 @@ class UsersController < ApplicationController
   
   # PUT /users/1
   def update
-    # TODO(costan): figure out the usefulness of the method, maybe drop it    
-
     @user = User.find_by_param params[:id]
+    return bounce_user unless @user.can_edit?(current_user)
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        flash[:notice] = 'User was successfully updated.'
+        flash[:notice] = 'User information successfully updated.'
         format.html { redirect_to(@user) }
       else
         format.html { render :action => :edit }

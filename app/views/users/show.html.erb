@@ -1,7 +1,7 @@
 <h2>
-	<%= user_image_tag @user, :size => :large %>
+	<%= user_image_tag @user, size: :large %>
 	<%= @user.name %>
 </h2>
-<%= render 'profile_photos/for_user', :user => @user %>
+<%= render 'profile_photos/for_user', user: @user %>
 
-<%= render 'profiles/for_user', :user => @user %>
+<%= render 'profiles/show', profile: @user.profile %>

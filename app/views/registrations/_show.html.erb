@@ -1,7 +1,7 @@
 <div class="registration-container">
 <h3>
   Registration for <%= registration.course.number %>
-  <% if registration.editable_by_user?(current_user) %>
+  <% if registration.can_edit?(current_user) %>
   <%= link_to 'Edit', :url => edit_registration_path(registration),
         :method => :get, :remote => true %>
   <% end %>

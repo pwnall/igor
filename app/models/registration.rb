@@ -40,7 +40,7 @@ class Registration < ActiveRecord::Base
   end
 
   # Returns true if the given user is allowed to edit this registration.
-  def editable_by_user?(user)
+  def can_edit?(user)
     user and (user == self.user or user.admin?)
   end
 end

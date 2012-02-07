@@ -38,7 +38,7 @@ class Team < ActiveRecord::Base
   end
   
   # Returns true if the given user is allowed to edit this team's membership.  
-  def editable_by_user?(user)
+  def can_edit?(user)
     user.admin?
   end
 end

@@ -68,6 +68,11 @@ class User
       name
     end
   end
+  
+  # Returns true if the given user is allowed to edit this user's info.
+  def can_edit?(user)
+    (user && user.admin?) || user == self
+  end
 
   # Class registration info, e.g. survey answers and credit / listener status.
   has_many :registrations, :dependent => :destroy, :inverse_of => :user

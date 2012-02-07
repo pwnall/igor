@@ -10,6 +10,6 @@
 
 <%= render 'profile_photos/for_user', :user => @registration.user %>
 
-<%= render 'profiles/for_user', :user => @registration.user %>
+<%= render 'profiles/show', :profile => @registration.user.profile %>
 
 <%= render 'registrations/form' %>
