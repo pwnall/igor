@@ -15,7 +15,7 @@
 
 # Submission checker that runs an external script.
 class ScriptAnalyzer < Analyzer
-  # The database-backed file holding the checker script.
+  # The database-backed file holding the analyzer script.
   belongs_to :db_file, :dependent => :destroy
   validates :db_file, :presence => true
   accepts_nested_attributes_for :db_file
@@ -25,9 +25,33 @@ class ScriptAnalyzer < Analyzer
     DbFile.unscoped.where(:id => db_file_id).first
   end
   
-  # The maximum time that the checker script is allowed to run.
+  # Limits that apply when running the analyzer script.
+  store :exec_limits, :accessors
+  
+  # Maximum number of seconds of CPU time that the analyzer can use.
   validates :time_limit, :presence => true,
-                         :numericality => { :only_integer => true }
+      :numericality => { :only_integer => true, :greater_than => 0 }
+  store_accesor :limits, :time_limit
+
+  # Maximum number of megabytes of RAM that the analyzer can use.
+  validates :ram_limit, :presence => true,
+      :numericality => { :only_integer => true, :greater_than => 0 }
+  store_accessor :limits, :ram_limit
+  
+  # Maximum number of file descriptors that the analyzer can use.
+  validates :file_limit, :presence => true,
+      :numericality => { :only_integer => true, :greater_than => 0 }
+  store_accessor :limits, :file_limit
+
+  # Maximum number of megabytes that the analyzer can write to a single file.
+  validates :file_size_limit, :presence => true,
+      :numericality => { :only_integer => true, :greater_than => 0 }
+  store_accessor :limits, :file_size_limit
+  
+  # Maximum number of processes that the analyzer can use.
+  validates :process_limit, :presence => true,
+      :numericality => { :only_integer => true, :greater_than => 0 }
+  store_accessor :limits, :process_limit
 
   # :nodoc: overrides Analyzer#check
   def check(submission)
