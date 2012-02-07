@@ -13,10 +13,9 @@ Seven::Application.routes.draw do
       post :check_email
     end
     member do
-      get :edit_password
       post :impersonate
       put :set_admin
-      put :update_password
+      put :confirm_email
     end
   end
   

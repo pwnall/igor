@@ -2,16 +2,9 @@
 
 <table>
   <tbody>
-    <% @users.each do |user| %>
+    <% @users.sort_by { |u| [u.admin? ? 0 : 1, u.name] }.each do |user| %>
       <tr>
         <td><%= user.name %></td>
-        <td>
-          <% if user.admin? %>
-            <%= role_icon_tag :staff %> staff
-          <% else %>
-            <%= role_icon_tag :student %> student
-          <% end %>
-        </td>
         <td>
           <% if user.email_credential.verified? %>
             <%= valid_icon_tag %>
@@ -21,25 +14,41 @@
           <%= user.email %>
         </td>
         <td>
-          <%= link_to 'Impersonate', impersonate_user_path(user),
-                  method: :post, class: 'button' %>
+          <% if user.admin? %>
+            <%= role_icon_tag :staff %> staff
+          <% else %>
+            <%= role_icon_tag :student %> student
+          <% end %>
         </td>
         <td>
-          <%= link_to user, :confirm => "Completely wipe #{user.email}'s data?",
-                  method: :delete, class: 'button' do %>
+        <% unless user.admin? %>
+          <%= link_to impersonate_user_path(user), method: :post,
+                      class: 'button' do %>
+            <%= search_icon_tag %> Impersonate
+          <% end %>
+        <% end %>
+        </td>
+        <td>
+          <%= link_to user, confirm: "Completely wipe #{user.email}'s data?",
+                      method: :delete, class: 'button' do %>
             <%= destroy_icon_tag %> Remove
           <% end %>
         </td>
         <td>
           <% if user.admin? %>
             <%= link_to set_admin_user_path(user, :to => false),
-                    method: :put, class: 'button' do %>
+                        method: :put, class: 'button' do %>
               <%= role_icon_tag :student %> Student
             <% end %>
-          <% else %>
+          <% elsif user.email_credential.verified? %>
             <%= link_to set_admin_user_path(user, :to => true),
-                    method: :put, class: 'button' do %>
+                        method: :put, class: 'button' do %>
               <%= role_icon_tag :staff %> Staff
+            <% end %>
+          <% else %>
+            <%= link_to confirm_email_user_path(user), method: :put,
+                        class: 'button' do %>
+              <%= valid_icon_tag %> Confirm E-mail
             <% end %>
           <% end %>
         </td>

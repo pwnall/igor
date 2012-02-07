@@ -63,9 +63,9 @@ class UsersController < ApplicationController
   
   # PUT /users/1
   def update
-    # TODO(costan): figure out the usefulness of this, maybe drop it
-    
-    @user = User.find(params[:id])
+    # TODO(costan): figure out the usefulness of the method, maybe drop it    
+
+    @user = User.find_by_param params[:id]
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
@@ -79,7 +79,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @user = User.find(params[:id])
+    @user = User.find_by_param params[:id]
     @user.destroy
 
     respond_to do |format|
@@ -106,21 +106,36 @@ class UsersController < ApplicationController
     end
   end
   
-  # POST /users/set_admin/1?to=true
+  # POST /users/1/set_admin?to=true
   def set_admin
     @user = User.find_by_param params[:id]
     @user.admin = params[:to] || false
     @user.save!
     
-    flash[:notice] = "#{@user.email} is #{@user.admin ? 'an admin now' : 'no longer an admin'}."
-    redirect_to :controller => :users, :action => :index
+    if @user.admin
+      flash[:notice] = "#{@user.name} has been granted staff privileges."
+    else
+      flash[:notice] = "#{@user.name} no longer has staff privileges."
+    end
+    redirect_to users_url
+  end
+
+  # PUT /users/1/confirm_email
+  def confirm_email
+    @user = User.find_by_param params[:id]
+    @user.email_credential.verified = true
+    @user.email_credential.save!
+    
+    flash[:notice] = "#{@user.name}'s email has been manually confirmed."
+    redirect_to users_url
   end
     
+    # POST /users/1/impersonate
   def impersonate
-    @user = User.find(params[:id])
+    @user = User.find_by_param params[:id]
     return bounce_user('Cannot impersonate another admin.') if @user.admin?
     
-    session[:user_id] = @user.id
+    self.current_user = @user
     respond_to do |format|
       format.html { redirect_to root_path }
     end

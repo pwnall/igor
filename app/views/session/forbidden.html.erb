@@ -1,7 +1,7 @@
 <% if current_user %>
 <p>
   You are not allowed to perform this action.  
-  Please  <%= link_to 'sign off', session_path, :method => :destroy %>, and 
+  Please  <%= link_to 'sign off', session_path, :method => :delete %>, and 
   sign in as a different user.  
 </p>
 <% else %>
