@@ -15,6 +15,9 @@
 
 # Submission checker that runs an external script.
 class ScriptAnalyzer < Analyzer
+  # Name to be used when saving the submission into the script directory.
+  validates :input_file, :length => 1..256, :presence => true
+  
   # The database-backed file holding the analyzer script.
   belongs_to :db_file, :dependent => :destroy
   validates :db_file, :presence => true
@@ -26,12 +29,12 @@ class ScriptAnalyzer < Analyzer
   end
   
   # Limits that apply when running the analyzer script.
-  store :exec_limits, :accessors
+  store :exec_limits
   
   # Maximum number of seconds of CPU time that the analyzer can use.
   validates :time_limit, :presence => true,
       :numericality => { :only_integer => true, :greater_than => 0 }
-  store_accesor :limits, :time_limit
+  store_accessor :limits, :time_limit
 
   # Maximum number of megabytes of RAM that the analyzer can use.
   validates :ram_limit, :presence => true,
@@ -53,8 +56,8 @@ class ScriptAnalyzer < Analyzer
       :numericality => { :only_integer => true, :greater_than => 0 }
   store_accessor :limits, :process_limit
 
-  # :nodoc: overrides Analyzer#check
-  def check(submission)
+  # :nodoc: overrides Analyzer#analyze
+  def analyze(submission)
     random_dir = '/tmp/' + (0...16).map { rand(256).to_s(16) }.join
     FileUtils.mkdir_p random_dir
     Dir.chdir random_dir do
@@ -91,7 +94,7 @@ class ScriptAnalyzer < Analyzer
   #
   # This should be run in a temporary directory.
   def setup_submission(submission)
-    File.open(deliverable.filename, 'wb') do |f|
+    File.open(input_file, 'wb') do |f|
       f.write submission.full_db_file.f.file_contents
     end
   end

@@ -7,9 +7,6 @@ class Deliverable < ActiveRecord::Base
   # Instructions on preparing submissions for this deliverable.
   validates :description, :length => 1..(2.kilobytes), :presence => true
   
-  # Standard filename of the deliverable (e.g. writeup.pdf, trees.py)
-  validates :filename, :length => 1..256, :presence => true
-
   # The assignment that the deliverable is a part of.
   belongs_to :assignment, :inverse_of => :deliverables
   

@@ -23,10 +23,10 @@ class Analyzer < ActiveRecord::Base
   validates :deliverable, :presence => true
   validates :deliverable_id, :uniqueness => true
   
-  # Analyzes a student's submission.
+  # Sanity-checks a student's submission.
   #
   # Returns the Analysis instance containing the result.
-  def check(submission)
+  def analyze(submission)
     raise "Subclass #{self.class.name} did not override #check(submission)."
   end
 end

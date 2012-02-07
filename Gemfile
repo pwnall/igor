@@ -31,7 +31,7 @@ gem 'jquery-rails', '>= 2.0.0'
 # gem 'ruby-debug'
 
 # Core.
-gem 'authpwn_rails', '>= 0.10.7'
+gem 'authpwn_rails', '>= 0.10.8'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'fastercsv', '>= 1.5.4', :platforms => [:mri_18]
 gem 'nokogiri', '>= 1.5.0'

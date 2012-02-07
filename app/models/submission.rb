@@ -52,7 +52,7 @@ class Submission < ActiveRecord::Base
     self.analysis ||= Analysis.new :submission => self
     if analyzer
       self.analysis.running!
-      analyzer.check self
+      analyzer.analyze self
     else
       self.analysis.no_analyzer!
     end

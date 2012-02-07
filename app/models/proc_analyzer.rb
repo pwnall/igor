@@ -19,8 +19,8 @@ class ProcAnalyzer < Analyzer
   validates :message_name, :presence => true, :length => 1..64,
       :inclusion => { :in => %w(analyze_pdf) }
   
-  # :nodoc: overrides Analyzer#check
-  def check(submission)
+  # :nodoc: overrides Analyzer#analyze
+  def analyze(submission)
     send self.message_name.to_sym, submission
   end
 

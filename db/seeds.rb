@@ -134,8 +134,7 @@ psets = pset_data.map.with_index do |data, index|
   
   deliverable = Deliverable.create! :assignment => pset,
       :name => 'PDF write-up',
-      :description => 'Please upload your write-up, in PDF format.',
-      :filename => 'writeup.pdf'
+      :description => 'Please upload your write-up, in PDF format.'
   ProcAnalyzer.create! :deliverable => deliverable,
       :message_name => 'analyze_pdf'
 
