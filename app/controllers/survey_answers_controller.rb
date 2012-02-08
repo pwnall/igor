@@ -54,8 +54,6 @@ class SurveyAnswersController < ApplicationController
   def edit
     @survey_answer = SurveyAnswer.find(params[:id])
     return bounce_user if @survey_answer.user_id != current_user.id
-      
-    end
     
     new_edit
   end
