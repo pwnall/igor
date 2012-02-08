@@ -15,35 +15,29 @@
         </span>
   		</p>
   		<p class="field">
-  			<%= label_tag :cutoff_enable, 'Only late' %>
+  			<%= label_tag :use_cutoff, 'Late submissions' %>
         <span class="value">
-          <%= check_box_tag :cutoff_enable, '1', false,
-                :id => 'submission_cutoff_enable',
+          <%= check_box_tag :use_cutoff, '1', false,
                 'data-pwnfx-hide' => 'submission-cutoff',
                 'data-pwnfx-hide-trigger' => 'checked',
                 'data-pwnfx-hide-scope' => 'grading-kit' %>
-          get submissions after the deadline
+          <%= label_tag :use_cutoff,
+                        'only get the submissions after the cutoff below' %>
         </span>
       </p>
-      <p class="field" id="submission_cutoff_container">
+      <p class="field" data-pwnfx-hide-negative="submission-cutoff">
         <%= label_tag :submission_cutoff %>
-        <span class="value">
-          <span data-pwnfx-hide-positive="submission-cutoff">
-            <%= select_datetime Time.now,
-                                :prefix => 'cutoff', :use_short_month => true, :minute_step => 15,
-                                :datetime_separator => ' at ', :time_separator => ':' %>
-          </span>
-          <span data-pwnfx-hide-negative="submission-cutoff"
-                data-pwnfx-move-target="submission-cutoff-deadline">
-          </span>          
+        <span class="value" data-pwnfx-move-target="submission-cutoff-deadline">
+          <%= select_datetime Time.now, prefix: 'cutoff',
+                use_short_month: true, minute_step: 15,
+                datetime_separator: ' at ', time_separator: ':' %>
         </span>
   		</p>
     </section>
   
     <div data-pwnfx-refresh-target="submission-deliverables">
     <% if @assignments.first %>
-    <%= render 'submissions/xhr_deliverables',
-               :assignment => @assignments.first %>
+    <%= render 'submissions/xhr_deliverables', assignment: @assignments.first %>
     <% end %>
     </div>
   

@@ -143,12 +143,12 @@ class SubmissionsController < ApplicationController
       deliverable_ids = @assignment.deliverables.map(&:id)
     end
 
-    seed_submissions = Submission.where :deliverable_id => deliverable_ids
-    unless params[:cutoff_enable].blank?
+    seed_submissions = Submission.where(:deliverable_id => deliverable_ids)
+    unless params[:use_cutoff].blank?
       cutoff = Time.local(*([:year, :month, :day, :hour, :minute].
                           map { |e| params[:cutoff][e].to_i }))
-      seed_submissions = seed_submissions.          
-          where(Submission.arel_table[:updated_at].gteq(cutoff))
+      seed_submissions = seed_submissions.where(
+          Submission.arel_table[:updated_at].gteq(cutoff))
     end
     
     user_ids = seed_submissions.map(&:user_id).uniq
@@ -165,7 +165,7 @@ class SubmissionsController < ApplicationController
                                    order(:id)
     
     if @user_submissions.empty?
-      flash[:error] = 'There is no submission meeting your conditions.'
+      flash[:alert] = 'There is no submission meeting your conditions.'
       request_package
       render :action => :request_package
       return
@@ -191,7 +191,7 @@ class SubmissionsController < ApplicationController
           db_file = s.full_db_file
           extension = db_file.f.original_filename.split('.').last
           fname = "#{tempdir}/#{prefix}#{basename}#{suffix}.#{extension}"
-          File.open(fname, 'w') { |f| f.write db_file.f.file_contents }
+          File.open(fname, 'wb') { |f| f.write db_file.f.file_contents }
         end
       end
       
@@ -211,25 +211,18 @@ class SubmissionsController < ApplicationController
       # zip up the submissions
       cur_dir = Dir.pwd
       Dir.chdir(tempdir) { Kernel.system "zip #{cur_dir}/#{tempdir}.zip *" }
-      package_fname = case @deliverables.length
-      when 0
-        "cover_sheets_#{@assignment.id}.zip"
-      when 1
-        d = @deliverables.first
-        d.filename[0...(d.filename.rindex(?.) || d.filename.length)] + '.zip'
-      else
-        "assignment_#{@assignment.id}.zip"
-      end      
-      send_data File.open("#{tempdir}.zip", 'r') { |f| f.read }, :filename => package_fname, :disposition => 'inline'      
+      package_fname = "assignment_#{@assignment.id}.zip"
+      send_data File.open("#{tempdir}.zip", 'rb') { |f| f.read }, :filename => package_fname, :disposition => 'inline'      
     end
     File.delete "#{temp_dir}.zip"    
   end
   
-  private
   def with_temp_dir
-    tempdir = 'tmp/' + (0...16).map { rand(256).to_s(16) }.join
-    Dir.mkdir tempdir
-    yield tempdir
-    FileUtils.rm_r tempdir
+    temp_dir = 'tmp/' + (0...16).map { rand(256).to_s(16) }.join
+    Dir.mkdir temp_dir
+    yield temp_dir
+    FileUtils.rm_r temp_dir
+    temp_dir
   end
+  private :with_temp_dir
 end
