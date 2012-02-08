@@ -16,6 +16,7 @@ class Deliverable < ActiveRecord::Base
   # The method used to verify students' submissions for this deliverable.
   has_one :analyzer, :dependent => :destroy,
                                :inverse_of => :deliverable
+  accepts_nested_attributes_for :analyzer
   
   # All the student submissions for this deliverable.
   has_many :submissions, :dependent => :destroy, :inverse_of => :deliverable

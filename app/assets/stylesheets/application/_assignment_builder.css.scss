@@ -18,8 +18,8 @@
         width: 100%;
       }
       
-      input[type=text], input[type=email], input[type=tel], input[type=password],
-          input[type=search], input[type=number], textarea {
+      > input[type=text], input[type=email], input[type=tel],
+        input[type=password], input[type=search], input[type=number], textarea {
         box-sizing: border-box;
         -moz-box-sizing: border-box; 
         width: 100%;
@@ -30,6 +30,10 @@
 
 .assignment-builder-deliverables {
   @include assignment-builder-table;
+  
+  span.file-type {
+    width: 8em;
+  }
   
   p.description {
     display: block;

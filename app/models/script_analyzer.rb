@@ -34,27 +34,27 @@ class ScriptAnalyzer < Analyzer
   # Maximum number of seconds of CPU time that the analyzer can use.
   validates :time_limit, :presence => true,
       :numericality => { :only_integer => true, :greater_than => 0 }
-  store_accessor :limits, :time_limit
+  store_accessor :exec_limits, :time_limit
 
   # Maximum number of megabytes of RAM that the analyzer can use.
   validates :ram_limit, :presence => true,
       :numericality => { :only_integer => true, :greater_than => 0 }
-  store_accessor :limits, :ram_limit
+  store_accessor :exec_limits, :ram_limit
   
   # Maximum number of file descriptors that the analyzer can use.
   validates :file_limit, :presence => true,
       :numericality => { :only_integer => true, :greater_than => 0 }
-  store_accessor :limits, :file_limit
+  store_accessor :exec_limits, :file_limit
 
   # Maximum number of megabytes that the analyzer can write to a single file.
   validates :file_size_limit, :presence => true,
       :numericality => { :only_integer => true, :greater_than => 0 }
-  store_accessor :limits, :file_size_limit
+  store_accessor :exec_limits, :file_size_limit
   
   # Maximum number of processes that the analyzer can use.
   validates :process_limit, :presence => true,
       :numericality => { :only_integer => true, :greater_than => 0 }
-  store_accessor :limits, :process_limit
+  store_accessor :exec_limits, :process_limit
 
   # :nodoc: overrides Analyzer#analyze
   def analyze(submission)

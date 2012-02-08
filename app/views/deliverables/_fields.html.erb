@@ -2,12 +2,16 @@
   <p class="header">
     <span class="name">
       <%= f.text_field :name, :placeholder => 'PDF Write-up',
-                       :required => true %>
+                :required => true %>
     </span>
-    <span class="file_name">
-      <span class="value">
-        <%= f.text_field :file_ext, :placeholder => 'pdf' %>
-      </span>
+    <span class="file-type">
+      <%= f.text_field :file_ext, :placeholder => 'pdf', :required => true %>
+    </span>
+    <span class="validator-type">
+    <%= f.fields_for :analyzer, f.object.analyzer || ProcAnalyzer.new do |fa| %>
+      <%= fa.select :type, [['Built-in Analyzer', 'ProcAnalyzer'], ['Script Analyzer', 'ScriptAnalyzer']],
+               {}, 'data-pwnfx-showif-source' => 'analyzer-type' %>
+    <% end %>
     </span>
     <span class="destroy">
       <%= f.check_box :_destroy, 'data-pwnfx-hide' => 'deliverable-div',
@@ -24,5 +28,43 @@
       <%= f.text_area :description,
               :placeholder => 'Please upload your write-up, in PDF format.' %>
     </span>
+  </p>
+  <p class="analyzer">
+    <div data-pwnfx-showif="analyzer-type" data-pwnfx-showif-is="ProcAnalyzer"
+         data-pwnfx-showif-scope="deliverable">
+    <%= f.fields_for :analyzer, analyzer_for(f.object, ProcAnalyzer) do |fa| %>
+      <%= fa.label :message_name, 'Built-in analyzer'%>
+      <%= fa.select :message_name, [['PDF Analyzer', 'analyze_pdf']] %>
+    <% end %>
+    </div>
+
+    <div data-pwnfx-showif="analyzer-type" data-pwnfx-showif-is="ScriptAnalyzer"
+         data-pwnfx-showif-scope="deliverable">
+    <%= f.fields_for :analyzer, analyzer_for(f.object, ScriptAnalyzer) do |fa| %>
+      <%= fa.label :pkg, 'Script .zip'%>
+      <%= fa.file_field :pkg, :accept => 'application/zip' %>
+
+      <%= fa.label :input_file, 'Submission file name' %>
+      <%= fa.text_field :input_file,
+                                     :placeholder => 'code.py' %>
+      
+      <%= fa.label :time_limit, 'CPU time' %>
+      <%= fa.number_field :time_limit, :placeholder => 5 %> seconds
+
+      <%= fa.label :ram_limit, 'RAM usage' %>
+      <%= fa.number_field :ram_limit, :placeholder => 1024 %> Mb
+      
+      <%= fa.label :file_limit, 'Open files' %>
+      <%= fa.number_field :file_limit, :placeholder => 10 %> files
+
+      <%= fa.label :file_size_limit, 'File size' %>
+      <%= fa.number_field :file_size_limit,
+                                      :placeholder => 100 %> Mb
+      
+      <%= fa.label :process_limit, 'Spawn' %>
+      <%= fa.number_field :process_limit,
+                                      :placeholder => 5 %> processes
+    <% end %>
+    </div>
   </p>
 </div>
