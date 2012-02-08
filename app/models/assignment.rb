@@ -20,7 +20,7 @@ class Assignment < ActiveRecord::Base
   scope :by_deadline, order('deadline DESC').order(:name)
   
   # The assignments in a course that are visible to a user.
-  def self.for(user, course)    
+  def self.for(user, course)
     course.assignments.by_deadline.select { |a| a.visible_for? user }
   end
 end

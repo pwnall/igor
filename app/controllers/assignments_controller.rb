@@ -3,7 +3,7 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments
   def index
-    @assignments = Assignment.by_deadline(Course.main)
+    @assignments = Assignment.for current_user, Course.main
 
     respond_to do |format|
       format.html do

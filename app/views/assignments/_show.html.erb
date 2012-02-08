@@ -1,44 +1,47 @@
-<h2><%= assignment.name %></h2>
-
-<% if current_user.admin? %>
-<p class="actions">
-  <%= link_to edit_assignment_path(assignment), class: 'button' do %>
-    <%= edit_icon_tag %> Edit
-  <% end %>
-
-<% if assignment.deliverables_ready? %>
-  <%= link_to assignment_path(assignment,
-          assignment: { deliverables_ready: false}), method: :put,
-          confirm: "Un-publish #{assignment.name}? Prepare for hate mail :(",
-          class: 'button' do %>
-    <%= pull_icon_tag %> Pull
-  <% end %>
-<% elsif assignment.deliverables.length > 0 %>
-  <%= link_to assignment_path(assignment,
-          { assignment: { deliverables_ready: true} }), method: :put,
-          class: 'button' do %>
-    <%= ship_icon_tag %> Release
-  <% end %>
-<% end %>
-
-<% if assignment.metrics_ready? %>
-  <%= link_to assignment_path(assignment,
-          assignment: { metrics_ready: false}), method: :put,
-          confirm: "Un-publish #{assignment.name} grades?",
-          class: 'button' do %>
-    <%= pull_icon_tag %> Pull Grades
-  <% end %>
-<% elsif assignment.grades.length > 0 %>
-  <%= link_to assignment_path(assignment,
-          { assignment: { metrics_ready: true} }), method: :put,
-          class: 'button' do %>
-    <%= ship_icon_tag %> Release Grades
-  <% end %>
-<% end %>
-</p>
-<% end %>
-
 <section class="assignment">
+  <h2 class="heading">
+    <%= assignment.name %>
+  
+    <% if current_user.admin? %>
+    <span class="actions">
+      <%= link_to edit_assignment_path(assignment), class: 'button' do %>
+        <%= edit_icon_tag %> Edit
+      <% end %>
+    
+    <% if assignment.deliverables_ready? %>
+      <%= link_to assignment_path(assignment,
+              assignment: { deliverables_ready: false}), method: :put,
+              confirm: "Un-publish #{assignment.name}? Prepare for hate mail :(",
+              class: 'button' do %>
+        <%= pull_icon_tag %> Pull
+      <% end %>
+    <% elsif assignment.deliverables.length > 0 %>
+      <%= link_to assignment_path(assignment,
+              { assignment: { deliverables_ready: true} }), method: :put,
+              class: 'button' do %>
+        <%= ship_icon_tag %> Release
+      <% end %>
+    <% end %>
+    
+    <% if assignment.metrics_ready? %>
+      <%= link_to assignment_path(assignment,
+              assignment: { metrics_ready: false}), method: :put,
+              confirm: "Un-publish #{assignment.name} grades?",
+              class: 'button' do %>
+        <%= pull_icon_tag %> Pull Grades
+      <% end %>
+    <% elsif assignment.grades.length > 0 %>
+      <%= link_to assignment_path(assignment,
+              { assignment: { metrics_ready: true} }), method: :put,
+              class: 'button' do %>
+        <%= ship_icon_tag %> Release Grades
+      <% end %>
+    <% end %>
+    </span>
+    <% end %>
+  </h2>
+
+
   <p>
     Due
     <%= assignment.deadline.to_s(:deadline_long) %>
@@ -48,25 +51,27 @@
     (<%= time_ago_in_words assignment.deadline %> ago)
     <% end %>
   </p>
-</section>
 
-<h3>Required Files</h3>
-
-<ul class="deliverables">
-<% assignment.deliverables_for(current_user).each do |deliverable| %>
-  <li>
-    <div class="summary">
-      <div class="new">
-        <%= render 'submissions/form',
-              :submission => Submission.new(:deliverable => deliverable) %>
+  <ul class="deliverables">
+  <% assignment.deliverables_for(current_user).each do |deliverable| %>
+    <li>
+      <div class="summary">
+        <span class="name"><%= deliverable.name %></span>
+        <div class="new">
+          <%= render 'submissions/form',
+                :submission => Submission.new(:deliverable => deliverable) %>
+        </div>
       </div>
-      <span class="name"><%= deliverable.name %></span>
-    </div>
-    <p class="description"><%= deliverable.description %></p>
-    <p class="submission">
-      <%= render 'submissions/info',
-            :submission => deliverable.submission_for(current_user) %>
-    </p>
-  </li>
-<% end %>
-</ul>
+      <div class="details">
+        <p class="description">
+          <%= deliverable.description %>
+        </p>
+        <p class="submission">
+          <%= render 'submissions/info',
+                :submission => deliverable.submission_for(current_user) %>
+        </p>
+      </div>
+    </li>
+  <% end %>
+  </ul>
+</section>

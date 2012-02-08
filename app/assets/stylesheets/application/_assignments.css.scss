@@ -1,51 +1,56 @@
-section.assignment > p:first-child {
-  margin: 0.5ex 0 1em 0;
-}
+section.assignment {
+  > .heading {
+    font-size: 1.44em;
+    
+    .actions {
+      display: inline-block;
+      text-align: right;
+      
+      input[type="button"], input[type="submit"], a.button {
+        font-size: 0.84em;
+        font-weight: normal;
+      }
+    }
+  }
+  > p:first-child {
+    margin: 0.5ex 0 1em 0;
+  }
 
-ul.deliverables {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-ul.deliverables li {
-  padding: 0;
-  margin: 1ex 0;
-  position: relative;
-  overflow: hidden;
+  ul.deliverables {
+    display: table;
+    width: 100%;
+    
+    li {
+      display: block;
+      
+      .summary {
+        display: table-row;
+        
+        .name {
+          display: table-cell;
+          font-size: 1.1em;
+        }
+        .new {
+          display: table-cell;
+        }
+      }
+      .details {
+        display: block;
+        
+        .description {
+          display: block;
+          color: hsl(0deg, 0%, 35%);
+        }
+        .submission {
+          display: block;
+          padding: 0.5ex 0;
+        }
+      }
+    }
+  }
+
   border-bottom: 1px solid #B18566;
-}
-ul.deliverables li .name {
-  margin: 0;
-  padding: 0 0 0.2ex 0;
-  display: block;
-  float: left;
-  font-size: 1.1em;
-}
-ul.deliverables li .new {
-  display: block;
-  float: right;
-  width: 320px;
-}
-ul.deliverables li .description {
-  float: left;
-  width: 640px;
-
-  color: #666666;
-  clear: left;
-  margin: 0;
-  padding: 0.2ex 0 0 0;
-}
-ul.deliverables li .submission {
-  clear: both;
-  margin: 0;
-  padding: 0.5ex 0 0.5ex 0;
-}
-ul.deliverables li .submission .submission-info {
-  margin: 0;
-  padding: 0;
-}
-ul.deliverables li .submission img {
-  display: inline-block;
-  position: relative;
-  top: 4px;
+  &:last-child {
+    border-bottom: none;
+  }
 }

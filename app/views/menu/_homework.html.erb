@@ -3,18 +3,25 @@
     <%= homework_icon_tag %> Homework
   <% end %>
   <ol>
+    <% if current_user.admin? %>
     <li>
       <%= link_to new_assignment_path do %>
         <%= create_icon_tag %> Add Homework
       <% end %>
     </li>
+    <% end %>
     <% Assignment.for(current_user, Course.main).each do |assignment| %>
     <li>
-      <%= assignment_state_icon_tag assignment.ui_state_for(current_user) %>
       <% if current_user.admin? %>
-        <%= link_to assignment.name, edit_assignment_path(assignment) %>
+        <%= link_to edit_assignment_path(assignment) do %>
+          <%= assignment_state_icon_tag assignment.ui_state_for(current_user) %>
+          <%= assignment.name %>
+        <% end %>
       <% else %>
-        <%= link_to assignment.name, assignment %>
+        <%= link_to assignment do %>
+          <%= assignment_state_icon_tag assignment.ui_state_for(current_user) %>
+          <%= assignment.name %>        
+        <% end %>
       <% end %>
     </li>
     <% end %>
