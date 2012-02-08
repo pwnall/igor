@@ -8,7 +8,7 @@
               :method => :get,
               :before => update_page { |p|
                  p.select('.new-feed-item-form-container').each { |element|
-                   element.update loading_image_tag
+                   element.update ajax_spinner_image_tag
                  }
               }
         %>        
@@ -19,7 +19,7 @@
               :method => :get,
               :before => update_page { |p|
                  p.select('.new-feed-item-form-container').each { |element|
-                   element.update loading_image_tag
+                   element.update ajax_spinner_image_tag
                  }
               }
         %>
@@ -29,7 +29,7 @@
               :method => :get,
               :before => update_page { |p|
                  p.select('.new-feed-item-form-container').each { |element|
-                   element.update loading_image_tag
+                   element.update ajax_spinner_image_tag
                  }
               }
         %>

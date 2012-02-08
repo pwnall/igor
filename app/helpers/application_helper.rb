@@ -1,5 +1,5 @@
 module ApplicationHelper
-  def loading_image_tag
+  def ajax_spinner_image_tag
     image_tag 'ajax-loader.gif', :alt => 'Loading...'
   end
   

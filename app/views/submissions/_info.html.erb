@@ -1,25 +1,33 @@
 <% if submission %>
-<span class="submission-info">
-  <span class="author">
-    <%= user_image_tag submission.user %>
-    <%= link_to submission.user.display_name_for(current_user),
-                submission.user %>
+  <span class="submission-info">
+    <span class="author">
+      <%= user_image_tag submission.user %>
+      <%= link_to submission.user.display_name_for(current_user),
+                  submission.user %>
+    </span>
+    submitted a
+    <%= link_to file_submission_path(submission, :inline => false) do %>
+      <%= number_to_human_size submission.db_file.f.size %> file
+    <% end %>
+    <%= time_ago_in_words submission.updated_at %>
+    ago.
   </span>
-  submitted a
-  <%= link_to file_submission_path(submission, :inline => false) do %>
-    <%= number_to_human_size submission.db_file.f.size %> file
+  <span class="submission-result">
+  <% if submission.analysis %>
+    <%= link_to submission.analysis.diagnostic,
+                submission.analysis %>
+    <% if %w(queued running).include? submission.analysis.diagnostic.downcase %>
+      <span data-pwnfx-delayed="submission-info" data-pwnfx-delayed-method="GET"
+            data-pwnfx-delayed-url="<%= info_submission_path(submission) %>"
+            data-pwnfx-delayed-ms="5000"
+            data-pwnfx-delayed-scope="submission-info">
+        <%= ajax_spinner_image_tag %>
+      </span>
+    <% end %>
   <% end %>
-  <%= time_ago_in_words submission.updated_at %>
-  ago.
-</span>
-<span class="submission-result">
-<% if submission.analysis %>
-  <%= link_to submission.analysis.diagnostic,
-              submission.analysis %>
-  <% end %>
-</span>
+  </span>
 <% else %>
-<span class="no-submission">
-  <%= invalid_icon_tag %> No submission yet
-</span>
+  <span class="no-submission">
+    <%= invalid_icon_tag %> No submission yet
+  </span>
 <% end %>

@@ -12,7 +12,7 @@
 <%= observe_field 'survey_answer_assignment_id',
       :url => new_survey_answer_path, :method => :get, :frequency => 0.5,
       :before => update_page { |p|
-        p.replace_html 'survey-assignment-ajax-indicator', loading_image_tag
+        p.replace_html 'survey-assignment-ajax-indicator', ajax_spinner_image_tag
       },
       :with => "'survey_answer[assignment_id]=' + encodeURIComponent(value)" %>
 
@@ -21,7 +21,7 @@
 <%= remote_form_for @survey_answer,
       :html => {:class => 'survey-answer-form'},
       :before => update_page { |p|            
-        p.replace_html 'survey-answer-ajax-indicator', loading_image_tag
+        p.replace_html 'survey-answer-ajax-indicator', ajax_spinner_image_tag
       } do |f| %>	
   <%= f.error_messages %>
   <%= f.hidden_field :assignment_id %>  

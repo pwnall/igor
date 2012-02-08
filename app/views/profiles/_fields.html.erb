@@ -1,12 +1,13 @@
-<section class="fields">
+<section class="fields" data-pwnfx-scope="profile">
   <p class="field">
     <%= f.label :athena_username, 'Athena username' %>
     <span class="value">
       <%= f.text_field :athena_username, :autocomplete => :off,
-              :autofocus => true,
-              'data-pwnfx-refresh' => websis_lookup_profiles_path,
+              :autofocus => true, 'data-pwnfx-refresh' => 'athena-lookup-js',
+              'data-pwnfx-refresh-url' => websis_lookup_profiles_path,
               'data-pwnfx-refresh-method' => 'POST',
-              'data-pwnfx-refresh-target' => 'profile-form-js-container' %>
+              'data-pwnfx-refresh-scope' => 'profile',
+              'data-pwnfx-refresh-ms' => 1000 %>
     </span>
     <span class="comment" id="profile-athena-success">
     </span>
@@ -18,7 +19,7 @@
       <%= f.text_field :name, :id => 'profile_name' %>
     </span>
     <span class="comment">
-      <span id="profile-form-js-container" />
+      <span data-pwnfx-refresh-target="athena-lookup-js" />
     </span>
   </p>
   <p class="field">

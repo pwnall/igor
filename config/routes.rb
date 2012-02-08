@@ -62,13 +62,13 @@ Seven::Application.routes.draw do
   resources :submissions do
     member do
       get :file
+      get :info
       post :revalidate
     end
     collection do
       get :request_package
+      post :xhr_deliverables
       post :package_assignment
-      post :xhr_update_cutoff
-      post :xhr_update_deliverables
     end
   end
   resources :survey_answers

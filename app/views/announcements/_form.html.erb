@@ -1,7 +1,7 @@
 <%= remote_form_for @announcement,
       :html => {:class => 'announcement-form'},
       :before => update_page { |p|            
-        p.replace_html 'announcement-ajax-indicator', loading_image_tag
+        p.replace_html 'announcement-ajax-indicator', ajax_spinner_image_tag
       } do |f| %> 
   <%= f.error_messages %>
 

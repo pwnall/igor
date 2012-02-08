@@ -1,13 +1,14 @@
-<section class="fields">
+<section class="fields" data-pwnfx-scope="new-user">
   <p class="field">
     <%= f.label :email, 'School e-mail' %>
     <span class="value">
       <%= f.text_field :email, :placeholder => 'you@mit.edu', :required => true,
-              :autofocus => true, 'data-pwnfx-refresh' => check_email_users_url,
+              :autofocus => true, 'data-pwnfx-refresh' => 'email-check',
+              'data-pwnfx-refresh-url' => check_email_users_url,
               'data-pwnfx-refresh-method' => 'POST',
-              'data-pwnfx-refresh-target' => 'user_form_email_availability' %>
+              'data-pwnfx-refresh-scope' => 'new-user' %>
     </span>
-    <span class="comment" id="user_form_email_availability">
+    <span class="comment" data-pwnfx-refresh-target="email-check">
     </span>
   </p>
   <p class="field">

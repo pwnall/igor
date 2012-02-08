@@ -1,42 +1,56 @@
 <h2>Grading Kit Builder</h2>
-<%= form_tag package_assignment_submissions_path do %>
-  <section class="fields">
-    <p class="field">
-      <%= label_tag :assignment_id, 'Assignment' %>
-      <span class="value">
-        <%= select_tag :assignment_id,
-              options_for_select(@assignments.map { |a| [a.name, a.id] }),
-              'data-pwnfx-refresh-target' => 'submission-deliverables-container',
-              'data-pwnfx-refresh' => xhr_update_deliverables_submissions_path %>
-      </span>
-		</p>
-		<p class="field">
-			<%= label_tag :cutoff_enable, 'Only late' %>
-      <span class="value">
-        <%= check_box_tag :cutoff_enable, '1', false,
-              :id => 'submission_cutoff_enable',
-              'data-pwnfx-hide' => 'submission-cutoff',
-              'data-pwnfx-hide-trigger' => 'checked' %>
-        get submissions after the deadline
-      </span>
+<div data-pwnfx-scope="grading-kit">
+  <%= form_tag package_assignment_submissions_path do %>
+    <section class="fields">
+      <p class="field">
+        <%= label_tag :assignment_id, 'Assignment' %>
+        <span class="value">
+          <%= select_tag :assignment_id,
+                options_for_select(@assignments.map { |a| [a.name, a.id] }),
+                'data-pwnfx-refresh' => 'submission-deliverables',
+                'data-pwnfx-refresh-url' => xhr_deliverables_submissions_path,
+                'data-pwnfx-refresh-method' => 'POST',
+                'data-pwnfx-refresh-scope' => 'grading-kit',
+                'data-pwnfx-refresh-ms' => 100 %>
+        </span>
+  		</p>
+  		<p class="field">
+  			<%= label_tag :cutoff_enable, 'Only late' %>
+        <span class="value">
+          <%= check_box_tag :cutoff_enable, '1', false,
+                :id => 'submission_cutoff_enable',
+                'data-pwnfx-hide' => 'submission-cutoff',
+                'data-pwnfx-hide-trigger' => 'checked',
+                'data-pwnfx-hide-scope' => 'grading-kit' %>
+          get submissions after the deadline
+        </span>
+      </p>
+      <p class="field" id="submission_cutoff_container">
+        <%= label_tag :submission_cutoff %>
+        <span class="value">
+          <span data-pwnfx-hide-positive="submission-cutoff">
+            <%= select_datetime Time.now,
+                                :prefix => 'cutoff', :use_short_month => true, :minute_step => 15,
+                                :datetime_separator => ' at ', :time_separator => ':' %>
+          </span>
+          <span data-pwnfx-hide-negative="submission-cutoff"
+                data-pwnfx-move-target="submission-cutoff-deadline">
+          </span>          
+        </span>
+  		</p>
+    </section>
+  
+    <div data-pwnfx-refresh-target="submission-deliverables">
+    <% if @assignments.first %>
+    <%= render 'submissions/xhr_deliverables',
+               :assignment => @assignments.first %>
+    <% end %>
+    </div>
+  
+    <p class="action">
+    	<%= button_tag do %>
+    	  <%= download_icon_tag %> Download Grading Kit
+    	<% end %>
     </p>
-    <p class="field" id="submission_cutoff_container"
-                     data-pwnfx-hide-positive="submission-cutoff">
-      <%= label_tag :submission_cutoff %>
-      <span class="value">
-        <%= select_datetime (@assignments.first ? @assignments.first.deadline : Time.now - 1.day),
-                            :prefix => 'cutoff', :use_short_month => true, :minute_step => 15,
-                            :datetime_separator => ' at ', :time_separator => ':' %>
-      </span>
-		</p>
-  </section>
-
-  <div id="submission-deliverables-container">
-  </div>
-
-  <p class="action">
-  	<%= button_tag do %>
-  	  <%= download_icon_tag %> Download Grading Kit
-  	<% end %>
-  </p>
-<% end %> 
+  <% end %> 
+</div>

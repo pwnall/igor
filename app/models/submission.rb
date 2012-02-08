@@ -39,6 +39,11 @@ class Submission < ActiveRecord::Base
   # Analyzer used to perform an automated health-check for this submission.
   has_one :analyzer, :through => :deliverable
   
+  # True if the given user is allowed to see the submission.
+  def can_read?(user)
+    user && (user == self.user || user.admin?)
+  end
+  
   # Queues up a request to run an automated health-check for this submission.
   def queue_analysis
     self.analysis ||= Analysis.new :submission => self

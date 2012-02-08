@@ -1,29 +1,22 @@
 class SubmissionsController < ApplicationController
   include CoverSheet
   
-  before_filter :authenticated_as_user, :only => [:new, :create, :update, :file]
-  before_filter :authenticated_as_admin, :except => [:new, :create, :update, :file]
+  before_filter :authenticated_as_user,
+                :only => [:new, :create, :update, :file, :info]
+  before_filter :authenticated_as_admin,
+                :except => [:new, :create, :update, :file, :info]
   
-  # XHR /submissions/xhr_update_deliverables?assignment_id=1
-  def xhr_update_deliverables
+  # XHR /submissions/xhr_deliverables?assignment_id=1
+  def xhr_deliverables
     @assignment = Assignment.where(:id => params[:assignment_id]).
                              includes(:deliverables).first
-    respond_to do |format|
-      format.js do
-        return if @assignment # xhr_update_deliverables.html.erb
-        render :text => ''
-      end
+    unless @assignment
+      render :text => ''
+      return
     end
+    render :layout => false if request.xhr?
   end
 
-  # XHR /submissions/xhr_update_deliverables/0?assignment_id=1
-  def xhr_update_cutoff
-    @assignment = Assignment.find(:first, :conditions => {:id => params[:assignment_id]}, :include => :deliverables)
-    respond_to do |format|
-      format.js
-    end
-  end  
-  
   # GET /submissions/request_package
   def request_package
     @assignments = Assignment.order('deadline DESC').includes(:deliverables).all
@@ -118,10 +111,7 @@ class SubmissionsController < ApplicationController
   # GET /submissions/1/file
   def file
     @submission = Submission.find(params[:id])
-    if current_user.id != @submission.user_id && !current_user.admin?
-      
-      
-    end
+    return bounce_user unless @submission.can_read? current_user
     
     db_file = @submission.full_db_file
     filename = @submission.user.email.gsub(/[^A-Za-z0-9]/, '_') + '_' +
@@ -129,6 +119,13 @@ class SubmissionsController < ApplicationController
     send_data db_file.f.file_contents, :filename => filename,
               :type => db_file.f.content_type,
               :disposition => params[:inline] ? 'inline' : 'attachment'
+  end
+  
+  # GET /submissions/1/info
+  def info
+    @submission = Submission.find(params[:id])
+    return bounce_user unless @submission.can_read? current_user
+    render :layout => false if request.xhr?
   end
 
   # GET /submissions/package_assignment

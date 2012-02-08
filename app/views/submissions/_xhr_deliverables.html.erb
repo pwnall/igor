@@ -1,0 +1,21 @@
+<%= render 'submissions/filename_spec', default_prefix: nil,
+  default_suffix: 'cover', extension: 'pdf',
+  basename: (assignment.team_partition ? 'teamname' : 'username'),
+  id: 'cover', name: 'Cover', title: 'Cover Sheet' %>     
+
+<% assignment.deliverables.each.with_index do |d, i| %>
+
+<%= render 'submissions/filename_spec', default_prefix: nil,
+  default_suffix: "part#{i + 1}", extension: d.file_ext,
+  basename: (assignment.team_partition ? 'teamname' : 'username'),
+  id: d.id, name: d.name, title: d.name %>
+
+<% end %>
+
+<span data-pwnfx-move="submission-cutoff-deadline"
+      data-pwnfx-move-method="replace" data-pwnfx-scope="grading-kit">
+  <%= select_datetime assignment.deadline,
+                      :prefix => 'cutoff', :use_short_month => true, :minute_step => 15,
+                      :datetime_separator => ' at ', :time_separator => ':',
+                      :disabled => true %>   
+</span>
