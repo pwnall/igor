@@ -14,9 +14,38 @@ class Deliverable < ActiveRecord::Base
   belongs_to :assignment, :inverse_of => :deliverables
   
   # The method used to verify students' submissions for this deliverable.
-  has_one :analyzer, :dependent => :destroy,
-                               :inverse_of => :deliverable
+  has_one :analyzer, :dependent => :destroy, :inverse_of => :deliverable
   accepts_nested_attributes_for :analyzer
+  validates_associated :analyzer
+  
+  # HACK: this nasty bit of code gets nested_attributes working with STI.
+  def analyzer_attributes=(attributes)
+    type = attributes[Analyzer.inheritance_column]
+    attributes = attributes.except Analyzer.inheritance_column, :id
+    if type
+      klass = Analyzer.send :find_sti_class, type
+      if analyzer && !analyzer.kind_of?(klass)
+        Rails.logger.info ['destroy:', klass, analyzer.kind_of?(klass)].inspect
+        analyzer.destroy
+        self.analyzer = nil
+      end
+      
+      unless analyzer
+        Rails.logger.info ['new:', klass].inspect
+        self.analyzer = klass.new
+        analyzer.deliverable = self
+      end
+    end
+    analyzer.attributes = attributes
+  end
+  
+  # The analyzer, if it's a proc_analyzer.
+  has_one :proc_analyzer, :inverse_of => :deliverable
+  accepts_nested_attributes_for :proc_analyzer
+  
+  # The analyzer, if it's a script_analyzer
+  has_one :script_analyzer, :inverse_of => :deliverable
+  accepts_nested_attributes_for :script_analyzer
   
   # All the student submissions for this deliverable.
   has_many :submissions, :dependent => :destroy, :inverse_of => :deliverable

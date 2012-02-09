@@ -37,7 +37,7 @@ gem 'fastercsv', '>= 1.5.4', :platforms => [:mri_18]
 gem 'nokogiri', '>= 1.5.0'
 gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
                  :ref => 'c295bc4e78b84044296f3a03157c097b50161bc5'
-gem 'pwnstyles_rails', '>= 0.1.10', :path => '../pwnstyles_rails'
+gem 'pwnstyles_rails', '>= 0.1.11'
 gem 'rmagick', '>= 2.13.1'
 gem 'validates_timeliness', '>= 3.0.8'
 
@@ -51,7 +51,7 @@ gem 'delayed_job_active_record', '>= 0.3.2'  # Required by delayed_job.
 gem 'prawn', '~> 0.12.0'
 
 # Code grading.
-gem 'exec_sandbox', '>= 0.1.2'
+gem 'exec_sandbox', '>= 0.2.2'
 
 # Gravatar fall-back avatars.
 gem 'gravtastic', '>= 3.2.6'

@@ -17,11 +17,13 @@
 class ScriptAnalyzer < Analyzer
   # Name to be used when saving the submission into the script directory.
   validates :input_file, :length => 1..256, :presence => true
-  
+  attr_accessible :input_file
+    
   # The database-backed file holding the analyzer script.
   belongs_to :db_file, :dependent => :destroy
   validates :db_file, :presence => true
   accepts_nested_attributes_for :db_file
+  attr_accessible :db_file_attributes
   
   # Database-backed file association, including the file contents.
   def full_db_file
@@ -35,47 +37,51 @@ class ScriptAnalyzer < Analyzer
   validates :time_limit, :presence => true,
       :numericality => { :only_integer => true, :greater_than => 0 }
   store_accessor :exec_limits, :time_limit
+  attr_accessible :time_limit
 
   # Maximum number of megabytes of RAM that the analyzer can use.
   validates :ram_limit, :presence => true,
       :numericality => { :only_integer => true, :greater_than => 0 }
   store_accessor :exec_limits, :ram_limit
-  
+  attr_accessible :ram_limit
+    
   # Maximum number of file descriptors that the analyzer can use.
   validates :file_limit, :presence => true,
       :numericality => { :only_integer => true, :greater_than => 0 }
   store_accessor :exec_limits, :file_limit
+  attr_accessible :file_limit
 
   # Maximum number of megabytes that the analyzer can write to a single file.
   validates :file_size_limit, :presence => true,
       :numericality => { :only_integer => true, :greater_than => 0 }
   store_accessor :exec_limits, :file_size_limit
+  attr_accessible :file_size_limit
   
   # Maximum number of processes that the analyzer can use.
   validates :process_limit, :presence => true,
       :numericality => { :only_integer => true, :greater_than => 0 }
   store_accessor :exec_limits, :process_limit
+  attr_accessible :process_limit
 
   # :nodoc: overrides Analyzer#analyze
   def analyze(submission)
     random_dir = '/tmp/' + (0...16).map { rand(256).to_s(16) }.join
     FileUtils.mkdir_p random_dir
     Dir.chdir random_dir do
-      setup_script
-      setup_submission submission
-      setup_permissions
-      run_checker_script
-      
+      unpack_script
+      write_submission submission
+      result_hash = run_script
+      score_submission submission, result_hash
     end
-    FileUtils.rm_r random_dir
+    FileUtils.rm_rf random_dir
   end
   
   # Copies the checker script data into the current directory.
   #
   # This should be run in a temporary directory.
-  def setup_script
-    script_filename = db_file.f.original_filename.split('/').last
-    File.open(script_filename, 'wb') do |f|
+  def unpack_script
+    script_filename = File.basename db_file.f.original_filename
+    File.open script_filename, 'wb' do |f|
       f.write full_db_file.f.file_contents
     end
     
@@ -88,92 +94,83 @@ class ScriptAnalyzer < Analyzer
       Kernel.system "unzip #{script_filename}"
     end
     File.unlink script_filename if File.exist?(script_filename)
+
+    File.chmod 0700, 'run' if File.exist?('run')
   end
   
   # Copies a submission into the current directory.
   #
   # This should be run in a temporary directory.
-  def setup_submission(submission)
-    File.open(input_file, 'wb') do |f|
+  def write_submission(submission)
+    File.open input_file, 'wb' do |f|
       f.write submission.full_db_file.f.file_contents
     end
   end
   
-  # Configures the current directory so that every file can be executed.
-  #
-  # This should be run in a temporary directory meant for script execution.
-  def setup_permissions
-    Dir.foreach('.') do |entry|
-      next if File.directory?(entry)
-      File.chmod(500, entry)  
+  # Runs the checker's script, assuming it is in the current directory.
+  def run_script
+    old_keep = Daemonz.keep_daemons_at_exit
+    Daemonz.keep_daemons_at_exit = true
+    connection = ActiveRecord::Base.remove_connection
+    begin
+      command = ['nice', '--adjustment=20', './run']
+      File.open('stdin', 'w') { |f| f.write '' }
+      File.open('stdout', 'w') { |f| f.write '' }
+      File.open('stderr', 'w') { |f| f.write '' }
+      io = { :in => 'stdin', :out => 'stdout', :err => 'stderr' }
+      limits = { :cpu => time_limit.to_i,
+            :file_size => file_size_limit.to_i.megabytes,
+            :open_files => 10 + file_limit.to_i,
+            :data => ram_limit.to_i.megabytes
+          }
+      
+      pid = ExecSandbox::Spawn.spawn command, io, {}, {}
+           
+      status = ExecSandbox::Wait4.wait4 pid
+      stdout = File.exist?('stdout') ? File.read('stdout') : 'missing'
+      stderr = File.exist?('stderr') ? File.read('stderr') : 'missing'
+      
+      { :stdout => stdout, :stderr => stderr, :status => status }
+    ensure
+      ActiveRecord::Base.establish_connection connection || {}
+      Daemonz.keep_daemons_at_exit = old_keep
     end
   end
-  
-  # Runs the checker's script, assuming it is in the current directory.
-  def run_checker_script
-    # Fork off the runner.
-    runner_pid = Kernel.fork do
-      # Lobotomize ActiveRecord so it doesn't drop its connections
-      ActiveRecord::Base.connection_handler.instance_variable_set :@connection_pools, {}
-      
-      Kernel.exec 'nice ./run.sh > ./.stdout 2> ./.stderr'
-    end
-    
-    time_limit_seconds = (self.time_limit || 300.0).to_f
-    
-    # Fork off the process that enforces the time limit.
-    killer_pid = Kernel.fork do
-      # Lobotomize ActiveRecord so it doesn't drop its connections
-      ActiveRecord::Base.connection_handler.instance_variable_set :@connection_pools, {}
-      
-      sleep_start = Time.now
-      while (Time.now - sleep_start) < time_limit_seconds
-        Kernel.sleep [2, (Time.now - sleep_start)].min
-      end
-      
-      Zerg::Support::Process.kill_tree runner_pid
-    end
-    Process.detach killer_pid
-    Process.wait runner_pid
-    
-    # Check for time-limit exceeded.
-    # HACK: magic numbers
-    if $?.signaled? and ($?.termsig == 15 or $?.termsig == 9)
-      killed = true
-    elsif $?.exited? and ($?.exitstatus == 143 or $?.exitstatus == 137)
-      killed = true
-    end
 
-    # Extract score.
-    stdout_text = File.read('./.stdout')
-    stderr_text = File.read('./.stderr')
-    begin
-      stderr_diags = stderr_text.slice(0, stderr_text.index(/[\n\r]{2}/m)).split(/[\n\r]+/m)
-      tests = stderr_diags.length
-      passed = stderr_diags.select { |d| !(d =~ /FAIL/ || d =~ /ERROR/) }.length 
-      score = "#{passed}"
-      runtime = stderr_text.scan(/^Ran [0-9]* tests in ([0-9.]*)s$/)[-1]
-      diagnostic = "#{passed == tests ? 'ok' : 'needs work'} (#{passed} / #{tests})"
-      if runtime != nil
-        diagnostic += " in %.1fs" % runtime[0]
-      end
-    rescue
+  # Computes the score for the submission and saves it into the analysis.  
+  def score_submission(submission, result)
+    stdout = result[:stdout]
+    stderr = result[:stderr]
+    
+    running_time = result[:status][:system_time] + result[:status][:user_time]
+    if running_time > time_limit.to_i
+      diagnostic = "Time Limit Exceeded (ran for #{running_time} s)"
       score = '0'
-      # Check both ways that we might know about the runner getting killed
-      if killed
-        diagnostic = 'time limit exceeded (%.2f s)' % time_limit_seconds
-      else
-        diagnostic = 'runtime errors'
+    elsif result[:status][:exit_code] != 0
+      diagnostic = "Crashed (exit code #{result[:status][:exit_code]})"
+      score = '0'
+    else
+      begin
+        stderr_diags = stderr.slice(0, stderr.index(/[\n\r]{2}/m)).split(/[\n\r]+/m)
+        tests = stderr_diags.length
+        passed = stderr_diags.select { |d| !(d =~ /FAIL/ || d =~ /ERROR/) }.length 
+        score = "#{passed}"
+        runtime = stderr.scan(/^Ran [0-9]* tests in ([0-9.]*)s$/)[-1]
+        diagnostic = "#{passed == tests ? 'ok' : 'needs work'} (#{passed} / #{tests})"
+        if runtime != nil
+          diagnostic += " in %.1fs" % runtime[0]
+        end
+      rescue
+        score = '0'
+        diagnostic = 'Test Output Parsing Error'
       end
     end
     
-    # update results
-    ActiveRecord::Base.verify_active_connections!
-    result = submission.analysis
-    result.stdout = stdout_text
-    result.stderr = stderr_text
-    result.diagnostic = diagnostic
-    result.score = score
-    result.save!
+    analyis = submission.analysis
+    analyis.stdout = stdout
+    analyis.stderr = stderr
+    analyis.diagnostic = diagnostic
+    analyis.score = score
+    analyis.save!
   end
 end

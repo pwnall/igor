@@ -18,6 +18,7 @@ class ProcAnalyzer < Analyzer
   # The name of the method to be called.
   validates :message_name, :presence => true, :length => 1..64,
       :inclusion => { :in => %w(analyze_pdf) }
+  attr_accessible :message_name
   
   # :nodoc: overrides Analyzer#analyze
   def analyze(submission)

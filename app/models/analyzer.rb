@@ -23,6 +23,8 @@ class Analyzer < ActiveRecord::Base
   validates :deliverable, :presence => true
   validates :deliverable_id, :uniqueness => true
   
+  attr_accessible :type
+  
   # Sanity-checks a student's submission.
   #
   # Returns the Analysis instance containing the result.

@@ -1,16 +1,16 @@
-<div data-pwnfx-hide-positive="deliverable-div" data-pwnfx-scope="deliverable">
+<section class="deliverable" data-pwnfx-hide-positive="deliverable-div"
+         data-pwnfx-scope="deliverable">
   <p class="header">
     <span class="name">
-      <%= f.text_field :name, :placeholder => 'PDF Write-up',
-                :required => true %>
+      <%= f.text_field :name, placeholder: 'PDF Write-up', required: true %>
     </span>
     <span class="file-type">
-      <%= f.text_field :file_ext, :placeholder => 'pdf', :required => true %>
+      <%= f.text_field :file_ext, placeholder: 'pdf', required: true %>
     </span>
     <span class="validator-type">
     <%= f.fields_for :analyzer, f.object.analyzer || ProcAnalyzer.new do |fa| %>
-      <%= fa.select :type, [['Built-in Analyzer', 'ProcAnalyzer'], ['Script Analyzer', 'ScriptAnalyzer']],
-               {}, 'data-pwnfx-showif-source' => 'analyzer-type' %>
+      <%= fa.select :type, analyzer_types_for_select, {},
+                           'data-pwnfx-showif-source' => 'analyzer-type' %>
     <% end %>
     </span>
     <span class="destroy">
@@ -26,45 +26,94 @@
   <p class="description">
     <span class="description">
       <%= f.text_area :description,
-              :placeholder => 'Please upload your write-up, in PDF format.' %>
+              placeholder: 'Please upload your write-up, in PDF format.' %>
     </span>
   </p>
   <p class="analyzer">
     <div data-pwnfx-showif="analyzer-type" data-pwnfx-showif-is="ProcAnalyzer"
-         data-pwnfx-showif-scope="deliverable">
+         data-pwnfx-showif-scope="deliverable"
+         data-pwnfx-showif-replace="div">
     <%= f.fields_for :analyzer, analyzer_for(f.object, ProcAnalyzer) do |fa| %>
-      <%= fa.label :message_name, 'Built-in analyzer'%>
-      <%= fa.select :message_name, [['PDF Analyzer', 'analyze_pdf']] %>
+      <%= fa.label :message_name, 'Built-in analyzer' %>
+      <%= fa.select :message_name, proc_analyzer_messages_for_select %>
     <% end %>
     </div>
 
     <div data-pwnfx-showif="analyzer-type" data-pwnfx-showif-is="ScriptAnalyzer"
-         data-pwnfx-showif-scope="deliverable">
+         data-pwnfx-showif-scope="deliverable"
+         data-pwnfx-showif-replace="div">
     <%= f.fields_for :analyzer, analyzer_for(f.object, ScriptAnalyzer) do |fa| %>
-      <%= fa.label :pkg, 'Script .zip'%>
-      <%= fa.file_field :pkg, :accept => 'application/zip' %>
+      <section class="fields">
+        <p class="field">
+        <%= fa.fields_for :db_file, DbFile.new do |faf| %>
+          <%= faf.label :f, 'Script .zip'%>
+          <span class="value">
+          <%= faf.file_field :f, :accept => 'application/zip' %>
+          </span>
+          <span class="comment">
+          </span>
+        <% end %>
+        </p>
+  
+        <p class="field">
+          <%= fa.label :input_file, 'Submission file name' %>
+          <span class="value">
+            <%= fa.text_field :input_file, required: true, 
+                                           placeholder: 'program.rb' %>
+          </span>
+        </p>
+        
+        <p class="field">
+          <%= fa.label :time_limit, 'CPU time' %>
+          <span class="value">
+            <%= fa.number_field :time_limit, required: true, placeholder: 5 %>
+          </span>
+          <span class="comment">
+            seconds
+          </span>
+        </p>
+  
+        <p class="field">
+          <%= fa.label :ram_limit, 'RAM usage' %>
+          <span class="value">
+            <%= fa.number_field :ram_limit, required: true, placeholder: 1024 %>
+          </span>
+          <span class="comment">
+            Mb
+          </span>
+        </p>
+        
+        <p class="field">
+          <%= fa.label :file_limit, 'Open files' %>
+          <span class="value">
+            <%= fa.number_field :file_limit, required: true, placeholder: 10 %>
+          </span>
+          <span class="comment">
+            files
+          </span>
+        </p>
 
-      <%= fa.label :input_file, 'Submission file name' %>
-      <%= fa.text_field :input_file,
-                                     :placeholder => 'code.py' %>
-      
-      <%= fa.label :time_limit, 'CPU time' %>
-      <%= fa.number_field :time_limit, :placeholder => 5 %> seconds
-
-      <%= fa.label :ram_limit, 'RAM usage' %>
-      <%= fa.number_field :ram_limit, :placeholder => 1024 %> Mb
-      
-      <%= fa.label :file_limit, 'Open files' %>
-      <%= fa.number_field :file_limit, :placeholder => 10 %> files
-
-      <%= fa.label :file_size_limit, 'File size' %>
-      <%= fa.number_field :file_size_limit,
-                                      :placeholder => 100 %> Mb
-      
-      <%= fa.label :process_limit, 'Spawn' %>
-      <%= fa.number_field :process_limit,
-                                      :placeholder => 5 %> processes
+        <p class="field">
+          <%= fa.label :file_size_limit, 'File size' %>
+          <span class="value">
+            <%= fa.number_field :file_size_limit, required: true, placeholder: 100 %>
+          </span>
+          <span class="comment">
+            Mb
+          </span>
+        </p>
+        
+        <p class="field">
+          <%= fa.label :process_limit, 'Spawn' %>
+          <span class="value">
+            <%= fa.number_field :process_limit, required: true, placeholder: 5 %>
+          </span>
+          <span class="comment">
+            processes
+          </span>
+        </p>
+      </section>
     <% end %>
     </div>
   </p>
-</div>
+</section>

@@ -55,6 +55,15 @@
   margin: 0 0.5em 1em;
 }
 
+section.deliverable {
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #B18566;
+  &:last-of-type {
+    border-bottom: none;
+  }
+  margin-bottom: 0.5em;
+}
+
 // Uncomment to hide the "Assignment Builder" heading.
 // We're keeping it in for now, because the UI is confusing without it.
 // 

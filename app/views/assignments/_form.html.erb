@@ -1,10 +1,10 @@
 <div class="assignment-builder" data-pwnfx-scope="assignment">
-  <%= form_for assignment do |f| %>
+  <%= form_for assignment, :multipart => true do |f| %>
     <% if @assignment.errors.any? %>
       <div class="error-explanation">
         <p>
           <%= invalid_icon_tag %>
-          <%= pluralize(@assignment.errors.count, "error") %>
+          <%= pluralize @assignment.errors.count, 'error' %>
           prohibited this assignment from being saved:
         </p>
   

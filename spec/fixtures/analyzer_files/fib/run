@@ -1,0 +1,2 @@
+#!/bin/dash
+/usr/bin/env ruby ./fib_test.rb

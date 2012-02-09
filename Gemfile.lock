@@ -15,13 +15,6 @@ GIT
       cocaine (>= 0.0.2)
       mime-types
 
-PATH
-  remote: ../pwnstyles_rails
-  specs:
-    pwnstyles_rails (0.1.9)
-      rails (>= 3.2.0)
-      sass-rails (>= 3.2.4)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -67,7 +60,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.2.0)
-    daemons (1.1.6)
+    daemons (1.1.8)
     daemonz (0.3.5)
       posix-spawn (>= 0.3.6)
       rails (>= 3.2.0)
@@ -84,7 +77,7 @@ GEM
     dynamic_form (1.1.4)
     erubis (2.7.0)
     eventmachine (0.12.10)
-    exec_sandbox (0.2.0)
+    exec_sandbox (0.2.2)
       ffi (>= 1.0.11)
     execjs (1.3.0)
       multi_json (~> 1.0)
@@ -135,7 +128,7 @@ GEM
     multipart-post (1.1.4)
     mysql2 (0.3.11)
     net-http-digest_auth (1.2)
-    net-http-persistent (2.4.1)
+    net-http-persistent (2.5)
     nokogiri (1.5.0)
     ntlm-http (0.1.1)
     oauth2 (0.5.2)
@@ -149,6 +142,9 @@ GEM
     prawn (0.12.0)
       pdf-reader (>= 0.9.0)
       ttfunk (~> 1.0.2)
+    pwnstyles_rails (0.1.11)
+      rails (>= 3.2.0)
+      sass-rails (>= 3.2.4)
     rack (1.4.1)
     rack-cache (1.1)
       rack (>= 0.4)
@@ -190,7 +186,7 @@ GEM
       activesupport (>= 3.0)
       railties (>= 3.0)
       rspec (~> 2.8.0)
-    ruby-rc4 (0.1.4)
+    ruby-rc4 (0.1.5)
     sass (3.1.14)
     sass-rails (3.2.4)
       railties (~> 3.2.0)
@@ -245,7 +241,7 @@ DEPENDENCIES
   delayed_job (>= 3.0.1)
   delayed_job_active_record (>= 0.3.2)
   dynamic_form (>= 1.1.4)
-  exec_sandbox (>= 0.1.2)
+  exec_sandbox (>= 0.2.2)
   fastercsv (>= 1.5.4)
   gravtastic (>= 3.2.6)
   jquery-rails (>= 2.0.0)
@@ -255,7 +251,7 @@ DEPENDENCIES
   nokogiri (>= 1.5.0)
   paperclip!
   prawn (~> 0.12.0)
-  pwnstyles_rails (>= 0.1.9)!
+  pwnstyles_rails (>= 0.1.11)
   rails (>= 3.2.1)
   rmagick (>= 2.13.1)
   rspec-rails (>= 2.8.1)
