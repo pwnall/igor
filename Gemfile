@@ -51,7 +51,7 @@ gem 'delayed_job_active_record', '>= 0.3.2'  # Required by delayed_job.
 gem 'prawn', '~> 0.12.0'
 
 # Code grading.
-gem 'exec_sandbox', '>= 0.2.2'
+gem 'exec_sandbox', '>= 0.2.3'
 
 # Gravatar fall-back avatars.
 gem 'gravtastic', '>= 3.2.6'
