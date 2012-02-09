@@ -70,8 +70,7 @@ class FeedItem
           :contents => number_to_human_size(submission.db_file.f.size) +
                        " #{submission.db_file.f_content_type} file",
           :actions => [
-            ['View', [:file_submission_path, submission, {:inline => true}]],
-            ['Download', [:file_submission_path, submission, {:inline => false}]]
+            ['Download', [:file_submission_path, submission]]
           ],
           :replies => []
       items << item
