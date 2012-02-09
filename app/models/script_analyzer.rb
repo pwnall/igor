@@ -113,7 +113,14 @@ class ScriptAnalyzer < Analyzer
     Daemonz.keep_daemons_at_exit = true
     connection = ActiveRecord::Base.remove_connection
     begin
-      command = ['nice', '--adjustment=20', './run']
+      case RUBY_PLATFORM
+      when /darwin/ 
+        command = ['nice', '-n', '20', './run']
+      when /linux/
+        command = ['nice', '--adjustment=20', './run']
+      else
+        command = ['nice', './run']
+      end
       File.open('stdin', 'w') { |f| f.write '' }
       File.open('stdout', 'w') { |f| f.write '' }
       File.open('stderr', 'w') { |f| f.write '' }
@@ -124,7 +131,7 @@ class ScriptAnalyzer < Analyzer
             :data => ram_limit.to_i.megabytes
           }
       
-      pid = ExecSandbox::Spawn.spawn command, io, {}, {}
+      pid = ExecSandbox::Spawn.spawn command, io, {}, limits
            
       status = ExecSandbox::Wait4.wait4 pid
       stdout = File.exist?('stdout') ? File.read('stdout') : 'missing'
