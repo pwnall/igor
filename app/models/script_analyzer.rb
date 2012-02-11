@@ -66,10 +66,12 @@ class ScriptAnalyzer < Analyzer
   # :nodoc: overrides Analyzer#analyze
   def analyze(submission)
     Dir.mktmpdir 'seven_' do |temp_dir|
-      unpack_script
-      write_submission submission
-      result_hash = run_script
-      score_submission submission, result_hash
+      Dir.chdir temp_dir do
+        unpack_script
+        write_submission submission
+        result_hash = run_script
+        score_submission submission, result_hash
+      end
     end
   end
   
@@ -78,17 +80,19 @@ class ScriptAnalyzer < Analyzer
   # This should be run in a temporary directory.
   def unpack_script
     package_file = Tempfile.new 'seven_package_'
-    package_file.write full_db_file.f.file_contents
     package_file.close
+    File.open package_file.path, 'wb' do |f|
+      f.write full_db_file.f.file_contents
+    end
     
-    Zip::ZipFile.open package_file do |zip_file|
+    Zip::ZipFile.open package_file.path do |zip_file|
       zip_file.each do |f|
         next if f.name.index '..'
-        f_dir = File.dirname(f.name)
-        FileUtils.mkdir_p unless f_dir.empty?
+        f_dir = File.dirname f.name
+        FileUtils.mkdir_p f_dir unless f_dir.empty?
         zip_file.extract f, f.name unless File.exist?(f.name)
       end
-    end    
+    end
     package_file.unlink
     
     File.chmod 0700, 'run' if File.exist?('run')
