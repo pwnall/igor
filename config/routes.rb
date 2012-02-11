@@ -2,7 +2,7 @@ Seven::Application.routes.draw do
   authpwn_session
 
   # Registration
-  resources :profiles, :only => [:show, :create, :edit, :update] do
+  resources :profiles, :only => [] do
     collection do
       post :websis_lookup
       put :websis_lookup
