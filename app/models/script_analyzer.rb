@@ -109,8 +109,6 @@ class ScriptAnalyzer < Analyzer
   
   # Runs the checker's script, assuming it is in the current directory.
   def run_script
-    old_keep = Daemonz.keep_daemons_at_exit
-    Daemonz.keep_daemons_at_exit = true
     connection = ActiveRecord::Base.remove_connection
     begin
       case RUBY_PLATFORM
@@ -140,7 +138,6 @@ class ScriptAnalyzer < Analyzer
       { :stdout => stdout, :stderr => stderr, :status => status }
     ensure
       ActiveRecord::Base.establish_connection connection || {}
-      Daemonz.keep_daemons_at_exit = old_keep
     end
   end
 
