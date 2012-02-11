@@ -48,7 +48,8 @@ class Submission < ActiveRecord::Base
   def queue_analysis
     self.analysis ||= Analysis.new :submission => self
     self.analysis.queued!
-    self.delay.run_analysis
+    # self.delay.run_analysis
+    self.run_analysis
   end
   
   # Performs an automated health-check for this submission.

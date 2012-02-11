@@ -65,36 +65,32 @@ class ScriptAnalyzer < Analyzer
 
   # :nodoc: overrides Analyzer#analyze
   def analyze(submission)
-    random_dir = '/tmp/' + (0...16).map { rand(256).to_s(16) }.join
-    FileUtils.mkdir_p random_dir
-    Dir.chdir random_dir do
+    Dir.mktmpdir 'seven_' do |temp_dir|
       unpack_script
       write_submission submission
       result_hash = run_script
       score_submission submission, result_hash
     end
-    FileUtils.rm_rf random_dir
   end
   
   # Copies the checker script data into the current directory.
   #
   # This should be run in a temporary directory.
   def unpack_script
-    script_filename = File.basename db_file.f.original_filename
-    File.open script_filename, 'wb' do |f|
-      f.write full_db_file.f.file_contents
-    end
+    package_file = Tempfile.new 'seven_package_'
+    package_file.write full_db_file.f.file_contents
+    package_file.close
     
-    case script_filename
-    when /\.tar.gz$/
-      Kernel.system "tar -xzf #{script_filename}"
-    when /\.tar.bz2$/
-      Kernel.system "tar -xjf #{script_filename}"
-    when /\.zip$/
-      Kernel.system "unzip #{script_filename}"
-    end
-    File.unlink script_filename if File.exist?(script_filename)
-
+    Zip::ZipFile.open package_file do |zip_file|
+      zip_file.each do |f|
+        next if f.name.index '..'
+        f_dir = File.dirname(f.name)
+        FileUtils.mkdir_p unless f_dir.empty?
+        zip_file.extract f, f.name unless File.exist?(f.name)
+      end
+    end    
+    package_file.unlink
+    
     File.chmod 0700, 'run' if File.exist?('run')
   end
   
