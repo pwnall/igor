@@ -23,7 +23,8 @@
   </section>
   
   <p class="action">
-    <%= button_tag 'Log in', :name => 'login', :value => 'requested' %>
+    <%= button_tag 'Log in', :name => 'login', :value => 'requested',
+                             :class => 'emphasized' %>
     <%= button_tag 'Reset Password', :name => 'reset_password',
           :value => 'requested', :formaction => reset_password_session_path %>
     

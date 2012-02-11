@@ -30,9 +30,8 @@ class ProfilesController < ApplicationController
     else
       @athena_info = MitStalker.from_user_name @athena_username
     end
-    @athena_info ||= {}
     respond_to do |format|
-      format.html { render :layout => false }  # websis_lookup.html.erb
+      format.html { render layout: false }  # websis_lookup.html.erb
     end
   end
 end

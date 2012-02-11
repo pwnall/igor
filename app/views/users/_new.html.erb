@@ -2,20 +2,22 @@
 <%= form_for user do |f| %>
   <%= f.error_messages %>
 
-  <%= render 'users/new_fields', :f => f %>
+  <%= render 'users/new_fields', f: f %>
   
   <h3>Profile</h3>
   <%= f.fields_for :profile do |pf| %>
-  <%= render 'profiles/fields', :f => pf %>
+  <%= render 'profiles/fields', f: pf %>
   <% end %>
   
   <h3>Course Registration</h3>
   <%= f.fields_for :registrations do |rf| %>
-  <%= render 'registrations/fields', :f => rf %>
+  <%= render 'registrations/fields', f: rf %>
   <% end %>
   
   <p class="action">
-    <%= f.submit 'Create my account' %>
+    <%= button_tag class: 'emphasized' do %>
+      Create my account
+    <% end %>
   </p>
 <% end %>
 </section>

@@ -8,7 +8,7 @@
 <% else %>
   $('#profile-athena-success').html('<%= valid_icon_tag %> <%= @athena_username %> found');
   $('#profile_name').val('<%= (@athena_info[:full_name] || '').html_safe %>');
-  $('#profile_nickname').val('<%= (@athena_info[:full_name] || '').split(' ').first.html_safe %>');
+  $('#profile_nickname').val('<%= (@athena_info[:full_name] || ' ').split(' ').first.html_safe %>');
   $('#profile_department').val('<%= (@athena_info[:department] || '').html_safe %>');
   $('#profile_university').val('<%= guess_university_from_athena(@athena_info).html_safe %>');
   $('#profile_year').val('<%= (@athena_info[:year] || '').html_safe %>');
