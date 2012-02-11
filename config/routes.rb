@@ -1,5 +1,16 @@
 Seven::Application.routes.draw do
   authpwn_session
+
+  # Registration
+  resources :profiles, :only => [:show, :create, :edit, :update] do
+    collection do
+      post :websis_lookup
+      put :websis_lookup
+    end
+  end
+  resources :registrations
+  resources :recitation_sections
+
   
   resources :analyses
   resources :survey_questions
@@ -51,14 +62,6 @@ Seven::Application.routes.draw do
       get :profile, :thumb
     end
   end
-  resources :profiles do
-    collection do
-      post :websis_lookup
-      put :websis_lookup
-    end
-  end
-  resources :recitation_sections
-  resources :registrations
   resources :submissions do
     member do
       get :file

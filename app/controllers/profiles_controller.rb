@@ -1,7 +1,5 @@
 class ProfilesController < ApplicationController
-  before_filter :authenticated_as_user,
-      :only => [:new, :create, :edit, :show, :update]
-  before_filter :authenticated_as_admin, :only => [:index, :destroy]
+  before_filter :authenticated_as_user, :only => [:show]
 
   # GET /profiles/1
   def show
@@ -12,67 +10,10 @@ class ProfilesController < ApplicationController
     end
   end
   
-  # GET /profiles/1/edit
-  def edit
-    @profile = Profile.find(params[:id])
-    # Disallow random record updates.
-    return bounce_user unless @profile.can_edit?(current_user)
-
-    respond_to do |format|
-      format.html # edit.html.erb
-      format.js   # edit.js.rjs
-    end    
-  end
+  # create, edit, update, and destroy are all implemented in UserController.
   
-  def new_edit
-  end
-  private :new_edit
-
-  # POST /profiles
-  def create
-    @profile = Profile.new(params[:profile])
-    create_update
-  end
-
-  # PUT /profiles/1
-  def update
-    @profile = Profile.find(params[:id])
-    create_update
-  end
-
-  def create_update
-    # Disallow random record updates.
-    return bounce_user unless @profile.can_edit?(current_user)
-    
-    if @new_record = @profile.new_record?
-      success = @profile.save
-    else
-      params[:profile].delete :user_id  # Profiles should not move among users.
-      success = @profile.update_attributes(params[:profile])
-    end
-    
-    respond_to do |format|
-      if success
-        flash[:notice] = "Profile successfully #{@profile.new_record? ? 'created' : 'updated'}."
-        format.html { redirect_to @profile.user }
-        format.js   { render :action => :create_update }
-      else
-        format.html { render :action => :new_edit }
-        format.js   { render :action => :edit }
-      end
-    end    
-  end
-  private :create_update
-  
-  # DELETE /profiles/1
-  def destroy
-    @profile = Profile.find(params[:id])
-    @profile.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(profiles_url) }
-    end
-  end
+  # Listing all profiles can be done via UsersController (for site admins),
+  # or via RegistrationsController (for course staff).
   
   # XHR POST /profiles/websis_lookup
   def websis_lookup

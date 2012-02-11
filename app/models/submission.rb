@@ -21,7 +21,7 @@ class Submission < ActiveRecord::Base
   validates :deliverable, :presence => true
   
   # The database-backed file holding the submission.
-  belongs_to :db_file, :dependent => :destroy, :autosave => true
+  belongs_to :db_file, :dependent => :destroy
   validates :db_file, :presence => true
   accepts_nested_attributes_for :db_file
   

@@ -101,7 +101,7 @@ GEM
       oauth2 (>= 0.5.0)
       rails (>= 3.1.0)
     ffi (1.0.11)
-    gravtastic (3.2.6)
+    gravatar-ultimate (1.0.3)
     hashie (1.2.0)
     hike (1.2.1)
     i18n (0.6.0)
@@ -128,7 +128,7 @@ GEM
     multipart-post (1.1.4)
     mysql2 (0.3.11)
     net-http-digest_auth (1.2)
-    net-http-persistent (2.5)
+    net-http-persistent (2.5.1)
     nokogiri (1.5.0)
     ntlm-http (0.1.1)
     oauth2 (0.5.2)
@@ -187,7 +187,7 @@ GEM
       railties (>= 3.0)
       rspec (~> 2.8.0)
     ruby-rc4 (0.1.5)
-    sass (3.1.14)
+    sass (3.1.15)
     sass-rails (3.2.4)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
@@ -228,6 +228,7 @@ GEM
       rack-test (>= 0.5.3)
     webrobots (0.0.13)
     zerg_support (0.1.5)
+    zip (2.0.2)
 
 PLATFORMS
   ruby
@@ -243,7 +244,7 @@ DEPENDENCIES
   dynamic_form (>= 1.1.4)
   exec_sandbox (>= 0.2.3)
   fastercsv (>= 1.5.4)
-  gravtastic (>= 3.2.6)
+  gravatar-ultimate (>= 1.0.3)
   jquery-rails (>= 2.0.0)
   json (>= 1.5.4)
   mit_stalker (>= 1.0.3)
@@ -262,3 +263,4 @@ DEPENDENCIES
   uglifier (>= 1.2.3)
   validates_timeliness (>= 3.0.8)
   webrat
+  zip (>= 2.0.2)

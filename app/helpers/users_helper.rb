@@ -1,16 +1,15 @@
 module UsersHelper
   def user_image_tag(user, options = {})
     size = options[:size] || :small
-    size_pixels = {:small => 20, :large => 100}[size]
+    size_pixels = {small: 20, large: 100}[size]
         
     if user.profile and user.profile.photo
-      url = user.profile.photo.pic.
-                 url({:small => :thumb, :large => :profile}[size]) 
+      url = user.profile.photo.pic.url({small: :thumb, large: :profile}[size]) 
     else
-      url = user.gravatar_url(:size => size_pixels)
+      url = Gravatar.new(user.email).image_url size: size_pixels, default: :retro
     end
-    image_tag url, :alt => "avatar for #{user.name}",
-              :style => "width: #{size_pixels}px; height: #{size_pixels}px;"
+    image_tag url, alt: "avatar for #{user.name}",
+              style: "width: #{size_pixels}px; height: #{size_pixels}px;"
   end
   
   # TODO(costan): this should be outdated and replaced with the model method;

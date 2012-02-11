@@ -52,9 +52,10 @@ gem 'prawn', '~> 0.12.0'
 
 # Code grading.
 gem 'exec_sandbox', '>= 0.2.3'
+gem 'zip', '>= 2.0.2'
 
 # Gravatar fall-back avatars.
-gem 'gravtastic', '>= 3.2.6'
+gem 'gravatar-ultimate', '>= 1.0.3'
 
 # MIT WebSIS student lookup.
 gem 'mit_stalker', '>= 1.0.3'

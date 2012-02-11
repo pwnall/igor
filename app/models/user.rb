@@ -37,10 +37,6 @@ class User
   accepts_nested_attributes_for :profile
   attr_accessible :profile_attributes
   
-  # Configure gravatars.
-  include Gravtastic
-  gravtastic :email, :secure => true, :rating => 'G', :filetype => 'png'
-  
   # The user's real-life name.
   #
   # May return the user's e-mail if the user managed to register without

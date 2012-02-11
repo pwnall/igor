@@ -1,7 +1,7 @@
 <div class="profile-container">
 <% if profile.can_edit?(current_user) %>
 <p>
-  <%= link_to edit_profile_path(profile), :class => 'button' do %>
+  <%= link_to edit_user_path(profile.user), :class => 'button' do %>
     <%= image_tag('pencil_16.png') %> Edit Profile
   <% end %>
   <span id="profile-ajax-indicator"></span>
