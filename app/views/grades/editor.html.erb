@@ -33,7 +33,7 @@
           data-subject-id="<%= subject.id %>"
           data-subject-type="<%= subject.class.name %>">
         <th class="subject-name">
-          <%= link_to subject.name, subject.profile, :tabindex => '-1' %>
+          <%= link_to subject.name, subject, :tabindex => '-1' %>
         </th>
         <% @metrics.each do |metric| %>
         <td class="grade">
