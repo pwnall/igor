@@ -61,7 +61,7 @@ GEM
       execjs
     coffee-script-source (1.2.0)
     daemons (1.1.8)
-    daemonz (0.3.5)
+    daemonz (0.3.6)
       posix-spawn (>= 0.3.6)
       rails (>= 3.2.0)
       simple-daemon (>= 0.1.2)
@@ -238,7 +238,7 @@ DEPENDENCIES
   authpwn_rails (>= 0.10.9)
   coffee-rails (>= 3.2.1)
   daemons
-  daemonz (>= 0.3.5)
+  daemonz (>= 0.3.6)
   delayed_job (>= 3.0.1)
   delayed_job_active_record (>= 0.3.2)
   dynamic_form (>= 1.1.4)

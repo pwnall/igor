@@ -42,7 +42,7 @@ gem 'rmagick', '>= 2.13.1'
 gem 'validates_timeliness', '>= 3.0.8'
 
 # Background processing.
-gem 'daemonz', '>= 0.3.5'
+gem 'daemonz', '>= 0.3.6'
 gem 'daemons'  # Required by delayed_job.
 gem 'delayed_job', '>= 3.0.1'
 gem 'delayed_job_active_record', '>= 0.3.2'  # Required by delayed_job.
