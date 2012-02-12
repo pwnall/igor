@@ -32,14 +32,8 @@ Seven::Application.routes.draw do
   resource :api, :controller => 'api' do
     get :conflict_info
   end
-  resources :assignment_metrics
   resources :assignments
   resources :courses
-  resources :deliverables do
-    collection do
-      post :xhr_description
-    end
-  end
   resources :analyzers do
     member do
       get :contents
