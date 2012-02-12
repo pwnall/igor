@@ -25,13 +25,11 @@ class Deliverable < ActiveRecord::Base
     if type
       klass = Analyzer.send :find_sti_class, type
       if analyzer && !analyzer.kind_of?(klass)
-        Rails.logger.info ['destroy:', klass, analyzer.kind_of?(klass)].inspect
         analyzer.destroy
         self.analyzer = nil
       end
       
       unless analyzer
-        Rails.logger.info ['new:', klass].inspect
         self.analyzer = klass.new
         analyzer.deliverable = self
       end

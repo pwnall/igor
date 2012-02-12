@@ -29,6 +29,7 @@ class AssignmentsController < ApplicationController
   def new
     @assignment = Assignment.new
     @assignment.course = Course.main
+    @assignment.author = current_user
     
     respond_to do |format|
       format.html  # new.html.erb

@@ -79,7 +79,6 @@ class RegistrationsController < ApplicationController
     if Course.main.has_recitations?
       old_recitation_conflicts =
           @registration.recitation_conflicts.index_by &:timeslot
-      Rails.logger.warn old_recitation_conflicts.inspect
       
       # Update recitation conflicts.
       params[:recitation_conflicts].each_value do |rc|
