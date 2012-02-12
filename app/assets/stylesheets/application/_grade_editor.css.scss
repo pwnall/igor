@@ -18,9 +18,14 @@ table.grades-table {
     text-align: right;
   
     input[type=number] {
-      width: 4em;
+      width: 3em;
       text-align: right;
       border: 1px solid #999999;
+      
+      &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+      }    
     }
     .max-points {
       color: #666666;
