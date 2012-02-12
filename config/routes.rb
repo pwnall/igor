@@ -34,10 +34,9 @@ Seven::Application.routes.draw do
   end
   resources :assignments
   resources :courses
-  resources :analyzers do
+  resources :analyzers, :only => [] do
     member do
-      get :contents
-      put :update_deliverable
+      get :source
     end
   end
   resources :grades do

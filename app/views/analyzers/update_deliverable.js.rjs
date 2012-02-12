@@ -1,6 +1,0 @@
-if @success
-  add_site_status page, 'Submission analyzer configured', true
-else
-  add_site_status page, 'Failed to configure analyzer', false
-end
-page.replace "analyzer_#{@deliverable.id}", :partial => 'show_for_deliverable', :deliverable => @deliverable
