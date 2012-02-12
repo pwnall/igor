@@ -1,21 +1,10 @@
 Seven::Application.routes.draw do
   authpwn_session
 
-  # Registration
-  resources :profiles, :only => [] do
-    collection do
-      post :websis_lookup
-      put :websis_lookup
-    end
-  end
-  resources :registrations
-  resources :recitation_sections
+  resources :courses
+  resources :prerequisites
 
-  
-  resources :analyses
-  resources :survey_questions
-  resources :team_memberships
-  
+  # Registration
   resources :users do
     collection do
       get :lookup
@@ -27,18 +16,22 @@ Seven::Application.routes.draw do
       put :confirm_email
     end
   end
-  
-  resources :announcements  
-  resource :api, :controller => 'api' do
-    get :conflict_info
-  end
-  resources :assignments
-  resources :courses
-  resources :analyzers, :only => [] do
-    member do
-      get :source
+  resources :profiles, :only => [] do
+    collection do
+      post :websis_lookup
+      put :websis_lookup
     end
   end
+  resources :profile_photos do
+    member do
+      get :profile, :thumb
+    end
+  end  
+  resources :registrations
+  resources :recitation_sections
+
+  # Homework.
+  resources :assignments
   resources :grades do
     collection do
       get :editor
@@ -49,12 +42,15 @@ Seven::Application.routes.draw do
       put :update_for_user
     end
   end
-  resources :prerequisites
-  resources :profile_photos do
+
+  # Homework submission.
+  resources :analyzers, :only => [] do
     member do
-      get :profile, :thumb
+      get :source
     end
   end
+  resources :deliverables
+  resources :assignment_metrics
   resources :submissions do
     member do
       get :file
@@ -67,15 +63,29 @@ Seven::Application.routes.draw do
       post :package_assignment
     end
   end
-  resources :survey_answers
+  resources :analyses
+  
+  # Surveys.
+  resources :survey_questions
   resources :surveys do
     member do
       post :add_question
       delete :remove_question
     end
   end
+  resources :survey_answers
+  
+  # Teams.
+  resources :team_memberships
   resources :team_partitions
   resources :teams
+  
+  # Deprecated.
+  resources :announcements  
+  resource :api, :controller => 'api' do
+    get :conflict_info
+  end
+  
 
   root :to => "session#show"
 end
