@@ -31,18 +31,15 @@ class ProcAnalyzer < Analyzer
     result = submission.analysis
     if bytes[0, 5] == '%PDF-'
       if bytes[([0, bytes.length - 1024].max)..-1] =~ /\%\%EOF/
-        result.diagnostic = 'valid PDF'
-        result.stdout = 'valid PDF header and trailer encountered'
-        result.stderr = ''
+        result.diagnostic = 'Valid PDF'
+        result.log = 'valid PDF header and trailer encountered'
       else
-        result.diagnostic = 'incomplete PDF'
-        result.stdout = ''
-        result.stderr = 'missing trailer; the file is incomplete'
+        result.diagnostic = 'Incomplete PDF'
+        result.log = 'missing trailer; the file is incomplete'
       end
     else
-      result.diagnostic = 'bad PDF'
-      result.stdout = ''
-      result.stderr = 'missing header; the file is not a PDF'
+      result.diagnostic = 'Bad PDF'
+      result.log = 'missing header; the file is not a PDF'
     end
     result.save!
   end

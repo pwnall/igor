@@ -119,11 +119,9 @@ class ScriptAnalyzer < Analyzer
       else
         command = ['nice', './run']
       end
-      File.open('stdin', 'w') { |f| f.write '' }
-      File.open('stdout', 'w') { |f| f.write '' }
-      File.open('stderr', 'w') { |f| f.write '' }
-      io = { :in => 'stdin', :out => 'stdout', :err => 'stderr' }
-      limits = { :cpu => time_limit.to_i,
+      File.open('.log', 'w') { |f| f.write '' }
+      io = { :in => '/dev/null', :out => '.log', :err => STDOUT }
+      limits = { :cpu => time_limit.to_i + 1,
             :file_size => file_size_limit.to_i.megabytes,
             :open_files => 10 + file_limit.to_i,
             :data => ram_limit.to_i.megabytes
@@ -132,10 +130,9 @@ class ScriptAnalyzer < Analyzer
       pid = ExecSandbox::Spawn.spawn command, io, {}, limits
            
       status = ExecSandbox::Wait4.wait4 pid
-      stdout = File.exist?('stdout') ? File.read('stdout') : 'missing'
-      stderr = File.exist?('stderr') ? File.read('stderr') : 'missing'
+      log = File.exist?('.log') ? File.read('.log') : 'Program removed its log'
       
-      { :stdout => stdout, :stderr => stderr, :status => status }
+      { :log => log, :status => status }
     ensure
       ActiveRecord::Base.establish_connection connection || {}
     end
@@ -143,36 +140,34 @@ class ScriptAnalyzer < Analyzer
 
   # Computes the score for the submission and saves it into the analysis.  
   def score_submission(submission, result)
-    stdout = result[:stdout]
-    stderr = result[:stderr]
+    log = result[:log]
     
     running_time = result[:status][:system_time] + result[:status][:user_time]
     if running_time > time_limit.to_i
-      diagnostic = "Time Limit Exceeded (ran for #{running_time} s)"
+      diagnostic = "Time Limit Exceeded"
       score = '0'
     elsif result[:status][:exit_code] != 0
       diagnostic = "Crashed (exit code #{result[:status][:exit_code]})"
       score = '0'
     else
       begin
-        stderr_diags = stderr.slice(0, stderr.index(/[\n\r]{2}/m)).split(/[\n\r]+/m)
-        tests = stderr_diags.length
-        passed = stderr_diags.select { |d| !(d =~ /FAIL/ || d =~ /ERROR/) }.length 
+        log_diags = log.slice(0, log.index(/[\n\r]{2}/m)).split(/[\n\r]+/m)
+        tests = log_diags.length
+        passed = log_diags.select { |d| !(d =~ /FAIL/ || d =~ /ERROR/) }.length
         score = "#{passed}"
-        runtime = stderr.scan(/^Ran [0-9]* tests in ([0-9.]*)s$/)[-1]
+        runtime = log.scan(/^Ran [0-9]* tests in ([0-9.]*)s$/)[-1]
         diagnostic = "#{passed == tests ? 'ok' : 'needs work'} (#{passed} / #{tests})"
         if runtime != nil
           diagnostic += " in %.1fs" % runtime[0]
         end
       rescue
         score = '0'
-        diagnostic = 'Test Output Parsing Error'
+        diagnostic = 'Bad Log'
       end
     end
     
     analyis = submission.analysis
-    analyis.stdout = stdout
-    analyis.stderr = stderr
+    analyis.log = log
     analyis.diagnostic = diagnostic
     analyis.score = score
     analyis.save!

@@ -150,5 +150,6 @@ end
 #  accepts_feedback   :boolean(1)      default(FALSE), not null
 #  created_at         :datetime        not null
 #  updated_at         :datetime        not null
+#  author_id          :integer(4)      default(1), not null
 #
 

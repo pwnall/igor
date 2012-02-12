@@ -3,10 +3,10 @@ class CreateAnalyses < ActiveRecord::Migration
     create_table :analyses do |t|
       t.references :submission, :null => false
       
-      t.integer :score, :null => true, :default => nil
-      t.string :diagnostic, :limit => 256, :null => true, :default => nil
-      t.binary :stdout, :limit => 64.kilobytes, :null => true, :default => nil
-      t.binary :stderr, :limit => 64.kilobytes, :null => true, :default => nil
+      t.integer :score, :null => true
+      t.string :diagnostic, :limit => 256, :null => true
+
+      t.text :log, :limit => 64.kilobytes, :null => true
 
       t.timestamps
     end
