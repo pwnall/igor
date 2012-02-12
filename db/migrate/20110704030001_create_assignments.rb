@@ -2,6 +2,8 @@ class CreateAssignments < ActiveRecord::Migration
   def change
     create_table :assignments do |t|
       t.references :course, :null => false
+      t.references :author, :null => false
+      
       t.references :team_partition, :null => true
       t.references :feedback_survey, :null => true
 

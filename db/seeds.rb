@@ -33,6 +33,17 @@ admin_profile = Profile.create! user: admin, name: 'Victor Costan',
     nickname: 'Victor', university: 'MIT', department: 'EECS',
     year: 'G', athena_username: 'costan', about_me: "I'm the boss"
 
+admin_registration = Registration.new for_credit: false, allows_publishing: true    
+admin_registration.user = admin
+admin_registration.course = course
+admin_registration.save!
+
+PrerequisiteAnswer.create! registration: admin_registration,
+    prerequisite: prereq1, took_course: false,
+    waiver_answer: 'Gold medal at IOI 2003'
+PrerequisiteAnswer.create! registration: admin_registration,
+    prerequisite: prereq2, took_course: true, waiver_answer: nil
+
 # Students.
 
 names = File.read('db/seeds/names.txt').split("\n").
@@ -209,8 +220,6 @@ end
     end
   end
 end
-
-
 
 # TODO: Projects.
 

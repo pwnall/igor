@@ -28,8 +28,18 @@ class Course < ActiveRecord::Base
   # Assignments issued for this course.
   has_many :assignments, :dependent => :destroy, :inverse_of => :course
   
+  # All users connected to this course.
+  has_many :users, :through => :registrations, :source => :user
+  
   # Students registered for this course.
-  has_many :students, :through => :registrations, :source => :user
+  def students
+    users.where admin: false
+  end
+  
+  # Course staff members.
+  def staff
+    users.where admin: true
+  end
 
   # The main (and only) course on the website.
   def self.main

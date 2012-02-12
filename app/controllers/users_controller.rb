@@ -25,8 +25,9 @@ class UsersController < ApplicationController
   def new
     @user = User.new
     @user.build_profile
-    @user.registrations.build :course => Course.main
-    @user.registrations.first.build_prerequisite_answers
+    registration = @user.registrations.build
+    registration.course = Course.main
+    registration.build_prerequisite_answers
 
     respond_to do |format|
       format.html # new.html.erb
@@ -43,6 +44,9 @@ class UsersController < ApplicationController
     @user = User.new params[:user]
     # The first user becomes an administrator by default.
     @user.admin = (User.count == 0)
+    if registration = @user.registrations.first
+      registration.course = Course.main
+    end
 
     respond_to do |format|
       if @user.save

@@ -21,6 +21,12 @@
                                   :placeholder => 1.0 %>
     </span>
   </p>
+  <p class="field">
+    <%= f.label :author, 'Author' %>
+    <span class="field">
+      <%= f.collection_select :author_id, Course.main.staff, :id, :name %>
+    </span>
+  </p>
   
   <% if f.object.course.has_teams? %>
   <p class="field">

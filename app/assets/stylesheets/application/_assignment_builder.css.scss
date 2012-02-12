@@ -2,7 +2,43 @@
   padding: 0 0 0 4em;
 }
 
-@mixin assignment-builder-table {
+.assignment-builder-deliverables {
+  p {
+    display: -webkit-flexbox;
+    display: -moz-flexbox;
+    display: flexbox;
+    
+    -webkit-flex-align: baseline;
+    -moz-flex-align: baseline;
+    flex-align: baseline;
+    
+    input.name {
+      width: -webkit-flex(1);
+      width: -moz-flex(1);
+      width: flex(1);
+    }
+    input.file-ext {
+      width: 4em;
+    }
+    > input, select, span {
+      display: block;
+      margin: 0 0.2em 0 0;
+    }
+  }
+  
+  p.description {
+    display: block;
+    span {
+      display: block;
+      textarea {
+        box-sizing: border-box;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.assignment-builder-metrics {
   display: table;
   width: 100%;
 
@@ -26,29 +62,6 @@
       }
     }
   }  
-}
-
-.assignment-builder-deliverables {
-  @include assignment-builder-table;
-  
-  span.file-type {
-    width: 8em;
-  }
-  
-  p.description {
-    display: block;
-    span {
-      display: block;
-      textarea {
-        box-sizing: border-box;
-        width: 100%;
-      }
-    }
-  }
-}
-
-.assignment-builder-metrics {
-  @include assignment-builder-table;
 }
 
 .assignment-builder .error-explanation {

@@ -1,18 +1,14 @@
 <section class="deliverable" data-pwnfx-hide-positive="deliverable-div"
          data-pwnfx-scope="deliverable">
   <p class="header">
-    <span class="name">
-      <%= f.text_field :name, placeholder: 'PDF Write-up', required: true %>
-    </span>
-    <span class="file-type">
-      <%= f.text_field :file_ext, placeholder: 'pdf', required: true %>
-    </span>
-    <span class="validator-type">
+    <%= f.text_field :name, placeholder: 'PDF Write-up', required: true,
+                            class: 'name' %>
+    <%= f.text_field :file_ext, placeholder: 'pdf', required: true,
+                                class: 'file-ext' %>
     <%= f.fields_for :analyzer, f.object.analyzer || ProcAnalyzer.new do |fa| %>
       <%= fa.select :type, analyzer_types_for_select, {},
                            'data-pwnfx-showif-source' => 'analyzer-type' %>
     <% end %>
-    </span>
     <span class="destroy">
       <%= f.check_box :_destroy, 'data-pwnfx-hide' => 'deliverable-div',
               'data-pwnfx-hide-scope' => 'deliverable',

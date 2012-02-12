@@ -113,11 +113,10 @@ class FeedItem
     Deliverable.includes(:assignment).each do |deliverable|
       next unless deliverable.visible_for?(user)
       
-      # TODO(costan): get authors on deliverables
       with_teammates = deliverable.assignment.team_partition_id ?
                        'and your teammates ' : ''
       item = FeedItem.new :time => deliverable.updated_at,
-          :author => User.first, :flavor => :deliverable,
+          :author => deliverable.assignment.author, :flavor => :deliverable,
           :headline => "asked you #{with_teammates}to submit a " +
                        "#{deliverable.name} for #{deliverable.assignment.name}",
           :contents => deliverable.description,

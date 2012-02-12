@@ -11,6 +11,9 @@ class Assignment < ActiveRecord::Base
                    :presence => true
   attr_accessible :name
   
+  # The user that will be reported as the assignment's author.
+  belongs_to :author, :class_name => 'User'
+  
   # True if the user is allowed to see this assignment.
   def visible_for?(user)
     deliverables_ready? || metrics_ready? || (user && user.admin?)
@@ -33,7 +36,7 @@ class Assignment
   
   # If true, students can read deliverables and make submissions.
   validates :deliverables_ready, :inclusion => { :in => [true, false],
-                                                 :allow_nil => false }  
+                                                 :allow_nil => false }
   attr_accessible :deliverables_ready
 
   # The deliverables that students need to submit to complete the assignment.

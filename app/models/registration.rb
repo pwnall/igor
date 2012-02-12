@@ -11,18 +11,20 @@ class Registration < ActiveRecord::Base
 
   # True if the student is taking the class for credit.
   validates :for_credit, :inclusion => { :in => [true, false] }
+  attr_accessible :for_credit
   
   # True if the student dropped the class.
   validates :dropped, :inclusion => { :in => [true, false] }
-  attr_protected :dropped
   
   # True if the user consents to having their work published.
   validates :allows_publishing, :inclusion => { :in => [true, false] }  
+  attr_accessible :allows_publishing
   
   # The user's recitation section.
   #
   # This is only used if the user is a student and the course has recitations.
   belongs_to :recitation_section
+  attr_protected :recitation_section
 
   # Temporary excuse for a calendar.
   has_many :recitation_conflicts, :dependent => :destroy
@@ -31,6 +33,7 @@ class Registration < ActiveRecord::Base
   has_many :prerequisite_answers, :dependent => :destroy,
                                   :inverse_of => :registration
   accepts_nested_attributes_for :prerequisite_answers, :allow_destroy => false
+  attr_accessible :prerequisite_answers_attributes
   
   # Populates prerequisite_answers for a new registration
   def build_prerequisite_answers
