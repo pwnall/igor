@@ -13,6 +13,8 @@ class Assignment < ActiveRecord::Base
   
   # The user that will be reported as the assignment's author.
   belongs_to :author, :class_name => 'User'
+  validates :author, :presence => true
+  attr_accessible :author_id
   
   # True if the user is allowed to see this assignment.
   def visible_for?(user)
