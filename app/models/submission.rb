@@ -50,11 +50,15 @@ class Submission < ActiveRecord::Base
       self.analysis = Analysis.new
       analysis.submission = self      
     end
-    self.analysis.queued!
-    if Rails.env.production? 
-      self.delay.run_analysis
+    if analyzer
+      self.analysis.reset_status! :queued
+      if Rails.env.production? 
+        self.delay.run_analysis
+      else
+        self.run_analysis
+      end
     else
-      self.run_analysis
+      self.analysis.reset_status! :no_analyzer
     end
   end
   
@@ -65,10 +69,10 @@ class Submission < ActiveRecord::Base
       analysis.submission = self
     end
     if analyzer
-      self.analysis.running!
+      self.analysis.reset_status! :queued
       analyzer.analyze self
     else
-      self.analysis.no_analyzer!
+      self.analysis.reset_status! :no_analyzer
     end
   end
 end

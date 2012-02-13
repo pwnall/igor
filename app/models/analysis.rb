@@ -13,6 +13,9 @@
 
 # The result of analyzing a Submission. 
 class Analysis < ActiveRecord::Base
+  # Analyses aren't editable from Web forms.
+  attr_accessible
+
   # The submission that was analyzed.
   belongs_to :submission, inverse_of: :analysis
   validates :submission, presence: true
@@ -22,33 +25,38 @@ class Analysis < ActiveRecord::Base
   validates :score, numericality: { integer_only: true,
       greater_than_or_equal_to: 0, allow_nil: true }
   
-  # Analysis result.
-  validates :diagnostic, length: { in: 1..256, allow_nil: true }
-
-  # Detailed log of the analysis software.
+  # The analyzer's logging output.
   validates :log, length: { in: 1..64.kilobytes, allow_nil: true }
 
-  # Analyses aren't editable from Web forms.
-  attr_accessible
+  # Analysis status, can be one of the following symbols.
+  STATUS_SYMBOLS = {
+    :no_analyzer => 1,
+    :queued => 2,
+    :running => 3,
+    :limits_exceeded => 4,
+    :crashed => 5,
+    :wrong => 6,
+    :ok => 7
+  }.freeze
+  STATUS_VALUES = STATUS_SYMBOLS.invert.freeze
+  validates :raw_status, :inclusion => { :in => STATUS_SYMBOLS.values }
   
-  # Sets fields to reflect that the result is pending a queued check.
-  def queued!
-    self.diagnostic = 'Queued'
+  # :nodoc: synthetic attribute converting status to raw_status
+  def status=(new_status)
+    new_raw_status = STATUS_VALUES[new_status]
+    raise ArgumentError, "Invalid status #{new_status}" unless value
+    self.raw_status = new_raw_status
+  end
+  def status
+    STATUS_VALUES[raw_status]
+  end
+end
+
+class Analysis
+  # Resets all the data in the analyzer.
+  def reset_status!(new_status)
+    self.status = new_status
     self.log = self.score = nil
     self.save!
-  end
-  
-  # Sets fields to reflect that the result is pending a running check.
-  def running!
-    self.diagnostic = 'Running'
-    self.log = self.score = nil
-    self.save!
-  end
-  
-  # Sets fields to reflect that no analyzer is available for the submission.
-  def no_analyzer!
-    self.diagnostic = 'No analyzer available'
-    self.log = self.score = nil
-    self.save!
-  end
+  end  
 end
