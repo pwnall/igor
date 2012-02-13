@@ -46,9 +46,16 @@ class Submission < ActiveRecord::Base
   
   # Queues up a request to run an automated health-check for this submission.
   def queue_analysis
-    self.analysis ||= Analysis.new :submission => self
+    unless analysis
+      self.analysis = Analysis.new
+      analysis.submission = self      
+    end
     self.analysis.queued!
-    self.delay.run_analysis
+    if Rails.env.production? 
+      self.delay.run_analysis
+    else
+      self.run_analysis
+    end
   end
   
   # Performs an automated health-check for this submission.
