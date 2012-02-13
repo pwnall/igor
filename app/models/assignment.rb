@@ -141,6 +141,7 @@ end
 #
 #  id                 :integer(4)      not null, primary key
 #  course_id          :integer(4)      not null
+#  author_id          :integer(4)      not null
 #  team_partition_id  :integer(4)
 #  feedback_survey_id :integer(4)
 #  deadline           :datetime        not null
@@ -151,6 +152,5 @@ end
 #  accepts_feedback   :boolean(1)      default(FALSE), not null
 #  created_at         :datetime        not null
 #  updated_at         :datetime        not null
-#  author_id          :integer(4)      default(1), not null
 #
 

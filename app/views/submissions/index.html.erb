@@ -62,7 +62,7 @@
 					</td>
 					<td>
 						<% if submission.analysis %>
-						<%= link_to submission.analysis.diagnostic,
+						<%= link_to analysis_status_text(submission.analysis),
                         submission.analysis %>
 						<% else %>
 						no status
@@ -73,12 +73,8 @@
                         :method => :post %>
 					</td>
 					<td>
-						<%= link_to "View",
-                        file_submission_path(submission, :inline => true) %>
-					</td>
-					<td>
 						<%= link_to "Download (#{number_to_human_size submission.db_file.f.size})",
-                        file_submission_path(submission, :inline => false) %>
+                        file_submission_path(submission) %>
 				  </td>
 				</tr>
 				<% end %>

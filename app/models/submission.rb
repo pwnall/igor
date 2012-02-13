@@ -46,10 +46,7 @@ class Submission < ActiveRecord::Base
   
   # Queues up a request to run an automated health-check for this submission.
   def queue_analysis
-    unless analysis
-      self.analysis = Analysis.new
-      analysis.submission = self      
-    end
+    ensure_analysis_exists
     if analyzer
       self.analysis.reset_status! :queued
       if Rails.env.production? 
@@ -64,15 +61,23 @@ class Submission < ActiveRecord::Base
   
   # Performs an automated health-check for this submission.
   def run_analysis
-    unless analysis
-      self.analysis = Analysis.new
-      analysis.submission = self
-    end
+    ensure_analysis_exists
     if analyzer
       self.analysis.reset_status! :queued
       analyzer.analyze self
     else
       self.analysis.reset_status! :no_analyzer
+    end
+  end
+  
+  # After this method completes, this submission's analysis will not be nil.
+  def ensure_analysis_exists
+    unless analysis
+      analysis = Analysis.new
+      analysis.submission = self
+      analysis.status = :queued
+      analysis.log = ''
+      self.analysis = analysis
     end
   end
 end

@@ -9,15 +9,15 @@
              :html => {:class => 'user_form'}) do |f| %>
   <div class="form_box">
     <div class="form_entry">
-      <div class="form_label">Result</div>
+      <div class="form_label">Status</div>
       <div class="form_field_box">
-        <%=h @analysis.diagnostic %>
+        <%= analysis_status_text @analysis %>
       </div>
     </div>        
     <div class="form_entry">
       <div class="form_label">Score</div>
       <div class="form_field_box">
-        <%=h @analysis.score || 'Not available' %>
+        <%= @analysis.score || 'Not available' %>
       </div>
     </div>        
     <div class="form_entry">

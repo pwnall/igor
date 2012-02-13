@@ -6,6 +6,7 @@ module Contents
 class FeedItem
   class <<self
     include ActionView::Helpers::NumberHelper
+    include AnalysesHelper
   end
   
   # The time the item was posted. Usually items will be sorted by time.
@@ -77,7 +78,7 @@ class FeedItem
       if analysis = submission.analysis
         reply = FeedItem.new :time => analysis.updated_at,
             :author => User.first, :flavor => :announcement,
-            :contents => analysis.diagnostic,
+            :contents => analysis_status_text(submission.analysis),
             :actions => [
               ['Details', [:url_for, analysis]]
             ],

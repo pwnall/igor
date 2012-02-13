@@ -5,6 +5,7 @@ module CoverSheet
   include ActionView::Helpers::NumberHelper
   include ActionView::Helpers::TextHelper
   include ApplicationHelper
+  include AnalysesHelper
   
   def cover_sheet_for_assignment(target, assignment, file_name)
     submissions = target.submissions.
@@ -80,7 +81,7 @@ module CoverSheet
         end
         [d.name, 
          number_to_human_size(s.db_file.f.size),
-         (s.analysis.nil? ? 'no diagnostic' : s.analysis.diagnostic),
+         analysis_status_text(s.analysis),
          submitted_text,
          (s.updated_at < d.assignment.deadline) ? 'not needed' : '']
       end

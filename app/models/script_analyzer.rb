@@ -144,31 +144,44 @@ class ScriptAnalyzer < Analyzer
     
     running_time = result[:status][:system_time] + result[:status][:user_time]
     if running_time > time_limit.to_i
-      diagnostic = "Time Limit Exceeded"
-      score = '0'
+      status = :limit_exceeded
+      status_log = <<END_LOG
+Your submission exceeded the time limit of #{time_limit.to_i} seconds.
+The process was terminated after running for #{running_time} seconds.
+END_LOG
+      score = 0
     elsif result[:status][:exit_code] != 0
-      diagnostic = "Crashed (exit code #{result[:status][:exit_code]})"
-      score = '0'
+      status = :crashed
+      status_log = <<END_LOG
+Your submission crashed with exit code #{result[:status][:exit_code]}.
+The process ran for #{running_time} seconds.
+END_LOG
+      score = 0
     else
       begin
         log_diags = log.slice(0, log.index(/[\n\r]{2}/m)).split(/[\n\r]+/m)
         tests = log_diags.length
         passed = log_diags.select { |d| !(d =~ /FAIL/ || d =~ /ERROR/) }.length
-        score = "#{passed}"
-        runtime = log.scan(/^Ran [0-9]* tests in ([0-9.]*)s$/)[-1]
-        diagnostic = "#{passed == tests ? 'ok' : 'needs work'} (#{passed} / #{tests})"
-        if runtime != nil
-          diagnostic += " in %.1fs" % runtime[0]
-        end
+        
+        status = (passed == tests) ? :ok : :wrong
+        status_log = <<END_LOG
+Your submission passed #{passed} tests out of #{tests}.
+The process ran for #{running_time} seconds.
+END_LOG
+        score = (100 * passed / tests.to_f).round
       rescue
-        score = '0'
-        diagnostic = 'Bad Log'
+        status = :ok
+        status_log = <<END_LOG
+The analyzer ran successfully, but did not report a score for your submission.
+The process ran for #{running_time} seconds.
+END_LOG
+        score = 100
       end
     end
     
     analyis = submission.analysis
-    analyis.log = log
-    analyis.diagnostic = diagnostic
+    analyis.log = [log, status_log].join("\n")
+    analyis.status = status
     analyis.score = score
     analyis.save!
   end

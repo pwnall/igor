@@ -6,17 +6,16 @@
                   submission.user %>
     </span>
     submitted a
-    <%= link_to file_submission_path(submission, :inline => false) do %>
-      <%= number_to_human_size submission.db_file.f.size %> file
-    <% end %>
+    <%= link_to "#{number_to_human_size(submission.db_file.f.size)} file",
+                file_submission_path(submission) %>
     <%= time_ago_in_words submission.updated_at %>
     ago.
   </span>
   <span class="submission-result">
   <% if submission.analysis %>
-    <%= link_to submission.analysis.diagnostic,
+    <%= link_to analysis_status_text(submission.analysis),
                 submission.analysis %>
-    <% if %w(queued running).include? submission.analysis.diagnostic.downcase %>
+    <% if submission.analysis.status_will_change? %>
       <span data-pwnfx-delayed="submission-info" data-pwnfx-delayed-method="GET"
             data-pwnfx-delayed-url="<%= info_submission_path(submission) %>"
             data-pwnfx-delayed-ms="5000"

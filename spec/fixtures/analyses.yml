@@ -5,10 +5,10 @@
 #  id            :integer(4)      not null, primary key
 #  submission_id :integer(4)      not null
 #  score         :integer(4)
-#  diagnostic    :string(256)
+#  log           :text(16777215)  default(""), not null
 #  created_at    :datetime        not null
 #  updated_at    :datetime        not null
-#  log           :text(16777215)
+#  status_code   :integer(4)      not null
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
@@ -16,11 +16,11 @@
 #one:
 #  submission_id: 1
 #  score: 1
-#  diagnostic: MyString
+#  status: 1
 #  log:
 #
 #two:
 #  submission_id: 1
 #  score: 1
-#  diagnostic: MyString
+#  status: 1
 #  log: 
