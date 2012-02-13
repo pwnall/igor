@@ -3,7 +3,5 @@ unless Rails.env.test?
 end
 
 Seven::Application.config.action_mailer.smtp_settings = {
-  :address => "outgoing.mit.edu",
-  :port => 25,
-  :domain => "mit.edu",
+  address: 'outgoing.mit.edu', port: 25, domain: 'mit.edu',
 }

@@ -29,18 +29,9 @@ Seven::Application.configure do
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
 
-  # Use SQL instead of Active Record's schema dumper when creating the test database.
-  # This is necessary if your schema can't be completely dumped by the schema dumper,
-  # like if you have constraints or database-specific column types
-  # config.active_record.schema_format = :sql
+  # Raise exception on mass assignment protection for Active Record models
+  config.active_record.mass_assignment_sanitizer = :strict
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
-
-  # Raise exception on mass assignment protection for Active Record models
-  config.active_record.mass_assignment_sanitizer = :strict
-   
-  # Log the query plan for queries taking more than this (works
-  # with SQLite, MySQL, and PostgreSQL)
-  config.active_record.auto_explain_threshold_in_seconds = 0.5
 end

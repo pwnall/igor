@@ -25,7 +25,14 @@ class GradesController < ApplicationController
       query = query.where(['deadline < ?', Time.now]).order('deadline DESC')
     end
     
-    @assignment = query.first
+    @assignment = query.first || Assignment.last
+    unless @assignment
+      respond_to do |format|
+        format.html { render :action => :editor_blank }
+      end
+      return
+    end
+      
     @metrics = @assignment.metrics
     @grades = @assignment.grades.includes(:subject).
                           group_by { |g| [g.subject, g.metric] }
