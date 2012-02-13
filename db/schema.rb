@@ -17,9 +17,9 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
     t.integer  "submission_id",                     :null => false
     t.integer  "score"
     t.string   "diagnostic",    :limit => 256
+    t.text     "log",           :limit => 16777215
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
-    t.text     "log",           :limit => 16777215
   end
 
   add_index "analyses", ["submission_id"], :name => "index_analyses_on_submission_id", :unique => true
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "course_id",                                                                          :null => false
+    t.integer  "author_id",                                                                          :null => false
     t.integer  "team_partition_id"
     t.integer  "feedback_survey_id"
     t.datetime "deadline",                                                                           :null => false
@@ -68,7 +69,6 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
     t.boolean  "accepts_feedback",                                                :default => false, :null => false
     t.datetime "created_at",                                                                         :null => false
     t.datetime "updated_at",                                                                         :null => false
-    t.integer  "author_id",                                                       :default => 1,     :null => false
   end
 
   add_index "assignments", ["course_id", "deadline", "name"], :name => "index_assignments_on_course_id_and_deadline_and_name", :unique => true

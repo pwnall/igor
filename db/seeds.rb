@@ -65,8 +65,10 @@ names.each_with_index do |name, i|
       athena_username: short_name, university: 'MIT', year: (1 + (i % 4)).to_s,
       department: depts[i % depts.length], about_me: "Test subject #{i + 1}"
 
-  registration = Registration.create! user: user, course: course,
-      for_credit: (i % 2 == 0), allows_publishing: (i % 2 == 0)
+  registration = Registration.new for_credit: (i % 5 < 4),
+                                  allows_publishing: (i % 7 < 5)
+  registration.user = user
+  registration.course = course
 
   PrerequisiteAnswer.create! registration: registration,
       prerequisite: prereq1, took_course: (i % 2 == 0),
@@ -89,7 +91,7 @@ exam_data = [
 exams = exam_data.map.with_index do |data, index|
   i = index + 1
   
-  exam = Assignment.new name: "Exam #{i}", weight: 5.0,
+  exam = Assignment.new name: "Exam #{i}", weight: 5.0, author: admin,
                         deadline: Time.now + data[:deadline]
   exam.course = course
   exam.deliverables_ready = data[:state] != :draft
@@ -135,8 +137,8 @@ pset_data = [
 
 psets = pset_data.map.with_index do |data, index|
   i = index + 1
-  pset = Assignment.new name: "Problem Set #{i}", weight: 1.0,
-      deadline: Time.now + data[:deadline]
+  pset = Assignment.new name: "Problem Set #{i}", weight: 1.0, author: admin,
+                        deadline: Time.now + data[:deadline]
   pset.course = course
   pset.deliverables_ready = data[:state] != :draft
   pset.metrics_ready = data[:state] == :graded
@@ -189,8 +191,9 @@ end
                                     'application/pdf')
            }, created_at: time, updated_at: time
       submission.run_analysis
-      submission.analysis.update_attributes! created_at: time + 1.second,
-                                             updated_at: time + 5.seconds    
+      submission.analysis.created_at = time + 1.second
+      submission.analysis.updated_at = time + 5.seconds
+      submission.analysis.save!
     end
     
     if (i + j) % 3 == 0
@@ -203,8 +206,9 @@ end
                                     'application/x-ruby')
            }, created_at: time, updated_at: time
       submission.run_analysis
-      submission.analysis.update_attributes! created_at: time + 1.second,
-                                             updated_at: time + 5.seconds    
+      submission.analysis.created_at = time + 1.second
+      submission.analysis.updated_at = time + 5.seconds
+      submission.analysis.save!
     end
     
     # NOTE: the last condition is not a typo; we skip over some of the students
