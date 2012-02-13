@@ -121,7 +121,7 @@ class FeedItem
                        "#{deliverable.name} for #{deliverable.assignment.name}",
           :contents => deliverable.description,
           :actions => [
-            ['Submit', [:url_for, deliverable]]
+            ['Submit', [:url_for, deliverable.assignment]]
           ],
           :replies => []
       items << item
