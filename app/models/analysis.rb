@@ -26,7 +26,8 @@ class Analysis < ActiveRecord::Base
       greater_than_or_equal_to: 0, allow_nil: true }
   
   # The analyzer's logging output.
-  validates :log, length: { in: 0..64.kilobytes, allow_nil: false }
+  LOG_LIMIT = 64.kilobytes
+  validates :log, length: { in: 0..LOG_LIMIT, allow_nil: false }
 end
 
 # :nodoc: Analysis life cycle.

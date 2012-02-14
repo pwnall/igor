@@ -141,6 +141,10 @@ class ScriptAnalyzer < Analyzer
   # Computes the score for the submission and saves it into the analysis.  
   def score_submission(submission, result)
     log = result[:log]
+    log_limit = Analysis::LOG_LIMIT - 1.kilobyte
+    if log.length >= log_limit
+      log = [log[0, log_limit], "\n**Too much output. Truncated.**"].join('')
+    end
     
     running_time = result[:status][:system_time] + result[:status][:user_time]
     if running_time > time_limit.to_i

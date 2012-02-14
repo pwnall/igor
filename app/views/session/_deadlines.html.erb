@@ -7,7 +7,7 @@
       <span class="icon">
         <%= deadline_state_icon_tag deadline.state %>
       </span>
-      <span class="date">
+      <span class="date" title="<%= deadline.due.to_s(:deadline_long) %>">
         <%= deadline.due.to_s(:deadline_short) %>
       </span>
       <span class="assignment">
