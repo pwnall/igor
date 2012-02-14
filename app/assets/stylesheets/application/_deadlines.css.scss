@@ -1,28 +1,56 @@
+.deadlines-heading {
+  padding-left: (0.25 * $column-total);
+}
 ol.deadlines {
-  display: table;
+  display: block;
   width: 100%;
+  font-size: 1.1em;
+  line-height: 1.2em;
   
   li {
-    display: table-row;
-  }
-  li span {
-    display: table-cell;
-  }
-  li span.date {
-    width: (2 * $column-total);
-  }
+    display: block;
+    padding: 0.4em 0 0.2em 0;
+    border-bottom: 1px solid $header-border-color;
+    
+    div.heading {
+      display: -webkit-flexbox;
+      display: -moz-flexbox;
+      display: flexbox;
+      padding: 0 0 0 (0.25 * $column-total);
+      
+      span.icon {
+        display: inline-block;
+        width: (0.75 * $column-total);
+        img {
+          position: relative;
+          top: (0.25 * $column-total);
+        }
+      }
+      span.date {
+        display: block;
+        width: (2 * $column-total);
+        -webkit-flex-order: 2;
+        -moz-flex-order: 2;
+        flex-order: 2;
+      }
+      span.assignment {
+        display: block;
+        width: -webkit-flex(1);
+        width: -moz-flex(1);
+        width: flex(1);
+      }
+    }
+    div.description {
+      padding: 0 0 0 (1 * $column-total);
+    }
 
-  li.deadline-overdue {
-    color: #7E3300;
-  }
-  li.deadline-done {
-    color: #99A0EF;
-  }
-  li.deadline-missed {
-    color: #EABA99;
-    text-decoration: line-through;
-  }
-  li a {
-    color: inherit;
-  }
+    &.deadline-overdue, &.deadline-done, &.deadline-missed {
+      background-color: change-color($main-color1,
+          $saturation: 10%, $lightness: 98%);
+      color: lighten($text-color, 35%);
+      a {
+        color: lighten($text-color, 35%);
+      }
+    }
+  }  
 }

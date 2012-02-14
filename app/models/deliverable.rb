@@ -49,14 +49,16 @@ class Deliverable < ActiveRecord::Base
   has_many :submissions, :dependent => :destroy, :inverse_of => :deliverable
   
   # True if the given user should be allowed to see the deliverable.
-  def visible_for?(user)
+  def can_read?(user)
     assignment.deliverables_ready? || (user && user.admin?)
   end
 
   # This deliverable's submission for the given user.
   #
   # The result is non-trivial in the presence of teams.
-  def submission_for(user)    
+  def submission_for(user)
+    return nil unless user
+    
     if (partition = assignment.team_partition) and
        (team = partition.team_for_user(user))
       users = team.users

@@ -102,6 +102,24 @@ module IconsHelper
     end
   end
   
+  def deadline_state_icon_tag(state = :pending)
+    case state
+    when :pending
+      image_tag 'icons/deadline.png', alt: 'Pending deadline', class: 'ui-icon'
+    when :missed
+      image_tag 'icons/deadline_missed.png', alt: 'Missed deadline',
+                                             class: 'ui-icon'
+    when :overdue
+      image_tag 'icons/deadline_overdue.png', alt: 'Overdue', class: 'ui-icon'
+    when :changing
+      image_tag 'icons/waiting.png', alt: 'Processing', class: 'ui-icon'
+    when :rejected
+      image_tag 'icons/error.png', alt: 'Rejected submission', class: 'ui-icon'
+    when :done
+      image_tag 'icons/checkmark.png', alt: 'Done', class: 'ui-icon'
+    end
+  end
+  
   # Show this icon next to forms that configure site features.
   def config_icon_tag
     image_tag 'icons/config.png', alt: 'Configuration', class: 'ui-icon'

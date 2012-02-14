@@ -49,7 +49,7 @@ class Submission < ActiveRecord::Base
     ensure_analysis_exists
     if analyzer
       self.analysis.reset_status! :queued
-      if Rails.env.production? 
+      if Rails.env.production?
         self.delay.run_analysis
       else
         self.run_analysis

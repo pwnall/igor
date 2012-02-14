@@ -23,7 +23,7 @@ class AssignmentMetric < ActiveRecord::Base
                         :presence => true
 
   # True if the given user should be allowed to see the metric.
-  def visible_for?(user)
+  def can_read?(user)
     assignment.metrics_ready? || (user && user.admin?)
   end
   

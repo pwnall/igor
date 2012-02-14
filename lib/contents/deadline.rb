@@ -7,21 +7,27 @@ class Deadline
   # The date when the deadline is due.
   attr_accessor :due
   # Short description for the deadline.
-  attr_accessor :headline
+  attr_accessor :description
   # An action that can lead to completing the deadline.
   attr_accessor :link
   # True if the deadline's action can still be done.
   attr_accessor :active
   alias_method :active?, :active
+  # True if the deadline should indicate a rejected submission.
+  attr_accessor :rejected
+  alias_method :rejected?, :rejected
+  # True if the deadline status is expected to change soon.
+  attr_accessor :changing
+  alias_method :changing?, :changing
   # True if the deadline should show up as completed / fulfilled.
   attr_accessor :done
   alias_method :done?, :done
-  # The object that triggered the deadline.
-  attr_accessor :source
+  # The assignment that the deadline is for.
+  attr_accessor :assignment
   
   # True if the deadline passed and the user hasn't fulfilled it.
   def overdue?
-    !done? and due < Time.now
+    !done? && due < Time.now
   end
 
   # Returns :pending, :done, :overdue, or :missed.
@@ -30,6 +36,10 @@ class Deadline
       :done
     elsif overdue?
       active? ? :overdue : :missed
+    elsif changing?
+      :changing
+    elsif rejected?
+      :rejected
     else
       :pending
     end
@@ -38,7 +48,7 @@ class Deadline
   # The deadlines that are relevant to a user.
   #
   # Returns an array of Deadline objects sorted in order of relevance.
-  def self.for(user = nil, options = {})
+  def self.for(user, options = {})
     if user
       answers_by_aid = user.survey_answers.index_by(&:assignment_id)
     else
@@ -47,40 +57,40 @@ class Deadline
     
     deadlines = []
     Assignment.includes(:deliverables, :feedback_survey).
-               order('deadline DESC').each do |assignment|
+               by_deadline.each do |assignment|
+      next unless assignment.can_read?(user)
+                 
       include_feedback = user ? false : true
-      assignment.deliverables.each do |deliverable|
-        next unless deliverable.visible_for?(user)
+      assignment.deliverables_for(user).each do |deliverable|
         d = Deadline.new :due => assignment.deadline, :done => false,
-                         :active => true, :source => assignment,
-                         :headline =>
-                             "#{deliverable.name} for #{assignment.name}",                         
+                         :active => true, :assignment => assignment,
+                         :description => deliverable.name,                         
                          :link => [
-                            [:new_submission_path,
-                             {:submission => {:deliverable_id => deliverable}}],
-                            {:remote => true}
+                            [:assignment_path, assignment]
                          ]
 
-        if user and deliverable.submission_for(user)
+        if submission = deliverable.submission_for(user)
           # TODO(costan): make deadline inactive if we posted grades or admin disabled submissions
-          d.done = true
+          d.done = !submission.analysis || submission.analysis.submission_ok?
+          d.rejected = submission.analysis &&
+                       submission.analysis.submission_rejected?
+          d.changing = submission.analysis &&
+                       submission.analysis.status_will_change?
           include_feedback = true
         end
-        next if d.done  # Exclude completed deadlines.
         deadlines << d
       end
     
       if include_feedback and assignment.feedback_survey
         d = Deadline.new :due => assignment.deadline, :done => false,         
-                         :headline => "Feedback survey for #{assignment.name}",
+                         :description => "Feedback survey",
                          :link => [[:new_survey_answer_path,
                                     {:survey_answer => {:assignment_id =>
                                                           assignment.id } }],
                                    {:remote => true}],
-                         :source => assignment,
+                         :assignment => assignment,
                          :active => assignment.accepts_feedback
         d.done = true if answers_by_aid[assignment.id]
-        next if d.done  # Exclude completed deadlines.
         deadlines << d
       end
     end

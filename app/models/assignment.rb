@@ -18,16 +18,16 @@ class Assignment < ActiveRecord::Base
   attr_accessible :author_id
   
   # True if the user is allowed to see this assignment.
-  def visible_for?(user)
+  def can_read?(user)
     deliverables_ready? || metrics_ready? || (user && user.admin?)
   end
 
-  # A course's assignments, ordered by their deadline.
+  # Adds deadline ordering to an assignment query.
   scope :by_deadline, order('deadline DESC').order(:name)
   
   # The assignments in a course that are visible to a user.
   def self.for(user, course)
-    course.assignments.by_deadline.select { |a| a.visible_for? user }
+    course.assignments.by_deadline.select { |a| a.can_read? user }
   end
 end
 
@@ -68,7 +68,7 @@ class Assignment
   
   # Deliverables that a user can submit files for.
   def deliverables_for(user)
-    deliverables.select { |d| d.visible_for? user }
+    (deliverables_ready? || (user && user.admin?)) ? deliverables : []
   end
 end
 

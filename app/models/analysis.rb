@@ -61,6 +61,16 @@ class Analysis
   def status_will_change?
     status == :queued || status == :running
   end
+  
+  # True the submission appears to be correct.
+  def submission_ok?
+    status == :ok || status == :no_analyzer
+  end
+  
+  # True if the submission is definitely incorrect.
+  def submission_rejected?
+    status == :wrong || status == :crashed || status == :limit_exceeded
+  end
 end
 
 class Analysis

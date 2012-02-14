@@ -1,19 +1,31 @@
-<h2>Deadlines</h2>
+<h2 class="deadlines-heading">Deadlines</h2>
 
 <ol class="deadlines">
 <% Contents::Deadline.for(current_user).each do |deadline| %>
   <li class="deadline-<%= deadline.state %>">
-    <span class="date">
-      <%= deadline.due.to_s(:deadline_short) %>
-    </span>
-    <span class="title">
+    <div class="heading">
+      <span class="icon">
+        <%= deadline_state_icon_tag deadline.state %>
+      </span>
+      <span class="date">
+        <%= deadline.due.to_s(:deadline_short) %>
+      </span>
+      <span class="assignment">
+        <% if deadline.active? %>
+          <%= link_to deadline.assignment.name, deadline.assignment %>
+        <% else %>
+          <%= deadline.assignment.name %>
+        <% end %>
+      </span>
+    </div>
+    <div class="description">
       <% if deadline.active? %>
-        <%= link_to deadline.headline, self.send(*deadline.link[0]),
+        <%= link_to deadline.description, self.send(*deadline.link[0]),
                     deadline.link[1] || {} %>
       <% else %>
         <%= deadline.headline %>
       <% end %>
-    </span>
+    </div>
   </li>
 <% end %>
 </ol>
