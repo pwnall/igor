@@ -15,11 +15,11 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
 
   create_table "analyses", :force => true do |t|
     t.integer  "submission_id",                     :null => false
+    t.integer  "status_code",                       :null => false
     t.integer  "score"
     t.text     "log",           :limit => 16777215, :null => false
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
-    t.integer  "status_code",                       :null => false
   end
 
   add_index "analyses", ["submission_id"], :name => "index_analyses_on_submission_id", :unique => true

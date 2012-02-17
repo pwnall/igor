@@ -3,6 +3,7 @@ class CreateAnalyzers < ActiveRecord::Migration
     create_table :analyzers do |t|
       t.references :deliverable, :null => false
       t.string :type, :limit => 32, :null => false
+      t.boolean :change_grades, :null => false, :default => false
 
       t.string :input_file, :limit => 64, :null => true
       t.text :exec_limits, :limit => 1.kilobyte, :null => true
