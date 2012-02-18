@@ -45,5 +45,9 @@ LOG_END
       result.log = "Missing PDF header.\nDid you upload a PDF?\n"
     end
     result.save!
+    
+    if auto_grading? && result.status != :ok
+      # TODO: set all grades to 0
+    end
   end
 end
