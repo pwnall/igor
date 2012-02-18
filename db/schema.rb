@@ -25,14 +25,15 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
   add_index "analyses", ["submission_id"], :name => "index_analyses_on_submission_id", :unique => true
 
   create_table "analyzers", :force => true do |t|
-    t.integer  "deliverable_id",               :null => false
-    t.string   "type",           :limit => 32, :null => false
+    t.integer  "deliverable_id",                                  :null => false
+    t.string   "type",           :limit => 32,                    :null => false
+    t.boolean  "auto_grading",                 :default => false, :null => false
     t.string   "input_file",     :limit => 64
     t.text     "exec_limits"
     t.integer  "db_file_id"
     t.string   "message_name",   :limit => 64
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
   end
 
   add_index "analyzers", ["deliverable_id"], :name => "index_analyzers_on_deliverable_id", :unique => true
@@ -143,6 +144,7 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
     t.datetime "updated_at",                                               :null => false
   end
 
+  add_index "grades", ["metric_id"], :name => "index_grades_on_metric_id"
   add_index "grades", ["subject_id", "subject_type", "metric_id"], :name => "grades_by_subject_and_metric", :unique => true
 
   create_table "prerequisite_answers", :force => true do |t|
