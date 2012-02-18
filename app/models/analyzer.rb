@@ -19,11 +19,13 @@
 # the right magic number in the file header. The result 
 class Analyzer < ActiveRecord::Base
   # The deliverable whose submissions are sanity-checked.
-  belongs_to :deliverable, :inverse_of => :analyzer
-  validates :deliverable, :presence => true
-  validates :deliverable_id, :uniqueness => true
+  belongs_to :deliverable, inverse_of: :analyzer
+  validates :deliverable, presence: true
+  validates :deliverable_id, uniqueness: true
   
-  attr_accessible :type
+  # If true, the analyzer can automatically update the student's grades.
+  validates :auto_grading, inclusion: { in: [true, false] }
+  attr_accessible :auto_grading
   
   # Sanity-checks a student's submission.
   #

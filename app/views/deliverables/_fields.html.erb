@@ -30,8 +30,22 @@
          data-pwnfx-showif-scope="deliverable"
          data-pwnfx-showif-replace="div">
     <%= f.fields_for :analyzer, analyzer_for(f.object, ProcAnalyzer) do |fa| %>
-      <%= fa.label :message_name, 'Built-in analyzer' %>
-      <%= fa.select :message_name, proc_analyzer_messages_for_select %>
+      <section class="fields">
+        <p class="field">
+          <%= fa.label :message_name, 'Built-in analyzer' %>
+          <span class="value">
+            <%= fa.select :message_name, proc_analyzer_messages_for_select %>
+          </span>
+        </p>
+        <p class="field">
+          <%= fa.label :auto_grading, 'Auto grading' %>
+          <span class="value">
+            <%= fa.check_box :auto_grading %>
+            <%= fa.label :auto_grading do %>
+              set the assignment's grades to 0 (zero) for invalid submissions
+            <% end %>
+          </span>
+        </p>
     <% end %>
     </div>
 
@@ -112,6 +126,16 @@
           </span>
           <span class="comment">
             processes
+          </span>
+        </p>
+
+        <p class="field">
+          <%= fa.label :auto_grading, 'Auto grading' %>
+          <span class="value">
+            <%= fa.check_box :auto_grading %>
+            <%= fa.label :auto_grading do %>
+              analyzer can output JSON grades
+            <% end %>
           </span>
         </p>
       </section>
