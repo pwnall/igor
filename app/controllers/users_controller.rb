@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :authenticated_as_admin, :except =>
-      [:new, :create, :show, :check_email]
+      [:show, :new, :edit, :create, :check_email]
   before_filter :authenticated_as_user, :only => [:update, :show]
    
   # GET /users
@@ -15,6 +15,7 @@ class UsersController < ApplicationController
   # GET /users/1
   def show
     @user = User.find_by_param params[:id]
+    return bounce_user unless @user && @user.can_read?(current_user)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -37,13 +38,14 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @user = User.find_by_param params[:id]
+    return bounce_user unless @user && @user.can_edit?(current_user)
   end
 
   # POST /users
   def create
     @user = User.new params[:user]
-    # The first user becomes an administrator by default.
-    @user.admin = (User.count == 0)
+    # Bootstrapping: the first user (asides from Staff Robot) gets admin rights.
+    @user.admin = (User.count == 1)
     if registration = @user.registrations.first
       registration.course = Course.main
     end
@@ -66,7 +68,7 @@ class UsersController < ApplicationController
   # PUT /users/1
   def update
     @user = User.find_by_param params[:id]
-    return bounce_user unless @user.can_edit?(current_user)
+    return bounce_user unless @user && @user.can_edit?(current_user)
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
@@ -81,8 +83,9 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
     @user = User.find_by_param params[:id]
+    return bounce_user unless @user && @user.can_edit?(current_user)
+    
     @user.destroy
-
     respond_to do |format|
       format.html { redirect_to(users_url) }
     end

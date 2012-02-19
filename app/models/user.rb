@@ -30,6 +30,14 @@ class User < ActiveRecord::Base
   end
 end
 
+# :nodoc: staff robot
+class User
+  # The user profile that represents the actions of the site software.
+  def self.robot
+    first
+  end
+end
+
 # :nodoc: site identity and class membership
 class User
   # Personal information, e.g. full name and contact info.
@@ -65,9 +73,16 @@ class User
     end
   end
   
+  # Returns true if the given user is allowed to see this user's info.
+  def can_read?(user)
+    # TODO(pwnall): figure out teams; teammates should see user
+    # TODO(pwnall): do admins and course staff get fully visible profiles?
+    admin? || user == self || (user && user.admin?)
+  end
+  
   # Returns true if the given user is allowed to edit this user's info.
   def can_edit?(user)
-    (user && user.admin?) || user == self
+    user == self || (user && user.admin?)
   end
 
   # Class registration info, e.g. survey answers and credit / listener status.

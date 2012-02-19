@@ -15,19 +15,28 @@
 class Grade < ActiveRecord::Base
   # The metric that this grade is for.
   belongs_to :metric, class_name: 'AssignmentMetric'
-  validates :metric, presence: true
+  validates :metric, presence: true,
+                     permission: { subject: :grader, can: :grade }
   validates :metric_id, uniqueness: { scope: [:subject_id, :subject_type] }
+  attr_accessible :metric, :metric_id
   
   # The subject being graded (a user or a team).
   belongs_to :subject, polymorphic: true
   validates :subject, presence: true
+  attr_accessible :subject_type, :subject_id, :subject
   
   # The user who posted this grade (an admin).
   belongs_to :grader, class_name: 'User'
   validates :grader, presence: true
 
   # The numeric grade.
-  validates_numericality_of :score, :only_integer => false
+  validates_numericality_of :score, only_integer: false
+  attr_accessible :score
+  
+  # Because the polymorphic association doesn't allow .where(subject: subject).
+  scope :with_subject, lambda { |subject|
+    where subject_id: subject.id, subject_type: subject.class.name
+  }
   
   # The users impacted by a grade.
   def users

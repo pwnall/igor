@@ -46,8 +46,22 @@ LOG_END
     end
     result.save!
     
-    if auto_grading? && result.status != :ok
-      # TODO: set all grades to 0
+    zero_grades(submission) if auto_grading? && result.status != :ok
+  end
+  
+  # Creates zero grades for all the metrics on the submission's assignment.
+  #
+  # This method does not overwrite existing grades, so that (1) it does not
+  # interfere with human graders, and (2) it can coexist with script analyzers
+  # that might assign non-zero grades for working code.
+  def zero_grades(submission)
+    metrics = submission.assignment.metrics
+    metrics.each do |metric|
+      grade = metric.grade_for submission.user
+      next unless grade.new_record?
+      grade.score = 0
+      grade.grader = User.robot
+      grade.save!
     end
   end
 end

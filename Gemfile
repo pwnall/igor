@@ -31,7 +31,7 @@ gem 'jquery-rails', '>= 2.0.0'
 # gem 'ruby-debug'
 
 # Core.
-gem 'authpwn_rails', '>= 0.10.9'
+gem 'authpwn_rails', '>= 0.10.10'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'fastercsv', '>= 1.5.4', :platforms => [:mri_18]
 gem 'nokogiri', '>= 1.5.0'
@@ -64,9 +64,13 @@ gem 'mit_stalker', '>= 1.0.4'
 gem 'stellar', '>= 0.3.1'
 
 group :development, :test do
-  gem 'annotate', '>= 2.4.1.beta',
-      :git => 'git://github.com/ctran/annotate_models.git'
   gem 'rspec-rails', '>= 2.8.1'
   gem 'thin', '>= 1.3.1'
   gem 'webrat'
+end
+
+group :development do
+  gem 'annotate', '>= 2.4.1.beta',
+      :git => 'git://github.com/ctran/annotate_models.git'  
+  gem 'railroady', '>= 1.0.6'
 end

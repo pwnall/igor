@@ -1,18 +1,16 @@
 class AssignmentsController < ApplicationController
   before_filter :authenticated_as_admin, :except => [:index, :show]
 
+  layout lambda { |controller|
+    controller.current_user.try(:admin?) ? 'assignments' : 'session'
+  }
+
   # GET /assignments
   def index
     @assignments = Assignment.for current_user, Course.main
 
     respond_to do |format|
-      format.html do
-        if current_user.admin?
-         render  # index.html.erb
-        else
-          render :layout => 'application'  # index.html.erb
-        end
-      end
+      format.html  # index.html.erb
     end
   end
 

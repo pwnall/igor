@@ -120,6 +120,11 @@ end
 class Assignment
   # The partition of teams used for this assignment.
   belongs_to :team_partition, :inverse_of => :assignments
+  
+  # The object to be set as the subject on this assignment's grades for a user.
+  def grade_subject_for(user)
+    team_partition.nil? ? user : team_partition.team_for_user(user)
+  end
 end
 
 # :nodoc: feedback survey integration.

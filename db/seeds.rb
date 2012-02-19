@@ -23,15 +23,33 @@ prereq2.save!
 
 # Staff.
 
+unless User.robot
+  robot_user = User.new email: 'robot@localhost.edu',
+                        password: '_', password_confirmation: '_'
+  robot_user.email_credential.verified = true
+  robot_user.save!
+  robot_user.password_credential.destroy
+      
+  robot_profile = Profile.new name: 'Staff Robot', nickname: 'Robot',
+      university: 'MIT', department: 'EECS', year: 'G',
+      athena_username: '---',
+      about_me: "Pay no attention to the man behind the curtain"
+  robot_profile.user = robot_profile
+  robot_profile.save!
+end
+
+
 admin = User.create email: 'costan@mit.edu', password: 'mit',
                     password_confirmation: 'mit'
 admin.email_credential.verified = true
 admin.admin = true
 admin.save!
 
-admin_profile = Profile.create! user: admin, name: 'Victor Costan',
-    nickname: 'Victor', university: 'MIT', department: 'EECS',
-    year: 'G', athena_username: 'costan', about_me: "I'm the boss"
+admin_profile = Profile.new name: 'Victor Costan', nickname: 'Victor',
+    university: 'MIT', department: 'EECS', year: 'G', athena_username: 'costan',
+    about_me: "I'm the boss"
+admin_profile.user = admin
+admin_profile.save!
 
 admin_registration = Registration.new for_credit: false, allows_publishing: true    
 admin_registration.user = admin
@@ -111,8 +129,10 @@ end
     next unless exam.deadline < Time.now
     exam.metrics.each_with_index do |metric, k|
       next if i + j == k
-      Grade.create! subject: user, grader: admin, metric: metric,
-                    score: metric.max_score * (0.1 * ((i + j + k) % 10))
+      grade = Grade.new subject: user, metric: metric,
+                        score: metric.max_score * (0.1 * ((i + j + k) % 10))
+      grade.grader = admin
+      grade.save!
     end
   end
 end
@@ -218,9 +238,12 @@ end
       # Submit grades.
       pset.metrics.each_with_index do |metric, k|
         next if i + j == k
-        Grade.create! subject: user, grader: admin, metric: metric,
-            score: metric.max_score * (0.1 * ((i + j + k) % 10)),
-            created_at: pset.deadline + 1.day, updated_at: pset.deadline + 1.day
+        grade = Grade.new subject: user, metric: metric,
+            score: metric.max_score * (0.1 * ((i + j + k) % 10))
+        grade.grader = admin
+        grade.created_at = pset.deadline + 1.day
+        grade.updated_at = pset.deadline + 1.day
+        grade.save!
       end
     end
   end

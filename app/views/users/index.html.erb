@@ -13,7 +13,7 @@
   <tbody>
     <% @users.sort_by { |u| [u.admin? ? 0 : 1, u.name] }.each do |user| %>
       <tr>
-        <td><%= user.name %></td>
+        <td><%= link_to user.name, user %></td>
         <td>
           <% if user.email_credential.verified? %>
             <%= valid_icon_tag %>

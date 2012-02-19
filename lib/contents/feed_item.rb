@@ -77,7 +77,7 @@ class FeedItem
       items << item
       if analysis = submission.analysis
         reply = FeedItem.new :time => analysis.updated_at,
-            :author => User.first, :flavor => :announcement,
+            :author => User.robot, :flavor => :announcement,
             :contents => analysis_status_text(submission.analysis),
             :actions => [
               ['Details', [:url_for, analysis]]
@@ -96,9 +96,9 @@ class FeedItem
       
       last_metric = metrics.sort_by(&:updated_at).last
       last_grade = last_metric.grades.sort_by(&:updated_at).last
-      author = last_grade ? last_grade.grader : User.first
+      
       item = FeedItem.new :time => (last_grade || last_metric).updated_at,
-           :author => author, :flavor => :grade,
+           :author => assignment.author, :flavor => :grade,
            :headline => "released the grades for #{assignment.name}",
            :contents => '',
            :actions => [
@@ -129,7 +129,7 @@ class FeedItem
       
       if deliverable.deadline_passed_for? user
         reply = FeedItem.new :time => deliverable.deadline_for(user),
-            :author => User.first, :flavor => :announcement,
+            :author => User.robot, :flavor => :announcement,
             :contents => "The deadline has passed.",
             :actions => [], :replies => []
         item.replies << reply
