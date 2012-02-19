@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
 
   # Add your extensions to the User class here.
   
-  # Additional restrictuion: .edu e-mails only.
+  # Additional restriction: .edu e-mails only.
   validates :email, :format => {
       :with => /\A[A-Za-z0-9.+_-]+\@[A-Za-z0-9.\-]+\.edu\Z/,
       :message => 'needs to be an .edu e-mail address' }
@@ -42,6 +42,9 @@ end
 class User
   # Personal information, e.g. full name and contact info.
   has_one :profile, :dependent => :destroy, :inverse_of => :user
+  validates_associated :profile, :on => :create
+  validates :profile, :presence => { :on => :create }
+  
   accepts_nested_attributes_for :profile
   attr_accessible :profile_attributes
   

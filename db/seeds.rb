@@ -25,31 +25,25 @@ prereq2.save!
 
 unless User.robot
   robot_user = User.new email: 'robot@localhost.edu',
-                        password: '_', password_confirmation: '_'
+      password: '_', password_confirmation: '_', profile_attributes: {
+        athena_username: '---', name: 'Staff Robot', nickname: 'Robot',
+        university: 'MIT', department: 'EECS', year: 'G',
+        about_me: "Pay no attention to the man behind the curtain"
+      }
   robot_user.email_credential.verified = true
   robot_user.save!
   robot_user.password_credential.destroy
-      
-  robot_profile = Profile.new name: 'Staff Robot', nickname: 'Robot',
-      university: 'MIT', department: 'EECS', year: 'G',
-      athena_username: '---',
-      about_me: "Pay no attention to the man behind the curtain"
-  robot_profile.user = robot_profile
-  robot_profile.save!
 end
 
 
 admin = User.create email: 'costan@mit.edu', password: 'mit',
-                    password_confirmation: 'mit'
+    password_confirmation: 'mit', profile_attributes: {
+      athena_username: 'costan', name: 'Victor Costan', nickname: 'Victor',
+      university: 'MIT', department: 'EECS', year: 'G', about_me: "I'm the boss"
+    }
 admin.email_credential.verified = true
 admin.admin = true
 admin.save!
-
-admin_profile = Profile.new name: 'Victor Costan', nickname: 'Victor',
-    university: 'MIT', department: 'EECS', year: 'G', athena_username: 'costan',
-    about_me: "I'm the boss"
-admin_profile.user = admin
-admin_profile.save!
 
 admin_registration = Registration.new for_credit: false, allows_publishing: true    
 admin_registration.user = admin
@@ -74,15 +68,15 @@ names.each_with_index do |name, i|
   first_name = name.split(' ').first
   short_name = (first_name[0, 1] + name.split(' ').last).downcase
   user = User.create email: short_name + '@mit.edu',  password: 'mit',
-                     password_confirmation: 'mit'
+      password_confirmation: 'mit', profile_attributes: {
+        athena_username: short_name, name: name, nickname: first_name,
+        university: 'MIT', year: (1 + (i % 4)).to_s,
+        department: depts[i % depts.length], about_me: "Test subject #{i + 1}"        
+      }
   user.email_credential.verified = true
   user.save!
   users << user
   
-  Profile.create! user: user, name: name, nickname: first_name,
-      athena_username: short_name, university: 'MIT', year: (1 + (i % 4)).to_s,
-      department: depts[i % depts.length], about_me: "Test subject #{i + 1}"
-
   registration = Registration.new for_credit: (i % 5 < 4),
                                   allows_publishing: (i % 7 < 5)
   registration.user = user
