@@ -29,7 +29,7 @@
     </thead>
     <tbody>
       <% @subjects.each do |subject| %>
-      <tr data-subject-name="<%= subject.profile.name %>"
+      <tr data-subject-name="<%= subject.name %>"
           data-subject-id="<%= subject.id %>"
           data-subject-type="<%= subject.class.name %>">
         <th class="subject-name">
