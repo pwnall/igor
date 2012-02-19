@@ -51,12 +51,12 @@ class FeedItem
   # Generates feed items for the user's submitted surveys.
   def self.add_survey_answers(items, user, options)
     user.survey_answers.each do |answer|
-      item = FeedItem.new :time => answer.updated_at,
-          :author => answer.user, :flavor => :survey_answer,
-          :headline => "answered a survey on #{answer.assignment.name}",
-          :contents => '',
-          :actions => [['Edit', [:edit_survey_answer_path, answer]]],
-          :replies => []
+      item = FeedItem.new time: answer.updated_at,
+          author: answer.user, flavor: :survey_answer,
+          headline: "answered a survey on #{answer.assignment.name}",
+          contents: '',
+          actions: [['Edit', [:edit_survey_answer_path, answer]]],
+          replies: []
       items << item
     end
   end
@@ -64,25 +64,25 @@ class FeedItem
   # Generates feed items for the submissions that the user can see.
   def self.add_submissions(items, user, options)
     user.connected_submissions.each do |submission|
-      item = FeedItem.new :time => submission.updated_at,
-          :author => submission.user, :flavor => :submission,
-          :headline => "submitted a #{submission.deliverable.name} for " +
-                       submission.deliverable.assignment.name,
-          :contents => number_to_human_size(submission.db_file.f.size) +
-                       " #{submission.db_file.f_content_type} file",
-          :actions => [
+      item = FeedItem.new time: submission.updated_at,
+          author: submission.user, flavor: :submission,
+          headline: "submitted a #{submission.deliverable.name} for " +
+                    submission.deliverable.assignment.name,
+          contents: number_to_human_size(submission.db_file.f.size) +
+                    " #{submission.db_file.f_content_type} file",
+          actions: [
             ['Download', [:file_submission_path, submission]]
           ],
-          :replies => []
+          replies: []
       items << item
       if analysis = submission.analysis
-        reply = FeedItem.new :time => analysis.updated_at,
-            :author => User.robot, :flavor => :announcement,
-            :contents => analysis_status_text(submission.analysis),
-            :actions => [
+        reply = FeedItem.new time: analysis.updated_at,
+            author: User.robot, flavor: :announcement,
+            contents: analysis_status_text(submission.analysis),
+            actions: [
               ['Details', [:url_for, analysis]]
             ],
-            :replies => []
+            replies: []
         item.replies << reply
       end
     end
@@ -97,14 +97,12 @@ class FeedItem
       last_metric = metrics.sort_by(&:updated_at).last
       last_grade = last_metric.grades.sort_by(&:updated_at).last
       
-      item = FeedItem.new :time => (last_grade || last_metric).updated_at,
-           :author => assignment.author, :flavor => :grade,
-           :headline => "released the grades for #{assignment.name}",
-           :contents => '',
-           :actions => [
-             ['View', [:grades_path]]
-           ],
-           :replies => []
+      item = FeedItem.new time: (last_grade || last_metric).updated_at,
+          author: assignment.author, flavor: :grade,
+          headline: "released the grades for #{assignment.name}",
+          contents: '',
+          actions: [['View', [:grades_path]]],
+          replies: []
       items << item
     end
   end
@@ -116,22 +114,21 @@ class FeedItem
       
       with_teammates = deliverable.assignment.team_partition_id ?
                        'and your teammates ' : ''
-      item = FeedItem.new :time => deliverable.updated_at,
-          :author => deliverable.assignment.author, :flavor => :deliverable,
-          :headline => "asked you #{with_teammates}to submit a " +
-                       "#{deliverable.name} for #{deliverable.assignment.name}",
-          :contents => deliverable.description,
-          :actions => [
-            ['Submit', [:url_for, deliverable.assignment]]
-          ],
-          :replies => []
+      item = FeedItem.new time: deliverable.updated_at,
+          author: deliverable.assignment.author, flavor: :deliverable,
+          headline: "opened up " +
+              "#{deliverable.assignment.name}'s #{deliverable.name} " +
+              "for submissions",
+          contents: deliverable.description,
+          actions: [['Submit', [:url_for, deliverable.assignment]]],
+          replies: []
       items << item
       
       if deliverable.deadline_passed_for? user
-        reply = FeedItem.new :time => deliverable.deadline_for(user),
-            :author => User.robot, :flavor => :announcement,
-            :contents => "The deadline has passed.",
-            :actions => [], :replies => []
+        reply = FeedItem.new time: deliverable.deadline_for(user),
+            author: User.robot, flavor: :announcement,
+            contents: "The deadline has passed.",
+            actions: [], replies: []
         item.replies << reply
       end
     end    
@@ -145,19 +142,19 @@ class FeedItem
       #               the default is semi-open, so we can post sensitive info      
       next unless user or announcement.open_to_visitors?
       
-      item = FeedItem.new :time => announcement.created_at,
-          :author => announcement.author, :flavor => :announcement,
-          :headline => announcement.headline.html_safe,
-          :contents => announcement.contents.html_safe,
-          :actions => [],
-          :replies => []
+      item = FeedItem.new time: announcement.created_at,
+          author: announcement.author, flavor: :announcement,
+          headline: announcement.headline.html_safe,
+          contents: announcement.contents.html_safe,
+          actions: [],
+          replies: []
       
       if announcement.can_edit? user
         item.actions = [
           ['Edit', [:edit_announcement_path, announcement],
-                   {:remote => true}],
+                   {remote: true}],
           ['Delete', [:url_for, announcement],
-                     { :confirm => 'Are you sure?', :method => :delete }]
+                     { confirm: 'Are you sure?', method: :delete }]
         ]
       end
       items << item

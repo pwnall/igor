@@ -1,4 +1,4 @@
-<h2>News</h2>
+<h2 class="feed-header">Activity Feed</h2>
 
 <% Contents::FeedItem.for(current_user).each do |item| %>
 <% next if @news_flavor and item.flavor != @news_flavor %>
