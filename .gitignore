@@ -6,6 +6,7 @@ tmp
 
 *~
 *.rbc
+.pydevproject
 
 doc/controllers_brief.svg
 doc/controllers_complete.svg

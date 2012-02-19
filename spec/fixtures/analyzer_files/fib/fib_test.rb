@@ -1,7 +1,7 @@
-require 'test/unit'
+require 'minitest/autorun'
 require './fib.rb'
 
-class FibTest < Test::Unit::TestCase
+class FibTest < MiniTest::Unit::TestCase
   def test_base
     assert_equal 0, Fib.fib(0)
     assert_equal 1, Fib.fib(1)

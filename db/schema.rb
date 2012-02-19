@@ -28,7 +28,6 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
     t.integer  "deliverable_id",                                  :null => false
     t.string   "type",           :limit => 32,                    :null => false
     t.boolean  "auto_grading",                 :default => false, :null => false
-    t.string   "input_file",     :limit => 64
     t.text     "exec_limits"
     t.integer  "db_file_id"
     t.string   "message_name",   :limit => 64

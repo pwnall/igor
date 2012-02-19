@@ -1,0 +1,11 @@
+---
+.py:
+  get: fib.py
+  run: /usr/bin/env python fib_test.py
+  limit:
+    cpu: 0.9
+.rb:
+  get: fib.rb
+  run: /usr/bin/env ruby fib_test.rb
+  limit:
+    cpu: 1.5

@@ -5,7 +5,7 @@
 #  id             :integer(4)      not null, primary key
 #  deliverable_id :integer(4)      not null
 #  type           :string(32)      not null
-#  input_file     :string(64)
+#  auto_grading   :boolean(1)      default(FALSE), not null
 #  exec_limits    :text
 #  db_file_id     :integer(4)
 #  message_name   :string(64)
@@ -15,10 +15,6 @@
 
 # Submission checker that runs an external script.
 class ScriptAnalyzer < Analyzer
-  # Name to be used when saving the submission into the script directory.
-  validates :input_file, :length => 1..256, :presence => true
-  attr_accessible :input_file
-    
   # The database-backed file holding the analyzer script.
   belongs_to :db_file, :dependent => :destroy
   validates :db_file, :presence => true
@@ -67,10 +63,18 @@ class ScriptAnalyzer < Analyzer
   def analyze(submission)
     Dir.mktmpdir 'seven_' do |temp_dir|
       Dir.chdir temp_dir do
-        unpack_script
-        write_submission submission
-        result_hash = run_script
-        score_submission submission, result_hash
+        manifest = unpack_script
+        if manifest
+          ext_key = write_submission submission, manifest
+          if ext_key
+            result_hash = run_script manifest, ext_key
+            score_submission submission, result_hash, manifest, ext_key
+          else
+            setup_error submission, 'Unsupported submission file format', :wrong
+          end
+        else
+          setup_error submission, 'Failed to parse the analyzer manifest'
+        end
       end
     end
   end
@@ -78,6 +82,8 @@ class ScriptAnalyzer < Analyzer
   # Copies the checker script data into the current directory.
   #
   # This should be run in a temporary directory.
+  #
+  # Returns a hash containing the parsed script configuration.
   def unpack_script
     package_file = Tempfile.new 'seven_package_'
     package_file.close
@@ -94,31 +100,43 @@ class ScriptAnalyzer < Analyzer
       end
     end
     package_file.unlink
+
+    begin
+      manifest = File.open('analyzer.yml') { |f| YAML.load f }
+    rescue
+      # The analyzer.yml manifest doesn't exist, or doesn't parse.
+      return nil
+    end
+    return nil unless manifest.kind_of?(Hash)
     
-    File.chmod 0700, 'run' if File.exist?('run')
+    # Remove files with names matching the submission files.
+    manifest.keys.each do |key|
+      next unless key[0] == ?. && manifest[key]['get']
+      File.unlink manifest[key]['get'] if File.exist? manifest[key]['get']
+    end
+    manifest
   end
   
   # Copies a submission into the current directory.
   #
   # This should be run in a temporary directory.
-  def write_submission(submission)
-    File.open input_file, 'wb' do |f|
-      f.write submission.full_db_file.f.file_contents
+  #
+  # Returns the manifest key matching the submission's extension.
+  def write_submission(submission, manifest)
+    paperclip = submission.full_db_file.f
+    ext_key = File.extname(paperclip.original_filename)
+    return nil unless manifest[ext_key] && manifest[ext_key]['get']
+    File.open manifest[ext_key]['get'], 'wb' do |f|
+      f.write paperclip.file_contents
     end
+    ext_key
   end
   
   # Runs the checker's script, assuming it is in the current directory.
-  def run_script
+  def run_script(manifest, ext_key)
     connection = ActiveRecord::Base.remove_connection
+    run_command = Shellwords.split(manifest[ext_key]['run'] || '')
     begin
-      case RUBY_PLATFORM
-      when /darwin/ 
-        command = ['nice', '-n', '20', './run']
-      when /linux/
-        command = ['nice', '--adjustment=20', './run']
-      else
-        command = ['nice', './run']
-      end
       File.open('.log', 'w') { |f| f.write '' }
       io = { :in => '/dev/null', :out => '.log', :err => STDOUT }
       limits = { :cpu => time_limit.to_i + 1,
@@ -127,7 +145,7 @@ class ScriptAnalyzer < Analyzer
             :data => ram_limit.to_i.megabytes
           }
       
-      pid = ExecSandbox::Spawn.spawn command, io, {}, limits
+      pid = ExecSandbox::Spawn.spawn nice_command + run_command, io, {}, limits
            
       status = ExecSandbox::Wait4.wait4 pid
       log = File.exist?('.log') ? File.read('.log') : 'Program removed its log'
@@ -137,9 +155,9 @@ class ScriptAnalyzer < Analyzer
       ActiveRecord::Base.establish_connection connection || {}
     end
   end
-
+  
   # Computes the score for the submission and saves it into the analysis.  
-  def score_submission(submission, result)
+  def score_submission(submission, result, manifest, ext_key)
     log = result[:log]
     log_limit = Analysis::LOG_LIMIT - 1.kilobyte
     if log.length >= log_limit
@@ -183,10 +201,34 @@ END_LOG
       end
     end
     
-    analyis = submission.analysis
-    analyis.log = [log, status_log].join("\n")
-    analyis.status = status
-    analyis.score = score
-    analyis.save!
+    analysis = submission.analysis
+    analysis.log = [log, status_log].join("\n")
+    analysis.status = status
+    analysis.score = score
+    analysis.save!
+  end
+  
+  # Reports an error that happened before the submission got to run.
+  def setup_error(submission, message, status = :no_analyzer)
+    analysis = submission.analysis
+    analysis.log = message + "\n"
+    analysis.status = status
+    analysis.score = nil
+    analysis.save!
+  end
+
+  # The command for nice-ing processes on the current platform.
+  #
+  # Returns an array of shell-parsed tokens that make up the command for running
+  # a process with low scheduler priority.
+  def nice_command
+    case RUBY_PLATFORM
+    when /darwin/ 
+      command = ['nice', '-n', '20']
+    when /linux/
+      command = ['nice', '--adjustment=20']
+    else
+      command = ['nice']
+    end
   end
 end

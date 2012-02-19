@@ -5,7 +5,7 @@
 #  id             :integer(4)      not null, primary key
 #  deliverable_id :integer(4)      not null
 #  type           :string(32)      not null
-#  input_file     :string(64)
+#  auto_grading   :boolean(1)      default(FALSE), not null
 #  exec_limits    :text
 #  db_file_id     :integer(4)
 #  message_name   :string(64)

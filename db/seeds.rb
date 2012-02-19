@@ -175,8 +175,7 @@ psets = pset_data.map.with_index do |data, index|
   analyzer = ScriptAnalyzer.new db_file_attributes: {
       f: fixture_file_upload('analyzer_files/fib.zip', 'application/zip') },
       time_limit: '2', ram_limit: '1024', process_limit: '5',
-      file_limit: '10', file_size_limit: '100', input_file: 'fib.rb',
-      auto_grading: false
+      file_limit: '10', file_size_limit: '100', auto_grading: false
   analyzer.deliverable = rb_deliverable
   analyzer.save!
 
