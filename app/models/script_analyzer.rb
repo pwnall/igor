@@ -67,8 +67,12 @@ class ScriptAnalyzer < Analyzer
         if manifest
           ext_key = write_submission submission, manifest
           if ext_key
-            result_hash = run_script manifest, ext_key
-            score_submission submission, result_hash, manifest, ext_key
+            write_grading_key manifest
+            run_state = run_script manifest, ext_key
+            grading = extract_grading run_state, manifest, ext_key
+            outcome = extract_outcome run_state, manifest, ext_key
+            update_grades submission, grading if auto_grading?
+            update_submission submission, run_state, outcome
           else
             setup_error submission, 'Unsupported submission file format', :wrong
           end
@@ -132,17 +136,30 @@ class ScriptAnalyzer < Analyzer
     ext_key
   end
   
+  # Creates a grading key and a file containing it.
+  #
+  # The grading key is created only if the manifest indicates that the analyzer
+  # can handle a grading key.
+  def write_grading_key(manifest)
+    if manifest['grading'] && manifest['grading']['key']
+      manifest[:grading_key] = SecureRandom.base64 64
+      File.open manifest['grading']['key'], 'w' do |f|
+        f.write manifest[:grading_key]
+      end
+    end
+  end
+  
   # Runs the checker's script, assuming it is in the current directory.
   def run_script(manifest, ext_key)
     connection = ActiveRecord::Base.remove_connection
     run_command = Shellwords.split(manifest[ext_key]['run'] || '')
     begin
       File.open('.log', 'w') { |f| f.write '' }
-      io = { :in => '/dev/null', :out => '.log', :err => STDOUT }
-      limits = { :cpu => time_limit.to_i + 1,
-            :file_size => file_size_limit.to_i.megabytes,
-            :open_files => 10 + file_limit.to_i,
-            :data => ram_limit.to_i.megabytes
+      io = { in: '/dev/null', out: '.log', err: STDOUT }
+      limits = { cpu: time_limit.to_i + 1,
+            file_size: file_size_limit.to_i.megabytes,
+            open_files: 10 + file_limit.to_i,
+            data: ram_limit.to_i.megabytes
           }
       
       pid = ExecSandbox::Spawn.spawn nice_command + run_command, io, {}, limits
@@ -150,61 +167,67 @@ class ScriptAnalyzer < Analyzer
       status = ExecSandbox::Wait4.wait4 pid
       log = File.exist?('.log') ? File.read('.log') : 'Program removed its log'
       
-      { :log => log, :status => status }
+      { log: log, status: status }
     ensure
       ActiveRecord::Base.establish_connection connection || {}
     end
   end
   
-  # Computes the score for the submission and saves it into the analysis.  
-  def score_submission(submission, result, manifest, ext_key)
+  # Extracts the grading output from a script's run result.
+  #
+  # Returns a hash containing the processed grading information.
+  def extract_grading(run_state, manifest, ext_key)
+    if manifest['grading']
+      defaults = manifest['grading']['defaults'] || {}
+    end
+    return defaults unless manifest[:grading_key]
+    splitter = "\n#{manifest[:grading_key]}\n"
+    log, match, grading_json = run_state[:log].rpartition manifest[:grading_key]
+    return defaults unless match == manifest[:grading_key]
+    run_state[:log] = log
+    begin
+      JSON.parse grading_json.strip.split("\n", 2).first
+    rescue
+      defaults
+    end
+  end
+    
+  # Computes the analysis outcome based on a script's run result.
+  def extract_outcome(run_state, manifest, ext_key)
+    running_time = run_state[:status][:system_time] + run_state[:status][:user_time]
+    if running_time > time_limit.to_i
+      status = :limit_exceeded
+      status_log = <<END_LOG
+Your submission exceeded the time limit of #{time_limit.to_i} seconds.
+The analysis was terminated after running for #{running_time} seconds.
+END_LOG
+    elsif run_state[:status][:exit_code] != 0
+      status = :crashed
+      status_log = <<END_LOG
+Your submission crashed with exit code #{run_state[:status][:exit_code]}.
+The analysis ran for #{running_time} seconds.
+END_LOG
+    else
+      status = :ok
+      status_log = <<END_LOG
+Your submission appears to be correct.
+The analysis ran for #{running_time} seconds.
+END_LOG
+    end
+    { status: status, log: status_log }
+  end
+  
+  # Update a submission's analysis based on the script's result.
+  def update_submission(submission, result, outcome)
     log = result[:log]
     log_limit = Analysis::LOG_LIMIT - 1.kilobyte
     if log.length >= log_limit
       log = [log[0, log_limit], "\n**Too much output. Truncated.**"].join('')
     end
     
-    running_time = result[:status][:system_time] + result[:status][:user_time]
-    if running_time > time_limit.to_i
-      status = :limit_exceeded
-      status_log = <<END_LOG
-Your submission exceeded the time limit of #{time_limit.to_i} seconds.
-The process was terminated after running for #{running_time} seconds.
-END_LOG
-      score = 0
-    elsif result[:status][:exit_code] != 0
-      status = :crashed
-      status_log = <<END_LOG
-Your submission crashed with exit code #{result[:status][:exit_code]}.
-The process ran for #{running_time} seconds.
-END_LOG
-      score = 0
-    else
-      begin
-        log_diags = log.slice(0, log.index(/[\n\r]{2}/m)).split(/[\n\r]+/m)
-        tests = log_diags.length
-        passed = log_diags.select { |d| !(d =~ /FAIL/ || d =~ /ERROR/) }.length
-        
-        status = (passed == tests) ? :ok : :wrong
-        status_log = <<END_LOG
-Your submission passed #{passed} tests out of #{tests}.
-The process ran for #{running_time} seconds.
-END_LOG
-        score = (100 * passed / tests.to_f).round
-      rescue
-        status = :ok
-        status_log = <<END_LOG
-The analyzer ran successfully, but did not report a score for your submission.
-The process ran for #{running_time} seconds.
-END_LOG
-        score = 100
-      end
-    end
-    
     analysis = submission.analysis
-    analysis.log = [log, status_log].join("\n")
-    analysis.status = status
-    analysis.score = score
+    analysis.log = [log, outcome[:log]].join("\n")
+    analysis.status = outcome[:status]
     analysis.save!
   end
   
@@ -213,8 +236,19 @@ END_LOG
     analysis = submission.analysis
     analysis.log = message + "\n"
     analysis.status = status
-    analysis.score = nil
     analysis.save!
+  end
+  
+  def update_grades(submission, grading)
+    assignment = submission.assignment
+    grading.each do |metric_name, score_fraction|
+      metric = assignment.metrics.where(name: metric_name).first
+      next unless metric
+      grade = metric.grade_for submission.user
+      grade.score = score_fraction * metric.max_score
+      grade.grader = User.robot
+      grade.save!
+    end
   end
 
   # The command for nice-ing processes on the current platform.
