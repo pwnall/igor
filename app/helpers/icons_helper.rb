@@ -60,6 +60,12 @@ module IconsHelper
     image_tag 'icons/report.png', alt: title, title: title, class: 'ui-icon'
   end
   
+  # Show this icon on links that lead to a help screen.
+  def help_icon_tag
+    title = 'Help'
+    image_tag 'icons/help.png', alt: title, title: title, class: 'ui-icon'
+  end
+
   # Show this icon on buttons that release some data to the public.
   def ship_icon_tag
     title = 'Ship it!'

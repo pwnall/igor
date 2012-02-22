@@ -45,6 +45,9 @@ Seven::Application.routes.draw do
 
   # Homework submission.
   resources :analyzers, :only => [] do
+    collection do
+      get :help
+    end
     member do
       get :source
     end

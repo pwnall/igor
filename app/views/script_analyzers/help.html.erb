@@ -1,0 +1,150 @@
+<h2>Script Analyzer Tutorial</h2>
+
+<p>
+  This is a short introduction to packaging your custom script for analyzing
+  student submissions into the .zip file expected by the grading site.   
+</p>
+
+<h3>Health Checks</h3>
+
+<p>
+  Analyzers perform a (quick) health check on the files submitted by students,
+  and offer immediate feedback. This lets students fix their submissions early,
+  and gives TAs a good reason to reject any requests for manually tweaking a
+  student's submission. 
+</p>
+
+<p>
+  An analyzer that only does health checks typically consists of a script
+  containing unit tests and a manifest file named <code>analyzer.yml</code>.
+</p>
+
+<figure>
+<div class="markdpwn-parsed-code">.
+|-- analyzer.yml
+|-- fib_test.py
+`-- fib_test.rb
+</div>
+  <figcaption>Analyzer .zip package structure</figcaption>
+</figure> 
+
+<p>
+  An analyzer can potentially handle multiple file types (e.g., both Ruby and
+  Python solution to the same problem). The manifest specifies the command that
+  will be run for each file type. The command typically invokes an interpreter
+  on a unit test file, though anything that behaves like a unit test (exit code
+  0 for success, non-zero for failures) is acceptable. The manifest also
+  specifies the file name to be used for the student submission, and it should
+  match the name expected by your unit testing code.
+</p>
+
+<figure>
+  <%= Markdpwn.markup(
+        File.read(Rails.root.join('spec/fixtures/analyzer_files/fib/analyzer.yml')),
+        :file_name => 'analyzer.yml').html_safe %>
+  <figcaption>Sample analyzer manifest (<code>analyzer.yml</code>)</figcaption>
+</figure>
+
+<p>
+  The health-check scripts usually use the language's native unit-testing
+  framework (e.g., Ruby's <code>minitest</code> or Python's
+  <code>unittest</code>). It is good policy to give the health-check source code
+  to the students, so they can check their submissions on their own, without
+  overloading the server.
+</p>
+
+<h3>Automated Grading</h3>
+
+<p>
+  Automated grading goes beyond health checking, and uses the analyzer results
+  to fill in students' grades, which reduces load on the course staff. Grades
+  are a big deal at most schools, so the system has some minimal safeguards
+  against students changing their own grades. Unfortunately, this makes
+  auto-grading a bit more complex than it should be.
+</p>
+
+<p>
+  Analyzers that issue automated grades have a <code>grading</code> section in
+  their manifest, which contains default grades that will be assigned if the
+  analyzer doesn't successfully output grades (e.g., if it crashes), and the
+  name of a file that will contain a randomly-generated key that prevents
+  students from outputting grades.
+</p>
+
+<figure>
+  <%= Markdpwn.markup(
+        File.read(Rails.root.join('spec/fixtures/analyzer_files/fib_grading/analyzer.yml')),
+        :file_name => 'analyzer.yml').html_safe %>
+  <figcaption>
+    Auto-grading analyzer manifest (<code>analyzer.yml</code>)
+  </figcaption>
+</figure>
+
+<p>
+  An analyzer that outputs grades should read the grading key and delete the
+  file before evaluating any student-submitted code. The grading key should be
+  stored in some location that is not easily accessible by the student code.
+  In most languages, method-local variables cannot be accessed through
+  introspection.
+</p>
+
+<p>
+  Grades should be output only after the student-submitted code has ran. The
+  analyzer should output the grading key on a separate line, immediately
+  followed by a JSON object whose keys are the names of the problems to be
+  graded. The value for each key should be a number between 0, meaning that the
+  problem's score is zero, and 1, meaning that the student gets the maximum
+  score for the problem.   
+</p>
+
+<p>
+  An auto-grading analyzer typically has the grading code separated from the
+  unit-testing code. 
+</p>
+
+<figure>
+<div class="markdpwn-parsed-code">.
+|-- analyzer.yml
+|-- fib_test.py
+|-- fib_test.rb
+|-- grader.py
+`-- grader.rb
+</div>
+  <figcaption>Analyzer .zip package structure</figcaption>
+</figure> 
+
+<h4>Secret Test Cases</h4>
+
+<p>
+  Auto-grading analyzers usually have secret test cases, so that students cannot
+  easily get good grades. This conflicts with the best practice of giving
+  students the full code used to analyze their submissions.
+</p>
+
+<p>
+  A good compromise is to have the analyzer scan the <code>tests</code>
+  directory for files, and use them as test cases. Then students can receive the
+  full analyzer source code, and a subset of the files in <code>tests</code>, as
+  public test cases.
+</p>
+
+<h4>Example Graders</h4>
+
+<p>
+  The requirements for auto-grading analyzers are non-trivial. Hopefully, the
+  grading code samples below will help you get started. 
+</p>
+
+<figure>
+  <%= Markdpwn.markup(
+        File.read(Rails.root.join('spec/fixtures/analyzer_files/fib_grading/grader.rb')),
+        :file_name => 'grader.rb').html_safe %>
+  <figcaption>Sample Ruby grader (<code>grader.rb</code>)</figcaption>
+</figure>
+  
+<figure>
+  <%= Markdpwn.markup(
+        File.read(Rails.root.join('spec/fixtures/analyzer_files/fib_grading/grader.py')),
+        :file_name => 'grader.py').html_safe %>
+  <figcaption>Sample Python grader (<code>grader.py</code>)</figcaption>
+</figure>

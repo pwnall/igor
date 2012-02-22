@@ -1,6 +1,6 @@
 source :rubygems
 
-gem 'rails', '>= 3.2.1'
+gem 'rails', '>= 3.2.2.rc1'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -38,7 +38,7 @@ gem 'markdpwn', '>= 0.1.2'
 gem 'nokogiri', '>= 1.5.0'
 gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
                  :ref => 'c295bc4e78b84044296f3a03157c097b50161bc5'
-gem 'pwnstyles_rails', '>= 0.1.17'
+gem 'pwnstyles_rails', '>= 0.1.18'
 gem 'rmagick', '>= 2.13.1'
 gem 'validates_timeliness', '>= 3.0.8'
 

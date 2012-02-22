@@ -7,10 +7,6 @@ grading:
 .py:
   get: fib.py
   run: /usr/bin/env python grader.py
-  limit:
-    cpu: 0.9
 .rb:
   get: fib.rb
   run: /usr/bin/env ruby grader.rb
-  limit:
-    cpu: 1.5

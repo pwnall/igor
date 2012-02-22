@@ -9,4 +9,9 @@ class AnalyzersController < ApplicationController
               filename: db_file.f.original_filename,
               type: db_file.f.content_type
   end
+  
+  # GET /analyzers/help
+  def help
+    render 'script_analyzers/help'
+  end
 end
