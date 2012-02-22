@@ -1,0 +1,80 @@
+<section class="fields">
+  <p class="field">
+  <%= f.fields_for :db_file, DbFile.new do |ff| %>
+    <%= ff.label :f, 'Script .zip'%>
+    <span class="value">
+    <%= ff.file_field :f, :accept => 'application/zip' %>
+    </span>
+    <span class="comment">
+    <% if f.object.db_file %>
+    <%= download_icon_tag %>
+    <%= link_to f.object.db_file.f.original_filename,
+                source_analyzer_path(f.object) %>
+    (<%= number_to_human_size f.object.db_file.f.size %>)
+    <% end %>
+    </span>
+  <% end %>
+  </p>
+
+  <p class="field">
+    <%= f.label :time_limit, 'CPU time' %>
+    <span class="value">
+      <%= f.number_field :time_limit, required: true, placeholder: 5 %>
+    </span>
+    <span class="comment">
+      seconds
+    </span>
+  </p>
+
+  <p class="field">
+    <%= f.label :ram_limit, 'RAM usage' %>
+    <span class="value">
+      <%= f.number_field :ram_limit, required: true, placeholder: 1024 %>
+    </span>
+    <span class="comment">
+      Mb
+    </span>
+  </p>
+  
+  <p class="field">
+    <%= f.label :file_limit, 'Open files' %>
+    <span class="value">
+      <%= f.number_field :file_limit, required: true, placeholder: 10 %>
+    </span>
+    <span class="comment">
+      files
+    </span>
+  </p>
+
+  <p class="field">
+    <%= f.label :file_size_limit, 'File size' %>
+    <span class="value">
+      <%= f.number_field :file_size_limit, required: true, placeholder: 100 %>
+    </span>
+    <span class="comment">
+      Mb
+    </span>
+  </p>
+  
+  <p class="field">
+    <%= f.label :process_limit, 'Spawn' %>
+    <span class="value">
+      <%= f.number_field :process_limit, required: true, placeholder: 5 %>
+    </span>
+    <span class="comment">
+      processes
+    </span>
+  </p>
+
+  <p class="field">
+    <%= f.label :auto_grading, 'Auto grading' %>
+    <span class="value">
+      <%= f.check_box :auto_grading %>
+      <%= f.label :auto_grading do %>
+        use analyzer grade output
+      <% end %>
+    </span>
+    <span class="comment">
+    </span>
+  </p>
+</section>

@@ -1,0 +1,17 @@
+<section class="fields">
+  <p class="field">
+    <%= f.label :message_name, 'Built-in analyzer' %>
+    <span class="value">
+      <%= f.select :message_name, proc_analyzer_messages_for_select %>
+    </span>
+  </p>
+  <p class="field">
+    <%= f.label :auto_grading, 'Auto grading' %>
+    <span class="value">
+      <%= f.check_box :auto_grading %>
+      <%= f.label :auto_grading do %>
+        invalid submissions get 0 (zero) grades
+      <% end %>
+    </span>
+  </p>
+</section>

@@ -30,109 +30,15 @@
          data-pwnfx-showif-scope="deliverable"
          data-pwnfx-showif-replace="div">
     <%= f.fields_for :analyzer, analyzer_for(f.object, ProcAnalyzer) do |fa| %>
-      <section class="fields">
-        <p class="field">
-          <%= fa.label :message_name, 'Built-in analyzer' %>
-          <span class="value">
-            <%= fa.select :message_name, proc_analyzer_messages_for_select %>
-          </span>
-        </p>
-        <p class="field">
-          <%= fa.label :auto_grading, 'Auto grading' %>
-          <span class="value">
-            <%= fa.check_box :auto_grading %>
-            <%= fa.label :auto_grading do %>
-              invalid submissions get 0 (zero) grades
-            <% end %>
-          </span>
-        </p>
+    <%= render 'proc_analyzers/fields', :f => fa  %>
     <% end %>
     </div>
 
     <div data-pwnfx-showif="analyzer-type" data-pwnfx-showif-is="ScriptAnalyzer"
          data-pwnfx-showif-scope="deliverable"
          data-pwnfx-showif-replace="div">
-    <%= f.fields_for :analyzer, analyzer_for(f.object, ScriptAnalyzer) do |fa| %>
-      <section class="fields">
-        <p class="field">
-        <%= fa.fields_for :db_file, DbFile.new do |faf| %>
-          <%= faf.label :f, 'Script .zip'%>
-          <span class="value">
-          <%= faf.file_field :f, :accept => 'application/zip' %>
-          </span>
-          <span class="comment">
-          <% if fa.object.db_file %>
-          <%= download_icon_tag %>
-          <%= link_to fa.object.db_file.f.original_filename,
-                      source_analyzer_path(fa.object) %>
-          (<%= number_to_human_size fa.object.db_file.f.size %>)
-          <% end %>
-          </span>
-        <% end %>
-        </p>
-  
-        <p class="field">
-          <%= fa.label :time_limit, 'CPU time' %>
-          <span class="value">
-            <%= fa.number_field :time_limit, required: true, placeholder: 5 %>
-          </span>
-          <span class="comment">
-            seconds
-          </span>
-        </p>
-  
-        <p class="field">
-          <%= fa.label :ram_limit, 'RAM usage' %>
-          <span class="value">
-            <%= fa.number_field :ram_limit, required: true, placeholder: 1024 %>
-          </span>
-          <span class="comment">
-            Mb
-          </span>
-        </p>
-        
-        <p class="field">
-          <%= fa.label :file_limit, 'Open files' %>
-          <span class="value">
-            <%= fa.number_field :file_limit, required: true, placeholder: 10 %>
-          </span>
-          <span class="comment">
-            files
-          </span>
-        </p>
-
-        <p class="field">
-          <%= fa.label :file_size_limit, 'File size' %>
-          <span class="value">
-            <%= fa.number_field :file_size_limit, required: true, placeholder: 100 %>
-          </span>
-          <span class="comment">
-            Mb
-          </span>
-        </p>
-        
-        <p class="field">
-          <%= fa.label :process_limit, 'Spawn' %>
-          <span class="value">
-            <%= fa.number_field :process_limit, required: true, placeholder: 5 %>
-          </span>
-          <span class="comment">
-            processes
-          </span>
-        </p>
-
-        <p class="field">
-          <%= fa.label :auto_grading, 'Auto grading' %>
-          <span class="value">
-            <%= fa.check_box :auto_grading %>
-            <%= fa.label :auto_grading do %>
-              use analyzer grade output
-            <% end %>
-          </span>
-          <span class="comment">
-          </span>
-        </p>
-      </section>
+    <%= f.fields_for analyzer_for(f.object, ScriptAnalyzer) do |fa| %>
+    <%= render 'script_analyzers/fields', :f => fa  %>
     <% end %>
     </div>
   </p>

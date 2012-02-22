@@ -34,6 +34,7 @@ gem 'jquery-rails', '>= 2.0.0'
 gem 'authpwn_rails', '>= 0.10.10'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'fastercsv', '>= 1.5.4', :platforms => [:mri_18]
+gem 'markdpwn', '>= 0.1.2'
 gem 'nokogiri', '>= 1.5.0'
 gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
                  :ref => 'c295bc4e78b84044296f3a03157c097b50161bc5'
