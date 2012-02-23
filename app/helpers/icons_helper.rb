@@ -147,9 +147,9 @@ module IconsHelper
     when :limit_exceeded
       'icons/timer.png'
     when :crashed
-      'icons/alert.png'
+      'icons/error.png'
     when :wrong
-      'icons/alert.png'
+      'icons/error.png'
     when :ok
       'icons/checkmark.png'
     end
