@@ -13,7 +13,7 @@
     <% Assignment.for(current_user, Course.main).each do |assignment| %>
     <li>
       <% if current_user.admin? %>
-        <%= link_to edit_assignment_path(assignment) do %>
+        <%= link_to dashboard_assignment_path(assignment) do %>
           <%= assignment_state_icon_tag assignment.ui_state_for(current_user) %>
           <%= assignment.name %>
         <% end %>

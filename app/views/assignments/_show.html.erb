@@ -4,39 +4,12 @@
   
     <% if current_user.admin? %>
     <span class="actions">
+      <%= link_to dashboard_assignment_path(@assignment), class: 'button' do %>
+        <%= dashboard_icon_tag %> Dashboard
+      <% end %>
       <%= link_to edit_assignment_path(assignment), class: 'button' do %>
         <%= edit_icon_tag %> Edit
       <% end %>
-    
-    <% if assignment.deliverables_ready? %>
-      <%= link_to assignment_path(assignment,
-              assignment: { deliverables_ready: false}), method: :put,
-              confirm: "Un-publish #{assignment.name}? Prepare for hate mail :(",
-              class: 'button' do %>
-        <%= pull_icon_tag %> Pull
-      <% end %>
-    <% elsif assignment.deliverables.length > 0 %>
-      <%= link_to assignment_path(assignment,
-              { assignment: { deliverables_ready: true} }), method: :put,
-              class: 'button' do %>
-        <%= ship_icon_tag %> Release
-      <% end %>
-    <% end %>
-    
-    <% if assignment.metrics_ready? %>
-      <%= link_to assignment_path(assignment,
-              assignment: { metrics_ready: false}), method: :put,
-              confirm: "Un-publish #{assignment.name} grades?",
-              class: 'button' do %>
-        <%= pull_icon_tag %> Pull Grades
-      <% end %>
-    <% elsif assignment.grades.length > 0 %>
-      <%= link_to assignment_path(assignment,
-              { assignment: { metrics_ready: true} }), method: :put,
-              class: 'button' do %>
-        <%= ship_icon_tag %> Release Grades
-      <% end %>
-    <% end %>
     </span>
     <% end %>
   </h2>

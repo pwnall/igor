@@ -42,6 +42,13 @@ class AssignmentMetric < ActiveRecord::Base
     subject = grades.with_subject(assignment.grade_subject_for(user)).
                      first_or_initialize
   end
+  
+  # Number of grades that will be posted for this metric.
+  #
+  # The estimation is based on the number of students in the class.
+  def expected_grades
+    assignment.course.students.count
+  end  
 end
 
 # == Schema Information

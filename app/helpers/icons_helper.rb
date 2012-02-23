@@ -132,6 +132,30 @@ module IconsHelper
     image_tag path, alt: title, title: title, class: 'ui-icon'
   end
   
+  # Icon representing an analysis' status property.
+  def analysis_status_icon_tag(analysis)
+    title = analysis_status_text analysis
+    status = analysis ? analysis.status : :no_analyzer
+
+    path = case status
+    when :no_analyzer
+      'icons/draft.png'
+    when :queued
+      'icons/waiting.png'
+    when :running
+      'icons/running.png'
+    when :limit_exceeded
+      'icons/timer.png'
+    when :crashed
+      'icons/alert.png'
+    when :wrong
+      'icons/alert.png'
+    when :ok
+      'icons/checkmark.png'
+    end
+    image_tag path, alt: title, title: title, class: 'ui-icon'
+  end
+  
   def deadline_state_icon_tag(state = :pending)
     case state
     when :pending
@@ -179,6 +203,11 @@ module IconsHelper
   # Show this icon next to links that lead to displaying contact information.
   def contacts_icon_tag
     image_tag 'icons/contacts.png', alt: 'Contacts', class: 'ui-icon'
+  end
+
+  # Show this icon next to links to aggregate information.
+  def dashboard_icon_tag
+    image_tag 'icons/dashboard.png', alt: 'Dashboard', class: 'ui-icon'
   end
 
   # A bunch of unrelated tools.

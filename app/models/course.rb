@@ -33,7 +33,7 @@ class Course < ActiveRecord::Base
   
   # Students registered for this course.
   def students
-    users.where admin: false
+    registrations.joins(:user).where(dropped: false, users: { admin: false })
   end
   
   # Course staff members.

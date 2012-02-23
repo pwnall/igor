@@ -1,0 +1,69 @@
+<h2 class="assignment-heading"><%= @assignment.name %></h2>
+
+<p class="actions">
+  <%= link_to @assignment, class: 'button' do %>
+    <%= role_icon_tag :student %> Student View
+  <% end %>
+  <%= link_to edit_assignment_path(@assignment), class: 'button' do %>
+    <%= edit_icon_tag %> Edit
+  <% end %>
+  <%= render 'assignments/release_actions', assignment: @assignment %>
+</p>
+
+<h3 class="dashboard-heading">Grades</h3>
+<ul class="dashboard-list">
+  <li>
+    <span class="name"><strong>Overall</strong></span>
+    <%= grading_stats_tags @assignment %>
+  </li>
+<% @assignment.metrics.each do |metric| %>
+  <li>
+    <span class="name"><%= metric.name %></span>
+    <%= grading_stats_tags metric %>  
+  </li>
+<% end %>
+</ul>
+
+<% if @assignment.deadline_passed_for? nil %>
+<h3 class="dashboard-heading">Grading Process</h3>
+<ul class="dashboard-list">
+  <li>
+    <span class="name"><strong>Overall</strong></span>
+    <%= grading_progress_tag @assignment %>
+  </li>
+<% @assignment.metrics.each do |metric| %>
+  <li>
+    <span class="name"><%= metric.name %></span>
+    <%= grading_progress_tag metric %>  
+  </li>
+<% end %>
+</ul>
+<% end %>
+
+<h3 class="dashboard-heading">
+  Submissions  
+  <%= submissions_progress_tag @assignment %>  
+</h3>
+<ul class="dashboard-list">
+<% @assignment.deliverables.each do |deliverable| %>
+  <li>
+    <h4 class="dashboard-heading">
+      <span class="name"><%= deliverable.name %></span>
+      <%= submissions_progress_tag deliverable %>  
+    </h4>
+    <ol class="user-list">
+    <% deliverable.submissions.includes(:analysis, :user => :profile).
+                    order('updated_at DESC').each do |submission| %>
+      <li>
+        <%= link_to submission.analysis || submission do %>
+          <figure title="<%= submission.user.name %>">
+            <%= user_image_tag submission.user, size: :large %>
+            <%= analysis_status_icon_tag submission.analysis %>
+          </figure>
+        <% end %>
+      </li>
+    <% end %>
+    </ol>
+  </li>
+<% end %>
+</ul>

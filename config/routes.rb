@@ -31,7 +31,11 @@ Seven::Application.routes.draw do
   resources :recitation_sections
 
   # Homework.
-  resources :assignments
+  resources :assignments do
+    member do
+      get :dashboard
+    end
+  end
   resources :grades do
     collection do
       get :editor

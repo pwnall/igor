@@ -70,6 +70,13 @@ class Assignment
   def deliverables_for(user)
     (deliverables_ready? || (user && user.admin?)) ? deliverables : []
   end
+  
+  # Number of submissions that will be received for this assignment.
+  #
+  # The estimation is based on the number of students in the class.
+  def expected_submissions
+    deliverables.count * course.students.count
+  end
 end
 
 # :nodoc: grade collection and publishing feature.
@@ -93,6 +100,20 @@ class Assignment
   
   # All students' grades for this assignment.
   has_many :grades, :through => :metrics
+  
+  # Number of submissions that will be received for this assignment.
+  #
+  # The estimation is based on the number of students in the class.
+  def expected_grades
+    metrics.count * course.students.count
+  end
+  
+  # The maximum score that a student can obtain on this assignment.
+  #
+  # This is the sum of all the metrics' maximum scores.
+  def max_score
+    metrics.sum :max_score
+  end  
 end
 
 # :nodoc: lifecycle

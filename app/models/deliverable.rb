@@ -83,7 +83,14 @@ class Deliverable < ActiveRecord::Base
   # True if the submissions for this deliverable should be marked as late.
   def deadline_passed_for?(user)
     assignment.deadline_passed_for? user
-  end  
+  end
+  
+  # Number of submissions that will be received for this deliverable.
+  #
+  # The estimation is based on the number of students in the class.
+  def expected_submissions
+    assignment.course.students.count
+  end
 end
 
 # == Schema Information

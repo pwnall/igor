@@ -1,0 +1,67 @@
+.dashboard-heading {
+  position: relative;
+  > progress {
+    position: absolute;
+    height: 0.70em;
+    bottom: 0.15em;
+    right: 0px;
+    
+    border: 1px solid $text-color;
+    
+    background-color: $input-border-color;
+
+    &::-webkit-progress-bar {
+      background-color: $input-border-color;
+    }
+    
+    &::-webkit-progress-value, &::-moz-progress-bar {
+      background-color: $main-color1;
+    }
+    -moz-appearance: none;
+  }
+}
+.dashboard-list {
+  display: table;
+  width: 100%;
+  
+  li {
+    display: table-row;
+    
+    > span {
+      display: table-cell;
+      width: 33%;
+      > meter {
+        display: block;
+        width: 100%;
+      }
+    }
+    > span:last-child {
+      text-align: right;
+    }
+  }
+  
+  .user-list {
+    display: block;
+    margin-right: -5px;
+    margin-left: -5px;
+    
+    li {
+      display: inline-block;
+      figure {
+        position: relative;
+        border: none;
+        margin: none;
+        padding: 5px;
+        img:first-child {
+          width: 50px !important;
+          height: 50px !important;
+        }
+        img:last-child {
+          position: absolute;
+          right: 1px;
+          bottom: 1px;
+        }
+      }
+    }
+  }
+}
