@@ -4,7 +4,7 @@
   
     <% if current_user.admin? %>
     <span class="actions">
-      <%= link_to dashboard_assignment_path(@assignment), class: 'button' do %>
+      <%= link_to dashboard_assignment_path(assignment), class: 'button' do %>
         <%= dashboard_icon_tag %> Dashboard
       <% end %>
       <%= link_to edit_assignment_path(assignment), class: 'button' do %>
