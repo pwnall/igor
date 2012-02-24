@@ -18,6 +18,7 @@ class ScriptAnalyzer < Analyzer
   # The database-backed file holding the analyzer script.
   belongs_to :db_file, :dependent => :destroy
   validates :db_file, :presence => true
+  validates_associated :db_file
   accepts_nested_attributes_for :db_file
   attr_accessible :db_file_attributes
   
