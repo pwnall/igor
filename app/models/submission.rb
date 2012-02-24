@@ -45,11 +45,11 @@ class Submission < ActiveRecord::Base
   end
   
   # Queues up a request to run an automated health-check for this submission.
-  def queue_analysis
+  def queue_analysis(force_queueing = false)
     ensure_analysis_exists
     if analyzer
       self.analysis.reset_status! :queued
-      if Rails.env.production?
+      if force_queueing || Rails.env.production?
         self.delay.run_analysis
       else
         self.run_analysis

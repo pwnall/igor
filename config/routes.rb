@@ -56,7 +56,11 @@ Seven::Application.routes.draw do
       get :source
     end
   end
-  resources :deliverables
+  resources :deliverables do
+    member do
+      post :reanalyze
+    end
+  end
   resources :assignment_metrics
   resources :submissions do
     member do

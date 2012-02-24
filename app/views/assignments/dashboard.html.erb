@@ -10,6 +10,7 @@
   <%= render 'assignments/release_actions', assignment: @assignment %>
 </p>
 
+<% if @assignment.grades.length > 0 %>
 <h3 class="dashboard-heading">Grades</h3>
 <ul class="dashboard-list">
   <li>
@@ -23,6 +24,7 @@
   </li>
 <% end %>
 </ul>
+<% end %>
 
 <% if @assignment.deadline_passed_for? nil %>
 <h3 class="dashboard-heading">Grading Process</h3>
@@ -49,6 +51,12 @@
   <li>
     <h4 class="dashboard-heading">
       <span class="name"><%= deliverable.name %></span>
+      <span class="actions">
+        <%= link_to reanalyze_deliverable_path(deliverable), method: :post,
+                    class: 'button' do %>
+          <%= recompute_icon_tag %> Re-analyze All
+        <% end %>
+      </span>
       <%= submissions_progress_tag deliverable %>  
     </h4>
     <ol class="user-list">
