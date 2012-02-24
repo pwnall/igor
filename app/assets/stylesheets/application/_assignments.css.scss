@@ -1,16 +1,6 @@
 section.assignment {
   > .heading {
     font-size: 1.44em;
-    
-    .actions {
-      display: inline-block;
-      text-align: right;
-      
-      input[type="button"], input[type="submit"], a.button {
-        font-size: 0.84em;
-        font-weight: normal;
-      }
-    }
   }
   > p:first-child {
     margin: 0.5ex 0 1em 0;

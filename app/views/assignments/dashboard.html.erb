@@ -1,17 +1,22 @@
-<h2 class="assignment-heading"><%= @assignment.name %></h2>
-
-<p class="actions">
+<h2 class="assignment-heading">
+  <%= @assignment.name %>
+  <span class="actions">
   <%= link_to @assignment, class: 'button' do %>
     <%= role_icon_tag :student %> Student View
   <% end %>
   <%= link_to edit_assignment_path(@assignment), class: 'button' do %>
     <%= edit_icon_tag %> Edit
   <% end %>
-  <%= render 'assignments/release_actions', assignment: @assignment %>
-</p>
+  <%= render 'assignments/deliverable_release', assignment: @assignment %>
+</h2>
 
 <% if @assignment.grades.length > 0 %>
-<h3 class="dashboard-heading">Grades</h3>
+<h3 class="dashboard-heading">
+  Grades
+  <span class="actions">
+    <%= render 'assignments/grade_release', assignment: @assignment %>
+  </span>
+</h3>
 <ul class="dashboard-list">
   <li>
     <span class="name"><strong>Overall</strong></span>
@@ -43,7 +48,7 @@
 <% end %>
 
 <h3 class="dashboard-heading">
-  Submissions  
+  Submissions
   <%= submissions_progress_tag @assignment %>  
 </h3>
 <ul class="dashboard-list">

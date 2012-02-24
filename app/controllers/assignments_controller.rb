@@ -70,7 +70,8 @@ class AssignmentsController < ApplicationController
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
         format.html do
-          redirect_to @assignment, :notice => 'Assignment successfully updated.'
+          redirect_to dashboard_assignment_url(@assignment),
+              notice: 'Assignment successfully updated.'
         end
       else
         format.html { render :action => :edit }
