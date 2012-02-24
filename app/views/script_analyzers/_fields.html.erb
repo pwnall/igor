@@ -6,7 +6,7 @@
       Script .zip
     <% end %>
     <span class="value">
-    <%= ff.file_field :f, :accept => 'application/zip' %>
+    <%= ff.file_field :f, :accept => 'application/zip', :required => true %>
     </span>
     <span class="comment">
     <% if f.object.db_file %>

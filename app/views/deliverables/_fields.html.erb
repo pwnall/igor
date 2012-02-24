@@ -37,7 +37,7 @@
     <div data-pwnfx-showif="analyzer-type" data-pwnfx-showif-is="ScriptAnalyzer"
          data-pwnfx-showif-scope="deliverable"
          data-pwnfx-showif-replace="div">
-    <%= f.fields_for analyzer_for(f.object, ScriptAnalyzer) do |fa| %>
+    <%= f.fields_for :analyzer, analyzer_for(f.object, ScriptAnalyzer) do |fa| %>
     <%= render 'script_analyzers/fields', :f => fa  %>
     <% end %>
     </div>
