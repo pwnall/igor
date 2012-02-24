@@ -9,7 +9,7 @@
     <%= ff.file_field :f, :accept => 'application/zip', :required => true %>
     </span>
     <span class="comment">
-    <% if f.object.db_file %>
+    <% if f.object.db_file && !f.object.db_file.new_record? %>
     <%= download_icon_tag %>
     <%= link_to f.object.db_file.f.original_filename,
                 source_analyzer_path(f.object) %>
