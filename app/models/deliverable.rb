@@ -24,15 +24,12 @@ class Deliverable < ActiveRecord::Base
     attributes = attributes.except Analyzer.inheritance_column, :id
     if type
       klass = Analyzer.send :find_sti_class, type
-      self.analyzer = nil if analyzer && !analyzer.kind_of?(klass)
-      
-      if analyzer
-        analyzer.attributes = attributes
-      else
-        self.analyzer = klass.new attributes
-        analyzer.deliverable = self
+      if !analyzer || !analyzer.kind_of?(klass)
+        # Don't save the new association before validation.
+        self.association(:analyzer).replace klass.new, false
       end
     end
+    analyzer.attributes = attributes
   end
   
   # The analyzer, if it's a proc_analyzer.

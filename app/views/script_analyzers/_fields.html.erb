@@ -6,7 +6,8 @@
       Script .zip
     <% end %>
     <span class="value">
-    <%= ff.file_field :f, :accept => 'application/zip', :required => true %>
+    <%= ff.file_field :f, :accept => 'application/zip',
+          :required => (!f.object.db_file || f.object.db_file.new_record?) %>
     </span>
     <span class="comment">
     <% if f.object.db_file && !f.object.db_file.new_record? %>
