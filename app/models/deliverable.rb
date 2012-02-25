@@ -86,6 +86,15 @@ class Deliverable < ActiveRecord::Base
   def expected_submissions
     assignment.course.students.count
   end
+
+  # Queues re-analysis requests for every submission on this deliverable.
+  #
+  # Calling this will cause a lot of load on the site.
+  def reanalyze_submissions  
+    submissions.includes(:analysis).each do |submission|
+      submission.queue_analysis true
+    end
+  end
 end
 
 # == Schema Information

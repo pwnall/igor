@@ -4,9 +4,7 @@ class DeliverablesController < ApplicationController
   # POST /deliverables/1/reanalyze
   def reanalyze
     @deliverable = Deliverable.find params[:id], include: :assignment
-    @deliverable.submissions.includes(:analysis).each do |submission|
-      submission.queue_analysis true
-    end
+    @deliverable.reanalyze_submissions
     
     redirect_to dashboard_assignment_url(@deliverable.assignment),
         notice: "All submissions for #{@deliverable.name} queued for analysis"

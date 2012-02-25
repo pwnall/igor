@@ -62,9 +62,12 @@
           <%= recompute_icon_tag %> Re-analyze All
         <% end %>
       </span>
-      <%= submissions_progress_tag deliverable %>  
+      <%= submissions_progress_tag deliverable %>
     </h4>
-    <%= render 'deliverables/submission_list', deliverable: deliverable %>
+    <div data-pwnfx-scope="submissions-list"
+         data-pwnfx-delayed-target="submission-states">
+      <%= render 'deliverables/submission_list', deliverable: deliverable %>
+    </div>  
   </li>
 <% end %>
 </ul>
