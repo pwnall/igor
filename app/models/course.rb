@@ -33,7 +33,8 @@ class Course < ActiveRecord::Base
   
   # Students registered for this course.
   def students
-    registrations.joins(:user).where(dropped: false, users: { admin: false })
+    users.joins(:registrations).where(admin: false,
+        registrations: { course_id: id, dropped:false })
   end
   
   # Course staff members.
