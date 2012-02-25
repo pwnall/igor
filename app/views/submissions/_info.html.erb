@@ -6,15 +6,19 @@
                   submission.user %>
     </span>
     submitted a
-    <%= link_to "#{number_to_human_size(submission.db_file.f.size)} file",
-                file_submission_path(submission) %>
+    <%= link_to file_submission_path(submission) do %>
+      <%= download_icon_tag %>
+      <%= number_to_human_size submission.db_file.f.size %> file
+    <% end %>
     <%= time_ago_in_words submission.updated_at %>
     ago.
   </span>
   <span class="submission-result">
   <% if submission.analysis %>
-    <%= link_to analysis_status_text(submission.analysis),
-                submission.analysis %>
+    <%= link_to submission.analysis do %>
+      <%= analysis_status_icon_tag submission.analysis %>
+      <%= analysis_status_text submission.analysis %>
+    <% end %>
     <% if submission.analysis.status_will_change? %>
       <span data-pwnfx-delayed="submission-info" data-pwnfx-delayed-method="GET"
             data-pwnfx-delayed-url="<%= info_submission_path(submission) %>"

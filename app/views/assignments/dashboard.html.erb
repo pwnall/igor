@@ -1,17 +1,19 @@
 <h2 class="assignment-heading">
   <%= @assignment.name %>
   <span class="actions">
-  <%= link_to @assignment, class: 'button' do %>
-    <%= role_icon_tag :student %> Student View
-  <% end %>
-  <%= link_to edit_assignment_path(@assignment), class: 'button' do %>
-    <%= edit_icon_tag %> Edit
-  <% end %>
-  <%= render 'assignments/deliverable_release', assignment: @assignment %>
+    <%= link_to @assignment, class: 'button' do %>
+      <%= role_icon_tag :student %> Student View
+    <% end %>
+    <%= link_to edit_assignment_path(@assignment), class: 'button' do %>
+      <%= edit_icon_tag %> Edit
+    <% end %>
+    <%= render 'assignments/deliverable_release', assignment: @assignment %>
+  </span>
 </h2>
 
 <% if @assignment.grades.length > 0 %>
 <h3 class="dashboard-heading">
+  <%= grades_icon_tag %>
   Grades
   <span class="actions">
     <%= render 'assignments/grade_release', assignment: @assignment %>
@@ -32,7 +34,16 @@
 <% end %>
 
 <% if @assignment.deadline_passed_for? nil %>
-<h3 class="dashboard-heading">Grading Process</h3>
+<h3 class="dashboard-heading">
+  <%= waiting_icon_tag %>
+  Grading Process
+  <span class="actions">
+    <%= link_to editor_grades_path(:assignment_id => @assignment.id),
+          class: 'button' do %>
+      <%= edit_icon_tag %> Enter Grades
+    <% end %>
+  </span>  
+</h3>
 <ul class="dashboard-list">
   <li>
     <span class="name"><strong>Overall</strong></span>
@@ -48,6 +59,7 @@
 <% end %>
 
 <h3 class="dashboard-heading">
+  <%= homework_icon_tag %>
   Submissions
   <%= submissions_progress_tag @assignment %>  
 </h3>
@@ -55,6 +67,7 @@
 <% @assignment.deliverables.each do |deliverable| %>
   <li>
     <h4 class="dashboard-heading">
+      <%= upload_icon_tag %>
       <span class="name"><%= deliverable.name %></span>
       <span class="actions">
         <%= link_to reanalyze_deliverable_path(deliverable), method: :post,

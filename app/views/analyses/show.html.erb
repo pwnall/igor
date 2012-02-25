@@ -1,35 +1,17 @@
-<div class="full_section">
-  
-<h2 class="full_section">
-  Analysis for <%= @analysis.submission.deliverable.assignment.name %>:
+<h2>
+  Submission for
+  <%= @analysis.submission.deliverable.assignment.name %>
   <%= @analysis.submission.deliverable.name %>
 </h2>
 
-<%= form_for(@analysis, :url => '#',
-             :html => {:class => 'user_form'}) do |f| %>
-  <div class="form_box">
-    <div class="form_entry">
-      <div class="form_label">Status</div>
-      <div class="form_field_box">
-        <%= analysis_status_text @analysis %>
-      </div>
-    </div>        
-    <div class="form_entry">
-      <div class="form_label">Score</div>
-      <div class="form_field_box">
-        <%= @analysis.score || 'Not available' %>
-      </div>
-    </div>        
-    <div class="form_entry">
-      <div class="form_label">Log</div>
-      <div class="form_field_box">
-        <pre><%= word_wrap(@analysis.log || 'Not available', 80) %></pre>
-      </div>
-    </div>
-    <div class="form_submit_box">
-        <%= link_to 'Go home', root_path %>
-    </div>
-  </div>
-<% end %>
+<p class="submission" data-pwnfx-scope="submission-info"
+                      data-pwnfx-delayed-target="submission-info">
+  <%= render 'submissions/info',
+        :submission => @analysis.submission %>
+</p>
 
+<h3>Log</h3>
+
+<div class="markdpwn-parsed-code">
+<pre><%= @analysis.log %></pre>
 </div>

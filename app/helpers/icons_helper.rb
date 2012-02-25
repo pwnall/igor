@@ -1,17 +1,23 @@
 # Methods for rendering generic UI icons.
 module IconsHelper
-  # Show this icon to tell the user that his input is valid.
+  # Tells the user that his input is valid.
   def valid_icon_tag
     title = 'Valid input'
     image_tag 'icons/checkmark.png', alt: title, title: title, class: 'ui-icon'
   end
   
-  # Show this icon to tell the user that his input has some errors.
+  # Tells the user that his input has some errors.
   def invalid_icon_tag
     title = 'Invalid input'
     image_tag 'icons/error.png', alt: title, title: title, class: 'ui-icon'
   end
   
+  # Tells the user that some lengthy computation or process is in progress.
+  def waiting_icon_tag
+    title = 'In progress'
+    image_tag 'icons/waiting.png', alt: title, title: title, class: 'ui-icon'
+  end
+
   # Shown on links to the next step in a multi-step process. 
   def next_step_icon_tag
     title = 'Next step'
