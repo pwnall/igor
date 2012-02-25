@@ -28,23 +28,8 @@
   <ul class="deliverables">
   <% assignment.deliverables_for(current_user).each do |deliverable| %>
     <li>
-      <div class="summary">
-        <span class="name"><%= deliverable.name %></span>
-        <div class="new">
-          <%= render 'submissions/form',
-                :submission => Submission.new(:deliverable => deliverable) %>
-        </div>
-      </div>
-      <div class="details">
-        <p class="description">
-          <%= deliverable.description %>
-        </p>
-        <p class="submission" data-pwnfx-scope="submission-info"
-                              data-pwnfx-delayed-target="submission-info">
-          <%= render 'submissions/info',
-                :submission => deliverable.submission_for(current_user) %>
-        </p>
-      </div>
+      <%= render 'deliverables/student_list_entry', deliverable: deliverable,
+            submission: deliverable.submission_for(current_user) %>
     </li>
   <% end %>
   </ul>

@@ -67,7 +67,7 @@ Seven::Application.routes.draw do
     member do
       get :file
       get :info
-      post :revalidate
+      post :reanalyze
     end
     collection do
       get :request_package

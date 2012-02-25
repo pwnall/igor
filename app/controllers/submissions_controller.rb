@@ -97,14 +97,14 @@ class SubmissionsController < ApplicationController
     create
   end
   
-  # POST /submissions/revalidate/1
-  def revalidate
-    @submission = Submission.find(params[:id])
+  # POST /submissions/1/reanalyze
+  def reanalyze
+    @submission = Submission.find params[:id]
     @submission.queue_analysis
     
-    flash[:notice] = "Reanalyzing #{@submission.db_file.f.original_filename} from #{@submission.deliverable.assignment.name}: #{@submission.deliverable.name}. "
+    flash[:notice] = "Reanalysis request queued."
     respond_to do |format|
-      format.html { redirect_to submissions_path }
+      format.html { redirect_to @submission.analysis }
     end    
   end
   

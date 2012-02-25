@@ -4,13 +4,25 @@
   <%= @analysis.submission.deliverable.name %>
 </h2>
 
-<p class="submission" data-pwnfx-scope="submission-info"
-                      data-pwnfx-delayed-target="submission-info">
-  <%= render 'submissions/info',
-        :submission => @analysis.submission %>
-</p>
-
-<h3>Log</h3>
+<section class="assignment">
+  <ul class="deliverables">
+    <li>
+      <%= render 'deliverables/student_list_entry',
+            deliverable: @analysis.submission.deliverable,
+            submission: @analysis.submission %>
+    </li>
+  </ul>
+<section>
+    
+<h3>
+  Log
+  <span class="actions">
+    <%= link_to reanalyze_submission_path(@analysis.submission), method: :post,
+                class: 'button' do %>
+      <%= recompute_icon_tag %> Re-analyze
+    <% end %>
+  </span>
+</h3>
 
 <div class="markdpwn-parsed-code">
 <pre><%= @analysis.log %></pre>
