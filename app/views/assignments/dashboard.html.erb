@@ -41,7 +41,7 @@
 <% @assignment.metrics.each do |metric| %>
   <li>
     <span class="name"><%= metric.name %></span>
-    <%= grading_progress_tag metric %>  
+    <%= grading_progress_tag metric %>
   </li>
 <% end %>
 </ul>
@@ -64,19 +64,7 @@
       </span>
       <%= submissions_progress_tag deliverable %>  
     </h4>
-    <ol class="user-list">
-    <% deliverable.submissions.includes(:analysis, :user => :profile).
-                    order('updated_at DESC').each do |submission| %>
-      <li>
-        <%= link_to submission.analysis || submission do %>
-          <figure title="<%= submission.user.name %>">
-            <%= user_image_tag submission.user, size: :large %>
-            <%= analysis_status_icon_tag submission.analysis %>
-          </figure>
-        <% end %>
-      </li>
-    <% end %>
-    </ol>
+    <%= render 'deliverables/submission_list', deliverable: deliverable %>
   </li>
 <% end %>
 </ul>

@@ -58,6 +58,7 @@ Seven::Application.routes.draw do
   end
   resources :deliverables do
     member do
+      get :submission_dashboard
       post :reanalyze
     end
   end

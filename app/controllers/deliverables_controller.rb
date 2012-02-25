@@ -3,12 +3,19 @@ class DeliverablesController < ApplicationController
   
   # POST /deliverables/1/reanalyze
   def reanalyze
-    deliverable = Deliverable.find params[:id], include: :assignment
-    deliverable.submissions.includes(:analysis).each do |submission|
+    @deliverable = Deliverable.find params[:id], include: :assignment
+    @deliverable.submissions.includes(:analysis).each do |submission|
       submission.queue_analysis true
     end
     
-    redirect_to dashboard_assignment_url(deliverable.assignment),
-        notice: "All submissions for #{deliverable.name} queued for analysis"
+    redirect_to dashboard_assignment_url(@deliverable.assignment),
+        notice: "All submissions for #{@deliverable.name} queued for analysis"
+  end
+  
+  # XHR GET /deliverables/1/submission_dashboard
+  def submission_dashboard
+    @deliverable = Deliverable.find params[:id],
+        include: [:assignment, {submissions: [:analysis, {user: :profile}]}]
+    render layout: false if request.xhr?
   end
 end

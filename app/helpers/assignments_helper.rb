@@ -20,7 +20,13 @@ module AssignmentsHelper
   end
   
   def grading_stats_tags(assignment_or_metric)
-    avg = assignment_or_metric.grades.average(:score) || 0
+    if assignment_or_metric.respond_to? :metrics
+      totals = assignment_or_metric.grades.includes(:subject).
+          group_by(&:subject).map { |k, v| v.map(&:score).sum }
+      avg = totals.sum.to_f / totals.length
+    else
+      avg = assignment_or_metric.grades.average(:score) || 0
+    end
     max = assignment_or_metric.max_score || 0.0001
     percent = '%.2f' % ((avg * 100) / max.to_f)
     title = "#{percent}% (#{'%.2f' % avg} / #{max})"
