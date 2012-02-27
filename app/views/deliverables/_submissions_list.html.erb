@@ -1,0 +1,13 @@
+<ol class="submission-list">
+<% deliverable.submissions.includes(:analysis, :user => :profile).
+                order('updated_at DESC').each do |submission| %>
+  <li>
+    <%= link_to submission.analysis || submission do %>
+      <figure title="<%= submission.user.name %>">
+        <%= user_image_tag submission.user, size: :large %>
+        <%= analysis_status_icon_tag submission.analysis %>
+      </figure>
+    <% end %>
+  </li>
+<% end %>
+</ol>

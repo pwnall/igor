@@ -1,6 +1,6 @@
 class DeliverablesController < ApplicationController
   before_filter :authenticated_as_admin
-  
+
   # POST /deliverables/1/reanalyze
   def reanalyze
     @deliverable = Deliverable.find params[:id], include: :assignment
