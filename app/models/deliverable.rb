@@ -43,8 +43,13 @@ class Deliverable < ActiveRecord::Base
   # All the student submissions for this deliverable.
   has_many :submissions, :dependent => :destroy, :inverse_of => :deliverable
   
-  # True if the given user should be allowed to see the deliverable.
+  # True if "user" should be allowed to see this deliverable.
   def can_read?(user)
+    assignment.deliverables_ready? || (user && user.admin?)
+  end
+  
+  # True if "user" should be able to submit (or re-submit) for this deliverable.
+  def can_submit?(user)
     assignment.deliverables_ready? || (user && user.admin?)
   end
 

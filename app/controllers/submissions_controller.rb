@@ -69,6 +69,8 @@ class SubmissionsController < ApplicationController
   # POST /submissions
   def create    
     deliverable = Deliverable.find params[:submission][:deliverable_id]
+    return bounce_user unless deliverable.can_submit? current_user
+    
     @submission = deliverable.submission_for current_user
     @submission ||= Submission.new params[:submission]
     @submission.user = current_user

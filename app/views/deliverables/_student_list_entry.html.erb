@@ -1,7 +1,8 @@
 <div class="summary">
   <span class="name"><%= deliverable.name %></span>
   <div class="new">
-    <% if !submission || submission.user == current_user %>
+    <% if (!submission || submission.user == current_user) &&
+          deliverable.can_submit?(current_user) %>
       <%= render 'submissions/form',
             submission: Submission.new(deliverable: deliverable) %>
     <% end %>
