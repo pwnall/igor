@@ -89,7 +89,6 @@ GEM
       addressable (~> 2.2)
       multipart-post (~> 1.1)
       rack (~> 1.1)
-    fastercsv (1.5.4)
     fbgraph (1.9.0)
       activesupport
       faraday (>= 0.7.5)
@@ -156,7 +155,7 @@ GEM
     prawn (0.12.0)
       pdf-reader (>= 0.9.0)
       ttfunk (~> 1.0.2)
-    pwnstyles_rails (0.1.19)
+    pwnstyles_rails (0.1.20)
       rails (>= 3.2.0)
       sass-rails (>= 3.2.4)
     pygments.rb (0.2.7)
@@ -267,7 +266,6 @@ DEPENDENCIES
   delayed_job_active_record (>= 0.3.2)
   dynamic_form (>= 1.1.4)
   exec_sandbox (>= 0.2.3)
-  fastercsv (>= 1.5.4)
   gravatar-ultimate (>= 1.0.3)
   jquery-rails (>= 2.0.0)
   json (>= 1.5.4)
@@ -278,7 +276,7 @@ DEPENDENCIES
   paperclip!
   pdf-reader (>= 1.0.0)
   prawn (~> 0.12.0)
-  pwnstyles_rails (>= 0.1.19)
+  pwnstyles_rails (>= 0.1.20)
   railroady (>= 1.0.6)
   rails (>= 3.2.2)
   rmagick (>= 2.13.1)

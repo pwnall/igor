@@ -98,6 +98,7 @@ class GradesController < ApplicationController
 
   # GET /grades/request_report/0
   def request_report
+    render layout: 'assignments'
   end
   
   def missing
@@ -178,7 +179,7 @@ class GradesController < ApplicationController
     @histogram_step = params[:histogram_step].to_i || 1
     @users.each do |user|
       if params[:use_weights]
-        @totals_by_uid[user.id] = @grades_by_uid_and_mid[user.id].values.inject(0) { |acc, grade| acc + (grade ? (grade.score || 0)  * grade.metric.weight : 0) }
+        @totals_by_uid[user.id] = @grades_by_uid_and_mid[user.id].values.inject(0) { |acc, grade| acc + (grade ? (grade.score || 0)  * grade.metric.assignment.weight : 0) }
       else
         @totals_by_uid[user.id] = @grades_by_uid_and_mid[user.id].values.inject(0) { |acc, grade| acc + (grade ? (grade.score || 0) : 0) }
       end
@@ -204,8 +205,8 @@ class GradesController < ApplicationController
       csv << ['Name', 'Rec'] + @ordered_metrics.map { |m| "#{m.assignment.name}: #{m.name}" } + [params[:use_weights] ? 'Weighted Total' : 'Raw Total']
       @users.each do |user|
         section_number = 'None'
-        if user.profile && user.profile.recitation_section
-          section_number = user.profile.recitation_section.serial
+        if user.registration && user.registration.recitation_section
+          section_number = user.registration.recitation_section.serial
         end
         csv << [@names_by_uid[user.id], section_number] +
                @ordered_metrics.map { |m| g = @grades_by_uid_and_mid[user.id][m.id]; next (g ? g.score || 'N' : 'N') } +

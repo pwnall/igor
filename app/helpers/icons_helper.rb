@@ -62,7 +62,7 @@ module IconsHelper
 
   # Shown on buttons that generate a table out of existing data.
   def report_icon_tag
-     title = 'Print'
+    title = 'Generate report'
     image_tag 'icons/report.png', alt: title, title: title, class: 'ui-icon'
   end
   

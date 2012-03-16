@@ -1,28 +1,40 @@
 <h2>Report grades</h2>
-<%= form_tag(report_grades_path, :class => 'student_form', :method => :post) do %>
-  <dl>
-  	<dt><%= label_tag :filter_aid, 'Assignment' %></dt>
-		<dd>
-      <%= select_tag :filter_aid, options_for_select([['(all)', nil]] + Assignment.find(:all).map { |a| [a.name, a.id] }) %>
-		</dd>
-    <dt><%= label_tag :sort_by, 'Sort by' %></dt>
-    <dd>
-      <%= select_tag :sort_by, options_for_select([['Name', 'name'], ['Total score', 'total']]) %>
-    </dd>
-    <dt><%= label_tag :name_by, 'Name students by' %></dt>
-    <dd>
-      <%= select_tag :name_by, options_for_select([['Real name', 'name'], ['Athena ID', 'athena_username'], ['.edu e-mail', 'email']]) %>      
-    </dd>
-    <dt><%= label_tag :use_weights, 'Weight totals' %></dt>
-    <dd>
-      <%= check_box_tag :use_weights, nil, :checked => true %>
-    </dd>
-    <dt><%= label_tag :histogram_step, 'Weight totals' %></dt>
-    <dd>
-      <%= select_tag :histogram_step, options_for_select([500, 200, 100, 50, 20, 10, 5], 10) %>
-    </dd>
-  </dl>
-  <p>
-    <%= submit_tag 'Generate report' %>  	
+<%= form_tag report_grades_path, method: :post do %>
+  <section class="fields">
+    <p class="field">
+      <%= label_tag :filter_aid, 'Assignment' %>
+      <span class="value">
+        <%= select_tag :filter_aid, options_for_select([['(all)', nil]] + Assignment.find(:all).map { |a| [a.name, a.id] }) %>
+      </span>
+    </p>
+    <p class="field">
+      <%= label_tag :sort_by, 'Sort by' %>
+      <span class="value">
+        <%= select_tag :sort_by, options_for_select([['Name', 'name'], ['Total score', 'total']]) %>
+      </span>
+    </p>
+    <p class="field">
+      <%= label_tag :name_by, 'Name students by' %>
+      <span class="value">
+        <%= select_tag :name_by, options_for_select([['Real name', 'name'], ['Athena ID', 'athena_username'], ['.edu e-mail', 'email']]) %>
+      </span>
+    </p>
+    <p class="field">
+      <%= label_tag :use_weights, 'Weight totals' %>
+      <span class="value">
+        <%= check_box_tag :use_weights, nil, :checked => true %>
+      </span>
+    </p>
+    <p class="field">
+      <%= label_tag :histogram_step, 'Histogram bucket size' %>
+      <span class="value">
+        <%= select_tag :histogram_step, options_for_select([500, 200, 100, 50, 20, 10, 5], 10) %>
+      </span>
+    </p>
+  </section>
+  <p class="action">
+    <%= button_tag class: 'emphasized' do %>
+      <%= report_icon_tag %> Generate Report
+    <% end %>
   </p>
 <% end %>

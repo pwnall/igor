@@ -1,14 +1,14 @@
 <section class="fields">
   <p class="field">
     <%= f.label :name %>
-    <span class="field">
+    <span class="value">
       <%= f.text_field :name, :placeholder => 'PS 1', :required => true,
               :autofocus => true %>
     </span>
   </p>
   <p class="field">
     <%= f.label :deadline, 'Submission Deadline' %>
-    <span class="field">
+    <span class="value">
       <%= f.datetime_select :deadline, :use_short_month => true,
              :minute_step => 15, :datetime_separator => ' at ',
              :time_separator => ':' %>
@@ -16,14 +16,14 @@
   </p>
   <p class="field">
     <%= f.label :weight, 'Grade Weight' %>
-    <span class="field">
+    <span class="value">
       <%= f.number_field :weight, :min => 0, :step => 0.1, :required => true,
                                   :placeholder => 1.0 %>
     </span>
   </p>
   <p class="field">
     <%= f.label :author, 'Author' %>
-    <span class="field">
+    <span class="value">
       <%= f.collection_select :author_id, Course.main.staff, :id, :name %>
     </span>
   </p>
@@ -31,7 +31,7 @@
   <% if f.object.course.has_teams? %>
   <p class="field">
     <%= f.label :team_partition_id, 'Teams' %>
-    <span class="field">
+    <span class="value">
       <%= f.select :team_partition_id,
               ([['(none)', nil]] + TeamPartition.all.map { |p| [p.name, p.id] }),
               :class => 'form_field' %>
@@ -42,14 +42,14 @@
   <% if f.object.course.has_surveys? %>
   <p class="field">
     <%= f.label :feedback_survey_id, 'Feedback survey' %>
-    <span class="field">
+    <span class="value">
      <%= f.select :feedback_survey_id, Survey.all.map { |s| [s.name, s.id] },
                   :include_blank => '(none)', :class => 'form_field' %>
     </span>
   </p>
   <p class="field">
     <%= f.label :accepts_feedback, 'Survey open' %>
-    <span class="field">
+    <span class="value">
       <%= f.check_box :accepts_feedback %>
       students can submit feedback
     </span>
