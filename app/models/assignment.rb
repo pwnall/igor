@@ -3,18 +3,18 @@
 # Examples: problem set, project, exam.
 class Assignment < ActiveRecord::Base
   # The course that this assignment is a part of.
-  belongs_to :course, :inverse_of => :assignments
-  validates :course, :presence => true
+  belongs_to :course, inverse_of: :assignments
+  validates :course, presence: true
   
   # The user-visible assignment name (e.g., "PSet 1").
-  validates :name, :length => 1..64, :uniqueness => { :scope => :course_id },
-                   :presence => true
+  validates :name, length: 1..64, uniqueness: { scope: :course_id },
+                   presence: true
   attr_accessible :name
   
   # The user that will be reported as the assignment's author.
-  belongs_to :author, :class_name => 'User'
+  belongs_to :author, class_name: 'User'
   attr_accessible :author
-  validates :author, :presence => true
+  validates :author, presence: true
   attr_accessible :author_id
   
   # True if the user is allowed to see this assignment.
@@ -34,23 +34,23 @@ end
 # :nodoc: homework submission feature.
 class Assignment
   # The time when all the deliverables of the assignment are due.
-  validates :deadline, :presence => true, :timeliness => true
+  validates :deadline, presence: true, timeliness: true
   attr_accessible :deadline
   
   # If true, students can read deliverables and make submissions.
-  validates :deliverables_ready, :inclusion => { :in => [true, false],
-                                                 :allow_nil => false }
+  validates :deliverables_ready, inclusion: { in: [true, false],
+                                              allow_nil: false }
   attr_accessible :deliverables_ready
 
   # The deliverables that students need to submit to complete the assignment.
-  has_many :deliverables, :dependent => :destroy, :inverse_of => :assignment
+  has_many :deliverables, dependent: :destroy, inverse_of: :assignment
   validates_associated :deliverables
-  accepts_nested_attributes_for :deliverables, :allow_destroy => true,
-                                               :reject_if => :all_blank
+  accepts_nested_attributes_for :deliverables, allow_destroy: true,
+                                               reject_if: :all_blank
   attr_accessible :deliverables_attributes
 
   # All students' submissions for this assignment.
-  has_many :submissions, :through => :deliverables, :inverse_of => :assignment
+  has_many :submissions, through: :deliverables, inverse_of: :assignment
   
   # The assignment deadline, customized to a specific user.
   #
@@ -64,7 +64,7 @@ class Assignment
   # This method takes an user as an argument so that we can later account for
   # deadline extensions.
   def deadline_passed_for?(user)
-    deadline < Time.now
+    deadline_for(user) < Time.now
   end
   
   # Deliverables that a user can submit files for.
@@ -83,25 +83,24 @@ end
 # :nodoc: grade collection and publishing feature.
 class Assignment
   # The assignment's weight when computing total class scores.
-  validates :weight, :numericality => { :greater_than_or_equal_to => 0,
-      :less_than_or_equal_to => 100, :allow_nil => true }
+  validates :weight, numericality: { greater_than_or_equal_to: 0,
+      less_than_or_equal_to: 100, allow_nil: true }
   attr_accessible :weight
   
   # If true, students can see their grades on the assignment.
-  validates :metrics_ready, :inclusion => { :in => [true, false],
-                                            :allow_nil => false }  
+  validates :metrics_ready, inclusion: { in: [true, false], allow_nil: false }
   attr_accessible :metrics_ready
   
   # The metrics that the students are graded on for this assignment.
-  has_many :metrics, :class_name => 'AssignmentMetric', :dependent => :destroy,
-                     :inverse_of => :assignment
+  has_many :metrics, class_name: 'AssignmentMetric', dependent: :destroy,
+                     inverse_of: :assignment
   validates_associated :metrics
-  accepts_nested_attributes_for :metrics, :allow_destroy => true,
-                                          :reject_if => :all_blank
+  accepts_nested_attributes_for :metrics, allow_destroy: true,
+                                          reject_if: :all_blank
   attr_accessible :metrics_attributes
   
   # All students' grades for this assignment.
-  has_many :grades, :through => :metrics
+  has_many :grades, through: :metrics
   
   # Number of submissions that will be received for this assignment.
   #
@@ -142,7 +141,7 @@ end
 # :nodoc: team integration.
 class Assignment
   # The partition of teams used for this assignment.
-  belongs_to :team_partition, :inverse_of => :assignments
+  belongs_to :team_partition, inverse_of: :assignments
   
   # The object to be set as the subject on this assignment's grades for a user.
   def grade_subject_for(user)
@@ -153,7 +152,7 @@ end
 # :nodoc: feedback survey integration.
 class Assignment
   # The set of survey questions for getting feedback on this assignment. 
-  belongs_to :feedback_survey, :class_name => 'Survey'
+  belongs_to :feedback_survey, class_name: 'Survey'
 
   # The questions in the feedback survey for this assignment. 
   def feedback_questions

@@ -162,14 +162,14 @@ psets = pset_data.map.with_index do |data, index|
                              max_score: 6 + (i + j) % 6
   end
   
-  pdf_deliverable = Deliverable.create! assignment: pset,
-      name: 'PDF write-up', file_ext: 'pdf',
+  pdf_deliverable = pset.deliverables.create! name: 'PDF write-up',
+      file_ext: 'pdf',
       description: 'Please upload your write-up, in PDF format.'
   analyzer = ProcAnalyzer.new  message_name: 'analyze_pdf', auto_grading: true
   analyzer.deliverable = pdf_deliverable
   analyzer.save!
   
-  rb_deliverable = Deliverable.create! assignment: pset,
+  rb_deliverable = pset.deliverables.create! assignment: pset,
       name: 'Fibonacci', file_ext: 'rb',
       description: 'Please upload your modified fib.rb.'
   analyzer = ScriptAnalyzer.new db_file_attributes: {
@@ -179,7 +179,9 @@ psets = pset_data.map.with_index do |data, index|
   analyzer.deliverable = rb_deliverable
   analyzer.save!
 
-  raise "Pset #{i} seeding bug" unless pset.ui_state_for(admin) == data[:state]
+  unless pset.ui_state_for(admin) == data[:state]
+    raise "Pset #{i} seeding bug: #{data[:state]} / #{pset.ui_state_for(admin)}"
+  end
   pset
 end
 
