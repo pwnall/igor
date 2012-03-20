@@ -15,12 +15,12 @@
 # set of questions.
 class Survey < ActiveRecord::Base
   # A name for the question set. Visible to admins.
-  validates_length_of :name, :in => 1..128, :allow_nil => false
+  validates :name, length: 1..128
   
   # Memberships for the questions in this set.
-  has_many :memberships, :class_name => 'SurveyQuestionMembership',
-                         :dependent => :destroy
+  has_many :memberships, class_name: 'SurveyQuestionMembership',
+                         dependent: :destroy
                          
   # The questions in this set.
-  has_many :questions, :through => :memberships, :source => :survey_question
+  has_many :questions, through: :memberships, source: :survey_question
 end

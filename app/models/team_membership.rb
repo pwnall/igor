@@ -16,7 +16,7 @@ class TeamMembership < ActiveRecord::Base
   validates_presence_of :team
   
   # The user that belongs to a team.
-  belongs_to :user, :inverse_of => :team_memberships
-  validates :user, :presence => true
-  validates :user_id, :uniqueness => { :scope => [:team_id] }
+  belongs_to :user, inverse_of: :team_memberships
+  validates :user, presence: true
+  validates :user_id, uniqueness: { scope: [:team_id] }
 end

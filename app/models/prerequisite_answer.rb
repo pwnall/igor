@@ -13,19 +13,18 @@
 
 class PrerequisiteAnswer < ActiveRecord::Base
   # The registration containing this answer to a prerequisite class question.
-  belongs_to :registration, :inverse_of => :prerequisite_answers
+  belongs_to :registration, inverse_of: :prerequisite_answers
   
   # The prerequisite that this answer covers.
-  belongs_to :prerequisite, :inverse_of => :prerequisite_answers
+  belongs_to :prerequisite, inverse_of: :prerequisite_answers
   
   # True if the student took the prerequisite course, false otherwise.
   #
   # NOTE: this is self-reported by the student. We cann't hook up to the
   #       registrar database.
-  validates_inclusion_of :took_course, :in => [true, false], :allow_nil => false
+  validates :took_course, inclusion: { in: [true, false], allow_nil: false }
   
   # The student's answer to the question which showed up because the student
   # indicated he/she did not take the prerequisite course.
-  validates_length_of :waiver_answer, :in => 0...(4.kilobytes),
-                      :allow_nil => true  
+  validates :waiver_answer, length: { in: 0...(4.kilobytes), allow_nil: true }
 end

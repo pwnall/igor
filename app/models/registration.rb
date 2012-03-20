@@ -1,23 +1,23 @@
 # A student's commitment to participate in a class.
 class Registration < ActiveRecord::Base
   # The student who registered.
-  belongs_to :user, :inverse_of => :registrations
-  validates :user, :presence => true
+  belongs_to :user, inverse_of: :registrations
+  validates :user, presence: true
   
   # The course for which the student registered.
-  belongs_to :course, :inverse_of => :registrations
-  validates :course, :presence => true
-  validates :course_id, :uniqueness => { :scope => [:user_id] }
+  belongs_to :course, inverse_of: :registrations
+  validates :course, presence: true
+  validates :course_id, uniqueness: { scope: [:user_id] }
 
   # True if the student is taking the class for credit.
-  validates :for_credit, :inclusion => { :in => [true, false] }
+  validates :for_credit, inclusion: { in: [true, false] }
   attr_accessible :for_credit
   
   # True if the student dropped the class.
-  validates :dropped, :inclusion => { :in => [true, false] }
+  validates :dropped, inclusion: { in: [true, false] }
   
   # True if the user consents to having their work published.
-  validates :allows_publishing, :inclusion => { :in => [true, false] }  
+  validates :allows_publishing, inclusion: { in: [true, false] }  
   attr_accessible :allows_publishing
   
   # The user's recitation section.
@@ -27,18 +27,17 @@ class Registration < ActiveRecord::Base
   attr_protected :recitation_section
 
   # Temporary excuse for a calendar.
-  has_many :recitation_conflicts, :dependent => :destroy
+  has_many :recitation_conflicts, dependent: :destroy
 
   # Answers to the course's prerequisites questions.
-  has_many :prerequisite_answers, :dependent => :destroy,
-                                  :inverse_of => :registration
-  accepts_nested_attributes_for :prerequisite_answers, :allow_destroy => false
+  has_many :prerequisite_answers, dependent: :destroy, inverse_of: :registration
+  accepts_nested_attributes_for :prerequisite_answers, allow_destroy: false
   attr_accessible :prerequisite_answers_attributes
   
   # Populates prerequisite_answers for a new registration
   def build_prerequisite_answers
     course.prerequisites.each do |p|
-      prerequisite_answers.build :registration => self, :prerequisite => p
+      prerequisite_answers.build registration: self, prerequisite: p
     end
   end
 

@@ -1,35 +1,32 @@
 # A bunch of work that results in with grades for registered students.
 class Course < ActiveRecord::Base
   # The course number (e.g. "6.006")
-  validates :number, :length => 1..16, :presence => true
+  validates :number, length: 1..16, presence: true
   # The course title (e.g. "Introoduction to Algorithms").
-  validates :title, :length => 1..256, :presence => true
+  validates :title, length: 1..256, presence: true
   # The contact e-mail for course staff.
-  validates :email, :length => 1..64, :presence => true
+  validates :email, length: 1..64, presence: true
   # True if the course has recitation sections.
-  validates :has_recitations,
-      :inclusion => { :in => [true, false], :allow_nil => false }
+  validates :has_recitations, inclusion: { in: [true, false], allow_nil: false }
   # True if the course has homework surveys.
-  validates :has_surveys,
-      :inclusion => { :in => [true, false], :allow_nil => false }
+  validates :has_surveys, inclusion: { in: [true, false], allow_nil: false }
   # True if the course has homework teams.
-  validates :has_teams,
-      :inclusion => { :in => [true, false], :allow_nil => false }
+  validates :has_teams, inclusion: { in: [true, false], allow_nil: false }
   
   # Google Analytics account ID for the course.
-  validates :ga_account, :length => 1..32, :presence => true
+  validates :ga_account, length: 1..32, presence: true
   
   # Student registrations for this course.
-  has_many :registrations, :dependent => :destroy, :inverse_of => :course
+  has_many :registrations, dependent: :destroy, inverse_of: :course
   
   # Prerequisite courses for this course.
-  has_many :prerequisites, :dependent => :destroy, :inverse_of => :course
+  has_many :prerequisites, dependent: :destroy, inverse_of: :course
   
   # Assignments issued for this course.
-  has_many :assignments, :dependent => :destroy, :inverse_of => :course
+  has_many :assignments, dependent: :destroy, inverse_of: :course
   
   # All users connected to this course.
-  has_many :users, :through => :registrations, :source => :user
+  has_many :users, through: :registrations, source: :user
   
   # Students registered for this course.
   def students

@@ -1,20 +1,20 @@
 # The description of a file that students must submit for an assignment.
 class Deliverable < ActiveRecord::Base
   # The user-visible deliverable name.
-  validates :name, :length => 1..64, :presence => true,
-                   :uniqueness => { :scope => [:assignment_id] }
+  validates :name, length: 1..64, presence: true,
+                   uniqueness: { scope: [:assignment_id] }
   
   # Instructions on preparing submissions for this deliverable.
-  validates :description, :length => 1..(2.kilobytes), :presence => true
+  validates :description, length: 1..(2.kilobytes), presence: true
 
   # The extension of files to be submitted for this deliverable. (e.g., "pdf")
-  validates :file_ext, :length => 1..16, :presence => true
+  validates :file_ext, length: 1..16, presence: true
   
   # The assignment that the deliverable is a part of.
-  belongs_to :assignment, :inverse_of => :deliverables
+  belongs_to :assignment, inverse_of: :deliverables
   
   # The method used to verify students' submissions for this deliverable.
-  has_one :analyzer, :dependent => :destroy, :inverse_of => :deliverable
+  has_one :analyzer, dependent: :destroy, inverse_of: :deliverable
   accepts_nested_attributes_for :analyzer
   validates_associated :analyzer
   
@@ -33,15 +33,15 @@ class Deliverable < ActiveRecord::Base
   end
   
   # The analyzer, if it's a proc_analyzer.
-  has_one :proc_analyzer, :inverse_of => :deliverable
+  has_one :proc_analyzer, inverse_of: :deliverable
   accepts_nested_attributes_for :proc_analyzer
   
   # The analyzer, if it's a script_analyzer
-  has_one :script_analyzer, :inverse_of => :deliverable
+  has_one :script_analyzer, inverse_of: :deliverable
   accepts_nested_attributes_for :script_analyzer
   
   # All the student submissions for this deliverable.
-  has_many :submissions, :dependent => :destroy, :inverse_of => :deliverable
+  has_many :submissions, dependent: :destroy, inverse_of: :deliverable
   
   # True if "user" should be allowed to see this deliverable.
   def can_read?(user)
@@ -66,13 +66,12 @@ class Deliverable < ActiveRecord::Base
       users = [user]
     end
     
-    Submission.where(:deliverable_id => self.id, :user_id => users.map(&:id)).
-               first
+    Submission.where(deliverable_id: self.id, user_id: users.map(&:id)).first
   end
   
   # The deliverables that a user is allowed to submit.
   def self.submittable_by(user)
-    Deliverable.where(user.admin? ? {} : {:published => true})
+    Deliverable.where(user.admin? ? {} : {published: true})
   end
   
   # The deliverable deadline, customized to a specific user.

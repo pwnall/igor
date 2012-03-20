@@ -12,16 +12,16 @@
 # A user's response to a set of questions.
 class SurveyAnswer < ActiveRecord::Base
   # The user responding to the survey.
-  belongs_to :user, :inverse_of => :survey_answers
+  belongs_to :user, inverse_of: :survey_answers
   
   # The subject of this feedback.
   # TODO(costan): make this polymorphic, rename to subject
   belongs_to :assignment
     
   # The answers that are part of this feedback.
-  has_many :answers, :class_name => 'SurveyQuestionAnswer',
-                     :dependent => :destroy,
-                     :order => 'target_user_id, question_id'
+  has_many :answers, class_name: 'SurveyQuestionAnswer',
+                     dependent: :destroy,
+                     order: 'target_user_id, question_id'
   accepts_nested_attributes_for :answers
   
   # The questions asked for this feedback.
@@ -38,7 +38,7 @@ class SurveyAnswer < ActiveRecord::Base
   def create_question_answers
     user_questions, global_questions = *questions.partition(&:targets_user?)
     global_questions.each do |question|
-      answers.build :question => question
+      answers.build question: question
     end
     
     return answers unless assignment.team_partition
@@ -48,7 +48,7 @@ class SurveyAnswer < ActiveRecord::Base
     
     teammates.each do |teammate|
       user_questions.each do |question|
-        answers.build :question => question, :target_user => teammate
+        answers.build question: question, target_user: teammate
       end
     end
     answers

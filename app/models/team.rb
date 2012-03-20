@@ -14,27 +14,27 @@
 # The system supports multiple partitions of students into teams. 
 class Team < ActiveRecord::Base
   # The team's user-visible name.
-  validates :name, :length => 1..64, :presence => true,
-                   :uniqueness => { :scope => [:partition_id] }
+  validates :name, length: 1..64, presence: true,
+                   uniqueness: { scope: [:partition_id] }
   
   # The partition that this team is part of.
-  belongs_to :partition, :class_name => 'TeamPartition', :inverse_of => :teams
-  validates :partition, :presence => true
+  belongs_to :partition, class_name: 'TeamPartition', inverse_of: :teams
+  validates :partition, presence: true
   
   # The memberships connecting users to this team.
-  has_many :memberships, :class_name => 'TeamMembership',
-                         :dependent => :destroy
+  has_many :memberships, class_name: 'TeamMembership',
+                         dependent: :destroy
   
   # The users in this team.  
-  has_many :users, :through => :memberships, :inverse_of => :teams
+  has_many :users, through: :memberships, inverse_of: :teams
   
   # The grades assigned to this team.
-  has_many :grades, :dependent => :destroy, :as => :subject
+  has_many :grades, dependent: :destroy, as: :subject
   
   # The submissions of this team.
   def submissions
-    Submission.where(:user_id => memberships.map(&:user_id),
-                     :deliverable_id => partition.deliverables.map(&:id))
+    Submission.where(user_id: memberships.map(&:user_id),
+                     deliverable_id: partition.deliverables.map(&:id))
   end
   
   # Returns true if the given user is allowed to edit this team's membership.  

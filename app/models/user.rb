@@ -13,15 +13,15 @@ class User < ActiveRecord::Base
   # Add your extensions to the User class here.
   
   # Additional restriction: .edu e-mails only.
-  validates :email, :format => {
-      :with => /\A[A-Za-z0-9.+_-]+\@[A-Za-z0-9.\-]+\.edu\Z/,
-      :message => 'needs to be an .edu e-mail address' }
+  validates :email, format: {
+      with: /\A[A-Za-z0-9.+_-]+\@[A-Za-z0-9.\-]+\.edu\Z/,
+      message: 'needs to be an .edu e-mail address' }
   
   # Admins can bless other admins and activate blocked users.
-  attr_accessible :active, :admin, :as => :admin
+  attr_accessible :active, :admin, as: :admin
   
   # Site staff members. Not the same as teaching staff.
-  validates :admin, :inclusion => { :in => [true, false], :allow_nil => false }
+  validates :admin, inclusion: { in: [true, false], allow_nil: false }
   
   # Reject un-verified e-mails.
   def auth_bounce_reason(credential)
@@ -41,9 +41,9 @@ end
 # :nodoc: site identity and class membership
 class User
   # Personal information, e.g. full name and contact info.
-  has_one :profile, :dependent => :destroy, :inverse_of => :user
-  validates_associated :profile, :on => :create
-  validates :profile, :presence => { :on => :create }
+  has_one :profile, dependent: :destroy, inverse_of: :user
+  validates_associated :profile, on: :create
+  validates :profile, presence: { on: :create }
   
   accepts_nested_attributes_for :profile
   attr_accessible :profile_attributes
@@ -89,20 +89,20 @@ class User
   end
 
   # Class registration info, e.g. survey answers and credit / listener status.
-  has_many :registrations, :dependent => :destroy, :inverse_of => :user
+  has_many :registrations, dependent: :destroy, inverse_of: :user
   accepts_nested_attributes_for :registrations
   attr_accessible :registrations_attributes
   
   # The user's registration for the main class on this site.
   def registration
-    registrations.where(:course_id => Course.main.id).first
+    registrations.where(course_id: Course.main.id).first
   end
 end
 
 # :nodoc: homework submission feature.
 class User  
   # Files uploaded by the user to meet assignment deliverables.
-  has_many :submissions, :dependent => :destroy, :inverse_of => :user
+  has_many :submissions, dependent: :destroy, inverse_of: :user
 
   # Submissions connected to this user.
   #
@@ -118,16 +118,16 @@ end
 # :nodoc: grade submission and publishing feature.
 class User
   # Grades assigned to the user, not to a team that the user belongs to.
-  has_many :direct_grades, :class_name => 'Grade', :dependent => :destroy,
-           :as => :subject
+  has_many :direct_grades, class_name: 'Grade', dependent: :destroy,
+           as: :subject
 
   # All the grades connected to a user.
   #
   # The returned set includes the user's direct grades, as well as grades
   # recorded for a team that the user is a part of.
   def grades
-    direct_grades.includes(:metric => :assignment) +
-        teams.includes(:grades => {:metric => :assignment}).
+    direct_grades.includes(metric: :assignment) +
+        teams.includes(grades: {metric: :assignment}).
               map(&:grades).flatten
   end
 end
@@ -135,16 +135,16 @@ end
 # :nodoc: teams feature.
 class User  
   # Backing model for the teams association.
-  has_many :team_memberships, :dependent => :destroy, :inverse_of => :user
+  has_many :team_memberships, dependent: :destroy, inverse_of: :user
   
   # Teams that this user belongs to.
-  has_many :teams, :through => :team_memberships, :inverse_of => :users
+  has_many :teams, through: :team_memberships, inverse_of: :users
 end
 
 # :nodoc: feedback survey integration.
 class User
   # The user's answers to homework surveys.
-  has_many :survey_answers, :dependent => :destroy, :inverse_of => :user
+  has_many :survey_answers, dependent: :destroy, inverse_of: :user
 end  
   
 # :nodoc: search integration.
@@ -155,7 +155,7 @@ class User
     query.gsub!(/ \[.*/, '')
     sql_query = '%' + query.strip + '%'
     matching_profiles = Profile.where('(name LIKE ?) OR (athena_username LIKE ?)', sql_query, sql_query).includes(:user).all
-    unscored_users = Credentials::Email.where('name LIKE ?', sql_query).includes(:user => :profile).map(&:user) | matching_profiles.map { |i| i.user }
+    unscored_users = Credentials::Email.where('name LIKE ?', sql_query).includes(user: :profile).map(&:user) | matching_profiles.map { |i| i.user }
     unscored_users.map { |u| [u.query_score(query), u] }.sort_by { |v| [-v[0], v[1].name] }[0, 10].map(&:last)
   end
   
@@ -194,7 +194,7 @@ class User
     email = nil if email and email.empty?
     
     query_string, name = name, nil if query_string.nil?
-    { :string => query_string, :name => name, :email => email }
+    { string: query_string, name: name, email: email }
   end
   
   # 

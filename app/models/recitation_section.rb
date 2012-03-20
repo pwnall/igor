@@ -12,7 +12,7 @@
 #
 
 class RecitationSection < ActiveRecord::Base
-  belongs_to :leader, :class_name => 'User', :foreign_key => :leader_id
+  belongs_to :leader, class_name: 'User', foreign_key: :leader_id
   
   validates_presence_of :leader_id
   validates_presence_of :time

@@ -21,18 +21,18 @@ class ProfilePhoto < ActiveRecord::Base
   validates_presence_of :profile
   
   # The picture bits.
-  has_attached_file :pic, :storage => :database,
-      :default_style => :thumb, :convert_options => { :all => '-strip' },
-      :url => '/:class/:id/:style',
-      :styles => {
-        :thumb => {
-          :geometry => '36x36#', :format => 'png'
+  has_attached_file :pic, storage: :database,
+      default_style: :thumb, convert_options: { all: '-strip' },
+      url: '/:class/:id/:style',
+      styles: {
+        thumb: {
+          geometry: '36x36#', format: 'png'
         },
-        :profile => {
-          :geometry => '100x100#', :format => 'png'
+        profile: {
+          geometry: '100x100#', format: 'png'
         }
       }
-  validates_attachment_size :pic, :less_than => 1.megabyte
+  validates_attachment_size :pic, less_than: 1.megabyte
 
   # TODO(costan): filesystem-based caching
 end

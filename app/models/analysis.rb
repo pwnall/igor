@@ -34,13 +34,13 @@ end
 class Analysis
   # Analysis status, can be one of the following symbols.
   STATUS_CODES = {
-    :no_analyzer => 1,      # Submission's deliverable doesn't have an analyzer.
-    :queued => 2,           # Submission queued for analysis.
-    :running => 3,          # Submission is processed by an analyzer.
-    :limit_exceeded => 4,   # The analyzer consumed too many resources. 
-    :crashed => 5,          # The analyzer crashed.
-    :wrong => 6,            # The submission was analyzed to be incorrect.
-    :ok => 7                # The submission seems correct.
+    no_analyzer: 1,      # Submission's deliverable doesn't have an analyzer.
+    queued: 2,           # Submission queued for analysis.
+    running: 3,          # Submission is processed by an analyzer.
+    limit_exceeded: 4,   # The analyzer consumed too many resources. 
+    crashed: 5,          # The analyzer crashed.
+    wrong: 6,            # The submission was analyzed to be incorrect.
+    ok: 7                # The submission seems correct.
   }.freeze
   STATUS_SYMBOLS = STATUS_CODES.invert.freeze
   validates :status_code, presence: true, inclusion: { in: STATUS_CODES.values }                          

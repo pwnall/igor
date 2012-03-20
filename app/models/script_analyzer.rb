@@ -16,47 +16,47 @@
 # Submission checker that runs an external script.
 class ScriptAnalyzer < Analyzer
   # The database-backed file holding the analyzer script.
-  belongs_to :db_file, :dependent => :destroy
-  validates :db_file, :presence => true
+  belongs_to :db_file, dependent: :destroy
+  validates :db_file, presence: true
   validates_associated :db_file
   accepts_nested_attributes_for :db_file
   attr_accessible :db_file_attributes
   
   # Database-backed file association, including the file contents.
   def full_db_file
-    DbFile.unscoped.where(:id => db_file_id).first
+    DbFile.unscoped.where(id: db_file_id).first
   end
   
   # Limits that apply when running the analyzer script.
   store :exec_limits
   
   # Maximum number of seconds of CPU time that the analyzer can use.
-  validates :time_limit, :presence => true,
-      :numericality => { :only_integer => true, :greater_than => 0 }
+  validates :time_limit, presence: true,
+      numericality: { only_integer: true, greater_than: 0 }
   store_accessor :exec_limits, :time_limit
   attr_accessible :time_limit
 
   # Maximum number of megabytes of RAM that the analyzer can use.
-  validates :ram_limit, :presence => true,
-      :numericality => { :only_integer => true, :greater_than => 0 }
+  validates :ram_limit, presence: true,
+      numericality: { only_integer: true, greater_than: 0 }
   store_accessor :exec_limits, :ram_limit
   attr_accessible :ram_limit
     
   # Maximum number of file descriptors that the analyzer can use.
-  validates :file_limit, :presence => true,
-      :numericality => { :only_integer => true, :greater_than => 0 }
+  validates :file_limit, presence: true,
+      numericality: { only_integer: true, greater_than: 0 }
   store_accessor :exec_limits, :file_limit
   attr_accessible :file_limit
 
   # Maximum number of megabytes that the analyzer can write to a single file.
-  validates :file_size_limit, :presence => true,
-      :numericality => { :only_integer => true, :greater_than => 0 }
+  validates :file_size_limit, presence: true,
+      numericality: { only_integer: true, greater_than: 0 }
   store_accessor :exec_limits, :file_size_limit
   attr_accessible :file_size_limit
   
   # Maximum number of processes that the analyzer can use.
-  validates :process_limit, :presence => true,
-      :numericality => { :only_integer => true, :greater_than => 0 }
+  validates :process_limit, presence: true,
+      numericality: { only_integer: true, greater_than: 0 }
   store_accessor :exec_limits, :process_limit
   attr_accessible :process_limit
 

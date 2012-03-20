@@ -13,31 +13,31 @@
 # A file submitted by a student for an assignment.
 class Submission < ActiveRecord::Base
   # The user doing the submission.
-  belongs_to :user, :inverse_of => :submissions
-  validates :user, :presence => true
+  belongs_to :user, inverse_of: :submissions
+  validates :user, presence: true
   
   # The deliverable that the submission is for.
   belongs_to :deliverable
-  validates :deliverable, :presence => true
+  validates :deliverable, presence: true
   
   # The database-backed file holding the submission.
-  belongs_to :db_file, :dependent => :destroy
-  validates :db_file, :presence => true
+  belongs_to :db_file, dependent: :destroy
+  validates :db_file, presence: true
   accepts_nested_attributes_for :db_file
   
   # Database-backed file association, including the file contents.
   def full_db_file
-    DbFile.unscoped.where(:id => db_file_id).first
+    DbFile.unscoped.where(id: db_file_id).first
   end
   
   # The assignment that this submission is for.
-  has_one :assignment, :through => :deliverable
+  has_one :assignment, through: :deliverable
 
   # Diagnostic issued by the deliverable's Analyzer.
-  has_one :analysis, :dependent => :destroy, :inverse_of => :submission
+  has_one :analysis, dependent: :destroy, inverse_of: :submission
 
   # Analyzer used to perform an automated health-check for this submission.
-  has_one :analyzer, :through => :deliverable
+  has_one :analyzer, through: :deliverable
   
   # True if the given user is allowed to see the submission.
   def can_read?(user)

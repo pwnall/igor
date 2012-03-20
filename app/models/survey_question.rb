@@ -1,36 +1,36 @@
 # A question in a survey.
 class SurveyQuestion < ActiveRecord::Base
   # The user-visible question string.
-  validates_length_of :human_string, :in => 1..(1.kilobyte), :allow_nil => false
+  validates_length_of :human_string, in: 1..(1.kilobyte), allow_nil: false
   
   # True if the question asks for feedback on another user in the same team.
   #
   # If this is false, the question asks for feedback on the assignment.
-  validates_inclusion_of :targets_user, :in => [false, true],
-                                        :allow_nil => false
+  validates_inclusion_of :targets_user, in: [false, true],
+                                        allow_nil: false
 
   # True if the question asks for comments, asides from the numerical answer.
-  validates_inclusion_of :allows_comments, :in => [false, true],
-                                           :allow_nil => false
+  validates_inclusion_of :allows_comments, in: [false, true],
+                                           allow_nil: false
   
   # True if the question's answer is an integer on a scale.
   #
   # If this is true, the question's answer UI will be a bunch of radio buttons.
   # Otherwise, the answer will be a text field.
-  validates_inclusion_of :scaled, :in => [false, true], :allow_nil => false
+  validates_inclusion_of :scaled, in: [false, true], allow_nil: false
   
   # The minimum value on the scale.
-  validates_numericality_of :scale_min, :only_integer => true,
-                                        :allow_nil => true
+  validates_numericality_of :scale_min, only_integer: true,
+                                        allow_nil: true
   # The maximum value on the scale.
-  validates_numericality_of :scale_max, :only_integer => true,
-                                        :allow_nil => true
+  validates_numericality_of :scale_max, only_integer: true,
+                                        allow_nil: true
 
   # User-visible label for the minimum value on the scale.
-  validates_length_of :scale_min_label, :in => 1..64, :allow_nil => true
+  validates_length_of :scale_min_label, in: 1..64, allow_nil: true
   # User-visible label for the maximum value on the scale.
-  validates_numericality_of :scale_max, :only_integer => true,
-                                        :allow_nil => true
+  validates_numericality_of :scale_max, only_integer: true,
+                                        allow_nil: true
 end
 
 # == Schema Information
