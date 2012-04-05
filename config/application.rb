@@ -60,5 +60,9 @@ module Seven
     
     # Enable the AR identity map
     config.active_record.identity_map = true
+
+    # Bounce Internet Explorer users.
+    config.middleware.use Rack::NoIE, minimum: 20,
+                                      redirect: 'https://www.google.com/chrome'
   end
 end

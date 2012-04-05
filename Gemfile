@@ -35,9 +35,11 @@ gem 'authpwn_rails', '>= 0.10.10'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'markdpwn', '>= 0.1.2'
 gem 'nokogiri', '>= 1.5.0'
-gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
-                 :ref => 'c295bc4e78b84044296f3a03157c097b50161bc5'
+gem 'paperclip', git: 'git://github.com/patshaughnessy/paperclip.git',
+                 ref: 'c295bc4e78b84044296f3a03157c097b50161bc5'
 gem 'pwnstyles_rails', '>= 0.1.20'
+gem 'rack-noie', require: 'noie.rb',
+                 git: 'git://github.com/juliocesar/rack-noie.git'
 gem 'rmagick', '>= 2.13.1'
 gem 'validates_timeliness', '>= 3.0.11'
 
@@ -72,6 +74,6 @@ end
 
 group :development do
   gem 'annotate', '>= 2.4.1.beta',
-      :git => 'git://github.com/ctran/annotate_models.git'  
+                  git: 'git://github.com/ctran/annotate_models.git'  
   gem 'railroady', '>= 1.0.6'
 end
