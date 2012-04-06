@@ -126,9 +126,11 @@ class Assignment
   # :grading -- the assignment doesn't accept submissions, grades are not ready
   # :graded -- grades have been released to students
   def ui_state_for(user)
-    if deliverables_ready?
+    if metrics_ready?
+      :graded
+    elsif deliverables_ready?
       if deadline_passed_for? user
-        metrics_ready? ? :graded : :grading
+        :grading
       else
         (deliverables.length > 0) ? :open : :grading
       end
