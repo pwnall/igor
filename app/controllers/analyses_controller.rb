@@ -6,6 +6,7 @@ class AnalysesController < ApplicationController
   # GET /analyses/1
   def show
     @analysis = Analysis.find params[:id]
+    return bounce_user unless @analysis.can_read? current_user
 
     respond_to do |format|
       format.html  # show.html.erb

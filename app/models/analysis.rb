@@ -28,6 +28,11 @@ class Analysis < ActiveRecord::Base
   # The analyzer's logging output.
   LOG_LIMIT = 64.kilobytes
   validates :log, length: { in: 0..LOG_LIMIT, allow_nil: false }
+  
+  # True if the given user is allowed to see the analysis.
+  def can_read?(user)
+    user && (user == submission.user || user.admin?)
+  end  
 end
 
 # :nodoc: Analysis life cycle.
