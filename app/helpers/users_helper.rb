@@ -6,7 +6,8 @@ module UsersHelper
     if user.profile and user.profile.photo
       url = user.profile.photo.pic.url({small: :thumb, large: :profile}[size]) 
     else
-      url = Gravatar.new(user.email).image_url size: size_pixels, default: :retro
+      url = Gravatar.new(user.email).image_url size: size_pixels, secure: true,
+                                               default: :retro
     end
     image_tag url, alt: "avatar for #{user.name}",
               style: "width: #{size_pixels}px; height: #{size_pixels}px;"

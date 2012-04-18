@@ -168,6 +168,12 @@ class ScriptAnalyzer < Analyzer
       status = ExecSandbox::Wait4.wait4 pid
       log = File.exist?('.log') ? File.read('.log') : 'Program removed its log'
       
+      # Force the output to UTF-8 if necessary.
+      unless log.valid_encoding? && log.encoding == Encoding::UTF_8
+        log.encode! Encoding::UTF_16, invalid: :replace, undef: :replace
+        log.encode! Encoding::UTF_8
+      end
+      
       { log: log, status: status }
     ensure
       ActiveRecord::Base.establish_connection connection || {}
