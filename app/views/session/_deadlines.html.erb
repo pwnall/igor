@@ -7,15 +7,15 @@
       <span class="icon">
         <%= deadline_state_icon_tag deadline.state %>
       </span>
-      <span class="date" title="<%= deadline.due.to_s(:deadline_long) %>">
-        <%= deadline.due.to_s(:deadline_short) %>
-      </span>
       <span class="assignment">
         <% if deadline.active? %>
           <%= link_to deadline.assignment.name, deadline.assignment %>
         <% else %>
           <%= deadline.assignment.name %>
         <% end %>
+      </span>
+      <span class="date" title="<%= deadline.due.to_s(:deadline_long) %>">
+        <%= deadline.due.to_s(:deadline_short) %>
       </span>
     </div>
     <div class="description">

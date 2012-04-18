@@ -1,29 +1,25 @@
-<nav id="menu">
-  <ol>
-  <% if current_user.admin? %>
+<% if current_user.admin? %>
 <%= render 'menu/admin' %>
-  <% else %>
+<% else %>
 <%= render 'menu/nonadmin' %>
-  <% end %>
+<% end %>
   
+<li>
+  <%= link_to current_user do %>
+    <%= user_image_tag current_user %>
+    <span>
+      <%= current_user.name %> &#x25bc;
+    </span>
+  <% end %>
+  <ol>
     <li>
-      <%= link_to current_user do %>
-        <%= user_image_tag current_user %>
-        <span>
-          <%= current_user.name %> &#x25bc;
-        </span>
-      <% end %>
-      <ol>
-        <li>
-          <%= link_to 'Profile', current_user %>
-        </li>
-        <li>
-          <%= link_to 'Change Password', change_password_session_path %>
-        </li>
-        <li>
-          <%= link_to 'Sign out', session_path, :method => :delete %>
-        </li>
-      </ul>
+      <%= link_to 'Profile', current_user %>
     </li>
-  </ol>
-</nav>
+    <li>
+      <%= link_to 'Change Password', change_password_session_path %>
+    </li>
+    <li>
+      <%= link_to 'Sign out', session_path, :method => :delete %>
+    </li>
+  </ul>
+</li>

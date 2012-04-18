@@ -13,10 +13,12 @@ ol.deadlines {
     border-bottom: 1px solid $header-border-color;
     
     div.heading {
+      display: -moz-box;
       display: -webkit-flexbox;
       display: -moz-flexbox;
       display: flexbox;
       padding: 0 0 0 (0.25 * $column-total);
+      width: 100%;
       
       span.icon {
         display: inline-block;
@@ -29,15 +31,14 @@ ol.deadlines {
       span.date {
         display: block;
         width: (2 * $column-total);
-        -webkit-flex-order: 2;
-        -moz-flex-order: 2;
-        flex-order: 2;
       }
       span.assignment {
         display: block;
+        -moz-box-flex: 1;
         width: -webkit-flex(1);
-        width: -moz-flex(1);
-        width: flex(1);
+        -webkit-flex: 1;
+        -moz-flex: 1;
+        flex: 1;
       }
     }
     div.description {

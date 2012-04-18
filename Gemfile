@@ -37,7 +37,7 @@ gem 'markdpwn', '>= 0.1.2'
 gem 'nokogiri', '>= 1.5.0'
 gem 'paperclip', :git => 'git://github.com/patshaughnessy/paperclip.git',
                  :ref => 'c295bc4e78b84044296f3a03157c097b50161bc5'
-gem 'pwnstyles_rails', '>= 0.1.20'
+gem 'pwnstyles_rails', '>= 0.1.21'
 gem 'rmagick', '>= 2.13.1'
 gem 'validates_timeliness', '>= 3.0.8'
 

@@ -1,15 +1,24 @@
-<hgroup>
-  <h1>
-    <%= image_tag 'mit-blackred-footer3.gif', :alt => '' %>
-    <span class="course-number">
-      <%= link_to Course.main.number, root_path %>
-      <% unless current_user %>
-      <%= link_to Course.main.title, root_path %>
+<header id="header">
+  <nav id="main-menu">
+    <ol>
+      <li>
+        <%= link_to root_path do %>
+          <h1>
+            <%= image_tag 'mit-blackred-footer3.gif', :alt => '' %>
+            <span class="course-number">
+              <%= Course.main.number %>
+              <% unless current_user %>
+              <%= Course.main.title %>
+              <% end %>
+            </span>
+          </h1>
+        <% end %>
+      </li>
+      <% if current_user %>
+      <%= render 'menu/menu' %>
+      <% else %>
+      <li> </li>
       <% end %>
-    </span>
-  </h1>
-
-  <% if current_user %>
-  <%= render 'menu/menu' %>
-  <% end %>
-</hgroup>
+    </ol>
+  </nav>
+</header>

@@ -1,21 +1,23 @@
-<nav>
-	<ul>
-		<li>
-			<a href="mailto:<%= Course.main.email %>">
-				<%= Course.main.number %> TA Mailing List
-			</a>
-      <a href="http://web.mit.edu/registrar/calendar/">MIT Academic Calendar</a>
-      <a href="http://www.eecs.mit.edu/">MIT EECS Department</a>
-			<a href="http://student.mit.edu/catalog/index.cgi">MIT Course Catalog</a>
-		</li>
-	</ul>		
-  <p class="copyright">
-    <%= link_to image_tag('cc_by_nd.png', :alt => 'Creative Commons License'),
-                'http://creativecommons.org/licenses/by-nd/3.0/us/' %>
-    &copy; Copyright 2008-2011
-    <a href="http://web.mit.edu/">Massachusetts Institute of Technology</a>
-  </p>
-  <p class="design">
-    Designed by <a href="http://www.costan.us">Victor Costan</a>
-  </p>
-</nav>
+<footer id="footer">
+  <nav>
+  	<ul>
+  		<li>
+  			<a href="mailto:<%= Course.main.email %>">
+  				<%= Course.main.number %> TA Mailing List
+  			</a>
+        <a href="http://web.mit.edu/registrar/calendar/">MIT Academic Calendar</a>
+        <a href="http://www.eecs.mit.edu/">MIT EECS Department</a>
+  			<a href="http://student.mit.edu/catalog/index.cgi">MIT Course Catalog</a>
+  		</li>
+  	</ul>		
+    <p class="copyright">
+      <%= link_to image_tag('cc_by_nd.png', :alt => 'Creative Commons License'),
+                  'http://creativecommons.org/licenses/by-nd/3.0/us/' %>
+      &copy; Copyright 2008-2011
+      <a href="http://web.mit.edu/">Massachusetts Institute of Technology</a>
+    </p>
+    <p class="design">
+      Designed by <a href="http://www.costan.us">Victor Costan</a>
+    </p>
+  </nav>
+</footer>
