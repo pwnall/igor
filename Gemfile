@@ -37,7 +37,7 @@ gem 'markdpwn', '>= 0.1.2'
 gem 'nokogiri', '>= 1.5.0'
 gem 'paperclip', git: 'git://github.com/patshaughnessy/paperclip.git',
                  ref: '729848221b19c3791a35c80fe9803f4c1b6dd7d9'
-gem 'pwnstyles_rails', '>= 0.1.21'
+gem 'pwnstyles_rails', '>= 0.1.22'
 gem 'rack-noie', require: 'noie.rb',
                  git: 'git://github.com/juliocesar/rack-noie.git'
 gem 'rmagick', '>= 2.13.1'

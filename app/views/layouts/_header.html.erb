@@ -4,7 +4,7 @@
       <li>
         <%= link_to root_path do %>
           <h1>
-            <%= image_tag 'mit-blackred-footer3.gif', :alt => '' %>
+            <%= image_tag 'mit-blackred-footer3.gif', :class => 'logo', :alt => '' %>
             <span class="course-number">
               <%= Course.main.number %>
               <% unless current_user %>
