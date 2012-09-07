@@ -6,6 +6,7 @@ tmp
 
 *~
 *.rbc
+*.swp
 .pydevproject
 .DS_Store
 

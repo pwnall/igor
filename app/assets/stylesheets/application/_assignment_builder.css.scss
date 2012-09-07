@@ -12,17 +12,20 @@
 .assignment-builder-deliverables {
   p.header {
     display: -webkit-flexbox;
-    display: -moz-flexbox;
-    display: flexbox;
-    
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+
     -webkit-flex-align: baseline;
     -moz-flex-align: baseline;
     flex-align: baseline;
-    
+
     input.name {
-      width: -webkit-flex(1);
-      width: -moz-flex(1);
-      width: flex(1);
+      -moz-box-flex: 1;
+      -webkit-flex: 1;
+      -moz-flex: 1;
+      -webkit-flex: 1 1 0%;
+      flex: 1 1 0%;
     }
     input.file-ext {
       width: 4em;
@@ -32,7 +35,7 @@
       margin: 0 0.2em 0 0;
     }
   }
-  
+
   p.description {
     display: block;
     span {
@@ -51,24 +54,24 @@
 
   p {
     display: table-row;
-    
+
     > span {
       display: table-cell;
       padding: 1px 2px;
-      
+
       > span.field_with_errors {
         display: block;
         width: 100%;
       }
-      
+
       > input[type=text], input[type=email], input[type=tel],
         input[type=password], input[type=search], input[type=number], textarea {
         box-sizing: border-box;
-        -moz-box-sizing: border-box; 
+        -moz-box-sizing: border-box;
         width: 100%;
       }
     }
-  }  
+  }
 }
 
 .assignment-builder .error-explanation {
@@ -86,7 +89,7 @@ section.deliverable {
 
 // Uncomment to hide the "Assignment Builder" heading.
 // We're keeping it in for now, because the UI is confusing without it.
-// 
+//
 // .assignment-builder-heading {
 //   display: none;
 // }
