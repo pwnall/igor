@@ -1,12 +1,12 @@
 ---
-delayed_job: 
+delayed_job:
   :binary: script/delayed_job
   :absolute_binary: false
   # The File.read expression computes the number of CPU cores in the system.
-  <% if Rails.env.development? %>
-  :start_args: --prefix <%= Rails.root %> -n 1 start
-  <% else %>
+  <% if Rails.env.production? and File.exist?('/proc/cpuinfo') %>
   :start_args: --prefix <%= Rails.root %> -n <%= File.read("/proc/cpuinfo").scan(/^processor\s*:/).length - 1 %> start
+  <% else %>
+  :start_args: --prefix <%= Rails.root %> -n 1 start
   <% end %>
   :stop_args: stop
   # Pattern for the PID file(s) used by the daemon.

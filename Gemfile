@@ -9,18 +9,6 @@ gem 'mysql2', '>= 0.3.11'
 
 gem 'json', '>= 1.5.4'
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails', '>= 3.2.5'
-  gem 'coffee-rails', '>= 3.2.2'
-  gem 'uglifier', '>= 1.3.0'
-
-  gem 'therubyracer', '>= 0.10.2'
-end
-
-gem 'jquery-rails', '>= 2.1.2'
-
 # Use unicorn as the web server
 # gem 'unicorn'
 
@@ -37,15 +25,13 @@ gem 'markdpwn', '>= 0.1.4'
 gem 'nokogiri', '>= 1.5.0'
 gem 'paperclip', git: 'git://github.com/patshaughnessy/paperclip.git',
                  ref: '729848221b19c3791a35c80fe9803f4c1b6dd7d9'
-gem 'pwnstyles_rails', '>= 0.1.24'
-# gem 'pwnstyles_rails', '>= 0.1.22', path: '../pwnstyles_rails'
 gem 'rack-noie', require: 'noie.rb',
                  git: 'git://github.com/juliocesar/rack-noie.git'
 gem 'rmagick', '>= 2.13.1'
 gem 'validates_timeliness', '>= 3.0.11'
 
 # Background processing.
-gem 'daemonz', '>= 0.3.6'
+gem 'daemonz', '>= 0.3.8'
 gem 'daemons'  # Required by delayed_job.
 gem 'delayed_job', '>= 3.0.3'
 gem 'delayed_job_active_record', '>= 0.3.2'  # Required by delayed_job.
@@ -66,6 +52,18 @@ gem 'mit_stalker', '>= 1.0.4'
 
 # MIT Stellar integration.
 gem 'stellar', '>= 0.3.1'
+
+group :assets do
+  gem 'sass-rails', '>= 3.2.5'
+  # gem 'pwnstyles_rails', '>= 0.1.24'
+  gem 'pwnstyles_rails', '>= 0.1.24', path: '../pwnstyles_rails'
+
+  gem 'jquery-rails', '>= 2.1.2'
+  gem 'coffee-rails', '>= 3.2.2'
+  gem 'uglifier', '>= 1.3.0'
+
+  gem 'therubyracer', '>= 0.10.2'
+end
 
 group :development, :test do
   gem 'rspec-rails', '>= 2.11.0'
