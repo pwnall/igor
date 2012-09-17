@@ -32,7 +32,7 @@ gem 'rmagick', '>= 2.13.1'
 gem 'validates_timeliness', '>= 3.0.11'
 
 # Background processing.
-gem 'daemonz', '>= 0.3.8'
+gem 'daemonz', '>= 0.3.9'
 gem 'daemons'  # Required by delayed_job.
 gem 'delayed_job', '>= 3.0.3'
 gem 'delayed_job_active_record', '>= 0.3.2'  # Required by delayed_job.
@@ -57,7 +57,7 @@ gem 'stellar', '>= 0.3.1'
 group :assets do
   gem 'sass-rails', '>= 3.2.5'
   gem 'pwnstyles_rails', '>= 0.1.25'
-  # gem 'pwnstyles_rails', '>= 0.1.24', path: '../pwnstyles_rails'
+  # gem 'pwnstyles_rails', '>= 0.1.25', path: '../pwnstyles_rails'
 
   gem 'jquery-rails', '>= 2.1.2'
   gem 'coffee-rails', '>= 3.2.2'

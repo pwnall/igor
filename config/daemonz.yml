@@ -4,10 +4,10 @@
 # vendor/daemonz/config_template.yml
 
 ---
-:daemons: 
+:daemons:
   # Daemon configurations placed here will be read as if they were in a file in
   # config/daemonz. This is less maintainable if you have more than one daemon.
-    
+
 # The base path for daemon binaries specified in binary, start_binary and
 # stop_binary.
 :root_path: <%= Rails.root %>
@@ -18,19 +18,24 @@
 # Set to true to completely disable daemonz, and not load any plugins.
 :disabled: false
 
+# Set to true to have the daemons started on a separate thread, so they don't
+# block the server start-up process. Set to false if your application
+# communicates with the daemons directly, e.g. via DRb.
+:async_start: true
+
 # daemonz is loaded every time the Rails framework is loaded. Sometimes
 # (e.g. when performing migrations) daemons aren't required, so we shouldn't
 # have to wait for the few seconds it takes to start / stop daemons.
 
 # Daemons will not be started / stopped when the name of the binary that's
 # loading Rails ($0) is one of the following.
-:disabled_for: 
+:disabled_for:
 - 'irb'
 - 'rake'
 - 'script/generate'
 - 'script/destroy'
 - 'script/plugin'
 
-# Daemons will not be started for the following environments. 
+# Daemons will not be started for the following environments.
 :disabled_in:
 - 'test'
