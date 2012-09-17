@@ -39,7 +39,7 @@
       Mb
     </span>
   </p>
-  
+
   <p class="field">
     <%= f.label :file_limit, 'Open files' %>
     <span class="value">
@@ -59,7 +59,7 @@
       Mb
     </span>
   </p>
-  
+
   <p class="field">
     <%= f.label :process_limit, 'Spawn' %>
     <span class="value">
@@ -73,8 +73,8 @@
   <p class="field">
     <%= f.label :auto_grading, 'Auto grading' %>
     <span class="value">
-      <%= f.check_box :auto_grading %>
       <%= f.label :auto_grading do %>
+        <%= f.check_box :auto_grading %>
         use analyzer grade output
       <% end %>
     </span>

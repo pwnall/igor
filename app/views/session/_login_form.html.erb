@@ -7,27 +7,27 @@
 
 <%= form_tag session_path do %>
   <section class="fields">
-  <div class="field">
-    <%= label_tag :email, 'Email Address' %><br />
-    <span class="value">
-      <%= email_field_tag :email, @email %>
-    </span>
-  </div>
-  
-  <div class="field">
-    <%= label_tag :password %><br />
-    <span class="value">
-      <%= password_field_tag :password %>
-    </span
-  </div>
+    <p class="field">
+      <%= label_tag :email, 'Email Address' %>
+      <span class="value">
+        <%= email_field_tag :email, @email %>
+      </span>
+    </p>
+
+    <p class="field">
+      <%= label_tag :password %>
+      <span class="value">
+        <%= password_field_tag :password %>
+      </span>
+    </p>
   </section>
-  
+
   <p class="action">
     <%= button_tag 'Log in', :name => 'login', :value => 'requested',
                              :class => 'emphasized' %>
     <%= button_tag 'Reset Password', :name => 'reset_password',
           :value => 'requested', :formaction => reset_password_session_path %>
-    
+
     <% if @redirect_url %>
     <%= hidden_field_tag :redirect_url, @redirect_url %>
     <% end %>

@@ -2,26 +2,30 @@
   <p class="field">
     <%= f.label :for_credit, 'For credit' %>
     <span class="value">
-      <%= f.check_box :for_credit %>
-      intending to take <%= f.object.course.number %> for credit / grades
+      <%= f.label :for_credit do %>
+        <%= f.check_box :for_credit %>
+        intending to take <%= f.object.course.number %> for credit / grades
+      <% end %>
     </span>
     <span class="comment" />
   </p>
   <p class="field">
     <%= f.label :allows_publishing, 'Publish my work' %>
     <span class="value">
-      <%= f.check_box :allows_publishing %>
-      course staff may publish my homework, and I will be credited
+      <%= f.label :allows_publishing do %>
+        <%= f.check_box :allows_publishing %>
+        course staff may publish my homework, and I will be credited
+      <% end %>
     </span>
     <span class="comment">
     </span>
   </p>
-    
+
   <% unless f.object.prerequisite_answers.empty? %>
   <p class="field">
-    <span class="label">Have taken</span>
-    <span class="value" data-pwnfx-move-target="prerequisites" />
-    <span class="comment" />
+    <label>Have taken</label>
+    <span class="value" data-pwnfx-move-target="prerequisites"></span>
+    <span class="comment"></span>
   </p>
 
   <%= f.fields_for :prerequisite_answers do |p| %>
@@ -33,9 +37,11 @@
     </span>
     <span class="comment">
       <span data-pwnfx-move="prerequisites">
-        <%= p.check_box :took_course, 'data-pwnfx-hide' => p.object_name,
-                'data-pwnfx-hide-trigger' => 'checked' %>
-        <%= p.label :took_course, p.object.prerequisite.prerequisite_number %>
+        <%= p.label :took_course do %>
+          <%= p.object.prerequisite.prerequisite_number %>
+          <%= p.check_box :took_course, 'data-pwnfx-hide' => p.object_name,
+                  'data-pwnfx-hide-trigger' => 'checked' %>
+        <% end %>
         <%= p.hidden_field :prerequisite_id %>
       </span>
     </span>

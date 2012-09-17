@@ -8,8 +8,8 @@
   <p class="field">
     <%= f.label :auto_grading, 'Auto grading' %>
     <span class="value">
-      <%= f.check_box :auto_grading %>
       <%= f.label :auto_grading do %>
+        <%= f.check_box :auto_grading %>
         invalid submissions get 0 (zero) grades
       <% end %>
     </span>

@@ -10,11 +10,11 @@
                            'data-pwnfx-showif-source' => 'analyzer-type' %>
     <% end %>
     <span class="destroy">
-      <%= f.check_box :_destroy, 'data-pwnfx-hide' => 'deliverable-div',
-              'data-pwnfx-hide-scope' => 'deliverable',
-              'data-pwnfx-hide-class' => 'destroyed-blur',
-              'data-pwnfx-hide-trigger' => 'checked' %>
       <%= f.label :_destroy do %>
+        <%= f.check_box :_destroy, 'data-pwnfx-hide' => 'deliverable-div',
+                'data-pwnfx-hide-scope' => 'deliverable',
+                'data-pwnfx-hide-class' => 'destroyed-blur',
+                'data-pwnfx-hide-trigger' => 'checked' %>
         <%= destroy_icon_tag %> Remove
       <% end %>
     </span>
