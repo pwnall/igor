@@ -24,7 +24,7 @@
       -moz-box-flex: 1;
       -webkit-flex: 1;
       -moz-flex: 1;
-      -webkit-flex: 1 1 0%;
+      -webkit-flex: auto;
       flex: 1 1 0%;
     }
     input.file-ext {
@@ -33,6 +33,9 @@
     > input, select, span {
       display: block;
       margin: 0 0.2em 0 0;
+    }
+    .destroy {
+      white-space: nowrap;
     }
   }
 
