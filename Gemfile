@@ -54,6 +54,9 @@ gem 'mit_stalker', '>= 1.0.4'
 # MIT Stellar integration.
 gem 'stellar', '>= 0.3.1'
 
+# Web
+gem 'best_in_place'
+
 group :assets do
   gem 'sass-rails', '>= 3.2.5'
   gem 'pwnstyles_rails', '>= 0.1.29'
