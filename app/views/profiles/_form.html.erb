@@ -2,7 +2,7 @@
   <%= fu.fields_for :profile do |f| %>
     <%= render 'profiles/fields', f: f %>
   <% end %>
-  <p class="action">
+  <p class="actions">
     <%= button_tag class: 'emphasized' do %>
       <%= save_icon_tag %> Update Profile
     <% end %>

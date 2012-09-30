@@ -7,7 +7,7 @@
           <%= pluralize @assignment.errors.count, 'error' %>
           prohibited this assignment from being saved:
         </p>
-  
+
         <ul>
         <% @assignment.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
@@ -17,7 +17,7 @@
     <% end %>
 
     <%= render 'assignments/fields', f: f %>
-    
+
     <h3>Files to be Submitted</h3>
     <div class="assignment-builder-deliverables"
          data-pwnfx-render-target="assignment-deliverables">
@@ -33,13 +33,13 @@
         <%= create_icon_tag %> Add File
       <% end %>
     </p>
-  
+
 <script type="text/html" data-pwnfx-render-source="assignment-deliverables">
 <%= f.fields_for :deliverables, Deliverable.new, child_index: 'IDID' do |df| %>
   <%= render 'deliverables/fields', f: df %>
-<% end %>    
+<% end %>
 </script>
-    
+
     <h3>Grading Breakdown</h3>
     <div class="assignment-builder-metrics"
          data-pwnfx-render-target="assignment-metrics">
@@ -55,15 +55,15 @@
         <%= create_icon_tag %> Add Item
       <% end %>
     </p>
-    
-  
+
+
 <script type="text/html" data-pwnfx-render-source="assignment-metrics">
 <%= f.fields_for :metrics, AssignmentMetric.new, child_index: 'IDID' do |mf| %>
   <%= render 'assignment_metrics/fields', f: mf %>
-<% end %>    
+<% end %>
 </script>
-  
-    <p class="action">
+
+    <p class="actions">
       <%= button_tag class: 'emphasized' do %>
         <%= save_icon_tag %> Update Assignment
       <% end %>

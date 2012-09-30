@@ -56,8 +56,8 @@ gem 'stellar', '>= 0.3.1'
 
 group :assets do
   gem 'sass-rails', '>= 3.2.5'
-  gem 'pwnstyles_rails', '>= 0.1.27'
-  # gem 'pwnstyles_rails', '>= 0.1.27', path: '../pwnstyles_rails'
+  gem 'pwnstyles_rails', '>= 0.1.28'
+  # gem 'pwnstyles_rails', '>= 0.1.28', path: '../pwnstyles_rails'
 
   gem 'jquery-rails', '>= 2.1.2'
   gem 'coffee-rails', '>= 3.2.2'

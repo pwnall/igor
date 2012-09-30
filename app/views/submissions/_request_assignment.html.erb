@@ -34,17 +34,17 @@
         </span>
   		</p>
     </section>
-  
+
     <div data-pwnfx-refresh-target="submission-deliverables">
     <% if @assignments.first %>
     <%= render 'submissions/xhr_deliverables', assignment: @assignments.first %>
     <% end %>
     </div>
-  
-    <p class="action">
+
+    <p class="actions">
     	<%= button_tag do %>
     	  <%= download_icon_tag %> Download Grading Kit
     	<% end %>
     </p>
-  <% end %> 
+  <% end %>
 </div>
