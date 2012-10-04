@@ -1,0 +1,17 @@
+<%= form_for(@recitation_section) do |f| %>
+  <% if @recitation_section.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@recitation_section.errors.count, "error") %> prohibited this recitation_section from being saved:</h2>
+
+      <ul>
+      <% @recitation_section.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
