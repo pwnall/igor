@@ -45,7 +45,7 @@
       <%= link_to edit_course_path(Course.main) do %>
         <%= config_icon_tag %> Course Info
       <% end %>
-    </li>         
+    </li>
     <li>
       <%= link_to prerequisites_path do %>
         <%= edit_icon_tag %> Prerequisites
@@ -60,7 +60,14 @@
       <%= link_to registrations_path do %>
         <%= role_icon_tag :student %> Students
       <% end %>
-    </li>    
+    </li>
+    <% if Course.main.has_teams? %>
+    <li>
+      <%= link_to team_partitions_path do %>
+        <%= role_icon_tag :team %> Teams
+      <% end %>
+    </li>
+    <% end %>
   </ol>
 </li>
 <li>
@@ -78,12 +85,7 @@
       <%= link_to 'Surveys', survey_questions_path %>
     </li>
     <% end %>
-    <% if Course.main.has_teams? %>
-    <li>
-      <%= link_to 'Teams', team_partitions_path %>
-    </li>
-    <% end %>
-        
+
     <li>
       <%= link_to 'Submissions', submissions_path %>
     </li>
@@ -92,7 +94,7 @@
       <%= link_to 'Survey Answers', survey_answers_path %>
     </li>
     <% end %>
-        
+
     <li>
       <%= link_to users_path do %>
         <%= contacts_icon_tag %> Site Users

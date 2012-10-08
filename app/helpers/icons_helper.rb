@@ -5,43 +5,43 @@ module IconsHelper
     title = 'Valid input'
     image_tag 'icons/checkmark.png', alt: title, title: title, class: 'ui-icon'
   end
-  
+
   # Tells the user that his input has some errors.
   def invalid_icon_tag
     title = 'Invalid input'
     image_tag 'icons/error.png', alt: title, title: title, class: 'ui-icon'
   end
-  
+
   # Tells the user that some lengthy computation or process is in progress.
   def waiting_icon_tag
     title = 'In progress'
     image_tag 'icons/waiting.png', alt: title, title: title, class: 'ui-icon'
   end
 
-  # Shown on links to the next step in a multi-step process. 
+  # Shown on links to the next step in a multi-step process.
   def next_step_icon_tag
     title = 'Next step'
     image_tag 'icons/next.png', alt: title, title: title, class: 'ui-icon'
   end
-  
+
   # Shown on buttons that lead to creating data.
   def create_icon_tag
     title = 'Create item'
     image_tag 'icons/add.png', alt: title, title: title, class: 'ui-icon'
   end
-  
+
   # Shown on buttons that delete some data (e.g. ActiveRecord.destroy).
   def destroy_icon_tag
     title = 'Remove'
     image_tag 'icons/destroy.png', alt: title, title: title, class: 'ui-icon'
   end
-  
+
   # Shown on links that lead to an edit form.
   def edit_icon_tag
     title = 'Edit'
     image_tag 'icons/edit.png', alt: title, title: title, class: 'ui-icon'
   end
-  
+
   # Shown on buttons that commit information to the database.
   def save_icon_tag
     title = 'Save'
@@ -65,7 +65,7 @@ module IconsHelper
     title = 'Generate report'
     image_tag 'icons/report.png', alt: title, title: title, class: 'ui-icon'
   end
-  
+
   # Shown on links that lead to a help screen.
   def help_icon_tag
     title = 'Help'
@@ -77,7 +77,7 @@ module IconsHelper
     title = 'Ship it!'
     image_tag 'icons/release.png', alt: title, title: title, class: 'ui-icon'
   end
-  
+
   # Shown on buttons that pull back previously released data.
   def pull_icon_tag
     title = 'Pull data'
@@ -95,13 +95,13 @@ module IconsHelper
     title = 'Upload file'
     image_tag 'icons/upload.png', alt: title, title: title, class: 'ui-icon'
   end
-  
-  # Shown on buttons that cause an expensive re-computation of cached state. 
+
+  # Shown on buttons that cause an expensive re-computation of cached state.
   def recompute_icon_tag
     title = 'Recompute'
     image_tag 'icons/recompute.png', alt: title, title: title, class: 'ui-icon'
   end
-  
+
   # Access levels / roles throughout the site.
   def role_icon_tag(role = :student)
     case role
@@ -113,16 +113,16 @@ module IconsHelper
       path = 'icons/staff.png'
     when :team
       title = 'Team'
-      image_tag 'icons/team.png'
+      path = 'icons/team.png'
     when :public
       title = 'Public'
-      image_tag 'icons/public.png'
+      path = 'icons/public.png'
     else
       raise "Unknown role #{role}!"
     end
     image_tag path, alt: title, title: title, class: 'ui-icon'
   end
-  
+
   # The icon that communicates an assignment's state to the user.
   def assignment_state_icon_tag(state = :open)
     case state
@@ -143,7 +143,7 @@ module IconsHelper
     end
     image_tag path, alt: title, title: title, class: 'ui-icon'
   end
-  
+
   # Icon representing an analysis' status property.
   def analysis_status_icon_tag(analysis)
     title = analysis_status_text analysis
@@ -167,7 +167,7 @@ module IconsHelper
     end
     image_tag path, alt: title, title: title, class: 'ui-icon'
   end
-  
+
   def deadline_state_icon_tag(state = :pending)
     case state
     when :pending
@@ -191,7 +191,7 @@ module IconsHelper
     end
     image_tag path, alt: title, title: title, class: 'ui-icon'
   end
-  
+
   # Show this icon next to forms that configure site features.
   def config_icon_tag
     image_tag 'icons/config.png', alt: 'Configuration', class: 'ui-icon'
@@ -201,17 +201,17 @@ module IconsHelper
   def feed_icon_tag
     image_tag 'icons/feed.png', alt: 'Change history', class: 'ui-icon'
   end
-  
+
   # Show this icon next to submission-related functionality.
   def homework_icon_tag
     image_tag 'icons/homework.png', alt: 'Homework', class: 'ui-icon'
   end
-  
+
   # Show this icon next to grading-related functionality.
   def grades_icon_tag
     image_tag 'icons/grades.png', alt: 'Grades', class: 'ui-icon'
   end
-  
+
   # Show this icon next to links that lead to displaying contact information.
   def contacts_icon_tag
     image_tag 'icons/contacts.png', alt: 'Contacts', class: 'ui-icon'

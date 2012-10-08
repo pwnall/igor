@@ -1,8 +1,10 @@
-<p class="actions">
-  <%= link_to new_assignment_path, class: 'button emphasized' do %>
-    <%= create_icon_tag %> New Assignment
-  <% end %>
-</p>
+<div id="assignments-sidebar">
+  <p class="actions">
+    <%= link_to new_assignment_path, class: 'button emphasized' do %>
+      <%= create_icon_tag %> New Assignment
+    <% end %>
+  </p>
 
-<%= render 'assignments/sidebar_list',
-           assignments: Assignment.for(current_user, Course.main) %>
+  <%= render 'assignments/sidebar_list',
+             assignments: Assignment.for(current_user, Course.main) %>
+</div>
