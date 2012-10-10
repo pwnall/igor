@@ -37,6 +37,14 @@
 				<%= f.text_field :location, :class => 'form_field' %>
 			</div>
 		</div>
+		<div class="form_entry">
+			<div class="form_label">Students</div>
+			<div class="form_field_box">
+				<% @recitation_section.users.each do |user| %>
+					<%= user.name %>
+				<% end %>
+			</div>
+		</div>
 		<div class="form_submit_box">
 		    <%= f.submit @recitation_section.new_record? ? "Create" : "Update", :class => 'form_submit' %>
 			or
