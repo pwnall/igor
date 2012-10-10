@@ -10,30 +10,27 @@
 		Recitation Sections
 	</h1>
 	
+	<span class="validation-errors"></span>
+	
 	<table>
 	  <tr>
 	    <th style="text-align: left; width: 75px;">Serial</th>
 	    <th style="text-align: left; width: 180px;">Leader</th>
 	    <th style="text-align: left; width: 220px;">Time</th>
 	    <th style="text-align: left; width: 180px;">Location</th>
+	    <th style="text-align: left; width: 180px;">Students</th>
 	  </tr>
 	
-	<% for @recitation_section in @recitation_sections %>
-	  <tr>
-	  	<td>
-		  	<%= in_place_editor_field(:recitation_section, :serial, {}, :cols => 3, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
-	  	</td>
-		<td>
-	    	<%= in_place_select(:recitation_section, :leader_id, :choices => @leaders.map { |l| [display_name_for_user(l, :really_short), l.id] }) %>			
-	  	</td>
-		<td>
-		  	<%= in_place_editor_field(:recitation_section, :time, {}, :cols => 12, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
-	  	</td>
-		<td>
-		  	<%= in_place_editor_field(:recitation_section, :location, {}, :cols => 10, :with => "form.serialize() + '&authenticity_token=#{form_authenticity_token}'") %>
-		</td>
-	    <td><%= link_to 'Destroy', @recitation_section, :confirm => 'Are you sure?', :method => :delete %></td>
+	  <% @recitation_sections.each do |recitation_section| %>
+	  <tr> 
+	    <td><%= best_in_place recitation_section, :serial, :type => :input %></td>
+	    <td><%= best_in_place recitation_section, :leader_id, :type => :select,
+		    :collection => @leaders.each.map { |l| [l.id, l.name()] } %></td>
+	    <td><%= best_in_place recitation_section, :time, :type => :input %></td>
+	    <td><%= best_in_place recitation_section, :location, :type => :input %></td>
+	    <td><%= link_to "Edit", recitation_section %></td>
 	  </tr>
-	<% end %>
+	  <% end %>
+	
 	</table>
 </div>
