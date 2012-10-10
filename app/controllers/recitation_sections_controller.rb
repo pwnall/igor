@@ -14,10 +14,11 @@ class RecitationSectionsController < ApplicationController
   # GET /recitation_sections/1
   def show
     @recitation_section = RecitationSection.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-    end
+    new_edit
+    #
+    #respond_to do |format|
+    #  format.html # show.html.erb
+    #end
   end
 
   # GET /recitation_sections/new
@@ -64,10 +65,12 @@ class RecitationSectionsController < ApplicationController
     
     respond_to do |format|
       if success
-        flash[:notice] = "Recitation section R#{'%02d' % @recitation_section.serial} successfully #{@is_new_record ? 'created' : 'updated'}."
-        format.html { redirect_to(:controller => :recitation_sections, :action => :index) }
+        notice_message = "Recitation section R#{'%02d' % @recitation_section.serial} successfully #{@is_new_record ? 'created' : 'updated'}."
+        format.html { redirect_to(@recitation_section, :action => :index, :notice => notice_message) }
+        format.json { head :ok }
       else
         format.html { render :action => :new_edit }
+        format.json { render :json => @recitation_section.errors.full_messages, :status => :unprocessable_entity }
       end
     end    
   end
