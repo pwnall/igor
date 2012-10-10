@@ -16,7 +16,7 @@ Seven::Application.routes.draw do
       put :confirm_email
     end
   end
-  resources :profiles, :only => [] do
+  resources :profiles, only: [] do
     collection do
       post :websis_lookup
       put :websis_lookup
@@ -26,7 +26,7 @@ Seven::Application.routes.draw do
     member do
       get :profile, :thumb
     end
-  end  
+  end
   resources :registrations
   resources :recitation_sections
 
@@ -48,7 +48,7 @@ Seven::Application.routes.draw do
   end
 
   # Homework submission.
-  resources :analyzers, :only => [] do
+  resources :analyzers, only: [] do
     collection do
       get :help
     end
@@ -76,7 +76,7 @@ Seven::Application.routes.draw do
     end
   end
   resources :analyses
-  
+
   # Surveys.
   resources :survey_questions
   resources :surveys do
@@ -86,18 +86,17 @@ Seven::Application.routes.draw do
     end
   end
   resources :survey_answers
-  
+
   # Teams.
-  resources :team_memberships
+  resources :team_memberships, only: [:create, :destroy]
   resources :team_partitions
-  resources :teams
-  
+  resources :teams, only: [:edit, :create, :update, :destroy]
+
   # Deprecated.
-  resources :announcements  
-  resource :api, :controller => 'api' do
+  resources :announcements
+  resource :api, controller: 'api' do
     get :conflict_info
   end
-  
 
-  root :to => "session#show"
+  root to: 'session#show'
 end

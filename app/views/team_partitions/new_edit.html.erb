@@ -1,64 +1,57 @@
-<!-- team_partitions/new_edit -->
-<div class="full_section">
-  
-<h1 class="full_section">Team Partition</h1>
+<h2>Team Partition</h2>
 
 <%= error_messages_for :team_partition %>
 
-<%= form_for(@team_partition, :html => {:class => 'student_form'}) do |f| %>
-  <div class="form_box">
-    <div class="form_entry">
-      <div class="form_label">Name</div>
-      <div class="form_field_box">
-        <%= f.text_field :name, :class => 'form_field' %>
-      </div>
-    </div>
-    
-    <div class="form_entry" >
-      <div class="form_label">Automated partitioning</div>
-      <div class="form_field_box">
+<%= form_for @team_partition do |f| %>
+  <section class="fields">
+    <p class="field">
+      <%= f.label :name %>
+      <span class="value">
+        <%= f.text_field :name, placeholder: 'Project Teams', required: true %>
+      </span>
+    </p>
+
+    <p class="field">
+      <%= f.label :automated, 'Automated partitioning' %>
+      <span class="value">
       	<% if @team_partition.new_record? %>
-        <%= f.check_box :automated, :class => 'form_field' %>
+          <%= f.check_box :automated,
+                'data-pwnfx-hide' => 'auto-partition',
+                'data-pwnfx-hide-trigger' => 'checked' %>
 				<% else %>
-				<%= @team_partition.automated? ? 'Yes' : 'No' %>
-				<% end %>				
-      </div>
-    </div>
-		
-    <div class="form_entry">
-      <div class="form_label">Published</div>
-      <div class="form_field_box">
-        <%= f.check_box :published, :class => 'form_field' %>
-      </div>
-    </div>
-		
+          <%= @team_partition.automated? ? 'Yes' : 'No' %>
+				<% end %>
+      </span>
+    </p>
+
+    <p class="field">
+      <%= f.label :published %>
+      <span class="value">
+        <%= f.check_box :published %>
+      </span>
+    </p>
+
 		<% if @team_partition.new_record? %>
-    <div class="form_entry" id="optimal_size_container">
-      <div class="form_label">Optimal team size</div>
-      <div class="form_field_box">
-        <%= text_field_tag :optimal_size, nil, :class => 'form_field' %>
-      </div>
-    </div>
-		
-		<div class="form_entry" id="clone_container">
-      <div class="form_label">Clone partition</div>
-      <div class="form_field_box">
+    <p class="field" data-pwnfx-hide-negative="auto-partition">
+      <%= f.label :optimal_size, 'Optimal team size' %>
+      <span class="value">
+        <%= number_field_tag :optimal_size, nil, placeholder: 3, min: 1 %>
+      </span>
+    </p>
+
+    <p class="field" data-pwnfx-hide-positive="auto-partition">
+      <%= f.label :clone_partition_id, 'Clone partition' %>
+      <span class="value">
         <%= select_tag :clone_partition_id, options_for_select([['(none)', nil]] + TeamPartition.all.map { |p| [p.name, p.id] }) %>
-      </div>			
-		</div>
-		<%= javascript_tag <<JS_END
-show_div_on_checkbox_setting('clone_container', 'team_partition_automated', false);
-show_div_on_checkbox_setting('optimal_size_container', 'team_partition_automated', true);
-JS_END
-%>
+      </span>
+    </p>
 		<% end %>
+  </section>
 
-    <div class="form_submit_box">
-        <%= f.submit @team_partition.new_record? ? "Submit" : "Update", :class => 'form_submit' %>
-      or
-      <%= link_to 'Go home', root_path %>
-    </div>
-  </div>
+  <p class="actions">
+    <%= button_tag class: 'emphasized', type: 'submit' do %>
+      <%= save_icon_tag %>
+      <%= @team_partition.new_record? ? "Create" : "Update" %>
+    <% end %>
+  </p>
 <% end %>
-
-</div>

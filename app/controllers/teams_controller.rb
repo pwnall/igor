@@ -1,33 +1,6 @@
 class TeamsController < ApplicationController
   before_filter :authenticated_as_admin
 
-  # GET /teams
-  def index
-    @teams = Team.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-    end
-  end
-
-  # GET /teams/1
-  def show
-    @team = Team.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-    end
-  end
-
-  # GET /teams/new
-  def new
-    @team = Team.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-    end
-  end
-
   # GET /teams/1/edit
   def edit
     @team = Team.find(params[:id])
@@ -69,7 +42,7 @@ class TeamsController < ApplicationController
     @team.destroy
 
     respond_to do |format|
-      format.html { redirect_to(teams_url) }
+      format.html { redirect_to @team.partition }
     end
-  end  
+  end
 end

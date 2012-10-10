@@ -2,7 +2,7 @@
 class TeamPartition < ActiveRecord::Base
   # True if this partitioning is visible to the students.
   validates :published, inclusion: { in: [true, false], allow_nil: false }
-  
+
   # True if this partitioning was automatically generated. If false, the
   # students are allowed to pair up via a Web UI.
   validates :automated, inclusion: { in: [true, false], allow_nil: false }
@@ -18,13 +18,13 @@ class TeamPartition < ActiveRecord::Base
 
   # The memberships tying users to the teams in this partitioning.
   has_many :memberships, through: :teams
-  
+
   # The assignments using this partitioning.
   has_many :assignments, dependent: :nullify, inverse_of: :team_partition
-  
+
   # The deliverables for the assignments using this partitioning.
   has_many :deliverables, through: :assignments
-  
+
   # The team in this assignment containing a user.
   #
   # Returns nil if the given user isn't contained in any team.
@@ -33,13 +33,13 @@ class TeamPartition < ActiveRecord::Base
         team_id: teams.map(&:id)}
     membership && membership.team
   end
-  
+
   # The teammates in this assignment for a user.
   def teammates_for_user(user)
     team = team_for_user(user)
     team && (team.users - [user])
   end
-  
+
   # Copies the contents (teams, memberships) of another partition.
   #
   # This offers a quick way of describing a new partition that is similar
@@ -53,45 +53,43 @@ class TeamPartition < ActiveRecord::Base
         team_mapping[template.team] = team
       end
       TeamMembership.create(team: team, user: template.user)
-    end    
+    end
     self
   end
 
   # Automatically assigns users to teams for this partitioning.
-  def auto_assign_users(team_size = 3)
-    all_users = User.all(include: :student_info).
-                     reject(&:admin?).select(&:student_info)
-    RandomShuffle.shuffle! all_users
-    all_teams = []
-    all_users.partition { |u| u.student_info.wants_credit }.each do |users|
-      leftovers = users.length % team_size
-      teams = []
-      0.upto(users.length / team_size - 1) do |i|
-        team = Team.create! partition: self,
-                            name: "Team #{all_teams.length + 1}"
-        
-        users[leftovers + team_size * i, team_size].each do |user|
-          TeamMembership.create! user: user, team: team
+  def auto_assign_users(team_size)
+    all_registrations = Course.main.registrations.where(:for_credit => true).
+                               includes(:user).all
+
+    team_sets = []
+    overflow = []
+    all_registrations.group_by(&:for_credit?).each do |credit, registrations|
+      students = registrations.map(&:user).reject(&:admin?).shuffle!
+      (0...students.length).step(team_size) do |i|
+        team_set = students[i, team_size]
+        if team_set.length == team_size
+          team_sets << team_set
+        else
+          overflow += team_set
+          if overflow.length >= team_size
+            team_sets << overflow.shift(team_size)
+          end
         end
-        team.save!
-        teams << team
-        all_teams << team
-      end
-      
-      if teams.empty?
-        team = Team.create! partition: self,
-                            name: "Team #{all_teams.length + 1}"
-        # HACK: all leftover users will be assigned to the team after the if.
-        teams = [team] * team_size
-        all_teams << team
-      end
-      
-      0.upto(leftovers - 1) do |i|
-        TeamMembership.create! user: users[i], team: teams[i]
       end
     end
-    all_teams
-  end  
+    team_sets << overflow
+
+    teams = team_sets.map.with_index do |members, i|
+      team = Team.create! partition: self, name: "Team #{i + 1}"
+      members.each do |member|
+        TeamMembership.create! user: member, team: team
+      end
+      team
+    end
+
+    teams
+  end
 end
 
 # == Schema Information

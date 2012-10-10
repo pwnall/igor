@@ -12,28 +12,28 @@ class Course < ActiveRecord::Base
   validates :has_surveys, inclusion: { in: [true, false], allow_nil: false }
   # True if the course has homework teams.
   validates :has_teams, inclusion: { in: [true, false], allow_nil: false }
-  
+
   # Google Analytics account ID for the course.
   validates :ga_account, length: 1..32, presence: true
-  
+
   # Student registrations for this course.
   has_many :registrations, dependent: :destroy, inverse_of: :course
-  
+
   # Prerequisite courses for this course.
   has_many :prerequisites, dependent: :destroy, inverse_of: :course
-  
+
   # Assignments issued for this course.
   has_many :assignments, dependent: :destroy, inverse_of: :course
-  
+
   # All users connected to this course.
   has_many :users, through: :registrations, source: :user
-  
+
   # Students registered for this course.
   def students
     users.joins(:registrations).where(admin: false,
-        registrations: { course_id: id, dropped:false })
+        registrations: { course_id: id, dropped: false })
   end
-  
+
   # Course staff members.
   def staff
     users.where admin: true

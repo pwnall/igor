@@ -1,32 +1,5 @@
 class TeamMembershipsController < ApplicationController
   before_filter :authenticated_as_admin
-  
-  # GET /team_memberships
-  def index
-    @team_memberships = TeamMembership.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-    end
-  end
-
-  # GET /team_memberships/1
-  def show
-    @team_membership = TeamMembership.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-    end
-  end
-
-  # GET /team_memberships/new
-  def new
-    @team_membership = TeamMembership.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-    end
-  end
 
   # POST /team_memberships
   def create

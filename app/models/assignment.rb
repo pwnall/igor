@@ -5,18 +5,18 @@ class Assignment < ActiveRecord::Base
   # The course that this assignment is a part of.
   belongs_to :course, inverse_of: :assignments
   validates :course, presence: true
-  
+
   # The user-visible assignment name (e.g., "PSet 1").
   validates :name, length: 1..64, uniqueness: { scope: :course_id },
                    presence: true
   attr_accessible :name
-  
+
   # The user that will be reported as the assignment's author.
   belongs_to :author, class_name: 'User'
   attr_accessible :author
   validates :author, presence: true
   attr_accessible :author_id
-  
+
   # True if the user is allowed to see this assignment.
   def can_read?(user)
     deliverables_ready? || metrics_ready? || (user && user.admin?)
@@ -24,7 +24,7 @@ class Assignment < ActiveRecord::Base
 
   # Adds deadline ordering to an assignment query.
   scope :by_deadline, order('deadline DESC').order(:name)
-  
+
   # The assignments in a course that are visible to a user.
   def self.for(user, course)
     course.assignments.by_deadline.select { |a| a.can_read? user }
@@ -36,7 +36,7 @@ class Assignment
   # The time when all the deliverables of the assignment are due.
   validates :deadline, presence: true, timeliness: true
   attr_accessible :deadline
-  
+
   # If true, students can read deliverables and make submissions.
   validates :deliverables_ready, inclusion: { in: [true, false],
                                               allow_nil: false }
@@ -51,14 +51,14 @@ class Assignment
 
   # All students' submissions for this assignment.
   has_many :submissions, through: :deliverables, inverse_of: :assignment
-  
+
   # The assignment deadline, customized to a specific user.
   #
-  # This method will eventually account for deadline extensions. 
+  # This method will eventually account for deadline extensions.
   def deadline_for(user)
     deadline
   end
-  
+
   # True if the sumbissions for this assignment should be marked as late.
   #
   # This method takes an user as an argument so that we can later account for
@@ -66,12 +66,12 @@ class Assignment
   def deadline_passed_for?(user)
     deadline_for(user) < Time.now
   end
-  
+
   # Deliverables that a user can submit files for.
   def deliverables_for(user)
     (deliverables_ready? || (user && user.admin?)) ? deliverables : []
   end
-  
+
   # Number of submissions that will be received for this assignment.
   #
   # The estimation is based on the number of students in the class.
@@ -86,11 +86,11 @@ class Assignment
   validates :weight, numericality: { greater_than_or_equal_to: 0,
       less_than_or_equal_to: 100, allow_nil: true }
   attr_accessible :weight
-  
+
   # If true, students can see their grades on the assignment.
   validates :metrics_ready, inclusion: { in: [true, false], allow_nil: false }
   attr_accessible :metrics_ready
-  
+
   # The metrics that the students are graded on for this assignment.
   has_many :metrics, class_name: 'AssignmentMetric', dependent: :destroy,
                      inverse_of: :assignment
@@ -98,29 +98,29 @@ class Assignment
   accepts_nested_attributes_for :metrics, allow_destroy: true,
                                           reject_if: :all_blank
   attr_accessible :metrics_attributes
-  
+
   # All students' grades for this assignment.
   has_many :grades, through: :metrics
-  
+
   # Number of submissions that will be received for this assignment.
   #
   # The estimation is based on the number of students in the class.
   def expected_grades
     metrics.count * course.students.count
   end
-  
+
   # The maximum score that a student can obtain on this assignment.
   #
   # This is the sum of all the metrics' maximum scores.
   def max_score
     metrics.sum :max_score
-  end  
+  end
 end
 
 # :nodoc: lifecycle
 class Assignment
   # This assignment's position in the assignment lifecycle.
-  # 
+  #
   # :draft -- under construction, not available to students
   # :open -- the assignment accepts submissions from students
   # :grading -- the assignment doesn't accept submissions, grades are not ready
@@ -144,7 +144,8 @@ end
 class Assignment
   # The partition of teams used for this assignment.
   belongs_to :team_partition, inverse_of: :assignments
-  
+  attr_accessible :team_partition_id
+
   # The object to be set as the subject on this assignment's grades for a user.
   def grade_subject_for(user)
     team_partition.nil? ? user : team_partition.team_for_user(user)
@@ -153,13 +154,13 @@ end
 
 # :nodoc: feedback survey integration.
 class Assignment
-  # The set of survey questions for getting feedback on this assignment. 
+  # The set of survey questions for getting feedback on this assignment.
   belongs_to :feedback_survey, class_name: 'Survey'
 
-  # The questions in the feedback survey for this assignment. 
+  # The questions in the feedback survey for this assignment.
   def feedback_questions
     # NOTE: this should be a has_many :through association, except ActiveRecord
-    #       doesn't support nested :through associations 
+    #       doesn't support nested :through associations
     feedback_survey.questions
   end
 end

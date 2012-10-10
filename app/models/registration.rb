@@ -3,7 +3,7 @@ class Registration < ActiveRecord::Base
   # The student who registered.
   belongs_to :user, inverse_of: :registrations
   validates :user, presence: true
-  
+
   # The course for which the student registered.
   belongs_to :course, inverse_of: :registrations
   validates :course, presence: true
@@ -12,14 +12,14 @@ class Registration < ActiveRecord::Base
   # True if the student is taking the class for credit.
   validates :for_credit, inclusion: { in: [true, false] }
   attr_accessible :for_credit
-  
+
   # True if the student dropped the class.
   validates :dropped, inclusion: { in: [true, false] }
-  
+
   # True if the user consents to having their work published.
-  validates :allows_publishing, inclusion: { in: [true, false] }  
+  validates :allows_publishing, inclusion: { in: [true, false] }
   attr_accessible :allows_publishing
-  
+
   # The user's recitation section.
   #
   # This is only used if the user is a student and the course has recitations.
@@ -33,7 +33,7 @@ class Registration < ActiveRecord::Base
   has_many :prerequisite_answers, dependent: :destroy, inverse_of: :registration
   accepts_nested_attributes_for :prerequisite_answers, allow_destroy: false
   attr_accessible :prerequisite_answers_attributes
-  
+
   # Populates prerequisite_answers for a new registration
   def build_prerequisite_answers
     course.prerequisites.each do |p|
