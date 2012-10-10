@@ -20,7 +20,9 @@
 		<div class="form_entry">
 			<div class="form_label">Recitation Leader</div>
 			<div class="form_field_box">
-				<%= f.select :leader_id, @leaders.map { |l| [l.display_name_for(), l.id] }, :class => 'form_field' %>
+				<%= f.select :leader_id,
+				    options_for_select(@leaders.map { |l| [l.display_name_for(), l.id] }, @recitation_section.leader_id),
+				    :class => 'form_field' %>
 			</div>
 		</div>
 		<div class="form_entry">
