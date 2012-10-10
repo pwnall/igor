@@ -25,6 +25,8 @@ class Registration < ActiveRecord::Base
   # This is only used if the user is a student and the course has recitations.
   belongs_to :recitation_section
   attr_protected :recitation_section
+  accepts_nested_attributes_for :recitation_section
+  attr_accessible :recitation_section_attributes
 
   # Temporary excuse for a calendar.
   has_many :recitation_conflicts, dependent: :destroy

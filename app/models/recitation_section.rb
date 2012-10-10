@@ -15,6 +15,7 @@ class RecitationSection < ActiveRecord::Base
   belongs_to :leader, class_name: 'User', foreign_key: :leader_id
   has_many :registrations
   has_many :users, :through => :registrations
+  accepts_nested_attributes_for :leader
   
   validates_presence_of :leader_id
   validates_presence_of :time
@@ -22,5 +23,8 @@ class RecitationSection < ActiveRecord::Base
   validates_presence_of :serial
   validates_uniqueness_of :serial
   
+  def recitation_name
+    "#{leader.name} - #{time}"
+  end
   
 end
