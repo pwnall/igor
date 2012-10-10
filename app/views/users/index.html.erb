@@ -61,15 +61,6 @@
             <% end %>
           <% end %>
         </td>
-        <td>
-          <% user.registrations.each do |registration| %>
-            <%= registration.recitation_section %>
-	    <%= best_in_place registration, :recitation_section, :type => :select,
-                    :collection => @leaders.each_with_index.map { |l, i| [i, l.name()] } %>
-	    <%= best_in_place registration, :recitation_section, :type => :select,
-                    :collection => @recitations.each_with_index.map { |l, i| [i, l.leader_id().to_s + ":" + l.time()] } %>
-          <% end %>
-        </td>
       </tr>
     <% end %>
   </tbody>
