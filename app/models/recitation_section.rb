@@ -13,6 +13,8 @@
 
 class RecitationSection < ActiveRecord::Base
   belongs_to :leader, class_name: 'User', foreign_key: :leader_id
+  has_many :registrations
+  has_many :users, :through => registrations
   
   validates_presence_of :leader_id
   validates_presence_of :time

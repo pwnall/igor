@@ -92,6 +92,7 @@ class User
   has_many :registrations, dependent: :destroy, inverse_of: :user
   accepts_nested_attributes_for :registrations
   attr_accessible :registrations_attributes
+  has_many :recitation_sections, :through => :registrations
   
   # The user's registration for the main class on this site.
   def registration
