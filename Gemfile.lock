@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/bernat/best_in_place.git
+  revision: 966213713c903d977ee4950a8f53b646173d81b4
+  specs:
+    best_in_place (1.1.2)
+      jquery-rails
+      rails (~> 3.1)
+
+GIT
   remote: git://github.com/ctran/annotate_models.git
   revision: 1340635ff0d6eb80f5b6815010b52dac0be0765c
   specs:
@@ -284,6 +292,7 @@ PLATFORMS
 DEPENDENCIES
   annotate (>= 2.6.0.beta1)!
   authpwn_rails (>= 0.13.1)
+  best_in_place!
   coffee-rails (>= 3.2.2)
   daemons
   daemonz (>= 0.3.9)

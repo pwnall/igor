@@ -55,7 +55,7 @@ gem 'mit_stalker', '>= 1.0.4'
 gem 'stellar', '>= 0.3.1'
 
 # Web
-gem 'best_in_place'
+gem 'best_in_place', :git => 'git://github.com/bernat/best_in_place.git'
 
 group :assets do
   gem 'sass-rails', '>= 3.2.5'
