@@ -31,13 +31,13 @@
 	    <td><%= link_to 'Destroy', registration,
 	                :confirm => 'Are you sure?', :method => :delete %></td>
 	    <td>
-		<% if registration.recitation_section.nil? %>
-			<%= "NIL!" %>
-		<% else %>
-			<%= collection_select(:recitation_section, :leader_id,
-				RecitationSection.all, :serial, :recitation_name,
-				{ :selected => registration.recitation_section.serial() } ) %>
-		<% end %>
+		<%= collection_select :recitation_section, :leader_id,
+				      RecitationSection.all, :serial, :recitation_name,
+					{ :prompt => 'Select Recitation',
+					:selected => registration.recitation_section.nil? ? nil : registration.recitation_section.serial() },
+					 :data => { :remote => true,
+						    :url => url_for(registration),
+						    :method => :put } %>
 	  </tr>
 	<% end %>
 	</tbody>
