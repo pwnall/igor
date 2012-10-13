@@ -3,4 +3,8 @@ module RecitationSectionsHelper
     return 'no assignment' unless recitation_section
     "R#{'%02d' % recitation_section.serial} - #{recitation_section.time}, #{recitation_section.location} #{display_name_for_user recitation_section.leader, :really_short}"
   end
+  
+  def recitation_leaders
+    @leaders = User.find(:all, :conditions => {:admin => true}, :include => :profile)
+  end
 end

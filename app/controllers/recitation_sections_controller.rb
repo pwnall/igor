@@ -4,8 +4,7 @@ class RecitationSectionsController < ApplicationController
   # GET /recitation_sections
   def index
     @recitation_sections = RecitationSection.find(:all, :include => :leader)
-    @leaders = User.find(:all, :conditions => {:admin => true}, :include => :profile)
-
+    
     respond_to do |format|
       format.html # index.html.erb
     end
@@ -35,7 +34,6 @@ class RecitationSectionsController < ApplicationController
   end
   
   def new_edit
-    @leaders = User.find(:all, :conditions => {:admin => true}, :include => :profile)
     respond_to do |format|
       format.html { render :action => :new_edit }
     end
@@ -69,7 +67,7 @@ class RecitationSectionsController < ApplicationController
         format.html { redirect_to(@recitation_section, :action => :index, :notice => notice_message) }
         format.json { head :ok }
       else
-        format.html { render :action => :new_edit }
+        format.html { render :action => :new_edit } 
         format.json { render :json => @recitation_section.errors.full_messages, :status => :unprocessable_entity }
       end
     end    

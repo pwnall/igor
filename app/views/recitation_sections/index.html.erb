@@ -25,7 +25,7 @@
 	  <tr> 
 	    <td><%= best_in_place recitation_section, :serial, :type => :input %></td>
 	    <td><%= best_in_place recitation_section, :leader_id, :type => :select,
-		    :collection => @leaders.each.map { |l| [l.id, l.name()] } %></td>
+		    :collection => recitation_leaders.each.map { |l| [l.id, l.name()] } %></td>
 	    <td><%= best_in_place recitation_section, :time, :type => :input %></td>
 	    <td><%= best_in_place recitation_section, :location, :type => :input %></td>
 	    <td><%= link_to "Edit", recitation_section %></td>
