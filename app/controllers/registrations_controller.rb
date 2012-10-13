@@ -118,8 +118,8 @@ class RegistrationsController < ApplicationController
     respond_to do |format|
       if success
         flash[:notice] = "Student Information successfully #{@new_record ? 'submitted' : 'updated'}."
-        format.html { redirect_to @registration.user }
-        format.js   { render :action => :create_update }
+        format.html { redirect_to(@recitation_section, :action => :index, :method => :get) }
+        format.js { head :ok }
       else
         prepare_for_editing
         format.html { render :action => :new_edit }
