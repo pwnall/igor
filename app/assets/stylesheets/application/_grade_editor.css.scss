@@ -1,9 +1,14 @@
+section.grades-table-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 table.grades-table {
   position: relative;
 
   tbody {
     overflow: auto;
-  
+
     tr:hover {
       background-color: change-color(#F5DCCC, $lightness: 95%);
     }
@@ -14,18 +19,16 @@ table.grades-table {
       display: none;
     }
   }
+  th, td {
+    white-space: nowrap;
+  }
   td {
     text-align: right;
-  
+
     input[type=number] {
       width: 3em;
       text-align: right;
       border: 1px solid #999999;
-      
-      &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-      }    
     }
     .max-points {
       color: #666666;
@@ -36,12 +39,12 @@ table.grades-table {
 span.progress-indicators {
   display: inline-block;
   vertical-align: middle;
-  
+
   img {
     display: inline-block;
     position: absolute;
     opacity: 1;
-    
+
     &:last-child {
       position: static;
     }
