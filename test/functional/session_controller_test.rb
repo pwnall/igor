@@ -23,7 +23,7 @@ class SessionControllerTest < ActionController::TestCase
     post :create, :email => @email_credential.email, :password => 'password'
     assert_equal @user, session_current_user, 'session'
     assert_redirected_to session_url
-    assert_nil Credentials::Token.with_code(old_token.code),
+    assert_nil Tokens::Base.with_code(old_token.code).first,
                'old session not purged'
   end
 
