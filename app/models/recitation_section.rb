@@ -23,6 +23,9 @@ class RecitationSection < ActiveRecord::Base
   validates_presence_of :serial
   validates_uniqueness_of :serial
   
+  validates :time, :format => { :with => /[MTWRF]+\d+/,
+      :message => 'must be days of the week followed by the time of day. Ex: MW2, TR10' }
+  
   def recitation_name
     "#{leader.name} - #{time}"
   end
