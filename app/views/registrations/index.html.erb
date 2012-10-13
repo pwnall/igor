@@ -1,13 +1,14 @@
 <h2>Listing <%= @registrations.length %> Registrations</h2>
 
-<table>
+<table id='registrations-table'>
 	<thead>
 	  <tr>
-	  	<td>User</td>
+	    <td>User</td>
 	    <td>Credit</td>
 			<% @prerequisites.sort_by(&:id).each do |prereq| %>
 			<td><%= prereq.prerequisite_number %></td>
-			<% end %>
+		<% end %>
+	    <td>Recitation</td>
 	  </tr>
 	</thead>
 	
@@ -26,11 +27,7 @@
 				<% end %>
 				</td>
 			<% end %>
-	    <td><%= link_to 'Show', registration %></td>
-	    <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
-	    <td><%= link_to 'Destroy', registration,
-	                :confirm => 'Are you sure?', :method => :delete %></td>
-	    <td>
+	    <td id='registration-<%= registration.id %>'>
 		<%= collection_select :recitation_section, :serial,
 				      RecitationSection.all, :serial, :recitation_name,
 				      { :prompt => 'Select Recitation',
@@ -38,6 +35,11 @@
 					:data => { :remote => true,
 						   :url => url_for(registration),
 						   :method => :put } %>
+	    </td>
+	    <td><%= link_to 'Show', registration %></td>
+	    <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
+	    <td><%= link_to 'Destroy', registration,
+	                :confirm => 'Are you sure?', :method => :delete %></td>
 	  </tr>
 	<% end %>
 	</tbody>
