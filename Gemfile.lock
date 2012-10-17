@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ctran/annotate_models.git
-  revision: 8004adc710a4a60f6ea53c517802a1d1862cf48c
+  revision: 4a96f3a15902c58e6044f8229d81a7554149219a
   specs:
     annotate (2.6.0.beta1)
       activerecord (>= 2.3.0)
@@ -56,10 +56,10 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     arel (3.0.2)
-    authpwn_rails (0.13.0)
+    authpwn_rails (0.13.1)
       fbgraph_rails (>= 0.2.2)
       rails (>= 3.2.8)
-    builder (3.0.3)
+    builder (3.0.4)
     chunky_png (1.2.6)
     cocaine (0.4.0)
     coffee-rails (3.2.2)
@@ -183,7 +183,7 @@ GEM
       compass-rails (>= 1.0.3)
       rails (>= 3.2.3)
       sass-rails (>= 3.2.5)
-    pygments.rb (0.3.1)
+    pygments.rb (0.3.2)
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.1.0)
     rack (1.4.1)
@@ -224,7 +224,7 @@ GEM
     rspec-expectations (2.11.3)
       diff-lcs (~> 1.1.3)
     rspec-mocks (2.11.3)
-    rspec-rails (2.11.0)
+    rspec-rails (2.11.4)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
@@ -284,7 +284,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate (>= 2.6.0.beta1)!
-  authpwn_rails (>= 0.13.0)
+  authpwn_rails (>= 0.13.1)
   coffee-rails (>= 3.2.2)
   daemons
   daemonz (>= 0.3.9)

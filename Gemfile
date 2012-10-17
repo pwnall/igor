@@ -20,7 +20,7 @@ gem 'json', '>= 1.5.4'
 # gem 'ruby-debug'
 
 # Core.
-gem 'authpwn_rails', '>= 0.13.0'
+gem 'authpwn_rails', '>= 0.13.1'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'markdpwn', '>= 0.1.5'
 gem 'nokogiri', '>= 1.5.0'
