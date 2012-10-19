@@ -91,6 +91,13 @@ Seven::Application.routes.draw do
   resources :team_memberships, only: [:create, :destroy]
   resources :team_partitions
   resources :teams, only: [:edit, :create, :update, :destroy]
+  # Teams / Student view.
+  get "/teams_student" => "teams_student#show"
+  post "/teams_student/leave_team" => "teams_student#leave_team"
+  post "/teams_student/create_team" => "teams_student#create_team"
+  resources :teams_student
+
+  
 
   # Deprecated.
   resources :announcements

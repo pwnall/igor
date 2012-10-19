@@ -41,4 +41,5 @@ class Team < ActiveRecord::Base
   def can_edit?(user)
     user.admin?
   end
+
 end

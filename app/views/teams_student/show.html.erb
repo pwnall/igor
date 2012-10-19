@@ -1,0 +1,69 @@
+
+<h1>Student view for the teams</h1>
+
+<% if !@team_memberships.nil? %>
+<h4>Current Teams</h4>
+<table>
+  <tr>
+    <th>Partition Name</th>
+    <th>Team Name</th>
+    <th>Leave Team?</th>
+    <th>Members</th>
+  </tr>
+<% @team_memberships.each do |team_membership| %>
+  <tr>
+      <% @team = Team.find_by_id(team_membership.team_id) %>
+      <% @partition = TeamPartition.find_by_id(@team.partition_id) %>
+      <% @friend_memberships = TeamMembership.where(:team_id => @team.id) %>
+    <td>
+      <%= @partition.name %>
+    </td>
+    <td>
+      <%= @team.name %>
+    </td>
+    <td>
+      <% if @partition.editable %>
+      <%= button_to "Leave Team", { :action => "leave_team", :id => @team.id },
+        :confirm => "Are you sure?", :method => :post %>
+      <% else %>
+      <span style="background-color: red">TEAM FINAL</span>
+      <% end %>
+    </td>
+      <% @friend_memberships.each do |friend_membership| %> 
+      <% if friend_membership != team_membership %>
+      <% @friend = User.find_by_id(friend_membership.user_id) %>
+      <% @profile = Profile.find_by_user_id(@friend.id) %>
+    <td>
+      <%= @profile.name %>
+    </td>
+    <% end %>
+    <% end %>
+  </tr>
+<% end %>
+<% else %>
+<h4>You are associated with no teams.</h4>
+<% end %>
+</table>
+<br />
+<br />
+<% if !@partitions_without_team_membership.nil? %>
+<h4>Partitions you don't have a team for:</h2>
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+  <% @partitions_without_team_membership.each do |part| %>
+  <tr>
+    <td>
+      <%= part.name %>
+    </td>
+    <td>
+      <%= text_field_tag ('name' + part.id.to_s), nil, :placeholder => 'Team Awesome' %>
+    </td>
+    <td>
+      <%= button_to "Create Team", { :action => "create_team", :id => part.id }, :method => :post %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+<% end %>
