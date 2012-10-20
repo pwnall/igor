@@ -21,7 +21,7 @@ class TeamsStudentController < ApplicationController
       team_membership = TeamMembership.where(:user_id => current_user.id, :team_id => team.id).first
       team_membership.destroy
       ## If the Team is now empty...
-      if TeamMembership.where(:team_id => team.id) == nil
+      if TeamMembership.where(:team_id => team.id).first == nil
         team.destroy
       end
       flash[:notice] = "You have been removed from that team."
@@ -32,18 +32,24 @@ class TeamsStudentController < ApplicationController
   end
 
   def create_team
-    partition = TeamPartition.find_by_id(params[:id])
+    partition = TeamPartition.find_by_id(params[:part_id])
+    name_str = "name"+partition.id.to_s
+    name = params[name_str]
     if partition && partition.editable
       # Ensure that the student doesn't already have a Team for this partition
       TeamMembership.where(:user_id => current_user.id).each do |tm|
-        if tm.partition_id == partition.id
+        team_on = Team.find_by_id(tm.team_id)
+        if team_on.partition_id === partition.id
           flash[:notice] = "You already have a team for " + partition.name.to_s + "."
           redirect_to teams_student_path and return
         end
       end
       # Now we can create a team and add them to it.
-      
+      team = Team.create(:partition_id => partition.id, :name => name)
+      team_membership = TeamMembership.create(:team_id => team.id, :user_id => current_user.id)
+      flash[:notice] = "You just created team: " + team.name
     end
+    redirect_to teams_student_path and return
   end
 
 end

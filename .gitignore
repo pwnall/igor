@@ -9,6 +9,7 @@ tmp
 *.swp
 .pydevproject
 .DS_Store
+.AppleDouble
 
 doc/controllers_brief.svg
 doc/controllers_complete.svg

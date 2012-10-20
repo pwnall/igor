@@ -58,11 +58,14 @@
       <%= part.name %>
     </td>
     <td>
+	  	<%= form_tag("/teams_student/create_team") do -%>
       <%= text_field_tag ('name' + part.id.to_s), nil, :placeholder => 'Team Awesome' %>
+			<%= hidden_field_tag 'part_id', part.id %>
     </td>
     <td>
-      <%= button_to "Create Team", { :action => "create_team", :id => part.id }, :method => :post %>
-    </td>
+      <%= button_to "Create Team", :action => "create_team" %>
+			<% end -%>
+		</td>
   </tr>
   <% end %>
 </table>
