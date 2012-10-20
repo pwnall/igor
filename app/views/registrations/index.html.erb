@@ -28,13 +28,7 @@
 				</td>
 			<% end %>
 	    <td id='registration-<%= registration.id %>'>
-		<%= collection_select :recitation_section, :serial,
-				      RecitationSection.all, :serial, :recitation_name,
-				      { :prompt => 'Select Recitation',
-					:selected => registration.recitation_section.nil? ? nil : registration.recitation_section.serial() },
-					:data => { :remote => true,
-						   :url => url_for(registration),
-						   :method => :put } %>
+        <%= recitation_select(registration) %>
 	    </td>
 	    <td><%= link_to 'Show', registration %></td>
 	    <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
