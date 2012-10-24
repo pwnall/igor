@@ -6,8 +6,8 @@ module RegistrationsHelper
 				      RecitationSection.all, :serial, :recitation_name,
 				      { :prompt => 'Select Recitation',
 					      :selected => isSelected }, 					    
-              :data => { :remote => true,
-						             :url => url_for(registration),
-						             :method => :put } %>
+                :data => { :remote => true,
+                           :url => url_for(registration),
+                           :method => :put }
   end
 end
