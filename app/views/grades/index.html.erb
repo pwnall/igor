@@ -1,6 +1,6 @@
 <h2 class="grades-list-heading">Grades</h2>
 
-<% @grades.each do |assignment, metrics| %>
+<% @grades.each do |assignment, metrics, recitation_average| %>
   <h3 class="grades"><%= assignment.name %></h3>
 	<ol class="grades">
     <li class="total">
@@ -13,6 +13,16 @@
         <span class="max-score">
           <%= metrics.map { |metric, grade| metric.max_score }.sum %>
         </span>
+      </span>
+      <span class="assignment-name">Recitation Average</span>
+      <span class="scores">
+          <span class="score">
+            <%= recitation_average %>
+          </span>
+          /
+          <span class="max-score">
+            <%= metrics.map { |metric, grade| metric.max_score }.sum %>
+          </span>
       </span>
     </li>
     <% metrics.each do |metric, grade| %>

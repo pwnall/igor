@@ -42,7 +42,28 @@ class AssignmentMetric < ActiveRecord::Base
     subject = grades.with_subject(assignment.grade_subject_for(user)).
                      first_or_initialize
   end
-  
+
+  def grade_for_recitation(recitation)
+    average_grade = 0
+    students_with_grades = 0
+
+    recitation.users.each do |user|
+      if user.admin?
+        next
+      end
+
+      grade = grade_for(user)
+      if grade.score.nil?
+        next
+      end
+
+      average_grade += grade.score 
+      students_with_grades += 1
+    end
+
+    students_with_grades == 0 ? 0 : average_grade / students_with_grades
+  end
+
   # Number of grades that will be posted for this metric.
   #
   # The estimation is based on the number of students in the class.

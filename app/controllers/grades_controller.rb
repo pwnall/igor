@@ -11,7 +11,13 @@ class GradesController < ApplicationController
       metrics = assignment.metrics.
           select { |metric| metric.can_read? current_user }.
           map { |metric| [metric, grades_by_metric_id[metric.id]] }
-      @grades << [assignment, metrics] unless metrics.empty?
+
+      recitation_average = 0
+      metrics.map do |metric, grade|
+        recitation_average += metric.grade_for_recitation current_user.recitation_section 
+      end
+
+      @grades << [assignment, metrics, recitation_average] unless metrics.empty?
     end
   end
 

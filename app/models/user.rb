@@ -98,6 +98,10 @@ class User
   def registration
     registrations.where(course_id: Course.main.id).first
   end
+
+  def recitation_section
+    registration.recitation_section
+  end
 end
 
 # :nodoc: homework submission feature.
