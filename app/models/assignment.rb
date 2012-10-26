@@ -115,6 +115,13 @@ class Assignment
   def max_score
     metrics.sum :max_score
   end
+
+  # The average score for this assignment given a recitation.
+  # 
+  # This is the sum of all the metrics' recitation averaged scores.
+  def recitation_score(recitation)
+    metrics.inject(0) { |sum, metric| sum + metric.grade_for_recitation(recitation) }
+  end
 end
 
 # :nodoc: lifecycle
