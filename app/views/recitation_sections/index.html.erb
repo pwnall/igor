@@ -15,10 +15,11 @@
 	<table>
 	  <tr>
 	    <th style="text-align: left; width: 75px;">Serial</th>
-	    <th style="text-align: left; width: 180px;">Leader</th>
-	    <th style="text-align: left; width: 220px;">Time</th>
-	    <th style="text-align: left; width: 180px;">Location</th>
-	    <th style="text-align: left; width: 180px;">Students</th>
+	    <th style="text-align: left; width: 150px;">Leader</th>
+	    <th style="text-align: left; width: 150px;">Time</th>
+	    <th style="text-align: left; width: 150px;">Location</th>
+	    <th style="text-align: left; width: 150px;"># Students</th>
+	    <th style="text-align: left; width: 180px;"></th>
 	  </tr>
 	
 	  <% @recitation_sections.each do |recitation_section| %>
@@ -28,6 +29,7 @@
 		    :collection => recitation_leaders.each.map { |l| [l.id, l.name()] } %></td>
 	    <td><%= best_in_place recitation_section, :time, :type => :input %></td>
 	    <td><%= best_in_place recitation_section, :location, :type => :input %></td>
+      <td><%= recitation_section.users.length %></td>
 	    <td><%= link_to "Edit", recitation_section %></td>
 	  </tr>
 	  <% end %>
