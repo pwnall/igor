@@ -81,23 +81,22 @@ class RegistrationsController < ApplicationController
     if Course.main.has_recitations?
       old_recitation_conflicts =
           @registration.recitation_conflicts.index_by &:timeslot
-    end
     
-    #  # Update recitation conflicts.
-    #  params[:recitation_conflicts].each_value do |rc|
-    #    next if rc[:class_name].blank?
-    #    timeslot = rc[:timeslot].to_i
-    #    if old_recitation_conflicts.has_key? timeslot
-    #      old_recitation_conflicts.delete(timeslot).update_attributes rc
-    #    else
-    #      rc[:registration] = @registration
-    #      conflict = RecitationConflict.new(rc)
-    #      @registration.recitation_conflicts << conflict
-    #    end
-    #  end
-    #  # Wipe cleared conflicts.
-    #  old_recitation_conflicts.each_value { |orc| @registration.recitation_conflicts.delete orc }
-    #end
+      # Update recitation conflicts.
+      params[:recitation_conflicts].each_value do |rc|
+        next if rc[:class_name].blank?
+        timeslot = rc[:timeslot].to_i
+        if old_recitation_conflicts.has_key? timeslot
+          old_recitation_conflicts.delete(timeslot).update_attributes rc
+        else
+          rc[:registration] = @registration
+          conflict = RecitationConflict.new(rc)
+          @registration.recitation_conflicts << conflict
+        end
+      end
+      # Wipe cleared conflicts.
+      old_recitation_conflicts.each_value { |orc| @registration.recitation_conflicts.delete orc }
+    end
     
     if @new_record = @registration.new_record?
       success = @registration.save
@@ -106,6 +105,7 @@ class RegistrationsController < ApplicationController
       if params.has_key? :recitation_section
         @registration.recitation_section = RecitationSection.where(:serial => params[:recitation_section][:serial]).first
         success = @registration.save
+      elsif params.has_key? :recitation_conflicts
       else
         # Disallow structural changes to the record.
         params[:registration].delete :user_id
