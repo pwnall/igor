@@ -141,11 +141,29 @@ module RecitationAssigner
     matching.each { |k, v| reverted[v] ||= []; reverted[v] << k }
     reverted
   end
+
+  def self.assign_and_email(user, root_url)
+    recitation_sections = RecitationSection.all
+
+    days = []
+    times = []
+    recitation_sections.each do |rs|
+      days = days | rs.recitation_days
+      times = times | [rs.recitation_time]
+    end
+
+    students = RecitationAssigner.conflicts_info
+
+    recitation_assignments = self.assignment 30, days, times, students 
+    reverted_matching = RecitationAssigner.reverted_assignment recitation_assignments
+    SessionMailer.recitation_assignment_email(user.email, recitation_assignments, 
+                                              reverted_matching, students, root_url).deliver
+  end
 end
 
 
-def nice_times(section_size, days, students)
-  times = [10, 11, 12, 13, 14, 15]
+def nice_times(section_size, days, times, students)
+  #times = [10, 11, 12, 13, 14, 15]
   mm_length = 0
   mm_alts = []
   mm = nil
