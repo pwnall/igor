@@ -1,6 +1,8 @@
 class RecitationSectionsController < ApplicationController
   before_filter :authenticated_as_admin
 
+  require 'recitation_assigner'
+
   # GET /recitation_sections
   def index
     @recitation_sections = RecitationSection.find(:all, :include => :leader)
@@ -45,6 +47,16 @@ class RecitationSectionsController < ApplicationController
   def create
     @recitation_section = RecitationSection.new(params[:recitation_section])
     create_update
+  end
+
+  # POST /recitation_sections/autoassign
+  def autoassign
+    RecitationAssigner.delay.assign_and_email(current_user, root_url)
+
+    respond_to do |format|
+      flash[:notice] = "Started recitation assignment. Email will arrive shortly."
+      format.html { redirect_to :back }  
+    end
   end
 
   # PUT /recitation_sections/1

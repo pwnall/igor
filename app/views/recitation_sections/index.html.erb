@@ -1,10 +1,14 @@
 <!-- recitation_sections/index -->
 <div class="full_section">
 
-	<div style="z-index: 10; float: right; width: 100px; text-align: right;">
-		<h1 class="full_section">
+	<div style="z-index: 10; float: right; width: 275; text-align: left;">
+    <h3> 
 			<%= link_to 'New', new_recitation_section_path %>
-		</h1>
+		</h3>
+    <h3>
+      <%= link_to 'Auto-Assign Students', autoassign_recitation_sections_path, 
+        :method => :post, :confirm => 'This will an assignment proposal for all students.' %>
+    </h3>
 	</div>
 	<h1 class="full_section" style="margin-right: 100px; ">
 		Recitation Sections

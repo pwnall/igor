@@ -28,7 +28,11 @@ Seven::Application.routes.draw do
     end
   end
   resources :registrations
-  resources :recitation_sections
+  resources :recitation_sections do
+    collection do
+      post :autoassign
+    end
+  end
 
   # Homework.
   resources :assignments do
