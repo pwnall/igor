@@ -86,6 +86,10 @@ class UsersController < ApplicationController
     @user = User.find_by_param params[:id]
     return bounce_user unless @user && @user.can_edit?(current_user)
 
+    if params.has_key? :recitation_conflicts
+      @user.registration.update_conflicts(params[:recitation_conflicts])
+    end
+
     respond_to do |format|
       if @user.update_attributes(params[:user])
         flash[:notice] = 'User information successfully updated.'
