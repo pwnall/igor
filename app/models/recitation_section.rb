@@ -29,5 +29,20 @@ class RecitationSection < ActiveRecord::Base
   def recitation_name
     "#{leader.name} - #{time}"
   end
-  
+
+  def recitation_days
+    days_list = []
+
+    ['M', 'T', 'W', 'R', 'F'].each_with_index do |letter, i|
+      days_list << i if time.include? letter
+    end
+
+    days_list
+  end
+
+  def recitation_time
+    rt = time.match(/(\d+)/).captures[0].to_i
+    rt <= 5 ? rt += 12 : rt
+  end
+
 end
