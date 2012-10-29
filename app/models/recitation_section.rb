@@ -27,7 +27,7 @@ class RecitationSection < ActiveRecord::Base
       :message => 'must be days of the week followed by the time of day. Ex: MW2, TR10' }
   
   def recitation_name
-    "#{leader.name} - #{time}"
+    "#{leader.name} #{time}"
   end
 
   def recitation_days

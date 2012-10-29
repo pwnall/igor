@@ -1,4 +1,5 @@
 <h2 class="grades-list-heading">Grades</h2>
+<h3>Recitation: <%= @recitation.recitation_name %></h3>
 
 <% @grades.each do |assignment, metrics, recitation_average| %>
   <h3 class="grades"><%= assignment.name %></h3>
