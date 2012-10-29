@@ -30,6 +30,7 @@ class Registration < ActiveRecord::Base
 
   # Temporary excuse for a calendar.
   has_many :recitation_conflicts, dependent: :destroy
+  accepts_nested_attributes_for :recitation_conflicts
 
   # Answers to the course's prerequisites questions.
   has_many :prerequisite_answers, dependent: :destroy, inverse_of: :registration
