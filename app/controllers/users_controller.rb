@@ -53,12 +53,14 @@ class UsersController < ApplicationController
       registration.course = Course.main
     end
 
-    params[:recitation_conflicts].each_value do |rc|
-      next if rc[:class_name].blank?
-      timeslot = rc[:timeslot].to_i
-      rc[:registration] = @registration
-      conflict = RecitationConflict.new(rc)
-      registration.recitation_conflicts << conflict
+    if Course.main.has_recitations?
+      params[:recitation_conflicts].each_value do |rc|
+        next if rc[:class_name].blank?
+        timeslot = rc[:timeslot].to_i
+        rc[:registration] = @registration
+        conflict = RecitationConflict.new(rc)
+        registration.recitation_conflicts << conflict
+      end
     end
 
     respond_to do |format|
