@@ -39,14 +39,14 @@
         <% ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm'].zip((9..17).to_a).each do |hour, dhour| %>
           <tr>
             <th><%= hour %></th>
-            <% (1..5).each do |day| %>
+            <% (0..4).each do |day| %>
               <% rc = registration.recitation_conflicts.select { |rc| rc.timeslot.to_i == day + dhour * 10 }.first %> 
 							<% if rc %>
               <td class="busy">
                 <%=h rc.class_name %>
               </td>
 							<% else %>
-							<td class="free">
+              <td class="free">
 								free
 							</td>
 							<% end %>
