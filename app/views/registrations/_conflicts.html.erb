@@ -25,7 +25,8 @@
           <td>
             <% timeslot = day + dhour * 10 %>
             <%= fields_for("recitation_conflicts[#{timeslot}]",
-                  RecitationConflict.new(:timeslot => timeslot)) do |r|  %>
+                  @recitation_conflicts[timeslot].nil? ? 
+                  RecitationConflict.new(:timeslot => timeslot) : @recitation_conflicts[timeslot]) do |r|  %>
               <%= r.text_field :class_name, :class => 'form_field', :id => "recitation_conflicts_#{timeslot}_class_name", :size => 8 %>
               <%= r.hidden_field :timeslot, :id => "recitation_conflicts_#{timeslot}_timeslot" %>
             <% end %>
