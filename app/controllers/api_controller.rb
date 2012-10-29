@@ -1,6 +1,8 @@
 class ApiController < ApplicationController
   def conflict_info
-    @registrations = Registration.find :all, :include => :recitation_conflicts
+    @registrations = Registration.joins(:user).find(:all, 
+                                                    :include => :recitation_conflicts,
+                                                    :conditions => { :users => { :admin => false }})
     
     @response_data = @registrations.map do |s|
       conflicts = s.recitation_conflicts.map do |r|
