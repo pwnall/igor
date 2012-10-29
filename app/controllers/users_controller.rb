@@ -30,6 +30,9 @@ class UsersController < ApplicationController
     registration.course = Course.main
     registration.build_prerequisite_answers
 
+    # Don't have any recitation conflicts yet TODO: move logic to helper/view
+    @recitation_conflicts = []
+
     respond_to do |format|
       format.html # new.html.erb
     end
@@ -48,6 +51,14 @@ class UsersController < ApplicationController
     @user.admin = (User.count == 1)
     if registration = @user.registrations.first
       registration.course = Course.main
+    end
+
+    params[:recitation_conflicts].each_value do |rc|
+      next if rc[:class_name].blank?
+      timeslot = rc[:timeslot].to_i
+      rc[:registration] = @registration
+      conflict = RecitationConflict.new(rc)
+      registration.recitation_conflicts << conflict
     end
 
     respond_to do |format|
