@@ -6,6 +6,7 @@ module CoverSheet
   include ActionView::Helpers::TextHelper
   include ApplicationHelper
   include AnalysesHelper
+  include RecitationSectionsHelper
   
   def cover_sheet_for_assignment(target, assignment, file_name)
     submissions = target.submissions.
@@ -34,7 +35,7 @@ module CoverSheet
     if Course.main.has_recitations?
       if user.registration and user.registration.recitation_section
         section_title =
-            display_name_for_recitation_section user.profile.recitation_section
+            display_name_for_recitation_section user.recitation_section
       else
         section_title = "R00 - 00am, No Section Info"
       end
