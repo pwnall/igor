@@ -16,6 +16,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find_by_param params[:id]
     return bounce_user unless @user && @user.can_read?(current_user)
+    @recitation_conflicts = @user.registration.recitation_conflicts.index_by(&:timeslot)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -41,6 +42,8 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @user = User.find_by_param params[:id]
+    @recitation_conflicts = @user.registration.recitation_conflicts.index_by(&:timeslot)
+
     return bounce_user unless @user && @user.can_edit?(current_user)
   end
 
