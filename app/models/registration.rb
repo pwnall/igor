@@ -47,6 +47,25 @@ class Registration < ActiveRecord::Base
   def can_edit?(user)
     user and (user == self.user or user.admin?)
   end
+
+  def update_conflicts(new_conflicts)
+    old_recitation_conflicts = recitation_conflicts.index_by &:timeslot
+  
+    # Update recitation conflicts.
+    new_conflicts.each_value do |rc|
+      next if rc[:class_name].blank?
+      timeslot = rc[:timeslot].to_i
+      if old_recitation_conflicts.has_key? timeslot
+        old_recitation_conflicts.delete(timeslot).update_attributes rc
+      else
+        rc[:registration] = self
+        conflict = RecitationConflict.new(rc)
+        recitation_conflicts << conflict
+      end
+    end
+    # Wipe cleared conflicts.
+    old_recitation_conflicts.each_value { |orc| recitation_conflicts.delete orc }
+  end
 end
 
 # == Schema Information
