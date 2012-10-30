@@ -6,7 +6,7 @@ class RegistrationsController < ApplicationController
   def index
     @prerequisites = Prerequisite.all
     @registrations = Registration.all
-    @leaders = User.find(:all, :conditions => {:admin => true}, :include => :profile)
+    @leaders = User.find(:all, conditions: { admin: true }, include: :profile)
 
     respond_to do |format|
       format.html # index.html.erb

@@ -5,6 +5,6 @@ module RecitationSectionsHelper
   end
   
   def recitation_leaders
-    @leaders = User.find(:all, :conditions => {:admin => true}, :include => :profile)
+    @leaders = User.find(:all, conditions: {admin: true}, include: :profile)
   end
 end

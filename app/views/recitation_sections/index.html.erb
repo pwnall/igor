@@ -7,7 +7,7 @@
 		</h3>
     <h3>
       <%= link_to 'Auto-Assign Students', autoassign_recitation_sections_path, 
-        :method => :post, :confirm => 'This will create an assignment proposal for all students.' %>
+        method: :post, confirm: 'This will create an assignment proposal for all students.' %>
     </h3>
 	</div>
 	<h1 class="full_section" style="margin-right: 100px; ">
@@ -28,11 +28,11 @@
 	
 	  <% @recitation_sections.each do |recitation_section| %>
 	  <tr> 
-	    <td><%= best_in_place recitation_section, :serial, :type => :input %></td>
-	    <td><%= best_in_place recitation_section, :leader_id, :type => :select,
-		    :collection => recitation_leaders.each.map { |l| [l.id, l.name()] } %></td>
-	    <td><%= best_in_place recitation_section, :time, :type => :input %></td>
-	    <td><%= best_in_place recitation_section, :location, :type => :input %></td>
+	    <td><%= best_in_place recitation_section, :serial, type: :input %></td>
+	    <td><%= best_in_place recitation_section, :leader_id, type: :select,
+		              collection: recitation_leaders.each.map { |l| [l.id, l.name()] } %></td>
+	    <td><%= best_in_place recitation_section, :time, type: :input %></td>
+	    <td><%= best_in_place recitation_section, :location, type: :input %></td>
       <td><%= recitation_section.users.length %></td>
 	    <td><%= link_to "Edit", recitation_section %></td>
 	  </tr>

@@ -14,10 +14,6 @@ class RecitationSectionsController < ApplicationController
   def show
     @recitation_section = RecitationSection.find(params[:id])
     new_edit
-    #
-    #respond_to do |format|
-    #  format.html # show.html.erb
-    #end
   end
 
   # GET /recitation_sections/new

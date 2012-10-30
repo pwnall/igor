@@ -31,7 +31,6 @@ class UsersController < ApplicationController
     registration.course = Course.main
     registration.build_prerequisite_answers
 
-    # Don't have any recitation conflicts yet TODO: move logic to helper/view
     @recitation_conflicts = []
 
     respond_to do |format|
