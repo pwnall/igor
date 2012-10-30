@@ -154,7 +154,7 @@ module RecitationAssigner
 
     students = RecitationAssigner.conflicts_info
 
-    recitation_assignments = self.assignment 30, days, times, students 
+    recitation_assignments = self.assignment Course.main.recitation_size, days, times, students
     reverted_matching = RecitationAssigner.reverted_assignment recitation_assignments
     RecitationAssignmentMailer.recitation_assignment_email(user.email, recitation_assignments, 
                                                            reverted_matching, students, root_url).deliver
