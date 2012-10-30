@@ -156,8 +156,8 @@ module RecitationAssigner
 
     recitation_assignments = self.assignment 30, days, times, students 
     reverted_matching = RecitationAssigner.reverted_assignment recitation_assignments
-    SessionMailer.recitation_assignment_email(user.email, recitation_assignments, 
-                                              reverted_matching, students, root_url).deliver
+    RecitationAssignmentMailer.recitation_assignment_email(user.email, recitation_assignments, 
+                                                           reverted_matching, students, root_url).deliver
   end
 end
 
