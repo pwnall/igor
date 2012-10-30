@@ -70,7 +70,6 @@ class RegistrationsController < ApplicationController
   end
   
   def create_update
-    #logger.info "---------------------------------"
     unless @registration.can_edit? current_user
       # Disallow random record updates.
       notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
@@ -83,14 +82,11 @@ class RegistrationsController < ApplicationController
     else
       # recitation_section is attr_protected, set manually
       if params.has_key? :recitation_section
-        @registration.recitation_section = RecitationSection.where(:serial => params[:recitation_section][:serial]).first
+        @registration.recitation_section = RecitationSection.where(serial: params[:recitation_section][:serial]).first
         success = @registration.save
       elsif params.has_key? :recitation_conflicts
         @registration.update_conflicts(params[:recitation_conflicts])
       else
-        # Disallow structural changes to the record.
-        params[:registration].delete :user_id
-        params[:registration].delete :course_id
         success = @registration.update_attributes params[:registration]
       end
       
@@ -99,7 +95,7 @@ class RegistrationsController < ApplicationController
     respond_to do |format|
       if success
         flash[:notice] = "Student Information successfully #{@new_record ? 'submitted' : 'updated'}."
-        format.html { redirect_to(@recitation_section, :action => :index, :method => :get) }
+        format.html { redirect_to @registration }
         format.js { head :ok }
       else
         prepare_for_editing

@@ -1,8 +1,6 @@
 class RecitationSectionsController < ApplicationController
   before_filter :authenticated_as_admin
 
-  require 'recitation_assigner'
-
   # GET /recitation_sections
   def index
     @recitation_sections = RecitationSection.find(:all, :include => :leader)

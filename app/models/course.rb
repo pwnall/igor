@@ -8,7 +8,7 @@ class Course < ActiveRecord::Base
   validates :email, length: 1..64, presence: true
   # True if the course has recitation sections.
   validates :has_recitations, inclusion: { in: [true, false], allow_nil: false }
-  validates :recitation_size, :numericality => { :only_integer => true } 
+  validates :recitation_size, numericality: { only_integer: true, greater_than: 0 } 
   # True if the course has homework surveys.
   validates :has_surveys, inclusion: { in: [true, false], allow_nil: false }
   # True if the course has homework teams.

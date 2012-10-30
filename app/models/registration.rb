@@ -9,6 +9,9 @@ class Registration < ActiveRecord::Base
   validates :course, presence: true
   validates :course_id, uniqueness: { scope: [:user_id] }
 
+  attr_protected :course_id
+  attr_protected :user_id
+
   # True if the student is taking the class for credit.
   validates :for_credit, inclusion: { in: [true, false] }
   attr_accessible :for_credit

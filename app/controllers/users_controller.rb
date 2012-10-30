@@ -59,7 +59,6 @@ class UsersController < ApplicationController
     if Course.main.has_recitations?
       params[:recitation_conflicts].each_value do |rc|
         next if rc[:class_name].blank?
-        timeslot = rc[:timeslot].to_i
         rc[:registration] = @registration
         conflict = RecitationConflict.new(rc)
         registration.recitation_conflicts << conflict
@@ -86,7 +85,7 @@ class UsersController < ApplicationController
     @user = User.find_by_param params[:id]
     return bounce_user unless @user && @user.can_edit?(current_user)
 
-    if params.has_key? :recitation_conflicts
+    if params[:recitation_conflicts]
       @user.registration.update_conflicts(params[:recitation_conflicts])
     end
 
