@@ -1,9 +1,8 @@
 /* Bind AJAX events to recitation selection for /registrations */
-$(document).ready(function() {
-    // TODO: Remove this global--suggestions? 
+$(function() {
     var updated_registration;
     
-    jQuery("#registrations-table")
+    $("#registrations-table")
         .bind('ajax:beforeSend', function(e, xhr, settings) {
             update_registration = e.target;
         })
