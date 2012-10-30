@@ -14,7 +14,7 @@
 class RecitationSection < ActiveRecord::Base
   belongs_to :leader, class_name: 'User', foreign_key: :leader_id
   has_many :registrations
-  has_many :users, :through => :registrations
+  has_many :users, through: :registrations
   accepts_nested_attributes_for :leader
   
   validates_presence_of :leader_id
@@ -23,8 +23,8 @@ class RecitationSection < ActiveRecord::Base
   validates_presence_of :serial
   validates_uniqueness_of :serial
   
-  validates :time, :format => { :with => /^[MTWRF]+\d+$/,
-      :message => 'must be days of the week followed by the time of day. Ex: MW2, TR10' }
+  validates :time, format: { with: /^[MTWRF]+\d+$/,
+      message: 'must be days of the week followed by the time of day. Ex: MW2, TR10' }
   
   def recitation_name
     "#{leader.name} #{time}"
