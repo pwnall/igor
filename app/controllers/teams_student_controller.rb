@@ -5,6 +5,8 @@ class TeamsStudentController < ApplicationController
     @team_memberships = TeamMembership.where(:user_id => current_user.id)    
     @partitions = TeamPartition.find(:all)
     
+    @invitations = Invitation.where(:invitee_id => current_user.id)
+    
     @partitions_without_team_membership = TeamPartition.find(:all)
     @team_memberships.each do |team_membership|
       team = Team.find_by_id( team_membership.team_id )
@@ -51,5 +53,36 @@ class TeamsStudentController < ApplicationController
     end
     redirect_to teams_student_path and return
   end
+  
+  def invite_member
+    ## Validate the athena is one that is in our system.
+    prof = Profile.find_by_athena_username(params['athena'])
+    if !prof.nil?
+      flash[:notice] = "An email has been sent to " + params['athena'] + "@mit.edu"
+      Invitation.create(:inviter_id => current_user.id, :invitee_id => prof.user_id, :team_id => params['team_id'])
+      SessionMailer.team_invite_email(params['athena'], current_user.id, params["team_id"]).deliver
+    else
+      flash[:notice] = "Sorry, that user appears to not be in this class."
+    end
+    redirect_to teams_student_path and return
+  end
 
+  def accept_invitation
+    inv = Invitation.find_by_id(params["invitation_id"])
+    tm = TeamMembership.create(:team_id => inv.team_id, :user_id => inv.invitee_id)
+    if tm
+      flash[:notice] = "Successful team join."
+      inv.destroy
+    else
+      flash[:notice] = "Oops! Looks like something went wrong."
+    end
+    redirect_to teams_student_path and return
+  end
+  
+  def ignore_invitation
+    inv = Invitation.find_by_id(params["invitation_id"])
+    inv.destroy
+    flash[:notice] = "Invitation ignored."
+    redirect_to teams_student_path and return
+  end
 end

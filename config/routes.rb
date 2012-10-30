@@ -93,8 +93,11 @@ Seven::Application.routes.draw do
   resources :teams, only: [:edit, :create, :update, :destroy]
   # Teams / Student view.
   get "/teams_student" => "teams_student#show"
-  post "/teams_student/leave_team" => "teams_student#leave_team"
+  post "/teams_student/leave_team" => "teams_student#leave_team", as: :leave_team  
   post "/teams_student/create_team" => "teams_student#create_team"
+  post "/teams_student/invite_member" => "teams_student#invite_member"
+  post "/teams_student/accept_invitation" => "teams_student#accept_invitation"
+  post "/teams_student/ignore_invitation" => "teams_student#ignore_invitation"
   resources :teams_student
 
   

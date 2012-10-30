@@ -8,6 +8,8 @@
     <th>Partition Name</th>
     <th>Team Name</th>
     <th>Leave Team?</th>
+		<th>Invite (athena)</th>
+		<th></th>
     <th>Members</th>
   </tr>
 <% @team_memberships.each do |team_membership| %>
@@ -26,9 +28,18 @@
       <%= button_to "Leave Team", { :action => "leave_team", :id => @team.id },
         :confirm => "Are you sure?", :method => :post %>
       <% else %>
-      <span style="background-color: red">TEAM FINAL</span>
+      <span style="background-color: gray">TEAM FINAL</span>
       <% end %>
     </td>
+		<td>		
+	  	<%= form_tag("/teams_student/invite_member") do -%>
+      <%= text_field_tag 'athena', nil, :placeholder => 'bbitdiddle', :size => 10 %>
+			<%= hidden_field_tag 'team_id', @team.id %>
+    </td>
+    <td>
+      <%= button_to "Invite", :action => "invite_member" %>
+			<% end -%>
+		</td>
       <% @friend_memberships.each do |friend_membership| %> 
       <% if friend_membership != team_membership %>
       <% @friend = User.find_by_id(friend_membership.user_id) %>
@@ -69,4 +80,40 @@
   </tr>
   <% end %>
 </table>
+<% end %>
+<br />
+<br />
+
+<% if !@invitations.nil? && !@invitations.first.nil? %>
+<h4>Invitations</h2>
+<table>
+  <tr>
+    <th>Inviter Name</th>
+    <th>Team Name</th>
+    <th>Partition Name</th>
+    <th></th>
+    <th></th>
+  </tr>
+  <% @invitations.each do |inv| %>
+  <tr>
+    <td><%= Profile.find_by_user_id(inv.inviter_id).name %></td>
+    <td><%= Team.find_by_id(inv.team_id).name %></td>
+    <td><%= TeamPartition.find_by_id(Team.find_by_id(inv.team_id).partition_id).name %></td>
+    <td>
+	  	<%= form_tag("/teams_student/accept_invitation") do -%>
+			<%= hidden_field_tag 'invitation_id', inv.id %>
+      <%= button_to "Join Team", :action => "accept_invitation" %>
+			<% end -%>
+		</td>
+    <td>
+	  	<%= form_tag("/teams_student/ignore_invitation") do -%>
+			<%= hidden_field_tag 'invitation_id', inv.id %>
+      <%= button_to "Ignore", :action => "ignore_invitation" %>
+			<% end -%>
+    </td>
+  </tr>
+  <% end %>
+</table>
+<% else %>
+<h4>You don't have any pending invitations.</h4>
 <% end %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110704070001) do
+ActiveRecord::Schema.define(:version => 20121020145804) do
 
   create_table "analyses", :force => true do |t|
     t.integer  "submission_id",                     :null => false
@@ -147,6 +147,14 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
 
   add_index "grades", ["metric_id"], :name => "index_grades_on_metric_id"
   add_index "grades", ["subject_id", "subject_type", "metric_id"], :name => "grades_by_subject_and_metric", :unique => true
+
+  create_table "invitations", :force => true do |t|
+    t.integer  "inviter_id"
+    t.integer  "invitee_id"
+    t.integer  "team_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "prerequisite_answers", :force => true do |t|
     t.integer  "registration_id", :null => false
