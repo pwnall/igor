@@ -98,6 +98,8 @@ Seven::Application.routes.draw do
   post "/teams_student/invite_member" => "teams_student#invite_member"
   post "/teams_student/accept_invitation" => "teams_student#accept_invitation"
   post "/teams_student/ignore_invitation" => "teams_student#ignore_invitation"
+  post "/team_partitions/unlock/:id" => "team_partitions#unlock"
+  post "/team_partitions/lock/:id" => "team_partitions#lock"
   resources :teams_student
 
   

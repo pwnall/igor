@@ -7,6 +7,7 @@
   <tr>
     <th>Partition Name</th>
     <th>Team Name</th>
+    <th>Min / Max size</th>
     <th>Leave Team?</th>
 		<th>Invite (athena)</th>
 		<th></th>
@@ -24,6 +25,17 @@
       <%= @team.name %>
     </td>
     <td>
+      <% min = @team.minimum_size %>
+      <% if min.nil? %>
+      <% min = 0 %>
+      <% end %>
+      <% max = @team.maximum_size %>
+      <% if max.nil? %>
+      <% max = 1.0/0.0%>
+      <% end %>
+      <%= min.to_s + " / " + max.to_s %>
+    </td>
+    <td>
       <% if @partition.editable %>
       <%= button_to "Leave Team", { :action => "leave_team", :id => @team.id },
         :confirm => "Are you sure?", :method => :post %>
@@ -31,15 +43,25 @@
       <span style="background-color: gray">TEAM FINAL</span>
       <% end %>
     </td>
-		<td>		
-	  	<%= form_tag("/teams_student/invite_member") do -%>
-      <%= text_field_tag 'athena', nil, :placeholder => 'bbitdiddle', :size => 10 %>
-			<%= hidden_field_tag 'team_id', @team.id %>
-    </td>
-    <td>
-      <%= button_to "Invite", :action => "invite_member" %>
-			<% end -%>
-		</td>
+    <% if @partition.editable %>
+        <% if @team.size >= max %>
+        <td><span style="background-color: gray">Team at max</span></td>
+        <td><span style="background-color: gray"></span></td>
+        <% else %>
+		    <td>		
+	        <%= form_tag("/teams_student/invite_member") do -%>
+          <%= text_field_tag 'athena', nil, :placeholder => 'bbitdiddle', :size => 10 %>
+			    <%= hidden_field_tag 'team_id', @team.id %>
+        </td>
+        <td>
+          <%= button_to "Invite", :action => "invite_member" %>
+			    <% end -%>
+		    </td>
+        <% end %>
+        <% else %>
+    <td><span style="background-color: gray">TEAM FINAL</span></td>
+    <td><span style="background-color: gray">TEAM FINAL</span></td>
+    <% end %>
       <% @friend_memberships.each do |friend_membership| %> 
       <% if friend_membership != team_membership %>
       <% @friend = User.find_by_id(friend_membership.user_id) %>
@@ -47,6 +69,7 @@
     <td>
       <%= @profile.name %>
     </td>
+    
     <% end %>
     <% end %>
   </tr>
@@ -64,6 +87,7 @@
     <th>Name</th>
   </tr>
   <% @partitions_without_team_membership.each do |part| %>
+  <% if part.editable %>
   <tr>
     <td>
       <%= part.name %>
@@ -78,6 +102,7 @@
 			<% end -%>
 		</td>
   </tr>
+  <% end %>
   <% end %>
 </table>
 <% end %>

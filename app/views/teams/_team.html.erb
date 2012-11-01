@@ -1,6 +1,11 @@
 <dt>
 	<%= team.partition.name %>:
 	<%= team.name %>
+  <% if team.partition.editable %>
+  <%= link_to 'Remove', team, :method => :delete,
+        :confirm => "Remove #{team.name} from #{team.partition.name}?"%>
+  <% else %>
+  <% end %>
 </dt>
 <dd>
 	<ul>
@@ -15,14 +20,17 @@
 			</span>
 			<% end %>
       <% if team.can_edit? current_user %>
+      <% if team.partition.editable %>
 	    <%= link_to 'Remove', membership, :method => :delete,
 	            :confirm => "Remove #{membership.user.name} from #{team.name}" %>
+      <% end %>
 	    <% end %>
 	  </li>
 	<% end %>
 	</ul>
 
   <% if team.can_edit? current_user %>
+  <% if team.partition.editable %>
 	<%= form_for TeamMembership.new(team: team) do |f| %>
 	  <%= f.hidden_field :team_id %>
 
@@ -30,5 +38,8 @@
                                :autocomplete => false %>
 		<%= f.submit "Add" %>
 	<% end %>
+  <% else %>
+  <br />
+  <% end %>
   <% end %>
 </dd>

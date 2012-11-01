@@ -91,4 +91,19 @@ class TeamPartitionsController < ApplicationController
       format.html { redirect_to(team_partitions_url) }
     end
   end
+  
+  def unlock
+    team_partition = TeamPartition.find(params[:id])
+    team_partition.editable = true
+    team_partition.save
+    redirect_to :action => 'show', :id => params[:id]
+  end
+  
+  def lock
+    team_partition = TeamPartition.find(params[:id])
+    team_partition.editable = false
+    team_partition.save
+    redirect_to :action => 'show', :id => params[:id]
+  end
+  
 end

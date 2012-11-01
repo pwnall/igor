@@ -41,5 +41,9 @@ class Team < ActiveRecord::Base
   def can_edit?(user)
     user.admin?
   end
+  
+  def size
+    TeamMembership.count(:conditions => ["team_id = ?", self.id])
+  end
 
 end

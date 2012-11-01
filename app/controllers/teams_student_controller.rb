@@ -57,6 +57,13 @@ class TeamsStudentController < ApplicationController
   def invite_member
     ## Validate the athena is one that is in our system.
     prof = Profile.find_by_athena_username(params['athena'])
+    ## Check that the partition is editable!
+    team = Team.find_by_id(params['team_id'])
+    partition = TeamPartition.find_by_id(team.partition_id)
+    if !partition.editable && (team.size < team.maximum_size)
+      flash[:notice] = "That partition is final, sorry!"
+      redirect_to teams_student_path and return
+    end
     if !prof.nil?
       flash[:notice] = "An email has been sent to " + params['athena'] + "@mit.edu"
       Invitation.create(:inviter_id => current_user.id, :invitee_id => prof.user_id, :team_id => params['team_id'])
@@ -69,6 +76,11 @@ class TeamsStudentController < ApplicationController
 
   def accept_invitation
     inv = Invitation.find_by_id(params["invitation_id"])
+    team = Team.find_by_id(inv.team_id)
+    if team.size >= team.maximum_size
+      flash[:notice] = "Sorry, that team is full."
+      redirect_to teams_student_path and return
+    end
     tm = TeamMembership.create(:team_id => inv.team_id, :user_id => inv.invitee_id)
     if tm
       flash[:notice] = "Successful team join."
