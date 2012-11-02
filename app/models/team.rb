@@ -45,5 +45,21 @@ class Team < ActiveRecord::Base
   def size
     TeamMembership.count(:conditions => ["team_id = ?", self.id])
   end
+  
+  def min_size
+    min = TeamPartition.find_by_id(self.partition_id).min_size
+    if min.nil?
+      return 0
+    end
+    return min.to_i
+  end
+  
+  def max_size
+    max = TeamPartition.find_by_id(self.partition_id).max_size
+    if max.nil?
+      return 1.0/0.0 ## Infinity hackery
+    end
+    return max.to_i
+  end
 
 end

@@ -25,11 +25,11 @@
       <%= @team.name %>
     </td>
     <td>
-      <% min = @team.minimum_size %>
+      <% min = @team.min_size %>
       <% if min.nil? %>
       <% min = 0 %>
       <% end %>
-      <% max = @team.maximum_size %>
+      <% max = @team.max_size %>
       <% if max.nil? %>
       <% max = 1.0/0.0%>
       <% end %>
@@ -44,7 +44,7 @@
       <% end %>
     </td>
     <% if @partition.editable %>
-        <% if @team.size >= max %>
+        <% if @team.size >= @team.max_size %>
         <td><span style="background-color: gray">Team at max</span></td>
         <td><span style="background-color: gray"></span></td>
         <% else %>

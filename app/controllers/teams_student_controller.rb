@@ -60,7 +60,7 @@ class TeamsStudentController < ApplicationController
     ## Check that the partition is editable!
     team = Team.find_by_id(params['team_id'])
     partition = TeamPartition.find_by_id(team.partition_id)
-    if !partition.editable && (team.size < team.maximum_size)
+    if !partition.editable && (team.size < team.max_size)
       flash[:notice] = "That partition is final, sorry!"
       redirect_to teams_student_path and return
     end
@@ -77,7 +77,7 @@ class TeamsStudentController < ApplicationController
   def accept_invitation
     inv = Invitation.find_by_id(params["invitation_id"])
     team = Team.find_by_id(inv.team_id)
-    if team.size >= team.maximum_size
+    if team.size >= team.max_size
       flash[:notice] = "Sorry, that team is full."
       redirect_to teams_student_path and return
     end

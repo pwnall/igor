@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121101193451) do
+ActiveRecord::Schema.define(:version => 20121102010631) do
 
   create_table "analyses", :force => true do |t|
     t.integer  "submission_id",                     :null => false
@@ -318,6 +318,8 @@ ActiveRecord::Schema.define(:version => 20121101193451) do
     t.boolean  "published",                :default => false, :null => false
     t.datetime "created_at",                                  :null => false
     t.datetime "updated_at",                                  :null => false
+    t.integer  "min_size"
+    t.integer  "max_size"
   end
 
   add_index "team_partitions", ["name"], :name => "index_team_partitions_on_name", :unique => true
@@ -327,8 +329,6 @@ ActiveRecord::Schema.define(:version => 20121101193451) do
     t.string   "name",         :limit => 64, :null => false
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
-    t.integer  "minimum_size"
-    t.integer  "maximum_size"
   end
 
   add_index "teams", ["partition_id", "name"], :name => "index_teams_on_partition_id_and_name", :unique => true
