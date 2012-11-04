@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: assignment_metrics
+#
+#  id            :integer          not null, primary key
+#  assignment_id :integer          not null
+#  name          :string(64)       not null
+#  max_score     :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
 # A measurable (and measured) result of an assignment.
 #
 # For example, "the score for Problem 1".
@@ -71,16 +83,3 @@ class AssignmentMetric < ActiveRecord::Base
     assignment.course.students.count
   end  
 end
-
-# == Schema Information
-#
-# Table name: assignment_metrics
-#
-#  id            :integer(4)      not null, primary key
-#  assignment_id :integer(4)      not null
-#  name          :string(64)      not null
-#  max_score     :integer(4)
-#  created_at    :datetime        not null
-#  updated_at    :datetime        not null
-#
-

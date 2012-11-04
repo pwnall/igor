@@ -2,12 +2,13 @@
 #
 # Table name: credentials
 #
-#  id       :integer(4)      not null, primary key
-#  user_id  :integer(4)      not null
-#  type     :string(32)      not null
-#  name     :string(128)
-#  verified :boolean(1)      default(FALSE), not null
-#  key      :binary
+#  id         :integer          not null, primary key
+#  user_id    :integer          not null
+#  type       :string(32)       not null
+#  name       :string(128)
+#  verified   :boolean          default(FALSE), not null
+#  updated_at :datetime         not null
+#  key        :binary
 #
 
 # Credential used to prove the identity of a user.

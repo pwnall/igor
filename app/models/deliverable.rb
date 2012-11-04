@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: deliverables
+#
+#  id            :integer          not null, primary key
+#  assignment_id :integer          not null
+#  file_ext      :string(16)       not null
+#  name          :string(80)       not null
+#  description   :string(2048)     not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
 # The description of a file that students must submit for an assignment.
 class Deliverable < ActiveRecord::Base
   # The user-visible deliverable name.
@@ -100,17 +113,3 @@ class Deliverable < ActiveRecord::Base
     end
   end
 end
-
-# == Schema Information
-#
-# Table name: deliverables
-#
-#  id            :integer(4)      not null, primary key
-#  assignment_id :integer(4)      not null
-#  file_ext      :string(16)      not null
-#  name          :string(80)      not null
-#  description   :string(2048)    not null
-#  created_at    :datetime        not null
-#  updated_at    :datetime        not null
-#
-

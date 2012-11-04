@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: assignments
+#
+#  id                 :integer          not null, primary key
+#  course_id          :integer          not null
+#  author_id          :integer          not null
+#  team_partition_id  :integer
+#  feedback_survey_id :integer
+#  deadline           :datetime         not null
+#  weight             :decimal(16, 8)   default(1.0), not null
+#  name               :string(64)       not null
+#  deliverables_ready :boolean          default(FALSE), not null
+#  metrics_ready      :boolean          default(FALSE), not null
+#  accepts_feedback   :boolean          default(FALSE), not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#
+
 # A piece of work that students have to complete.
 #
 # Examples: problem set, project, exam.
@@ -171,23 +190,3 @@ class Assignment
     feedback_survey.questions
   end
 end
-
-# == Schema Information
-#
-# Table name: assignments
-#
-#  id                 :integer(4)      not null, primary key
-#  course_id          :integer(4)      not null
-#  author_id          :integer(4)      not null
-#  team_partition_id  :integer(4)
-#  feedback_survey_id :integer(4)
-#  deadline           :datetime        not null
-#  weight             :decimal(16, 8)  default(1.0), not null
-#  name               :string(64)      not null
-#  deliverables_ready :boolean(1)      default(FALSE), not null
-#  metrics_ready      :boolean(1)      default(FALSE), not null
-#  accepts_feedback   :boolean(1)      default(FALSE), not null
-#  created_at         :datetime        not null
-#  updated_at         :datetime        not null
-#
-

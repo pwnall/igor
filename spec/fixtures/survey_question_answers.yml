@@ -2,14 +2,14 @@
 #
 # Table name: survey_question_answers
 #
-#  id               :integer(4)      not null, primary key
-#  survey_answer_id :integer(4)      not null
-#  question_id      :integer(4)      not null
-#  target_user_id   :integer(4)
-#  number           :float           not null
+#  id               :integer          not null, primary key
+#  survey_answer_id :integer          not null
+#  question_id      :integer          not null
+#  target_user_id   :integer
+#  number           :float            not null
 #  comment          :string(1024)
-#  created_at       :datetime        not null
-#  updated_at       :datetime        not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

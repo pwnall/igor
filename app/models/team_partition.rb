@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: team_partitions
+#
+#  id         :integer          not null, primary key
+#  name       :string(64)       not null
+#  automated  :boolean          default(TRUE), not null
+#  editable   :boolean          default(TRUE), not null
+#  published  :boolean          default(FALSE), not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 # A partitioning of students into teams.
 class TeamPartition < ActiveRecord::Base
   # True if this partitioning is visible to the students.
@@ -91,17 +104,3 @@ class TeamPartition < ActiveRecord::Base
     teams
   end
 end
-
-# == Schema Information
-#
-# Table name: team_partitions
-#
-#  id         :integer(4)      not null, primary key
-#  name       :string(64)      not null
-#  automated  :boolean(1)      default(TRUE), not null
-#  editable   :boolean(1)      default(TRUE), not null
-#  published  :boolean(1)      default(FALSE), not null
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
-#
-

@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: registrations
+#
+#  id                    :integer          not null, primary key
+#  user_id               :integer          not null
+#  course_id             :integer          not null
+#  dropped               :boolean          default(FALSE), not null
+#  teacher               :boolean          default(FALSE), not null
+#  for_credit            :boolean          default(TRUE), not null
+#  allows_publishing     :boolean          default(TRUE), not null
+#  recitation_section_id :integer
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#
+
 # A student's commitment to participate in a class.
 class Registration < ActiveRecord::Base
   # The student who registered.
@@ -71,20 +87,3 @@ class Registration < ActiveRecord::Base
     old_recitation_conflicts.each_value { |orc| recitation_conflicts.delete orc }
   end
 end
-
-# == Schema Information
-#
-# Table name: registrations
-#
-#  id                    :integer(4)      not null, primary key
-#  user_id               :integer(4)      not null
-#  course_id             :integer(4)      not null
-#  dropped               :boolean(1)      default(FALSE), not null
-#  teacher               :boolean(1)      default(FALSE), not null
-#  for_credit            :boolean(1)      default(TRUE), not null
-#  allows_publishing     :boolean(1)      default(TRUE), not null
-#  recitation_section_id :integer(4)
-#  created_at            :datetime        not null
-#  updated_at            :datetime        not null
-#
-

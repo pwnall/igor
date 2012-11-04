@@ -2,13 +2,13 @@
 #
 # Table name: prerequisite_answers
 #
-#  id              :integer(4)      not null, primary key
-#  registration_id :integer(4)      not null
-#  prerequisite_id :integer(4)      not null
-#  took_course     :boolean(1)      not null
+#  id              :integer          not null, primary key
+#  registration_id :integer          not null
+#  prerequisite_id :integer          not null
+#  took_course     :boolean          not null
 #  waiver_answer   :text
-#  created_at      :datetime        not null
-#  updated_at      :datetime        not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 
 class PrerequisiteAnswer < ActiveRecord::Base

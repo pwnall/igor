@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: survey_questions
+#
+#  id              :integer          not null, primary key
+#  scale_min       :integer          default(1), not null
+#  scale_max       :integer          default(5), not null
+#  scaled          :boolean          default(FALSE), not null
+#  targets_user    :boolean          default(FALSE), not null
+#  allows_comments :boolean          default(FALSE), not null
+#  human_string    :string(1024)     not null
+#  scale_min_label :string(64)       default("Small"), not null
+#  scale_max_label :string(64)       default("Large"), not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
 # A question in a survey.
 class SurveyQuestion < ActiveRecord::Base
   # The user-visible question string.
@@ -32,21 +49,3 @@ class SurveyQuestion < ActiveRecord::Base
   validates_numericality_of :scale_max, only_integer: true,
                                         allow_nil: true
 end
-
-# == Schema Information
-#
-# Table name: survey_questions
-#
-#  id              :integer(4)      not null, primary key
-#  scale_min       :integer(4)      default(1), not null
-#  scale_max       :integer(4)      default(5), not null
-#  scaled          :boolean(1)      default(FALSE), not null
-#  targets_user    :boolean(1)      default(FALSE), not null
-#  allows_comments :boolean(1)      default(FALSE), not null
-#  human_string    :string(1024)    not null
-#  scale_min_label :string(64)      default("Small"), not null
-#  scale_max_label :string(64)      default("Large"), not null
-#  created_at      :datetime        not null
-#  updated_at      :datetime        not null
-#
-
