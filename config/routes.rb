@@ -102,5 +102,8 @@ Seven::Application.routes.draw do
     get :conflict_info
   end
 
+  # Recitation Proposals
+  resources :recitation_assignment_proposals
+
   root to: 'session#show'
 end
