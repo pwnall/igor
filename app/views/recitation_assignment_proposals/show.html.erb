@@ -1,0 +1,35 @@
+<!-- recitation_assignment_proposals/show -->
+<div class="full_section">
+
+	<div style="z-index: 10; float: right; width: 275; text-align: left;">
+    <h3>
+      <%= link_to 'Implement', autoassign_recitation_sections_path, method: :post %>
+    </h3>
+	</div>
+
+  <h1 class="full_section">Recitation Assignment Proposal</h1>
+
+
+  <h3><%= "# Conflicts: #{@proposal.number_of_conflicts}" %></h3>
+  <h3><%= "# Recitations: #{@proposal.number_of_recitations}" %></h3>
+ 
+  <table id='recitation-student-assignments-table'>
+    <thead>
+      <tr>
+        <td style="text-align: left; vertical-align: top; width: 250px;">Recitation Section</td>
+        <td style="text-align: left;">Students</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @proposal.recitation_student_assignments.group_by(&:recitation_section).each do |id, students| %>
+        <% section_name = id.nil? ? 'Conflicts' : "Section #{id.recitation_name}" %>
+        <tr>
+          <td style="vertical-align: top;"><%= "#{section_name}" %></td>
+          <td>
+            <%= students.collect { |s| s.name }.sort!.join(', ') %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
