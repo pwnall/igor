@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id         :integer          not null, primary key
+#  exuid      :string(32)       not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  admin      :boolean          default(FALSE), not null
+#
+
 # An user account.
 class User < ActiveRecord::Base
   include Authpwn::UserModel
@@ -151,6 +162,11 @@ class User
   # The user's answers to homework surveys.
   has_many :survey_answers, dependent: :destroy, inverse_of: :user
 end  
+
+# :nodoc: recitation assignment proposals
+class User
+  has_many :recitation_student_assignments, inverse_of: :user
+end
   
 # :nodoc: search integration.
 class User
@@ -245,15 +261,3 @@ class User
     "<#{self.class} email: #{email.inspect} id: #{id} admin: #{admin.inspect}>"
   end
 end
-
-# == Schema Information
-#
-# Table name: users
-#
-#  id         :integer(4)      not null, primary key
-#  exuid      :string(32)      not null
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
-#  admin      :boolean(1)      default(FALSE), not null
-#
-

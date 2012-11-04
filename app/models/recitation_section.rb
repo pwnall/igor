@@ -13,9 +13,12 @@
 
 class RecitationSection < ActiveRecord::Base
   belongs_to :leader, class_name: 'User', foreign_key: :leader_id
+  accepts_nested_attributes_for :leader
+
   has_many :registrations
   has_many :users, through: :registrations
-  accepts_nested_attributes_for :leader
+
+  has_many :recitation_student_assignments
   
   validates_presence_of :leader_id
   validates_presence_of :time
