@@ -155,9 +155,18 @@ module RecitationAssigner
     students = RecitationAssigner.conflicts_info
 
     recitation_assignments = self.assignment Course.main.recitation_size, days, times, students
-    reverted_matching = RecitationAssigner.reverted_assignment recitation_assignments
+    reverted_matching = self.reverted_assignment recitation_assignments
     RecitationAssignmentMailer.recitation_assignment_email(user.email, recitation_assignments, 
                                                            reverted_matching, students, root_url).deliver
+
+    new_proposal = RecitationAssignmentProposal.create(course_id: Course.main.id,
+        recitation_size: Course.main.recitation_size, 
+        number_of_recitations: reverted_matching.length,
+        number_of_conflicts: students.length - recitation_assignments.length)
+
+    new_matching = reverted_matching
+    new_matching[:conflict] = students.map { |s| s[:athena] } - recitation_assignments.keys
+    new_proposal.create_student_assignments new_matching
   end
 end
 
@@ -179,6 +188,16 @@ def nice_times(section_size, days, times, students)
   puts "\nScrewed: "
   puts((students.map { |s| s[:athena] } - matching.keys).
        map { |a| "#{a}@mit.edu" }.join(", "))
+
+  new_proposal = RecitationAssignmentProposal.new(course_id: Course.main.id,
+      recitation_size: Course.main.recitation_size, 
+      number_of_recitations: reverted_matching.length,
+      number_of_conflicts: students.length - matching.length)
+  new_proposal.save
+
+  new_matching = reverted_matching
+  new_matching[:conflict] = students.map { |s| s[:athena] } - matching.keys
+  new_proposal.create_student_assignments new_matching
 end
 
 def sucky_times(section_size, days, students)
@@ -213,9 +232,23 @@ def sucky_times(section_size, days, students)
 end
 
 if $0 == __FILE__
-  section_size = 26
-  days = [2, 4]
+  @recitation_sections = RecitationSection.all
+
+  days = []
+  times = []
+  @recitation_sections.each do |rs|
+    days = days | rs.recitation_days
+    times = times | [rs.recitation_time]
+  end
+
+  days.sort!
+  times.sort!
+
+  section_size = 1
+
+  puts 'Available days:' + days.join(',')
+  puts 'Available times:' + times.join(',')
   students = RecitationAssigner.conflicts_info
-  nice_times section_size, days, students
+  nice_times section_size, days, times, students
 #  sucky_times section_size, days, students
 end
