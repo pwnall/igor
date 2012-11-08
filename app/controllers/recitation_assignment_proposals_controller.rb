@@ -29,4 +29,21 @@ class RecitationAssignmentProposalsController < ApplicationController
     end
   end
 
+  # POST /recitation_assignment_proposals/1
+  def implement
+    @proposal = RecitationAssignmentProposal.find(params[:id])
+
+    @proposal.recitation_student_assignments.each do |rsa|
+      if ! rsa.has_conflict
+        rsa.user.registration.recitation_section = rsa.recitation_section
+        rsa.user.registration.save
+      end
+    end
+
+    respond_to do |format|
+      flash[:notice] = "Recitation sections updated"
+      format.html { redirect_to :back }
+    end
+  end
+
 end

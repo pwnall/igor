@@ -103,7 +103,11 @@ Seven::Application.routes.draw do
   end
 
   # Recitation Proposals
-  resources :recitation_assignment_proposals
+  resources :recitation_assignment_proposals do
+    member do
+      post :implement
+    end
+  end
 
   root to: 'session#show'
 end
