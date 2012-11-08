@@ -29,7 +29,7 @@ class RecitationAssignmentProposal < ActiveRecord::Base
         else
           # Convert 24h section time
           section_time = section > 12 ? section - 12 : section
-          rec_sec_id = RecitationSection.find(:all, conditions: ['time LIKE ?', "%#{section_time}"]).first.id
+          rec_sec_id = RecitationSection.find(:all, conditions: ['time REGEXP ?', "^[a-z]+#{section_time}$"]).first.id
           conflict = 0
         end
 
