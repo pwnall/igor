@@ -2,34 +2,29 @@
 <div class="full_section">
 
 	<div style="z-index: 10; float: right; width: 275; text-align: left;">
+    <h3><%= link_to 'Recitation Proposals', recitation_assignment_proposals_path %></h3>
     <h3>
-      <%= link_to 'Implement', autoassign_recitation_sections_path, method: :post %>
+      <%= link_to 'Implement', implement_recitation_assignment_proposal_url(@proposal), method: :post,
+            confirm: "This will overwrite all current recitation assignments" %>
     </h3>
 	</div>
 
   <h1 class="full_section">Recitation Assignment Proposal</h1>
 
 
-  <h3><%= "# Conflicts: #{@proposal.number_of_conflicts}" %></h3>
-  <h3><%= "# Recitations: #{@proposal.number_of_recitations}" %></h3>
+  <h4><%= "Created: #{@proposal.created_at.strftime "%B %d, %Y %I:%M%p"}" %></h4>
+  <h4><%= "Recitations: #{@proposal.number_of_recitations}" %></h4>
  
-  <table id='recitation-student-assignments-table'>
-    <thead>
-      <tr>
-        <td style="text-align: left; vertical-align: top; width: 250px;">Recitation Section</td>
-        <td style="text-align: left;">Students</td>
-      </tr>
-    </thead>
-    <tbody>
+  <ol class='recitation-assignments'>
       <% @proposal.recitation_student_assignments.group_by(&:recitation_section).each do |id, students| %>
-        <% section_name = id.nil? ? 'Conflicts' : "Section #{id.recitation_name}" %>
-        <tr>
-          <td style="vertical-align: top;"><%= "#{section_name}" %></td>
-          <td>
-            <%= students.collect { |s| s.name }.sort!.join(', ') %>
-          </td>
-        </tr>
+        <ol class='recitation-section'>
+          <% section_name = id.nil? ? 'Conflicts' : "#{id.recitation_name}" %>
+          <li class='recitation-section-name'><h4><%= "#{section_name} (#{students.length})" %></h4></li>
+
+          <% students.each do |s| %>
+            <li class='recitation-section-student'><%= s.name %></li>
+          <% end %>
+        </ol>
       <% end %>
-    </tbody>
-  </table>
+  </ol>
 </div>

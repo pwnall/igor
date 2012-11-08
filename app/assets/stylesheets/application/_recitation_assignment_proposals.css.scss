@@ -1,0 +1,31 @@
+ol.recitation-assignments {
+  margin: 0;
+	padding: 0 0 2px 0;
+	overflow: hidden;
+  border-bottom: 1px solid #EABA99;
+  
+  -moz-column-width: ($column-total * 7 - $column-margin);
+  -moz-column-gap: $column-total;
+  -webkit-column-width: ($column-total * 7 - $column-margin);
+  -webkit-column-gap: $column-total;
+  column-width: ($column-total * 7 - $column-margin);
+  column-gap: $column-total;
+
+  -webkit-column-fill: auto;
+  column-fill: auto;
+  
+  &:last-child {
+    padding: 0;
+    border-bottom: none;
+  }
+  ol {
+    color: #595959;
+    display: inline-block;
+    margin: 0 $column-margin 30px 0;
+    break-after: column;
+
+    &:hover {
+      background-color: change-color(#F5DCCC, $lightness: 95%);
+    }
+  }
+}
