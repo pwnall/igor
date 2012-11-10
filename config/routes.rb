@@ -100,6 +100,7 @@ Seven::Application.routes.draw do
   post "/teams_student/ignore_invitation" => "teams_student#ignore_invitation"
   post "/team_partitions/unlock/:id" => "team_partitions#unlock"
   post "/team_partitions/lock/:id" => "team_partitions#lock"
+  get "/team_partitions/view_problem/:id" => "team_partitions#view_problem", as: :view_problem_partition
   resources :teams_student
 
   

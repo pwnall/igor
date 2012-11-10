@@ -241,6 +241,19 @@ class User
   end
 end
 
+# :nodoc: TeamPartition / Teams searching.
+class User
+  def team_in_partition(id)
+    tms = TeamMembership.where(:user_id => self.id)
+    tms.each do |tm|
+      if tm.team.partition.id.to_i == id.to_i
+        return tm
+      end
+    end
+    return nil
+  end
+end
+
 # == Schema Information
 #
 # Table name: users

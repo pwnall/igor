@@ -1,0 +1,36 @@
+<h1>Problem Teams</h1>
+
+<h3>Teams too small:</h3>
+
+<% if @toosmall.nil? || @toosmall.first.nil? %>
+<p>No teams have too few students.</p>
+<% else %>
+<% @toosmall.each do |team| %>
+<%= render team %>
+<br />
+<% end %>
+<% end %>
+
+
+<h3>Teams too big:</h3>
+
+<% if @toobig.nil? || @toobig.first.nil? %>
+<p>No teams have too many students.</p>
+<% else %>
+<% @toobig.each do |team| %>
+<%= render team %>
+<br />
+<% end %>
+<% end %>
+
+
+<h3>Nonassigned students:</h3>
+
+<% if @nonassigned.nil? %>
+<p>No students are unassigned.</p>
+<% else %>
+<% @nonassigned.each do |user| %>
+<%= render user %>
+<br />
+<% end %>
+<% end %>

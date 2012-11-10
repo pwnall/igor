@@ -6,7 +6,7 @@ class TeamMembershipsController < ApplicationController
     @team_membership = TeamMembership.new(params[:team_membership])
     @user = User.find_first_by_query!(params[:query])
     @team_membership.user = @user
-
+    logger.debug("User: " + @user.inspect)
     respond_to do |format|
       if @team_membership.save
         format.html do
