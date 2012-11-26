@@ -201,7 +201,7 @@ end
       pdf_contents = pdf.render
       
       time = pset.deadline - 1.day + i * 1.minute
-      submission = Submission.create! deliverable: writeup, user: user,
+      submission = Submission.create! deliverable: writeup, subject: user,
            db_file_attributes: {
              f: fixture_file_upload('submission_files/small.pdf',
                                     'application/pdf')
@@ -216,7 +216,7 @@ end
       # Submit code.
       code = pset.deliverables.where(file_ext: 'rb').first
       time = pset.deadline - 1.day + i * 1.minute + 30.seconds
-      submission = Submission.create! deliverable: code, user: user,
+      submission = Submission.create! deliverable: code, subject:m user,
            db_file_attributes: {
              f: fixture_file_upload('submission_files/good_fib.rb',
                                     'application/x-ruby')

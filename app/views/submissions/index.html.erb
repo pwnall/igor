@@ -56,7 +56,7 @@
 						<%= submission.deliverable.assignment.name %>:
 						<%= submission.deliverable.name %>
 					</td>
-					<td><%= submission.user.name %></td>
+					<td><%= submission.subject.name %></td>
 					<td title="<%=h submission.updated_at %>">
 						<%= (submission.updated_at < submission.deliverable.assignment.deadline) ? 'on time' : "late by #{distance_of_time_in_words(submission.deliverable.assignment.deadline, submission.updated_at)}" %>
 					</td>

@@ -27,7 +27,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1/dashboard
   def dashboard
     @assignment = Assignment.where(:id => params[:id]).
-        includes(:deliverables, :submissions => :user).first
+        includes(:deliverables, :submissions => :subject).first
         
     respond_to do |format|
       format.html  # dashboard.html.erb

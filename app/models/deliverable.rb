@@ -58,15 +58,19 @@ class Deliverable < ActiveRecord::Base
   # The result is non-trivial in the presence of teams.
   def submission_for(user)
     return nil unless user
-    
+    team = nil
     if (partition = assignment.team_partition) and
        (team = partition.team_for_user(user))
       users = team.users
     else
       users = [user]
     end
-    
-    Submission.where(deliverable_id: self.id, user_id: users.map(&:id)).first
+    if !team.nil?
+      return Submission.where(deliverable_id: self.id, subject_type: "team", subject_id: team.id).first
+    else
+      return Submission.where(deliverable_id: self.id, subject_type: "user", subject_id: user.id).first
+    end
+#    Submission.where(deliverable_id: self.id, user_id: users.map(&:id)).first
   end
   
   # The deliverables that a user is allowed to submit.

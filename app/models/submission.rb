@@ -13,8 +13,8 @@
 # A file submitted by a student for an assignment.
 class Submission < ActiveRecord::Base
   # The user doing the submission.
-  belongs_to :user, inverse_of: :submissions
-  validates :user, presence: true
+  belongs_to :subject, :polymorphic => true, inverse_of: :submissions
+  validates :subject, presence: true
   
   # The deliverable that the submission is for.
   belongs_to :deliverable
@@ -41,7 +41,7 @@ class Submission < ActiveRecord::Base
   
   # True if the given user is allowed to see the submission.
   def can_read?(user)
-    user && (user == self.user || user.admin?)
+    user && ( owned_by(user) || user.admin?)
   end
   
   # Queues up a request to run an automated health-check for this submission.
@@ -78,6 +78,14 @@ class Submission < ActiveRecord::Base
       analysis.status = :queued
       analysis.log = ''
       self.analysis = analysis
+    end
+  end
+  
+  def owned_by(user)
+    if self.subject_type == "user"
+      return self.subject_id == user.id
+    elsif self.subject_type == "team"
+      return self.assignment.team_partition.team_for(user).contains(user)
     end
   end
 end

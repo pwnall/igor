@@ -102,16 +102,16 @@ end
 # :nodoc: homework submission feature.
 class User  
   # Files uploaded by the user to meet assignment deliverables.
-  has_many :submissions, dependent: :destroy, inverse_of: :user
-
+  has_many :submissions, dependent: :destroy, inverse_of: :subject, as: :subject
+  
   # Submissions connected to this user.
   #
   # Returns the submissions authored by the user, as well as the submissions
   # authored by the user's teammates.
   def connected_submissions
-    submissions = self.submissions.all
+    submissions = self.submissions
     teams.each { |team| submissions += team.submissions.all }
-    submissions.uniq
+    submissions
   end
 end
 

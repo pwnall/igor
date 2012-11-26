@@ -31,7 +31,7 @@ class SubmissionsController < ApplicationController
     
     query = Submission.order('updated_at DESC').
         includes(:db_file, :analysis,
-                 {:deliverable => :assignment, :user => :profile})
+                 {:deliverable => :assignment}, :subject)
     
     if params.has_key? :deliverable_id
       query = query.where(:deliverable_id => params[:deliverable_id])
@@ -73,7 +73,7 @@ class SubmissionsController < ApplicationController
     
     @submission = deliverable.submission_for current_user
     @submission ||= Submission.new params[:submission]
-    @submission.user = current_user
+    @submission.subject = current_user
     
     success = if @submission.new_record?
       @submission.save
@@ -116,7 +116,7 @@ class SubmissionsController < ApplicationController
     return bounce_user unless @submission.can_read? current_user
     
     db_file = @submission.full_db_file
-    filename = @submission.user.email.gsub(/[^A-Za-z0-9]/, '_') + '_' +
+    filename = @submission.subject.email.gsub(/[^A-Za-z0-9]/, '_') + '_' +
         db_file.f.original_filename
     send_data db_file.f.file_contents, :filename => filename,
               :type => db_file.f.content_type,

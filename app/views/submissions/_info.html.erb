@@ -1,9 +1,9 @@
 <% if submission %>
   <span class="submission-info">
     <span class="author">
-      <%= user_image_tag submission.user %>
-      <%= link_to submission.user.display_name_for(current_user),
-                  submission.user %>
+      <%= user_image_tag submission.subject %>
+      <%= link_to submission.subject.display_name_for(current_user),
+                  submission.subject %>
     </span>
     submitted a
     <%= link_to file_submission_path(submission) do %>

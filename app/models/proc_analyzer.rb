@@ -57,7 +57,7 @@ LOG_END
   def zero_grades(submission)
     metrics = submission.assignment.metrics
     metrics.each do |metric|
-      grade = metric.grade_for submission.user
+      grade = metric.grade_for submission.subject
       next unless grade.new_record?
       grade.score = 0
       grade.grader = User.robot
