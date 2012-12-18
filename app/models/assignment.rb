@@ -139,7 +139,7 @@ class Assignment
   # 
   # This is the sum of all the metrics' recitation averaged scores.
   def recitation_score(recitation)
-    metrics.inject(0) { |sum, metric| sum + metric.grade_for_recitation(recitation) }
+    metrics.map { |metric| metric.grade_for_recitation recitation }.sum
   end
 end
 

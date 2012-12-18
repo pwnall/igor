@@ -25,7 +25,7 @@ class Registration < ActiveRecord::Base
   validates :course, presence: true
   validates :course_id, uniqueness: { scope: [:user_id] }
 
-  attr_protected :course_id
+  attr_accessible :course_id
   attr_protected :user_id
 
   # True if the student is taking the class for credit.
@@ -44,8 +44,6 @@ class Registration < ActiveRecord::Base
   # This is only used if the user is a student and the course has recitations.
   belongs_to :recitation_section
   attr_protected :recitation_section
-  accepts_nested_attributes_for :recitation_section
-  attr_accessible :recitation_section_attributes
 
   # Temporary excuse for a calendar.
   has_many :recitation_conflicts, dependent: :destroy
@@ -68,6 +66,9 @@ class Registration < ActiveRecord::Base
     user and (user == self.user or user.admin?)
   end
 
+  # New conflicts is an array of hashes formatted like...
+  # [{"timeslot": <integer>, "class_name": <string>},
+  #  {"timeslot": 9, "class_name": "6.042"}...]
   def update_conflicts(new_conflicts)
     old_recitation_conflicts = recitation_conflicts.index_by &:timeslot
   

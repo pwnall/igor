@@ -36,7 +36,7 @@ class RecitationSection < ActiveRecord::Base
   def recitation_days
     days_list = []
 
-    ['M', 'T', 'W', 'R', 'F'].each_with_index do |letter, i|
+    %w[M T W R F].each_with_index do |letter, i|
       days_list << i if time.include? letter
     end
 
@@ -44,8 +44,8 @@ class RecitationSection < ActiveRecord::Base
   end
 
   def recitation_time
-    rt = time.match(/(\d+)/).captures[0].to_i
-    rt <= 5 ? rt += 12 : rt
+    rt = time.match(/(\d+)/)[0].to_i
+    (rt <= 5) ? rt + 12 : rt
   end
 
 end
