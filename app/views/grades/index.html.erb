@@ -15,16 +15,6 @@
           <%= metrics.map { |metric, grade| metric.max_score }.sum %>
         </span>
       </span>
-      <span class="assignment-name">Recitation Average</span>
-      <span class="scores">
-          <span class="score">
-            <%= recitation_average %>
-          </span>
-          /
-          <span class="max-score">
-            <%= metrics.map { |metric, grade| metric.max_score }.sum %>
-          </span>
-      </span>
     </li>
     <% metrics.each do |metric, grade| %>
 		<li>
