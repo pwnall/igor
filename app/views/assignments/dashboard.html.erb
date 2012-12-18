@@ -58,6 +58,7 @@
 </ul>
 <% end %>
 
+<% if @assignment.grades.length > 0 %>
 <h3 class="dashboard-heading">
   <%= grades_icon_tag %>
   Recitation Grades
@@ -71,6 +72,7 @@
     </li>
   <% end %>
 </ul>
+<% end %>
 
 <h3 class="dashboard-heading">
   <%= homework_icon_tag %>
