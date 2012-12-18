@@ -54,7 +54,7 @@ gem 'mit_stalker', '>= 1.0.4'
 # MIT Stellar integration.
 gem 'stellar', '>= 0.3.1'
 
-# Web
+# UI
 gem 'best_in_place', git: 'git://github.com/bernat/best_in_place.git'
 
 group :assets do
