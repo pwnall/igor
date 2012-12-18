@@ -34,10 +34,8 @@ class RecitationAssignmentProposalsController < ApplicationController
     @proposal = RecitationAssignmentProposal.find(params[:id])
 
     @proposal.recitation_student_assignments.each do |rsa|
-      if ! rsa.has_conflict
-        rsa.user.registration.recitation_section = rsa.recitation_section
-        rsa.user.registration.save
-      end
+      rsa.user.registration.recitation_section = rsa.recitation_section
+      rsa.user.registration.save
     end
 
     respond_to do |format|
