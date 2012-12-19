@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: deliverables
+#
+#  id            :integer          not null, primary key
+#  assignment_id :integer          not null
+#  file_ext      :string(16)       not null
+#  name          :string(80)       not null
+#  description   :string(2048)     not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 ps1_writeup:
@@ -20,17 +33,3 @@ assessment_writeup:
   description: "Your self-assessment, in PDF format."
   published: true
   file_ext: assessment.pdf
-
-# == Schema Information
-#
-# Table name: deliverables
-#
-#  id            :integer(4)      not null, primary key
-#  assignment_id :integer(4)      not null
-#  file_ext      :string(16)      not null
-#  name          :string(80)      not null
-#  description   :string(2048)    not null
-#  created_at    :datetime        not null
-#  updated_at    :datetime        not null
-#
-

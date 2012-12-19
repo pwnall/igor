@@ -16,6 +16,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find_by_param params[:id]
     return bounce_user unless @user && @user.can_read?(current_user)
+    @recitation_conflicts = @user.registration.recitation_conflicts.index_by(&:timeslot)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -30,6 +31,8 @@ class UsersController < ApplicationController
     registration.course = Course.main
     registration.build_prerequisite_answers
 
+    @recitation_conflicts = []
+
     respond_to do |format|
       format.html # new.html.erb
     end
@@ -38,6 +41,8 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @user = User.find_by_param params[:id]
+    @recitation_conflicts = @user.registration.recitation_conflicts.index_by(&:timeslot)
+
     return bounce_user unless @user && @user.can_edit?(current_user)
   end
 
@@ -48,6 +53,15 @@ class UsersController < ApplicationController
     @user.admin = (User.count == 1)
     if registration = @user.registrations.first
       registration.course = Course.main
+    end
+
+    if Course.main.has_recitations?
+      params[:recitation_conflicts].each_value do |rc|
+        next if rc[:class_name].blank?
+        rc[:registration] = @registration
+        conflict = RecitationConflict.new(rc)
+        registration.recitation_conflicts << conflict
+      end
     end
 
     respond_to do |format|
@@ -69,6 +83,10 @@ class UsersController < ApplicationController
   def update
     @user = User.find_by_param params[:id]
     return bounce_user unless @user && @user.can_edit?(current_user)
+
+    if params[:recitation_conflicts]
+      @user.registration.update_conflicts(params[:recitation_conflicts])
+    end
 
     respond_to do |format|
       if @user.update_attributes(params[:user])

@@ -4,8 +4,7 @@ class RecitationSectionsController < ApplicationController
   # GET /recitation_sections
   def index
     @recitation_sections = RecitationSection.find(:all, :include => :leader)
-    @leaders = User.find(:all, :conditions => {:admin => true}, :include => :profile)
-
+    
     respond_to do |format|
       format.html # index.html.erb
     end
@@ -14,10 +13,7 @@ class RecitationSectionsController < ApplicationController
   # GET /recitation_sections/1
   def show
     @recitation_section = RecitationSection.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-    end
+    new_edit
   end
 
   # GET /recitation_sections/new
@@ -34,7 +30,6 @@ class RecitationSectionsController < ApplicationController
   end
   
   def new_edit
-    @leaders = User.find(:all, :conditions => {:admin => true}, :include => :profile)
     respond_to do |format|
       format.html { render :action => :new_edit }
     end
@@ -46,6 +41,16 @@ class RecitationSectionsController < ApplicationController
   def create
     @recitation_section = RecitationSection.new(params[:recitation_section])
     create_update
+  end
+
+  # POST /recitation_sections/autoassign
+  def autoassign
+    RecitationAssigner.delay.assign_and_email(current_user, root_url)
+
+    respond_to do |format|
+      flash[:notice] = "Started recitation assignment. Email will arrive shortly."
+      format.html { redirect_to :back }  
+    end
   end
 
   # PUT /recitation_sections/1
@@ -64,10 +69,12 @@ class RecitationSectionsController < ApplicationController
     
     respond_to do |format|
       if success
-        flash[:notice] = "Recitation section R#{'%02d' % @recitation_section.serial} successfully #{@is_new_record ? 'created' : 'updated'}."
-        format.html { redirect_to(:controller => :recitation_sections, :action => :index) }
+        notice_message = "Recitation section R#{'%02d' % @recitation_section.serial} successfully #{@is_new_record ? 'created' : 'updated'}."
+        format.html { redirect_to(@recitation_section, :action => :index, :notice => notice_message) }
+        format.json { head :ok }
       else
-        format.html { render :action => :new_edit }
+        format.html { render :action => :new_edit } 
+        format.json { render :json => @recitation_section.errors.full_messages, :status => :unprocessable_entity }
       end
     end    
   end

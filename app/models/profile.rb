@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: profiles
+#
+#  id              :integer          not null, primary key
+#  user_id         :integer          not null
+#  name            :string(128)      not null
+#  nickname        :string(64)       not null
+#  university      :string(64)       not null
+#  department      :string(64)       not null
+#  year            :string(4)        not null
+#  athena_username :string(32)       not null
+#  about_me        :string(4096)     default(""), not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
 # User data, asides from credentials which are stored in the User model.
 class Profile < ActiveRecord::Base
   # The user's Kerberos account on MIT's Athena system.
@@ -41,21 +58,3 @@ class Profile < ActiveRecord::Base
     self.user.can_edit? user
   end
 end
-
-# == Schema Information
-#
-# Table name: profiles
-#
-#  id              :integer(4)      not null, primary key
-#  user_id         :integer(4)      not null
-#  name            :string(128)     not null
-#  nickname        :string(64)      not null
-#  university      :string(64)      not null
-#  department      :string(64)      not null
-#  year            :string(4)       not null
-#  athena_username :string(32)      not null
-#  about_me        :string(4096)    default(""), not null
-#  created_at      :datetime        not null
-#  updated_at      :datetime        not null
-#
-

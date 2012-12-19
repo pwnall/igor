@@ -35,4 +35,17 @@ module AssignmentsHelper
       content_tag(:meter, title, min: 0, value: avg, max: max, title: title)
     } + content_tag(:span, title)
   end
+
+  def grading_recitation_tags(assignment, recitation_section)
+    avg = assignment.recitation_score recitation_section
+
+    max = assignment.max_score || 0.0001
+    percent = '%.2f' % ((avg * 100) / max.to_f)
+    title = "#{percent}% (#{'%.2f' % avg} / #{max})"
+    
+    content_tag(:span, class: 'meter-container') {
+      content_tag(:meter, title, min: 0, value: avg, max: max, title: title)
+    } + content_tag(:span, title)
+
+  end
 end

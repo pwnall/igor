@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: deliverables
+#
+#  id            :integer          not null, primary key
+#  assignment_id :integer          not null
+#  file_ext      :string(16)       not null
+#  name          :string(80)       not null
+#  description   :string(2048)     not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
 require 'spec_helper'
 
 describe Deliverable do
@@ -40,17 +53,3 @@ describe Deliverable do
     end
   end
 end
-
-# == Schema Information
-#
-# Table name: deliverables
-#
-#  id            :integer(4)      not null, primary key
-#  assignment_id :integer(4)      not null
-#  file_ext      :string(16)      not null
-#  name          :string(80)      not null
-#  description   :string(2048)    not null
-#  created_at    :datetime        not null
-#  updated_at    :datetime        not null
-#
-

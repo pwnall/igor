@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110704070001) do
+ActiveRecord::Schema.define(:version => 20121103004220) do
 
   create_table "analyses", :force => true do |t|
     t.integer  "submission_id",                     :null => false
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
     t.boolean  "has_recitations",                :default => true, :null => false
     t.boolean  "has_surveys",                    :default => true, :null => false
     t.boolean  "has_teams",                      :default => true, :null => false
+    t.integer  "recitation_size",                :default => 20
     t.datetime "created_at",                                       :null => false
     t.datetime "updated_at",                                       :null => false
   end
@@ -89,14 +90,16 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
   add_index "courses", ["number"], :name => "index_courses_on_number", :unique => true
 
   create_table "credentials", :force => true do |t|
-    t.integer "user_id",                                    :null => false
-    t.string  "type",     :limit => 32,                     :null => false
-    t.string  "name",     :limit => 128
-    t.boolean "verified",                :default => false, :null => false
-    t.binary  "key"
+    t.integer  "user_id",                                      :null => false
+    t.string   "type",       :limit => 32,                     :null => false
+    t.string   "name",       :limit => 128
+    t.boolean  "verified",                  :default => false, :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.binary   "key"
   end
 
   add_index "credentials", ["type", "name"], :name => "index_credentials_on_type_and_name", :unique => true
+  add_index "credentials", ["type", "updated_at"], :name => "index_credentials_on_type_and_updated_at"
   add_index "credentials", ["user_id", "type"], :name => "index_credentials_on_user_id_and_type"
 
   create_table "db_files", :force => true do |t|
@@ -196,6 +199,15 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id", :unique => true
 
+  create_table "recitation_assignment_proposals", :force => true do |t|
+    t.integer  "course_id",             :null => false
+    t.integer  "recitation_size",       :null => false
+    t.integer  "number_of_recitations", :null => false
+    t.integer  "number_of_conflicts",   :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
   create_table "recitation_conflicts", :force => true do |t|
     t.integer "registration_id", :null => false
     t.integer "timeslot",        :null => false
@@ -214,6 +226,17 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
   end
 
   add_index "recitation_sections", ["serial"], :name => "index_recitation_sections_on_serial", :unique => true
+
+  create_table "recitation_student_assignments", :force => true do |t|
+    t.integer "recitation_assignment_proposal_id", :null => false
+    t.integer "user_id",                           :null => false
+    t.integer "recitation_section_id"
+    t.boolean "has_conflict",                      :null => false
+  end
+
+  add_index "recitation_student_assignments", ["recitation_assignment_proposal_id"], :name => "index_recitation_students_to_proposals"
+  add_index "recitation_student_assignments", ["recitation_section_id"], :name => "index_recitation_student_assignments_on_recitation_section_id"
+  add_index "recitation_student_assignments", ["user_id"], :name => "index_recitation_student_assignments_on_user_id"
 
   create_table "registrations", :force => true do |t|
     t.integer  "user_id",                                  :null => false

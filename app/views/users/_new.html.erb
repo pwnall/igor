@@ -14,6 +14,8 @@
   <%= render 'registrations/fields', f: rf %>
   <% end %>
 
+  <%= render 'registrations/conflicts', recitation_conflicts: [] %>
+
   <p class="actions">
     <%= button_tag class: 'emphasized', type: 'submit' do %>
       Create my account

@@ -5,12 +5,14 @@ class GradesController < ApplicationController
   # GET /grades
   def index
     grades_by_metric_id = current_user.grades.index_by &:metric_id
+    @recitation = current_user.recitation_section
     
     @grades = []
     Assignment.includes(:metrics).order('deadline DESC').each do |assignment|
       metrics = assignment.metrics.
           select { |metric| metric.can_read? current_user }.
           map { |metric| [metric, grades_by_metric_id[metric.id]] }
+
       @grades << [assignment, metrics] unless metrics.empty?
     end
   end

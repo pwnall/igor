@@ -58,6 +58,22 @@
 </ul>
 <% end %>
 
+<% if @assignment.grades.length > 0 %>
+<h3 class="dashboard-heading">
+  <%= grades_icon_tag %>
+  Recitation Grades
+</h3>
+
+<ul class="dashboard-list">
+  <% @recitation_sections.each do |recitation| %>
+    <li>
+      <span class="name"><strong><%= recitation.recitation_name %></strong></span>
+      <%= grading_recitation_tags(@assignment, recitation) %>  
+    </li>
+  <% end %>
+</ul>
+<% end %>
+
 <h3 class="dashboard-heading">
   <%= homework_icon_tag %>
   Submissions

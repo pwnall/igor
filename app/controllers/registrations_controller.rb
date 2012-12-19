@@ -6,6 +6,7 @@ class RegistrationsController < ApplicationController
   def index
     @prerequisites = Prerequisite.all
     @registrations = Registration.all
+    @leaders = User.find(:all, conditions: { admin: true }, include: :profile)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -76,41 +77,26 @@ class RegistrationsController < ApplicationController
       return
     end
     
-    if Course.main.has_recitations?
-      old_recitation_conflicts =
-          @registration.recitation_conflicts.index_by &:timeslot
-      
-      # Update recitation conflicts.
-      params[:recitation_conflicts].each_value do |rc|
-        next if rc[:class_name].blank?
-        timeslot = rc[:timeslot].to_i
-        if old_recitation_conflicts.has_key? timeslot
-          old_recitation_conflicts.delete(timeslot).update_attributes rc
-        else
-          rc[:registration] = @registration
-          conflict = RecitationConflict.new(rc)
-          @registration.recitation_conflicts << conflict
-        end
-      end
-      # Wipe cleared conflicts.
-      old_recitation_conflicts.each_value { |orc| @registration.recitation_conflicts.delete orc }
-    end
-    
     if @new_record = @registration.new_record?
       success = @registration.save
     else
-      # Disallow structural changes to the record.
-      params[:registration].delete :user_id
-      params[:registration].delete :course_id
+      # recitation_section is attr_protected, set manually
+      if params.has_key? :recitation_section
+        @registration.recitation_section = RecitationSection.where(serial: params[:recitation_section][:serial]).first
+        success = @registration.save
+      elsif params.has_key? :recitation_conflicts
+        @registration.update_conflicts(params[:recitation_conflicts])
+      else
+        success = @registration.update_attributes params[:registration]
+      end
       
-      success = @registration.update_attributes params[:registration]
     end
     
     respond_to do |format|
       if success
         flash[:notice] = "Student Information successfully #{@new_record ? 'submitted' : 'updated'}."
-        format.html { redirect_to @registration.user }
-        format.js   { render :action => :create_update }
+        format.html { redirect_to @registration }
+        format.js { head :ok }
       else
         prepare_for_editing
         format.html { render :action => :new_edit }

@@ -2,16 +2,16 @@
 #
 # Table name: profile_photos
 #
-#  id               :integer(4)      not null, primary key
-#  profile_id       :integer(4)      not null
-#  pic_file_name    :string(256)     not null
-#  pic_content_type :string(64)      not null
-#  pic_file_size    :integer(4)      not null
-#  pic_file         :binary(16777215 default(""), not null
-#  pic_profile_file :binary(16777215 default(""), not null
-#  pic_thumb_file   :binary(16777215 default(""), not null
-#  created_at       :datetime        not null
-#  updated_at       :datetime        not null
+#  id               :integer          not null, primary key
+#  profile_id       :integer          not null
+#  pic_file_name    :string(256)      not null
+#  pic_content_type :string(64)       not null
+#  pic_file_size    :integer          not null
+#  pic_file         :binary(16777215) default(""), not null
+#  pic_profile_file :binary(16777215) default(""), not null
+#  pic_thumb_file   :binary(16777215) default(""), not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 
 # A profile's avatar.

@@ -28,7 +28,11 @@ Seven::Application.routes.draw do
     end
   end
   resources :registrations
-  resources :recitation_sections
+  resources :recitation_sections do
+    collection do
+      post :autoassign
+    end
+  end
 
   # Homework.
   resources :assignments do
@@ -96,6 +100,13 @@ Seven::Application.routes.draw do
   resources :announcements
   resource :api, controller: 'api' do
     get :conflict_info
+  end
+
+  # Recitation Proposals
+  resources :recitation_assignment_proposals do
+    member do
+      post :implement
+    end
   end
 
   root to: 'session#show'

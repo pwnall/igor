@@ -16,6 +16,5 @@ class SessionMailer < ActionMailer::Base
   def reset_password_from(token, server_hostname, protocol)
     %Q|"#{Course.main.number} staff" <#{Course.main.email}>|
   end
-
   # Add your extensions to the SessionMailer class here.  
 end

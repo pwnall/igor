@@ -1,4 +1,0 @@
---- 
-dns_name: 'sec-test.csail.mit.edu'
-frontends: 2
-frontends_per_core: 0

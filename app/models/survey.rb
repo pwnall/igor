@@ -2,10 +2,10 @@
 #
 # Table name: surveys
 #
-#  id         :integer(4)      not null, primary key
-#  name       :string(128)     not null
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id         :integer          not null, primary key
+#  name       :string(128)      not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 # The set of questions used in a survey.

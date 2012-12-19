@@ -1,12 +1,11 @@
 # == Schema Information
-# Schema version: 20110429122654
 #
 # Table name: recitation_conflicts
 #
-#  id              :integer(4)      not null, primary key
-#  registration_id :integer(4)      not null
-#  timeslot        :integer(4)      not null
-#  class_name      :string(255)     not null
+#  id              :integer          not null, primary key
+#  registration_id :integer          not null
+#  timeslot        :integer          not null
+#  class_name      :string(255)      not null
 #
 
 dexter_6001_monday_1pm:

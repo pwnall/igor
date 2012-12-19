@@ -2,12 +2,12 @@
 #
 # Table name: prerequisites
 #
-#  id                  :integer(4)      not null, primary key
-#  course_id           :integer(4)      not null
-#  prerequisite_number :string(64)      not null
-#  waiver_question     :string(256)     not null
-#  created_at          :datetime        not null
-#  updated_at          :datetime        not null
+#  id                  :integer          not null, primary key
+#  course_id           :integer          not null
+#  prerequisite_number :string(64)       not null
+#  waiver_question     :string(256)      not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #
 
 # A prerequisite for a course.

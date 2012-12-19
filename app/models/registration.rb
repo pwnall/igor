@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: registrations
+#
+#  id                    :integer          not null, primary key
+#  user_id               :integer          not null
+#  course_id             :integer          not null
+#  dropped               :boolean          default(FALSE), not null
+#  teacher               :boolean          default(FALSE), not null
+#  for_credit            :boolean          default(TRUE), not null
+#  allows_publishing     :boolean          default(TRUE), not null
+#  recitation_section_id :integer
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#
+
 # A student's commitment to participate in a class.
 class Registration < ActiveRecord::Base
   # The student who registered.
@@ -8,6 +24,9 @@ class Registration < ActiveRecord::Base
   belongs_to :course, inverse_of: :registrations
   validates :course, presence: true
   validates :course_id, uniqueness: { scope: [:user_id] }
+
+  attr_accessible :course_id
+  attr_protected :user_id
 
   # True if the student is taking the class for credit.
   validates :for_credit, inclusion: { in: [true, false] }
@@ -28,6 +47,7 @@ class Registration < ActiveRecord::Base
 
   # Temporary excuse for a calendar.
   has_many :recitation_conflicts, dependent: :destroy
+  accepts_nested_attributes_for :recitation_conflicts
 
   # Answers to the course's prerequisites questions.
   has_many :prerequisite_answers, dependent: :destroy, inverse_of: :registration
@@ -45,21 +65,26 @@ class Registration < ActiveRecord::Base
   def can_edit?(user)
     user and (user == self.user or user.admin?)
   end
+
+  # New conflicts is an array of hashes formatted like...
+  # [{"timeslot": <integer>, "class_name": <string>},
+  #  {"timeslot": 9, "class_name": "6.042"}...]
+  def update_conflicts(new_conflicts)
+    old_recitation_conflicts = recitation_conflicts.index_by &:timeslot
+  
+    # Update recitation conflicts.
+    new_conflicts.each_value do |rc|
+      next if rc[:class_name].blank?
+      timeslot = rc[:timeslot].to_i
+      if old_recitation_conflicts.has_key? timeslot
+        old_recitation_conflicts.delete(timeslot).update_attributes rc
+      else
+        rc[:registration] = self
+        conflict = RecitationConflict.new(rc)
+        recitation_conflicts << conflict
+      end
+    end
+    # Wipe cleared conflicts.
+    old_recitation_conflicts.each_value { |orc| recitation_conflicts.delete orc }
+  end
 end
-
-# == Schema Information
-#
-# Table name: registrations
-#
-#  id                    :integer(4)      not null, primary key
-#  user_id               :integer(4)      not null
-#  course_id             :integer(4)      not null
-#  dropped               :boolean(1)      default(FALSE), not null
-#  teacher               :boolean(1)      default(FALSE), not null
-#  for_credit            :boolean(1)      default(TRUE), not null
-#  allows_publishing     :boolean(1)      default(TRUE), not null
-#  recitation_section_id :integer(4)
-#  created_at            :datetime        not null
-#  updated_at            :datetime        not null
-#
-

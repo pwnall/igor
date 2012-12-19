@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id         :integer          not null, primary key
+#  exuid      :string(32)       not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  admin      :boolean          default(FALSE), not null
+#
+
 # An user account.
 class User < ActiveRecord::Base
   include Authpwn::UserModel
@@ -92,10 +103,15 @@ class User
   has_many :registrations, dependent: :destroy, inverse_of: :user
   accepts_nested_attributes_for :registrations
   attr_accessible :registrations_attributes
+  has_many :recitation_sections, through: :registrations
   
   # The user's registration for the main class on this site.
   def registration
     registrations.where(course_id: Course.main.id).first
+  end
+
+  def recitation_section
+    registration.recitation_section
   end
 end
 
@@ -146,6 +162,11 @@ class User
   # The user's answers to homework surveys.
   has_many :survey_answers, dependent: :destroy, inverse_of: :user
 end  
+
+# :nodoc: recitation assignment proposals
+class User
+  has_many :recitation_student_assignments, inverse_of: :user
+end
   
 # :nodoc: search integration.
 class User
@@ -240,15 +261,3 @@ class User
     "<#{self.class} email: #{email.inspect} id: #{id} admin: #{admin.inspect}>"
   end
 end
-
-# == Schema Information
-#
-# Table name: users
-#
-#  id         :integer(4)      not null, primary key
-#  exuid      :string(32)      not null
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
-#  admin      :boolean(1)      default(FALSE), not null
-#
-

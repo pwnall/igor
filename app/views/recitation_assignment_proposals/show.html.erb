@@ -1,0 +1,30 @@
+<!-- recitation_assignment_proposals/show -->
+<div class="full_section">
+
+	<div style="z-index: 10; float: right; width: 275; text-align: left;">
+    <h3><%= link_to 'Recitation Proposals', recitation_assignment_proposals_path %></h3>
+    <h3>
+      <%= link_to 'Implement', implement_recitation_assignment_proposal_url(@proposal), method: :post,
+            confirm: "This will overwrite all current recitation assignments" %>
+    </h3>
+	</div>
+
+  <h1 class="full_section">Recitation Assignment Proposal</h1>
+
+
+  <h4><%= "Created: #{@proposal.created_at.strftime "%B %d, %Y %I:%M%p"}" %></h4>
+  <h4><%= "Recitations: #{@proposal.number_of_recitations}" %></h4>
+ 
+  <ol class='recitation-assignments'>
+      <% @proposal.recitation_student_assignments.group_by(&:recitation_section).each do |id, students| %>
+        <ol class='recitation-section'>
+          <% section_name = id.nil? ? 'Conflicts' : "#{id.recitation_name}" %>
+          <li class='recitation-section-name'><h4><%= "#{section_name} (#{students.length})" %></h4></li>
+
+          <% students.each do |s| %>
+            <li class='recitation-section-student'><%= s.name %></li>
+          <% end %>
+        </ol>
+      <% end %>
+  </ol>
+</div>

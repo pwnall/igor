@@ -5,3 +5,8 @@
 <%= render 'profile_photos/for_user', user: @user %>
 
 <%= render 'profiles/show', profile: @user.profile %>
+
+<%= form_for @user do |f| %>
+  <%= render 'registrations/conflicts', recitation_conflicts: @recitation_conflicts %>
+  <%= f.submit 'Update schedule', class: 'form_submit' %>
+<% end %>
