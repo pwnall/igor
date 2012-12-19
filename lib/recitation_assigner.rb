@@ -18,13 +18,21 @@ module RecitationAssigner
   # Example:
   #   {:athena => 'genius', :conflicts => {120 => {:....} } }
   def self.conflicts_info    
-    students = JSON.parse raw_conflicts_info
-    students['info'].map do |student|
+    @registrations = Registration.joins(:user).
+                                  where(users: { admin: false }).
+                                  includes(:recitation_conflicts).
+                                  all
+
+    @response_data = @registrations.map do |s|
+      conflicts = s.recitation_conflicts.map do |r|
+        { :timeslot => r.timeslot, :class => r.class_name }
+      end
+
       {
-        :conflicts => student['conflicts'].reject { |c|
-          c['class'].strip == Course.main.number || c['class'] == 'free' }.
-                                           index_by { |c| c['timeslot'] },
-        :athena => student['athena']
+        :conflicts => conflicts.reject { |c|
+          c[:class].strip == Course.main.number || c[:class] == 'free' }.
+                                           index_by { |c| c[:timeslot] },
+        :athena => s.user.athena_id
       }
     end
   end
