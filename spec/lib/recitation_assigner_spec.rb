@@ -138,14 +138,14 @@ describe RecitationAssigner do
       end
     end
     
-    describe 'reverted assignment' do
+    describe 'inverted assignment' do
       let(:assignment) do
         { 'a' => 10, 'b' => 11, 'c' => 11, 'd' => 12, 'e' => 10 }
       end
-      let(:reverted) { {10 => ['a', 'e'], 11 => ['b', 'c'], 12 => ['d']} }
+      let(:inverted) { {10 => ['a', 'e'], 11 => ['b', 'c'], 12 => ['d']} }
             
       it 'should work on multi-assignments' do
-        RecitationAssigner.reverted_assignment(assignment).should == reverted
+        RecitationAssigner.inverted_assignment(assignment).should == inverted
       end
     end
   end

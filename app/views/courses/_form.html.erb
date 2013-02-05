@@ -31,7 +31,7 @@
     <p class="field">
       <%= f.label :has_recitations, 'Recitation sections' %>
       <span class="value">
-        <%= f.check_box :has_recitations, 'data-pwnfx-hide' => 'recitation_size_field',
+        <%= f.check_box :has_recitations, 'data-pwnfx-hide' => 'section_size_field',
               'data-pwnfx-hide-trigger' => 'checked' %>
         <%= f.label :has_recitations do %>
           students are assigned to recitation sections which show up on their
@@ -39,10 +39,10 @@
         <% end %>
       </span>
     </p>
-    <p class="field" data-pwnfx-hide-negative='recitation_size_field'>
-      <%= f.label :recitation_size, 'Recitation Size Limit' %>
+    <p class="field" data-pwnfx-hide-negative='section_size_field'>
+      <%= f.label :section_size, 'Recitation Size Limit' %>
       <span class="value">
-        <%= f.text_field :recitation_size %>
+        <%= f.text_field :section_size %>
       </span>
     </p>
     <p class="field">

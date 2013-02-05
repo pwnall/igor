@@ -6,7 +6,6 @@
 #  user_id    :integer          not null
 #  type       :string(32)       not null
 #  name       :string(128)
-#  verified   :boolean          default(FALSE), not null
 #  updated_at :datetime         not null
 #  key        :binary
 #
