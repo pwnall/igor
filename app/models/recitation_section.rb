@@ -15,7 +15,11 @@
 # Group of students that attend recitation together.
 class RecitationSection < ActiveRecord::Base
   # The course that this section belongs to.
+<<<<<<< HEAD
   belongs_to :course, inverse_of: :recitation_sections
+=======
+  belongs_to :course
+>>>>>>> Recitation code refactoring.
   validates :course, presence: true
 
   # The course staff member leading the section.
