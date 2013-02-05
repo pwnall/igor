@@ -22,22 +22,22 @@ class User < ActiveRecord::Base
 
 
   # Add your extensions to the User class here.
-  
+
   # Additional restriction: .edu e-mails only.
   validates :email, format: {
       with: /\A[A-Za-z0-9.+_-]+\@[A-Za-z0-9.\-]+\.edu\Z/,
       message: 'needs to be an .edu e-mail address' }
-  
+
   # Admins can bless other admins and activate blocked users.
   attr_accessible :active, :admin, as: :admin
-  
+
   # Site staff members. Not the same as teaching staff.
   validates :admin, inclusion: { in: [true, false], allow_nil: false }
-  
+
   # Reject un-verified e-mails.
   def auth_bounce_reason(credential)
     (credential.is_a?(Credentials::Email) && !credential.verified?) ?
-        :blocked : nil  
+        :blocked : nil
   end
 end
 
@@ -55,10 +55,10 @@ class User
   has_one :profile, dependent: :destroy, inverse_of: :user
   validates_associated :profile, on: :create
   validates :profile, presence: { on: :create }
-  
+
   accepts_nested_attributes_for :profile
   attr_accessible :profile_attributes
-  
+
   # The user's real-life name.
   #
   # May return the user's e-mail if the user managed to register without
@@ -66,14 +66,14 @@ class User
   def name
     (profile && profile.name) || email
   end
-  
+
   # The user's athena ID.
   #
   # Returns the email username if the user has not created a profile.
   def athena_id
     (profile && profile.athena_username) || email[0, email.index(?@)]
   end
-  
+
   # The user's name, suitable to be displayed to the given user.
   def display_name_for(other_user = nil, identity_value = 'You')
     if self == other_user
@@ -86,14 +86,14 @@ class User
       name
     end
   end
-  
+
   # Returns true if the given user is allowed to see this user's info.
   def can_read?(user)
     # TODO(pwnall): figure out teams; teammates should see user
     # TODO(pwnall): do admins and course staff get fully visible profiles?
     admin? || user == self || (user && user.admin?)
   end
-  
+
   # Returns true if the given user is allowed to edit this user's info.
   def can_edit?(user)
     user == self || (user && user.admin?)
@@ -104,7 +104,7 @@ class User
   accepts_nested_attributes_for :registrations
   attr_accessible :registrations_attributes
   has_many :recitation_sections, through: :registrations
-  
+
   # The user's registration for the main class on this site.
   def registration
     registrations.where(course_id: Course.main.id).first
@@ -116,7 +116,7 @@ class User
 end
 
 # :nodoc: homework submission feature.
-class User  
+class User
   # Files uploaded by the user to meet assignment deliverables.
   has_many :submissions, dependent: :destroy, inverse_of: :user
 
@@ -149,10 +149,10 @@ class User
 end
 
 # :nodoc: teams feature.
-class User  
+class User
   # Backing model for the teams association.
   has_many :team_memberships, dependent: :destroy, inverse_of: :user
-  
+
   # Teams that this user belongs to.
   has_many :teams, through: :team_memberships, inverse_of: :users
 end
@@ -161,13 +161,13 @@ end
 class User
   # The user's answers to homework surveys.
   has_many :survey_answers, dependent: :destroy, inverse_of: :user
-end  
+end
 
 # :nodoc: recitation assignment proposals
 class User
-  has_many :recitation_student_assignments, inverse_of: :user
+  has_many :recitation_assignments, inverse_of: :user
 end
-  
+
 # :nodoc: search integration.
 class User
   # TODO(costan): move query processing in another class
@@ -179,11 +179,11 @@ class User
     unscored_users = Credentials::Email.where('name LIKE ?', sql_query).includes(user: :profile).map(&:user) | matching_profiles.map { |i| i.user }
     unscored_users.map { |u| [u.query_score(query), u] }.sort_by { |v| [-v[0], v[1].name] }[0, 10].map(&:last)
   end
-  
+
   def self.find_first_by_query!(query)
-    find_all_by_query!(query).first    
+    find_all_by_query!(query).first
   end
-  
+
   # Parses a free-form user search query.
   #
   # Queries have the form "something [name <email>]", and any of the components
@@ -193,14 +193,14 @@ class User
   # value can be nil or a string.
   def self.parse_freeform_query(query)
     query = query.strip
-    
+
     name_match = /^([^\[]*)\[(.+)\]$/.match query
     if name_match
       query_string, query = name_match[1], name_match[2]
     else
       query_string = nil
     end
-    
+
     email_match = /^([^\<]*)\<(.+)\>$/.match query
     if email_match
       name, email = email_match[1], email_match[2]
@@ -208,17 +208,17 @@ class User
       name = query
       email = nil
     end
-    
+
     [query_string, name, email].each { |piece| piece.strip! unless piece.nil? }
     query_string = nil if query_string and query_string.empty?
     name = nil if name and name.empty?
     email = nil if email and email.empty?
-    
+
     query_string, name = name, nil if query_string.nil?
     { string: query_string, name: name, email: email }
   end
-  
-  # 
+
+  #
   def self.score_query_part(needle, haystack, full_match, start_match,
                             end_match, inner_match)
     return 0 if needle.nil? or needle.empty?
@@ -230,13 +230,13 @@ class User
     return inner_match if haystack.index needle
     0
   end
-  
+
   # The score of this user against a user search query.
   def query_score(query)
     score = 0
     query = User.parse_freeform_query query
-    
-    # Real name matching: 4 points.               
+
+    # Real name matching: 4 points.
     if query[:name]
       score += User.score_query_part query[:name], name, 4, 2, 1, 0.2
     end
@@ -256,7 +256,7 @@ class User
 
     score / 20.0
   end
-  
+
   def inspect
     "<#{self.class} email: #{email.inspect} id: #{id} admin: #{admin.inspect}>"
   end

@@ -1,10 +1,6 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
-#   Mayor.create(:name => 'Daley', :city => cities.first)
+
 
 # Course.
 
@@ -22,30 +18,18 @@ prereq2.course = course
 prereq2.save!
 
 # Staff.
-
-unless User.robot
-  robot_user = User.new email: 'robot@localhost.edu',
-      password: '_', password_confirmation: '_', profile_attributes: {
-        athena_username: '---', name: 'Staff Robot', nickname: 'Robot',
-        university: 'MIT', department: 'EECS', year: 'G',
-        about_me: "Pay no attention to the man behind the curtain"
-      }
-  robot_user.email_credential.verified = true
-  robot_user.save!
-  robot_user.password_credential.destroy
-end
-
-
-admin = User.create email: 'costan@mit.edu', password: 'mit',
+admin = User.create! email: 'costan@mit.edu', password: 'mit',
     password_confirmation: 'mit', profile_attributes: {
       athena_username: 'costan', name: 'Victor Costan', nickname: 'Victor',
-      university: 'MIT', department: 'EECS', year: 'G', about_me: "I'm the boss"
+      university: 'MIT', department: 'EECS', year: 'G',
+      about_me: "I'm the boss"
     }
 admin.email_credential.verified = true
 admin.admin = true
 admin.save!
 
-admin_registration = Registration.new for_credit: false, allows_publishing: true    
+admin_registration = Registration.new for_credit: false,
+                                      allows_publishing: true
 admin_registration.user = admin
 admin_registration.course = course
 admin_registration.save!
@@ -71,12 +55,12 @@ names.each_with_index do |name, i|
       password_confirmation: 'mit', profile_attributes: {
         athena_username: short_name, name: name, nickname: first_name,
         university: 'MIT', year: (1 + (i % 4)).to_s,
-        department: depts[i % depts.length], about_me: "Test subject #{i + 1}"        
+        department: depts[i % depts.length], about_me: "Test subject #{i + 1}"
       }
   user.email_credential.verified = true
   user.save!
   users << user
-  
+
   registration = Registration.new for_credit: (i % 5 < 4),
                                   allows_publishing: (i % 7 < 5)
   registration.user = user
@@ -102,7 +86,7 @@ exam_data = [
 
 exams = exam_data.map.with_index do |data, index|
   i = index + 1
-  
+
   exam = Assignment.new name: "Exam #{i}", weight: 5.0, author: admin,
                         deadline: Time.now + data[:deadline]
   exam.course = course
@@ -161,14 +145,14 @@ psets = pset_data.map.with_index do |data, index|
     AssignmentMetric.create! assignment: pset, name: "Problem #{j}",
                              max_score: 6 + (i + j) % 6
   end
-  
+
   pdf_deliverable = pset.deliverables.create! name: 'PDF write-up',
       file_ext: 'pdf',
       description: 'Please upload your write-up, in PDF format.'
   analyzer = ProcAnalyzer.new  message_name: 'analyze_pdf', auto_grading: true
   analyzer.deliverable = pdf_deliverable
   analyzer.save!
-  
+
   rb_deliverable = pset.deliverables.create! assignment: pset,
       name: 'Fibonacci', file_ext: 'rb',
       description: 'Please upload your modified fib.rb.'
@@ -188,7 +172,7 @@ end
 ([admin] + users).each_with_index do |user, i|
   psets.each_with_index do |pset, j|
     next unless pset.deadline < Time.now
-    
+
     unless (i + j) % 20 == 1
       # Submit PDF.
       writeup = pset.deliverables.where(file_ext: 'pdf').first
@@ -199,7 +183,7 @@ end
       pdf.text user.name, align: :left, size: 24
       pdf.text pset.name, align: :left, size: 24
       pdf_contents = pdf.render
-      
+
       time = pset.deadline - 1.day + i * 1.minute
       submission = Submission.create! deliverable: writeup, user: user,
            db_file_attributes: {
@@ -211,7 +195,7 @@ end
       submission.analysis.updated_at = time + 5.seconds
       submission.analysis.save!
     end
-    
+
     if (i + j) % 3 == 0
       # Submit code.
       code = pset.deliverables.where(file_ext: 'rb').first
@@ -226,7 +210,7 @@ end
       submission.analysis.updated_at = time + 5.seconds
       submission.analysis.save!
     end
-    
+
     # NOTE: the last condition is not a typo; we skip over some of the students
     #       who submitted the writeup, to test the "missing grades" finder
     unless (i + j) % 3 == 0 || (i + j) % 10 == 1

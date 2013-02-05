@@ -49,7 +49,7 @@ class UsersController < ApplicationController
   # POST /users
   def create
     @user = User.new params[:user]
-    # Bootstrapping: the first user (asides from Staff Robot) gets admin rights.
+    # Root of trust: the first user (asides from Staff Robot) becomes admin.
     @user.admin = (User.count == 1)
     if registration = @user.registrations.first
       registration.course = Course.main

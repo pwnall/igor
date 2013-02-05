@@ -1,14 +1,14 @@
 source :rubygems
 ruby '1.9.3'
 
-gem 'rails', '>= 3.2.9'
+gem 'rails', '>= 3.2.11'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2', '>= 0.3.11'
 
-gem 'json', '>= 1.5.4'
+gem 'json', '>= 1.7.6'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -20,16 +20,16 @@ gem 'json', '>= 1.5.4'
 # gem 'ruby-debug'
 
 # Core.
-gem 'authpwn_rails', '>= 0.13.1'
+gem 'authpwn_rails', '>= 0.13.4'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'markdpwn', '>= 0.1.5'
-gem 'nokogiri', '>= 1.5.0'
+gem 'nokogiri', '>= 1.5.6'
 gem 'paperclip', git: 'git://github.com/patshaughnessy/paperclip.git',
                  ref: '729848221b19c3791a35c80fe9803f4c1b6dd7d9'
 gem 'rack-noie', require: 'noie.rb',
                  git: 'git://github.com/juliocesar/rack-noie.git'
-gem 'rmagick', '>= 2.13.1'
-gem 'validates_timeliness', '>= 3.0.11'
+gem 'rmagick', '>= 2.13.2'
+gem 'validates_timeliness', '>= 3.0.14'
 
 # Background processing.
 gem 'daemonz', '>= 0.3.9'
@@ -42,7 +42,7 @@ gem 'prawn', '~> 0.12.0'
 
 # Instant feedback.
 gem 'exec_sandbox', '>= 0.2.3'
-gem 'pdf-reader', '>= 1.2.0'
+gem 'pdf-reader', '>= 1.3.0'
 gem 'zip', '>= 2.0.2'
 
 # Gravatar fall-back avatars.
@@ -55,24 +55,24 @@ gem 'mit_stalker', '>= 1.0.4'
 gem 'stellar', '>= 0.3.1'
 
 # UI
-gem 'best_in_place', git: 'git://github.com/bernat/best_in_place.git'
+gem 'best_in_place', '>= 2.0.3'
 
 group :assets do
-  gem 'sass-rails', '>= 3.2.5'
+  gem 'sass-rails', '>= 3.2.6'
   gem 'pwnstyles_rails', '>= 0.1.29'
   # gem 'pwnstyles_rails', '>= 0.1.28', path: '../pwnstyles_rails'
 
-  gem 'jquery-rails', '>= 2.1.4'
+  gem 'jquery-rails', '>= 2.2.0'
   gem 'coffee-rails', '>= 3.2.2'
   gem 'uglifier', '>= 1.3.0'
 
-  gem 'therubyracer', '>= 0.11.0'
-  gem 'libv8', '>= 3.11.8.4'
+  gem 'therubyracer', '>= 0.11.3'
+  gem 'libv8', '>= 3.11.8.13'
 end
 
 group :development, :test do
   gem 'rspec-rails', '>= 2.11.0'
-  gem 'thin', '>= 1.4.1'
+  gem 'thin', '>= 1.5.0'
   gem 'webrat', '>= 0.7.3'
 end
 
