@@ -10,9 +10,9 @@
 #  has_recitations :boolean          default(TRUE), not null
 #  has_surveys     :boolean          default(TRUE), not null
 #  has_teams       :boolean          default(TRUE), not null
+#  section_size    :integer          default(20)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  recitation_size :integer
 #
 
 # A bunch of work that results in with grades for registered students.
@@ -25,7 +25,7 @@ class Course < ActiveRecord::Base
   validates :email, length: 1..64, presence: true
   # True if the course has recitation sections.
   validates :has_recitations, inclusion: { in: [true, false], allow_nil: false }
-  validates :recitation_size, numericality: { only_integer: true, greater_than: 0 } 
+  validates :section_size, numericality: { only_integer: true, greater_than: 0 }
   # True if the course has homework surveys.
   validates :has_surveys, inclusion: { in: [true, false], allow_nil: false }
   # True if the course has homework teams.
@@ -42,6 +42,9 @@ class Course < ActiveRecord::Base
 
   # Assignments issued for this course.
   has_many :assignments, dependent: :destroy, inverse_of: :course
+
+  # Sections for this course's recitations.
+  has_many :recitation_sections, dependent: :destroy, inverse_of: :course
 
   # All users connected to this course.
   has_many :users, through: :registrations, source: :user

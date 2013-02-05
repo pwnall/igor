@@ -2,33 +2,50 @@
 #
 # Table name: recitation_sections
 #
-#  id         :integer(4)      not null, primary key
-#  serial     :integer(4)      not null
-#  leader_id  :integer(4)      not null
-#  time       :string(64)      not null
-#  location   :string(64)      not null
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id         :integer          not null, primary key
+#  course_id  :integer          not null
+#  leader_id  :integer          not null
+#  serial     :integer          not null
+#  time       :string(64)       not null
+#  location   :string(64)       not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
+# Group of students that attend recitation together.
 class RecitationSection < ActiveRecord::Base
-  belongs_to :leader, class_name: 'User', foreign_key: :leader_id
+  # The course that this section belongs to.
+  belongs_to :course, inverse_of: :recitation_sections
+  validates :course, presence: true
+
+  # The course staff member leading the section.
+  belongs_to :leader, class_name: 'User'
+  validates :leader, presence: true
   accepts_nested_attributes_for :leader
 
+  # Serial number of the section. 1 is displayed as "R01".
+  validates :serial, presence: true, numericality: { greater_than: 0 },
+                     uniqueness: { scope: [:course_id] }
+
+  # Scheduled time of the recitation. Format: "WF 10am"
+  validates :time, presence: true, length: 1..64,
+      format: { with: /^[MTWRF]+\d+$/,
+      message: 'days of the week followed by the time of day. Ex: MW2, TR10' }
+
+  # Student-friendly description of the section location, e.g. "36-144" (room).
+  validates :location, presence: true, length: 1..64
+
+  # Course registrations for the students in this section.
   has_many :registrations
+
+  # The students in this section.
   has_many :users, through: :registrations
 
-  has_many :recitation_student_assignments
-  
-  validates_presence_of :leader_id
-  validates_presence_of :time
+  # Proposed assignments of students to this recitation section.
+  has_many :recitation_assignments
+
   validates_presence_of :location
-  validates_presence_of :serial
-  validates_uniqueness_of :serial
-  
-  validates :time, format: { with: /^[MTWRF]+\d+$/,
-      message: 'must be days of the week followed by the time of day. Ex: MW2, TR10' }
-  
+
   def recitation_name
     "#{leader.name} #{time}"
   end

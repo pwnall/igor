@@ -10,9 +10,9 @@
 #  has_recitations :boolean          default(TRUE), not null
 #  has_surveys     :boolean          default(TRUE), not null
 #  has_teams       :boolean          default(TRUE), not null
+#  section_size    :integer          default(20)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  recitation_size :integer
 #
 
 main:

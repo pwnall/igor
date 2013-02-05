@@ -103,7 +103,7 @@ Seven::Application.routes.draw do
   end
 
   # Recitation Proposals
-  resources :recitation_assignment_proposals do
+  resources :recitation_partitions do
     member do
       post :implement
     end

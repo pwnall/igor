@@ -3,11 +3,6 @@ ENV['RAILS_ENV'] ||= 'development'
 require File.join(File.dirname(__FILE__), '..', 'config', 'environment.rb')
 
 module RecitationAssigner
-  # The raw conflict information obtained directly from the API.
-  def self.raw_conflicts_info
-    Net::HTTP.get URI.parse('http://alg.csail.mit.edu/api/conflict_info.json')
-  end
-  
   # The conflict information.
   #
   # Returns an array with an element for each student to be assigned to a
@@ -17,11 +12,9 @@ module RecitationAssigner
   #
   # Example:
   #   {:athena => 'genius', :conflicts => {120 => {:....} } }
-  def self.conflicts_info    
-    @registrations = Registration.joins(:user).
-                                  where(users: { admin: false }).
-                                  includes(:recitation_conflicts).
-                                  all
+  def self.conflicts_info(course)
+    @registrations = course.registrations.joins(:user).
+        where(users: { admin: false }).includes(:recitation_conflicts).all
 
     @response_data = @registrations.map do |s|
       conflicts = s.recitation_conflicts.map do |r|
@@ -36,7 +29,7 @@ module RecitationAssigner
       }
     end
   end
-  
+
   # Finds an optimal assignment of students to recitation sections.
   #
   # Args:
@@ -52,18 +45,18 @@ module RecitationAssigner
   def self.assignment(section_size, section_days, section_times, students)
     graph = assignment_graph section_size, section_days, section_times, students
     matching = best_matching! graph
-    
+
     Hash[*(matching.map { |student, seat|
       [student, section_times[seat / section_size]]
     }.flatten)]
   end
-  
+
   # Builds a bipartite graph for matching students to recitation sections.
   def self.assignment_graph(section_size, section_days, section_times, students)
-    seats = (0...(section_times.length * section_size)).to_a    
+    seats = (0...(section_times.length * section_size)).to_a
     athenas = students.map { |c| c[:athena] }
     vertices = athenas + seats + [:source, :sink]
-    
+
     edges = Hash[*(vertices.map { |v| [v, {}] }.flatten)]
     athenas.each { |athena| edges[:source][athena] = 0 }
     seats.each { |seat| edges[seat][:sink] = 0 }
@@ -73,7 +66,7 @@ module RecitationAssigner
           student[:conflicts].has_key? day + time * 10
         end
         next if has_conflicts
-        
+
         0.upto(section_size - 1) do |section_seat|
           edges[student[:athena]][section_seat + time_index * section_size] = 0
         end
@@ -81,7 +74,7 @@ module RecitationAssigner
     end
     { :vertices => vertices, :edges => edges }
   end
-  
+
   # Finds a maximal matching in a bipartite graph. Mutates the graph.
   #
   # Returns a hash representing the matching.
@@ -90,17 +83,17 @@ module RecitationAssigner
       path = augmenting_path graph
       break unless path
       augment_flow_graph! graph, path
-    end    
+    end
     matching_in graph, source, sink
   end
-  
+
   # Finds an augmenting path in a flow graph.
   #
   # Returns the path from source to sink, as an array of edge arrays, for
   # example [[:source, 'a'], ['a', 'c'], ['c', :sink]]
   def self.augmenting_path(graph, source = :source, sink = :sink)
     # TODO(costan): replace this with Bellman-Ford to support min-cost matching.
-    
+
     # Breadth-first search.
     parents = { source => true }
     queue = [source]
@@ -114,7 +107,7 @@ module RecitationAssigner
       end
     end
     return nil unless parents[sink]
-    
+
     # Reconstruct the path.
     path = []
     current_vertex = sink
@@ -123,11 +116,11 @@ module RecitationAssigner
       current_vertex = parents[current_vertex]
     end
     path.reverse!
-  end 
+  end
 
   # Augments a flow graph along a path.
   def self.augment_flow_graph!(graph, path)
-    # Turn normal edges into residual edges and viceversa.    
+    # Turn normal edges into residual edges and viceversa.
     edges = graph[:edges]
     path.each do |u, v|
       edges[v] ||= {}
@@ -135,22 +128,22 @@ module RecitationAssigner
       edges[u].delete v
     end
   end
-  
+
   # The matching currently found in a matching graph.
   def self.matching_in(graph, source = :source, sink = :sink)
     Hash[*((graph[:edges][sink] || {}).keys.map { |matched_vertex|
       [graph[:edges][matched_vertex].keys.first, matched_vertex]
     }.flatten)]
   end
-  
+
   # The reverse of a student -> section assignment.
-  def self.reverted_assignment(matching)
-    reverted = {}
-    matching.each { |k, v| reverted[v] ||= []; reverted[v] << k }
-    reverted
+  def self.inverted_assignment(matching)
+    inverted = {}
+    matching.each { |k, v| inverted[v] ||= []; inverted[v] << k }
+    inverted
   end
 
-  def self.assign_and_email(user, root_url)
+  def self.assign_and_email(requester, course, root_url)
     recitation_sections = RecitationSection.all
 
     days = []
@@ -160,21 +153,19 @@ module RecitationAssigner
       times = times | [rs.recitation_time]
     end
 
-    students = RecitationAssigner.conflicts_info
+    students = RecitationAssigner.conflicts_info course
 
-    recitation_assignments = self.assignment Course.main.recitation_size, days, times, students
-    reverted_matching = self.reverted_assignment recitation_assignments
-    RecitationAssignmentMailer.recitation_assignment_email(user.email, recitation_assignments, 
-                                                           reverted_matching, students, root_url).deliver
+    recitation_assignments = self.assignment course.section_size, days, times,
+                                             students
+    inverted_matching = self.inverted_assignment recitation_assignments
+    RecitationAssignmentMailer.recitation_assignment_email(requester.email,
+        recitation_assignments, inverted_matching, students, root_url).deliver
 
-    new_proposal = RecitationAssignmentProposal.create(course_id: Course.main.id,
-        recitation_size: Course.main.recitation_size, 
-        number_of_recitations: reverted_matching.length,
-        number_of_conflicts: students.length - recitation_assignments.length)
+    partition = RecitationPartition.create course: course,
+        section_size: course.section_size,
+        section_count: inverted_matching.length
 
-    new_matching = reverted_matching
-    new_matching[:conflict] = students.map { |s| s[:athena] } - recitation_assignments.keys
-    new_proposal.create_student_assignments new_matching
+    partition.create_assignments inverted_matching
   end
 end
 
@@ -186,10 +177,10 @@ def nice_times(section_size, days, times, students)
   mm = nil
 
   matching = RecitationAssigner.assignment section_size, days, times, students
-  reverted_matching = RecitationAssigner.reverted_assignment matching
-  
+  inverted_matching = RecitationAssigner.inverted_assignment matching
+
   puts "Conflicts: #{students.length - matching.length}"
-  reverted_matching.each do |k, v|
+  inverted_matching.each do |k, v|
     puts "\nSection: #{k} (#{v.length} students)"
     puts v.map { |a| "#{a}@mit.edu" }.join(", ")
   end
@@ -197,15 +188,15 @@ def nice_times(section_size, days, times, students)
   puts((students.map { |s| s[:athena] } - matching.keys).
        map { |a| "#{a}@mit.edu" }.join(", "))
 
-  new_proposal = RecitationAssignmentProposal.new(course_id: Course.main.id,
-      recitation_size: Course.main.recitation_size, 
-      number_of_recitations: reverted_matching.length,
-      number_of_conflicts: students.length - matching.length)
+  new_proposal = RecitationPartition.new(course_id: Course.main.id,
+      section_size: Course.main.section_size,
+      section_count: inverted_matching.length,
+      conflict_count: students.length - matching.length)
   new_proposal.save
 
-  new_matching = reverted_matching
+  new_matching = inverted_matching
   new_matching[:conflict] = students.map { |s| s[:athena] } - matching.keys
-  new_proposal.create_student_assignments new_matching
+  new_proposal.create_assignments new_matching
 end
 
 def sucky_times(section_size, days, students)
@@ -230,7 +221,7 @@ def sucky_times(section_size, days, students)
         end
       end
     end
-  end  
+  end
 
   pp mm_length
   pp mm_times

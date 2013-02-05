@@ -1,20 +1,19 @@
-<!-- recitation_sections/index -->
 <div class="full_section">
 
 	<div style="z-index: 10; float: right; width: 275; text-align: left;">
-    <h3> 
+    <h3>
 			<%= link_to 'New', new_recitation_section_path %>
 		</h3>
     <h3>
-      <%= link_to 'Auto-Assignment', recitation_assignment_proposals_path %>
+      <%= link_to 'Auto-Assignment', recitation_partitions_path %>
     </h3>
 	</div>
 	<h1 class="full_section" style="margin-right: 100px; ">
 		Recitation Sections
 	</h1>
-	
+
 	<span class="validation-errors"></span>
-	
+
 	<table>
 	  <tr>
 	    <th style="text-align: left; width: 75px;">Serial</th>
@@ -24,9 +23,9 @@
 	    <th style="text-align: left; width: 150px;"># Students</th>
 	    <th style="text-align: left; width: 180px;"></th>
 	  </tr>
-	
+
 	  <% @recitation_sections.each do |recitation_section| %>
-	  <tr> 
+	  <tr>
 	    <td><%= best_in_place recitation_section, :serial, type: :input %></td>
 	    <td><%= best_in_place recitation_section, :leader_id, type: :select,
 		              collection: recitation_leaders.each.map { |l| [l.id, l.name()] } %></td>
@@ -36,6 +35,6 @@
 	    <td><%= link_to "Edit", recitation_section %></td>
 	  </tr>
 	  <% end %>
-	
+
 	</table>
 </div>

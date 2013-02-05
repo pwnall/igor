@@ -19,17 +19,19 @@
         <td style="text-align: left; width: 300px;">Date Created</td>
 		  </tr>
 		</thead>
-  
+
 		<tbody>
-			<% for @p in @proposals %>
+			<% for partition in @partitions %>
 			  <tr>
-          <td><%= @p.recitation_size %></td>
-          <td><%= @p.number_of_recitations %></td>
-          <td><%= @p.number_of_conflicts %></td>
-          <td><%= @p.created_at.strftime "%B %d, %Y %I:%M%p" %></td>
-          <td><%= link_to 'Show', @p %></td>
-          <td><%= link_to 'Destroy', @p,
-                      :confirm => 'Are you sure?', :method => :delete %></td>
+          <td><%= partition.section_size %></td>
+          <td><%= partition.section_count %></td>
+          <td><%= partition.conflict_count %></td>
+          <td><%= partition.created_at.strftime "%B %d, %Y %I:%M%p" %></td>
+          <td><%= link_to 'Show', partition %></td>
+          <td>
+            <%= link_to 'Destroy', partition, confirm: 'Are you sure?',
+                                              method: :delete %>
+          </td>
 			  </tr>
 			<% end %>
 		</tbody>
