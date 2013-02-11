@@ -18,10 +18,11 @@
 	  <tr>
 	    <th style="text-align: left; width: 75px;">Serial</th>
 	    <th style="text-align: left; width: 150px;">Leader</th>
-	    <th style="text-align: left; width: 150px;">Time</th>
-	    <th style="text-align: left; width: 150px;">Location</th>
-	    <th style="text-align: left; width: 150px;"># Students</th>
-	    <th style="text-align: left; width: 180px;"></th>
+	    <th style="text-align: left; width: 135px;">Time</th>
+	    <th style="text-align: left; width: 135px;">Location</th>
+      <th style="text-align: left; width: 135px;"># Students</th>
+      <th style="text-align: left;"></th>
+      <th style="text-align: left;"></th>
 	  </tr>
 
 	  <% @recitation_sections.each do |recitation_section| %>
@@ -33,6 +34,8 @@
 	    <td><%= best_in_place recitation_section, :location, type: :input %></td>
       <td><%= recitation_section.users.length %></td>
 	    <td><%= link_to "Edit", recitation_section %></td>
+      <td><%= link_to 'Destroy', recitation_section,
+	                :confirm => 'Are you sure?', :method => :delete %></td>
 	  </tr>
 	  <% end %>
 
