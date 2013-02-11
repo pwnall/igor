@@ -3,7 +3,7 @@ var GradeEditor = {};
 
 /**
  * Toggles DOM classes in an indicator container to reflect an event.
- * 
+ *
  * @param indicators DOM element containing the indicator images
  * @param activeClass the indicator class that will be shown
  * @param temporary if true, the indicator will be hidden after a bit of time
@@ -44,7 +44,7 @@ GradeEditor.onBlur = function (event) {
 GradeEditor.onFocus = function (event) {
   var target = $(event.target);
   target.attr('data-old-value', target.val());
-  
+
   target.parents('tr').first().addClass('focused');
 };
 
@@ -52,7 +52,7 @@ GradeEditor.onFocus = function (event) {
 GradeEditor.onKeyDown = function (event) {
   if (event.which === 13) {
     event.preventDefault();
-    
+
     var table = $(event.target).parents('table').first();
     var fields = [];
     var myIndex = null;
@@ -100,7 +100,7 @@ GradeEditor.onSearchChange = function(event) {
     return;
   }
   GradeEditor.onSearchChange.oldNameFilter = nameFilter;
-  
+
   var table = search.parents('table').first();
   $('tr[data-subject-name]', table).each(function (index, e) {
     var element = $(e);
@@ -117,20 +117,20 @@ GradeEditor.onSearchChange.oldNameFilter = "";
 
 /** Wires event listeners into the DOM. */
 GradeEditor.onLoad = function () {
-  $('table.grades-table input[type=number]').live('blur', GradeEditor.onBlur);
-  $('table.grades-table input[type=number]').live('focus', GradeEditor.onFocus);
-  $('table.grades-table input[type=number]').live('keydown',
-                                                  GradeEditor.onKeyDown);
-  $('table.grades-table input[type=search]').bind('change',
-                                                  GradeEditor.onSearchChange);
-  $('table.grades-table input[type=search]').bind('textInput',
-                                                  GradeEditor.onSearchChange);
-  $('table.grades-table input[type=search]').bind('input',
-                                                  GradeEditor.onSearchChange);
-  $('table.grades-table input[type=search]').bind('keydown',
-                                                  GradeEditor.onSearchChange);
-  $('table.grades-table form').live('ajax:success', GradeEditor.onAjaxSuccess);
-  $('table.grades-table form').live('ajax:error', GradeEditor.onAjaxError);
+  $('table.grades-table input[type=number]').on('blur', GradeEditor.onBlur);
+  $('table.grades-table input[type=number]').on('focus', GradeEditor.onFocus);
+  $('table.grades-table input[type=number]').on('keydown',
+                                                GradeEditor.onKeyDown);
+  $('table.grades-table input[type=search]').on('change',
+                                                GradeEditor.onSearchChange);
+  $('table.grades-table input[type=search]').on('textInput',
+                                                GradeEditor.onSearchChange);
+  $('table.grades-table input[type=search]').on('input',
+                                                GradeEditor.onSearchChange);
+  $('table.grades-table input[type=search]').on('keydown',
+                                                GradeEditor.onSearchChange);
+  $('table.grades-table form').on('ajax:success', GradeEditor.onAjaxSuccess);
+  $('table.grades-table form').on('ajax:error', GradeEditor.onAjaxError);
   $('table.grades-table tbody tr').each(function (index, row) {
     GradeEditor.redoSummary(row);
   });
