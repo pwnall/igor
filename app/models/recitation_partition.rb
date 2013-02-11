@@ -35,8 +35,8 @@ class RecitationPartition < ActiveRecord::Base
 
   #
   def create_assignments(inverted_matching)
-    sections = course.recitation_sections.all
-    users = course.users.includes(:profiles).all
+    sections = RecitationSection.where(course_id: course.id).all
+    users = course.users.includes(:profile).all
 
     inverted_matching.each do |section_number, athena_ids|
       athena_ids.each do |athena_id|
@@ -47,7 +47,7 @@ class RecitationPartition < ActiveRecord::Base
           section_time =
               section_number > 12 ? section_number - 12 : section_number
           section = sections.find do |s|
-            /^[a-z]+#{section_time}$/ =~ s.time
+            /^[a-zA-Z]+#{section_time}$/ =~ s.time
           end
         end
 
