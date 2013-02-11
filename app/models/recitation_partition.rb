@@ -35,7 +35,7 @@ class RecitationPartition < ActiveRecord::Base
 
   # Build RecitationAssignment records for a computed matching.
   def create_assignments(inverted_matching)
-    sections = course.recitation_sections.all
+    sections = RecitationSection.where(course_id: course.id).all
     users = course.users.includes(:profile).all
 
     inverted_matching.each do |section_number, athena_ids|
