@@ -65,6 +65,7 @@ class RecitationSectionsController < ApplicationController
   def create_update
     @is_new_record = @recitation_section.new_record?
     if @is_new_record
+      @recitation_section.course = Course.main
       success = @recitation_section.save
     else
       success = @recitation_section.update_attributes params[:recitation_section]
