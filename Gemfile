@@ -1,14 +1,14 @@
 source :rubygems
 ruby '1.9.3'
 
-gem 'rails', '>= 3.2.11'
+gem 'rails', '>= 3.2.12'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2', '>= 0.3.11'
 
-gem 'json', '>= 1.7.6'
+gem 'json', '>= 1.7.7'
 
 # Use unicorn as the web server
 # gem 'unicorn'
