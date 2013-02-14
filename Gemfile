@@ -34,8 +34,8 @@ gem 'validates_timeliness', '>= 3.0.14'
 # Background processing.
 gem 'daemonz', '>= 0.3.9'
 gem 'daemons'  # Required by delayed_job.
-gem 'delayed_job', '>= 3.0.4'
-gem 'delayed_job_active_record', '>= 0.3.3'  # Required by delayed_job.
+gem 'delayed_job', '>= 3.0.5'
+gem 'delayed_job_active_record', '>= 0.4.1'  # Required by delayed_job.
 
 # PDF cover sheets.
 gem 'prawn', '~> 0.12.0'
