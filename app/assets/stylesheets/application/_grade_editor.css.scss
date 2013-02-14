@@ -10,14 +10,20 @@ table.grades-table {
     overflow: auto;
 
     tr:hover {
-      background-color: change-color(#F5DCCC, $lightness: 95%);
+      background-color: change-color(#F5DCCC, $lightness: 98%);
     }
     tr.focused {
-      background-color: change-color(#F5DCCC, $lightness: 90%);
+      background-color: change-color(#F5DCCC, $lightness: 96%);
     }
     tr.hidden {
       display: none;
     }
+  }
+  th[scope=col] {
+    font-weight: 600;
+  }
+  th[scope=row] {
+    font-weight: 400;
   }
   th, td {
     white-space: nowrap;
@@ -28,10 +34,10 @@ table.grades-table {
     input[type=number] {
       width: 3em;
       text-align: right;
-      border: 1px solid #999999;
+      background-color:  hsl(0deg, 0%, 100%);
     }
     .max-points {
-      color: #666666;
+      font-weight: 300;
     }
   }
 }

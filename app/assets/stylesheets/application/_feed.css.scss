@@ -1,160 +1,81 @@
 h2.feed-header { display: none; }
 
 .feed-item {
-	margin: 8px 0 12px 0;
+	margin: 8px 0 6px 0;
 	padding: 0 0 0 24px;
 	overflow: hidden;
 	position: relative;
 	min-height: 20px;
-}
-.feed-item .author img {
-	position: absolute;
-	left: 0px;
-}
-.feed-item .action-bar {
-	clear: both;
+  .author img {
+    position: absolute;
+    left: 0px;
+    border-radius: 2px;
+  }
+  .action-bar {
+    clear: both;
+  }
+
+
+  .headline {
+    margin: 0;
+    padding: 0;
+    font-size: 12pt;
+    font-weight: 400;
+    color: hsl(0deg, 0%, 0%);
+
+    h4 {
+      margin: 0;
+      padding: 0;
+      font-size: 12pt;
+      font-weight: 400;
+      color: hsl(0deg, 0%, 0%);
+    }
+    .author {
+      font-weight: bold;
+    }
+  }
+
+  // Story.
+  > p {
+    margin: 0;
+    padding: 0;
+    font-size: 12pt;
+    font-weight: 300;
+  }
+  .footer {
+    margin: 0 0 4px 0;
+    padding: 0;
+    font-size: 12pt;
+    font-weight: 200;
+    p {
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+    }
+    ul.actions {
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+      font-weight: 400;
+      li {
+        display: inline-block;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  // Replies.
+  .replies {
+    margin: 0;
+    padding: 0;
+
+    .feed-item {
+      margin: 2px 0 4px 0;
+    }
+  }
 }
 
-/* Headline. */
-.feed-item .headline {
-	margin: 0;
-	padding: 0;
-	font-size: 12pt;
-	font-weight: normal;
-	color: #000000;
-}
-.feed-item h4 {
-	margin: 0;
-	padding: 0;
-	font-size: 11pt;
-	font-weight: normal;
-	color: #000000;
-}
-.feed-item .author {
-	font-weight: bold;
-}
 
-/* Story. */
-.feed-item p {
-	margin: 0;
-	padding: 0;
-	color: #595959;
-}
-.feed-item .footer {
-	font-size: 11pt;
-	overflow: hidden;
-}
-.feed-item .footer p {
-  float: left;
-	color: #A6A6A6;
-}
-.feed-item ul.actions {
-	float: left;
-	margin: 0;
-	padding: 0;
-}
-.feed-item .actions li {
-	float: left;
-	list-style-type: none;
-	margin: 0;
-	padding: 0 0 0 10px;
-	background: transparent;
-}
 
-/* Replies. */
-.feed-item .replies {
-	margin: 0;
-	padding: 0;
-}
-.feed-item .replies .feed-item {
-	margin: 2px 0 4px 0;
-}
-
-/* New item. */
-.new-feed-item {
-  margin: 10px 0 20px;
-  padding: 0;
-}
-.new-feed-item-type-selector {
-  overflow: hidden;
-	padding: 4px 0 4px 0;
-  border: 1px solid #EABA99;
-  border-radius: 3px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  box-shadow: inset 0px 1px 2px #F4DCCC;
-  -moz-box-shadow: inset 0px 1px 2px #F4DCCC;
-  -webkit-box-shadow: inset 0px 1px 2px #F4DCCC;
-}
-
-.new-feed-item h2 {
-	float: left;
-	margin: 0;
-	padding: 1px 8px 1px 4px;
-  color: #3F1900;
-  font: inherit;
-  font-size: 13pt;
-  font-weight: inherit;
-}
-.new-feed-item-type-selector ul {
-  margin: 0;
-	padding: 0;
-	float: left;
-	font-size: 13pt;
-}
-.new-feed-item-type-selector ul li {
-	float: left;
-	list-style-type: none;
-  margin: 0 2px;
-	padding: 0 4px;
-  border: 1px solid #EABA99;
-  border-radius: 6px;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  box-shadow: 0px 1px 2px #F4DCCC;
-  -moz-box-shadow: 0px 1px 2px #F4DCCC;
-  -webkit-box-shadow: 0px 1px 2px #F4DCCC;
-}
-.new-feed-item-type-selector ul li:hover {
-  background-color: #F4DCCC;
-}
-.new-feed-item-type-selector ul a, .new-feed-item-type-selector ul a:visited {
-	color: #3F1900;
-}
-.new-feed-item-type-selector ul a:hover,
-    .new-feed-item-type-selector ul a:active {
-	color: #3F1900;
-	text-decoration: none;
-}
-
-.new-feed-item-form-container {
-	margin: 0 3px;
-  padding: 8px 8px 6px 8px;
-  border: 1px solid #EABA99;
-	border-top: none;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  -moz-border-radius-bottomleft: 3px;
-  -moz-border-radius-bottomright: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-
-  box-shadow: inset 0px 1px 2px #F4DCCC;
-  -moz-box-shadow: inset 0px 1px 2px #F4DCCC;
-  -webkit-box-shadow: inset 0px 1px 2px #F4DCCC;
-  overflow: hidden;
-}
-.new-feed-item-form-container:empty {
-  padding: 0;
-	border: none;
-}
-.new-feed-item-form-container .privacy-policy {
-	float: left;
-	margin: 4px 0 0 0;
-	padding: 4px 0 0 0;
-  color: #652900;
-}
-.new-feed-item-form-container input[type=submit] {
-	margin: 4px 0 0 0;
-	float: right;
-}

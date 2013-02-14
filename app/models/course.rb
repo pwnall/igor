@@ -24,8 +24,10 @@ class Course < ActiveRecord::Base
   # The contact e-mail for course staff.
   validates :email, length: 1..64, presence: true
   # True if the course has recitation sections.
-  validates :has_recitations, inclusion: { in: [true, false], allow_nil: false }
-  validates :section_size, numericality: { only_integer: true, greater_than: 0 }
+  validates :has_recitations, inclusion: { in: [true, false],
+                                           allow_nil: false }
+  validates :section_size, numericality: { only_integer: true,
+                                           greater_than: 0 }
   # True if the course has homework surveys.
   validates :has_surveys, inclusion: { in: [true, false], allow_nil: false }
   # True if the course has homework teams.
