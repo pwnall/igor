@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id         :integer          not null, primary key
+#  exuid      :string(32)       not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  admin      :boolean          default(FALSE), not null
+#
+
 # An user account.
 class User < ActiveRecord::Base
   include Authpwn::UserModel
@@ -253,15 +264,3 @@ class User
     return nil
   end
 end
-
-# == Schema Information
-#
-# Table name: users
-#
-#  id         :integer(4)      not null, primary key
-#  exuid      :string(32)      not null
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
-#  admin      :boolean(1)      default(FALSE), not null
-#
-

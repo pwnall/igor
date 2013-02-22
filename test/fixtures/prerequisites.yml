@@ -1,0 +1,23 @@
+# == Schema Information
+#
+# Table name: prerequisites
+#
+#  id                  :integer          not null, primary key
+#  course_id           :integer          not null
+#  prerequisite_number :string(64)       not null
+#  waiver_question     :string(256)      not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+math:
+  course: main
+  prerequisite_number: "6.042"
+  waiver_question: "What is your mathematics background?"
+
+python:
+  course: main
+  prerequisite_number: "6.01"
+  waiver_question: "What is your experience with Python?"

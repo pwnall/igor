@@ -1,0 +1,32 @@
+# == Schema Information
+#
+# Table name: deliverables
+#
+#  id            :integer          not null, primary key
+#  assignment_id :integer          not null
+#  file_ext      :string(16)       not null
+#  name          :string(80)       not null
+#  description   :string(2048)     not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+ps1_writeup:
+  assignment: ps1
+  name: PDF Write-Up
+  description: "Your team's write-up for PS1, in PDF format."
+  file_ext: ps1.pdf
+
+project_writeup:
+  assignment: project
+  name: PDF Write-Up
+  description: "Your team's write-up for the final project, in PDF format."
+  file_ext: project.pdf
+
+assessment_writeup:
+  assignment: assessment
+  name: PDF Write-Up
+  description: "Your self-assessment, in PDF format."
+  file_ext: assessment.pdf

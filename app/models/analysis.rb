@@ -2,13 +2,13 @@
 #
 # Table name: analyses
 #
-#  id            :integer(4)      not null, primary key
-#  submission_id :integer(4)      not null
-#  score         :integer(4)
-#  log           :text(16777215)  default(""), not null
-#  created_at    :datetime        not null
-#  updated_at    :datetime        not null
-#  status_code   :integer(4)      not null
+#  id            :integer          not null, primary key
+#  submission_id :integer          not null
+#  status_code   :integer          not null
+#  score         :integer
+#  log           :text(16777215)   default(""), not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 
 # The result of analyzing a Submission. 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121113031717) do
+ActiveRecord::Schema.define(:version => 20121102010631) do
 
   create_table "analyses", :force => true do |t|
     t.integer  "submission_id",                     :null => false
@@ -243,13 +243,14 @@ ActiveRecord::Schema.define(:version => 20121113031717) do
   create_table "submissions", :force => true do |t|
     t.integer  "deliverable_id", :null => false
     t.integer  "db_file_id",     :null => false
+    t.integer  "subject_id",     :null => false
+    t.string   "subject_type",   :null => false
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
-    t.integer  "subject_id"
-    t.string   "subject_type"
   end
 
   add_index "submissions", ["deliverable_id", "updated_at"], :name => "index_submissions_on_deliverable_id_and_updated_at"
+  add_index "submissions", ["subject_id", "subject_type", "deliverable_id"], :name => "index_submissions_on_subj_id_and_subj_type_and_deliv_id", :unique => true
   add_index "submissions", ["updated_at"], :name => "index_submissions_on_updated_at"
 
   create_table "survey_answers", :force => true do |t|

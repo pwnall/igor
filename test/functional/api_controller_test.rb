@@ -6,11 +6,11 @@ class ApiControllerTest < ActionController::TestCase
     info = info.sort_by { |student| student['athena'] }
     
     golden_dexter = {"athena"=>"genius", "credit"=>true, "conflicts"=>
-      [{"timeslot" => 130, "class" => "6.001"},
-       {"timeslot" => 132, "class" => "6.002"},
-       {"timeslot" => 134, "class" => "6.006"},
+      [{"timeslot" => 132, "class" => "6.002"},
+       {"timeslot" => 142, "class" => "6.002"},
+       {"timeslot" => 130, "class" => "6.001"},
        {"timeslot" => 140, "class" => "6.001"},
-       {"timeslot" => 142, "class" => "6.002"}]       
+       {"timeslot" => 134, "class" => "6.006"}]
     }    
     assert_equal info.first, golden_dexter, "Dexter's conflict information"    
   end

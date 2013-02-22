@@ -2,15 +2,15 @@
 #
 # Table name: analyzers
 #
-#  id             :integer(4)      not null, primary key
-#  deliverable_id :integer(4)      not null
-#  type           :string(32)      not null
-#  auto_grading   :boolean(1)      default(FALSE), not null
+#  id             :integer          not null, primary key
+#  deliverable_id :integer          not null
+#  type           :string(32)       not null
+#  auto_grading   :boolean          default(FALSE), not null
 #  exec_limits    :text
-#  db_file_id     :integer(4)
+#  db_file_id     :integer
 #  message_name   :string(64)
-#  created_at     :datetime        not null
-#  updated_at     :datetime        not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #
 
 # Submission analyzer that calls a method on itself.

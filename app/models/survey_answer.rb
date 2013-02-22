@@ -2,11 +2,11 @@
 #
 # Table name: survey_answers
 #
-#  id            :integer(4)      not null, primary key
-#  user_id       :integer(4)      not null
-#  assignment_id :integer(4)      not null
-#  created_at    :datetime        not null
-#  updated_at    :datetime        not null
+#  id            :integer          not null, primary key
+#  user_id       :integer          not null
+#  assignment_id :integer          not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 
 # A user's response to a set of questions.

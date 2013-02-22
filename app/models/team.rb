@@ -2,11 +2,11 @@
 #
 # Table name: teams
 #
-#  id           :integer(4)      not null, primary key
-#  partition_id :integer(4)      not null
-#  name         :string(64)      not null
-#  created_at   :datetime        not null
-#  updated_at   :datetime        not null
+#  id           :integer          not null, primary key
+#  partition_id :integer          not null
+#  name         :string(64)       not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #
 
 # A team in the class.
@@ -37,7 +37,7 @@ class Team < ActiveRecord::Base
   
   # The submissions of this team.
   def submissions
-    Submission.where(user_id: memberships.map(&:user_id),
+    Submission.where(subject_id: memberships.map(&:user_id), subject_type: "team",
                      deliverable_id: partition.deliverables.map(&:id))
   end
   

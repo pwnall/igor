@@ -8,9 +8,12 @@
 
 # Course.
 
-course = Course.main
+puts 'Starting seeds'
+
+course = Course.new
 course.update_attributes! number: '1.337', title: 'Intro to Pwnage',
-    has_recitations: false, has_surveys: false, has_teams: false
+    has_recitations: false, has_surveys: false, has_teams: false, email: "vic.tor@costan.us",
+    ga_account: "faketest"
 prereq1 = Prerequisite.new prerequisite_number: '6.01',
                            waiver_question: 'Programming experience'
 prereq1.course = course
@@ -20,6 +23,8 @@ prereq2 = Prerequisite.new prerequisite_number: '6.042',
                            waiver_question: 'Math experience'
 prereq2.course = course
 prereq2.save!
+
+puts 'Course created'
 
 # Staff.
 
@@ -49,6 +54,8 @@ admin_registration = Registration.new for_credit: false, allows_publishing: true
 admin_registration.user = admin
 admin_registration.course = course
 admin_registration.save!
+
+puts 'Admin created'
 
 PrerequisiteAnswer.create! registration: admin_registration,
     prerequisite: prereq1, took_course: false,
@@ -92,6 +99,8 @@ names.each_with_index do |name, i|
                      'Bronze medal at IMO 2011, A+ in 18.something'
 end
 
+puts 'Students created'
+
 # Exams.
 
 exam_data = [
@@ -130,6 +139,8 @@ end
     end
   end
 end
+
+puts 'Exams created'
 
 # Psets.
 
@@ -216,7 +227,7 @@ end
       # Submit code.
       code = pset.deliverables.where(file_ext: 'rb').first
       time = pset.deadline - 1.day + i * 1.minute + 30.seconds
-      submission = Submission.create! deliverable: code, subject:m user,
+      submission = Submission.create! deliverable: code, subject: user,
            db_file_attributes: {
              f: fixture_file_upload('submission_files/good_fib.rb',
                                     'application/x-ruby')

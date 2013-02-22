@@ -2,13 +2,13 @@
 #
 # Table name: recitation_sections
 #
-#  id         :integer(4)      not null, primary key
-#  serial     :integer(4)      not null
-#  leader_id  :integer(4)      not null
-#  time       :string(64)      not null
-#  location   :string(64)      not null
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id         :integer          not null, primary key
+#  serial     :integer          not null
+#  leader_id  :integer          not null
+#  time       :string(64)       not null
+#  location   :string(64)       not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 class RecitationSection < ActiveRecord::Base

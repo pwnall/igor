@@ -1,11 +1,10 @@
 # == Schema Information
-# Schema version: 20110429122654
 #
 # Table name: survey_question_memberships
 #
-#  id                 :integer(4)      not null, primary key
-#  survey_question_id :integer(4)      not null
-#  survey_id          :integer(4)      not null
+#  id                 :integer          not null, primary key
+#  survey_question_id :integer          not null
+#  survey_id          :integer          not null
 #  created_at         :datetime
 #
 

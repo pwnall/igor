@@ -8,7 +8,7 @@ class CreateSubmissions < ActiveRecord::Migration
       t.timestamps
     end
     
-    add_index :submissions, [:subject_id, :subject_type, :deliverable_id], unique: true
+    add_index :submissions, [:subject_id, :subject_type, :deliverable_id], unique: true, name: "index_submissions_on_subj_id_and_subj_type_and_deliv_id"
     add_index :submissions, [:deliverable_id, :updated_at], unique: false
     add_index :submissions, :updated_at, unique: false
   end  
