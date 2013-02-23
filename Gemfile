@@ -55,7 +55,7 @@ gem 'mit_stalker', '>= 1.0.4'
 gem 'stellar', '>= 0.3.1'
 
 # UI
-gem 'best_in_place', '>= 2.0.3'
+gem 'best_in_place', '>= 2.1.0'
 
 group :assets do
   gem 'sass-rails', '>= 3.2.6'
