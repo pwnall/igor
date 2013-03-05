@@ -21,15 +21,15 @@ class ScriptAnalyzer < Analyzer
   validates_associated :db_file
   accepts_nested_attributes_for :db_file
   attr_accessible :db_file_attributes
-  
+
   # Database-backed file association, including the file contents.
   def full_db_file
     DbFile.unscoped.where(id: db_file_id).first
   end
-  
+
   # Limits that apply when running the analyzer script.
   store :exec_limits
-  
+
   # Maximum number of seconds of CPU time that the analyzer can use.
   validates :time_limit, presence: true,
       numericality: { only_integer: true, greater_than: 0 }
@@ -41,7 +41,7 @@ class ScriptAnalyzer < Analyzer
       numericality: { only_integer: true, greater_than: 0 }
   store_accessor :exec_limits, :ram_limit
   attr_accessible :ram_limit
-    
+
   # Maximum number of file descriptors that the analyzer can use.
   validates :file_limit, presence: true,
       numericality: { only_integer: true, greater_than: 0 }
@@ -53,7 +53,7 @@ class ScriptAnalyzer < Analyzer
       numericality: { only_integer: true, greater_than: 0 }
   store_accessor :exec_limits, :file_size_limit
   attr_accessible :file_size_limit
-  
+
   # Maximum number of processes that the analyzer can use.
   validates :process_limit, presence: true,
       numericality: { only_integer: true, greater_than: 0 }
@@ -72,7 +72,12 @@ class ScriptAnalyzer < Analyzer
             run_state = run_script manifest, ext_key
             grading = extract_grading run_state, manifest, ext_key
             outcome = extract_outcome run_state, manifest, ext_key
-            update_grades submission, grading if auto_grading?
+            if auto_grading?
+              unless update_grades submission, grading
+                outcome[:status] = :no_analyzer
+                outcome[:log] << "\nThe analyzer issued incorrect grades."
+              end
+            end
             update_submission submission, run_state, outcome
           else
             setup_error submission, 'Unsupported submission file format', :wrong
@@ -83,7 +88,7 @@ class ScriptAnalyzer < Analyzer
       end
     end
   end
-  
+
   # Copies the checker script data into the current directory.
   #
   # This should be run in a temporary directory.
@@ -95,7 +100,7 @@ class ScriptAnalyzer < Analyzer
     File.open package_file.path, 'wb' do |f|
       f.write full_db_file.f.file_contents
     end
-    
+
     Zip::ZipFile.open package_file.path do |zip_file|
       zip_file.each do |f|
         next if f.name.index '..'
@@ -113,7 +118,7 @@ class ScriptAnalyzer < Analyzer
       return nil
     end
     return nil unless manifest.kind_of?(Hash)
-    
+
     # Remove files with names matching the submission files.
     manifest.keys.each do |key|
       next unless key[0] == ?. && manifest[key]['get']
@@ -121,7 +126,7 @@ class ScriptAnalyzer < Analyzer
     end
     manifest
   end
-  
+
   # Copies a submission into the current directory.
   #
   # This should be run in a temporary directory.
@@ -136,7 +141,7 @@ class ScriptAnalyzer < Analyzer
     end
     ext_key
   end
-  
+
   # Creates a grading key and a file containing it.
   #
   # The grading key is created only if the manifest indicates that the analyzer
@@ -149,7 +154,7 @@ class ScriptAnalyzer < Analyzer
       end
     end
   end
-  
+
   # Runs the checker's script, assuming it is in the current directory.
   def run_script(manifest, ext_key)
     connection = ActiveRecord::Base.remove_connection
@@ -162,24 +167,24 @@ class ScriptAnalyzer < Analyzer
             open_files: 10 + file_limit.to_i,
             data: ram_limit.to_i.megabytes
           }
-      
+
       pid = ExecSandbox::Spawn.spawn nice_command + run_command, io, {}, limits
-           
+
       status = ExecSandbox::Wait4.wait4 pid
       log = File.exist?('.log') ? File.read('.log') : 'Program removed its log'
-      
+
       # Force the output to UTF-8 if necessary.
       unless log.valid_encoding? && log.encoding == Encoding::UTF_8
         log.encode! Encoding::UTF_16, invalid: :replace, undef: :replace
         log.encode! Encoding::UTF_8
       end
-      
+
       { log: log, status: status }
     ensure
       ActiveRecord::Base.establish_connection connection || {}
     end
   end
-  
+
   # Extracts the grading output from a script's run result.
   #
   # Returns a hash containing the processed grading information.
@@ -198,7 +203,7 @@ class ScriptAnalyzer < Analyzer
       defaults
     end
   end
-    
+
   # Computes the analysis outcome based on a script's run result.
   def extract_outcome(run_state, manifest, ext_key)
     running_time = run_state[:status][:system_time] + run_state[:status][:user_time]
@@ -223,7 +228,7 @@ END_LOG
     end
     { status: status, log: status_log }
   end
-  
+
   # Update a submission's analysis based on the script's result.
   def update_submission(submission, result, outcome)
     log = result[:log]
@@ -231,13 +236,13 @@ END_LOG
     if log.length >= log_limit
       log = [log[0, log_limit], "\n**Too much output. Truncated.**"].join('')
     end
-    
+
     analysis = submission.analysis
     analysis.log = [log, outcome[:log]].join("\n")
     analysis.status = outcome[:status]
     analysis.save!
   end
-  
+
   # Reports an error that happened before the submission got to run.
   def setup_error(submission, message, status = :no_analyzer)
     analysis = submission.analysis
@@ -245,17 +250,25 @@ END_LOG
     analysis.status = status
     analysis.save!
   end
-  
+
+  # Updates the database with the grades issued by the script.
+  #
+  # @return {Boolean} true if the database is updated; false if validation
+  #   error occurred and grades were not changed
   def update_grades(submission, grading)
     assignment = submission.assignment
+    grades = []
     grading.each do |metric_name, score_fraction|
       metric = assignment.metrics.where(name: metric_name).first
       next unless metric
       grade = metric.grade_for submission.user
       grade.score = score_fraction * metric.max_score
       grade.grader = User.robot
-      grade.save!
+      return false unless grade.valid?
+      grades << grade
     end
+    grades.each(&:save!)
+    true
   end
 
   # The command for nice-ing processes on the current platform.
@@ -264,7 +277,7 @@ END_LOG
   # a process with low scheduler priority.
   def nice_command
     case RUBY_PLATFORM
-    when /darwin/ 
+    when /darwin/
       command = ['nice', '-n', '20']
     when /linux/
       command = ['nice', '--adjustment=20']

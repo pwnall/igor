@@ -31,6 +31,9 @@ gem 'rack-noie', require: 'noie.rb',
 gem 'rmagick', '>= 2.13.2'
 gem 'validates_timeliness', '>= 3.0.14'
 
+# Help stupid bundler with version resolution.
+gem 'rdoc', '~> 3.12'
+
 # Background processing.
 gem 'daemonz', '>= 0.3.9'
 gem 'daemons'  # Required by delayed_job.
