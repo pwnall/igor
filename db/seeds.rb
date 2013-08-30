@@ -6,6 +6,7 @@
 
 puts 'Starting seeds'
 
+Course.destroy_all
 course = Course.new
 course.update_attributes! number: '1.337', title: 'Intro to Pwnage',
     has_recitations: false, has_surveys: false, has_teams: false, email: "vic.tor@costan.us",

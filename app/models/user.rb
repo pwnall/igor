@@ -175,9 +175,15 @@ class User
   def self.find_all_by_query!(query)
     query.gsub!(/ \[.*/, '')
     sql_query = '%' + query.strip + '%'
-    matching_profiles = Profile.where('(name LIKE ?) OR (athena_username LIKE ?)', sql_query, sql_query).includes(:user).all
-    unscored_users = Credentials::Email.where('name LIKE ?', sql_query).includes(user: :profile).map(&:user) | matching_profiles.map { |i| i.user }
-    unscored_users.map { |u| [u.query_score(query), u] }.sort_by { |v| [-v[0], v[1].name] }[0, 10].map(&:last)
+    matching_profiles = Profile.
+        where('(name LIKE ?) OR (athena_username LIKE ?)', sql_query,
+              sql_query).
+        includes(:user).all
+    unscored_users = Credentials::Email.where('name LIKE ?', sql_query).
+        includes(user: :profile).map(&:user) |
+        matching_profiles.map { |i| i.user }
+    unscored_users.map { |u| [u.query_score(query), u] }.
+        sort_by { |v| [-v[0], v[1].name] }[0, 10].map(&:last)
   end
 
   def self.find_first_by_query!(query)
