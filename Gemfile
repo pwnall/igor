@@ -46,8 +46,6 @@ gem 'stellar', '>= 0.3.1'
 # UI
 gem 'best_in_place', '>= 2.1.0'
 
-# Remn
-
 # Help bundler do gem resolution.
 gem 'rdoc', '~> 3.12'
 

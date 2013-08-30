@@ -158,7 +158,7 @@ module RecitationAssigner
     recitation_assignments = self.assignment course.section_size, days, times,
                                              students
     inverted_matching = self.inverted_assignment recitation_assignments
-    RecitationAssignmentMailer.recitation_assignment_email(requester.email,
+    RecitationAssignmentMailer.recitation_assignment_email(user.email,
         recitation_assignments, inverted_matching, students, root_url).deliver
 
     partition = RecitationPartition.create course: course,
