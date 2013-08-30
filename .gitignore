@@ -11,6 +11,7 @@ tmp
 *.sw*
 .pydevproject
 .DS_Store
+.AppleDouble
 
 # Production configuration.
 config/rails_pwnerer

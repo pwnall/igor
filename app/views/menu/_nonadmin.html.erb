@@ -14,3 +14,8 @@
   <%= link_to 'Surveys', root_path(:flavor => :survey_answer) %>
 </li>
 <% end %>
+<% if Course.main.has_teams %>
+<li>
+  <%= link_to 'Teams', teams_student_path %>
+</li>
+<% end %>

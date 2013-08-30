@@ -1,0 +1,144 @@
+
+<h1>Student view for the teams</h1>
+
+<% if !@team_memberships.nil? %>
+<h4>Current Teams</h4>
+<table>
+  <tr>
+    <th>Partition Name</th>
+    <th>Team Name</th>
+    <th>Min / Max size</th>
+    <th>Leave Team?</th>
+		<th>Invite (athena)</th>
+		<th></th>
+    <th>Members</th>
+  </tr>
+<% @team_memberships.each do |team_membership| %>
+  <tr>
+      <% @team = Team.find_by_id(team_membership.team_id) %>
+      <% @partition = TeamPartition.find_by_id(@team.partition_id) %>
+      <% @friend_memberships = TeamMembership.where(:team_id => @team.id) %>
+    <td>
+      <%= @partition.name %>
+    </td>
+    <td>
+      <%= @team.name %>
+    </td>
+    <td>
+      <% min = @team.min_size %>
+      <% if min.nil? %>
+      <% min = 0 %>
+      <% end %>
+      <% max = @team.max_size %>
+      <% if max.nil? %>
+      <% max = 1.0/0.0%>
+      <% end %>
+      <%= min.to_s + " / " + max.to_s %>
+    </td>
+    <td>
+      <% if @partition.editable %>
+      <%= button_to "Leave Team", { :action => "leave_team", :id => @team.id },
+        :confirm => "Are you sure?", :method => :post %>
+      <% else %>
+      <span style="background-color: gray">TEAM FINAL</span>
+      <% end %>
+    </td>
+    <% if @partition.editable %>
+        <% if @team.size >= @team.max_size %>
+        <td><span style="background-color: gray">Team at max</span></td>
+        <td><span style="background-color: gray"></span></td>
+        <% else %>
+		    <td>		
+	        <%= form_tag("/teams_student/invite_member") do -%>
+          <%= text_field_tag 'athena', nil, :placeholder => 'bbitdiddle', :size => 10 %>
+			    <%= hidden_field_tag 'team_id', @team.id %>
+        </td>
+        <td>
+          <%= button_to "Invite", :action => "invite_member" %>
+			    <% end -%>
+		    </td>
+        <% end %>
+        <% else %>
+    <td><span style="background-color: gray">TEAM FINAL</span></td>
+    <td><span style="background-color: gray">TEAM FINAL</span></td>
+    <% end %>
+      <% @friend_memberships.each do |friend_membership| %> 
+      <% if friend_membership != team_membership %>
+      <% @friend = User.find_by_id(friend_membership.user_id) %>
+      <% @profile = Profile.find_by_user_id(@friend.id) %>
+    <td>
+      <%= @profile.name %>
+    </td>
+    
+    <% end %>
+    <% end %>
+  </tr>
+<% end %>
+<% else %>
+<h4>You are associated with no teams.</h4>
+<% end %>
+</table>
+<br />
+<br />
+<% if !@partitions_without_team_membership.nil? %>
+<h4>Partitions you don't have a team for:</h2>
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+  <% @partitions_without_team_membership.each do |part| %>
+  <% if part.editable %>
+  <tr>
+    <td>
+      <%= part.name %>
+    </td>
+    <td>
+	  	<%= form_tag("/teams_student/create_team") do -%>
+      <%= text_field_tag ('name' + part.id.to_s), nil, :placeholder => 'Team Awesome' %>
+			<%= hidden_field_tag 'part_id', part.id %>
+    </td>
+    <td>
+      <%= button_to "Create Team", :action => "create_team" %>
+			<% end -%>
+		</td>
+  </tr>
+  <% end %>
+  <% end %>
+</table>
+<% end %>
+<br />
+<br />
+
+<% if !@invitations.nil? && !@invitations.first.nil? %>
+<h4>Invitations</h2>
+<table>
+  <tr>
+    <th>Inviter Name</th>
+    <th>Team Name</th>
+    <th>Partition Name</th>
+    <th></th>
+    <th></th>
+  </tr>
+  <% @invitations.each do |inv| %>
+  <tr>
+    <td><%= Profile.find_by_user_id(inv.inviter_id).name %></td>
+    <td><%= Team.find_by_id(inv.team_id).name %></td>
+    <td><%= TeamPartition.find_by_id(Team.find_by_id(inv.team_id).partition_id).name %></td>
+    <td>
+	  	<%= form_tag("/teams_student/accept_invitation") do -%>
+			<%= hidden_field_tag 'invitation_id', inv.id %>
+      <%= button_to "Join Team", :action => "accept_invitation" %>
+			<% end -%>
+		</td>
+    <td>
+	  	<%= form_tag("/teams_student/ignore_invitation") do -%>
+			<%= hidden_field_tag 'invitation_id', inv.id %>
+      <%= button_to "Ignore", :action => "ignore_invitation" %>
+			<% end -%>
+    </td>
+  </tr>
+  <% end %>
+</table>
+<% else %>
+<h4>You don't have any pending invitations.</h4>
+<% end %>

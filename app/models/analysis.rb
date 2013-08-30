@@ -31,7 +31,7 @@ class Analysis < ActiveRecord::Base
   
   # True if the given user is allowed to see the analysis.
   def can_read?(user)
-    user && (user == submission.user || user.admin?)
+    user && (user == submission.subject || user.admin?)
   end  
 end
 

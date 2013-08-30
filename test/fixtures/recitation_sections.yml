@@ -1,0 +1,26 @@
+# == Schema Information
+#
+# Table name: recitation_sections
+#
+#  id         :integer          not null, primary key
+#  serial     :integer          not null
+#  leader_id  :integer          not null
+#  time       :string(64)       not null
+#  location   :string(64)       not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+#one:
+#  serial: 1
+#  leader_id: 1
+#  time: MyString
+#  location: MyString
+#
+#two:
+#  serial: 1
+#  leader_id: 1
+#  time: MyString
+#  location: MyString

@@ -65,7 +65,7 @@ class FeedItem
   def self.add_submissions(items, user, options)
     user.connected_submissions.each do |submission|
       item = FeedItem.new time: submission.updated_at,
-          author: submission.user, flavor: :submission,
+          author: submission.subject, flavor: :submission,
           headline: "submitted a #{submission.deliverable.name} for " +
                     submission.deliverable.assignment.name,
           contents: number_to_human_size(submission.db_file.f.size) +

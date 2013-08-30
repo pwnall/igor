@@ -18,7 +18,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1
   def show
     @assignment = Assignment.find params[:id]
-
+    puts 'inside show'
     respond_to do |format|
       format.html  # show.html.erb
     end
@@ -27,7 +27,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1/dashboard
   def dashboard
     @assignment = Assignment.where(:id => params[:id]).
-        includes(:deliverables, :submissions => :user).first
+        includes(:deliverables, :submissions => :subject).first
     @recitation_sections = RecitationSection.all
         
     respond_to do |format|

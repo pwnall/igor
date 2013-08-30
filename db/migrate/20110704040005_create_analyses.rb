@@ -5,7 +5,7 @@ class CreateAnalyses < ActiveRecord::Migration
       t.integer :status_code, null: false
       t.integer :score, null: true
       
-      t.text :log, limit: 64.kilobytes, null: false, default: ''
+      t.text :log, limit: 64.kilobytes, null: false
 
       t.timestamps
     end

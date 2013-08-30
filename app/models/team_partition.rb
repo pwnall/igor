@@ -9,6 +9,8 @@
 #  published  :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  min_size   :integer
+#  max_size   :integer
 #
 
 # A partitioning of students into teams.

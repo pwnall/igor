@@ -13,51 +13,52 @@ class PrerequisitesControllerTest < ActionController::TestCase
   end
 
   test "admin should create prerequisite" do
-    session[:user_id] = users(:admin).id
+    set_session_current_user users(:admin)
     assert_difference('Prerequisite.count') do
-      post :create, :prerequisite => { :course_number => '6.042',
-          :waiver_question => 'What is your math experience?' }
+      post :create, :prerequisite => { :prerequisite_number => '6.041', 
+        :waiver_question => 'What is your probability experience?' }
     end
 
     assert_redirected_to prerequisites_path
   end
   
   test "user should not create prerequisite" do
-    session[:user_id] = users(:dexter).id
+    set_session_current_user users(:dexter)
     assert_no_difference 'Prerequisite.count' do
-      post :create, :prerequisite => { :course_number => '6.042',
+      post :create, :prerequisite => { :prerequisite_number => '6.042',
           :waiver_question => 'What is your math experience?' }
     end
   end
 
   test "should show prerequisite" do
-    get :show, :id => prerequisites(:math).to_param, :format => 'xml'
+    set_session_current_user users(:dexter)
+    get :show, :id => prerequisites(:math).to_param
     assert_response :success
   end  
 
   test "should get edit" do
-    session[:user_id] = users(:admin).id    
+    set_session_current_user users(:admin)
     get :edit, :id => prerequisites(:math).to_param
     assert_response :success
   end
 
   test "admin should update prerequisite" do
-    session[:user_id] = users(:admin).id    
+    set_session_current_user users(:admin)   
     put :update, :id => prerequisites(:math).to_param, 
-                 :prerequisite => { :course_number => '6.042J' }
+                 :prerequisite => { :prerequisite_number => '6.042J' }
     assert_redirected_to prerequisites_path
-    assert_equal '6.042J', prerequisites(:math).reload.course_number
+    assert_equal '6.042J', prerequisites(:math).reload.prerequisite_number
   end
 
   test "user should not update prerequisite" do
-    session[:user_id] = users(:dexter).id    
+    set_session_current_user users(:dexter)  
     put :update, :id => prerequisites(:math).to_param, 
-                 :prerequisite => { :course_number => '6.042J' }
-    assert_equal '6.042', prerequisites(:math).reload.course_number
+                 :prerequisite => { :prerequisite_number => '6.042J' }
+    assert_equal '6.042', prerequisites(:math).reload.prerequisite_number
   end
 
   test "should destroy prerequisite" do
-    session[:user_id] = users(:admin).id
+    set_session_current_user users(:admin)
     assert_difference('Prerequisite.count', -1) do
       delete :destroy, :id => prerequisites(:math).to_param
     end
@@ -66,7 +67,8 @@ class PrerequisitesControllerTest < ActionController::TestCase
   end
 
   test "user should not destroy prerequisite" do
-    session[:user_id] = users(:dexter).id
+    set_session_current_user users(:dexter)
+
     assert_no_difference 'Prerequisite.count' do
       delete :destroy, :id => prerequisites(:math).to_param
     end

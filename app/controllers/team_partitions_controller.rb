@@ -91,4 +91,46 @@ class TeamPartitionsController < ApplicationController
       format.html { redirect_to(team_partitions_url) }
     end
   end
+  
+  def unlock
+    team_partition = TeamPartition.find(params[:id])
+    team_partition.editable = true
+    team_partition.save
+    
+    respond_to do |format|
+      format.html { redirect_to :action => 'show', :id => params[:id] }
+    end
+  end
+  
+  def lock
+    team_partition = TeamPartition.find(params[:id])
+    team_partition.editable = false
+    team_partition.save
+    
+    respond_to do |format|
+      format.html { redirect_to :action => 'show', :id => params[:id] }
+    end
+  end
+  
+  def view_problem
+    id = params[:id]
+    part = TeamPartition.find_by_id(id)
+    
+    if !part.min_size.nil?
+      @toosmall = Team.where(:partition_id => id) 
+      @toosmall = @toosmall.reject {|t| t.size >= part.min_size }
+    end
+    if !part.max_size.nil?
+      @toobig = Team.where(:partition_id => id) 
+      @toobig = @toobig.reject {|t| t.size <= part.max_size }
+    end
+    
+    @nonassigned = User.where(:admin => false) 
+    @nonassigned = @nonassigned.reject {|t| t.team_in_partition(id) != nil}
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+  
 end

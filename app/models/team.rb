@@ -31,9 +31,13 @@ class Team < ActiveRecord::Base
   # The grades assigned to this team.
   has_many :grades, dependent: :destroy, as: :subject
   
+  
+  has_many :submissions, dependent: :destroy, inverse_of: :subject, as: :subject
+  
+  
   # The submissions of this team.
   def submissions
-    Submission.where(user_id: memberships.map(&:user_id),
+    Submission.where(subject_id: memberships.map(&:user_id), subject_type: "team",
                      deliverable_id: partition.deliverables.map(&:id))
   end
   
@@ -41,4 +45,34 @@ class Team < ActiveRecord::Base
   def can_edit?(user)
     user.admin?
   end
+  
+  def size
+    TeamMembership.count(:conditions => ["team_id = ?", self.id])
+  end
+  
+  def min_size
+    min = TeamPartition.find_by_id(self.partition_id).min_size
+    if min.nil?
+      return 0
+    end
+    return min.to_i
+  end
+  
+  def max_size
+    max = TeamPartition.find_by_id(self.partition_id).max_size
+    if max.nil?
+      return 1.0/0.0 ## Infinity hackery
+    end
+    return max.to_i
+  end
+  
+  def contains(user)
+    self.users.each do |u|
+      if u == user
+        return true
+      end
+    end
+    return false
+  end
+
 end

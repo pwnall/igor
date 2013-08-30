@@ -261,7 +261,7 @@ END_LOG
     grading.each do |metric_name, score_fraction|
       metric = assignment.metrics.where(name: metric_name).first
       next unless metric
-      grade = metric.grade_for submission.user
+      grade = metric.grade_for submission.subject
       grade.score = score_fraction * metric.max_score
       grade.grader = User.robot
       return false unless grade.valid?

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110704070001) do
+ActiveRecord::Schema.define(:version => 20121102010631) do
 
   create_table "analyses", :force => true do |t|
     t.integer  "submission_id",                     :null => false
@@ -148,6 +148,14 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
   add_index "grades", ["metric_id"], :name => "index_grades_on_metric_id"
   add_index "grades", ["subject_id", "subject_type", "metric_id"], :name => "grades_by_subject_and_metric", :unique => true
 
+  create_table "invitations", :force => true do |t|
+    t.integer  "inviter_id"
+    t.integer  "invitee_id"
+    t.integer  "team_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "prerequisite_answers", :force => true do |t|
     t.integer  "registration_id", :null => false
     t.integer  "prerequisite_id", :null => false
@@ -253,15 +261,16 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
 
   create_table "submissions", :force => true do |t|
     t.integer  "deliverable_id", :null => false
-    t.integer  "user_id",        :null => false
     t.integer  "db_file_id",     :null => false
+    t.integer  "subject_id",     :null => false
+    t.string   "subject_type",   :null => false
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end
 
   add_index "submissions", ["deliverable_id", "updated_at"], :name => "index_submissions_on_deliverable_id_and_updated_at"
+  add_index "submissions", ["subject_id", "subject_type", "deliverable_id"], :name => "index_submissions_on_subject_id_and_type_and_deliverable_id", :unique => true
   add_index "submissions", ["updated_at"], :name => "index_submissions_on_updated_at"
-  add_index "submissions", ["user_id", "deliverable_id"], :name => "index_submissions_on_user_id_and_deliverable_id", :unique => true
 
   create_table "survey_answers", :force => true do |t|
     t.integer  "user_id",       :null => false
@@ -329,6 +338,8 @@ ActiveRecord::Schema.define(:version => 20110704070001) do
     t.boolean  "published",                :default => false, :null => false
     t.datetime "created_at",                                  :null => false
     t.datetime "updated_at",                                  :null => false
+    t.integer  "min_size"
+    t.integer  "max_size"
   end
 
   add_index "team_partitions", ["name"], :name => "index_team_partitions_on_name", :unique => true

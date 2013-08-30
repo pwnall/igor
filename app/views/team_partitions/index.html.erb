@@ -26,6 +26,7 @@
           <td><%= link_to 'Show', partition %></td>
           <td><%= link_to 'Edit', edit_team_partition_path(partition) %></td>
           <td><%= link_to 'Destroy', partition, :confirm => 'Are you sure?', :method => :delete %></td>
+          <td><%= link_to 'View Problems', view_problem_partition_path(partition) %>
         </tr>
       <% end %>   
     </tbody>

@@ -1,0 +1,36 @@
+# == Schema Information
+#
+# Table name: profiles
+#
+#  id              :integer          not null, primary key
+#  user_id         :integer          not null
+#  name            :string(128)      not null
+#  nickname        :string(64)       not null
+#  university      :string(64)       not null
+#  department      :string(64)       not null
+#  year            :string(4)        not null
+#  athena_username :string(32)       not null
+#  about_me        :string(4096)     default(""), not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
+dexter:
+  user: dexter
+  name: Dexter Boy Genius
+  nickname: Dex
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: 1
+  athena_username: genius
+  about_me: "I am Dexter, boy genius!"
+
+solo:
+  user: solo
+  name: Always Going Solo
+  nickname: Solo
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: 4
+  athena_username: solo
+  about_me: "Leave me alone"

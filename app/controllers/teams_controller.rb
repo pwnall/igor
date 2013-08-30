@@ -11,6 +11,10 @@ class TeamsController < ApplicationController
     @team = Team.new(params[:team])
     @team_partition = @team.partition
 
+    if !@team_partition.editable
+      ## bounce user here.
+    end
+
     respond_to do |format|
       if @team.save
         format.html do
@@ -26,6 +30,10 @@ class TeamsController < ApplicationController
   # PUT /teams/1
   def update
     @team = Team.find(params[:id])
+
+    if !@team_partition.editable
+      ## bounce user here.
+    end
 
     respond_to do |format|
       if @team.update_attributes(params[:team])

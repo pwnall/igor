@@ -1,0 +1,49 @@
+# == Schema Information
+#
+# Table name: assignments
+#
+#  id                 :integer          not null, primary key
+#  course_id          :integer          not null
+#  author_id          :integer          not null
+#  team_partition_id  :integer
+#  feedback_survey_id :integer
+#  deadline           :datetime         not null
+#  weight             :decimal(16, 8)   default(1.0), not null
+#  name               :string(64)       not null
+#  deliverables_ready :boolean          default(FALSE), not null
+#  metrics_ready      :boolean          default(FALSE), not null
+#  accepts_feedback   :boolean          default(FALSE), not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#
+
+ps1:
+  deadline: 2010-02-01 00:00:01
+  name: PSet 1
+  team_partition: psets
+  feedback_survey: psets
+  weight: 1.0
+
+ps2:
+  deadline: 2010-02-15 00:00:01
+  name: PSet 2
+  team_partition: psets
+  feedback_survey: psets
+  weight: 1.0
+
+project:
+  deadline: 2010-04-30 17:00:00
+  name: Final Project
+  team_partition: project
+  feedback_survey: projects
+  weight: 5.0
+  
+exam:
+  deadline: 2010-04-24 21:00:00
+  name: Quiz 1
+  weight: 10.0
+  
+assessment:
+  deadline: 2010-05-01 17:00:00
+  name: Individual Assessment
+  weight: 0.0

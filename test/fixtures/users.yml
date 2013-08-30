@@ -9,11 +9,24 @@
 #  admin      :boolean          default(FALSE), not null
 #
 
-jane:
+admin:
   exuid: 12345
+  admin: true
 
-john:
+dexter:
   exuid: 56789
 
-bill:
+inactive:
+  exuid: 66666
+
+solo:
   exuid: 98765
+  
+jane:
+  exuid: 15345
+
+john:
+  exuid: 56769
+
+bill:
+  exuid: 98365

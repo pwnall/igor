@@ -1,0 +1,31 @@
+# == Schema Information
+#
+# Table name: survey_question_answers
+#
+#  id               :integer          not null, primary key
+#  survey_answer_id :integer          not null
+#  question_id      :integer          not null
+#  target_user_id   :integer
+#  number           :float            not null
+#  comment          :string(1024)
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+#one:
+#  assignment_feedback_id: 1
+#  question_id: 1
+#  user_id: 1
+#  target_user_id: 1
+#  number: 9.99
+#  comment: MyString
+#
+#two:
+#  assignment_feedback_id: 1
+#  question_id: 1
+#  user_id: 1
+#  target_user_id: 1
+#  number: 9.99
+#  comment: MyString
