@@ -13,10 +13,10 @@ module RecitationAssigner
   # Example:
   #   {:athena => 'genius', :conflicts => {120 => {:....} } }
   def self.conflicts_info(course)
-    @registrations = course.registrations.joins(:user).
+    registrations = course.registrations.joins(:user).
         where(users: { admin: false }).includes(:recitation_conflicts).all
 
-    @response_data = @registrations.map do |s|
+    registrations.map do |s|
       conflicts = s.recitation_conflicts.map do |r|
         { :timeslot => r.timeslot, :class => r.class_name }
       end
@@ -158,7 +158,7 @@ module RecitationAssigner
     recitation_assignments = self.assignment course.section_size, days, times,
                                              students
     inverted_matching = self.inverted_assignment recitation_assignments
-    RecitationAssignmentMailer.recitation_assignment_email(user.email,
+    RecitationAssignmentMailer.recitation_assignment_email(requester.email,
         recitation_assignments, inverted_matching, students, root_url).deliver
 
     partition = RecitationPartition.create course: course,
