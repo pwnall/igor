@@ -58,10 +58,11 @@ class UsersController < ApplicationController
     if Course.main.has_recitations?
       params[:recitation_conflicts].each_value do |rc|
         next if rc[:class_name].blank?
-        rc[:registration] = @registration
-        conflict = RecitationConflict.new(rc)
+        conflict = RecitationConflict.new rc
+        conflict.registration = registration
         registration.recitation_conflicts << conflict
       end
+      @recitation_conflicts = registration.recitation_conflicts.index_by(&:timeslot)
     end
 
     respond_to do |format|
