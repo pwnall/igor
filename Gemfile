@@ -40,8 +40,11 @@ gem 'gravatar-ultimate', '>= 1.0.3'
 # MIT WebSIS student lookup.
 gem 'mit_stalker', '>= 1.0.4'
 
-# MIT Stellar integration.
+# MIT Stellar integration. (not actually used, right now)
 gem 'stellar', '>= 0.3.2'
+
+# Report production exceptions.
+gem 'exception_notification', '>= 4.0.0'
 
 # UI
 gem 'best_in_place', '>= 2.1.0'
