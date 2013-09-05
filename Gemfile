@@ -38,7 +38,7 @@ gem 'zip', '>= 2.0.2'
 gem 'gravatar-ultimate', '>= 1.0.3'
 
 # MIT WebSIS student lookup.
-gem 'mit_stalker', '>= 1.0.4'
+gem 'mit_stalker', '>= 1.0.5'
 
 # MIT Stellar integration. (not actually used, right now)
 gem 'stellar', '>= 0.3.2'
