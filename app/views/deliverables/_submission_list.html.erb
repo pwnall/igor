@@ -1,6 +1,8 @@
+<% submissions = deliverable.submissions.
+       includes([:analysis, { subject: [ :credentials, { profile: :photo } ] }]).
+      order('updated_at DESC') %>
 <ol class="submission-list">
-  <% deliverable.submissions.includes(:analysis, :subject => :profile).
-                order('updated_at DESC').each do |submission| %>
+  <% submissions.each do |submission| %>
   <li>
     <%= link_to submission.analysis || submission do %>
     <figure title="<%= submission.subject.name %>">
@@ -10,7 +12,7 @@
     <% end %>
   </li>
 <% end %>
-<% if deliverable.submissions.any? { |s| s.analysis.status_will_change? } %>
+<% if submissions.any? { |s| s.analysis.status_will_change? } %>
   <li data-pwnfx-delayed="submission-states" data-pwnfx-delayed-method="GET"
       data-pwnfx-delayed-url="<%= submission_dashboard_deliverable_path(deliverable) %>"
       data-pwnfx-delayed-scope="submissions-list" data-pwnfx-delayed-ms="5000">
