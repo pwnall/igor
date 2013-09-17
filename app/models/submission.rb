@@ -16,21 +16,21 @@ class Submission < ActiveRecord::Base
   # The user doing the submission.
   belongs_to :subject, :polymorphic => true, inverse_of: :submissions
   validates :subject, presence: true
-  
+
   # The deliverable that the submission is for.
   belongs_to :deliverable
   validates :deliverable, presence: true
-  
+
   # The database-backed file holding the submission.
   belongs_to :db_file, dependent: :destroy
   validates :db_file, presence: true
   accepts_nested_attributes_for :db_file
-  
+
   # Database-backed file association, including the file contents.
   def full_db_file
     DbFile.unscoped.where(id: db_file_id).first
   end
-  
+
   # The assignment that this submission is for.
   has_one :assignment, through: :deliverable
 
@@ -39,12 +39,12 @@ class Submission < ActiveRecord::Base
 
   # Analyzer used to perform an automated health-check for this submission.
   has_one :analyzer, through: :deliverable
-  
+
   # True if the given user is allowed to see the submission.
   def can_read?(user)
-    user && ( owned_by(user) || user.admin?)
+    user && (is_owner?(user) || user.admin?)
   end
-  
+
   # Queues up a request to run an automated health-check for this submission.
   def queue_analysis(force_queueing = false)
     ensure_analysis_exists
@@ -59,7 +59,7 @@ class Submission < ActiveRecord::Base
       self.analysis.reset_status! :no_analyzer
     end
   end
-  
+
   # Performs an automated health-check for this submission.
   def run_analysis
     ensure_analysis_exists
@@ -70,7 +70,7 @@ class Submission < ActiveRecord::Base
       self.analysis.reset_status! :no_analyzer
     end
   end
-  
+
   # After this method completes, this submission's analysis will not be nil.
   def ensure_analysis_exists
     unless analysis
@@ -81,12 +81,17 @@ class Submission < ActiveRecord::Base
       self.analysis = analysis
     end
   end
-  
-  def owned_by(user)
-    if self.subject_type == "user"
-      return self.subject_id == user.id
-    elsif self.subject_type == "team"
-      return self.assignment.team_partition.team_for(user).contains(user)
+
+  # True if the given user is an owner of this submission.
+  #
+  # The test is non-trivial when teams come into play.
+  def is_owner?(user)
+    if subject.instance_of? User
+      subject == user
+    elsif subject.instance_of? Team
+      subject.has_user?(user)
+    else
+      raise "Unexpected subject type #{subject.class}"
     end
   end
 end
