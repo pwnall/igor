@@ -58,6 +58,7 @@ group :assets do
   # gem 'pwnstyles_rails', '>= 0.1.29', path: '../pwnstyles_rails'
 
   gem 'jquery-rails', '>= 3.0.4'
+  gem 'jquery-ui-rails', '>= 4.0.5'
   gem 'coffee-rails', '~> 3.2'
   gem 'uglifier', '>= 2.2.1'
 

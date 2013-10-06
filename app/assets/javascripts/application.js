@@ -6,6 +6,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.all
 //= require pwn-fx
 //= require jquery.purr
 //= require best_in_place
