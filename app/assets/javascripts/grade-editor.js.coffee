@@ -63,6 +63,11 @@ GradeEditor.onKeyDown = (event) ->
 GradeEditor.onAjaxSuccess = (event, data, status, xhr) ->
   container = $(event.target).parent()
   container.html data
+  input = container.find "input[type=number]"
+  # hacky thing
+  input.on('blur', GradeEditor.onBlur)
+    .on('focus', GradeEditor.onFocus)
+    .on('keydown', GradeEditor.onKeyDown)
   indicators = $ '.progress-indicators', container
   GradeEditor.setIndicator indicators, 'upload-win', 1000
 
@@ -100,15 +105,18 @@ GradeEditor.onSearchChange.oldNameFilter = ""
 
 # Wires event listeners into the DOM
 GradeEditor.onLoad = ->
-  $('table.grades-table input[type=number]').on 'blur', GradeEditor.onBlur
-  $('table.grades-table input[type=number]').on 'focus', GradeEditor.onFocus
-  $('table.grades-table input[type=number]').on 'keydown', GradeEditor.onKeyDown
-  $('table.grades-table input[type=search]').on 'change', GradeEditor.onSearchChange
-  $('table.grades-table input[type=search]').on 'textInput', GradeEditor.onSearchChange
-  $('table.grades-table input[type=search]').on 'input', GradeEditor.onSearchChange
-  $('table.grades-table input[type=search]').on 'keydown', GradeEditor.onSearchChange
-  $('table.grades-table form').on 'ajax:success', GradeEditor.onAjaxSuccess
-  $('table.grades-table form').on 'ajax:error', GradeEditor.onAjaxError
+  $('table.grades-table input[type=number]')
+    .on('blur', GradeEditor.onBlur)
+    .on('focus', GradeEditor.onFocus)
+    .on('keydown', GradeEditor.onKeyDown)
+  $('table.grades-table input[type=search]')
+    .on('change', GradeEditor.onSearchChange)
+    .on('textInput', GradeEditor.onSearchChange)
+    .on('input', GradeEditor.onSearchChange)
+    .on('keydown', GradeEditor.onSearchChange)
+  $('table.grades-table form')
+    .on('ajax:success', GradeEditor.onAjaxSuccess)
+    .on('ajax:error', GradeEditor.onAjaxError)
   $('table.grades-table tbody tr').each (index, row) ->
     GradeEditor.redoSummary row
 
