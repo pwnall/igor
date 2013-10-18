@@ -9,6 +9,7 @@ window.GradeEditor = {}
 # @param temporary if true, the indicator will be hidden after a bit of time
 #
 GradeEditor.setIndicator = (indicators, activeClass, temporary) ->
+  console.log(activeClass)
   $('img', indicators).each ->
     element = $ @
     if element.hasClass activeClass
@@ -21,14 +22,16 @@ GradeEditor.setIndicator = (indicators, activeClass, temporary) ->
       GradeEditor.setIndicator indicators, '-', false
     setTimeout remove, temporary
 
-# Saves a grade via AJAX if it is changed
+# Saves a grade and comment via AJAX if it is changed
+# todo: send comment only if it is changed
 GradeEditor.onBlur = (event) ->
   target = $ event.target
   target.parents('tr').first().removeClass 'focused'
-  GradeEditor.redoSummary target.parents('tr').first()
 
-  oldValue = target.attr 'data-old-value'
-  return if target.val() is oldValue
+  if event.target.nodeName == "INPUT"
+    GradeEditor.redoSummary target.parents('tr').first()
+    oldValue = target.attr 'data-old-value'
+    return if target.val() is oldValue
 
   form = target.parents('form').first()
   indicators = $ '.progress-indicators', form
@@ -61,13 +64,20 @@ GradeEditor.onKeyDown = (event) ->
 
 # Reflects a successful grade save
 GradeEditor.onAjaxSuccess = (event, data, status, xhr) ->
+  console.log("success!")
   container = $(event.target).parent()
   container.html data
+  form = container.find "form"
   input = container.find "input[type=number]"
+  comments = container.find "div.comments > textarea"
   # hacky thing
   input.on('blur', GradeEditor.onBlur)
     .on('focus', GradeEditor.onFocus)
     .on('keydown', GradeEditor.onKeyDown)
+  comments.on('blur', GradeEditor.onBlur)
+    .on('focus', GradeEditor.onFocus)
+  form.on('ajax:success', GradeEditor.onAjaxSuccess)
+    .on('ajax:error', GradeEditor.onAjaxError)
   indicators = $ '.progress-indicators', container
   GradeEditor.setIndicator indicators, 'upload-win', 1000
 
@@ -109,6 +119,9 @@ GradeEditor.onLoad = ->
     .on('blur', GradeEditor.onBlur)
     .on('focus', GradeEditor.onFocus)
     .on('keydown', GradeEditor.onKeyDown)
+  $('table.grades-table div.comments > textarea')
+    .on('blur', GradeEditor.onBlur)
+    .on('focus', GradeEditor.onFocus)
   $('table.grades-table input[type=search]')
     .on('change', GradeEditor.onSearchChange)
     .on('textInput', GradeEditor.onSearchChange)

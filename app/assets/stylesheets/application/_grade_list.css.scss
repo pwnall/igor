@@ -2,6 +2,11 @@
   display: none;
 }
 
+label.show-comments {
+  -webkit-appearance: push-button;
+  -moz-appearance: button; 
+}
+
 ol.grades {
   margin: 0;
 	padding: 0 0 2px 0;
@@ -51,6 +56,12 @@ ol.grades {
       text-align: right;
       width: $column-width;
       color: change-color(#5E2600, $saturation: 40%, $lightness: 35%);
+    }
+    div.comments {
+      display: none;
+    }
+    input[type=checkbox]:checked ~ div.comments {
+       display: inherit;
     }
   }
 }

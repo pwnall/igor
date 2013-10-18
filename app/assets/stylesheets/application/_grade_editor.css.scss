@@ -35,9 +35,21 @@ table.grades-table {
       width: 3em;
       text-align: right;
       background-color:  hsl(0deg, 0%, 100%);
+    
+      & ~ div.comments > textarea:not(:focus) {
+        display: none;
+      }
+      &:focus ~ div.comments > textarea {
+        display: inherit;
+      }
     }
     .max-points {
       font-weight: 300;
+    }
+    div.comments {
+      position: absolute;
+      z-index: 100;
+      background: #fff;
     }
   }
 }
@@ -70,3 +82,4 @@ span.progress-indicators {
     }
   }
 }
+

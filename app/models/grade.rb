@@ -8,6 +8,7 @@
 #  subject_id   :integer          not null
 #  subject_type :string(64)
 #  score        :decimal(8, 2)    not null
+#  comments     :text
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
@@ -31,8 +32,11 @@ class Grade < ActiveRecord::Base
 
   # The numeric grade.
   validates_numericality_of :score, only_integer: false
-  attr_accessible :score
+  attr_accessible :score 
   
+  # Comments associated with the grade
+  attr_accessible :comments
+
   # Because the polymorphic association doesn't allow .where(subject: subject).
   scope :with_subject, lambda { |subject|
     where subject_id: subject.id, subject_type: subject.class.name

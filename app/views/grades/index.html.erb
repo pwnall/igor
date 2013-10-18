@@ -2,7 +2,7 @@
 <h3>Recitation: <%= @recitation.nil? ? 'Unassigned' : @recitation.recitation_name %></h3>
 
 <% @grades.each do |assignment, metrics, recitation_average| %>
-  <h3 class="grades"><%= assignment.name %></h3>
+  <h3 class="grades"><%= assignment.name %> <label class="show-comments" for="assignment-<%= assignment.id %>">Show comments</label></h3>
 	<ol class="grades">
     <li class="total">
       <span class="assignment-name">Total</span>
@@ -16,6 +16,7 @@
         </span>
       </span>
     </li>
+    <input type="checkbox" id="assignment-<%= assignment.id %>" >
     <% metrics.each do |metric, grade| %>
 		<li>
       <span class="assignment-name"><%= metric.name %></span>
@@ -25,6 +26,9 @@
         /
         <span class="max-score"><%= metric.max_score %></span>
       </span>
+      <div class="comments">
+        Comments: <%= (grade and grade.comments) ? grade.comments : 'N' %>
+      </div>
     </li>
   	<% end %>
 	</ol>
