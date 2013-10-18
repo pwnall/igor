@@ -4,3 +4,8 @@
 </span>
 <span class="progress-indicator">
 </span>
+<div class="comments">
+  <% comment = grade.comment.comment if grade.comment else "" %>
+  <%= text_area_tag(:comment, comment, size: "15x3", :placeholder => "Comments", :tabindex => -1)  %>
+  <span><%= image_tag("icons/edit.png") %></span>
+</div>

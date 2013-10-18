@@ -19,6 +19,9 @@ class Grade < ActiveRecord::Base
                      permission: { subject: :grader, can: :grade }
   validates :metric_id, uniqueness: { scope: [:subject_id, :subject_type] }
   attr_accessible :metric, :metric_id
+
+  # The comment that each grade has
+  has_one :comment
   
   # The subject being graded (a user or a team).
   belongs_to :subject, polymorphic: true
@@ -31,7 +34,7 @@ class Grade < ActiveRecord::Base
 
   # The numeric grade.
   validates_numericality_of :score, only_integer: false
-  attr_accessible :score
+  attr_accessible :score 
   
   # Because the polymorphic association doesn't allow .where(subject: subject).
   scope :with_subject, lambda { |subject|

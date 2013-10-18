@@ -1,6 +1,7 @@
 section.grades-table-container {
   overflow-x: auto;
   overflow-y: hidden;
+  padding-bottom: 90px;
 }
 
 table.grades-table {
@@ -35,9 +36,46 @@ table.grades-table {
       width: 3em;
       text-align: right;
       background-color:  hsl(0deg, 0%, 100%);
+    
+      & ~ div.comments > textarea:not(:focus) {
+        display: none;
+        & + span {
+        display: none;
+        }
+      }
+      &:focus ~ div.comments > textarea {
+        display: inherit;
+        & + span {
+        display: inherit;
+        }
+      }
     }
     .max-points {
       font-weight: 300;
+    }
+    div.comments {
+      position: absolute;
+      margin: 3px 0px 0px -3px;
+      box-shadow: 2px 1px 3px #666;
+      background: #F1D7C6;
+      textarea {
+        float: right;
+        max-width: 300px;
+        background: #fff;
+      }
+      span {
+        float: left;
+        padding: 3px;
+        &:after {
+          content: "";
+          position: absolute;
+          left: 3px;
+          top: -8px;
+          border-bottom: 8px solid #F1D7C6;
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent;
+        }
+      }
     }
   }
 }
@@ -91,3 +129,4 @@ span.progress-indicator {
     opacity: 1.0;
   }
 }
+

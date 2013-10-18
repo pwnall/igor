@@ -26,7 +26,7 @@ class GradeEditor
     @redoSummary $row
 
     oldValue = $target.attr 'data-old-value'
-    return if $target.val() is oldValue
+    return if JSON.stringify($target.val()) is oldValue
 
     $td = $target.parents('td').first()
     $indicator = $ '.progress-indicator', $td
@@ -38,7 +38,8 @@ class GradeEditor
         'grade[subject_id]': $row.attr('data-subject-id')
         'grade[subject_type]': $row.attr('data-subject-type')
         'grade[metric_id]': $td.attr('data-metric-id')
-        'grade[score]': $target.val()
+        'grade[score]': $td.find('input#score').val()
+        'comment[comment]': $td.find("div.comments > textarea").val()
       dataType: 'text'
       method: 'post'
       success: (data, status, xhr) => @onAjaxSuccess $target, data
@@ -49,35 +50,42 @@ class GradeEditor
   # Takes note of a grade's current value.
   onFocus: (event) ->
     $target = $ event.target
-    $target.attr 'data-old-value', $target.val()
+    $target.attr 'data-old-value', JSON.stringify($target.val())
     $row = $target.parents('tr').first()
     $row.addClass 'focused'
     return
 
   # Tabs to the next window if the user presses Enter.
   onKeyDown: (event) ->
-    if event.which is 13
-      event.preventDefault()
+    event.preventDefault() if event.which in {13; 67}
+    $target = $ event.target
 
-      fields = []
-      myIndex = null
-      # TODO(pwnall): make this O(1)
-      $('tr:not(.hidden) input[type=number]').each (index, input) ->
-        fields[index] = input
-        if event.target is input
-          myIndex = index
+    switch event.which
+      when 13  # Enter
+        nextField = $target.parents('td').next('td').
+            find('input[type=number]')
+        if nextField.length == 0
+          nextField = $target.parents('tr').
+              nextAll('tr:not(.hidden):first').
+              find('td.grade:first input[type=number]')
+        if nextField.length == 0
+          nextField = $target.parents('tbody').
+              children('tr:not(.hidden):first').
+              find('td.grade:first input[type=number]')
+      when 67  # C
+        nextField = $target.parents('td').find('textarea')
+      else
+        return true
 
-      # Cycle to the beginning after reaching the last field
-      nextField = fields[myIndex + 1] or fields[0]
-      $(nextField).focus()
-      false
-    else
-      true
+    nextField.focus()
+    false
 
   # Reflects a successful grade save.
   onAjaxSuccess: ($target, data) ->
     $container = $target.parents('td').first()
-    $container.html data
+    if $container.find(':focus').length == 0
+      # mingy: is this replacement even necessary? the data is already sent
+      $container.html data
     $indicator = $ '.progress-indicator', $container
     @setIndicator $indicator, 'upload-win', 2000
     return
@@ -153,8 +161,8 @@ class GradeEditor
     @onAjaxError = @onAjaxError.bind @
 
     @$domRoot.
-        on('blur', 'input[type=number]', @onBlur).
-        on('focus', 'input[type=number]', @onFocus).
+        on('blur', 'input[type=number], textarea', @onBlur).
+        on('focus', 'input[type=number], textarea', @onFocus).
         on('keydown', 'input[type=number]', @onKeyDown).
         on('ajax:success', 'form', @onAjaxSuccess).
         on('ajax:error', 'form', @onAjaxError)
