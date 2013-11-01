@@ -1,6 +1,7 @@
 section.grades-table-container {
-  overflow-x: visible;
-  overflow-y: visible;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 90px;
 }
 
 table.grades-table {
