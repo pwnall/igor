@@ -9,7 +9,7 @@
     <%= image_tag 'icons/upload_fail.png', :alt => 'server request failed', :class => 'upload-fail flash hidden' %>
   </span>
   <div class="comments">
-    <%= f.text_area :comments, size: "15x3", :placeholder => "Comments"  %>
+    <%= f.text_area :comments, size: "15x3", :placeholder => "Comments", :tabindex => -1  %>
     <span><%= image_tag("icons/edit.png") %></span>
   </div>
   <%= f.hidden_field :metric_id %>
