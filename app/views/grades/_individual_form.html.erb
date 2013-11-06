@@ -8,6 +8,10 @@
     <%= image_tag 'icons/upload_win.png', :alt => 'server request succeeded', :class => 'upload-win flash hidden' %>
     <%= image_tag 'icons/upload_fail.png', :alt => 'server request failed', :class => 'upload-fail flash hidden' %>
   </span>
+  <div class="comments">
+    <%= f.text_area :comments, size: "15x3", :placeholder => "Comments", :tabindex => -1  %>
+    <span><%= image_tag("icons/edit.png") %></span>
+  </div>
   <%= f.hidden_field :metric_id %>
   <%= f.hidden_field :subject_id %>
   <%= f.hidden_field :subject_type %>

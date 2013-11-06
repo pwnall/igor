@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121102010631) do
+ActiveRecord::Schema.define(:version => 20131018010420) do
 
   create_table "analyses", :force => true do |t|
     t.integer  "submission_id",                     :null => false
@@ -141,6 +141,7 @@ ActiveRecord::Schema.define(:version => 20121102010631) do
     t.integer  "subject_id",                                               :null => false
     t.string   "subject_type", :limit => 64
     t.decimal  "score",                      :precision => 8, :scale => 2, :null => false
+    t.text     "comments"
     t.datetime "created_at",                                               :null => false
     t.datetime "updated_at",                                               :null => false
   end

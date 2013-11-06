@@ -2,55 +2,88 @@
   display: none;
 }
 
-ol.grades {
-  margin: 0;
-	padding: 0 0 2px 0;
+h3.grades {
+  button {
+    margin-top: -6px;
+    margin-left: 15px;
+    font-size: 0.6em;
+  }
+}
+
+div.grades {
+  padding: 0 0 2px 0;
 	overflow: hidden;
   border-bottom: 1px solid #EABA99;
-  
-  -moz-column-width: ($column-total * 7 - $column-margin);
-  -moz-column-gap: $column-total;
-  -webkit-column-width: ($column-total * 7 - $column-margin);
-  -webkit-column-gap: $column-total;
-  column-width: ($column-total * 7 - $column-margin);
-  column-gap :$column-total;
   
   &:last-child {
     padding: 0;
     border-bottom: none;
   }
-  li {
-    color: #595959;
-    &:hover {
-      background-color: change-color(#F5DCCC, $lightness: 95%);
-    }
-    &.total {
-      font-weight: bold;
-      color: #292929;
-    }
 
-    span.assignment-name {
-      display: inline-block;
-      width: ($column-total * 4 - $column-margin);
-      margin: 0 $column-margin 0 0;
+  &:not(.show-comments) {
+    -moz-column-width: ($column-total * 7 - $column-margin);
+    -moz-column-gap: $column-total;
+    -webkit-column-width: ($column-total * 7 - $column-margin);
+    -webkit-column-gap: $column-total;
+    column-width: ($column-total * 7 - $column-margin);
+    column-gap :$column-total;
+
+    div.comments {
+      display: none;
     }
-    span.scores {
-      display: inline-block;
-      width: ($column-total * 3 - $column-margin);
-      text-align: right;
+  }
+
+  > div {
+    &.total {
+    font-weight: bold;
+    color: #292929;
+    }
+    &.problem {
       color: #595959;
+      &:hover {
+        background-color: change-color(#F5DCCC, $lightness: 95%);
+      }
     }
-    span.score {
-      display: inline-block;
-      text-align: right;
-      width: $column-width;
-      color: #5E2600;
+    span.comment-head {
+      color: #595959;
+      padding-right: 8px;
     }
-    span.max-score {
-      display: inline-block;
-      text-align: right;
-      width: $column-width;
-      color: change-color(#5E2600, $saturation: 40%, $lightness: 35%);
+  }
+  
+  &.show-comments {
+    div.problem {
+      float: left;
+      clear: both;
     }
+    div.comments {
+      margin: 0px 0px 15px 25px;
+      display: inherit;
+      float: left;
+      width: 500px;
+    }
+  }
+
+  span.assignment-name {
+    display: inline-block;
+    width: ($column-total * 4 - $column-margin);
+    margin: 0 $column-margin 0 0;
+  }
+  span.scores {
+    display: inline-block;
+    width: ($column-total * 3 - $column-margin);
+    text-align: right;
+    color: #595959;
+  }
+  span.score {
+    display: inline-block;
+    text-align: right;
+    width: $column-width;
+    color: #5E2600;
+  }
+  span.max-score {
+    display: inline-block;
+    text-align: right;
+    width: $column-width;
+    color: change-color(#5E2600, $saturation: 40%, $lightness: 35%);
   }
 }

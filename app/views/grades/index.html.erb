@@ -2,9 +2,14 @@
 <h3>Recitation: <%= @recitation.nil? ? 'Unassigned' : @recitation.recitation_name %></h3>
 
 <% @grades.each do |assignment, metrics, recitation_average| %>
-  <h3 class="grades"><%= assignment.name %></h3>
-	<ol class="grades">
-    <li class="total">
+  <h3 class="grades">
+    <%= assignment.name %> 
+    <% if has_comments metrics %>
+    <button>Show Comments</button>
+    <% end %>
+  </h3>
+	<div class="grades">
+    <div class="total">
       <span class="assignment-name">Total</span>
       <span class="scores">
         <span class="score">
@@ -15,17 +20,19 @@
           <%= metrics.map { |metric, grade| metric.max_score }.sum %>
         </span>
       </span>
-    </li>
+    </div>
     <% metrics.each do |metric, grade| %>
-		<li>
+    <div class="problem">
       <span class="assignment-name"><%= metric.name %></span>
-
       <span class="scores">
-        <span class="score"><%= grade ? grade.score : 'N' %></span>
-        /
-        <span class="max-score"><%= metric.max_score %></span>
+       <span class="score"><%= grade ? grade.score : 'N' %></span>
+       /
+       <span class="max-score"><%= metric.max_score %></span>
       </span>
-    </li>
+    </div>
+    <div class="comments">
+      <span class="comment-head">Comments:</span> <%= (grade and grade.comments and grade.comments != "") ? grade.comments : 'None' %>
+    </div>
   	<% end %>
-	</ol>
+	</div>
 <% end %>
