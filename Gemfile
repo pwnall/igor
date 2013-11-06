@@ -1,7 +1,7 @@
 source :rubygems
 ruby '1.9.3'
 
-gem 'rails', '~> 3.2.14'
+gem 'rails', '~> 3.2.15'
 
 gem 'mysql2', '>= 0.3.13'
 gem 'json', '>= 1.7.7'
@@ -9,7 +9,7 @@ gem 'json', '>= 1.7.7'
 # Core.
 gem 'authpwn_rails', '>= 0.14.0'
 gem 'dynamic_form', '>= 1.1.4'
-gem 'markdpwn', '>= 0.1.6'
+gem 'markdpwn', '>= 0.1.7'
 gem 'nokogiri', '>= 1.6.0'
 gem 'paperclip', git: 'https://github.com/patshaughnessy/paperclip.git',
                  ref: '89d53623028a7f1f74cdc2726110486ada0061f9'
@@ -67,7 +67,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails', '>= 2.14.0'
-  gem 'thin', '>= 1.5.1'
+  gem 'thin', '>= 1.6.1'
   gem 'webrat', '>= 0.7.3'
 end
 

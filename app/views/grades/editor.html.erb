@@ -36,7 +36,7 @@
           <%= link_to subject.name, subject, :tabindex => '-1' %>
         </th>
         <% @metrics.each do |metric| %>
-        <td class="grade">
+        <td class="grade" data-metric-id="<%= metric.id %>">
           <%= render 'grades/individual_form', :grade => (@grades[[subject, metric]] || [Grade.new(:subject => subject, :metric => metric)]).first %>
         </td>
         <% end %>

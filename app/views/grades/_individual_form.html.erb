@@ -1,11 +1,6 @@
-<%= form_for grade, :remote => true, :format => 'html' do |f| %>
-  <%= f.number_field :score, :min => 0, :step => :any %>
-  <span class="max-points">
-    / <%= f.object.metric.max_score %>
-  </span>
-  <span class="progress-indicator">
-  </span>
-  <%= f.hidden_field :metric_id %>
-  <%= f.hidden_field :subject_id %>
-  <%= f.hidden_field :subject_type %>
-<% end %>
+<%= number_field_tag :score, grade.score, min: 0, step: :any %>
+<span class="max-points">
+  / <%= grade.metric.max_score %>
+</span>
+<span class="progress-indicator">
+</span>

@@ -21,23 +21,37 @@ class GradeEditor
   # Saves a grade via AJAX if it is changed.
   onBlur: (event) ->
     $target = $ event.target
-    $target.parents('tr').first().removeClass 'focused'
-    @redoSummary $target.parents('tr').first()
+    $row = $target.parents('tr').first()
+    $row.removeClass 'focused'
+    @redoSummary $row
 
     oldValue = $target.attr 'data-old-value'
     return if $target.val() is oldValue
 
-    $form = $target.parents('form').first()
-    $indicator = $ '.progress-indicator', $form
+    $td = $target.parents('td').first()
+    $indicator = $ '.progress-indicator', $td
     @setIndicator $indicator, 'upload-pending', false
-    $form.submit()
+
+    url = '/grades.html'
+    $.ajax url,
+      data:
+        'grade[subject_id]': $row.attr('data-subject-id')
+        'grade[subject_type]': $row.attr('data-subject-type')
+        'grade[metric_id]': $td.attr('data-metric-id')
+        'grade[score]': $target.val()
+      dataType: 'text'
+      method: 'post'
+      success: (data, status, xhr) => @onAjaxSuccess $target, data
+      error: (xhr, status, error) => @onAjaxError $target
+
     return
 
   # Takes note of a grade's current value.
   onFocus: (event) ->
     $target = $ event.target
     $target.attr 'data-old-value', $target.val()
-    $target.parents('tr').first().addClass 'focused'
+    $row = $target.parents('tr').first()
+    $row.addClass 'focused'
     return
 
   # Tabs to the next window if the user presses Enter.
@@ -61,16 +75,17 @@ class GradeEditor
       true
 
   # Reflects a successful grade save.
-  onAjaxSuccess: (event, data, status, xhr) ->
-    $container = $(event.target).parent()
+  onAjaxSuccess: ($target, data) ->
+    $container = $target.parents('td').first()
     $container.html data
     $indicator = $ '.progress-indicator', $container
     @setIndicator $indicator, 'upload-win', 2000
     return
 
   # Reflects an unsuccessful grade save.
-  onAjaxError: (event, data, status, xhr) ->
-    $indicator = $ '.progress-indicator', event.target
+  onAjaxError: ($target) ->
+    console.log 'error'
+    $indicator = $ '.progress-indicator', $target
     @setIndicator $indicator, 'upload-fail', 10000
     return
 
