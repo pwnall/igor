@@ -3,10 +3,7 @@
   <span class="max-points">
     / <%= f.object.metric.max_score %>
   </span>
-  <span class="progress-indicators">
-    <%= image_tag 'ajax-loader.gif', :alt => 'server request', :class => 'upload-pending hidden' %>
-    <%= image_tag 'icons/upload_win.png', :alt => 'server request succeeded', :class => 'upload-win flash hidden' %>
-    <%= image_tag 'icons/upload_fail.png', :alt => 'server request failed', :class => 'upload-fail flash hidden' %>
+  <span class="progress-indicator">
   </span>
   <%= f.hidden_field :metric_id %>
   <%= f.hidden_field :subject_id %>

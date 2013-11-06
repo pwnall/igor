@@ -42,31 +42,52 @@ table.grades-table {
   }
 }
 
-span.progress-indicators {
+span.progress-indicator {
   display: inline-block;
   vertical-align: middle;
+  width: 16px;
+  height: 16px;
+  position: relative;
 
-  img {
-    display: inline-block;
-    position: absolute;
-    opacity: 1;
+  background: transparent;
 
-    &:last-child {
-      position: static;
-    }
-    &.hidden {
-      opacity: 0;
-    }
-    &.flash {
-      -moz-transition-duration: 1000ms;
-      -moz-transition-property: opacity;
-      -moz-transition-timing-function: ease-in-out;
-      -webkit-transition-property: opacity;
-      -webkit-transition-timing-function: ease-in-out;
-      -webkit-transition-duration: 1000ms;
-      transition-duration: 1000ms;
-      transition-property: opacity;
-      transition-timing-function: ease-in-out;
-    }
+  &.upload-pending {
+    background-image: image-url('ajax-loader.gif');
+  }
+  &.upload-win {
+    background-image: image-url('icons/upload_win.png');
+
+    -webkit-animation-name: progress-indicator-flash;
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-animation-duration: 2s;
+    animation-name: progress-indicator-flash;
+    animation-timing-function: ease-in-out;
+    animation-duration: 2s;
+  }
+  &.upload-fail {
+    background-image: image-url('icons/upload_fail.png');
+    -webkit-animation-name: progress-indicator-flash;
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-animation-duration: 5s;
+    animation-name: progress-indicator-flash;
+    animation-timing-function: ease-in-out;
+    animation-duration: 5s;
+  }
+}
+
+@-webkit-keyframes progress-indicator-flash {
+  0%, 100% {
+    opacity: 0.0;
+  }
+  50% {
+    opacity: 1.0;
+  }
+}
+@keyframes progress-indicator-flash {
+  0%, 100% {
+    opacity: 0.0;
+  }
+  50% {
+    opacity: 1.0;
   }
 }

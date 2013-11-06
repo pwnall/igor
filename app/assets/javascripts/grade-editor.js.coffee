@@ -1,41 +1,44 @@
 class GradeEditor
-  # Toggles DOM classes in an indicator container to reflect an event
+  # Toggles DOM classes in an indicator container to reflect an event.
   #
-  # @param {Element} indicators DOM element containing the indicator images
-  # @param {String} activeClass the indicator class that will be shown
+  # @param {Element} indicator DOM element that hosts the indicator image
+  # @param {String} activeClass the indicator that will be shown
   # @param {Number, Boolean} temporary if not false, the indicator will be
   #   hidden after the number of milliseconds in this argument
   # @return {GradeEditor} this
-  setIndicator: (indicators, activeClass, temporary) ->
-    $('img', indicators).each ->
-      element = $ @
-      element.toggleClass 'hidden', !element.hasClass(activeClass)
+  setIndicator: (indicator, activeClass, temporary) ->
+    if activeClass.length is 0
+      $(indicator).attr 'class', 'progress-indicator'
+    else
+      $(indicator).attr 'class', 'progress-indicator ' + activeClass
 
     if temporary isnt false
       remove = =>
-        @setIndicator indicators, '-', false
+        @setIndicator indicator, '', false
       setTimeout remove, temporary
     @
 
   # Saves a grade via AJAX if it is changed.
   onBlur: (event) ->
-    target = $ event.target
-    target.parents('tr').first().removeClass 'focused'
-    @redoSummary target.parents('tr').first()
+    $target = $ event.target
+    $target.parents('tr').first().removeClass 'focused'
+    @redoSummary $target.parents('tr').first()
 
-    oldValue = target.attr 'data-old-value'
-    return if target.val() is oldValue
+    oldValue = $target.attr 'data-old-value'
+    return if $target.val() is oldValue
 
-    form = target.parents('form').first()
-    indicators = $ '.progress-indicators', form
-    @setIndicator indicators, 'upload-pending', false
-    form.submit()
+    $form = $target.parents('form').first()
+    $indicator = $ '.progress-indicator', $form
+    @setIndicator $indicator, 'upload-pending', false
+    $form.submit()
+    return
 
   # Takes note of a grade's current value.
   onFocus: (event) ->
-    target = $ event.target
-    target.attr 'data-old-value', target.val()
-    target.parents('tr').first().addClass 'focused'
+    $target = $ event.target
+    $target.attr 'data-old-value', $target.val()
+    $target.parents('tr').first().addClass 'focused'
+    return
 
   # Tabs to the next window if the user presses Enter.
   onKeyDown: (event) ->
@@ -59,15 +62,17 @@ class GradeEditor
 
   # Reflects a successful grade save.
   onAjaxSuccess: (event, data, status, xhr) ->
-    container = $(event.target).parent()
-    container.html data
-    indicators = $ '.progress-indicators', container
-    @setIndicator indicators, 'upload-win', 1000
+    $container = $(event.target).parent()
+    $container.html data
+    $indicator = $ '.progress-indicator', $container
+    @setIndicator $indicator, 'upload-win', 2000
+    return
 
   # Reflects an unsuccessful grade save.
   onAjaxError: (event, data, status, xhr) ->
-    indicators = $ '.progress-indicators', event.target
-    @setIndicator indicators, 'upload-fail', 5000
+    $indicator = $ '.progress-indicator', event.target
+    @setIndicator $indicator, 'upload-fail', 10000
+    return
 
   # Re-computes the summary values for a collection of grades.
   #
@@ -82,20 +87,25 @@ class GradeEditor
 
   # Hides and shows grade rows to reflect searchbox changes
   onSearchChange: (event) ->
-    search = $ event.target
-    nameFilter = (search.val() or '').toLowerCase()
+    nameFilter = (@$search.val() or '').toLowerCase()
     if nameFilter is @oldNameFilter
       return
     @oldNameFilter = nameFilter
 
-    table = search.parents('table').first()
-    $('tr[data-subject-name]', table).each ->
-      e = $ @
-      name = e.attr 'data-subject-name'
-      if nameFilter is '' or name.toLowerCase().indexOf(nameFilter) isnt -1
-        e.removeClass 'hidden'
+    if nameFilter is '' or nameFilter.length is 1
+      # Fast path for empty queries.
+      for row in @subjectRows
+        row.removeAttribute 'class'
+      return
+
+    for row, index in @subjectRows
+      name = @subjectNames[index]
+      if name.indexOf(nameFilter) is -1
+        row.setAttribute 'class', 'hidden'
       else
-        e.addClass 'hidden'
+        row.removeAttribute 'class'
+
+    return
 
   # Avoids applying the same name filter twice
   oldNameFilter: null
@@ -109,6 +119,13 @@ class GradeEditor
   #   control's elements
   constructor: (@domRoot) ->
     @$domRoot = $ @domRoot
+    @$table = @$domRoot
+
+    @subjectRows = @domRoot.querySelectorAll 'tbody tr[data-subject-name]'
+    @subjectNames = []
+    for row, index in @subjectRows
+      @subjectNames[index] = row.getAttribute('data-subject-name').toLowerCase()
+      @redoSummary row
 
     @oldNameFilter = ''
 
@@ -124,14 +141,15 @@ class GradeEditor
         on('blur', 'input[type=number]', @onBlur).
         on('focus', 'input[type=number]', @onFocus).
         on('keydown', 'input[type=number]', @onKeyDown).
-        on('change', 'input[type=search]', @onSearchChange).
-        on('textInput', 'input[type=search]', @onSearchChange).
-        on('input', 'input[type=search]', @onSearchChange).
-        on('keydown', 'input[type=search]', @onSearchChange).
         on('ajax:success', 'form', @onAjaxSuccess).
         on('ajax:error', 'form', @onAjaxError)
 
-    $('tbody tr').each (index, row) => @redoSummary row
+    @$search = $('input[type=search]', @domRoot).first()
+    @$search.
+        on('change', @onSearchChange).
+        on('textInput', @onSearchChange).
+        on('input', @onSearchChange).
+        on('keydown', @onSearchChange)
 
   # If the page has a grade editor, wires it up to a GradeEditor instance.
   @setup: ->
