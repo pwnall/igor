@@ -46,9 +46,6 @@ Seven::Application.routes.draw do
       get :request_report, :request_missing
       post :for_user, :missing, :report
     end
-    member do
-      put :update_for_user
-    end
   end
 
   # Homework submission.

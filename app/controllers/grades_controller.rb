@@ -1,12 +1,12 @@
 class GradesController < ApplicationController
   before_filter :authenticated_as_admin, :except => [:index]
   before_filter :authenticated_as_user, :only => [:index]
-  
+
   # GET /grades
   def index
     grades_by_metric_id = current_user.grades.index_by &:metric_id
     @recitation = current_user.recitation_section
-    
+
     @grades = []
     Assignment.includes(:metrics).order('deadline DESC').each do |assignment|
       metrics = assignment.metrics.
@@ -26,7 +26,7 @@ class GradesController < ApplicationController
     else
       query = query.where(['deadline < ?', Time.now]).order('deadline DESC')
     end
-    
+
     @assignment = query.first || Assignment.last
     unless @assignment
       respond_to do |format|
@@ -34,51 +34,36 @@ class GradesController < ApplicationController
       end
       return
     end
-      
+
     @metrics = @assignment.metrics
     @grades = @assignment.grades.includes(:subject).
                           group_by { |g| [g.subject, g.metric] }
-    
+
     respond_to do |format|
       format.html
     end
   end
-  
+
   # POST /grades
   def create
-    @grade = Grade.new params[:grade]
-    @grade.grader = current_user
-    if @grade.save
-      if request.xhr?
-        render :action => 'edit', :layout => false
-      else
-        render :action => 'edit'
-      end
-    else
-      respond_to do |format|
-        if request.xhr?
-          head :not_acceptable
-        else
-          render :action => 'edit'
-        end
-      end
-    end
-  end
-  
-  # PUT /grades
-  def update
-    @grade = Grade.find params[:id]
-    if params[:grade][:score].blank?
-      @grade.destroy
-      @grade = Grade.new params[:grade]
-      success = true
-    else
+    @grade = Grade.where(
+        subject_type: params[:grade][:subject_type],
+        subject_id: params[:grade][:subject_id],
+        metric_id: params[:grade][:metric_id]).first
+    if @grade
       @grade.grader = current_user
       success = @grade.update_attributes params[:grade]
+    else
+      @grade = Grade.new params[:grade]
+      @grade.grader = current_user
+      success = @grade.save
     end
+
+    @grade = Grade.new params[:grade]
+    @grade.grader = current_user
     if success
       if request.xhr?
-        render :action => 'edit', :layout => false, :format => 'html'
+        render :action => 'edit', :layout => false
       else
         render :action => 'edit'
       end
@@ -102,19 +87,19 @@ class GradesController < ApplicationController
   def request_report
     render layout: 'assignments'
   end
-  
+
   def missing
     assignments = Assignment.includes :deliverables, { :metrics => :assignment }
     @assignments = assignments
     if params[:filter_aid]
       assignments = assignments.where(:id => params[:filter_aid])
     end
-    
+
     @metrics_by_id = assignments.map(&:metrics).flatten.index_by(&:id)
-    
+
     gradeless_users = {}
     @users_by_id = {}
-  
+
     assignments.each do |assignment|
       metrics = assignment.metrics
       metrics.select!(&:published) if params[:filtered_published]
@@ -129,12 +114,12 @@ class GradesController < ApplicationController
         users = Submission.where(:deliverable_id => deliverable_ids).
                            includes(:user).map(&:user)
       end
-          
+
       # find those without all the grades
       users.index_by(&:id).each do |user_id, user|
         user_grades = user.grades.select { |g| metric_ids.include? g.metric_id }
         next if user_grades.length == metric_ids.length
-        
+
         # user found: add to list
         gradeless_users[user_id] ||= {}
         gradeless_users[user_id][assignment] =
@@ -142,7 +127,7 @@ class GradesController < ApplicationController
         @users_by_id[user_id] = user
       end
     end
-    
+
     @users = gradeless_users
   end
 
@@ -170,11 +155,11 @@ class GradesController < ApplicationController
       when 'athena_username'
         @users.map { |u| [u.id, u.athena_id] }
       when 'username'
-        @users.map { |u| [u.id, u.name] } 
+        @users.map { |u| [u.id, u.name] }
       when 'email'
-        @users.map { |u| [u.id, u.email] } 
+        @users.map { |u| [u.id, u.email] }
       end).flatten)]
-    
+
     # totals
     @totals_by_uid = {}
     @histogram = {}
@@ -185,23 +170,23 @@ class GradesController < ApplicationController
       else
         @totals_by_uid[user.id] = @grades_by_uid_and_mid[user.id].values.inject(0) { |acc, grade| acc + (grade ? (grade.score || 0) : 0) }
       end
-        
-      hv = (@totals_by_uid[user.id] / @histogram_step).to_i * @histogram_step 
-      @histogram[hv] = (@histogram[hv] || 0) + 1 
+
+      hv = (@totals_by_uid[user.id] / @histogram_step).to_i * @histogram_step
+      @histogram[hv] = (@histogram[hv] || 0) + 1
     end
     @histogram_keys = []; 0.step(@histogram.keys.max, @histogram_step) { |i| @histogram_keys << i }
-    
+
     # sort users
     if params[:sort_by] == 'total'
       @users.sort! { |a, b| @totals_by_uid[b.id] <=> @totals_by_uid[a.id] }
     else
       @users.sort! { |a, b| @names_by_uid[a.id] <=> @names_by_uid[b.id] }
     end
-    
+
     # generate the CSV
     csv_text = (defined?(FasterCSV) ? FasterCSV : CSV).generate do |csv|
       @ordered_metrics = @assignments_by_aid.values.sort { |a, b| a.deadline <=> b.deadline }.map { |a| @metrics_by_aid[a.id].sort_by { |m| m.name } }.flatten
-      
+
       csv << ['GRADES']
       csv << []
       csv << ['Name', 'Rec'] + @ordered_metrics.map { |m| "#{m.assignment.name}: #{m.name}" } + [params[:use_weights] ? 'Weighted Total' : 'Raw Total']
@@ -215,13 +200,13 @@ class GradesController < ApplicationController
                [@totals_by_uid[user.id]]
       end
       csv << []
-      
+
       csv << ['HISTOGRAM']
       @histogram_keys.each do |hk|
         csv << ["#{hk} - #{hk + @histogram_step - 1}", @histogram[hk] || 0]
       end
       csv << []
-  
+
       csv << ['STATISTICS']
       csv << ['Count', @totals_by_uid.length]
       csv << ['Max', @totals_by_uid.values.max]
@@ -230,7 +215,7 @@ class GradesController < ApplicationController
       if sorted_scores.length % 2
         median = sorted_scores[sorted_scores.length / 2]
       else
-        median = sorted_scores[sorted_scores.length / 2, 2].inject(0.0) { |acc, v| acc + v } / 2.0 
+        median = sorted_scores[sorted_scores.length / 2, 2].inject(0.0) { |acc, v| acc + v } / 2.0
       end
       csv << ['Median', median]
       csv << []
@@ -239,21 +224,21 @@ class GradesController < ApplicationController
     # push the CSV
     send_data csv_text, :filename => 'grades.csv', :type => 'text/csv', :disposition => 'inline'
   end
-  
+
   def pull_metrics(only_published = true)
     @metrics = AssignmentMetric.includes :assignment
     @metrics = @metrics.where(:published => true) if only_published
     if params[:filter_aid] && !params[:filter_aid].empty?
       @metrics = @metrics.where(:assignment_id => params[:filter_aid].to_i)
     end
-    
+
     @metrics_by_aid = {}
     @assignments_by_aid = {}
     @metrics.each do |m|
-      @assignments_by_aid[m.assignment_id] ||= m.assignment 
+      @assignments_by_aid[m.assignment_id] ||= m.assignment
       @metrics_by_aid[m.assignment_id] ||= []
       @metrics_by_aid[m.assignment_id] << m
-    end    
-  end  
+    end
+  end
   private :pull_metrics
 end
