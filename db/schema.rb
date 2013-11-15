@@ -75,10 +75,11 @@ ActiveRecord::Schema.define(:version => 20131114025608) do
   add_index "assignments", ["course_id", "name"], :name => "index_assignments_on_course_id_and_name", :unique => true
 
   create_table "comments", :force => true do |t|
-    t.integer  "grade_id"
-    t.text     "comment"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "grade_id",                   :null => false
+    t.integer  "grader_id",                  :null => false
+    t.string   "comment",    :limit => 1024
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   add_index "comments", ["grade_id"], :name => "index_comments_on_grade_id", :unique => true

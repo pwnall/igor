@@ -37,16 +37,16 @@ table.grades-table {
       text-align: right;
       background-color:  hsl(0deg, 0%, 100%);
     
-      & ~ div.comments > textarea:not(:focus) {
+      ~ div.comments > textarea:not(:focus) {
         display: none;
-        & + span {
+        + span {
         display: none;
         }
       }
       &:focus ~ div.comments > textarea {
         display: inherit;
         & + span {
-        display: inherit;
+          display: inherit;
         }
       }
     }

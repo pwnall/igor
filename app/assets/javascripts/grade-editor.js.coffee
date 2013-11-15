@@ -64,11 +64,11 @@ class GradeEditor
       when 13  # Enter
         nextField = $target.parents('td').next('td').
             find('input[type=number]')
-        if nextField.length == 0
+        if nextField.length is 0
           nextField = $target.parents('tr').
               nextAll('tr:not(.hidden):first').
               find('td.grade:first input[type=number]')
-        if nextField.length == 0
+        if nextField.length is 0
           nextField = $target.parents('tbody').
               children('tr:not(.hidden):first').
               find('td.grade:first input[type=number]')
@@ -84,7 +84,6 @@ class GradeEditor
   onAjaxSuccess: ($target, data) ->
     $container = $target.parents('td').first()
     if $container.find(':focus').length == 0
-      # mingy: is this replacement even necessary? the data is already sent
       $container.html data
     $indicator = $ '.progress-indicator', $container
     @setIndicator $indicator, 'upload-win', 2000

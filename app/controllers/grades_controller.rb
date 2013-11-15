@@ -64,6 +64,7 @@ class GradesController < ApplicationController
       if @comment
         # If there is an existing entry in the database
         # mingy: should I delete a database entry if params[:comment][:comment].blank? ?
+        @comment.grader = current_user
         comment_success = @comment.update_attributes params[:comment]
       elsif params[:comment][:comment].blank?
         # If there are no comments, and no existing entry in database, don't make new entry
@@ -73,13 +74,14 @@ class GradesController < ApplicationController
         @comment = Comment.new(
             grade_id: @grade[:id],
             comment: params[:comment][:comment])
+        @comment.grader = current_user
         comment_success = @comment.save
       end
     end
 
     # mingy: was this assignment necessary?
     #@grade = Grade.new params[:grade]
-    @grade.grader = current_user
+    #@grade.grader = current_user
     if grade_success and comment_success
       if request.xhr?
         render :action => 'edit', :layout => false
