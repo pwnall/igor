@@ -29,7 +29,7 @@ class RecitationSection < ActiveRecord::Base
 
   # Scheduled time of the recitation. Format: "WF 10am"
   validates :time, presence: true, length: 1..64,
-      format: { with: /^[MTWRF]+\d+$/,
+      format: { with: /\A[MTWRF]+\d+\Z/,
       message: 'days of the week followed by the time of day. Ex: MW2, TR10' }
 
   # Student-friendly description of the section location, e.g. "36-144" (room).

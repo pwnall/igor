@@ -6,6 +6,6 @@ class CreateRecitationConflicts < ActiveRecord::Migration
       t.string :class_name, null: false
     end
     add_index :recitation_conflicts, [:registration_id, :timeslot],
-                                     unique: true, null: false
+                                     unique: true
   end
 end

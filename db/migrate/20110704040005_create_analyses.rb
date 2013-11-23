@@ -4,12 +4,12 @@ class CreateAnalyses < ActiveRecord::Migration
       t.references :submission, null: false
       t.integer :status_code, null: false
       t.integer :score, null: true
-      
+
       t.text :log, limit: 64.kilobytes, null: false
 
       t.timestamps
     end
-    
-    add_index :analyses, :submission_id, unique: true, null: false
+
+    add_index :analyses, :submission_id, unique: true
   end
 end

@@ -14,7 +14,7 @@
 # A file submitted by a student for an assignment.
 class Submission < ActiveRecord::Base
   # The user doing the submission.
-  belongs_to :subject, :polymorphic => true, inverse_of: :submissions
+  belongs_to :subject, polymorphic: true, inverse_of: :submissions
   validates :subject, presence: true
 
   # The deliverable that the submission is for.
@@ -74,11 +74,8 @@ class Submission < ActiveRecord::Base
   # After this method completes, this submission's analysis will not be nil.
   def ensure_analysis_exists
     unless analysis
-      analysis = Analysis.new
-      analysis.submission = self
+      build_analysis status: :queued, log: ''
       analysis.status = :queued
-      analysis.log = ''
-      self.analysis = analysis
     end
   end
 

@@ -1,7 +1,3 @@
-# :nodoc: namespace
-module Contents
-
-
 # An item that shows up in the Deadlines widget.
 class Deadline
   # The date when the deadline is due.
@@ -24,7 +20,7 @@ class Deadline
   alias_method :done?, :done
   # The assignment that the deadline is for.
   attr_accessor :assignment
-  
+
   # True if the deadline passed and the user hasn't fulfilled it.
   def overdue?
     !done? && due < Time.now
@@ -54,17 +50,17 @@ class Deadline
     else
       answers_by_aid = []
     end
-    
+
     deadlines = []
     Assignment.includes(:deliverables, :feedback_survey).
                by_deadline.each do |assignment|
       next unless assignment.can_read?(user)
-                 
+
       include_feedback = user ? false : true
       assignment.deliverables_for(user).each do |deliverable|
         d = Deadline.new :due => assignment.deadline, :done => false,
                          :active => true, :assignment => assignment,
-                         :description => deliverable.name,                         
+                         :description => deliverable.name,
                          :link => [
                             [:assignment_path, assignment]
                          ]
@@ -80,9 +76,9 @@ class Deadline
         end
         deadlines << d
       end
-    
+
       if include_feedback and assignment.feedback_survey
-        d = Deadline.new :due => assignment.deadline, :done => false,         
+        d = Deadline.new :due => assignment.deadline, :done => false,
                          :description => "Feedback survey",
                          :link => [[:new_survey_answer_path,
                                     {:survey_answer => {:assignment_id =>
@@ -96,11 +92,9 @@ class Deadline
     end
     deadlines
   end
-  
+
   # Creates a new deadline with the given attributes.
   def initialize(attributes = {})
     attributes.each { |name, value| send :"#{name}=", value }
   end
 end  # class Contents::Deadline
-
-end  # namespace Contents

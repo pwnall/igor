@@ -7,8 +7,7 @@ class CreatePrerequisites < ActiveRecord::Migration
 
       t.timestamps
     end
-    
-    add_index :prerequisites, [:course_id, :prerequisite_number],
-                              null: false, unique: true
+
+    add_index :prerequisites, [:course_id, :prerequisite_number], unique: true
   end
 end

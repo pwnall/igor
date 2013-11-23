@@ -9,10 +9,10 @@ class CreateSurveyQuestionAnswers < ActiveRecord::Migration
 
       t.timestamps
     end
-    
+
     add_index :survey_question_answers,
               [:survey_answer_id, :question_id, :target_user_id],
-              null: true, unique: true,
+              unique: true,
               name: 'survey_question_answers_by_answer_question_user'
   end
 end

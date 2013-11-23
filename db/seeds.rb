@@ -40,13 +40,12 @@ admin_registration.user = admin
 admin_registration.course = course
 admin_registration.save!
 
-puts 'Admin created'
+admin_registration.prerequisite_answers.create! prerequisite: prereq1,
+    took_course: false, waiver_answer: 'Gold medal at IOI 2003'
+admin_registration.prerequisite_answers.create! prerequisite: prereq2,
+    took_course: true, waiver_answer: nil
 
-PrerequisiteAnswer.create! registration: admin_registration,
-    prerequisite: prereq1, took_course: false,
-    waiver_answer: 'Gold medal at IOI 2003'
-PrerequisiteAnswer.create! registration: admin_registration,
-    prerequisite: prereq2, took_course: true, waiver_answer: nil
+puts 'Admin created'
 
 # Students.
 
@@ -73,13 +72,14 @@ names.each_with_index do |name, i|
                                   allows_publishing: (i % 7 < 5)
   registration.user = user
   registration.course = course
-
-  PrerequisiteAnswer.create! registration: registration,
-      prerequisite: prereq1, took_course: (i % 2 == 0),
+  registration.save!
+  registration.prerequisite_answers.create! prerequisite: prereq1,
+      took_course: (i % 2 == 0),
       waiver_answer: (i % 2 == 0) ? nil :
                      'Silver medal at IOI 2011... bitches'
-  PrerequisiteAnswer.create! registration: registration,
-      prerequisite: prereq2, took_course: (i % 4 < 2),
+
+  registration.prerequisite_answers.create! prerequisite: prereq2,
+      took_course: (i % 4 < 2),
       waiver_answer: (i % 4 < 2) ? nil :
                      'Bronze medal at IMO 2011, A+ in 18.something'
 end
@@ -104,8 +104,7 @@ exams = exam_data.map.with_index do |data, index|
   exam.metrics_ready = data[:state] == :graded
   exam.save!
   metrics = (1..(5 + i)).map do |j|
-    AssignmentMetric.create! assignment: exam, name: "Problem #{j}",
-                             max_score: 6 + (i + j) % 6
+    exam.metrics.build name: "Problem #{j}", max_score: 6 + (i + j) % 6
   end
 
   raise "Exam #{i} seeding bug" unless exam.ui_state_for(admin) == data[:state]
@@ -115,10 +114,10 @@ end
 ([admin] + users).each_with_index do |user, i|
   exams.each_with_index do |exam, j|
     next unless exam.deadline < Time.now
-    exam.metrics.each_with_index do |metric, k|
+    exam.metrics.each.with_index do |metric, k|
       next if i + j == k
-      grade = Grade.new subject: user, metric: metric,
-                        score: metric.max_score * (0.1 * ((i + j + k) % 10))
+      grade = metric.grades.build subject: user,
+          score: metric.max_score * (0.1 * ((i + j + k) % 10))
       grade.grader = admin
       grade.save!
     end
@@ -154,8 +153,7 @@ psets = pset_data.map.with_index do |data, index|
   pset.metrics_ready = data[:state] == :graded
   pset.save!
   metrics = (1..(2 + i)).map do |j|
-    AssignmentMetric.create! assignment: pset, name: "Problem #{j}",
-                             max_score: 6 + (i + j) % 6
+    pset.metrics.create! name: "Problem #{j}", max_score: 6 + (i + j) % 6
   end
 
   pdf_deliverable = pset.deliverables.create! name: 'PDF write-up',
@@ -227,9 +225,10 @@ end
     #       who submitted the writeup, to test the "missing grades" finder
     unless (i + j) % 3 == 0 || (i + j) % 10 == 1
       # Submit grades.
-      pset.metrics.each_with_index do |metric, k|
+      pset.metrics.each.with_index do |metric, k|
         next if i + j == k
-        grade = Grade.new subject: user, metric: metric,
+
+        grade = metric.grades.build subject: user,
             score: metric.max_score * (0.1 * ((i + j + k) % 10))
         grade.grader = admin
         grade.created_at = pset.deadline + 1.day
@@ -239,6 +238,8 @@ end
     end
   end
 end
+
+puts 'Psets created'
 
 # TODO: Projects.
 

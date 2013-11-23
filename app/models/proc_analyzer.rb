@@ -19,7 +19,7 @@ class ProcAnalyzer < Analyzer
   validates :message_name, presence: true, length: 1..64,
       inclusion: { in: %w(analyze_pdf) }
   attr_accessible :message_name
-  
+
   # :nodoc: overrides Analyzer#analyze
   def analyze(submission)
     send self.message_name.to_sym, submission
@@ -45,10 +45,10 @@ LOG_END
       result.log = "Missing PDF header.\nDid you upload a PDF?\n"
     end
     result.save!
-    
+
     zero_grades(submission) if auto_grading? && result.status != :ok
   end
-  
+
   # Creates zero grades for all the metrics on the submission's assignment.
   #
   # This method does not overwrite existing grades, so that (1) it does not

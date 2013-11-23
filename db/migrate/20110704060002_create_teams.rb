@@ -8,6 +8,6 @@ class CreateTeams < ActiveRecord::Migration
     end
 
     # Prevent duplicate names in a partition.
-    add_index :teams, [:partition_id, :name], unique: true, null: false
+    add_index :teams, [:partition_id, :name], unique: true
   end
 end

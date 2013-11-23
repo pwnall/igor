@@ -1,7 +1,7 @@
 <h2 class="deadlines-heading">Deadlines</h2>
 
 <ol class="deadlines">
-<% Contents::Deadline.for(current_user).each do |deadline| %>
+<% Deadline.for(current_user).each do |deadline| %>
   <li class="deadline-<%= deadline.state %>">
     <div class="heading">
       <span class="icon">

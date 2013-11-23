@@ -12,7 +12,7 @@ class CreateAnalyzers < ActiveRecord::Migration
 
       t.timestamps
     end
-    
-    add_index :analyzers, :deliverable_id, unique: true, null: false
+
+    add_index :analyzers, :deliverable_id, unique: true
   end
 end

@@ -1,10 +1,9 @@
 class CreateDbFiles < ActiveRecord::Migration
   def change
     create_table :db_files do |t|
-      t.text :f_file_name, length: 256, null: false
-      t.string :f_content_type, length: 64, null: false
-      t.integer :f_file_size, null: false
-      t.binary :f_file, limit: 16.megabytes, null: false
+      t.datetime :created_at, null: false
     end
+
+    add_attachment :db_files, :f
   end
 end

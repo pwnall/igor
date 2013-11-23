@@ -8,6 +8,6 @@ class CreateRecitationPartition < ActiveRecord::Migration
       t.datetime :created_at
     end
 
-    add_index :recitation_partitions, :course_id, null: false, unique: false
+    add_index :recitation_partitions, :course_id, unique: false
   end
 end

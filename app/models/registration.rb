@@ -50,7 +50,8 @@ class Registration < ActiveRecord::Base
   accepts_nested_attributes_for :recitation_conflicts
 
   # Answers to the course's prerequisites questions.
-  has_many :prerequisite_answers, dependent: :destroy, inverse_of: :registration
+  has_many :prerequisite_answers, dependent: :destroy,
+                                  inverse_of: :registration
   accepts_nested_attributes_for :prerequisite_answers, allow_destroy: false
   attr_accessible :prerequisite_answers_attributes
 
@@ -71,7 +72,7 @@ class Registration < ActiveRecord::Base
   #  {"timeslot": 9, "class_name": "6.042"}...]
   def update_conflicts(new_conflicts)
     old_recitation_conflicts = recitation_conflicts.index_by &:timeslot
-  
+
     # Update recitation conflicts.
     new_conflicts.each_value do |rc|
       next if rc[:class_name].blank?

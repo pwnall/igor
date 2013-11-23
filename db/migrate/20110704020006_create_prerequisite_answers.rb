@@ -8,10 +8,9 @@ class CreatePrerequisiteAnswers < ActiveRecord::Migration
 
       t.timestamps
     end
-    
+
     # Optimize getting prerequisite answers for a registration.
     add_index :prerequisite_answers, [:registration_id, :prerequisite_id],
-              unique: true, null: false,
-              name: 'prerequisites_for_a_registration'
+              unique: true, name: 'prerequisites_for_a_registration'
   end
 end

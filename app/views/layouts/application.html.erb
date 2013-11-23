@@ -2,11 +2,11 @@
 <html>
 <head>
   <title>MIT <%= Course.main.number %></title>
-<%= csrf_meta_tags %>
-<%= favicon_link_tag %>
-<%= stylesheet_link_tag 'application' %>
+<%= stylesheet_link_tag 'application', media: 'all' %>
 <%= javascript_include_tag 'application' %>
 <%= render 'layouts/google_analytics' %>
+<%= csrf_meta_tags %>
+<%= favicon_link_tag %>
 </head>
 
 <% if current_user %>

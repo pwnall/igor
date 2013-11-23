@@ -7,7 +7,6 @@ class CreateAssignmentMetrics < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :assignment_metrics, [:assignment_id, :name],
-                                   null: false, unique: true
+    add_index :assignment_metrics, [:assignment_id, :name], unique: true
   end
 end

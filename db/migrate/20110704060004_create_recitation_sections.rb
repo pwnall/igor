@@ -10,7 +10,6 @@ class CreateRecitationSections < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :recitation_sections, [:course_id, :serial],
-                                    unique: true, null: false
+    add_index :recitation_sections, [:course_id, :serial], unique: true
   end
 end

@@ -14,6 +14,6 @@ class CreateCourses < ActiveRecord::Migration
     end
 
     # Enforce course number uniqueness.
-    add_index :courses, :number, unique: true, null: false
+    add_index :courses, :number, unique: true
   end
 end

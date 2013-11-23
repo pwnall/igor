@@ -8,12 +8,11 @@ class CreateGrades < ActiveRecord::Migration
 
       t.timestamps
     end
-    
+
     # Optimize getting the grades for a user / team.
     add_index :grades, [:subject_id, :subject_type, :metric_id],
-                       unique: true, null: false,
-                       name: 'grades_by_subject_and_metric'
+                       unique: true, name: 'grades_by_subject_and_metric'
     # Optimize getting the grades for an assignment.
-    add_index :grades, [:metric_id], unique: false, null: true
+    add_index :grades, [:metric_id], unique: false
   end
 end

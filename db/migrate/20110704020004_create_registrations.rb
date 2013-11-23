@@ -14,8 +14,8 @@ class CreateRegistrations < ActiveRecord::Migration
 
       t.timestamps
     end
-    
-    add_index :registrations, [:user_id, :course_id], unique: true, null: false
-    add_index :registrations, [:course_id, :user_id], unique: true, null: false
+
+    add_index :registrations, [:user_id, :course_id], unique: true
+    add_index :registrations, [:course_id, :user_id], unique: true
   end
 end

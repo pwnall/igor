@@ -8,8 +8,8 @@ class CreateTeamPartitions < ActiveRecord::Migration
 
       t.timestamps
     end
-    
+
     # Enforce name uniqueness.
-    add_index :team_partitions, :name, unique: true, null: false
+    add_index :team_partitions, :name, unique: true
   end
 end
