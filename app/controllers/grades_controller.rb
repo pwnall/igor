@@ -36,9 +36,8 @@ class GradesController < ApplicationController
     end
 
     @metrics = @assignment.metrics
-    @grades = @assignment.grades.includes(:subject).
+    @grades = @assignment.grades.includes(:comment, :subject).
                           group_by { |g| [g.subject, g.metric] }
-
     respond_to do |format|
       format.html
     end
@@ -50,18 +49,40 @@ class GradesController < ApplicationController
         subject_type: params[:grade][:subject_type],
         subject_id: params[:grade][:subject_id],
         metric_id: params[:grade][:metric_id]).first
-    if @grade
+    if @grade 
       @grade.grader = current_user
-      success = @grade.update_attributes params[:grade]
-    else
+      grade_success = @grade.update_attributes params[:grade]
+    else 
       @grade = Grade.new params[:grade]
       @grade.grader = current_user
-      success = @grade.save
+      grade_success = @grade.save
+    end
+    if grade_success
+      # Comments can only be given if a grade is assigned
+      @comment = Comment.where(
+          grade_id: @grade[:id]).first
+      if @comment
+        # If there is an existing entry in the database
+        # mingy: should I delete a database entry if params[:comment][:comment].blank? ?
+        @comment.grader = current_user
+        comment_success = @comment.update_attributes params[:comment]
+      elsif params[:comment][:comment].blank?
+        # If there are no comments, and no existing entry in database, don't make new entry
+        comment_success = true
+      else
+        # If there are comments, but no existing entry in database
+        @comment = Comment.new(
+            grade_id: @grade[:id],
+            comment: params[:comment][:comment])
+        @comment.grader = current_user
+        comment_success = @comment.save
+      end
     end
 
-    @grade = Grade.new params[:grade]
-    @grade.grader = current_user
-    if success
+    # mingy: was this assignment necessary?
+    #@grade = Grade.new params[:grade]
+    #@grade.grader = current_user
+    if grade_success and comment_success
       if request.xhr?
         render :action => 'edit', :layout => false
       else
