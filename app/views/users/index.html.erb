@@ -38,8 +38,7 @@
         <% end %>
         </td>
         <td>
-          <%= link_to user, confirm: "Completely wipe #{user.email}'s data?",
-                      method: :delete, class: 'button' do %>
+          <%= user_destroy_link user, class: 'button' do %>
             <%= destroy_icon_tag %> Remove
           <% end %>
         </td>

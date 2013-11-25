@@ -13,11 +13,13 @@
 #  deliverables_ready :boolean          default(FALSE), not null
 #  metrics_ready      :boolean          default(FALSE), not null
 #  accepts_feedback   :boolean          default(FALSE), not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  created_at         :datetime
+#  updated_at         :datetime
 #
 
 ps1:
+  author: admin
+  course: main
   deadline: 2010-02-01 00:00:01
   name: PSet 1
   team_partition: psets
@@ -25,6 +27,8 @@ ps1:
   weight: 1.0
 
 ps2:
+  author: admin
+  course: main
   deadline: 2010-02-15 00:00:01
   name: PSet 2
   team_partition: psets
@@ -32,18 +36,24 @@ ps2:
   weight: 1.0
 
 project:
+  author: admin
+  course: main
   deadline: 2010-04-30 17:00:00
   name: Final Project
   team_partition: project
   feedback_survey: projects
   weight: 5.0
-  
+
 exam:
+  author: admin
+  course: main
   deadline: 2010-04-24 21:00:00
   name: Quiz 1
   weight: 10.0
-  
+
 assessment:
+  author: admin
+  course: main
   deadline: 2010-05-01 17:00:00
   name: Individual Assessment
   weight: 0.0

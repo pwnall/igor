@@ -3,10 +3,11 @@
 # Table name: db_files
 #
 #  id             :integer          not null, primary key
-#  f_file_name    :text             default(""), not null
-#  f_content_type :string(255)      not null
-#  f_file_size    :integer          not null
-#  f_file         :binary(214748364 default(""), not null
+#  created_at     :datetime         not null
+#  f_file_name    :string(255)
+#  f_content_type :string(255)
+#  f_file_size    :integer
+#  f_updated_at   :datetime
 #
 
 # Stores all database-backed files.

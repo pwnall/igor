@@ -7,8 +7,8 @@
 #  headline         :string(128)      not null
 #  contents         :string(8192)     not null
 #  open_to_visitors :boolean          default(FALSE), not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  created_at       :datetime
+#  updated_at       :datetime
 #
 
 # An announcement published to the entire class.

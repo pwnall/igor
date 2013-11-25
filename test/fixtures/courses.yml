@@ -11,13 +11,14 @@
 #  has_surveys     :boolean          default(TRUE), not null
 #  has_teams       :boolean          default(TRUE), not null
 #  section_size    :integer          default(20)
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  created_at      :datetime
+#  updated_at      :datetime
 #
 
 main:
   number: "6.006"
   title: "Introduction to Algorithms"
   ga_account: UA-19600078-2
-  email: vic.tor@costan.us
   has_recitations: true
+  email: vic.tor@costan.us
+  id: 1

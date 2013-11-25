@@ -1,0 +1,20 @@
+admin_ps1:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:admin_ps1) %>
+  style: original
+  file_contents: <%= binary_file('submission_files/small.pdf') %>
+
+admin_project:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:admin_project) %>
+  style: original
+  file_contents: <%= binary_file('submission_files/small.pdf') %>
+
+admin_assessment:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:admin_assessment) %>
+  style: original
+  file_contents: <%= binary_file('submission_files/small.pdf') %>
+
+submission_catch_all:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:submission_catch_all) %>
+  style: original
+  file_contents: <%= binary_file('submission_files/small.pdf') %>
+

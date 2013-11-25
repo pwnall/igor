@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = User.includes([:credentials, :profile]).all
+    @users = User.includes([:credentials, :profile]).to_a
 
     respond_to do |format|
       format.html # index.html.erb
@@ -47,7 +47,12 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @user = User.find_by_param params[:id]
-    @recitation_conflicts = @user.registration.recitation_conflicts.index_by(&:timeslot)
+
+    if @user.registration
+      @recitation_conflicts = @user.registration.recitation_conflicts.index_by(&:timeslot)
+    else
+      @recitation_conflicts = {}
+    end
 
     return bounce_user unless @user && @user.can_edit?(current_user)
   end
@@ -62,13 +67,17 @@ class UsersController < ApplicationController
     end
 
     if Course.main.has_recitations?
-      params[:recitation_conflicts].each_value do |rc|
-        next if rc[:class_name].blank?
-        conflict = RecitationConflict.new rc
-        conflict.registration = registration
-        registration.recitation_conflicts << conflict
+      if registration
+        (params[:recitation_conflicts] || {}).each_value do |rc|
+          next if rc[:class_name].blank?
+          conflict = RecitationConflict.new rc
+          conflict.registration = registration
+          registration.recitation_conflicts << conflict
+        end
+        @recitation_conflicts = registration.recitation_conflicts.index_by(&:timeslot)
+      else
+        @recitation_conflicts = {}
       end
-      @recitation_conflicts = registration.recitation_conflicts.index_by(&:timeslot)
     end
 
     respond_to do |format|

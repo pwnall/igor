@@ -11,8 +11,8 @@
 #  has_surveys     :boolean          default(TRUE), not null
 #  has_teams       :boolean          default(TRUE), not null
 #  section_size    :integer          default(20)
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  created_at      :datetime
+#  updated_at      :datetime
 #
 
 # A bunch of work that results in with grades for registered students.

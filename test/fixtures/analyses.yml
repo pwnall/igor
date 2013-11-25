@@ -6,9 +6,9 @@
 #  submission_id :integer          not null
 #  status_code   :integer          not null
 #  score         :integer
-#  log           :text(16777215)   default(""), not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  log           :text(16777215)   not null
+#  created_at    :datetime
+#  updated_at    :datetime
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

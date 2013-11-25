@@ -8,8 +8,8 @@
 #  serial     :integer          not null
 #  time       :string(64)       not null
 #  location   :string(64)       not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

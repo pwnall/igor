@@ -7,12 +7,12 @@
 #  headline         :string(128)      not null
 #  contents         :string(8192)     not null
 #  open_to_visitors :boolean          default(FALSE), not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  created_at       :datetime
+#  updated_at       :datetime
 #
 
 guest_lecture:
-  headline: "Guest lecture on Wed"
+  headline: Guest lecture on Wed
   contents: "This Wed, we're having a guest lecture. Please come!"
   author: admin
   open_to_visitors: true

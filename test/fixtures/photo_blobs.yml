@@ -1,0 +1,14 @@
+dexter:
+  profile_photo_id: <%= ActiveRecord::FixtureSet.identify(:dexter) %>
+  style: original
+  file_contents: <%= binary_file('profile_pics/costan.png') %>
+
+dexter:
+  profile_photo_id: <%= ActiveRecord::FixtureSet.identify(:dexter) %>
+  style: thumb
+  file_contents: <%= binary_file('profile_pics/costan_thumb.png') %>
+
+dexter:
+  profile_photo_id: <%= ActiveRecord::FixtureSet.identify(:dexter) %>
+  style: profile
+  file_contents: <%= binary_file('profile_pics/costan_profile.png') %>

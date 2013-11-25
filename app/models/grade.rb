@@ -8,8 +8,8 @@
 #  subject_id   :integer          not null
 #  subject_type :string(64)
 #  score        :decimal(8, 2)    not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  created_at   :datetime
+#  updated_at   :datetime
 #
 
 class Grade < ActiveRecord::Base

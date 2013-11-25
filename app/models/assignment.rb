@@ -13,8 +13,8 @@
 #  deliverables_ready :boolean          default(FALSE), not null
 #  metrics_ready      :boolean          default(FALSE), not null
 #  accepts_feedback   :boolean          default(FALSE), not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  created_at         :datetime
+#  updated_at         :datetime
 #
 
 # A piece of work that students have to complete.
@@ -42,7 +42,7 @@ class Assignment < ActiveRecord::Base
   end
 
   # Adds deadline ordering to an assignment query.
-  scope :by_deadline, order('deadline DESC').order(:name)
+  scope :by_deadline, -> { order('deadline DESC').order(:name) }
 
   # The assignments in a course that are visible to a user.
   def self.for(user, course)
@@ -136,7 +136,7 @@ class Assignment
   end
 
   # The average score for this assignment given a recitation.
-  # 
+  #
   # This is the sum of all the metrics' recitation averaged scores.
   def recitation_score(recitation)
     metrics.map { |metric| metric.grade_for_recitation recitation }.sum

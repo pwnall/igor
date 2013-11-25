@@ -63,12 +63,15 @@ gem 'therubyracer', '>= 0.12.0'
 gem 'jbuilder', '~> 1.5'
 
 # Don't log BLOB values (file attachments).
-gem 'trim_blobs'
+group :development, :production do
+  gem 'trim_blobs'
+end
 
 group :development, :test do
-  gem 'rspec-rails', '>= 2.14.0'
+  gem 'minitest-rails', '>= 0.9.2'
+  gem 'binary_fixtures', '>= 0.1.2'
   gem 'thin', '>= 1.6.1'
-  gem 'webrat', '>= 0.7.3'
+  gem 'turn', '>= 0.9.6'
 end
 
 group :development do

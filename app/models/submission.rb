@@ -7,8 +7,8 @@
 #  db_file_id     :integer          not null
 #  subject_id     :integer          not null
 #  subject_type   :string(255)      not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  created_at     :datetime
+#  updated_at     :datetime
 #
 
 # A file submitted by a student for an assignment.

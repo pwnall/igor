@@ -3,32 +3,30 @@
 # Table name: db_files
 #
 #  id             :integer          not null, primary key
-#  f_file_name    :text             default(""), not null
-#  f_content_type :string(255)      not null
-#  f_file_size    :integer          not null
-#  f_file         :binary(214748364 default(""), not null
+#  created_at     :datetime         not null
+#  f_file_name    :string(255)
+#  f_content_type :string(255)
+#  f_file_size    :integer
+#  f_updated_at   :datetime
 #
 
 admin_ps1:
   f_file_name: admin_ps1.pdf
-  f_file_size: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").length %>
+  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
   f_content_type: application/pdf
-  f_file: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").inspect %>
 
 admin_project:
   f_file_name: admin_project.pdf
-  f_file_size: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").length %>
+  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
   f_content_type: application/pdf
-  f_file: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").inspect %>
 
 admin_assessment:
   f_file_name: admin_assessment.pdf
-  f_file_size: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").length %>
+  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
   f_content_type: application/pdf
-  f_file: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").inspect %>
 
 submission_catch_all:
   f_file_name: catch_all.pdf
-  f_file_size: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").length %>
+  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
   f_content_type: application/pdf
-  f_file: <%= File.read("#{Rails.root}/spec/fixtures/submission_files/small.pdf").inspect %>
+

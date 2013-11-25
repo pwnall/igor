@@ -5,8 +5,8 @@
 #  id           :integer          not null, primary key
 #  partition_id :integer          not null
 #  name         :string(64)       not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  created_at   :datetime
+#  updated_at   :datetime
 #
 
 # A team in the class.

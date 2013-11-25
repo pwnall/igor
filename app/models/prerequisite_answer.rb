@@ -7,8 +7,8 @@
 #  prerequisite_id :integer          not null
 #  took_course     :boolean          not null
 #  waiver_answer   :text
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  created_at      :datetime
+#  updated_at      :datetime
 #
 
 class PrerequisiteAnswer < ActiveRecord::Base

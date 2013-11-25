@@ -7,31 +7,31 @@
 #  db_file_id     :integer          not null
 #  subject_id     :integer          not null
 #  subject_type   :string(255)      not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  created_at     :datetime
+#  updated_at     :datetime
 #
 
 admin_ps1:
   deliverable: ps1_writeup
-  subject: admin
+  subject: awesome_pset (Team)
   db_file: admin_ps1
 
 admin_project:
   deliverable: project_writeup
-  subject: admin
+  subject: boo_project (Team)
   db_file: admin_project
 
 admin_assessment:
   deliverable: assessment_writeup
-  subject: admin
+  subject: admin (User)
   db_file: admin_assessment
 
 inactive_project:
   deliverable: project_writeup
-  subject: inactive
+  subject: awesome_project (Team)
   db_file: submission_catch_all
 
 solo_ps1:
   deliverable: ps1_writeup
-  subject: solo
+  subject: solo (User)
   db_file: submission_catch_all

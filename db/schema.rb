@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20121102010631) do
+ActiveRecord::Schema.define(version: 20121020145804) do
 
   create_table "analyses", force: true do |t|
     t.integer  "submission_id",                  null: false
@@ -107,6 +107,8 @@ ActiveRecord::Schema.define(version: 20121102010631) do
     t.binary  "file_contents", limit: 2147483647
   end
 
+  add_index "db_file_blobs", ["db_file_id", "style"], name: "index_db_file_blobs_on_db_file_id_and_style", unique: true, using: :btree
+
   create_table "db_files", force: true do |t|
     t.datetime "created_at",     null: false
     t.string   "f_file_name"
@@ -163,6 +165,14 @@ ActiveRecord::Schema.define(version: 20121102010631) do
     t.datetime "updated_at"
   end
 
+  create_table "photo_blobs", force: true do |t|
+    t.integer "profile_photo_id",                  null: false
+    t.string  "style",            limit: 16
+    t.binary  "file_contents",    limit: 16777215, null: false
+  end
+
+  add_index "photo_blobs", ["profile_photo_id", "style"], name: "index_photo_blobs_on_profile_photo_id_and_style", unique: true, using: :btree
+
   create_table "prerequisite_answers", force: true do |t|
     t.integer  "registration_id", null: false
     t.integer  "prerequisite_id", null: false
@@ -185,15 +195,13 @@ ActiveRecord::Schema.define(version: 20121102010631) do
   add_index "prerequisites", ["course_id", "prerequisite_number"], name: "index_prerequisites_on_course_id_and_prerequisite_number", unique: true, using: :btree
 
   create_table "profile_photos", force: true do |t|
-    t.integer  "profile_id",                        null: false
-    t.string   "pic_file_name",    limit: 256,      null: false
-    t.string   "pic_content_type", limit: 64,       null: false
-    t.integer  "pic_file_size",                     null: false
-    t.binary   "pic_file",         limit: 16777215, null: false
-    t.binary   "pic_profile_file", limit: 16777215, null: false
-    t.binary   "pic_thumb_file",   limit: 16777215, null: false
+    t.integer  "profile_id",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "pic_file_name"
+    t.string   "pic_content_type"
+    t.integer  "pic_file_size"
+    t.datetime "pic_updated_at"
   end
 
   add_index "profile_photos", ["profile_id"], name: "index_profile_photos_on_profile_id", unique: true, using: :btree
@@ -340,13 +348,13 @@ ActiveRecord::Schema.define(version: 20121102010631) do
 
   create_table "team_partitions", force: true do |t|
     t.string   "name",       limit: 64,                 null: false
+    t.integer  "min_size",                              null: false
+    t.integer  "max_size",                              null: false
     t.boolean  "automated",             default: true,  null: false
     t.boolean  "editable",              default: true,  null: false
     t.boolean  "published",             default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "min_size"
-    t.integer  "max_size"
   end
 
   add_index "team_partitions", ["name"], name: "index_team_partitions_on_name", unique: true, using: :btree

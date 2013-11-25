@@ -4,13 +4,13 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string(64)       not null
+#  min_size   :integer          not null
+#  max_size   :integer          not null
 #  automated  :boolean          default(TRUE), not null
 #  editable   :boolean          default(TRUE), not null
 #  published  :boolean          default(FALSE), not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  min_size   :integer
-#  max_size   :integer
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 # A partitioning of students into teams.

@@ -9,8 +9,8 @@
 #  exec_limits    :text
 #  db_file_id     :integer
 #  message_name   :string(64)
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  created_at     :datetime
+#  updated_at     :datetime
 #
 
 # Performs an automated sanity check on submissions and offers instant feedback.

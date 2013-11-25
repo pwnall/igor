@@ -10,8 +10,8 @@
 #  for_credit            :boolean          default(TRUE), not null
 #  allows_publishing     :boolean          default(TRUE), not null
 #  recitation_section_id :integer
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
+#  created_at            :datetime
+#  updated_at            :datetime
 #
 
 dexter:

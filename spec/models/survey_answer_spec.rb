@@ -5,8 +5,8 @@
 #  id            :integer          not null, primary key
 #  user_id       :integer          not null
 #  assignment_id :integer          not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  created_at    :datetime
+#  updated_at    :datetime
 #
 
 require 'spec_helper'

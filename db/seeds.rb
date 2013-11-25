@@ -1,6 +1,7 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 
+include ActionDispatch::TestProcess  # Want fixture_file_upload.
 
 # Course.
 
@@ -128,11 +129,6 @@ puts 'Exams created'
 
 # Psets.
 
-# fixture_file_upload from Rails, tweaked to use spec/fixtures.
-def fixture_file_upload(path, mime_type)
-  Rack::Test::UploadedFile.new 'spec/fixtures/' + path, mime_type, true
-end
-
 pset_data = [
   { deadline: -12.weeks - 1.day, state: :graded },
   { deadline: -9.weeks - 1.day, state: :graded },
@@ -167,7 +163,8 @@ psets = pset_data.map.with_index do |data, index|
       name: 'Fibonacci', file_ext: 'rb',
       description: 'Please upload your modified fib.rb.'
   analyzer = ScriptAnalyzer.new db_file_attributes: {
-      f: fixture_file_upload('analyzer_files/fib.zip', 'application/zip') },
+      f: fixture_file_upload('test/fixtures/analyzer_files/fib.zip',
+                             'application/zip', :binary) },
       time_limit: '2', ram_limit: '1024', process_limit: '5',
       file_limit: '10', file_size_limit: '100', auto_grading: false
   analyzer.deliverable = rb_deliverable
@@ -197,8 +194,8 @@ end
       time = pset.deadline - 1.day + i * 1.minute
       submission = Submission.create! deliverable: writeup, subject: user,
            db_file_attributes: {
-             f: fixture_file_upload('submission_files/small.pdf',
-                                    'application/pdf')
+             f: fixture_file_upload('test/fixtures/submission_files/small.pdf',
+                                    'application/pdf', :binary)
            }, created_at: time, updated_at: time
       submission.run_analysis
       submission.analysis.created_at = time + 1.second
@@ -211,10 +208,10 @@ end
       code = pset.deliverables.where(file_ext: 'rb').first
       time = pset.deadline - 1.day + i * 1.minute + 30.seconds
       submission = Submission.create! deliverable: code, subject: user,
-           db_file_attributes: {
-             f: fixture_file_upload('submission_files/good_fib.rb',
-                                    'application/x-ruby')
-           }, created_at: time, updated_at: time
+          db_file_attributes: {
+            f: fixture_file_upload('test/fixtures/submission_files/good_fib.rb',
+                                   'application/x-ruby', :binary)
+          }, created_at: time, updated_at: time
       submission.run_analysis
       submission.analysis.created_at = time + 1.second
       submission.analysis.updated_at = time + 5.seconds

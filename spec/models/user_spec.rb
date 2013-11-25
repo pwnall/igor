@@ -4,8 +4,8 @@
 #
 #  id         :integer          not null, primary key
 #  exuid      :string(32)       not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  created_at :datetime
+#  updated_at :datetime
 #  admin      :boolean          default(FALSE), not null
 #
 

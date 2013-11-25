@@ -8,8 +8,8 @@
 #  target_user_id   :integer
 #  number           :float            not null
 #  comment          :string(1024)
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  created_at       :datetime
+#  updated_at       :datetime
 #
 
 # An answer to a question in a survey.

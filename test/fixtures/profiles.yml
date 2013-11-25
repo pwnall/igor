@@ -11,8 +11,8 @@
 #  year            :string(4)        not null
 #  athena_username :string(32)       not null
 #  about_me        :string(4096)     default(""), not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  created_at      :datetime
+#  updated_at      :datetime
 #
 
 dexter:
