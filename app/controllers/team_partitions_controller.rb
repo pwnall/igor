@@ -12,7 +12,7 @@ class TeamPartitionsController < ApplicationController
 
   # GET /team_partitions/1
   def show
-    @team_partition = TeamPartition.find(params[:id])
+    @team_partition = TeamPartition.find params[:id]
     @team = Team.new :partition => @team_partition 
 
     respond_to do |format|
@@ -28,7 +28,7 @@ class TeamPartitionsController < ApplicationController
 
   # GET /team_partitions/1/edit
   def edit
-    @team_partition = TeamPartition.find(params[:id])
+    @team_partition = TeamPartition.find params[:id]
     new_edit
   end
   
@@ -41,13 +41,13 @@ class TeamPartitionsController < ApplicationController
 
   # POST /team_partitions
   def create
-    @team_partition = TeamPartition.new(params[:team_partition])
+    @team_partition = TeamPartition.new team_params
     create_update
   end
 
   # PUT /team_partitions/1
   def update
-    @team_partition = TeamPartition.find(params[:id])
+    @team_partition = TeamPartition.find params[:id]
     create_update
   end
   
@@ -56,7 +56,7 @@ class TeamPartitionsController < ApplicationController
     if @is_new_record
       success = @team_partition.save
     else
-      success = @team_partition.update_attributes(params[:team_partition])
+      success = @team_partition.update_attributes team_params
     end
     
     respond_to do |format|
@@ -68,7 +68,7 @@ class TeamPartitionsController < ApplicationController
             @team_partition.auto_assign_users team_size
           else
             unless params[:clone_partition_id].blank?
-              @team_partition.populate_from TeamPartition.find(params[:clone_partition_id])
+              @team_partition.populate_from TeamPartition.find params[:clone_partition_id]
             end
           end
         end
@@ -133,4 +133,10 @@ class TeamPartitionsController < ApplicationController
     end
   end
   
+  private 
+    # Permit updating and creating team partitions.
+    def team_params
+      params[:team_partition].permit(:name, :automated, :min_size, :max_size, :published)
+    end 
+
 end

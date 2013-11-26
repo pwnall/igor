@@ -32,5 +32,5 @@ class Prerequisite < ActiveRecord::Base
   validates :waiver_question, length: 1..256, presence: true
   
   # Forms can only mess with the user-visible fields.
-  attr_accessible :prerequisite_number, :waiver_question
+  #attr_accessible :prerequisite_number, :waiver_question
 end

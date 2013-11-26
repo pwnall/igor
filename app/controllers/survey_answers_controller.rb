@@ -5,7 +5,7 @@ class SurveyAnswersController < ApplicationController
   # GET /survey_answers
   def index
     if params[:assignment_id]
-      @assignment = Assignment.find(params[:assignment_id])
+      @assignment = Assignment.find params[:assignment_id]
       @survey_answers = SurveyAnswer.
           where(:assignment_id => params[:assignment_id]).
           includes(:user => :profile)
@@ -21,7 +21,7 @@ class SurveyAnswersController < ApplicationController
 
   # GET /survey_answers/1
   def show
-    @survey_answer = SurveyAnswer.find(params[:id])
+    @survey_answer = SurveyAnswer.find params[:id]
 
     respond_to do |format|
       format.html # show.html.erb
@@ -52,7 +52,7 @@ class SurveyAnswersController < ApplicationController
 
   # GET /survey_answers/1/edit
   def edit
-    @survey_answer = SurveyAnswer.find(params[:id])
+    @survey_answer = SurveyAnswer.find params[:id]
     return bounce_user if @survey_answer.user_id != current_user.id
     
     new_edit
@@ -67,14 +67,14 @@ class SurveyAnswersController < ApplicationController
 
   # POST /survey_answers
   def create
-    @survey_answer = SurveyAnswer.new(params[:survey_answer])
+    @survey_answer = SurveyAnswer.new params[:survey_answer]
     @survey_answer.user = current_user
     create_update    
   end
 
   # PUT /survey_answerss/1
   def update
-    @survey_answer = SurveyAnswer.find(params[:id])
+    @survey_answer = SurveyAnswer.find params[:id]
     return bounce_user if @survey_answer.user_id != current_user.id
 
     # updating is not allowed to move feedback around assignments
@@ -87,7 +87,7 @@ class SurveyAnswersController < ApplicationController
     if @is_new_record
       success = @survey_answer.save
     else
-      success = @survey_answer.update_attributes(params[:survey_answer])
+      success = @survey_answer.update_attributes params[:survey_answer]
     end
     
     respond_to do |format|
@@ -111,4 +111,11 @@ class SurveyAnswersController < ApplicationController
       format.html { redirect_to survey_answers_path }
     end
   end
+
+  private
+    # Permits creating and updating survey answers.
+    def survey_answer_params
+      params[:survey_answer].permit 
+    end 
+
 end

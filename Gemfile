@@ -5,7 +5,7 @@ gem 'rails', '>= 4.0.1'
 gem 'mysql2', '>= 0.3.14'
 
 # TODO(pwnall): remove this and switch to the Rails 4 security model.
-gem 'protected_attributes'
+# gem 'protected_attributes'
 
 # Core.
 gem 'authpwn_rails', '>= 0.15.1'

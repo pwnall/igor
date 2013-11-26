@@ -52,15 +52,13 @@ class GradesController < ApplicationController
         metric_id: params[:grade][:metric_id]).first
     if @grade
       @grade.grader = current_user
-      success = @grade.update_attributes params[:grade]
+      success = @grade.update_attributes grade_params
     else
-      @grade = Grade.new params[:grade]
+      @grade = Grade.new grade_params
       @grade.grader = current_user
       success = @grade.save
     end
 
-    @grade = Grade.new params[:grade]
-    @grade.grader = current_user
     if success
       if request.xhr?
         render :action => 'edit', :layout => false
@@ -225,20 +223,26 @@ class GradesController < ApplicationController
     send_data csv_text, :filename => 'grades.csv', :type => 'text/csv', :disposition => 'inline'
   end
 
-  def pull_metrics(only_published = true)
-    @metrics = AssignmentMetric.includes :assignment
-    @metrics = @metrics.where(:published => true) if only_published
-    if params[:filter_aid] && !params[:filter_aid].empty?
-      @metrics = @metrics.where(:assignment_id => params[:filter_aid].to_i)
+  private
+    def pull_metrics(only_published = true)
+      @metrics = AssignmentMetric.includes :assignment
+      @metrics = @metrics.where(:published => true) if only_published
+      if params[:filter_aid] && !params[:filter_aid].empty?
+        @metrics = @metrics.where(:assignment_id => params[:filter_aid].to_i)
+      end
+
+      @metrics_by_aid = {}
+      @assignments_by_aid = {}
+      @metrics.each do |m|
+        @assignments_by_aid[m.assignment_id] ||= m.assignment
+        @metrics_by_aid[m.assignment_id] ||= []
+        @metrics_by_aid[m.assignment_id] << m
+      end
     end
 
-    @metrics_by_aid = {}
-    @assignments_by_aid = {}
-    @metrics.each do |m|
-      @assignments_by_aid[m.assignment_id] ||= m.assignment
-      @metrics_by_aid[m.assignment_id] ||= []
-      @metrics_by_aid[m.assignment_id] << m
-    end
-  end
-  private :pull_metrics
+    # Permits updating grades.
+    def grade_params
+      params[:grade].permit :subject_id, :subject_type, :metric_id, :score
+    end 
+
 end

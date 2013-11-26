@@ -72,13 +72,13 @@ class SubmissionsController < ApplicationController
     return bounce_user unless deliverable.can_submit? current_user
 
     @submission = deliverable.submission_for current_user
-    @submission ||= Submission.new params[:submission]
+    @submission ||= Submission.new submission_params
     @submission.subject = current_user
 
     success = if @submission.new_record?
       @submission.save
     else
-      @submission.update_attributes(params[:submission])
+      @submission.update_attributes submission_params
     end
 
     respond_to do |format|
@@ -206,12 +206,18 @@ class SubmissionsController < ApplicationController
     File.delete "#{temp_dir}.zip"
   end
 
-  def with_temp_dir
-    temp_dir = 'tmp/' + (0...16).map { rand(256).to_s(16) }.join
-    Dir.mkdir temp_dir
-    yield temp_dir
-    FileUtils.rm_r temp_dir
-    temp_dir
-  end
-  private :with_temp_dir
+  private
+    def with_temp_dir
+      temp_dir = 'tmp/' + (0...16).map { rand(256).to_s(16) }.join
+      Dir.mkdir temp_dir
+      yield temp_dir
+      FileUtils.rm_r temp_dir
+      temp_dir
+    end
+
+    # Permit updating and creating submissions.
+    def submission_params
+      params[:submission].permit(:deliverable_id, db_file_attributes: [:f])
+    end 
+
 end

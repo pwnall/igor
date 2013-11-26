@@ -3,7 +3,7 @@ class TeamMembershipsController < ApplicationController
 
   # POST /team_memberships
   def create
-    @team_membership = TeamMembership.new(params[:team_membership])
+    @team_membership = TeamMembership.new team_membership_new_params
     @user = User.find_first_by_query!(params[:query])
     @team_membership.user = @user
     logger.debug("User: " + @user.inspect)
@@ -24,7 +24,7 @@ class TeamMembershipsController < ApplicationController
 
   # DELETE /team_memberships/1
   def destroy
-    @team_membership = TeamMembership.find(params[:id])
+    @team_membership = TeamMembership.find params[:id]
     @team_membership.destroy
 
     respond_to do |format|
@@ -34,4 +34,11 @@ class TeamMembershipsController < ApplicationController
       end
     end
   end
+
+  private 
+    # Permit updating and creating teams.
+    def team_membership_new_params
+      params[:team_membership].permit :team_id
+    end 
+
 end

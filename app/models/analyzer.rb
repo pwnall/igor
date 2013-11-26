@@ -25,7 +25,7 @@ class Analyzer < ActiveRecord::Base
   
   # If true, the analyzer can automatically update the student's grades.
   validates :auto_grading, inclusion: { in: [true, false] }
-  attr_accessible :auto_grading
+  #attr_accessible :auto_grading
   
   # Sanity-checks a student's submission.
   #

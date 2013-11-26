@@ -40,7 +40,7 @@ class RecitationSectionsController < ApplicationController
 
   # POST /recitation_sections
   def create
-    @recitation_section = RecitationSection.new params[:recitation_section]
+    @recitation_section = RecitationSection.new recitation_section_params
     @recitation_section.course = Course.main
     create_update
   end
@@ -68,7 +68,7 @@ class RecitationSectionsController < ApplicationController
       @recitation_section.course = Course.main
       success = @recitation_section.save
     else
-      success = @recitation_section.update_attributes params[:recitation_section]
+      success = @recitation_section.update_attributes recitation_section_params
     end
 
     respond_to do |format|
@@ -93,4 +93,11 @@ class RecitationSectionsController < ApplicationController
       format.html { redirect_to recitation_sections_url }
     end
   end
+
+  private
+    # Permits updating recitations.
+    def recitation_section_params
+      params[:recitation_section].permit :serial, :leader_id, :time, :location
+    end 
+
 end

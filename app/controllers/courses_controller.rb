@@ -15,7 +15,7 @@ class CoursesController < ApplicationController
     @course = Course.main
     
     respond_to do |format|
-      if @course.update_attributes params[:course]
+      if @course.update_attributes course_update_params
         format.html do
           redirect_to root_url, :notice => "#{@course.number} course settings updated"
         end
@@ -24,4 +24,11 @@ class CoursesController < ApplicationController
       end
     end
   end
+
+  private 
+    # Permit updating courses
+    def course_update_params
+      params[:course].permit :number, :title, :email, :ga_account, :has_recitations, :has_surveys, :has_teams
+    end
+
 end

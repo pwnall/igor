@@ -20,7 +20,7 @@ class ScriptAnalyzer < Analyzer
   validates :db_file, presence: true
   validates_associated :db_file
   accepts_nested_attributes_for :db_file
-  attr_accessible :db_file_attributes
+  #attr_accessible :db_file_attributes
 
   # Database-backed file association, including the file contents.
   def full_db_file
@@ -34,31 +34,31 @@ class ScriptAnalyzer < Analyzer
   validates :time_limit, presence: true,
       numericality: { only_integer: true, greater_than: 0 }
   store_accessor :exec_limits, :time_limit
-  attr_accessible :time_limit
+  #attr_accessible :time_limit
 
   # Maximum number of megabytes of RAM that the analyzer can use.
   validates :ram_limit, presence: true,
       numericality: { only_integer: true, greater_than: 0 }
   store_accessor :exec_limits, :ram_limit
-  attr_accessible :ram_limit
+  #attr_accessible :ram_limit
 
   # Maximum number of file descriptors that the analyzer can use.
   validates :file_limit, presence: true,
       numericality: { only_integer: true, greater_than: 0 }
   store_accessor :exec_limits, :file_limit
-  attr_accessible :file_limit
+  #attr_accessible :file_limit
 
   # Maximum number of megabytes that the analyzer can write to a single file.
   validates :file_size_limit, presence: true,
       numericality: { only_integer: true, greater_than: 0 }
   store_accessor :exec_limits, :file_size_limit
-  attr_accessible :file_size_limit
+  #attr_accessible :file_size_limit
 
   # Maximum number of processes that the analyzer can use.
   validates :process_limit, presence: true,
       numericality: { only_integer: true, greater_than: 0 }
   store_accessor :exec_limits, :process_limit
-  attr_accessible :process_limit
+  #attr_accessible :process_limit
 
   # :nodoc: overrides Analyzer#analyze
   def analyze(submission)

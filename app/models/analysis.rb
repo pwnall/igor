@@ -14,7 +14,7 @@
 # The result of analyzing a Submission. 
 class Analysis < ActiveRecord::Base
   # Analyses aren't editable from Web forms.
-  attr_accessible
+  #attr_accessible
 
   # The submission that was analyzed.
   belongs_to :submission, inverse_of: :analysis

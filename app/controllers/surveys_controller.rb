@@ -30,13 +30,13 @@ class SurveysController < ApplicationController
 
   # GET /surveys/1/edit
   def edit
-    @survey = Survey.find(params[:id])
+    @survey = Survey.find params[:id]
     @survey_questions = SurveyQuestion.all
   end
 
   # POST /surveys
   def create
-    @survey = Survey.new(params[:survey])
+    @survey = Survey.new survey_params
 
     respond_to do |format|
       if @survey.save
@@ -49,10 +49,10 @@ class SurveysController < ApplicationController
 
   # PUT /surveys/1
   def update
-    @survey = Survey.find(params[:id])
+    @survey = Survey.find params[:id]
 
     respond_to do |format|
-      if @survey.update_attributes(params[:survey])
+      if @survey.update_attributes survey_params
         format.html { redirect_to(survey_questions_path, :notice => 'Survey was successfully updated.') }
       else
         format.html { render :action => "edit" }
@@ -62,7 +62,7 @@ class SurveysController < ApplicationController
 
   # DELETE /surveys/1
   def destroy
-    @survey = Survey.find(params[:id])
+    @survey = Survey.find params[:id]
     @survey.destroy
 
     respond_to do |format|
@@ -72,22 +72,29 @@ class SurveysController < ApplicationController
   
   # POST /surveys/question
   def add_question
-    @survey = Survey.find(params[:id])
-    question = SurveyQuestion.find(params[:question_id])
+    @survey = Survey.find params[:id]
+    question = SurveyQuestion.find params[:question_id]
     
     SurveyQuestionMembership.create :survey_question => question,
         :survey => @survey
     
-    redirect_to edit_survey_path(@survey)
+    redirect_to edit_survey_path @survey
   end
 
   # DELETE /surveys/question
   def remove_question
-    @survey = Survey.find(params[:id])
+    @survey = Survey.find params[:id]
     membership = @survey.memberships.
         where(:survey_question_id => params[:question_id]).first
     membership.destroy
     
-    redirect_to edit_survey_path(@survey)    
+    redirect_to edit_survey_path @survey
   end
+
+  private
+    # Permits creating and updating surveys.
+    def survey_params 
+      params[:survey].permit :name
+    end 
+
 end

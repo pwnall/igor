@@ -48,12 +48,12 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments/1/edit
   def edit
-    @assignment = Assignment.find(params[:id])
+    @assignment = Assignment.find params[:id]
   end
   
   # POST /assignments
   def create
-    @assignment = Course.main.assignments.build params[:assignment]
+    @assignment = Course.main.assignments.build assignment_params
 
     respond_to do |format|
       if @assignment.save
@@ -66,10 +66,10 @@ class AssignmentsController < ApplicationController
 
   # PUT /assignments/1
   def update
-    @assignment = Assignment.find(params[:id])
+    @assignment = Assignment.find params[:id]
 
     respond_to do |format|
-      if @assignment.update_attributes(params[:assignment])
+      if @assignment.update_attributes assignment_params
         format.html do
           redirect_to dashboard_assignment_url(@assignment),
               notice: 'Assignment successfully updated.'
@@ -83,7 +83,7 @@ class AssignmentsController < ApplicationController
 
   # DELETE /assignments/1
   def destroy
-    @assignment = Assignment.find(params[:id])
+    @assignment = Assignment.find params[:id]
     @assignment.destroy
 
     respond_to do |format|
@@ -96,4 +96,11 @@ class AssignmentsController < ApplicationController
       end
     end
   end
+
+  private
+    # Permits updating and creating assignments.
+    def assignment_params
+      params[:assignment].permit :name, :deadline, :weight, :author, :author_id, :team_partition_id, :feedback_survey_id, :accepts_feedback, :deliverables_ready, :deliverables_attributes, :metrics_ready, :metrics_attributes
+      # Note: feedback_survey_id and accepts_feedback are protected in the model but are allowed here
+    end 
 end

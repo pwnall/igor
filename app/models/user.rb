@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
       message: 'needs to be an .edu e-mail address' }
 
   # Admins can bless other admins and activate blocked users.
-  attr_accessible :active, :admin, as: :admin
+  #attr_accessible :active, :admin, as: :admin
 
   # Site staff members. Not the same as teaching staff.
   validates :admin, inclusion: { in: [true, false], allow_nil: false }
@@ -57,7 +57,7 @@ class User
   validates :profile, presence: { on: :create }
 
   accepts_nested_attributes_for :profile
-  attr_accessible :profile_attributes
+  #attr_accessible :profile_attributes
 
   # The user's real-life name.
   #
@@ -102,7 +102,7 @@ class User
   # Class registration info, e.g. survey answers and credit / listener status.
   has_many :registrations, dependent: :destroy, inverse_of: :user
   accepts_nested_attributes_for :registrations
-  attr_accessible :registrations_attributes
+  #attr_accessible :registrations_attributes
   has_many :recitation_sections, through: :registrations
 
   # The user's registration for the main class on this site.
