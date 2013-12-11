@@ -5,31 +5,30 @@
 </p>
 <% end %>
 
-<%= form_tag session_path do %>
+<%= form_for @session, url: session_path do |f| %>
   <section class="fields">
     <p class="field">
-      <%= label_tag :email, 'Email Address' %>
+      <%= f.label :email, 'Email Address' %>
       <span class="value">
-        <%= email_field_tag :email, @email %>
+        <%= f.email_field :email %>
       </span>
     </p>
 
     <p class="field">
-      <%= label_tag :password %>
+      <%= f.label :password %>
       <span class="value">
-        <%= password_field_tag :password %>
+        <%= f.password_field :password %>
       </span>
     </p>
   </section>
 
   <p class="actions">
-    <%= button_tag 'Log in', :name => 'login', :value => 'requested',
-                             :class => 'emphasized' %>
-    <%= button_tag 'Reset Password', :name => 'reset_password',
-          :value => 'requested', :formaction => reset_password_session_path %>
-
-    <% if @redirect_url %>
-    <%= hidden_field_tag :redirect_url, @redirect_url %>
-    <% end %>
+    <%= f.button 'Log in', name: 'login', value: 'requested',
+            class: 'emphasized' %>
+    <%= f.button 'Reset Password', name: 'reset_password', value: 'requested',
+            formaction: reset_password_session_path %>
   </p>
+  <% if @redirect_url %>
+  <%= hidden_field_tag :redirect_url, @redirect_url %>
+  <% end %>
 <% end %>

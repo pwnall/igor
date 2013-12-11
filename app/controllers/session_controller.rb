@@ -4,6 +4,7 @@ class SessionController < ApplicationController
 
   # Sets up the 'session/welcome' view. No user is logged in.
   def welcome
+    @session = Session.from_params params
     render :action => :new
   end
   private :welcome
@@ -33,7 +34,7 @@ class SessionController < ApplicationController
       format.html do
         case token
         when Tokens::EmailVerification
-          redirect_to session_url, :notice => 'E-mail address confirmed'
+          redirect_to session_url, notice: 'E-mail address confirmed'
         when Tokens::PasswordReset
           redirect_to change_password_session_url
         # Handle other token types here.
@@ -54,6 +55,5 @@ class SessionController < ApplicationController
   self.auto_purge_sessions = true
 
   # You shouldn't extend the session controller, so you can benefit from future
-  # features, like Facebook / Twitter / OpenID integration. But, if you must,
-  # you can do it here.
+  # features. But, if you must, you can do it here.
 end

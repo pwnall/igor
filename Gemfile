@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-ruby '1.9.3'
 
 gem 'rails', '>= 4.0.1'
 
@@ -9,7 +8,7 @@ gem 'mysql2', '>= 0.3.14'
 gem 'protected_attributes'
 
 # Core.
-gem 'authpwn_rails', '>= 0.14.0'
+gem 'authpwn_rails', '>= 0.15.1'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'markdpwn', '>= 0.1.7'
 gem 'nokogiri', '>= 1.6.0'
@@ -51,8 +50,8 @@ gem 'best_in_place', '>= 2.1.0',
 
 # Assets.
 gem 'sass-rails', '>= 4.0.0'
-gem 'pwnstyles_rails', '>= 0.1.31'
-#gem 'pwnstyles_rails', '>= 0.1.31', path: '../pwnstyles_rails'
+gem 'pwnstyles_rails', '>= 0.1.32'
+#gem 'pwnstyles_rails', '>= 0.1.32', path: '../pwnstyles_rails'
 gem 'jquery-rails', '>= 3.0.4'
 gem 'jquery-ui-rails', '>= 4.0.5'
 gem 'coffee-rails', '>= 4.0.1'
