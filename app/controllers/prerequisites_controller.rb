@@ -3,7 +3,7 @@ class PrerequisitesController < ApplicationController
   
   # GET /prerequisites
   def index
-    @prerequisites = Prerequisite.find :all
+    @prerequisites = Prerequisite.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -70,10 +70,10 @@ class PrerequisitesController < ApplicationController
     end
   end
 
-  private
-    # Permits creating and updating prerequisites.
-    def prerequisite_params 
-      params[:prerequisite].permit :prerequisite_number, :waiver_question
-    end 
+  # Permits creating and updating prerequisites.
+  def prerequisite_params 
+    params[:prerequisite].permit :prerequisite_number, :waiver_question
+  end 
+  private :prerequisite_params
 
 end

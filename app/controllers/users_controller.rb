@@ -179,10 +179,10 @@ class UsersController < ApplicationController
     end
   end
 
-  private 
-    # Permit creating and updating user.
-    def user_params
-      params[:user].permit :email, :password, :password_confirmation, profile_attributes: [:athena_username, :name, :nickname, :university, :department, :year, :id], registration_attributes: []
-    end 
+  # Permit creating and updating user.
+  def user_params
+    params.require(:user).permit :email, :password, :password_confirmation, profile_attributes: [:athena_username, :name, :nickname, :university, :department, :year], registration_attributes: []
+  end 
+  private :user_params
 
 end

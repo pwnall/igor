@@ -112,10 +112,11 @@ class SurveyAnswersController < ApplicationController
     end
   end
 
-  private
-    # Permits creating and updating survey answers.
-    def survey_answer_params
-      params[:survey_answer].permit 
-    end 
+  # Permits creating and updating survey answers.
+  def survey_answer_params
+    params.require(:survey_answer).permit! 
+    #TODO: fill in permitted parameters once feature is fixed
+  end 
+  private :survey_answer_params
 
 end

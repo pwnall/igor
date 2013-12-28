@@ -94,10 +94,10 @@ class RecitationSectionsController < ApplicationController
     end
   end
 
-  private
-    # Permits updating recitations.
-    def recitation_section_params
-      params[:recitation_section].permit :serial, :leader_id, :time, :location
-    end 
+  # Permits updating recitations.
+  def recitation_section_params
+    params.require(:recitation_section).permit :serial, :leader_id, :time, :location
+  end 
+  private :recitation_section_params
 
 end

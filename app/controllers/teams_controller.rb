@@ -54,11 +54,11 @@ class TeamsController < ApplicationController
     end
   end
 
-  private 
-    # Permit updating and creating teams.
-    def team_params
-      params[:team].permit!
-      # TODO(mingy): fill in once update_page is fixed
-    end 
+  # Permit updating and creating teams.
+  def team_params
+    params.require(:team).permit!
+    # TODO(mingy): fill in once update_page is fixed
+  end 
+  private :team_params
 
 end

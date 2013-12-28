@@ -223,26 +223,27 @@ class GradesController < ApplicationController
     send_data csv_text, :filename => 'grades.csv', :type => 'text/csv', :disposition => 'inline'
   end
 
-  private
-    def pull_metrics(only_published = true)
-      @metrics = AssignmentMetric.includes :assignment
-      @metrics = @metrics.where(:published => true) if only_published
-      if params[:filter_aid] && !params[:filter_aid].empty?
-        @metrics = @metrics.where(:assignment_id => params[:filter_aid].to_i)
-      end
-
-      @metrics_by_aid = {}
-      @assignments_by_aid = {}
-      @metrics.each do |m|
-        @assignments_by_aid[m.assignment_id] ||= m.assignment
-        @metrics_by_aid[m.assignment_id] ||= []
-        @metrics_by_aid[m.assignment_id] << m
-      end
+  def pull_metrics(only_published = true)
+    @metrics = AssignmentMetric.includes :assignment
+    @metrics = @metrics.where(:published => true) if only_published
+    if params[:filter_aid] && !params[:filter_aid].empty?
+      @metrics = @metrics.where(:assignment_id => params[:filter_aid].to_i)
     end
 
-    # Permits updating grades.
-    def grade_params
-      params[:grade].permit :subject_id, :subject_type, :metric_id, :score
-    end 
+    @metrics_by_aid = {}
+    @assignments_by_aid = {}
+    @metrics.each do |m|
+      @assignments_by_aid[m.assignment_id] ||= m.assignment
+      @metrics_by_aid[m.assignment_id] ||= []
+      @metrics_by_aid[m.assignment_id] << m
+    end
+  end
+  private :pull_metrics
+
+  # Permits updating grades.
+  def grade_params
+    params.require(:grade).permit :subject_id, :subject_type, :metric_id, :score
+  end 
+  private :grade_params
 
 end

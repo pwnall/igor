@@ -206,18 +206,19 @@ class SubmissionsController < ApplicationController
     File.delete "#{temp_dir}.zip"
   end
 
-  private
-    def with_temp_dir
-      temp_dir = 'tmp/' + (0...16).map { rand(256).to_s(16) }.join
-      Dir.mkdir temp_dir
-      yield temp_dir
-      FileUtils.rm_r temp_dir
-      temp_dir
-    end
+  def with_temp_dir
+    temp_dir = 'tmp/' + (0...16).map { rand(256).to_s(16) }.join
+    Dir.mkdir temp_dir
+    yield temp_dir
+    FileUtils.rm_r temp_dir
+    temp_dir
+  end
+  private :with_temp_dir
 
-    # Permit updating and creating submissions.
-    def submission_params
-      params[:submission].permit(:deliverable_id, db_file_attributes: [:f])
-    end 
+  # Permit updating and creating submissions.
+  def submission_params
+    params.require(:submission).permit(:deliverable_id, db_file_attributes: [:f])
+  end 
+  private :submission_params
 
 end

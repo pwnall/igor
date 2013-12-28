@@ -133,10 +133,10 @@ class TeamPartitionsController < ApplicationController
     end
   end
   
-  private 
-    # Permit updating and creating team partitions.
-    def team_params
-      params[:team_partition].permit(:name, :automated, :min_size, :max_size, :published)
-    end 
+  # Permit updating and creating team partitions.
+  def team_params
+    params.require(:team_partition).permit(:name, :automated, :min_size, :max_size, :published)
+  end 
+  private :team_params
 
 end

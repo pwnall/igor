@@ -35,10 +35,10 @@ class TeamMembershipsController < ApplicationController
     end
   end
 
-  private 
-    # Permit updating and creating teams.
-    def team_membership_new_params
-      params[:team_membership].permit :team_id
-    end 
+  # Permit updating and creating teams.
+  def team_membership_new_params
+    params.require(:team_membership).permit :team_id
+  end 
+  private :team_membership_new_params
 
 end

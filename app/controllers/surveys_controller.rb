@@ -91,10 +91,10 @@ class SurveysController < ApplicationController
     redirect_to edit_survey_path @survey
   end
 
-  private
-    # Permits creating and updating surveys.
-    def survey_params 
-      params[:survey].permit :name
-    end 
+  # Permits creating and updating surveys.
+  def survey_params 
+    params.require(:survey).permit :name
+  end 
+  private :survey_params
 
 end

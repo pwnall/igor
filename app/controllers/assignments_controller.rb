@@ -97,10 +97,11 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  private
-    # Permits updating and creating assignments.
-    def assignment_params
-      params[:assignment].permit :name, :deadline, :weight, :author, :author_id, :team_partition_id, :feedback_survey_id, :accepts_feedback, :deliverables_ready, :deliverables_attributes, :metrics_ready, :metrics_attributes
-      # Note: feedback_survey_id and accepts_feedback are protected in the model but are allowed here
-    end 
+  # Permits updating and creating assignments.
+  def assignment_params
+    params.require(:assignment).permit :name, :deadline, :weight, :author, :author_id, :team_partition_id, :feedback_survey_id, :accepts_feedback, :deliverables_ready, :deliverables_attributes, :metrics_ready, :metrics_attributes
+    # Note: feedback_survey_id and accepts_feedback are protected in the model but are allowed here
+  end 
+  private :assignment_params
+
 end

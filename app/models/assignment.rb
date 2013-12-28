@@ -28,13 +28,10 @@ class Assignment < ActiveRecord::Base
   # The user-visible assignment name (e.g., "PSet 1").
   validates :name, length: 1..64, uniqueness: { scope: :course_id },
                    presence: true
-  #attr_accessible :name
 
   # The user that will be reported as the assignment's author.
   belongs_to :author, class_name: 'User'
-  #attr_accessible :author
   validates :author, presence: true
-  #attr_accessible :author_id
 
   # True if the user is allowed to see this assignment.
   def can_read?(user)
@@ -54,19 +51,16 @@ end
 class Assignment
   # The time when all the deliverables of the assignment are due.
   validates :deadline, presence: true, timeliness: true
-  #attr_accessible :deadline
 
   # If true, students can read deliverables and make submissions.
   validates :deliverables_ready, inclusion: { in: [true, false],
                                               allow_nil: false }
-  #attr_accessible :deliverables_ready
 
   # The deliverables that students need to submit to complete the assignment.
   has_many :deliverables, dependent: :destroy, inverse_of: :assignment
   validates_associated :deliverables
   accepts_nested_attributes_for :deliverables, allow_destroy: true,
                                                reject_if: :all_blank
-  #attr_accessible :deliverables_attributes
 
   # All students' submissions for this assignment.
   has_many :submissions, through: :deliverables, inverse_of: :assignment
@@ -104,11 +98,9 @@ class Assignment
   # The assignment's weight when computing total class scores.
   validates :weight, numericality: { greater_than_or_equal_to: 0,
       less_than_or_equal_to: 100, allow_nil: true }
-  #attr_accessible :weight
 
   # If true, students can see their grades on the assignment.
   validates :metrics_ready, inclusion: { in: [true, false], allow_nil: false }
-  #attr_accessible :metrics_ready
 
   # The metrics that the students are graded on for this assignment.
   has_many :metrics, class_name: 'AssignmentMetric', dependent: :destroy,
@@ -116,7 +108,6 @@ class Assignment
   validates_associated :metrics
   accepts_nested_attributes_for :metrics, allow_destroy: true,
                                           reject_if: :all_blank
-  #attr_accessible :metrics_attributes
 
   # All students' grades for this assignment.
   has_many :grades, through: :metrics
@@ -170,7 +161,6 @@ end
 class Assignment
   # The partition of teams used for this assignment.
   belongs_to :team_partition, inverse_of: :assignments
-  #attr_accessible :team_partition_id
 
   # The object to be set as the subject on this assignment's grades for a user.
   def grade_subject_for(user)

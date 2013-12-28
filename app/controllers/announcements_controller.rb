@@ -84,10 +84,10 @@ class AnnouncementsController < ApplicationController
     end
   end
 
-  private
-    # Permits creating and updating announcements.
-    def announcement_params
-      params[:announcement].permit :subject_id, :subject_type, :metric_id, :score
-    end 
+  # Permits creating and updating announcements.
+  def announcement_params
+    params.require(:announcement).permit :subject_id, :subject_type, :metric_id, :score
+  end 
+  private :announcement_params
 
 end

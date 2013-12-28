@@ -126,11 +126,11 @@ class RegistrationsController < ApplicationController
     end
   end
 
-  private 
-    # Permit update recitation conflicts
-    def registration_update_params
-      params[:registration].permit :course_id, :for_credit, :allows_publishing
-      # TODO(mingy): fill in once update_page is fixed
-    end 
+  # Permit update recitation conflicts
+  def registration_update_params
+    params.require(:registration).permit :course_id, :for_credit, :allows_publishing
+    # TODO(mingy): fill in once update_page is fixed
+  end 
+  private :registration_update_params
 
 end

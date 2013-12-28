@@ -30,7 +30,4 @@ class Prerequisite < ActiveRecord::Base
   
   # Question that students must answer if they haven't taken the prerequisite.
   validates :waiver_question, length: 1..256, presence: true
-  
-  # Forms can only mess with the user-visible fields.
-  #attr_accessible :prerequisite_number, :waiver_question
 end
