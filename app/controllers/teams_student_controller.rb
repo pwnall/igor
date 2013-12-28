@@ -17,8 +17,8 @@ class TeamsStudentController < ApplicationController
 
   # Lets a user leave a team. Team destroyed if now empty.
   def leave_team
-    team = Team.find_by_id(params[:id])
-    partition = TeamPartition.find_by_id(team.partition_id)
+    team = Team.find_by_id params[:id]
+    partition = TeamPartition.find_by_id team.partition_id
     if partition.editable
       team_membership = TeamMembership.where(:user_id => current_user.id, :team_id => team.id).first
       team_membership.destroy
@@ -34,7 +34,7 @@ class TeamsStudentController < ApplicationController
   end
 
   def create_team
-    partition = TeamPartition.find_by_id(params[:part_id])
+    partition = TeamPartition.find_by_id params[:part_id]
     name_str = "name"+partition.id.to_s
     name = params[name_str]
     if partition && partition.editable
@@ -56,18 +56,18 @@ class TeamsStudentController < ApplicationController
   
   def invite_member
     ## Validate the athena is one that is in our system.
-    prof = Profile.find_by_athena_username(params['athena'])
+    prof = Profile.find_by_athena_username params[:athena]
     ## Check that the partition is editable!
-    team = Team.find_by_id(params['team_id'])
-    partition = TeamPartition.find_by_id(team.partition_id)
+    team = Team.find_by_id params[:team_id]
+    partition = TeamPartition.find_by_id team.partition_id
     if !partition.editable && (team.size < team.max_size)
       flash[:notice] = "That partition is final, sorry!"
       redirect_to teams_student_path and return
     end
     if !prof.nil?
-      flash[:notice] = "An email has been sent to " + params['athena'] + "@mit.edu"
-      Invitation.create(:inviter_id => current_user.id, :invitee_id => prof.user_id, :team_id => params['team_id'])
-      SessionMailer.team_invite_email(params['athena'], current_user.id, params["team_id"]).deliver
+      flash[:notice] = "An email has been sent to " + params[:athena] + "@mit.edu"
+      Invitation.create(:inviter_id => current_user.id, :invitee_id => prof.user_id, :team_id => params[:team_id])
+      SessionMailer.team_invite_email(params[:athena], current_user.id, params[:team_id]).deliver
     else
       flash[:notice] = "Sorry, that user appears to not be in this class."
     end
@@ -75,8 +75,8 @@ class TeamsStudentController < ApplicationController
   end
 
   def accept_invitation
-    inv = Invitation.find_by_id(params["invitation_id"])
-    team = Team.find_by_id(inv.team_id)
+    inv = Invitation.find_by_id params[:invitation_id]
+    team = Team.find_by_id inv.team_id
     if team.size >= team.max_size
       flash[:notice] = "Sorry, that team is full."
       redirect_to teams_student_path and return
@@ -92,7 +92,7 @@ class TeamsStudentController < ApplicationController
   end
   
   def ignore_invitation
-    inv = Invitation.find_by_id(params["invitation_id"])
+    inv = Invitation.find_by_id params[:invitation_id]
     inv.destroy
     flash[:notice] = "Invitation ignored."
     redirect_to teams_student_path and return

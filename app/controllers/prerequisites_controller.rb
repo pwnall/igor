@@ -3,7 +3,7 @@ class PrerequisitesController < ApplicationController
   
   # GET /prerequisites
   def index
-    @prerequisites = Prerequisite.find(:all)
+    @prerequisites = Prerequisite.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -12,7 +12,7 @@ class PrerequisitesController < ApplicationController
 
   # GET /prerequisites/1
   def show
-    @prerequisite = Prerequisite.find(params[:id])
+    @prerequisite = Prerequisite.find params[:id]
 
     respond_to do |format|
       format.html # show.html.erb
@@ -31,7 +31,7 @@ class PrerequisitesController < ApplicationController
   
   # POST /prerequisites
   def create
-    @prerequisite = Prerequisite.new params[:prerequisite]
+    @prerequisite = Prerequisite.new prerequisite_params
     @prerequisite.course = Course.main
     respond_to do |format|
       if @prerequisite.save
@@ -48,7 +48,7 @@ class PrerequisitesController < ApplicationController
   def update
     @prerequisite = Prerequisite.find params[:id]
     respond_to do |format|
-      if @prerequisite.update_attributes params[:prerequisite]
+      if @prerequisite.update_attributes prerequisite_params
         format.html do
           redirect_to prerequisites_url, :notice => 'Prerequisite updated.'
         end
@@ -60,7 +60,7 @@ class PrerequisitesController < ApplicationController
 
   # DELETE /prerequisites/1
   def destroy
-    @prerequisite = Prerequisite.find(params[:id])
+    @prerequisite = Prerequisite.find params[:id]
     @prerequisite.destroy
 
     notice = "Prerequisite #{@prerequisite.prerequisite_number} removed."
@@ -69,4 +69,11 @@ class PrerequisitesController < ApplicationController
       format.html { redirect_to prerequisites_url, :notice => notice }
     end
   end
+
+  # Permits creating and updating prerequisites.
+  def prerequisite_params 
+    params[:prerequisite].permit :prerequisite_number, :waiver_question
+  end 
+  private :prerequisite_params
+
 end

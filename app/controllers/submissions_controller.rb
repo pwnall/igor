@@ -72,13 +72,13 @@ class SubmissionsController < ApplicationController
     return bounce_user unless deliverable.can_submit? current_user
 
     @submission = deliverable.submission_for current_user
-    @submission ||= Submission.new params[:submission]
+    @submission ||= Submission.new submission_params
     @submission.subject = current_user
 
     success = if @submission.new_record?
       @submission.save
     else
-      @submission.update_attributes(params[:submission])
+      @submission.update_attributes submission_params
     end
 
     respond_to do |format|
@@ -214,4 +214,11 @@ class SubmissionsController < ApplicationController
     temp_dir
   end
   private :with_temp_dir
+
+  # Permit updating and creating submissions.
+  def submission_params
+    params.require(:submission).permit(:deliverable_id, db_file_attributes: [:f])
+  end 
+  private :submission_params
+
 end

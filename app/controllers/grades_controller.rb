@@ -52,15 +52,13 @@ class GradesController < ApplicationController
         metric_id: params[:grade][:metric_id]).first
     if @grade
       @grade.grader = current_user
-      success = @grade.update_attributes params[:grade]
+      success = @grade.update_attributes grade_params
     else
-      @grade = Grade.new params[:grade]
+      @grade = Grade.new grade_params
       @grade.grader = current_user
       success = @grade.save
     end
 
-    @grade = Grade.new params[:grade]
-    @grade.grader = current_user
     if success
       if request.xhr?
         render :action => 'edit', :layout => false
@@ -241,4 +239,11 @@ class GradesController < ApplicationController
     end
   end
   private :pull_metrics
+
+  # Permits updating grades.
+  def grade_params
+    params.require(:grade).permit :subject_id, :subject_type, :metric_id, :score
+  end 
+  private :grade_params
+
 end

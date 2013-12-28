@@ -83,4 +83,11 @@ class AnnouncementsController < ApplicationController
       format.html { redirect_to root_path }
     end
   end
+
+  # Permits creating and updating announcements.
+  def announcement_params
+    params.require(:announcement).permit :subject_id, :subject_type, :metric_id, :score
+  end 
+  private :announcement_params
+
 end

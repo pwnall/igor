@@ -15,7 +15,7 @@ class RegistrationsController < ApplicationController
 
   # GET /registrations/1
   def show
-    @registration = Registration.find(params[:id])
+    @registration = Registration.find params[:id]
     @recitation_conflicts =
         @registration.recitation_conflicts.index_by(&:timeslot)
 
@@ -65,7 +65,7 @@ class RegistrationsController < ApplicationController
 
   # GET /registrations/1/edit
   def edit
-    @registration = Registration.find(params[:id])
+    @registration = Registration.find params[:id]
     new_edit
   end
   
@@ -80,12 +80,11 @@ class RegistrationsController < ApplicationController
     if @new_record = @registration.new_record?
       success = @registration.save
     else
-      # recitation_section is attr_protected, set manually
       if params.has_key? :recitation_section
         @registration.recitation_section = RecitationSection.where(serial: params[:recitation_section][:serial]).first
         success = @registration.save
       elsif params.has_key? :recitation_conflicts
-        @registration.update_conflicts(params[:recitation_conflicts])
+        @registration.update_conflicts params[:recitation_conflicts]
       else
         success = @registration.update_attributes params[:registration]
       end
@@ -107,23 +106,31 @@ class RegistrationsController < ApplicationController
 
   # POST /registrations
   def create
-    @registration = Registration.new(params[:registration])
+    @registration = Registration.new params[:registration]
     create_update
   end
 
   # PUT /registrations/1
   def update
-    @registration = Registration.find(params[:id])
+    @registration = Registration.find params[:id]
     create_update
   end
   
   # DELETE /registrations/1
   def destroy
-    @registration = Registration.find(params[:id])
+    @registration = Registration.find params[:id]
     @registration.destroy
 
     respond_to do |format|
       format.html { redirect_to(registrations_url) }
     end
   end
+
+  # Permit update recitation conflicts
+  def registration_update_params
+    params.require(:registration).permit :course_id, :for_credit, :allows_publishing
+    # TODO(mingy): fill in once update_page is fixed
+  end 
+  private :registration_update_params
+
 end

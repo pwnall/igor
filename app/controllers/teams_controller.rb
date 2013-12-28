@@ -8,7 +8,7 @@ class TeamsController < ApplicationController
 
   # POST /teams
   def create
-    @team = Team.new(params[:team])
+    @team = Team.new team_params 
     @team_partition = @team.partition
 
     if !@team_partition.editable
@@ -29,14 +29,14 @@ class TeamsController < ApplicationController
 
   # PUT /teams/1
   def update
-    @team = Team.find(params[:id])
+    @team = Team.find params[:id]
 
     if !@team_partition.editable
       ## bounce user here.
     end
 
     respond_to do |format|
-      if @team.update_attributes(params[:team])
+      if @team.update_attributes team_params
         format.html { redirect_to(@team, :notice => 'Team was successfully updated.') }
       else
         format.html { render :action => "edit" }
@@ -53,4 +53,12 @@ class TeamsController < ApplicationController
       format.html { redirect_to @team.partition }
     end
   end
+
+  # Permit updating and creating teams.
+  def team_params
+    params.require(:team).permit!
+    # TODO(mingy): fill in once update_page is fixed
+  end 
+  private :team_params
+
 end

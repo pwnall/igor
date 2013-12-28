@@ -59,7 +59,7 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    @user = User.new params[:user]
+    @user = User.new user_params
     # Root of trust: the first user (asides from Staff Robot) becomes admin.
     @user.admin = (User.count == 1)
     if registration = @user.registrations.first
@@ -101,11 +101,11 @@ class UsersController < ApplicationController
     return bounce_user unless @user && @user.can_edit?(current_user)
 
     if params[:recitation_conflicts]
-      @user.registration.update_conflicts(params[:recitation_conflicts])
+      @user.registration.update_conflicts params[:recitation_conflicts]
     end
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes user_params
         flash[:notice] = 'User information successfully updated.'
         format.html { redirect_to(@user) }
       else
@@ -178,4 +178,11 @@ class UsersController < ApplicationController
       format.html { redirect_to root_path }
     end
   end
+
+  # Permit creating and updating user.
+  def user_params
+    params.require(:user).permit :email, :password, :password_confirmation, profile_attributes: [:athena_username, :name, :nickname, :university, :department, :year], registration_attributes: []
+  end 
+  private :user_params
+
 end
