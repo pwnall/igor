@@ -181,6 +181,13 @@ class UsersController < ApplicationController
 
   # Permit creating and updating user.
   def user_params
+    if params[:user]
+      if params[:user][:profile_attributes]
+        params[:user][:profile_attributes].delete :id
+      end
+    end
+    Rails.logger.error params.inspect
+
     params.require(:user).permit :email, :password, :password_confirmation,
         profile_attributes: [:athena_username, :name, :nickname, :university,
             :department, :year],
