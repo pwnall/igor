@@ -23,13 +23,13 @@ class AssignmentsController < ApplicationController
       format.html  # show.html.erb
     end
   end
-  
+
   # GET /assignments/1/dashboard
   def dashboard
     @assignment = Assignment.where(:id => params[:id]).
         includes(:deliverables, :submissions => :subject).first
     @recitation_sections = RecitationSection.all
-        
+
     respond_to do |format|
       format.html  # dashboard.html.erb
     end
@@ -40,17 +40,17 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.new
     @assignment.course = Course.main
     @assignment.author = current_user
-    
+
     respond_to do |format|
       format.html  # new.html.erb
-    end    
+    end
   end
 
   # GET /assignments/1/edit
   def edit
     @assignment = Assignment.find params[:id]
   end
-  
+
   # POST /assignments
   def create
     @assignment = Course.main.assignments.build assignment_params
@@ -99,9 +99,15 @@ class AssignmentsController < ApplicationController
 
   # Permits updating and creating assignments.
   def assignment_params
-    params.require(:assignment).permit :name, :deadline, :weight, :author, :author_id, :team_partition_id, :feedback_survey_id, :accepts_feedback, :deliverables_ready, :deliverables_attributes, :metrics_ready, :metrics_attributes
+    params.require(:assignment).permit :name, :deadline, :weight, :author_id,
+        :team_partition_id, :feedback_survey_id, :accepts_feedback,
+        :deliverables_ready, :metrics_ready,
+        deliverables_attributes: [:name, :file_ext, :_destroy,
+            :description, :id, { analyzer_attributes: [:id, :type,
+                :message_name, :auto_grading, :time_limit, :ram_limit,
+                :file_limit, :file_size_limit, :process_limit] } ],
+        metrics_attributes: [:name, :max_score, :id, :_destroy]
     # Note: feedback_survey_id and accepts_feedback are protected in the model but are allowed here
-  end 
+  end
   private :assignment_params
-
 end
