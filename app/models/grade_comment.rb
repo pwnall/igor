@@ -15,6 +15,5 @@ class GradeComment < ActiveRecord::Base
 
   # The comment text.
   # TODO(pwnall): consider allowing safe markdown here.
-  attr_accessible :comment
   validates :comment, presence: true, length: 1..4.kilobytes
 end

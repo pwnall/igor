@@ -104,7 +104,7 @@ exams = exam_data.map.with_index do |data, index|
   exam.deliverables_ready = data[:state] != :draft
   exam.metrics_ready = data[:state] == :graded
   exam.save!
-  metrics = (1..(5 + i)).map do |j|
+  (1..(5 + i)).map do |j|
     exam.metrics.build name: "Problem #{j}", max_score: 6 + (i + j) % 6
   end
 
@@ -148,7 +148,7 @@ psets = pset_data.map.with_index do |data, index|
   pset.deliverables_ready = data[:state] != :draft
   pset.metrics_ready = data[:state] == :graded
   pset.save!
-  metrics = (1..(2 + i)).map do |j|
+  (1..(2 + i)).map do |j|
     pset.metrics.create! name: "Problem #{j}", max_score: 6 + (i + j) % 6
   end
 
@@ -183,14 +183,6 @@ end
     unless (i + j) % 20 == 1
       # Submit PDF.
       writeup = pset.deliverables.where(file_ext: 'pdf').first
-      pdf = Prawn::Document.new page_size: 'LETTER', page_layout: :portrait
-      pdf.y = 792 - 36
-      pdf.font "Times-Roman"
-      pdf.text user.email, align: :left, size: 24
-      pdf.text user.name, align: :left, size: 24
-      pdf.text pset.name, align: :left, size: 24
-      pdf_contents = pdf.render
-
       time = pset.deadline - 1.day + i * 1.minute
       submission = Submission.create! deliverable: writeup, subject: user,
            db_file_attributes: {
@@ -209,8 +201,9 @@ end
       time = pset.deadline - 1.day + i * 1.minute + 30.seconds
       submission = Submission.create! deliverable: code, subject: user,
           db_file_attributes: {
-            f: fixture_file_upload('test/fixtures/submission_files/good_fib.rb',
-                                   'application/x-ruby', :binary)
+            f: fixture_file_upload(
+                'test/fixtures/submission_files/good_fib.rb',
+                'text/x-ruby', :binary)
           }, created_at: time, updated_at: time
       submission.run_analysis
       submission.analysis.created_at = time + 1.second

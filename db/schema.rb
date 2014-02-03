@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20121020145804) do
-=======
-ActiveRecord::Schema.define(:version => 20131114025608) do
->>>>>>> ming/master
+ActiveRecord::Schema.define(version: 20110704070001) do
 
   create_table "analyses", force: true do |t|
     t.integer  "submission_id",                  null: false
@@ -65,7 +61,6 @@ ActiveRecord::Schema.define(:version => 20131114025608) do
     t.integer  "author_id",                                                              null: false
     t.integer  "team_partition_id"
     t.integer  "feedback_survey_id"
-<<<<<<< HEAD
     t.datetime "deadline",                                                               null: false
     t.decimal  "weight",                        precision: 16, scale: 8, default: 1.0,   null: false
     t.string   "name",               limit: 64,                                          null: false
@@ -125,68 +120,6 @@ ActiveRecord::Schema.define(:version => 20131114025608) do
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0
     t.integer  "attempts",   default: 0
-=======
-    t.datetime "deadline",                                                                           :null => false
-    t.decimal  "weight",                           :precision => 16, :scale => 8, :default => 1.0,   :null => false
-    t.string   "name",               :limit => 64,                                                   :null => false
-    t.boolean  "deliverables_ready",                                              :default => false, :null => false
-    t.boolean  "metrics_ready",                                                   :default => false, :null => false
-    t.boolean  "accepts_feedback",                                                :default => false, :null => false
-    t.datetime "created_at",                                                                         :null => false
-    t.datetime "updated_at",                                                                         :null => false
-  end
-
-  add_index "assignments", ["course_id", "deadline", "name"], :name => "index_assignments_on_course_id_and_deadline_and_name", :unique => true
-  add_index "assignments", ["course_id", "name"], :name => "index_assignments_on_course_id_and_name", :unique => true
-
-  create_table "comments", :force => true do |t|
-    t.integer  "grade_id",                   :null => false
-    t.integer  "grader_id",                  :null => false
-    t.string   "comment",    :limit => 1024
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-  end
-
-  add_index "comments", ["grade_id"], :name => "index_comments_on_grade_id", :unique => true
-
-  create_table "courses", :force => true do |t|
-    t.string   "number",          :limit => 16,                    :null => false
-    t.string   "title",           :limit => 256,                   :null => false
-    t.string   "ga_account",      :limit => 32,                    :null => false
-    t.string   "email",           :limit => 64,                    :null => false
-    t.boolean  "has_recitations",                :default => true, :null => false
-    t.boolean  "has_surveys",                    :default => true, :null => false
-    t.boolean  "has_teams",                      :default => true, :null => false
-    t.integer  "section_size",                   :default => 20
-    t.datetime "created_at",                                       :null => false
-    t.datetime "updated_at",                                       :null => false
-  end
-
-  add_index "courses", ["number"], :name => "index_courses_on_number", :unique => true
-
-  create_table "credentials", :force => true do |t|
-    t.integer  "user_id",                   :null => false
-    t.string   "type",       :limit => 32,  :null => false
-    t.string   "name",       :limit => 128
-    t.datetime "updated_at",                :null => false
-    t.binary   "key"
-  end
-
-  add_index "credentials", ["type", "name"], :name => "index_credentials_on_type_and_name", :unique => true
-  add_index "credentials", ["type", "updated_at"], :name => "index_credentials_on_type_and_updated_at"
-  add_index "credentials", ["user_id", "type"], :name => "index_credentials_on_user_id_and_type"
-
-  create_table "db_files", :force => true do |t|
-    t.text    "f_file_name",                          :null => false
-    t.string  "f_content_type",                       :null => false
-    t.integer "f_file_size",                          :null => false
-    t.binary  "f_file",         :limit => 2147483647, :null => false
-  end
-
-  create_table "delayed_jobs", :force => true do |t|
-    t.integer  "priority",   :default => 0
-    t.integer  "attempts",   :default => 0
->>>>>>> ming/master
     t.text     "handler"
     t.text     "last_error"
     t.datetime "run_at"
@@ -211,6 +144,16 @@ ActiveRecord::Schema.define(:version => 20131114025608) do
 
   add_index "deliverables", ["assignment_id", "name"], name: "index_deliverables_on_assignment_id_and_name", unique: true, using: :btree
 
+  create_table "grade_comments", force: true do |t|
+    t.integer  "grade_id",                null: false
+    t.integer  "grader_id",               null: false
+    t.string   "comment",    limit: 4096, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "grade_comments", ["grade_id"], name: "index_grade_comments_on_grade_id", unique: true, using: :btree
+
   create_table "grades", force: true do |t|
     t.integer  "metric_id",                                       null: false
     t.integer  "grader_id",                                       null: false
@@ -223,14 +166,6 @@ ActiveRecord::Schema.define(:version => 20131114025608) do
 
   add_index "grades", ["metric_id"], name: "index_grades_on_metric_id", using: :btree
   add_index "grades", ["subject_id", "subject_type", "metric_id"], name: "grades_by_subject_and_metric", unique: true, using: :btree
-
-  create_table "invitations", force: true do |t|
-    t.integer  "inviter_id"
-    t.integer  "invitee_id"
-    t.integer  "team_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "photo_blobs", force: true do |t|
     t.integer "profile_photo_id",                  null: false
@@ -400,6 +335,14 @@ ActiveRecord::Schema.define(:version => 20131114025608) do
 
   create_table "surveys", force: true do |t|
     t.string   "name",       limit: 128, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "team_invitations", force: true do |t|
+    t.integer  "inviter_id"
+    t.integer  "invitee_id"
+    t.integer  "team_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

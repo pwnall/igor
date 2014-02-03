@@ -9,6 +9,6 @@ class CreateGradeComments < ActiveRecord::Migration
     end
 
     # Ensure that each comment only has one grade associated.
-    add_index :comments, :grade_id, unique: true
+    add_index :grade_comments, :grade_id, unique: true
   end
 end

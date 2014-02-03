@@ -59,7 +59,7 @@ class GradesController < ApplicationController
     end
 
     if success
-      @comment = GradeComment.where(grade_id: @grade[:id]).first
+      @comment = @grade.comment
       if @comment
         # If there is an existing entry in the database
         # mingy: should I delete a database entry if params[:comment][:comment].blank? ?
@@ -70,8 +70,8 @@ class GradesController < ApplicationController
         success = true
       else
         # If there are comments, but no existing entry in database
-        @comment = GradeComment.new grade_id: @grade[:id],
-                                    comment: params[:comment][:comment]
+        @comment = GradeComment.new grade_comment_params
+        @comment.grade = @grade
         @comment.grader = current_user
         success = @comment.save
       end
@@ -264,4 +264,8 @@ class GradesController < ApplicationController
   end
   private :grade_params
 
+  def grade_comment_params
+    params.require(:comment).permit :comment
+  end
+  private :grade_comment_params
 end
