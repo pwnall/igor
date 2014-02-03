@@ -47,8 +47,8 @@ gem 'best_in_place', '>= 2.1.0',
 
 # Assets.
 gem 'sass-rails', '>= 4.0.1'
-gem 'pwnstyles_rails', '>= 0.1.32'
-#gem 'pwnstyles_rails', '>= 0.1.32', path: '../pwnstyles_rails'
+#gem 'pwnstyles_rails', '>= 0.1.33'
+gem 'pwnstyles_rails', '>= 0.1.33', path: '../pwnstyles_rails'
 gem 'jquery-rails', '>= 3.1.0'
 gem 'jquery-ui-rails', '>= 4.1.1'
 gem 'coffee-rails', '>= 4.0.1'
