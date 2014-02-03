@@ -30,6 +30,10 @@ class Grade < ActiveRecord::Base
   # The numeric grade.
   validates_numericality_of :score, only_integer: false
 
+  # An optional comment that will be missing on most grades.
+  has_one :comment, class_name: 'GradeComment', inverse_of: :grade,
+                    dependent: :destroy
+
   # Because the polymorphic association doesn't allow .where(subject: subject).
   scope :with_subject, lambda { |subject|
     where subject_id: subject.id, subject_type: subject.class.name

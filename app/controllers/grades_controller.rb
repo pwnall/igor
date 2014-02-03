@@ -36,9 +36,8 @@ class GradesController < ApplicationController
     end
 
     @metrics = @assignment.metrics
-    @grades = @assignment.grades.includes(:subject).
+    @grades = @assignment.grades.includes(:comment, :subject).
                           group_by { |g| [g.subject, g.metric] }
-
     respond_to do |format|
       format.html
     end
@@ -57,6 +56,25 @@ class GradesController < ApplicationController
       @grade = Grade.new grade_params
       @grade.grader = current_user
       success = @grade.save
+    end
+
+    if success
+      @comment = GradeComment.where(grade_id: @grade[:id]).first
+      if @comment
+        # If there is an existing entry in the database
+        # mingy: should I delete a database entry if params[:comment][:comment].blank? ?
+        @comment.grader = current_user
+        success = @comment.update_attributes params[:comment]
+      elsif params[:comment][:comment].blank?
+        # If there are no comments, and no existing entry in database, don't make new entry
+        success = true
+      else
+        # If there are comments, but no existing entry in database
+        @comment = GradeComment.new grade_id: @grade[:id],
+                                    comment: params[:comment][:comment]
+        @comment.grader = current_user
+        success = @comment.save
+      end
     end
 
     if success
@@ -243,7 +261,7 @@ class GradesController < ApplicationController
   # Permits updating grades.
   def grade_params
     params.require(:grade).permit :subject_id, :subject_type, :metric_id, :score
-  end 
+  end
   private :grade_params
 
 end

@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20121020145804) do
+=======
+ActiveRecord::Schema.define(:version => 20131114025608) do
+>>>>>>> ming/master
 
   create_table "analyses", force: true do |t|
     t.integer  "submission_id",                  null: false
@@ -61,6 +65,7 @@ ActiveRecord::Schema.define(version: 20121020145804) do
     t.integer  "author_id",                                                              null: false
     t.integer  "team_partition_id"
     t.integer  "feedback_survey_id"
+<<<<<<< HEAD
     t.datetime "deadline",                                                               null: false
     t.decimal  "weight",                        precision: 16, scale: 8, default: 1.0,   null: false
     t.string   "name",               limit: 64,                                          null: false
@@ -120,6 +125,68 @@ ActiveRecord::Schema.define(version: 20121020145804) do
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0
     t.integer  "attempts",   default: 0
+=======
+    t.datetime "deadline",                                                                           :null => false
+    t.decimal  "weight",                           :precision => 16, :scale => 8, :default => 1.0,   :null => false
+    t.string   "name",               :limit => 64,                                                   :null => false
+    t.boolean  "deliverables_ready",                                              :default => false, :null => false
+    t.boolean  "metrics_ready",                                                   :default => false, :null => false
+    t.boolean  "accepts_feedback",                                                :default => false, :null => false
+    t.datetime "created_at",                                                                         :null => false
+    t.datetime "updated_at",                                                                         :null => false
+  end
+
+  add_index "assignments", ["course_id", "deadline", "name"], :name => "index_assignments_on_course_id_and_deadline_and_name", :unique => true
+  add_index "assignments", ["course_id", "name"], :name => "index_assignments_on_course_id_and_name", :unique => true
+
+  create_table "comments", :force => true do |t|
+    t.integer  "grade_id",                   :null => false
+    t.integer  "grader_id",                  :null => false
+    t.string   "comment",    :limit => 1024
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
+
+  add_index "comments", ["grade_id"], :name => "index_comments_on_grade_id", :unique => true
+
+  create_table "courses", :force => true do |t|
+    t.string   "number",          :limit => 16,                    :null => false
+    t.string   "title",           :limit => 256,                   :null => false
+    t.string   "ga_account",      :limit => 32,                    :null => false
+    t.string   "email",           :limit => 64,                    :null => false
+    t.boolean  "has_recitations",                :default => true, :null => false
+    t.boolean  "has_surveys",                    :default => true, :null => false
+    t.boolean  "has_teams",                      :default => true, :null => false
+    t.integer  "section_size",                   :default => 20
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
+  end
+
+  add_index "courses", ["number"], :name => "index_courses_on_number", :unique => true
+
+  create_table "credentials", :force => true do |t|
+    t.integer  "user_id",                   :null => false
+    t.string   "type",       :limit => 32,  :null => false
+    t.string   "name",       :limit => 128
+    t.datetime "updated_at",                :null => false
+    t.binary   "key"
+  end
+
+  add_index "credentials", ["type", "name"], :name => "index_credentials_on_type_and_name", :unique => true
+  add_index "credentials", ["type", "updated_at"], :name => "index_credentials_on_type_and_updated_at"
+  add_index "credentials", ["user_id", "type"], :name => "index_credentials_on_user_id_and_type"
+
+  create_table "db_files", :force => true do |t|
+    t.text    "f_file_name",                          :null => false
+    t.string  "f_content_type",                       :null => false
+    t.integer "f_file_size",                          :null => false
+    t.binary  "f_file",         :limit => 2147483647, :null => false
+  end
+
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+>>>>>>> ming/master
     t.text     "handler"
     t.text     "last_error"
     t.datetime "run_at"
