@@ -186,7 +186,6 @@ class UsersController < ApplicationController
         params[:user][:profile_attributes].delete :id
       end
     end
-    Rails.logger.error params.inspect
 
     params.require(:user).permit :email, :password, :password_confirmation,
         profile_attributes: [:athena_username, :name, :nickname, :university,
