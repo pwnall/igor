@@ -78,4 +78,7 @@ Seven::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  # Do not discard data if strong parameters are messed up.
+  config.action_controller.action_on_unpermitted_parameters = :raise
 end

@@ -19,5 +19,8 @@ module Seven
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+
+    # TODO(pwnall): remove when switching to Rails 4.1.
+    config.active_record.disable_implicit_join_references = true
   end
 end

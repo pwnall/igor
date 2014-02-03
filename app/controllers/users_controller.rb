@@ -181,8 +181,12 @@ class UsersController < ApplicationController
 
   # Permit creating and updating user.
   def user_params
-    params.require(:user).permit :email, :password, :password_confirmation, profile_attributes: [:athena_username, :name, :nickname, :university, :department, :year], registration_attributes: []
-  end 
+    params.require(:user).permit :email, :password, :password_confirmation,
+        profile_attributes: [:athena_username, :name, :nickname, :university,
+            :department, :year],
+        registrations_attributes: [:for_credit, :allows_publishing,
+            prerequisite_answers_attributes: [:took_course, :prerequisite_id,
+                                              :waiver_answer]]
+  end
   private :user_params
-
 end

@@ -108,7 +108,7 @@ class User
   end
 
   def recitation_section
-    registration.recitation_section
+    registration && registration.recitation_section
   end
 end
 
@@ -116,7 +116,7 @@ end
 class User
   # Files uploaded by the user to meet assignment deliverables.
   has_many :submissions, dependent: :destroy, inverse_of: :subject, as: :subject
-  
+
   # Submissions connected to this user.
   #
   # Returns the submissions authored by the user, as well as the submissions
