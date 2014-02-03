@@ -31,5 +31,5 @@ class CoursesController < ApplicationController
     params.require(:course).permit :number, :title, :email, :ga_account,
         :has_recitations, :has_surveys, :has_teams, :section_size
   end
-  private :course_update_params
+  private :course_params
 end
