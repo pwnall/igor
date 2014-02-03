@@ -79,6 +79,7 @@ group :development do
 end
 
 group :production do
+  gem 'thin', '>= 1.6.1'
 end
 
 group :doc do
