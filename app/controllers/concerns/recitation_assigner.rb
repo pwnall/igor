@@ -1,7 +1,3 @@
-#!/usr/bin/env ruby
-ENV['RAILS_ENV'] ||= 'development'
-require File.join(File.dirname(__FILE__), '..', 'config', 'environment.rb')
-
 module RecitationAssigner
   # The conflict information.
   #
