@@ -49,7 +49,8 @@ class UsersController < ApplicationController
     @user = User.find_by_param params[:id]
 
     if @user.registration
-      @recitation_conflicts = @user.registration.recitation_conflicts.index_by(&:timeslot)
+      @recitation_conflicts = @user.registration.recitation_conflicts.
+                                    index_by(&:timeslot)
     else
       @recitation_conflicts = {}
     end
@@ -67,8 +68,8 @@ class UsersController < ApplicationController
     end
 
     if Course.main.has_recitations?
-      if registration
-        (params[:recitation_conflicts] || {}).each_value do |rc|
+      if registration && params[:recitation_conflicts]
+        params[:recitation_conflicts].each_value do |rc|
           next if rc[:class_name].blank?
           conflict = RecitationConflict.new rc
           conflict.registration = registration
@@ -87,10 +88,10 @@ class UsersController < ApplicationController
 
         format.html do
           redirect_to new_session_url,
-              :alert => 'Please check your e-mail to verify your account.'
+              alert: 'Please check your e-mail to verify your account.'
         end
       else
-        format.html { render :action => :new }
+        format.html { render action: :new }
       end
     end
   end
@@ -109,7 +110,7 @@ class UsersController < ApplicationController
         flash[:notice] = 'User information successfully updated.'
         format.html { redirect_to(@user) }
       else
-        format.html { render :action => :edit }
+        format.html { render action: :edit }
       end
     end
   end
@@ -139,7 +140,7 @@ class UsersController < ApplicationController
     @users = User.find_all_by_query!(@query)
 
     respond_to do |format|
-      format.js { render :layout => false } # lookup.js.erb
+      format.js { render layout: false } # lookup.js.erb
       format.html # nothing so far
     end
   end
@@ -181,10 +182,10 @@ class UsersController < ApplicationController
 
   # Permit creating and updating user.
   def user_params
-    if params[:user]
-      if params[:user][:profile_attributes]
-        params[:user][:profile_attributes].delete :id
-      end
+    return {} unless params[:user]
+
+    if params[:user][:profile_attributes]
+      params[:user][:profile_attributes].delete :id
     end
 
     params.require(:user).permit :email, :password, :password_confirmation,
