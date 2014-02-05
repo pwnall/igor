@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <p>
+      The recitation assignment proposal that you requested has been created.
+    </p>
+
+    <p>
+      Please go
+      <%= link_to 'here', recitation_partition_url(@recitation_partition,
+              host: @host, protocol: @protocol) %>
+      to inspect the assignment.
+    </p>
+  </body>
+</html>

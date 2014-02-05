@@ -50,19 +50,42 @@ class RecitationSection < ActiveRecord::Base
     "#{leader.name} #{time}"
   end
 
-  def recitation_days
-    days_list = []
+  # Section meeting times, in the same format as the registration schedule.
+  #
+  # @return [Array<Number>] meeting times, where each meeting time is
+  #   10 * hour_index + day_index; hour_index is 24-based and day_index is
+  #   0-based starting on Monday, e.g. 141 is 2pm, Tuesday.
+  def timeslots
+    return @timeslots if @timeslots
 
+    # Decode MIT schedule notation, e.g. MR4
+    #
+    # Simplifying assumptions:
+    # * recitations last one hour, so we won't have times like M1-2:30
+    # * recitations happen the same time each day, so we won't have times like
+    #   M1,R3
+    # * times 1-7 are pm, everything else is am; there are no classes before
+    #   8am, and 7-9pm is reserved for varsity sports, so there shouldn't be
+    #   recitations at or after 7pm
+    #
+    # There's no point in writing a better parser. The effort should be spent
+    # on migrating away from the MIT-specific syntax.
+    #
+    # TODO(pwnall): this should go away and be replaced by a generic UI that
+    #               any school instructor can understand and work with
+    days_list = []
     %w[M T W R F].each_with_index do |letter, i|
       days_list << i if time.include? letter
     end
+    time_index = time.match(/(\d+)/)[0].to_i
+    time_index += 12 if time_index <= 7
 
-    days_list
+    @timeslots = days_list.map { |day_index| time_index * 10 + day_index }
   end
 
-  def recitation_time
-    rt = time.match(/(\d+)/)[0].to_i
-    (rt <= 5) ? rt + 12 : rt
+  # :nodoc: invalida @timeslots when a new time is assigned
+  def time=(new_value)
+    @timeslots = nil
+    super
   end
-
 end

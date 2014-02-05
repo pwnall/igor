@@ -43,7 +43,7 @@ Seven::Application.routes.draw do
       get :dashboard
     end
   end
-  resources :grades do
+  resources :grades, only: [:index, :create] do
     collection do
       get :editor
       get :request_report, :request_missing

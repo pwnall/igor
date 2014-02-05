@@ -20,17 +20,22 @@
   </h4>
 
   <ol class="recitation-assignments">
-      <% @partition.recitation_assignments.group_by(&:recitation_section).each do |id, students| %>
-        <ol class="recitation-section">
-          <% section_name = id.nil? ? 'Conflicts' : "#{id.recitation_name}" %>
-          <li class="recitation-section-name">
-            <h4><%= "#{section_name} (#{students.length})" %></h4>
-          </li>
+  <% @partition.recitation_assignments.group_by(&:recitation_section).
+        each do |section, assignments| %>
+    <li>
+      <h4 class="recitation-section-name">
+        <%= section.recitation_name %>
+        <%= assignments.length %>
+      </h4>
 
-          <% students.each do |s| %>
-            <li class="recitation-section-student"><%= s.name %></li>
-          <% end %>
-        </ol>
+      <ol class="recitation-section">
+      <% assignments.each do |assignment| %>
+        <li class="recitation-section-student">
+          <%= link_to assignment.user.name, assignment.user %>
+        </li>
       <% end %>
+      </ol>
+    </li>
+  <% end %>
   </ol>
 </div>

@@ -1,16 +1,12 @@
 class RecitationAssignmentMailer < ActionMailer::Base
-  def recitation_assignment_email(email, recitation_assignments, 
-                                  inverted_matching, students,
-                                  root_url)
-    @recitation_assignments = recitation_assignments
-    @inverted_matching = inverted_matching
-    @students = students
+  def recitation_assignment_email(email, recitation_partition, root_url)
+    @recitation_partition = recitation_partition
     @email = email
     @protocol, @host = *root_url.split('://', 2)
     @host.slice!(-1) if @host[-1] == ?/
 
     hostname = @host.split(':', 2).first
-    mail :to => email, 
+    mail :to => email,
          :from => recitation_assignment_from(hostname, @protocol),
          :subject => recitation_assignment_from(hostname, @protocol)
 

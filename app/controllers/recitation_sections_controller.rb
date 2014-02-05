@@ -47,7 +47,8 @@ class RecitationSectionsController < ApplicationController
 
   # POST /recitation_sections/autoassign
   def autoassign
-    RecitationAssigner.delay.assign_and_email current_user, Course.main,
+    # HACK(pwnall): get the "delay" call back in here
+    RecitationAssigner.assign_and_email current_user, Course.main,
                                               root_url
 
     respond_to do |format|
@@ -97,7 +98,7 @@ class RecitationSectionsController < ApplicationController
   # Permits updating recitations.
   def recitation_section_params
     params.require(:recitation_section).permit :serial, :leader_id, :time, :location
-  end 
+  end
   private :recitation_section_params
 
 end

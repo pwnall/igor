@@ -33,31 +33,15 @@ class RecitationPartition < ActiveRecord::Base
     course.students.count - recitation_assignments.count
   end
 
-  # Build RecitationAssignment records for a computed matching.
-  def create_assignments(inverted_matching)
-    sections = RecitationSection.where(course_id: course.id).all
-    users = course.users.includes(:profile).all
-
-    inverted_matching.each do |section_number, athena_ids|
-      athena_ids.each do |athena_id|
-        if section_number == :conflict
-          next
-        else
-          # Convert 24h section time
-          section_time =
-              section_number > 12 ? section_number - 12 : section_number
-          section = sections.find do |s|
-            /^[a-z]+#{section_time}$/i =~ s.time
-          end
-
-          unless section
-            raise "Mismatch: #{section_time} not in #{sections.inspect}"
-          end
-        end
-
-        user = users.find { |u| u.profile.athena_username == athena_id }
-        RecitationAssignment.create! user: user, recitation_section: section,
-                                     recitation_partition: self
+  # Build RecitationAssignment records for a computed assignment.
+  #
+  # @param [Hash<RecitationSection, Array<Registration>>] section_members maps
+  #   each section to the course registrations of the students assigned to it
+  def create_assignments(section_members)
+    section_members.each do |section, registrations|
+      registrations.each do |registration|
+        RecitationAssignment.create! user: registration.user,
+            recitation_section: section, recitation_partition: self
       end
     end
   end

@@ -1,102 +1,195 @@
+require 'set'
+
 module RecitationAssigner
-  # The conflict information.
-  #
-  # Returns an array with an element for each student to be assigned to a
-  # section. The array has the following keys:
-  #     :athena:: the user's Athena ID
-  #     :conflicts:: a hash associating conflict times with conflict information
-  #
-  # Example:
-  #   {:athena => 'genius', :conflicts => {120 => {:....} } }
-  def self.conflicts_info(course)
-    registrations = course.registrations.joins(:user).
-        where(users: { admin: false }).includes(:recitation_conflicts).all
+  def self.assign_and_email(requester, course, root_url)
+    registrations = course.registrations.
+        includes(:user, :recitation_conflicts).reject { |r| r.user.admin? }
+    sections = course.recitation_sections
 
-    registrations.map do |s|
-      conflicts = s.recitation_conflicts.map do |r|
-        { :timeslot => r.timeslot, :class => r.class_name }
-      end
+    partition = self.partition! registrations, sections, course.section_size
 
-      {
-        :conflicts => conflicts.reject { |c|
-          c[:class].strip == Course.main.number || c[:class] == 'free' }.
-                                           index_by { |c| c[:timeslot] },
-        :athena => s.user.athena_id
-      }
-    end
+    RecitationAssignmentMailer.recitation_assignment_email(requester.email,
+        partition, root_url).deliver
   end
 
-  # Finds an optimal assignment of students to recitation sections.
+  # Creates a RecitationPartition assigning students to recitation sections.
   #
-  # Args:
-  #   section_size:: maximum number of students in a section
-  #   section_days:: array with weekdays when the sections should run;
-  #                  example: [2, 4] means Wednesday + Friday
-  #   section_times:: array with the section times; example: [10, 11, 13, 14]
-  #   students:: array with student information; each element should match the
-  #              format produced by conflicts_info
-  #
-  # Returns a hash associating each student that was matched with a recitation
-  # time.
-  def self.assignment(section_size, section_days, section_times, students)
-    graph = assignment_graph section_size, section_days, section_times, students
+  # @param [Array<Registration>] registrations registration information for
+  #   each student to be assigned to a recitation section
+  # @param [Array<RecitationSection>] sections the recitation sections that
+  #   should be considered in the assignment process
+  # @return [RecitationPartition] an assignment of students to recitation
+  #   sections
+  def self.partition!(registrations, sections, section_capacity)
+    graph = assignment_graph registrations, sections, section_capacity
     matching = best_matching! graph
+    registration_map = graph[:registration_map]
+    section_map = graph[:section_map]
 
-    Hash[*(matching.map { |student, seat|
-      [student, section_times[seat / section_size]]
-    }.flatten)]
+    section_members = {}
+    matching.each do |source_vertex, sink_vertex|
+      registration = registration_map[source_vertex]
+      section = section_map[sink_vertex]
+      section_members[section] ||= []
+      section_members[section] << registration
+    end
+
+    course = registrations.first.course
+    partition = RecitationPartition.create! course: course,
+        section_size: section_capacity,
+        section_count: section_members.length
+
+    partition.create_assignments section_members
+    partition
   end
 
   # Builds a bipartite graph for matching students to recitation sections.
-  def self.assignment_graph(section_size, section_days, section_times, students)
-    seats = (0...(section_times.length * section_size)).to_a
-    athenas = students.map { |c| c[:athena] }
-    vertices = athenas + seats + [:source, :sink]
+  #
+  # @param [Array<Registration>] registrations registration information for
+  #   each student to be assigned to a recitation section
+  # @param [Array<RecitationSection>] sections the recitation sections that
+  #   should be considered in the assignment process
+  # @param [Number] section_capacity maximum number of students in a recitation
+  #   section
+  # @return [Hash] a bipartite graph connecting a source vertex to registration
+  #   vertices, section seat vertices to a sink vertex, and registration
+  #   vertices to the seat vertices of sections that the students can attend
+  def self.assignment_graph(registrations, sections, section_capacity)
+    next_vertex = 2
+    registration_map = {}
+    registration_vertex = {}
 
-    edges = Hash[*(vertices.map { |v| [v, {}] }.flatten)]
-    athenas.each { |athena| edges[:source][athena] = 0 }
-    seats.each { |seat| edges[seat][:sink] = 0 }
-    students.each do |student|
-      section_times.each_with_index do |time, time_index|
-        has_conflicts = section_days.any? do |day|
-          student[:conflicts].has_key? day + time * 10
-        end
-        next if has_conflicts
+    # One vertex per registration.
+    registrations.each do |registration|
+      registration_map[next_vertex] = registration
+      registration_vertex[registration] = next_vertex
+      next_vertex += 1
+    end
 
-        0.upto(section_size - 1) do |section_seat|
-          edges[student[:athena]][section_seat + time_index * section_size] = 0
+    # One vertex per section seat. Each section has section_capacity seats.
+    section_map = {}
+    section_vertices = {}
+    sections.each do |section|
+      seat_vertices = []
+      section_vertices[section] = seat_vertices
+      0.upto section_capacity - 1 do
+        section_map[next_vertex] = section
+        seat_vertices << next_vertex
+        next_vertex += 1
+      end
+    end
+
+    source = 0
+    sink = 1
+    edges = { source => {}, sink => {} }
+
+    # Edges from source to registrations.
+    registration_map.each do |vertex, _|
+      edges[source][vertex] = 0
+    end
+    # Edges from seats to sink.
+    section_map.each do |vertex, _|
+      edges[vertex] = { sink => 0 }
+    end
+    # Edges from registrations to seats.
+    possible_assignments(registrations, sections).
+        each do |registration, possible_sections|
+      reg_vertex = registration_vertex[registration]
+      edges[reg_vertex] = {}
+      possible_sections.each do |section|
+        section_vertices[section].each do |seat_vertex|
+          edges[reg_vertex][seat_vertex] = 0
         end
       end
     end
-    { :vertices => vertices, :edges => edges }
+
+    {
+      source: 0,
+      sink: 1,
+      section_map: section_map,
+      registration_map: registration_map,
+      edges: edges,
+      vertex_count: next_vertex
+    }
+  end
+
+  # Computes the sections that students can be assigned to.
+  #
+  # @param [Array<Registration>] registrations registration information for
+  #   each student to be assigned to a recitation section
+  # @param [Array<RecitationSection>] sections the recitation sections that
+  #   should be considered in the assignment process
+  # @return [Hash<Registration, Array<Section>>] maps students' registrations
+  #   for the course to recitation sections that they can attend
+  def self.possible_assignments(registrations, sections)
+    return_value = {}
+    registrations.each do |registration|
+      return_value[registration] = available_sections registration, sections
+    end
+    return_value
+  end
+
+  # Computes the possible recitation sections that a student can attend.
+  #
+  # @param [Registration] registration registration information for
+  #   each student to be assigned to a recitation section
+  # @param [Array<RecitationSection>] sections the recitation sections that
+  #   should be included in the partition
+  # @return [Array<Section>] the sections that a student can attend
+  def self.available_sections(registration, sections)
+    blocked_times = Set.new(registration.recitation_conflicts.reject { |c|
+      # This filter cleans up data entered by less bright students.
+      # * some students enter the registrar-assigned recitation time as a
+      #   conflict
+      # * some students try to block off time for non-classes by entering e.g.
+      #   "sleep"; these entries are silently ignored
+      #
+      # TODO(pwnall): move this log into the registration form validation, and
+      #               tell students when their data entry is ignored
+      c.class_name == registration.course.number ||
+          !(/\A(\w+)\.(\w+)\Z/.match(c.class_name))
+    }.map(&:timeslot))
+
+    sections.reject do |section|
+      section.timeslots.any? { |ts| blocked_times.include? ts }
+    end
   end
 
   # Finds a maximal matching in a bipartite graph. Mutates the graph.
   #
-  # Returns a hash representing the matching.
-  def self.best_matching!(graph, source = :source, sink = :sink)
+  # @param [Hash] graph a graph produced by {assignment_graph}
+  # @return [Hash<Number, Number>] a maximal matching in the graph; the keys
+  #   are the vertices connected to the source, the values are the vertices
+  #   connected to the sink
+  def self.best_matching!(graph)
     loop do
       path = augmenting_path graph
       break unless path
       augment_flow_graph! graph, path
     end
-    matching_in graph, source, sink
+    matching graph
   end
 
-  # Finds an augmenting path in a flow graph.
+  # Finds an augmenting path in a matching graph.
   #
-  # Returns the path from source to sink, as an array of edge arrays, for
-  # example [[:source, 'a'], ['a', 'c'], ['c', :sink]]
-  def self.augmenting_path(graph, source = :source, sink = :sink)
+  # @param [Hash] graph a graph produced by {assignment_graph}
+  # @return [Array<Array<Number>>] a path from the source vertex to the sink
+  #    vertex, as an array of edge arrays; example: [[0, 3], [3, 5], [5, 1]]
+  def self.augmenting_path(graph)
     # TODO(costan): replace this with Bellman-Ford to support min-cost matching.
 
+    source = graph[:source]
+    sink = graph[:sink]
+    edges = graph[:edges]
+
     # Breadth-first search.
-    parents = { source => true }
+    parents = []
+    parents[source] = true
     queue = [source]
     until queue.empty?
       current_vertex = queue.shift
       break if current_vertex == sink
-      (graph[:edges][current_vertex] || {}).each do |new_vertex, edge|
+      (edges[current_vertex] || {}).each do |new_vertex, edge|
         next if parents[new_vertex]
         parents[new_vertex] = current_vertex
         queue << new_vertex
@@ -115,135 +208,36 @@ module RecitationAssigner
   end
 
   # Augments a flow graph along a path.
+  #
+  # @param [Hash] graph a graph produced by {assignment_graph}
+  # @param [Array<Array<Number>>] an augmenting path produced by
+  #   {augmenting_path}
   def self.augment_flow_graph!(graph, path)
     # Turn normal edges into residual edges and viceversa.
     edges = graph[:edges]
     path.each do |u, v|
-      edges[v] ||= {}
       edges[v][u] = -edges[u][v]
       edges[u].delete v
     end
   end
 
-  # The matching currently found in a matching graph.
-  def self.matching_in(graph, source = :source, sink = :sink)
-    Hash[*((graph[:edges][sink] || {}).keys.map { |matched_vertex|
-      [graph[:edges][matched_vertex].keys.first, matched_vertex]
-    }.flatten)]
-  end
+  # The matching encoded in a matching graph.
+  #
+  # @param [Hash] graph a graph produced by {assignment_graph}
+  # @return [Hash<Number, Number>] the matching encoded in the graph; the keys
+  #   are the vertices connected to the source, the values are the vertices
+  #   connected to the sink
+  def self.matching(graph, source = :source, sink = :sink)
+    source = graph[:source]
+    sink = graph[:sink]
+    edges = graph[:edges]
 
-  # The reverse of a student -> section assignment.
-  def self.inverted_assignment(matching)
-    inverted = {}
-    matching.each { |k, v| inverted[v] ||= []; inverted[v] << k }
-    inverted
-  end
-
-  def self.assign_and_email(requester, course, root_url)
-    recitation_sections = RecitationSection.all
-
-    days = []
-    times = []
-    recitation_sections.each do |rs|
-      days = days | rs.recitation_days
-      times = times | [rs.recitation_time]
+    matches = {}
+    # The network of residual edges contains the matching.
+    edges[sink].each do |right_vertex, _|
+      left_vertex = edges[right_vertex].first[0]
+      matches[left_vertex] = right_vertex
     end
-
-    students = RecitationAssigner.conflicts_info course
-
-    recitation_assignments = self.assignment course.section_size, days, times,
-                                             students
-    inverted_matching = self.inverted_assignment recitation_assignments
-    RecitationAssignmentMailer.recitation_assignment_email(requester.email,
-        recitation_assignments, inverted_matching, students, root_url).deliver
-
-    partition = RecitationPartition.create course: course,
-        section_size: course.section_size,
-        section_count: inverted_matching.length
-
-    partition.create_assignments inverted_matching
+    matches
   end
-end
-
-
-def nice_times(section_size, days, times, students)
-  #times = [10, 11, 12, 13, 14, 15]
-  mm_length = 0
-  mm_alts = []
-  mm = nil
-
-  matching = RecitationAssigner.assignment section_size, days, times, students
-  inverted_matching = RecitationAssigner.inverted_assignment matching
-
-  puts "Conflicts: #{students.length - matching.length}"
-  inverted_matching.each do |k, v|
-    puts "\nSection: #{k} (#{v.length} students)"
-    puts v.map { |a| "#{a}@mit.edu" }.join(", ")
-  end
-  puts "\nScrewed: "
-  puts((students.map { |s| s[:athena] } - matching.keys).
-       map { |a| "#{a}@mit.edu" }.join(", "))
-
-  new_proposal = RecitationPartition.new(course_id: Course.main.id,
-      section_size: Course.main.section_size,
-      section_count: inverted_matching.length,
-      conflict_count: students.length - matching.length)
-  new_proposal.save
-
-  new_matching = inverted_matching
-  new_matching[:conflict] = students.map { |s| s[:athena] } - matching.keys
-  new_proposal.create_assignments new_matching
-end
-
-def sucky_times(section_size, days, students)
-  mm_length = 0
-  mm_times = nil
-  mm = nil
-  mm_alts = []
-  10.upto(12) do |t1|
-    t1.upto(13) do |t2|
-      t2.upto(14) do |t3|
-        t3.upto(15) do |t4|
-          m = RecitationAssigner.assignment section_size, days,
-                                            [t1, t2, t3, t4], students
-          if m.length > mm_length
-            mm_length = m.length
-            mm = m
-            mm_times = [t1, t3, t2, t4]
-            mm_alts = []
-          elsif m.length == mm.length
-            mm_alts << [t1, t3, t2, t4]
-          end
-        end
-      end
-    end
-  end
-
-  pp mm_length
-  pp mm_times
-  pp mm
-  pp(students.map { |s| s[:athena] } - mm.keys)
-  pp mm_alts
-end
-
-if $0 == __FILE__
-  @recitation_sections = RecitationSection.all
-
-  days = []
-  times = []
-  @recitation_sections.each do |rs|
-    days = days | rs.recitation_days
-    times = times | [rs.recitation_time]
-  end
-
-  days.sort!
-  times.sort!
-
-  section_size = 1
-
-  puts 'Available days:' + days.join(',')
-  puts 'Available times:' + times.join(',')
-  students = RecitationAssigner.conflicts_info
-  nice_times section_size, days, times, students
-#  sucky_times section_size, days, students
 end

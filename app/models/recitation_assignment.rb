@@ -21,8 +21,4 @@ class RecitationAssignment < ActiveRecord::Base
   # The section that the student would be assigned to.
   belongs_to :recitation_section
   validates :recitation_section, presence: true
-
-  def name
-    user.name
-  end
 end

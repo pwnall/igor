@@ -1,14 +1,5 @@
-A new recitation assignment proposal has been created. 
+A new recitation assignment proposal has been created.
 
-<%= "Conflicts: #{@students.length - @recitation_assignments.length}" %>
-<% @inverted_matching.each do |k, v| %>
-  <%= "\nSection: #{k} (#{v.length} students)" %>
-  <% v.map do |a| %>
-    <%= "#{a}@mit.edu" %>
-  <% end %>
-<% end %>
-
-<%= "\nUnassigned students:" %>
-<% (@students.map { |s| s[:athena] } - @recitation_assignments.keys).map do |a| %>
-  <%= "#{a}@mit.edu" %>
-<% end %>
+Please go to the address below to inspect the assignment.
+<%= recitation_partition_url @recitation_partition, host: @host,
+                                                    protocol: @protocol %>
