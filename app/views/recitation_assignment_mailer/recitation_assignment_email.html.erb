@@ -11,5 +11,19 @@
               host: @host, protocol: @protocol) %>
       to inspect the assignment.
     </p>
+
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "EmailMessage",
+      "description": "Inspect a recitation assignment proposal",
+      "action": {
+        "@type": "ViewAction",
+        "url": <%= recitation_partition_url(@recitation_partition,
+                       host: @host, protocol: @protocol).to_json.html_safe %>,
+        "name": "Inspect proposal"
+      }
+    }
+    </script>
   </body>
 </html>
