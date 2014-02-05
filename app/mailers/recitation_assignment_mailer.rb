@@ -14,7 +14,7 @@ class RecitationAssignmentMailer < ActionMailer::Base
   end
 
   def recitation_assignment_subject(server_hostname, protocol)
-    %Q|"#{Course.main.number} recitation assignment proposal"|
+    %Q|#{Course.main.number} recitation assignment proposal|
   end
 
   def recitation_assignment_from(server_hostname, protocol)
