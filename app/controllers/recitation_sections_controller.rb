@@ -47,8 +47,7 @@ class RecitationSectionsController < ApplicationController
 
   # POST /recitation_sections/autoassign
   def autoassign
-    # HACK(pwnall): get the "delay" call back in here
-    RecitationAssigner.assign_and_email current_user, Course.main,
+    RecitationAssigner.delay.assign_and_email current_user, Course.main,
                                               root_url
 
     respond_to do |format|

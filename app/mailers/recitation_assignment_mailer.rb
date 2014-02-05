@@ -9,7 +9,7 @@ class RecitationAssignmentMailer < ActionMailer::Base
     hostname = @host.split(':', 2).first
     mail :to => email,
          :from => recitation_assignment_from(hostname, @protocol),
-         :subject => recitation_assignment_from(hostname, @protocol)
+         :subject => recitation_assignment_subject(hostname, @protocol)
 
   end
 
