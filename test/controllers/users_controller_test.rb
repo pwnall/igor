@@ -61,15 +61,20 @@ describe UsersController do
     it "should re-render the new template with invalid params" do
       assert_no_difference 'User.count' do
         @registration_params[:profile_attributes] = { }
-        post :create, user: { }
+        post :create, user: {
+            email: 'dexter2@mit.edu', password: 'sekret',
+            password_confirmation: 'typo' }
       end
     end
   end
 
   it "must update a user" do
-    put :update, id: @user, user: { }
+    put :update, id: @user.to_param, user: {
+        profile_attributes: { nickname: 'Dexterius' } }
     assert_equal @user, assigns(:user)
+    assert_response :redirect, response.body
     assert_redirected_to user_path(assigns(:user))
+    assert_equal 'Dexterius', @user.profile.nickname
   end
 
   it "must destroy a user" do
@@ -77,7 +82,7 @@ describe UsersController do
     assert_difference 'User.count', -1 do
       delete :destroy, id: @user
     end
+    assert_response :redirect, response.body
     assert_redirected_to users_path
-    assert_response :redirect
   end
 end

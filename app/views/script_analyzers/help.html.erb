@@ -2,7 +2,7 @@
 
 <p>
   This is a short introduction to packaging your custom script for analyzing
-  student submissions into the .zip file expected by the grading site.   
+  student submissions into the .zip file expected by the grading site.
 </p>
 
 <h3>Health Checks</h3>
@@ -11,7 +11,7 @@
   Analyzers perform a (quick) health check on the files submitted by students,
   and offer immediate feedback. This lets students fix their submissions early,
   and gives TAs a good reason to reject any requests for manually tweaking a
-  student's submission. 
+  student's submission.
 </p>
 
 <p>
@@ -26,7 +26,7 @@
 `-- fib_test.rb
 </div>
   <figcaption>Analyzer .zip package structure</figcaption>
-</figure> 
+</figure>
 
 <p>
   An analyzer can potentially handle multiple file types (e.g., both Ruby and
@@ -40,7 +40,7 @@
 
 <figure>
   <%= Markdpwn.markup(
-        File.read(Rails.root.join('spec/fixtures/analyzer_files/fib/analyzer.yml')),
+        File.read(Rails.root.join('test/analyzer_sources/fib/analyzer.yml')),
         :file_name => 'analyzer.yml').html_safe %>
   <figcaption>Sample analyzer manifest (<code>analyzer.yml</code>)</figcaption>
 </figure>
@@ -73,7 +73,7 @@
 
 <figure>
   <%= Markdpwn.markup(
-        File.read(Rails.root.join('spec/fixtures/analyzer_files/fib_grading/analyzer.yml')),
+        File.read(Rails.root.join('test/analyzer_sources/fib_grading/analyzer.yml')),
         :file_name => 'analyzer.yml').html_safe %>
   <figcaption>
     Auto-grading analyzer manifest (<code>analyzer.yml</code>)
@@ -94,12 +94,12 @@
   followed by a JSON object whose keys are the names of the problems to be
   graded. The value for each key should be a number between 0, meaning that the
   problem's score is zero, and 1, meaning that the student gets the maximum
-  score for the problem.   
+  score for the problem.
 </p>
 
 <p>
   An auto-grading analyzer typically has the grading code separated from the
-  unit-testing code. 
+  unit-testing code.
 </p>
 
 <figure>
@@ -111,7 +111,7 @@
 `-- grader.rb
 </div>
   <figcaption>Analyzer .zip package structure</figcaption>
-</figure> 
+</figure>
 
 <h4>Secret Test Cases</h4>
 
@@ -132,19 +132,19 @@
 
 <p>
   The requirements for auto-grading analyzers are non-trivial. Hopefully, the
-  grading code samples below will help you get started. 
+  grading code samples below will help you get started.
 </p>
 
 <figure>
   <%= Markdpwn.markup(
-        File.read(Rails.root.join('spec/fixtures/analyzer_files/fib_grading/grader.rb')),
+        File.read(Rails.root.join('test/analyzer_sources/fib_grading/grader.rb')),
         :file_name => 'grader.rb').html_safe %>
   <figcaption>Sample Ruby grader (<code>grader.rb</code>)</figcaption>
 </figure>
-  
+
 <figure>
   <%= Markdpwn.markup(
-        File.read(Rails.root.join('spec/fixtures/analyzer_files/fib_grading/grader.py')),
+        File.read(Rails.root.join('test/analyzer_sources/fib_grading/grader.py')),
         :file_name => 'grader.py').html_safe %>
   <figcaption>Sample Python grader (<code>grader.py</code>)</figcaption>
 </figure>
