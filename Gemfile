@@ -28,7 +28,7 @@ gem 'delayed_job_active_record', '>= 4.0.0'  # Required by delayed_job.
 gem 'prawn', '~> 0.12.0'
 
 # Instant feedback.
-gem 'exec_sandbox', '>= 0.2.3'
+gem 'exec_sandbox', '>= 0.2.6'
 gem 'pdf-reader', '>= 1.3.0'
 gem 'zip', '>= 2.0.2'
 
