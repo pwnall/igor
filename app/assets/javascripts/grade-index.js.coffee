@@ -1,4 +1,4 @@
-window.onload =  ->
+$ ->
   $("h3.grades button").click ->
     gradeDiv = $(this).parent('h3').next('div.grades')
     gradeDiv.toggleClass "show-comments"
