@@ -7,13 +7,20 @@ class GradesController < ApplicationController
     grades_by_metric_id = current_user.grades.index_by &:metric_id
     @recitation = current_user.recitation_section
 
-    @grades = []
+    @assignments = []
+    @assignment_metrics = {}
+    @assignment_grades = {}
     Assignment.includes(:metrics).order('deadline DESC').each do |assignment|
-      metrics = assignment.metrics.
-          select { |metric| metric.can_read? current_user }.
-          map { |metric| [metric, grades_by_metric_id[metric.id]] }
+      assignment_metrics = assignment.metrics.select do |metric|
+        metric.can_read? current_user
+      end
+      next if assignment_metrics.empty?
 
-      @grades << [assignment, metrics] unless metrics.empty?
+      @assignments << assignment
+      @assignment_metrics[assignment] = assignment_metrics
+      @assignment_grades[assignment] = assignment_metrics.map do |metric|
+        grades_by_metric_id[metric.id]
+      end
     end
   end
 
@@ -50,8 +57,17 @@ class GradesController < ApplicationController
         subject_id: params[:grade][:subject_id],
         metric_id: params[:grade][:metric_id]).first
     if @grade
-      @grade.grader = current_user
-      success = @grade.update_attributes grade_params
+      if params[:grade][:score].blank?
+        # Delete a grade. This will remove its comment as well.
+        @grade.destroy
+        @grade = Grade.new metric: @grade.metric  # Render a clean slate.
+        params[:comment][:comment] = ''
+        success = true
+      else
+        # Create / update a grade.
+        @grade.grader = current_user
+        success = @grade.update_attributes grade_params
+      end
     else
       @grade = Grade.new grade_params
       @grade.grader = current_user
@@ -59,37 +75,39 @@ class GradesController < ApplicationController
     end
 
     if success
-      @comment = @grade.comment
-      if @comment
-        # If there is an existing entry in the database
-        # mingy: should I delete a database entry if params[:comment][:comment].blank? ?
-        @comment.grader = current_user
-        success = @comment.update_attributes params[:comment]
-      elsif params[:comment][:comment].blank?
-        # If there are no comments, and no existing entry in database, don't make new entry
-        success = true
+      comment = @grade.comment
+      if comment
+        if params[:comment][:comment].empty?
+          # Delete a grade's comment.
+          comment.comment = nil
+          comment.destroy
+        else
+          # Update a grade's comment.
+          comment.grader = current_user
+          success = comment.update_attributes grade_comment_params
+        end
       else
-        # If there are comments, but no existing entry in database
-        @comment = GradeComment.new grade_comment_params
-        @comment.grade = @grade
-        @comment.grader = current_user
-        success = @comment.save
+        unless params[:comment][:comment].empty?
+          # Create a comment for a grade.
+          comment = GradeComment.new grade_comment_params
+          comment.grade = @grade
+          comment.grader = current_user
+          success = comment.save
+        end
       end
     end
 
     if success
       if request.xhr?
-        render :action => 'edit', :layout => false
+        render action: 'edit', layout: false
       else
-        render :action => 'edit'
+        render action: 'edit'
       end
     else
-      respond_to do |format|
-        if request.xhr?
-          head :not_acceptable
-        else
-          render :action => 'edit'
-        end
+      if request.xhr?
+        head :not_acceptable
+      else
+        render action: 'edit'
       end
     end
   end

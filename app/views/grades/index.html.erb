@@ -1,11 +1,11 @@
 <h2 class="grades-list-heading">Grades</h2>
 <h3>Recitation: <%= @recitation.nil? ? 'Unassigned' : @recitation.recitation_name %></h3>
 
-<% @grades.each do |assignment, metrics, recitation_average| %>
+<% @assignments.each do |assignment| %>
   <h3 class="grades">
-    <%= assignment.name %> 
-    <% if has_comments metrics %>
-    <button>Show Comments</button>
+    <%= assignment.name %>
+    <% if grades_have_comments @assignment_grades[assignment] %>
+    <button id="comments-toggle-button">Show Comments</button>
     <% end %>
   </h3>
 	<div class="grades">
@@ -13,25 +13,30 @@
       <span class="assignment-name">Total</span>
       <span class="scores">
         <span class="score">
-          <%= metrics.map { |metric, grade| grade ? grade.score : 0 }.sum %>
+          <%= grades_sum @assignment_grades[assignment] %>
         </span>
         /
         <span class="max-score">
-          <%= metrics.map { |metric, grade| metric.max_score }.sum %>
+          <%= metrics_max_score @assignment_metrics[assignment] %>
         </span>
       </span>
     </div>
-    <% metrics.each do |metric, grade| %>
+    <% @assignment_metrics[assignment].each_with_index do |metric, i| %>
     <div class="problem">
       <span class="assignment-name"><%= metric.name %></span>
       <span class="scores">
-       <span class="score"><%= grade ? grade.score : 'N' %></span>
+       <span class="score"><%= grade_display_text @assignment_grades[assignment][i] %></span>
        /
        <span class="max-score"><%= metric.max_score %></span>
       </span>
     </div>
     <div class="comments">
-      <span class="comment-head">Comments:</span> <%= has_comment(grade) ? grade.comment[:comment] : 'None' %>
+      <span class="comment-head">Comments:</span>
+      <% if @assignment_grades[assignment][i] && @assignment_grades[assignment][i].comment %>
+      <%= @assignment_grades[assignment][i].comment.comment %>
+      <% else %>
+      No comments
+      <% end %>
     </div>
   	<% end %>
 	</div>

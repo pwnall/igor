@@ -30,3 +30,6 @@ Seven::Application.configure do
   # Catch string parameter omissions.
   config.action_controller.action_on_unpermitted_parameters = :raise
 end
+
+# Get good errors on all remote devices.
+BetterErrors::Middleware.allow_ip! '0.0.0.0/0'

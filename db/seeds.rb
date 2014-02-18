@@ -224,6 +224,12 @@ end
         grade.created_at = pset.deadline + 1.day
         grade.updated_at = pset.deadline + 1.day
         grade.save!
+
+        if (i + j) % 4 == 1
+          comment = GradeComment.new grade: grade, grader: admin,
+              comment: Faker::Lorem.paragraphs(3).join("\n")
+          comment.save!
+        end
       end
     end
   end

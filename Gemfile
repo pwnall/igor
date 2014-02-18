@@ -75,6 +75,7 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'debugger'
+  gem 'faker', '>= 1.2.0'
   gem 'railroady', '>= 1.0.6'
 end
 

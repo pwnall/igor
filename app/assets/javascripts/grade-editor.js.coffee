@@ -39,7 +39,7 @@ class GradeEditor
         'grade[subject_type]': $row.attr('data-subject-type')
         'grade[metric_id]': $td.attr('data-metric-id')
         'grade[score]': $td.find('input#score').val()
-        'comment[comment]': $td.find("div.comments > textarea").val()
+        'comment[comment]': $td.find("div.comment > textarea").val()
       dataType: 'text'
       method: 'post'
       success: (data, status, xhr) => @onAjaxSuccess $target, data
@@ -55,7 +55,7 @@ class GradeEditor
     $row.addClass 'focused'
     return
 
-  # Tabs to the next window if the user presses Enter.
+  # Tabs to the next grade field if the user presses Enter.
   onKeyDown: (event) ->
     event.preventDefault() if event.which in {13; 67}
     $target = $ event.target
@@ -91,8 +91,8 @@ class GradeEditor
 
   # Reflects an unsuccessful grade save.
   onAjaxError: ($target) ->
-    console.log 'error'
-    $indicator = $ '.progress-indicator', $target
+    $container = $target.parents('td').first()
+    $indicator = $ '.progress-indicator', $container
     @setIndicator $indicator, 'upload-fail', 10000
     return
 
