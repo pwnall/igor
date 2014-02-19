@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 4.0.1'
+gem 'rails', '>= 4.0.3'
 
 gem 'mysql2', '>= 0.3.15'
 
@@ -10,7 +10,7 @@ gem 'dynamic_form', '>= 1.1.4'
 gem 'markdpwn', '>= 0.1.7'
 gem 'mail', git: 'https://github.com/pwnall/mail.git', ref: 'mime2_25'
 gem 'nokogiri', '>= 1.6.0'
-gem 'paperclip', '>= 4.0.0'
+gem 'paperclip', '>= 4.1.0'
 gem 'paperclip_database', '>= 2.2.1',
     git: 'https://github.com/pwnall/paperclip_database.git',
     ref: 'contents_style'
