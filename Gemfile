@@ -5,7 +5,7 @@ gem 'rails', '>= 4.0.3'
 gem 'mysql2', '>= 0.3.15'
 
 # Core.
-gem 'authpwn_rails', '>= 0.16.1'
+gem 'authpwn_rails', '>= 0.16.2'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'markdpwn', '>= 0.1.7'
 gem 'mail', git: 'https://github.com/pwnall/mail.git', ref: 'mime2_25'
