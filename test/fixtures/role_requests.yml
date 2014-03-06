@@ -1,0 +1,8 @@
+solo_wants_to_admin:
+  user: solo
+  name: admin
+
+dexter_wants_to_grade:
+  user: dexter
+  name: grader
+  course: main

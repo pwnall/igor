@@ -27,19 +27,35 @@ class User < ActiveRecord::Base
   validates :email, format: {
       with: /\A[A-Za-z0-9.+_-]+\@[A-Za-z0-9.\-]+\.edu\Z/,
       message: 'needs to be an .edu e-mail address' }
-
-  # Admins can bless other admins and activate blocked users.
-
-  # Site staff members. Not the same as teaching staff.
-  validates :admin, inclusion: { in: [true, false], allow_nil: false }
 end
 
-# :nodoc: staff robot
+# :nodoc: roles
 class User
+  # Special privileges for this user.
+  has_many :roles, dependent: :destroy, inverse_of: :user
+
+  # The user's requests for privileges.
+  has_many :role_requests, dependent: :destroy, inverse_of: :user
+
+  # Checks if this user has a privilege.
+  def has_role?(role_name, course = nil)
+    Role.has_entry? self, role_name, course
+  end
+
+  # Checks if the user is a site-wide admin.
+  def admin?
+    return true if has_role?('admin')
+
+    # HACK(pwnall): remove this when the rest of the code checks for the
+    #               correct privileges
+    has_role?('staff', Course.main)
+  end
+
   # The user profile that represents the actions of the site software.
   def self.robot
-    first
+    @robot ||= Role.where(name: 'bot').first!.user
   end
+  @robot = nil
 end
 
 # :nodoc: site identity and class membership
@@ -60,6 +76,9 @@ class User
   end
 
   # The user's athena ID.
+  #
+  # Athena IDs are MIT-specific. New code should avoid them and use full e-mail
+  # addresses instead.
   #
   # Returns the email username if the user has not created a profile.
   def athena_id
@@ -93,7 +112,6 @@ class User
 
   # Class registration info, e.g. survey answers and credit / listener status.
   has_many :registrations, dependent: :destroy, inverse_of: :user
-  accepts_nested_attributes_for :registrations
   has_many :recitation_sections, through: :registrations
 
   # The user's registration for the main class on this site.
@@ -157,106 +175,6 @@ end
 # :nodoc: recitation assignment proposals
 class User
   has_many :recitation_assignments, inverse_of: :user
-end
-
-# :nodoc: search integration.
-class User
-  # TODO(costan): move query processing in another class
-
-  def self.find_all_by_query!(query)
-    query.gsub!(/ \[.*/, '')
-    sql_query = '%' + query.strip + '%'
-    matching_profiles = Profile.
-        where('(name LIKE ?) OR (athena_username LIKE ?)', sql_query,
-              sql_query).
-        includes(:user).all
-    unscored_users = Credentials::Email.where('name LIKE ?', sql_query).
-        includes(user: :profile).map(&:user) |
-        matching_profiles.map { |i| i.user }
-    unscored_users.map { |u| [u.query_score(query), u] }.
-        sort_by { |v| [-v[0], v[1].name] }[0, 10].map(&:last)
-  end
-
-  def self.find_first_by_query!(query)
-    find_all_by_query!(query).first
-  end
-
-  # Parses a free-form user search query.
-  #
-  # Queries have the form "something [name <email>]", and any of the components
-  # may be missing.
-  #
-  # Returns a hash with the keys +:string+, +:name+ and +:email+. Each key's
-  # value can be nil or a string.
-  def self.parse_freeform_query(query)
-    query = query.strip
-
-    name_match = /^([^\[]*)\[(.+)\]$/.match query
-    if name_match
-      query_string, query = name_match[1], name_match[2]
-    else
-      query_string = nil
-    end
-
-    email_match = /^([^\<]*)\<(.+)\>$/.match query
-    if email_match
-      name, email = email_match[1], email_match[2]
-    else
-      name = query
-      email = nil
-    end
-
-    [query_string, name, email].each { |piece| piece.strip! unless piece.nil? }
-    query_string = nil if query_string and query_string.empty?
-    name = nil if name and name.empty?
-    email = nil if email and email.empty?
-
-    query_string, name = name, nil if query_string.nil?
-    { string: query_string, name: name, email: email }
-  end
-
-  #
-  def self.score_query_part(needle, haystack, full_match, start_match,
-                            end_match, inner_match)
-    return 0 if needle.nil? or needle.empty?
-    return full_match if needle == haystack
-    return start_match if haystack.index(needle) == 0
-    if haystack.rindex(needle) == haystack.length - needle.length
-      return end_match
-    end
-    return inner_match if haystack.index needle
-    0
-  end
-
-  # The score of this user against a user search query.
-  def query_score(query)
-    score = 0
-    query = User.parse_freeform_query query
-
-    # Real name matching: 4 points.
-    if query[:name]
-      score += User.score_query_part query[:name], name, 4, 2, 1, 0.2
-    end
-    if query[:string]
-      score += User.score_query_part query[:string], name, 2, 1, 0.5, 0.1
-    end
-
-    # Email matching: 6 points.
-    if query[:email]
-      score += User.score_query_part query[:email], "#{athena_id}@mit.edu",
-                                     6, 3, 1.5, 0.3
-    end
-    if query[:string]
-      score += User.score_query_part query[:string], "#{athena_id}@mit.edu",
-                                     2, 1, 0.5, 0.1
-    end
-
-    score / 20.0
-  end
-
-  def inspect
-    "<#{self.class} email: #{email.inspect} id: #{id} admin: #{admin.inspect}>"
-  end
 end
 
 # :nodoc: TeamPartition / Teams searching.

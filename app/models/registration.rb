@@ -48,6 +48,11 @@ class Registration < ActiveRecord::Base
                                   inverse_of: :registration
   accepts_nested_attributes_for :prerequisite_answers, allow_destroy: false
 
+  # Returns true if the given user is allowed to edit this registration.
+  def can_edit?(user)
+    user and (user == self.user or user.admin?)
+  end
+
   # Populates prerequisite_answers for a new registration
   def build_prerequisite_answers
     course.prerequisites.each do |p|
@@ -55,30 +60,27 @@ class Registration < ActiveRecord::Base
     end
   end
 
-  # Returns true if the given user is allowed to edit this registration.
-  def can_edit?(user)
-    user and (user == self.user or user.admin?)
-  end
-
-  # New conflicts is an array of hashes formatted like...
+  # new_conflicts is an array of hashes formatted like...
   # [{"timeslot": <integer>, "class_name": <string>},
   #  {"timeslot": 9, "class_name": "6.042"}...]
   def update_conflicts(new_conflicts)
-    old_recitation_conflicts = recitation_conflicts.index_by &:timeslot
+    old_conflicts = recitation_conflicts.index_by(&:timeslot)
 
     # Update recitation conflicts.
     new_conflicts.each_value do |rc|
       next if rc[:class_name].blank?
       timeslot = rc[:timeslot].to_i
-      if old_recitation_conflicts.has_key? timeslot
-        old_recitation_conflicts.delete(timeslot).update_attributes rc
+      if old_conflicts.has_key? timeslot
+        old_conflicts.delete(timeslot).update_attributes rc
       else
         rc[:registration] = self
-        conflict = RecitationConflict.new(rc)
+        conflict = RecitationConflict.new rc
         recitation_conflicts << conflict
       end
     end
     # Wipe cleared conflicts.
-    old_recitation_conflicts.each_value { |orc| recitation_conflicts.delete orc }
+    old_conflicts.each_value do |old_conflict|
+      recitation_conflicts.delete old_conflict
+    end
   end
 end

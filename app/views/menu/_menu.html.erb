@@ -1,9 +1,5 @@
-<% if current_user.admin? %>
-<%= render 'menu/admin' %>
-<% else %>
-<%= render 'menu/nonadmin' %>
-<% end %>
-  
+<%= render "menu/for_#{menu_type(current_user, Course.main)}" %>
+
 <li>
   <%= link_to current_user do %>
     <%= user_image_tag current_user %>

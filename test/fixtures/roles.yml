@@ -1,0 +1,17 @@
+admin_is_admin:
+  user: admin
+  name: admin
+
+robot_is_robot:
+  user: robot
+  name: robot
+
+staff_is_staff:
+  user: staff
+  name: staff
+  course: main
+
+grader_is_grader:
+  user: grader
+  name: grader
+  course: main

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :authenticated_as_admin, :except =>
+  before_filter :authenticated_as_admin, except:
       [:show, :new, :edit, :create, :update, :check_email]
-  before_filter :authenticated_as_user, :only => [:edit, :update]
+  before_filter :authenticated_as_user, only: [:edit, :update]
 
   # GET /users
   def index
@@ -16,13 +16,6 @@ class UsersController < ApplicationController
   def show
     @user = User.find_by_param params[:id]
     return bounce_user unless @user && @user.can_read?(current_user)
-    if Course.main.has_recitations? and registration = @user.registration and
-          registration.can_edit?(current_user)
-        @recitation_conflicts = registration.recitation_conflicts.
-                                             index_by(&:timeslot)
-    else
-      @recitation_conflicts = nil
-    end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -33,11 +26,6 @@ class UsersController < ApplicationController
   def new
     @user = User.new
     @user.build_profile
-    registration = @user.registrations.build
-    registration.course = Course.main
-    registration.build_prerequisite_answers
-
-    @recitation_conflicts = []
 
     respond_to do |format|
       format.html # new.html.erb
@@ -46,45 +34,23 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find_by_param params[:id]
-
-    if @user.registration
-      @recitation_conflicts = @user.registration.recitation_conflicts.
-                                    index_by(&:timeslot)
-    else
-      @recitation_conflicts = {}
-    end
-
+    @user = User.find_by_param! params[:id]
     return bounce_user unless @user && @user.can_edit?(current_user)
   end
 
   # POST /users
   def create
     @user = User.new user_params
-    # Root of trust: the first user (asides from Staff Robot) becomes admin.
-    @user.admin = (User.count == 1)
-    if registration = @user.registrations.first
-      registration.course = Course.main
-    end
-
-    if Course.main.has_recitations?
-      if registration && params[:recitation_conflicts]
-        params[:recitation_conflicts].each_value do |rc|
-          next if rc[:class_name].blank?
-          conflict = RecitationConflict.new rc
-          conflict.registration = registration
-          registration.recitation_conflicts << conflict
-        end
-        @recitation_conflicts = registration.recitation_conflicts.index_by(&:timeslot)
-      else
-        @recitation_conflicts = {}
-      end
-    end
 
     respond_to do |format|
       if @user.save
         token = Tokens::EmailVerification.random_for @user.email_credential
         SessionMailer.email_verification_email(token, root_url).deliver
+
+        # Root of trust: if no site admin exists, create one.
+        if Role.where(name: 'admin').empty?
+          Role.create! user: @user, name: 'admin'
+        end
 
         format.html do
           redirect_to new_session_url,
@@ -101,14 +67,10 @@ class UsersController < ApplicationController
     @user = User.find_by_param params[:id]
     return bounce_user unless @user && @user.can_edit?(current_user)
 
-    if params[:recitation_conflicts]
-      @user.registration.update_conflicts params[:recitation_conflicts]
-    end
-
     respond_to do |format|
       if @user.update_attributes user_params
         flash[:notice] = 'User information successfully updated.'
-        format.html { redirect_to(@user) }
+        format.html { redirect_to @user }
       else
         format.html { render action: :edit }
       end
@@ -122,7 +84,7 @@ class UsersController < ApplicationController
 
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to(users_url) }
+      format.html { redirect_to users_url }
     end
   end
 
@@ -131,25 +93,17 @@ class UsersController < ApplicationController
     @email = params[:user][:email]
     @user = User.with_email @email
 
-    render :layout => false
-  end
-
-  # XHR /users/lookup?query=...
-  def lookup
-    @query = params[:query]
-    @users = User.find_all_by_query!(@query)
-
-    respond_to do |format|
-      format.js { render layout: false } # lookup.js.erb
-      format.html # nothing so far
-    end
+    render layout: false
   end
 
   # POST /users/1/set_admin?to=true
   def set_admin
     @user = User.find_by_param params[:id]
-    @user.admin = params[:to] || false
-    @user.save!
+    if params[:to]
+      Role.grant @user, 'admin'
+    else
+      Role.revoke @user, 'admin'
+    end
 
     if @user.admin
       flash[:notice] = "#{@user.name} has been granted staff privileges."
@@ -190,10 +144,7 @@ class UsersController < ApplicationController
 
     params.require(:user).permit :email, :password, :password_confirmation,
         profile_attributes: [:athena_username, :name, :nickname, :university,
-            :department, :year],
-        registrations_attributes: [:for_credit, :allows_publishing,
-            prerequisite_answers_attributes: [:took_course, :prerequisite_id,
-                                              :waiver_answer]]
+                             :department, :year]
   end
   private :user_params
 end

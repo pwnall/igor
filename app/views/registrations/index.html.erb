@@ -11,7 +11,7 @@
 	    <td>Recitation</td>
 	  </tr>
 	</thead>
-	
+
 	<tbody>
 	<% @registrations.each do |registration| %>
 	  <tr>
@@ -36,8 +36,6 @@
       <% end %>
       <td><%= link_to 'Show', registration %></td>
       <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
-      <td><%= link_to 'Destroy', registration,
-	                :confirm => 'Are you sure?', :method => :delete %></td>
 	  </tr>
 	<% end %>
 	</tbody>

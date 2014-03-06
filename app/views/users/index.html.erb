@@ -1,15 +1,6 @@
 <h2>Site Users</h2>
 
 <table>
-  <tfoot>
-    <tr>
-      <th><%= pluralize @users.length, 'user' %></th>
-      <th>
-        <%= pluralize @users.select { |u| u.email_credential.verified? }.length,
-                      'verified e-mails' %>
-      </th>
-    </tr>
-  </tfoot>
   <tbody>
     <% @users.sort_by { |u| [u.admin? ? 0 : 1, u.name] }.each do |user| %>
       <tr>
@@ -24,9 +15,9 @@
         </td>
         <td>
           <% if user.admin? %>
-            <%= role_icon_tag :staff %> staff
+            <%= role_icon_tag :admin %> admin
           <% else %>
-            <%= role_icon_tag :student %> student
+            <%= role_icon_tag :student %> user
           <% end %>
         </td>
         <td>
@@ -46,12 +37,12 @@
           <% if user.admin? %>
             <%= link_to set_admin_user_path(user, :to => false),
                         method: :put, class: 'button' do %>
-              <%= role_icon_tag :student %> Student
+              <%= role_icon_tag :student %> User
             <% end %>
           <% elsif user.email_credential.verified? %>
             <%= link_to set_admin_user_path(user, :to => true),
                         method: :put, class: 'button' do %>
-              <%= role_icon_tag :staff %> Staff
+              <%= role_icon_tag :admin %> Admin
             <% end %>
           <% else %>
             <%= link_to confirm_email_user_path(user), method: :put,
@@ -63,4 +54,13 @@
       </tr>
     <% end %>
   </tbody>
+  <tfoot>
+    <tr>
+      <th><%= pluralize @users.length, 'user' %></th>
+      <th>
+        <%= pluralize @users.select { |u| u.email_credential.verified? }.length,
+                      'verified e-mails' %>
+      </th>
+    </tr>
+  </tfoot>
 </table>

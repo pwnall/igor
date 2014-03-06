@@ -1,0 +1,86 @@
+<h2>Course Staff</h2>
+
+<table>
+  <tbody>
+  <% @roles.each do |role| %>
+    <tr>
+      <td>
+        <%= role.user.name %>
+      </td>
+      <td>
+        <%= role.user.email %>
+      </td>
+      <td>
+      <% if role.name == 'staff' %>
+        <%= role_icon_tag :staff %> Instructor
+      <% elsif role.name == 'grader' %>
+        <%= role_icon_tag :staff %> Grader
+      <% else %>
+        ???
+      <% end %>
+      </td>
+
+      <td>
+        <%= link_to role, method: :delete, class: 'button', data: { confirm:
+               "Are you sure you want to remove #{role.user.name} from the course staff?"
+               } do %>
+          <%= destroy_icon_tag %> Revoke
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th><%= pluralize @roles.length, 'staff member' %></th>
+    </tr>
+  </tfoot>
+
+</table>
+
+
+<h3>Pending Staff Registrations</h3>
+
+<table>
+  <tbody>
+  <% @role_requests.each do |role_request| %>
+    <tr>
+      <td>
+        <%= role_request.user.name %>
+      </td>
+      <td>
+        <%= role_request.user.email %>
+      </td>
+      <td>
+      <% if role_request.name == 'staff' %>
+        <%= role_icon_tag :staff %> Instructor
+      <% elsif role_request.name == 'grader' %>
+        <%= role_icon_tag :staff %> Grader
+      <% else %>
+        ???
+      <% end %>
+      </td>
+
+      <td>
+        <%= link_to approve_role_request_path(role_request), method: :post,
+                    class: 'button' do %>
+          <%= create_icon_tag %> Approve
+        <% end %>
+      </td>
+      <td>
+        <%= link_to deny_role_request_path(role_request), method: :post,
+                    class: 'button' do %>
+          <%= destroy_icon_tag %> Deny
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>
+        <%= pluralize @role_requests.length, 'pending staff registration' %>
+      </th>
+    </tr>
+  </tfoot>
+</table>

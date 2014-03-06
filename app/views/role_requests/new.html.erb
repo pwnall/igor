@@ -1,0 +1,43 @@
+<h2>Staff Registration</h2>
+
+
+<p>
+  Use this page to register as a <%= @role_request.course.number %> staff
+  member. A course instructor or site administrator will have to approve your
+  registration.
+</p>
+
+<h3>Instructors</h3>
+<p>
+  Course instructors have full access to a course's students, assignments, and
+  grades. Professors and teaching assistants are usually course instructors.
+</p>
+
+<%= form_for @role_request  do |f| %>
+  <%= f.hidden_field :name, value: 'staff' %>
+  <%= f.hidden_field :course_id %>
+
+  <p class="actions">
+    <%= f.button class: 'emphasized', type: :submit do %>
+      Register as a <%= @role_request.course.number %> instructor
+    <% end %>
+  </p>
+<% end %>
+
+<h3>Graders</h3>
+
+<p>
+  Grades have access to a limited subset of the students' assignments and
+  grades. Graders are usually students with hourly jobs.
+</p>
+
+<%= form_for @role_request  do |f| %>
+  <%= f.hidden_field :name, value: 'grader' %>
+  <%= f.hidden_field :course_id %>
+
+  <p class="actions">
+    <%= f.button class: 'emphasized', type: :submit do %>
+      Register as a <%= @role_request.course.number %> grader
+    <% end %>
+  </p>
+<% end %>

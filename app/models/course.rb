@@ -48,18 +48,29 @@ class Course < ActiveRecord::Base
   # Sections for this course's recitations.
   has_many :recitation_sections, dependent: :destroy, inverse_of: :course
 
-  # All users connected to this course.
+  # The students in this course.
   has_many :users, through: :registrations, source: :user
+
+  # The course-specific privileges assigned for this course.
+  has_many :roles, inverse_of: :course, dependent: :destroy
+
+  # The requests for course-specific privileges for this course.
+  has_many :role_requests, inverse_of: :course, dependent: :destroy
 
   # Students registered for this course.
   def students
-    users.joins(:registrations).where(admin: false,
+    User.joins(:registrations).where(
         registrations: { course_id: id, dropped: false })
   end
 
   # Course staff members.
   def staff
-    users.where admin: true
+    User.joins(:role).where role: { name: 'staff', course_id: id }
+  end
+
+  # Graders for the course.
+  def graders
+    User.joins(:role).where role: { name: 'grader', course_id: id }
   end
 
   # The main (and only) course on the website.

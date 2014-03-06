@@ -1,0 +1,24 @@
+<li>
+  <%= link_to root_path do %>
+    <%= feed_icon_tag %> Activity
+  <% end %>
+</li>
+<%= render 'menu/homework' %>
+<%= render 'menu/grades' %>
+<%= render 'menu/course' %>
+<li>
+  <%= link_to root_path do %>
+    <%= tools_icon_tag %> Admin
+  <% end %>
+  <ol>
+    <li>
+      <%= link_to 'Submissions', submissions_path %>
+    </li>
+
+    <li>
+      <%= link_to users_path do %>
+        <%= contacts_icon_tag %> Site Users
+      <% end %>
+    </li>
+  </ol>
+</li>

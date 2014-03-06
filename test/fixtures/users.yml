@@ -9,9 +9,11 @@
 #  admin      :boolean          default(FALSE), not null
 #
 
+robot:
+  exuid: 13370
+
 admin:
   exuid: 12345
-  admin: true
 
 dexter:
   exuid: 56789
@@ -21,3 +23,9 @@ inactive:
 
 solo:
   exuid: 98765
+
+staff:
+  exuid: 424242
+
+grader:
+  exuid: 80085

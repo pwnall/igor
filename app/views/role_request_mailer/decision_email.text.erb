@@ -1,0 +1,8 @@
+Dear <%= @role_request.user.name %>,
+
+Your registration as a <%= @role_request.course.number %> <%= @role_request.name == 'staff' ? 'instructor' : 'grader' %> has been <%= @was_approved ? 'approved' : 'denied' %>.
+
+<% if @was_approved %>
+Please go to the address below to work on the course.
+<%= root_url host: @host, protocol: @protocol %>
+<% end %>

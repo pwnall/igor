@@ -7,10 +7,9 @@ Seven::Application.routes.draw do
   resources :courses
   resources :prerequisites
 
-  # Registration
+  # Account registration.
   resources :users do
     collection do
-      get :lookup
       post :check_email
     end
     member do
@@ -30,12 +29,26 @@ Seven::Application.routes.draw do
       get :profile, :thumb
     end
   end
-  resources :registrations
+
+  # Student registration.
+  resources :registrations,
+            only: [:index, :show, :new, :create, :edit, :update]
+
+  # Staff registration.
+  resources :role_requests, only: [:index, :new, :create, :show, :destroy] do
+    member do
+      post :approve
+      post :deny
+    end
+  end
+  resources :roles, only: [:destroy]
+
   resources :recitation_sections do
     collection do
       post :autoassign
     end
   end
+
 
   # Homework.
   resources :assignments do

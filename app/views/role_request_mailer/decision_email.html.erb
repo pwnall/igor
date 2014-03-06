@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h3>Dear <%= @role_request.user.name %>,</h3>
+    <p>
+      Your registration as a <%= @role_request.course.number %>
+      <em><%= @role_request.name == 'staff' ? 'instructor' : 'grader' %></em>
+      has been
+      <em><%= @was_approved ? 'approved' : 'denied' %></em>.
+    </p>
+
+    <% if @was_approved %>
+    <p>
+      Please go
+      <%= link_to 'here', root_url(host: @host, protocol: @protocol) %>
+      to work on the course.
+    </p>
+    <% end %>
+  </body>
+</html>

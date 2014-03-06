@@ -5,12 +5,17 @@ class SessionController < ApplicationController
   # Sets up the 'session/welcome' view. No user is logged in.
   def welcome
     @session = Session.from_params params
-    render :action => :new
+    render action: :new
   end
   private :welcome
 
   # Sets up the 'session/home' view. A user is logged in.
   def home
+    if current_user.registrations.empty? and current_user.roles.empty?
+      redirect_to new_registration_url
+      return
+    end
+
     # Pull information about the current user.
     @news_flavor = params[:flavor] ? params[:flavor].to_sym : nil
   end

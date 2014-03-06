@@ -7,9 +7,8 @@ class RecitationAssignmentMailer < ActionMailer::Base
     @host.slice!(-1) if @host[-1] == ?/
 
     hostname = @host.split(':', 2).first
-    mail :to => email,
-         :from => recitation_assignment_from(hostname, @protocol),
-         :subject => recitation_assignment_subject(hostname, @protocol)
+    mail to: email, from: recitation_assignment_from(hostname, @protocol),
+         subject: recitation_assignment_subject(hostname, @protocol)
 
   end
 

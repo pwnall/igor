@@ -276,6 +276,26 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   add_index "registrations", ["course_id", "user_id"], name: "index_registrations_on_course_id_and_user_id", unique: true, using: :btree
   add_index "registrations", ["user_id", "course_id"], name: "index_registrations_on_user_id_and_course_id", unique: true, using: :btree
 
+  create_table "role_requests", force: true do |t|
+    t.integer  "user_id",              null: false
+    t.string   "name",       limit: 8, null: false
+    t.integer  "course_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "role_requests", ["course_id", "name", "user_id"], name: "index_role_requests_on_course_id_and_name_and_user_id", unique: true, using: :btree
+
+  create_table "roles", force: true do |t|
+    t.integer  "user_id",              null: false
+    t.string   "name",       limit: 8, null: false
+    t.integer  "course_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "roles", ["course_id", "name", "user_id"], name: "index_roles_on_course_id_and_name_and_user_id", unique: true, using: :btree
+
   create_table "submissions", force: true do |t|
     t.integer  "deliverable_id", null: false
     t.integer  "db_file_id",     null: false
@@ -379,10 +399,9 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   add_index "teams", ["partition_id", "name"], name: "index_teams_on_partition_id_and_name", unique: true, using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "exuid",      limit: 32,                 null: false
+    t.string   "exuid",      limit: 32, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "admin",                 default: false, null: false
   end
 
   add_index "users", ["exuid"], name: "index_users_on_exuid", unique: true, using: :btree

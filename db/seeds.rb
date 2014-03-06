@@ -24,7 +24,7 @@ prereq2.save!
 
 puts 'Course created'
 
-# Staff.
+# Site admin.
 admin = User.create! email: 'costan@mit.edu', password: 'mit',
     password_confirmation: 'mit', profile_attributes: {
       athena_username: 'costan', name: 'Victor Costan', nickname: 'Victor',
@@ -32,19 +32,8 @@ admin = User.create! email: 'costan@mit.edu', password: 'mit',
       about_me: "I'm the boss"
     }
 admin.email_credential.verified = true
-admin.admin = true
 admin.save!
-
-admin_registration = Registration.new for_credit: false,
-                                      allows_publishing: true
-admin_registration.user = admin
-admin_registration.course = course
-admin_registration.save!
-
-admin_registration.prerequisite_answers.create! prerequisite: prereq1,
-    took_course: false, waiver_answer: 'Gold medal at IOI 2003'
-admin_registration.prerequisite_answers.create! prerequisite: prereq2,
-    took_course: true, waiver_answer: nil
+Role.create! user: admin, name: 'admin'
 
 puts 'Admin created'
 
@@ -86,6 +75,35 @@ names.each_with_index do |name, i|
 end
 
 puts 'Students created'
+
+# Staff.
+
+staff = []
+graders = []
+1.upto 14 do |i|
+  name = Faker::Name.name
+  first_name = name.split(' ').first
+  short_name = (first_name[0, 1] + name.split(' ').last).downcase
+  user = User.create email: short_name + '@mit.edu',  password: 'mit',
+      password_confirmation: 'mit', profile_attributes: {
+        athena_username: short_name, name: name, nickname: first_name,
+        university: 'MIT', year: (1 + (i % 4)).to_s,
+        department: depts[i % depts.length], about_me: "Test subject #{i + 1}"
+      }
+  user.email_credential.verified = true
+  user.save!
+  if i <= 10
+    role_name = 'staff'
+    staff << user
+  else
+    role_name = 'grader'
+    graders << user
+  end
+  Role.create! user: user, course: course, name: role_name
+end
+
+puts 'Staff created'
+
 
 # Exams.
 
