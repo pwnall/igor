@@ -18,7 +18,7 @@
           <%= search_field_tag :name, '', :placeholder => 'name filter' %>
         </th>
         <% @metrics.each do |metric| %>
-        <th>
+        <th data-metric-id="<%= metric.id %>">
           <%= metric.name %>
         </th>
         <% end %>
@@ -30,7 +30,7 @@
     <tbody>
       <% @subjects.each do |subject| %>
       <tr data-subject-name="<%= subject.name %>"
-          data-subject-id="<%= subject.id %>"
+          data-subject-id="<%= subject.to_param %>"
           data-subject-type="<%= subject.class.name %>">
         <th class="subject-name" scope="row">
           <%= link_to subject.name, subject, :tabindex => '-1' %>

@@ -52,6 +52,17 @@ class GradesController < ApplicationController
 
   # POST /grades
   def create
+    case params[:grade][:subject_type]
+    when 'User'
+      user = User.find_by_param params[:grade][:subject_id]
+      params[:grade][:subject_id] = user.id
+    when 'Team'
+      # Teams don't use external UIDs yet.
+    else
+      head :not_acceptable
+      return
+    end
+
     @grade = Grade.where(
         subject_type: params[:grade][:subject_type],
         subject_id: params[:grade][:subject_id],
