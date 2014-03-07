@@ -65,12 +65,12 @@ class Course < ActiveRecord::Base
 
   # Course staff members.
   def staff
-    User.joins(:role).where role: { name: 'staff', course_id: id }
+    User.joins(:roles).where roles: { name: 'staff', course_id: id }
   end
 
   # Graders for the course.
   def graders
-    User.joins(:role).where role: { name: 'grader', course_id: id }
+    User.joins(:roles).where roles: { name: 'grader', course_id: id }
   end
 
   # The main (and only) course on the website.
