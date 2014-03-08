@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find_by_param! params[:id]
+    @user = User.find_by_param params[:id]
     return bounce_user unless @user && @user.can_edit?(current_user)
   end
 
