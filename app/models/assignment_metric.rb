@@ -42,7 +42,7 @@ class AssignmentMetric < ActiveRecord::Base
 
   # True if the given user should be allowed to post grades for the metric.
   def can_grade?(user)
-    user && user.admin?
+    user && (user.admin? || user.robot?)
   end
 
   # True if this metric can be destroyed without a warning.
@@ -52,8 +52,7 @@ class AssignmentMetric < ActiveRecord::Base
 
   # A user's grade on this assignment metric.
   def grade_for(user)
-    subject = grades.with_subject(assignment.grade_subject_for(user)).
-                     first_or_initialize
+    grades.with_subject(assignment.grade_subject_for(user)).first_or_initialize
   end
 
   def grade_for_recitation(recitation)

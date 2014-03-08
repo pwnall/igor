@@ -51,6 +51,11 @@ class User
     has_role?('staff', Course.main)
   end
 
+  # Checks if the user is an automated robot.
+  def robot?
+    has_role? 'bot'
+  end
+
   # The user profile that represents the actions of the site software.
   def self.robot
     @robot ||= Role.where(name: 'bot').first!.user
