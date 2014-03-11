@@ -1,33 +1,34 @@
-<!-- grades/missing -->
-<%= render 'grades/request_missing', :assignments => @assignments %>
+<%= render 'grades/request_missing', assignments: @assignments %>
 
-<div class="full_section">	
+<div class="full_section">
 	<h3 class="full_section">Missing Grades
-		<% unless params[:filter_aid].blank? %>
-			for <%=h @assignments.find { |a| a.id == params[:filter_aid].to_i }.name %>
+    <% if @assignment %>
+			for <%= @assignment.name %>
 		<% end %>
 	</h3>
-	
-	<% if @users.empty? %>
+
+	<% if @subjects.empty? %>
 		<div>No missing grades.</div>
 	<% else %>
 		<table>
 			<thead>
-				<th style="text-align: left; ">User</th>
-				<th style="text-align: left; ">Assignments</th>
-			</thead>
-			<% @users.each do |user_id, assignments| %>
+				<th>User</th>
+				<th>Assignments</th>
+      </thead>
+      <tbody>
+			<% @subjects.each do |subject, assignments| %>
 				<tr>
-					<td><%=h display_name_for_user @users_by_id[user_id] %></td>
+					<td><%= link_to subject.name, subject %></td>
 					<td>
 						<% assignments.keys.sort_by { |a| a.deadline }.each do |assignment| %>
-							<%=h assignment.name %>:
-							<%=h assignments[assignment].map { |m_id| @metrics_by_id[m_id].name }.join(', ') %>
+							<%= assignment.name %>:
+							<%= assignments[assignment].map { |m_id| @metrics_by_id[m_id].name }.join(', ') %>
 							<br />
 						<% end %>
 					</td>
 				</tr>
 			<% end %>
-		</table>
+      </tbody>
+    </table>
 	<% end %>
 </div>

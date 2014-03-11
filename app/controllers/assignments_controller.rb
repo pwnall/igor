@@ -18,7 +18,6 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1
   def show
     @assignment = Assignment.find params[:id]
-    puts 'inside show'
     respond_to do |format|
       format.html  # show.html.erb
     end

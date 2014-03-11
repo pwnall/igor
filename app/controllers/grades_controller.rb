@@ -134,46 +134,50 @@ class GradesController < ApplicationController
   end
 
   def missing
-    assignments = Assignment.includes :deliverables, { :metrics => :assignment }
+    course = Course.main
+    assignments = course.assignments.includes :deliverables,
+                                              metrics: :assignment
     @assignments = assignments
-    if params[:filter_aid]
-      assignments = assignments.where(:id => params[:filter_aid])
+    unless params[:filter_aid].blank?
+      assignments = course.assignments.where(id: params[:filter_aid])
+      @assignment = assignments.first
+    else
+      @assignment = nil
     end
 
     @metrics_by_id = assignments.map(&:metrics).flatten.index_by(&:id)
 
-    gradeless_users = {}
-    @users_by_id = {}
-
+    gradeless_subjects = {}
     assignments.each do |assignment|
       metrics = assignment.metrics
-      metrics.select!(&:published) if params[:filtered_published]
+      metrics.select!(&:published) if params[:filter_published]
       metric_ids = metrics.map(&:id)
 
       if assignment.deliverables.empty?
         # No deliverables (quiz?). Include all registered students.
-        users = Profile.includes(:user).all.map(&:user).reject(&:admin?)
+        subjects = course.students
       else
-        # Only consider students who submitted something for the assignment.
+        # Only consider students / teams who submitted something for the assignment.
         deliverable_ids = assignment.deliverables.map(&:id)
-        users = Submission.where(:deliverable_id => deliverable_ids).
-                           includes(:user).map(&:user)
+        subjects = Submission.where(deliverable_id: deliverable_ids).
+                              includes(:subject).map(&:subject)
       end
 
       # find those without all the grades
-      users.index_by(&:id).each do |user_id, user|
-        user_grades = user.grades.select { |g| metric_ids.include? g.metric_id }
-        next if user_grades.length == metric_ids.length
+      subjects.index_by(&:name).each do |_, subject|
+        subject_grades = Grade.with_subject subject do |grade|
+          metric_ids.include? grade.metric_id
+        end
+        next if subject_grades.length == metric_ids.length
 
         # user found: add to list
-        gradeless_users[user_id] ||= {}
-        gradeless_users[user_id][assignment] =
-            metric_ids - user_grades.map(&:metric_id)
-        @users_by_id[user_id] = user
+        gradeless_subjects[subject] ||= {}
+        gradeless_subjects[subject][assignment] =
+            metric_ids - subject_grades.map(&:metric_id)
       end
     end
 
-    @users = gradeless_users
+    @subjects = gradeless_subjects
   end
 
   # GET /grades/report/0

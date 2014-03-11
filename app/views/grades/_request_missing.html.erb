@@ -1,9 +1,9 @@
 <!-- grades/request_missing -->
 <% @assignments = assignments %>
-<div class="full_section">	
+<div class="full_section">
 	<h3 class="full_section">Compute Missing Grades</h3>
 
-	<%= form_tag(missing_grades_path, {:class => 'user_form'}) do %>
+	<%= form_tag missing_grades_path, class: 'user_form' do %>
 		<div class="form_box">
 			<div class="form_entry">
 				<div class="form_label">Assignment</div>
@@ -14,14 +14,12 @@
 			<div class="form_entry">
 				<div class="form_label">Only published metrics</div>
 				<div class="form_field_box">
-					<%= check_box_tag :filter_published, '1', params[:filter_published] == '1', :class => 'form_field', :id => 'filter_published' %>
+          <%= check_box_tag :filter_published, '1', params[:filter_published] == '1' %>
 				</div>
 			</div>
 			<div class="form_submit_box">
-				<%= submit_tag "Compute missing grades", :class => 'form_submit', :id => 'request_missing_submit_button' %>
-				or
-				<%= link_to 'Go home', root_path %>
+				<%= submit_tag 'Compute missing grades' %>
 			</div>
 		</div>
-	<% end %>	
+	<% end %>
 </div>

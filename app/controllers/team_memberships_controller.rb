@@ -6,7 +6,6 @@ class TeamMembershipsController < ApplicationController
     @team_membership = TeamMembership.new team_membership_new_params
     @user = User.find_first_by_query!(params[:query])
     @team_membership.user = @user
-    logger.debug("User: " + @user.inspect)
     respond_to do |format|
       if @team_membership.save
         format.html do
@@ -38,7 +37,7 @@ class TeamMembershipsController < ApplicationController
   # Permit updating and creating teams.
   def team_membership_new_params
     params.require(:team_membership).permit :team_id
-  end 
+  end
   private :team_membership_new_params
 
 end
