@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 4.0.3'
+gem 'rails', '>= 4.0.4'
 
 gem 'mysql2', '>= 0.3.15'
 
@@ -52,7 +52,7 @@ gem 'pwnstyles_rails', '>= 0.1.33'
 gem 'jquery-rails', '>= 3.1.0'
 gem 'jquery-ui-rails', '>= 4.1.1'
 gem 'coffee-rails', '>= 4.0.1'
-gem 'uglifier', '>= 2.4.0'
+gem 'uglifier', '>= 2.5.0'
 gem 'therubyracer', '>= 0.12.0'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -66,8 +66,8 @@ end
 group :development, :test do
   gem 'minitest-rails', '>= 0.9.2'
   gem 'binary_fixtures', '>= 0.1.2'
-  gem 'thin', '>= 1.6.1'
-  gem 'turn', '>= 0.9.6'
+  gem 'thin', '>= 1.6.2'
+  gem 'turn', '>= 0.9.7'
 end
 
 group :development do
@@ -80,7 +80,7 @@ group :development do
 end
 
 group :production do
-  gem 'thin', '>= 1.6.1'
+  gem 'thin', '>= 1.6.2'
 end
 
 group :doc do

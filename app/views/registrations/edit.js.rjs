@@ -1,3 +1,0 @@
-page.select('.registration-container').each do |element|
-  element.replace render('registrations/form')
-end

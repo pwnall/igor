@@ -110,8 +110,29 @@ class RegistrationsController < ApplicationController
     end
   end
 
+  # XHR PATCH /registrations/1/restricted
+  def restricted
+    @registration = Registration.find params[:id]
+
+    respond_to do |format|
+      if @registration.update_attributes restricted_registration_params
+        format.js { head :ok }
+      else
+        format.js { head :not_acceptable }
+      end
+    end
+  end
+
   def registration_params
     params.require(:registration).permit :for_credit, :allows_publishing,
+        prerequisite_answers_attributes: [:took_course, :prerequisite_id,
+                                          :waiver_answer]
+  end
+  private :registration_params
+
+  def restricted_registration_params
+    params.require(:registration).permit :for_credit, :allows_publishing,
+        :recitation_section_id,
         prerequisite_answers_attributes: [:took_course, :prerequisite_id,
                                           :waiver_answer]
   end

@@ -27,13 +27,9 @@
 				<% end %>
 				</td>
 			<% end %>
-      <% if ! registration.user.admin? %>
-        <td id='registration-<%= registration.id %>'>
-          <%= recitation_select(registration) %>
-        </td>
-      <% else %>
-        <td>Recitation Leader</td>
-      <% end %>
+      <td id='registration-<%= registration.id %>'>
+        <%= recitation_select(registration) %>
+      </td>
       <td><%= link_to 'Show', registration %></td>
       <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
 	  </tr>

@@ -1,7 +1,0 @@
-if @new_record
-  page.redirect_to @registration.user
-else
-  page.select('.registration-container').each do |element|
-    element.replace render('registrations/show', :registration => @registration)
-  end
-end

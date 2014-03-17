@@ -32,7 +32,11 @@ Seven::Application.routes.draw do
 
   # Student registration.
   resources :registrations,
-            only: [:index, :show, :new, :create, :edit, :update]
+            only: [:index, :show, :new, :create, :edit, :update] do
+    member do
+      patch :restricted
+    end
+  end
 
   # Staff registration.
   resources :role_requests, only: [:index, :new, :create, :show, :destroy] do
