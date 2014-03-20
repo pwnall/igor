@@ -2,7 +2,7 @@
 
 <table>
   <tbody>
-    <% @users.sort_by { |u| [u.admin? ? 0 : 1, u.name] }.each do |user| %>
+    <% @users.sort_by { |u| [u.has_role?('admin') ? 0 : 1, u.name] }.each do |user| %>
       <tr>
         <td><%= link_to user.name, user %></td>
         <td>
@@ -14,14 +14,14 @@
           <%= user.email %>
         </td>
         <td>
-          <% if user.admin? %>
+          <% if user.has_role?('admin') %>
             <%= role_icon_tag :admin %> admin
           <% else %>
             <%= role_icon_tag :student %> user
           <% end %>
         </td>
         <td>
-        <% unless user.admin? %>
+        <% unless user.has_role?('admin') %>
           <%= link_to impersonate_user_path(user), method: :post,
                       class: 'button' do %>
             <%= search_icon_tag %> Impersonate
@@ -34,7 +34,7 @@
           <% end %>
         </td>
         <td>
-          <% if user.admin? %>
+          <% if user.has_role?('admin') %>
             <%= link_to set_admin_user_path(user, :to => false),
                         method: :put, class: 'button' do %>
               <%= role_icon_tag :student %> User

@@ -126,7 +126,9 @@ class UsersController < ApplicationController
     # POST /users/1/impersonate
   def impersonate
     @user = User.find_by_param params[:id]
-    return bounce_user('Cannot impersonate another admin.') if @user.admin?
+    if @user.has_role?('admin')
+      return bounce_user('Cannot impersonate another admin.')
+    end
 
     set_session_current_user @user
     respond_to do |format|
