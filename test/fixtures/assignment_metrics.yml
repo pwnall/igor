@@ -24,3 +24,8 @@ assessment_quality:
   name: Quality
   assignment: assessment
   max_score: 10
+
+assessment_overall:
+  name: Overall
+  assignment: assessment
+  max_score: 100
