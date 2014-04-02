@@ -15,7 +15,7 @@ describe Grade do
     it 'insists on the uniqueness of metric_id for a new grade of a user' do
       # This test ensures that there can't be more than one grade stored for a particular assignment of a particular user
       @grade.metric = assignment_metrics :assessment_overall
-      assert_raises(ActiveRecord::RecordInvalid){ @grade.save! }
+      assert_equal false, @grade.valid?
     end 
 
     it 'requires a metric' do
@@ -39,49 +39,34 @@ describe Grade do
     end
 
     it 'requires a numeric score' do
-      badarray = ['string', '01s']
-      goodarray = [1, 0.1, 1.3333, '01', '5.3']
-      badarray.each do |e|
-        @grade.score = e
+      bad_scores = ['string', '01s']
+      good_scores = [1, 0.1, 1.3333, '01', '5.3']
+      bad_scores.each do |score|
+        @grade.score = score
         assert_equal false, @grade.valid?
       end
-      goodarray.each do |e|
-        @grade.score = e
+      good_scores.each do |score|
+        @grade.score = score
         assert @grade.valid?
       end
     end
   end
 
-  describe 'when updating an existing grade' do
+  describe '#with_subject' do
     before do
-      @oldgrade = grades :dexter_assessment
-    end
-
-    it 'accepts updating the score of a grade' do
-      assert @oldgrade.update_attribute(:score, 4.0)
-    end 
-
-    it 'rejects a grade updated by a non-grader' do
-      assert_equal false, @oldgrade.update_attribute(:grader, users(:dexter)), "Updated a grade with a non-grader in the grader field"
-    end
-  end
-
-  describe 'when selecting grades' do
-    before do
-      @selectedgrades = Grade.with_subject users(:dexter)
+      @grades = Grade.with_subject users(:dexter)
     end
 
     it 'verifies each grade belongs to dexter' do
-      @selectedgrades.each do |grade|
-        assert grade.subject == users(:dexter)
+      @grades.each do |grade|
+        assert_equal grade.subject, users(:dexter)
       end
     end
 
     it 'verifies each grade belongs to dexter using the users method' do
-      @selectedgrades.each do |grade|
-        assert grade.users.first == users(:dexter)
+      @grades.each do |grade|
+        assert_equal grade.users.first, users(:dexter)
       end
     end
   end
-
 end
