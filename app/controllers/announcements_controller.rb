@@ -1,10 +1,10 @@
 class AnnouncementsController < ApplicationController
   before_filter :authenticated_as_admin, :except => [:show]
   before_filter :authenticated_as_user, :only => [:show]
-  
+
   # GET /announcements
   def index
-    @announcements = Announcement.find(:all)
+    @announcements = Announcement.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -31,7 +31,7 @@ class AnnouncementsController < ApplicationController
     @announcement = Announcement.find(params[:id])
     new_edit
   end
-  
+
   def new_edit
     respond_to do |format|
       format.html { render :action => :new_edit }
@@ -61,7 +61,7 @@ class AnnouncementsController < ApplicationController
     else
       success = @announcement.update_attributes(params[:announcement])
     end
-    
+
     respond_to do |format|
       if success
         flash[:announcement] = "Site-wide announcement successfully #{is_new_record ? 'published' : 'updated'}."
@@ -71,7 +71,7 @@ class AnnouncementsController < ApplicationController
         format.html { render :action => :new_edit }
         format.js   { render :action => :new_edit }
       end
-    end    
+    end
   end
 
   # DELETE /announcements/1
@@ -87,7 +87,7 @@ class AnnouncementsController < ApplicationController
   # Permits creating and updating announcements.
   def announcement_params
     params.require(:announcement).permit :subject_id, :subject_type, :metric_id, :score
-  end 
+  end
   private :announcement_params
 
 end

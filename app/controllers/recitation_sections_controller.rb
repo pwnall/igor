@@ -3,7 +3,7 @@ class RecitationSectionsController < ApplicationController
 
   # GET /recitation_sections
   def index
-    @recitation_sections = RecitationSection.find(:all, :include => :leader)
+    @recitation_sections = RecitationSection.includes(:leader).all
 
     respond_to do |format|
       format.html # index.html.erb

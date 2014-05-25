@@ -4,7 +4,7 @@
     <p class="field">
       <%= label_tag :filter_aid, 'Assignment' %>
       <span class="value">
-        <%= select_tag :filter_aid, options_for_select([['(all)', nil]] + Assignment.find(:all).map { |a| [a.name, a.id] }) %>
+        <%= select_tag :filter_aid, options_for_select([['(all)', nil]] + Assignment.all.map { |a| [a.name, a.id] }) %>
       </span>
     </p>
     <p class="field">

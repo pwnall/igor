@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 4.0.4'
+gem 'rails', '>= 4.1.1'
 
-gem 'mysql2', '>= 0.3.15'
+gem 'mysql2', '>= 0.3.16'
 
 # Core.
 gem 'authpwn_rails', '>= 0.16.2'
@@ -46,17 +46,14 @@ gem 'best_in_place', '>= 2.1.0',
                      git: 'https://github.com/bernat/best_in_place.git'
 
 # Assets.
-gem 'sass-rails', '>= 4.0.1'
+gem 'sass-rails', '>= 4.0.3'
 gem 'pwnstyles_rails', '>= 0.1.33'
 #gem 'pwnstyles_rails', '>= 0.1.33', path: '../pwnstyles_rails'
 gem 'jquery-rails', '>= 3.1.0'
-gem 'jquery-ui-rails', '>= 4.1.1'
+gem 'jquery-ui-rails', '>= 4.2.1'
 gem 'coffee-rails', '>= 4.0.1'
 gem 'uglifier', '>= 2.5.0'
 gem 'therubyracer', '>= 0.12.0'
-
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.5'
 
 # Don't log BLOB values (file attachments).
 group :development, :production do
@@ -64,14 +61,14 @@ group :development, :production do
 end
 
 group :development, :test do
-  gem 'minitest-rails', '>= 0.9.2'
+  gem 'minitest-rails', '>= 1.0.1'
   gem 'binary_fixtures', '>= 0.1.2'
   gem 'thin', '>= 1.6.2'
-  gem 'turn', '>= 0.9.7'
+  #gem 'turn', '>= 0.9.7'
 end
 
 group :development do
-  gem 'annotate', '>= 2.6.1'
+  gem 'annotate', '>= 2.6.3'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'debugger'

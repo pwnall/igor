@@ -2,15 +2,15 @@ class TeamsStudentController < ApplicationController
   before_filter :authenticated_as_user
 
   def show
-    @team_memberships = TeamMembership.where(:user_id => current_user.id)    
-    @partitions = TeamPartition.find(:all)
-    
+    @team_memberships = TeamMembership.where(:user_id => current_user.id)
+    @partitions = TeamPartition.all
+
     @invitations = Invitation.where(:invitee_id => current_user.id)
-    
-    @partitions_without_team_membership = TeamPartition.find(:all)
+
+    @partitions_without_team_membership = TeamPartition.all
     @team_memberships.each do |team_membership|
       team = Team.find_by_id( team_membership.team_id )
-      @partitions_without_team_membership = 
+      @partitions_without_team_membership =
         @partitions_without_team_membership.reject { |r| (r.id == team.partition_id) }
     end
   end
@@ -53,7 +53,7 @@ class TeamsStudentController < ApplicationController
     end
     redirect_to teams_student_path and return
   end
-  
+
   def invite_member
     ## Validate the athena is one that is in our system.
     prof = Profile.find_by_athena_username params[:athena]
@@ -90,7 +90,7 @@ class TeamsStudentController < ApplicationController
     end
     redirect_to teams_student_path and return
   end
-  
+
   def ignore_invitation
     inv = Invitation.find_by_id params[:invitation_id]
     inv.destroy

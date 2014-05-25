@@ -21,7 +21,3 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
 end
 
-Turn.config do |c|
-  c.format = :dot
-  c.trace = nil
-end
