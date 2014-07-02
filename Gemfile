@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 4.1.1'
+gem 'rails', '>= 4.1.2'
 
 gem 'mysql2', '>= 0.3.16'
 
@@ -16,13 +16,15 @@ gem 'paperclip_database', '>= 2.2.1',
     ref: 'contents_style'
 gem 'rack-noie', '>= 1.0', require: 'noie'
 gem 'rmagick', '>= 2.13.2'
-gem 'validates_timeliness', '>= 3.0.14'
+gem 'validates_timeliness', '>= 3.0.14',
+    git: 'https://github.com/johncarney/validates_timeliness.git',
+    ref: 'remove-deprecated-setup-method'
 
 # Background processing.
 gem 'daemonz', '>= 0.3.9'
 gem 'daemons'  # Required by delayed_job.
-gem 'delayed_job', '>= 4.0.0'
-gem 'delayed_job_active_record', '>= 4.0.0'  # Required by delayed_job.
+gem 'delayed_job', '>= 4.0.2'
+gem 'delayed_job_active_record', '>= 4.0.1'  # Required by delayed_job.
 
 # PDF cover sheets.
 gem 'prawn', '~> 0.12.0'
@@ -52,7 +54,7 @@ gem 'pwnstyles_rails', '>= 0.1.33'
 gem 'jquery-rails', '>= 3.1.0'
 gem 'jquery-ui-rails', '>= 4.2.1'
 gem 'coffee-rails', '>= 4.0.1'
-gem 'uglifier', '>= 2.5.0'
+gem 'uglifier', '>= 2.5.1'
 gem 'therubyracer', '>= 0.12.0'
 
 # Don't log BLOB values (file attachments).
@@ -62,13 +64,13 @@ end
 
 group :development, :test do
   gem 'minitest-rails', '>= 1.0.1'
-  gem 'binary_fixtures', '>= 0.1.2'
+  gem 'binary_fixtures', '>= 0.1.3'
   gem 'thin', '>= 1.6.2'
   #gem 'turn', '>= 0.9.7'
 end
 
 group :development do
-  gem 'annotate', '>= 2.6.3'
+  gem 'annotate', '>= 2.6.5'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'debugger'

@@ -31,15 +31,9 @@ class Team < ActiveRecord::Base
   # The grades assigned to this team.
   has_many :grades, dependent: :destroy, as: :subject
 
-
-  has_many :submissions, dependent: :destroy, inverse_of: :subject, as: :subject
-
-
-  # The submissions of this team.
-  def submissions
-    Submission.where(subject_id: memberships.map(&:user_id), subject_type: "team",
-                     deliverable_id: partition.deliverables.map(&:id))
-  end
+  # Submissions by this team's members to this team's assignments.
+  has_many :submissions, dependent: :destroy, inverse_of: :subject,
+           as: :subject
 
   # Returns true if the given user is allowed to edit this team's membership.
   def can_edit?(user)

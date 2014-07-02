@@ -54,7 +54,7 @@ class GradesController < ApplicationController
   def create
     case params[:grade][:subject_type]
     when 'User'
-      user = User.find_by_param params[:grade][:subject_id]
+      user = User.with_param(params[:grade][:subject_id]).first!
       params[:grade][:subject_id] = user.id
     when 'Team'
       # Teams don't use external UIDs yet.

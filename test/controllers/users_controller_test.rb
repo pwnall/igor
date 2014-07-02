@@ -69,8 +69,8 @@ describe UsersController do
   end
 
   it "must update a user" do
-    put :update, id: @user.to_param, user: {
-        profile_attributes: { nickname: 'Dexterius' } }
+    put :update, id: @user, user: {
+        profile_attributes: { id: 0xbadbeef, nickname: 'Dexterius' } }
     assert_equal @user, assigns(:user)
     assert_response :redirect, response.body
     assert_redirected_to user_path(assigns(:user))

@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = User.includes([:credentials, :profile]).to_a
+    @users = User.includes([:credentials, :profile, :roles]).to_a
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,8 +14,8 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    @user = User.find_by_param params[:id]
-    return bounce_user unless @user && @user.can_read?(current_user)
+    @user = User.with_param(params[:id]).first!
+    return bounce_user unless @user.can_read?(current_user)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,8 +34,8 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find_by_param params[:id]
-    return bounce_user unless @user && @user.can_edit?(current_user)
+    @user = User.with_param(params[:id]).first!
+    return bounce_user unless @user.can_edit?(current_user)
   end
 
   # POST /users
@@ -64,8 +64,8 @@ class UsersController < ApplicationController
 
   # PUT /users/1
   def update
-    @user = User.find_by_param params[:id]
-    return bounce_user unless @user && @user.can_edit?(current_user)
+    @user = User.with_param(params[:id]).first!
+    return bounce_user unless @user.can_edit?(current_user)
 
     respond_to do |format|
       if @user.update_attributes user_params
@@ -79,8 +79,8 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @user = User.find_by_param params[:id]
-    return bounce_user unless @user && @user.can_edit?(current_user)
+    @user = User.with_param(params[:id]).first!
+    return bounce_user unless @user.can_edit?(current_user)
 
     @user.destroy
     respond_to do |format|
@@ -98,24 +98,21 @@ class UsersController < ApplicationController
 
   # POST /users/1/set_admin?to=true
   def set_admin
-    @user = User.find_by_param params[:id]
-    if params[:to]
+    @user = User.with_param(params[:id]).first!
+    if ActiveRecord::ConnectionAdapters::Column.value_to_boolean(params[:to])
       Role.grant @user, 'admin'
-    else
-      Role.revoke @user, 'admin'
-    end
-
-    if @user.admin
       flash[:notice] = "#{@user.name} has been granted staff privileges."
     else
+      Role.revoke @user, 'admin'
       flash[:notice] = "#{@user.name} no longer has staff privileges."
     end
+
     redirect_to users_url
   end
 
   # PUT /users/1/confirm_email
   def confirm_email
-    @user = User.find_by_param params[:id]
+    @user = User.with_param(params[:id]).first!
     @user.email_credential.verified = true
     @user.email_credential.save!
 
@@ -125,7 +122,7 @@ class UsersController < ApplicationController
 
     # POST /users/1/impersonate
   def impersonate
-    @user = User.find_by_param params[:id]
+    @user = User.with_param(params[:id]).first!
     if @user.has_role?('admin')
       return bounce_user('Cannot impersonate another admin.')
     end
@@ -140,13 +137,14 @@ class UsersController < ApplicationController
   def user_params
     return {} unless params[:user]
 
-    if params[:user][:profile_attributes]
-      params[:user][:profile_attributes].delete :id
+    if params[:user][:profile_attributes] && params[:user][:profile_attributes][:id]
+      user = User.with_param(params[:id]).first!
+      params[:user][:profile_attributes][:id] = user.profile.id
     end
 
     params.require(:user).permit :email, :password, :password_confirmation,
         profile_attributes: [:athena_username, :name, :nickname, :university,
-                             :department, :year]
+                             :department, :year, :id]
   end
   private :user_params
 end
