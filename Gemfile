@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 4.1.2'
+gem 'rails', '>= 4.1.4'
 
 gem 'mysql2', '>= 0.3.16'
 
 # Core.
 gem 'authpwn_rails', '>= 0.16.2'
 gem 'dynamic_form', '>= 1.1.4'
-gem 'markdpwn', '>= 0.1.7'
+gem 'markdpwn', '>= 0.2.0'
 gem 'mail', git: 'https://github.com/pwnall/mail.git', ref: 'mime2_25'
 gem 'nokogiri', '>= 1.6.0'
 gem 'paperclip', '>= 4.1.0'
