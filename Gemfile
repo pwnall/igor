@@ -15,10 +15,8 @@ gem 'paperclip_database', '>= 2.2.1',
     git: 'https://github.com/pwnall/paperclip_database.git',
     ref: 'contents_style'
 gem 'rack-noie', '>= 1.0', require: 'noie'
-gem 'rmagick', '>= 2.13.2'
-gem 'validates_timeliness', '>= 3.0.14',
-    git: 'https://github.com/johncarney/validates_timeliness.git',
-    ref: 'remove-deprecated-setup-method'
+gem 'rmagick', '>= 2.13.3'
+gem 'jc-validates_timeliness', '>= 3.1.1'
 
 # Background processing.
 gem 'daemonz', '>= 0.3.9'
@@ -55,7 +53,7 @@ gem 'jquery-rails', '>= 3.1.0'
 gem 'jquery-ui-rails', '>= 4.2.1'
 gem 'coffee-rails', '>= 4.0.1'
 gem 'uglifier', '>= 2.5.3'
-gem 'therubyracer', '>= 0.12.0'
+gem 'therubyracer', '>= 0.12.1'
 
 # Don't log BLOB values (file attachments).
 group :development, :production do

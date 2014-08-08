@@ -323,7 +323,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.integer  "survey_answer_id",              null: false
     t.integer  "question_id",                   null: false
     t.integer  "target_user_id"
-    t.float    "number",                        null: false
+    t.float    "number",           limit: 24,   null: false
     t.string   "comment",          limit: 1024
     t.datetime "created_at"
     t.datetime "updated_at"
