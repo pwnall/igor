@@ -27,11 +27,24 @@ describe UsersController do
     assert_equal @user, assigns(:user)
   end
 
+  it "must not show user when logged out" do
+    set_session_current_user nil
+    get :show, id: @user
+    assert_response :forbidden
+  end
+
   it "must get edit" do
     get :edit, id: @user
     assert_response :success, response.body
     assert_equal @user, assigns(:user)
   end
+
+  it "must not get edit when logged out" do
+    set_session_current_user nil
+    get :edit, id: @user
+    assert_response :forbidden
+  end
+
 
   describe "POST /users" do
     before do
@@ -77,6 +90,14 @@ describe UsersController do
     assert_equal 'Dexterius', @user.profile.nickname
   end
 
+  it "must not update when logged out" do
+    set_session_current_user nil
+    put :update, id: @user, user: {
+        profile_attributes: { id: 0xbadbeef, nickname: 'Dexterius' } }
+    assert_response :forbidden
+    assert_not_equal 'Dexterius', @user.reload.profile.nickname
+  end
+
   it "must destroy a user" do
     set_session_current_user users(:admin)
     assert_difference 'User.count', -1 do
@@ -84,5 +105,13 @@ describe UsersController do
     end
     assert_response :redirect, response.body
     assert_redirected_to users_path
+  end
+
+  it "must not destroy when logged out" do
+    set_session_current_user nil
+    assert_no_difference 'User.count' do
+      delete :destroy, id: @user
+    end
+    assert_response :forbidden
   end
 end

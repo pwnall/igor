@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_filter :authenticated_as_admin, except:
       [:show, :new, :edit, :create, :update, :check_email]
-  before_filter :authenticated_as_user, only: [:edit, :update]
+  before_filter :authenticated_as_user, only: [:show, :edit, :update]
 
   # GET /users
   def index
