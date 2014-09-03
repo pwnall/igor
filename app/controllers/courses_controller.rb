@@ -29,7 +29,8 @@ class CoursesController < ApplicationController
   # Permit updating courses
   def course_params
     params.require(:course).permit :number, :title, :email, :ga_account,
-        :has_recitations, :has_surveys, :has_teams, :section_size
+        :email_on_role_requests, :has_recitations, :has_surveys, :has_teams,
+        :section_size
   end
   private :course_params
 end

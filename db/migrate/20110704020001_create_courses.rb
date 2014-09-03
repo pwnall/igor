@@ -5,9 +5,10 @@ class CreateCourses < ActiveRecord::Migration
       t.string :title, limit: 256, null: false
       t.string :ga_account, limit: 32, null: false
       t.string :email, limit: 64, null: false
-      t.boolean :has_recitations, null: false, default: true
-      t.boolean :has_surveys, null: false, default: true
-      t.boolean :has_teams, null: false, default: true
+      t.boolean :email_on_role_requests, null: false
+      t.boolean :has_recitations, null: false
+      t.boolean :has_surveys, null: false
+      t.boolean :has_teams, null: false
       t.integer :section_size, null: true, default: 20
 
       t.timestamps

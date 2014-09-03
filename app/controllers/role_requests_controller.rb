@@ -1,5 +1,5 @@
 class RoleRequestsController < ApplicationController
-  before_action :set_role_request, only: [:show, :destroy, :approve, :deny]
+  before_action :set_role_request, only: [:destroy, :approve, :deny]
   before_filter :authenticated_as_user, only: [:show, :new, :create, :destroy]
   before_filter :authenticated_as_admin, except: [:show, :new, :create,
                                                   :destroy]
@@ -17,6 +17,16 @@ class RoleRequestsController < ApplicationController
 
   # GET /role_requests/1
   def show
+    # NOTE: role requests get deleted after being approved / rejected, so their
+    #       URLs would normally 404; this is an issue if users refresh the
+    #       request page while waiting for an approval; we redirect them to the
+    #       home page, and hope that the right thing happened
+    @role_request = RoleRequest.where(params[:id]).first
+    unless @role_request
+      redirect_to session_url
+      return
+    end
+
     return bounce_user unless @role_request.user == current_user
   end
 
@@ -39,6 +49,9 @@ class RoleRequestsController < ApplicationController
 
     respond_to do |format|
       if @role_request.save
+        if @role_request.course.email_on_role_requests
+          RoleRequestMailer.notice_email(@role_request, root_url).deliver
+        end
         format.html do
           redirect_to @role_request,
               notice: 'Staff registration request created. Please wait for approval.'

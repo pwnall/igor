@@ -19,6 +19,15 @@
       </span>
     </p>
     <p class="field">
+      <%= f.label :email_on_role_requests, 'Staff request e-mails' %>
+      <span class="value">
+        <%= f.check_box :email_on_role_requests %>
+        <%= f.label :email_on_role_requests do %>
+          new staff requests generate e-mail notices to the course staff e-mail
+        <% end %>
+      </span>
+    </p>
+    <p class="field">
       <%= f.label :ga_account, 'Google Analytics account' %>
       <span class="value">
         <%= f.text_field :ga_account %>
@@ -26,7 +35,7 @@
     </p>
   </section>
 
-  <h3>Advanced Features</h3>
+  <h3>Advanced (Unstable) Features</h3>
   <section class="fields">
     <p class="field">
       <%= f.label :has_recitations, 'Recitation sections' %>

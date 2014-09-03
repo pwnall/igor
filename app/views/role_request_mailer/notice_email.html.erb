@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h3>Dear <%= @role_request.course.number %> staff members,</h3>
+    <p>
+      <%= @role_request.user.name %> &lt;<%= @role_request.user.email %>&gt;
+      has requested to be approved as a <%= @role_request.course.number %>
+      <em><%= @role_request.name == 'staff' ? 'instructor' : 'grader' %></em>.
+    </p>
+
+    <p>
+      Please go
+      <%= link_to 'here',
+                  role_requests_url(host: @host, protocol: @protocol) %>
+      to approve or deny the request.
+    </p>
+  </body>
+</html>

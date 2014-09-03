@@ -23,6 +23,10 @@ class Course < ActiveRecord::Base
   validates :title, length: 1..256, presence: true
   # The contact e-mail for course staff.
   validates :email, length: 1..64, presence: true
+  # True if requests for course-specific privileges e-mail the staff.
+  validates :email_on_role_requests, inclusion: { in: [true, false],
+                                                  allow_nil: false }
+
   # True if the course has recitation sections.
   validates :has_recitations, inclusion: { in: [true, false],
                                            allow_nil: false }
