@@ -1,9 +1,4 @@
-<p>
-  If you are not a student, please go to the
-  <%= link_to 'Staff Registration page', new_role_request_path %>.
-</p>
-
-<h3>Student Registration</h3>
+<h2>Student Registration</h2>
 
 <%= form_for @registration do |f| %>
 <%= render 'registrations/fields', f: f %>
@@ -15,3 +10,10 @@
   <% end %>
 </p>
 <% end %>
+
+<h2>Not a student?</h2>
+
+<p>
+  If you are not a student, please go to the
+  <%= link_to 'Staff Registration page', new_role_request_path %>.
+</p>
