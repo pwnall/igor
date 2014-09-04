@@ -122,9 +122,13 @@ class RegistrationsController < ApplicationController
 
     if params[:registration] and
         params[:registration][:prerequisite_answers_attributes]
-      registration = Registration.find params[:id]
-      answers_by_prerequisite_id =
-        registration.prerequisite_answers.index_by(&:prerequisite_id)
+      registration = Registration.where(id: params[:id]).first
+      if registration
+        answers_by_prerequisite_id =
+          registration.prerequisite_answers.index_by(&:prerequisite_id)
+      else
+        answers_by_prerequisite_id = {}
+      end
 
       params[:registration][:prerequisite_answers_attributes].values.
           each do |answer_attributes|
