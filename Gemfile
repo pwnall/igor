@@ -15,7 +15,7 @@ gem 'paperclip_database', '>= 2.2.1',
     git: 'https://github.com/pwnall/paperclip_database.git',
     ref: 'contents_style'
 gem 'rack-noie', '>= 1.0', require: 'noie'
-gem 'rmagick', '>= 2.13.3'
+#gem 'rmagick', '>= 2.13.3'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
 # Background processing.

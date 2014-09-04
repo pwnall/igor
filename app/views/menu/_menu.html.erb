@@ -11,6 +11,13 @@
     <li>
       <%= link_to 'Profile', current_user %>
     </li>
+    <% if current_user.registration %>
+    <li>
+      <%= link_to current_user.registration do %>
+        Registration
+      <% end %>
+    <li>
+    <% end %>
     <li>
       <%= link_to 'Change Password', change_password_session_path %>
     </li>

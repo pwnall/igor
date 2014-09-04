@@ -1,11 +1,11 @@
 <div class="registration-container">
 <h3>
   Registration for <%= registration.course.number %>
-  <% if registration.can_edit?(current_user) %>
-  <%= link_to 'Edit', :url => edit_registration_path(registration),
-        :method => :get, :remote => true %>
+  <% if registration.can_edit? current_user %>
+  <%= link_to edit_registration_path(registration), class: 'button' do %>
+    <%= edit_icon_tag %> Edit Profile
   <% end %>
-  <span id="registration-ajax-indicator"></span>
+  <% end %>
 </h3>
 <%= render registration %>
 </div>

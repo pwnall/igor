@@ -2,7 +2,7 @@ class RegistrationsController < ApplicationController
   before_filter :authenticated_as_user, only: [:show, :new, :create, :edit,
                                                :update]
   before_filter :authenticated_as_admin,
-                except: [:show, :new, :create, :edit, :update]
+                except: [:show, :new, :create, :edit, :update, :restricted]
 
   # GET /registrations
   def index
@@ -45,14 +45,10 @@ class RegistrationsController < ApplicationController
   # GET /registrations/1/edit
   def edit
     @registration = Registration.find params[:id]
+    return bounce_user unless @registration.can_edit?(current_user)
+
     @recitation_conflicts = @registration.recitation_conflicts.
                                           index_by(&:timeslot)
-    # Disallow random record updates.
-    unless @registration.can_edit? current_user
-      notice[:error] = 'That is not yours to play with! Attempt logged.'
-      redirect_to root_path
-      return
-    end
   end
 
   # POST /registrations
@@ -86,22 +82,20 @@ class RegistrationsController < ApplicationController
   # PUT /registrations/1
   def update
     @registration = Registration.find params[:id]
-
-    unless @registration.can_edit? current_user
-      # Disallow random record updates.
-      notice[:error] = 'That is not yours to play with! Your attempt has been logged.'
-      redirect_to root_path
-      return
-    end
+    return bounce_user unless @registration.can_edit?(current_user)
 
     if params[:recitation_conflicts]
       @registration.update_conflicts params[:recitation_conflicts]
+      @recitation_conflicts = @registration.recitation_conflicts.
+                                            index_by(&:timeslot)
+    else
+      @recitation_conflicts = {}
     end
 
     respond_to do |format|
       if @registration.update_attributes registration_params
         format.html do
-          redirect_to root_url, notice:
+          redirect_to @registration, notice:
               "#{@registration.course.number} registration info updated."
         end
       else
@@ -124,9 +118,29 @@ class RegistrationsController < ApplicationController
   end
 
   def registration_params
+    return {} unless params[:registration]
+
+    if params[:registration] and
+        params[:registration][:prerequisite_answers_attributes]
+      registration = Registration.find params[:id]
+      answers_by_prerequisite_id =
+        registration.prerequisite_answers.index_by(&:prerequisite_id)
+
+      params[:registration][:prerequisite_answers_attributes].values.
+          each do |answer_attributes|
+        answer = answers_by_prerequisite_id[
+            answer_attributes[:prerequisite_id].to_i]
+        if answer
+          answer_attributes[:id] = answer.id
+        else
+          answer_attributes.delete :id
+        end
+      end
+    end
+
     params.require(:registration).permit :for_credit, :allows_publishing,
         prerequisite_answers_attributes: [:took_course, :prerequisite_id,
-                                          :waiver_answer]
+                                          :waiver_answer, :id]
   end
   private :registration_params
 

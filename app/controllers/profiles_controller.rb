@@ -1,5 +1,5 @@
 class ProfilesController < ApplicationController
-  before_filter :authenticated_as_user, :only => [:show]
+  before_filter :authenticated_as_user, only: [:show]
 
   # GET /profiles/1
   def show
@@ -9,12 +9,12 @@ class ProfilesController < ApplicationController
       format.html
     end
   end
-  
+
   # create, edit, update, and destroy are all implemented in UserController.
-  
+
   # Listing all profiles can be done via UsersController (for site admins),
   # or via RegistrationsController (for course staff).
-  
+
   # XHR POST /profiles/websis_lookup
   def websis_lookup
     @athena_username = if params[:user]
@@ -24,7 +24,7 @@ class ProfilesController < ApplicationController
     else
       params[:athena_username]
     end
-    
+
     if @athena_username.blank?
       @athena_info = nil
     else
