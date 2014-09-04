@@ -2,7 +2,7 @@
 
 <%= form_for @registration do |f| %>
 <%= render 'registrations/fields', f: f %>
-<%= render 'registrations/conflicts', recitation_conflicts: [] %>
+<%= render 'registrations/conflicts', conflicts: @recitation_conflicts %>
 
 <p class="actions">
   <%= f.button class: 'emphasized', type: :submit do %>
