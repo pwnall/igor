@@ -33,11 +33,11 @@
           data-subject-id="<%= subject.to_param %>"
           data-subject-type="<%= subject.class.name %>">
         <th class="subject-name" scope="row">
-          <%= link_to subject.name, subject, :tabindex => '-1' %>
+          <%= link_to subject.name, subject, tabindex: '-1' %>
         </th>
         <% @metrics.each do |metric| %>
         <td class="grade" data-metric-id="<%= metric.id %>">
-          <%= render 'grades/individual_form', :grade => (@grades[[subject, metric]] || [Grade.new(:subject => subject, :metric => metric)]).first %>
+          <%= render 'grades/individual_form', grade: (@grades[[subject, metric]] || [Grade.new(subject: subject, metric: metric)]).first %>
         </td>
         <% end %>
         <td class="summary">

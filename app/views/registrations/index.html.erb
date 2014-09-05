@@ -1,6 +1,6 @@
 <h2><%= @registrations.length %> Students</h2>
 
-<table id='registrations-table'>
+<table class='registrations-table'>
 	<thead>
 	  <tr>
 	    <th>Name</th>
@@ -36,10 +36,16 @@
 
       <% if @course.has_recitations? %>
       <td id='registration-<%= registration.id %>'>
-        <%= recitation_select(registration) %>
+        <%= form_for registration, method: :patch,
+                    url: restricted_registration_url(registration) do |f| %>
+           <%= f.collection_select :recitation_section_id,
+                   RecitationSection.all, :id, :recitation_name,
+                   prompt: 'Select a section...'
+           %><span class="progress-indicator"></span>
+        <% end %>
       </td>
       <% end %>
-      <td><%= link_to 'Show', registration %></td>
+      <td><%= link_to 'Details', registration %></td>
       <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
 	  </tr>
 	<% end %>

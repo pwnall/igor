@@ -135,10 +135,10 @@ class GradeEditor
   # Sets up the grade edtor.
   #
   # @private
-  # Called by {GradeEditor.onLoad}.
+  # Called by {GradeEditor.setup}.
   #
-  # @param {Element} domRoot the DOM element that is hosts all the
-  #   control's elements
+  # @param {Element} domRoot the DOM element that is hosts all the control's
+  #   elements
   constructor: (@domRoot) ->
     @$domRoot = $ @domRoot
     @$table = @$domRoot
@@ -176,10 +176,10 @@ class GradeEditor
   # If the page has a grade editor, wires it up to a GradeEditor instance.
   @setup: ->
     domRoot = $('table.grades-table')[0]
-    if domRoot
-      window.gradeEditor = new GradeEditor domRoot
+    window.gradeEditor = if domRoot
+      new GradeEditor domRoot
     else
-      window.gradeEditor = null
+      null
 
 $(document).ready GradeEditor.setup
 window.GradeEditor = GradeEditor
