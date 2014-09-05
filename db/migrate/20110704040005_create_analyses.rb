@@ -6,6 +6,7 @@ class CreateAnalyses < ActiveRecord::Migration
       t.integer :score, null: true
 
       t.text :log, limit: 64.kilobytes, null: false
+      t.text :private_log, limit: 64.kilobytes, null: false
 
       t.timestamps
     end

@@ -43,6 +43,7 @@ LOG_END
       result.status = :wrong
       result.log = "Missing PDF header.\nDid you upload a PDF?\n"
     end
+    result.private_log = ''
     result.save!
 
     zero_grades(submission) if auto_grading? && result.status != :ok

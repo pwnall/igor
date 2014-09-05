@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.integer  "status_code",                    null: false
     t.integer  "score"
     t.text     "log",           limit: 16777215, null: false
+    t.text     "private_log",   limit: 16777215, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

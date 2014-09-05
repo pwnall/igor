@@ -178,11 +178,12 @@ psets = pset_data.map.with_index do |data, index|
   rb_deliverable = pset.deliverables.create! assignment: pset,
       name: 'Fibonacci', file_ext: 'rb',
       description: 'Please upload your modified fib.rb.'
+  analyzer_file = 'test/fixtures/analyzer_files/' +
+      ((i % 2 == 1) ? 'fib_grading.zip' : 'fib.zip')
   analyzer = ScriptAnalyzer.new db_file_attributes: {
-      f: fixture_file_upload('test/fixtures/analyzer_files/fib.zip',
-                             'application/zip', :binary) },
+      f: fixture_file_upload(analyzer_file, 'application/zip', :binary) },
       time_limit: '2', ram_limit: '1024', process_limit: '5',
-      file_limit: '10', file_size_limit: '100', auto_grading: false
+      file_limit: '10', file_size_limit: '100', auto_grading: (i % 2 == 1)
   analyzer.deliverable = rb_deliverable
   analyzer.save!
 

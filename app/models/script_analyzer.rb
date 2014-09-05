@@ -67,10 +67,12 @@ class ScriptAnalyzer < Analyzer
             grading = extract_grading run_state, manifest, ext_key
             outcome = extract_outcome run_state, manifest, ext_key
             if auto_grading?
-              unless update_grades submission, grading
+              unless update_grades submission, grading, run_state
                 outcome[:status] = :no_analyzer
                 outcome[:log] << "\nThe analyzer issued incorrect grades."
               end
+            else
+              run_state[:private_log] << "Auto grading NOT enabled.\n"
             end
             update_submission submission, run_state, outcome
           else
@@ -173,7 +175,7 @@ class ScriptAnalyzer < Analyzer
         log.encode! Encoding::UTF_8
       end
 
-      { log: log, status: status }
+      { log: log, status: status, private_log: '' }
     ensure
       ActiveRecord::Base.establish_connection connection || {}
     end
@@ -184,23 +186,58 @@ class ScriptAnalyzer < Analyzer
   # Returns a hash containing the processed grading information.
   def extract_grading(run_state, manifest, ext_key)
     if manifest['grading']
+      run_state[:private_log] << "Grading enabled in the manifest.\n"
       defaults = manifest['grading']['defaults'] || {}
+    else
+      run_state[:private_log] << "Grading NOT enabled in the manifest.\n"
+      defaults = nil
     end
-    return defaults unless manifest[:grading_key]
+    unless manifest[:grading_key]
+      unless defaults.nil?
+        run_state[:private_log] <<
+            "The manifest doesn't specify the grading key file name!\n"
+        run_state[:private_log] << "Used the default grades.\n"
+      end
+
+      return defaults
+    end
+
     splitter = "\n#{manifest[:grading_key]}\n"
-    log, match, grading_json = run_state[:log].rpartition manifest[:grading_key]
-    return defaults unless match == manifest[:grading_key]
+    log, match, grading_json = run_state[:log].partition splitter
+    unless match == splitter
+      if run_state[:log].index manifest[:grading_key]
+        run_state[:private_log] <<
+          "Grading script did not output the grading key on its own line!\n"
+      else
+        run_state[:private_log] <<
+          "Grading script did not output the grading key!\n"
+      end
+      run_state[:private_log] << "Used the default grades.\n"
+      return defaults
+    end
+
     run_state[:log] = log
+    run_state[:private_log] << "JSON grades output by the grading script:\n"
+    run_state[:private_log] << "--- begin JSON object ---\n"
+    run_state[:private_log] << grading_json
+    run_state[:private_log] << "--- end JSON object ---\n"
     begin
-      JSON.parse grading_json.strip.split("\n", 2).first
-    rescue
+      grades = JSON.parse grading_json.strip.split("\n", 2).first
+      run_state[:private_log] << "JSON grades parsed successfully.\n"
+      grades
+    rescue JSONError => e
+      run_state[:private_log] <<
+          "Failed to parse grading JSON: #{e.class.name} - #{e.message}\n"
+      run_state[:private_log] << e.backtrace.join("\n") + "\n"
+      run_state[:private_log] << "Used the default grades.\n"
       defaults
     end
   end
 
   # Computes the analysis outcome based on a script's run result.
   def extract_outcome(run_state, manifest, ext_key)
-    running_time = run_state[:status][:system_time] + run_state[:status][:user_time]
+    running_time =
+        run_state[:status][:system_time] + run_state[:status][:user_time]
     if running_time > time_limit.to_i
       status = :limit_exceeded
       status_log = <<END_LOG
@@ -224,15 +261,23 @@ END_LOG
   end
 
   # Update a submission's analysis based on the script's result.
-  def update_submission(submission, result, outcome)
-    log = result[:log]
+  def update_submission(submission, run_state, outcome)
+    log = run_state[:log]
     log_limit = Analysis::LOG_LIMIT - 1.kilobyte
     if log.length >= log_limit
       log = [log[0, log_limit], "\n**Too much output. Truncated.**"].join('')
     end
 
+    private_log = run_state[:private_log]
+    private_log_limit = Analysis::LOG_LIMIT - 128
+    if private_log.length >= private_log_limit
+      private_log = [private_log[0, private_log_limit],
+                     "\n**Too much output. Truncated.**"].join('')
+    end
+
     analysis = submission.analysis
     analysis.log = [log, outcome[:log]].join("\n")
+    analysis.private_log = private_log
     analysis.status = outcome[:status]
     analysis.save!
   end
@@ -249,19 +294,28 @@ END_LOG
   #
   # @return {Boolean} true if the database is updated; false if validation
   #   error occurred and grades were not changed
-  def update_grades(submission, grading)
+  def update_grades(submission, grading, run_state)
     assignment = submission.assignment
     grades = []
     grading.each do |metric_name, score_fraction|
       metric = assignment.metrics.where(name: metric_name).first
-      next unless metric
+      unless metric
+        run_state[:private_log] << "Metric not found: #{metric_name}\n"
+        next
+      end
       grade = metric.grade_for submission.subject
       grade.score = score_fraction * metric.max_score
       grade.grader = User.robot
-      return false unless grade.valid?
+      unless grade.valid?
+        run_state[:private_log] <<
+            "Produced invalid grade for metric #{metric_name}\n"
+        run_state[:private_log] << grade.errors.message.inspect + "\n"
+        return false
+      end
       grades << grade
     end
     grades.each(&:save!)
+    run_state[:private_log] << "Grades committed to the database.\n"
     true
   end
 

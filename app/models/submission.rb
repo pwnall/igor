@@ -64,7 +64,7 @@ class Submission < ActiveRecord::Base
   def run_analysis
     ensure_analysis_exists
     if analyzer
-      self.analysis.reset_status! :queued
+      self.analysis.reset_status! :running
       analyzer.analyze self
     else
       self.analysis.reset_status! :no_analyzer
