@@ -47,7 +47,7 @@ Seven::Application.routes.draw do
   end
   resources :roles, only: [:destroy]
 
-  resources :recitation_sections do
+  resources :recitation_sections, except: [:show] do
     collection do
       post :autoassign
     end

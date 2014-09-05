@@ -8,9 +8,9 @@
       <%= link_to 'Assignments', recitation_partitions_path %>
     </h3>
 	</div>
-	<h1 class="full_section" style="margin-right: 100px; ">
+	<h2 class="full_section" style="margin-right: 100px; ">
 		Recitation Sections
-	</h1>
+	</h2>
 
 	<span class="validation-errors"></span>
 
@@ -27,15 +27,22 @@
 
 	  <% @recitation_sections.each do |recitation_section| %>
 	  <tr>
-	    <td><%= best_in_place recitation_section, :serial, type: :input %></td>
-	    <td><%= best_in_place recitation_section, :leader_id, type: :select,
-		              collection: recitation_leaders.each.map { |l| [l.id, l.name()] } %></td>
-	    <td><%= best_in_place recitation_section, :time, type: :input %></td>
-	    <td><%= best_in_place recitation_section, :location, type: :input %></td>
+	    <td><%= recitation_section.serial %></td>
+      <td><%= recitation_section.leader.name %></td>
+      <td><%= recitation_section.time %></td>
+      <td><%= recitation_section.location %></td>
       <td><%= recitation_section.users.length %></td>
-	    <td><%= link_to "Edit", recitation_section %></td>
-      <td><%= link_to 'Destroy', recitation_section,
-	                :confirm => 'Are you sure?', :method => :delete %></td>
+      <td>
+        <%= link_to edit_recitation_section_path(recitation_section) do %>
+          Edit
+        <% end %>
+      </td>
+      <td>
+        <%= link_to recitation_section, method: :delete,
+              confirm: 'Are you sure?' do %>
+          Delete
+        <% end %>
+      </td>
 	  </tr>
 	  <% end %>
 

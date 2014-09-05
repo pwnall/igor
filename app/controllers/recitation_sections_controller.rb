@@ -1,5 +1,5 @@
 class RecitationSectionsController < ApplicationController
-  before_action :set_recitation_section, only: [:show, :edit, :update, :destroy]
+  before_action :set_recitation_section, only: [:edit, :update, :destroy]
   before_action :authenticated_as_admin
 
   # GET /recitation_sections
@@ -9,11 +9,6 @@ class RecitationSectionsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
     end
-  end
-
-  # GET /recitation_sections/1
-  def show
-    new_edit
   end
 
   # GET /recitation_sections/new
