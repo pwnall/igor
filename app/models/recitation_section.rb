@@ -47,7 +47,11 @@ class RecitationSection < ActiveRecord::Base
   validates_presence_of :location
 
   def recitation_name
-    "#{leader.name} #{time}"
+    if location.blank?
+      "#{time} #{leader.name}"
+    else
+      "#{time} #{location} #{leader.name}"
+    end
   end
 
   # Section meeting times, in the same format as the registration schedule.
