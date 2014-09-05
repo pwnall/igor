@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :authenticated_as_admin, except:
+  before_action :authenticated_as_admin, except:
       [:show, :new, :edit, :create, :update, :check_email]
-  before_filter :authenticated_as_user, only: [:show, :edit, :update]
+  before_action :authenticated_as_user, only: [:show, :edit, :update]
 
   # GET /users
   def index
@@ -69,8 +69,9 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes user_params
-        flash[:notice] = 'User information successfully updated.'
-        format.html { redirect_to @user }
+        format.html do
+          redirect_to @user, notice: 'User information successfully updated.'
+        end
       else
         format.html { render action: :edit }
       end

@@ -1,8 +1,9 @@
 <h2>Team Partition</h2>
 
-<%= error_messages_for :team_partition %>
 
 <%= form_for @team_partition do |f| %>
+  <%= f.error_messages %>
+
   <section class="fields">
     <p class="field">
       <%= f.label :name %>
@@ -30,14 +31,14 @@
         <%= f.text_field :min_size %>
       </span>
     </p>
-    
+
     <p class="field">
       <%= f.label :max_size %>
       <span class="value">
         <%= f.text_field :max_size %>
       </span>
     </p>
-    
+
     <p class="field">
       <%= f.label :published %>
       <span class="value">

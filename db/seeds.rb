@@ -10,8 +10,11 @@ puts 'Starting seeds'
 Course.destroy_all
 course = Course.new
 course.update_attributes! number: '1.337', title: 'Intro to Pwnage',
-    has_recitations: false, has_surveys: false, has_teams: false, email: "vic.tor@costan.us",
-    ga_account: "faketest"
+    email: Rails.application.secrets.gmail_email,
+    ga_account: "faketest",
+    email_on_role_requests: true,
+    has_recitations: false, has_surveys: false, has_teams: false
+
 prereq1 = Prerequisite.new prerequisite_number: '6.01',
                            waiver_question: 'Programming experience'
 prereq1.course = course
@@ -28,8 +31,7 @@ puts 'Course created'
 admin = User.create! email: 'costan@mit.edu', password: 'mit',
     password_confirmation: 'mit', profile_attributes: {
       athena_username: 'costan', name: 'Victor Costan', nickname: 'Victor',
-      university: 'MIT', department: 'EECS', year: 'G',
-      about_me: "I'm the boss"
+      university: 'MIT', department: 'EECS', year: 'G'
     }
 admin.email_credential.verified = true
 admin.save!
@@ -48,26 +50,22 @@ users = []
 names.each_with_index do |name, i|
   first_name = name.split(' ').first
   short_name = (first_name[0, 1] + name.split(' ').last).downcase
-  user = User.create email: short_name + '@mit.edu',  password: 'mit',
+  user = User.create! email: short_name + '@mit.edu',  password: 'mit',
       password_confirmation: 'mit', profile_attributes: {
         athena_username: short_name, name: name, nickname: first_name,
         university: 'MIT', year: (1 + (i % 4)).to_s,
-        department: depts[i % depts.length], about_me: "Test subject #{i + 1}"
+        department: depts[i % depts.length]
       }
   user.email_credential.verified = true
-  user.save!
+  user.email_credential.save!
   users << user
 
-  registration = Registration.new for_credit: (i % 5 < 4),
-                                  allows_publishing: (i % 7 < 5)
-  registration.user = user
-  registration.course = course
-  registration.save!
+  registration = Registration.create! user: user, course: course,
+       for_credit: (i % 5 < 4), allows_publishing: (i % 7 < 5)
   registration.prerequisite_answers.create! prerequisite: prereq1,
       took_course: (i % 2 == 0),
       waiver_answer: (i % 2 == 0) ? nil :
                      'Silver medal at IOI 2011... bitches'
-
   registration.prerequisite_answers.create! prerequisite: prereq2,
       took_course: (i % 4 < 2),
       waiver_answer: (i % 4 < 2) ? nil :
@@ -84,14 +82,14 @@ graders = []
   name = Faker::Name.name
   first_name = name.split(' ').first
   short_name = (first_name[0, 1] + name.split(' ').last).downcase
-  user = User.create email: short_name + '@mit.edu',  password: 'mit',
+  user = User.create! email: short_name + '@mit.edu',  password: 'mit',
       password_confirmation: 'mit', profile_attributes: {
         athena_username: short_name, name: name, nickname: first_name,
         university: 'MIT', year: (1 + (i % 4)).to_s,
-        department: depts[i % depts.length], about_me: "Test subject #{i + 1}"
+        department: depts[i % depts.length]
       }
   user.email_credential.verified = true
-  user.save!
+  user.email_credential.save!
   if i <= 10
     role_name = 'staff'
     staff << user

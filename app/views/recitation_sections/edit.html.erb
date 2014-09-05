@@ -1,6 +1,13 @@
-<h1>Editing recitation_section</h1>
+<h2>Editing Recitation Section</h2>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @recitation_section %> |
-<%= link_to 'Back', recitation_sections_path %>
+<h3>Section Students</h3>
+
+<ul>
+<% @recitation_section.users.each do |user| %>
+  <li>
+    <%= user.name %>
+  </li>
+<% end %>
+</ul>

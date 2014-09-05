@@ -75,14 +75,15 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   add_index "assignments", ["course_id", "name"], name: "index_assignments_on_course_id_and_name", unique: true, using: :btree
 
   create_table "courses", force: true do |t|
-    t.string   "number",          limit: 16,                 null: false
-    t.string   "title",           limit: 256,                null: false
-    t.string   "ga_account",      limit: 32,                 null: false
-    t.string   "email",           limit: 64,                 null: false
-    t.boolean  "has_recitations",             default: true, null: false
-    t.boolean  "has_surveys",                 default: true, null: false
-    t.boolean  "has_teams",                   default: true, null: false
-    t.integer  "section_size",                default: 20
+    t.string   "number",                 limit: 16,               null: false
+    t.string   "title",                  limit: 256,              null: false
+    t.string   "ga_account",             limit: 32,               null: false
+    t.string   "email",                  limit: 64,               null: false
+    t.boolean  "email_on_role_requests",                          null: false
+    t.boolean  "has_recitations",                                 null: false
+    t.boolean  "has_surveys",                                     null: false
+    t.boolean  "has_teams",                                       null: false
+    t.integer  "section_size",                       default: 20
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -209,14 +210,13 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   add_index "profile_photos", ["profile_id"], name: "index_profile_photos_on_profile_id", unique: true, using: :btree
 
   create_table "profiles", force: true do |t|
-    t.integer  "user_id",                                   null: false
-    t.string   "name",            limit: 128,               null: false
-    t.string   "nickname",        limit: 64,                null: false
-    t.string   "university",      limit: 64,                null: false
-    t.string   "department",      limit: 64,                null: false
-    t.string   "year",            limit: 4,                 null: false
-    t.string   "athena_username", limit: 32,                null: false
-    t.string   "about_me",        limit: 4096, default: "", null: false
+    t.integer  "user_id",                     null: false
+    t.string   "name",            limit: 128, null: false
+    t.string   "nickname",        limit: 64,  null: false
+    t.string   "university",      limit: 64,  null: false
+    t.string   "department",      limit: 64,  null: false
+    t.string   "year",            limit: 4,   null: false
+    t.string   "athena_username", limit: 32,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -265,7 +265,6 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.integer  "user_id",                               null: false
     t.integer  "course_id",                             null: false
     t.boolean  "dropped",               default: false, null: false
-    t.boolean  "teacher",               default: false, null: false
     t.boolean  "for_credit",            default: true,  null: false
     t.boolean  "allows_publishing",     default: true,  null: false
     t.integer  "recitation_section_id"

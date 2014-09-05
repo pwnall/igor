@@ -6,7 +6,6 @@
 #  user_id               :integer          not null
 #  course_id             :integer          not null
 #  dropped               :boolean          default(FALSE), not null
-#  teacher               :boolean          default(FALSE), not null
 #  for_credit            :boolean          default(TRUE), not null
 #  allows_publishing     :boolean          default(TRUE), not null
 #  recitation_section_id :integer

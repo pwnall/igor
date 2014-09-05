@@ -10,7 +10,6 @@
 #  department      :string(64)       not null
 #  year            :string(4)        not null
 #  athena_username :string(32)       not null
-#  about_me        :string(4096)     default(""), not null
 #  created_at      :datetime
 #  updated_at      :datetime
 #
@@ -39,9 +38,6 @@ class Profile < ActiveRecord::Base
   belongs_to :user, inverse_of: :profile
   validates :user, presence: true
   validates :user_id, uniqueness: true
-
-  # Self-description that the site admins can see.
-  validates :about_me, length: 0..(4.kilobytes)
 
   # The user's avatar.
   has_one :photo, class_name: 'ProfilePhoto', inverse_of: :profile

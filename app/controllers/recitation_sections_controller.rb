@@ -1,5 +1,6 @@
 class RecitationSectionsController < ApplicationController
-  before_filter :authenticated_as_admin
+  before_action :set_recitation_section, only: [:show, :edit, :update, :destroy]
+  before_action :authenticated_as_admin
 
   # GET /recitation_sections
   def index
@@ -12,38 +13,50 @@ class RecitationSectionsController < ApplicationController
 
   # GET /recitation_sections/1
   def show
-    @recitation_section = RecitationSection.find(params[:id])
     new_edit
   end
 
   # GET /recitation_sections/new
   def new
-    @recitation_section = RecitationSection.new
-    @recitation_section.course = Course.main
-    @recitation_section.serial = 1 + RecitationSection.count
-    new_edit
+    @recitation_section = RecitationSection.new course: Course.main,
+        serial: 1 + RecitationSection.count
   end
 
   # GET /recitation_sections/1/edit
   def edit
-    @recitation_section = RecitationSection.find(params[:id])
-    new_edit
   end
-
-  def new_edit
-    respond_to do |format|
-      format.html { render :action => :new_edit }
-    end
-  end
-  private :new_edit
-
 
   # POST /recitation_sections
   def create
     @recitation_section = RecitationSection.new recitation_section_params
     @recitation_section.course = Course.main
-    create_update
+
+    respond_to do |format|
+      if @recitation_section.save
+        format.html do
+          redirect_to recitation_sections_url, notice:
+              "Recitation section R#{@recitation_section.serial} created."
+        end
+      else
+        format.html { render action: :new }
+      end
+    end
   end
+
+  # PUT /recitation_sections/1
+  def update
+    respond_to do |format|
+      if @recitation_section.update_attributes recitation_section_params
+        format.html do
+          redirect_to recitation_sections_url, notice:
+              "Recitation section R#{@recitation_section.serial} updated."
+        end
+      else
+        format.html { render action: :edit }
+      end
+    end
+  end
+
 
   # POST /recitation_sections/autoassign
   def autoassign
@@ -51,42 +64,15 @@ class RecitationSectionsController < ApplicationController
                                               root_url
 
     respond_to do |format|
-      flash[:notice] = "Started recitation assignment. Email will arrive shortly."
-      format.html { redirect_to :back }
-    end
-  end
-
-  # PUT /recitation_sections/1
-  def update
-    @recitation_section = RecitationSection.find params[:id]
-    create_update
-  end
-
-  def create_update
-    @is_new_record = @recitation_section.new_record?
-    if @is_new_record
-      @recitation_section.course = Course.main
-      success = @recitation_section.save
-    else
-      success = @recitation_section.update_attributes recitation_section_params
-    end
-
-    respond_to do |format|
-      if success
-        notice_message = "Recitation section R#{'%02d' % @recitation_section.serial} successfully #{@is_new_record ? 'created' : 'updated'}."
-        format.html { redirect_to(@recitation_section, :action => :index, :notice => notice_message) }
-        format.json { head :ok }
-      else
-        format.html { render :action => :new_edit }
-        format.json { render :json => @recitation_section.errors.full_messages, :status => :unprocessable_entity }
+      format.html do
+        redirect_to recitation_sections_url, notice:
+            'Started recitation assignment. Email will arrive shortly.'
       end
     end
   end
-  private :create_update
 
   # DELETE /recitation_sections/1
   def destroy
-    @recitation_section = RecitationSection.find params[:id]
     @recitation_section.destroy
 
     respond_to do |format|
@@ -94,10 +80,14 @@ class RecitationSectionsController < ApplicationController
     end
   end
 
-  # Permits updating recitations.
+  def set_recitation_section
+    @recitation_section = RecitationSection.find params[:id]
+  end
+  private :set_recitation_section
+
   def recitation_section_params
-    params.require(:recitation_section).permit :serial, :leader_id, :time, :location
+    params.require(:recitation_section).permit :serial, :leader_id, :time,
+        :location
   end
   private :recitation_section_params
-
 end

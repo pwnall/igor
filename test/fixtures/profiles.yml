@@ -10,7 +10,6 @@
 #  department      :string(64)       not null
 #  year            :string(4)        not null
 #  athena_username :string(32)       not null
-#  about_me        :string(4096)     default(""), not null
 #  created_at      :datetime
 #  updated_at      :datetime
 #
@@ -23,7 +22,6 @@ dexter:
   department: Electrical Eng & Computer Sci
   year: 1
   athena_username: genius
-  about_me: "I am Dexter, boy genius!"
 
 solo:
   user: solo
@@ -33,4 +31,3 @@ solo:
   department: Electrical Eng & Computer Sci
   year: 4
   athena_username: solo
-  about_me: "Leave me alone"

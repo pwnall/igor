@@ -7,8 +7,7 @@ describe User do
     User.new email: 'dvdjon@mit.edu', password: 'awesome',
       password_confirmation: 'awesome', profile_attributes: {
           name: 'Jon Johansen', nickname: 'dvdjon', university: 'MIT',
-          department: 'EECS', year: 'G', athena_username: 'jon',
-          about_me: 'DeCSS'
+          department: 'EECS', year: 'G', athena_username: 'jon'
       }
   end
   let(:dexter) { users(:dexter) }
