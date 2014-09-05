@@ -1,38 +1,53 @@
-<h2>Listing <%= @registrations.length %> Registrations</h2>
+<h2><%= @registrations.length %> Students</h2>
 
 <table id='registrations-table'>
 	<thead>
 	  <tr>
-	    <td>User</td>
-	    <td>Credit</td>
-			<% @prerequisites.sort_by(&:id).each do |prereq| %>
-			<td><%= prereq.prerequisite_number %></td>
-		<% end %>
-	    <td>Recitation</td>
+	    <th>Name</th>
+      <th>E-mail</th>
+      <th>Publish HW</th>
+	    <th>For Credit</th>
+			<% @prerequisites.sort_by(&:id).each do |prerequisite| %>
+			<th><%= prerequisite.prerequisite_number %></th>
+  		<% end %>
+      <% if @course.has_recitations? %>
+      <th>Recitation</th>
+      <% end %>
+      <th></th>
 	  </tr>
 	</thead>
 
 	<tbody>
 	<% @registrations.each do |registration| %>
 	  <tr>
-	    <td><%=link_to h(registration.user.email), registration.user %></td>
-	    <td><%= registration.for_credit ? 'Yes' : 'No' %></td>
+	    <td><%= link_to registration.user.name, registration.user %></td>
+      <td><%= registration.user.email %></td>
+      <td><%= registration.allows_publishing? ? 'Yes' : 'No' %></td>
+	    <td><%= registration.for_credit? ? 'Yes' : 'No' %></td>
+
 			<% registration.prerequisite_answers.
                       sort_by(&:prerequisite_id).each do |answer| %>
-				<td>
-				<% if answer.took_course? %>
-				  <%= valid_icon_tag %>
-				<% else %>
-				  <%= answer.waiver_answer %>
-				<% end %>
-				</td>
+      <td>
+      <% if answer.took_course? %>
+        <%= valid_icon_tag %>
+      <% end %>
+      </td>
 			<% end %>
+
+      <% if @course.has_recitations? %>
       <td id='registration-<%= registration.id %>'>
         <%= recitation_select(registration) %>
       </td>
+      <% end %>
       <td><%= link_to 'Show', registration %></td>
       <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
 	  </tr>
 	<% end %>
 	</tbody>
+
+  <tfoot>
+    <tr>
+      <td colspan="3"></td>
+    </tr>
+  </tfoot>
 </table>
