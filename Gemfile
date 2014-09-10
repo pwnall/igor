@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 4.1.4'
+gem 'rails', '>= 4.1.5'
 
 gem 'mysql2', '>= 0.3.16'
 
@@ -14,14 +14,16 @@ gem 'paperclip', '>= 4.2.0'
 gem 'paperclip_database', '>= 2.2.1',
     git: 'https://github.com/pwnall/paperclip_database.git',
     ref: 'contents_style'
-gem 'rack-noie', '>= 1.0', require: 'noie'
+gem 'rack-noie', '>= 1.0', require: 'noie',
+    git: 'https://github.com/juliocesar/rack-noie.git',
+    ref: 'ce8313c6f327e5c524e3e903a05044ec31c98fd8'
 #gem 'rmagick', '>= 2.13.3'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
 # Background processing.
 gem 'daemonz', '>= 0.3.9'
 gem 'daemons'  # Required by delayed_job.
-gem 'delayed_job', '>= 4.0.2'
+gem 'delayed_job', '>= 4.0.3'
 gem 'delayed_job_active_record', '>= 4.0.1'  # Required by delayed_job.
 
 # PDF cover sheets.
