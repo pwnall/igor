@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 4.1.5'
+gem 'rails', '>= 4.1.6'
 
 gem 'mysql2', '>= 0.3.16'
 
@@ -17,7 +17,7 @@ gem 'paperclip_database', '>= 2.2.1',
 gem 'rack-noie', '>= 1.0', require: 'noie',
     git: 'https://github.com/juliocesar/rack-noie.git',
     ref: 'ce8313c6f327e5c524e3e903a05044ec31c98fd8'
-#gem 'rmagick', '>= 2.13.3'
+gem 'rmagick', '>= 2.13.3'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
 # Background processing.
