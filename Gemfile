@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 4.1.6'
+gem 'rails', '>= 4.1.7'
 
 gem 'mysql2', '>= 0.3.16'
 
@@ -45,10 +45,10 @@ gem 'exception_notification', '>= 4.0.0'
 
 # Assets.
 gem 'sass-rails', '>= 4.0.3'
-gem 'pwnstyles_rails', '>= 0.1.33'
+gem 'pwnstyles_rails', '>= 0.1.34'
 #gem 'pwnstyles_rails', '>= 0.1.33', path: '../pwnstyles_rails'
 gem 'jquery-rails', '>= 3.1.0'
-gem 'coffee-rails', '>= 4.0.1'
+gem 'coffee-rails', '>= 4.1.0'
 gem 'uglifier', '>= 2.5.3'
 gem 'therubyracer', '>= 0.12.1'
 
@@ -68,7 +68,7 @@ group :development do
   gem 'annotate', '>= 2.6.5'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'debugger'
+  gem 'byebug'
   gem 'faker', '>= 1.2.0'
   gem 'railroady', '>= 1.0.6'
 end
