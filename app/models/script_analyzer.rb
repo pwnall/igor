@@ -166,7 +166,27 @@ class ScriptAnalyzer < Analyzer
 
       pid = ExecSandbox::Spawn.spawn nice_command + run_command, io, {}, limits
 
-      status = ExecSandbox::Wait4.wait4 pid
+      # TODO(pwnall): kill the main process from a thread, so we don't waste
+      #               0.1 seconds for instant submissions
+      start_time = Time.now
+      status = nil
+      loop do
+        elapsed_time = Time.now - start_time
+        time_left = time_limit.to_i + 1 - elapsed_time
+        if time_left < 0
+          if time_left < -1
+            # The process should really be done.
+            Process.kill 'KILL', pid rescue nil
+          else
+            # The process should be done.
+            Process.kill 'TERM', pid rescue nil
+          end
+        end
+
+        Kernel.sleep 0.1
+        status = ExecSandbox::Wait4.wait4_nonblock pid
+        break unless status.nil?
+      end
       log = File.exist?('.log') ? File.read('.log') : 'Program removed its log'
 
       # Force the output to UTF-8 if necessary.
