@@ -1,5 +1,4 @@
 Seven::Application.routes.draw do
-  get "xc/td"
   root 'session#show'
 
   authpwn_session
