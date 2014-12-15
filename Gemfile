@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 4.1.8'
+gem 'rails', '>= 4.2.0.rc3'
 
 gem 'mysql2', '>= 0.3.17'
 
@@ -8,7 +8,7 @@ gem 'mysql2', '>= 0.3.17'
 gem 'authpwn_rails', '>= 0.17.1'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'markdpwn', '>= 0.2.0'
-gem 'mail', git: 'https://github.com/pwnall/mail.git', ref: 'mime2_25'
+gem 'mail', '>= 2.6.3'
 gem 'nokogiri', '>= 1.6.3.1'
 gem 'paperclip', '>= 4.2.0'
 gem 'paperclip_database', '>= 2.2.1',
@@ -44,15 +44,13 @@ gem 'mit_stalker', '>= 1.0.6'
 gem 'exception_notification', '>= 4.0.0'
 
 # Assets.
-gem 'sass-rails', '>= 4.0.3'
-gem 'pwnstyles_rails', '>= 0.1.34'
-#gem 'pwnstyles_rails', '>= 0.1.33', path: '../pwnstyles_rails'
-gem 'jquery-rails', '>= 3.1.0'
+gem 'sass-rails', '>= 5.0.0'
+gem 'pwnstyles_rails', '>= 0.2.1'
+#gem 'pwnstyles_rails', '>= 0.2.1', path: '../pwnstyles_rails'
+gem 'jquery-rails', '>= 4.0.0'
 gem 'coffee-rails', '>= 4.1.0'
-gem 'uglifier', '>= 2.5.3'
-gem 'therubyracer', '>= 0.12.1'
-
-gem 'sass', '~> 3.2.19'
+gem 'uglifier', '>= 2.6.0'
+gem 'therubyracer', platforms: :ruby
 
 # Don't log BLOB values (file attachments).
 group :development, :production do
@@ -76,7 +74,7 @@ group :development do
 end
 
 group :production do
-  gem 'thin', '>= 1.6.2'
+  gem 'thin', '>= 1.6.3'
 end
 
 group :doc do
