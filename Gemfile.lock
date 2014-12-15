@@ -307,7 +307,7 @@ DEPENDENCIES
   sass-rails (>= 5.0.0)
   sdoc
   therubyracer
-  thin (>= 1.6.2)
+  thin (>= 1.6.3)
   trim_blobs
   uglifier (>= 2.6.0)
   zip (>= 2.0.2)

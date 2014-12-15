@@ -60,7 +60,7 @@ end
 group :development, :test do
   gem 'minitest-rails', '>= 2.1.0'
   gem 'binary_fixtures', '>= 0.1.3'
-  gem 'thin', '>= 1.6.2'
+  gem 'thin', '>= 1.6.3'
   #gem 'turn', '>= 0.9.7'
 end
 
