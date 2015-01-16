@@ -1,6 +1,6 @@
 class TeamPartitionsController < ApplicationController
-  before_filter :authenticated_as_admin
-    
+  before_action :authenticated_as_admin
+
   # GET /team_partitions
   def index
     @team_partitions = TeamPartition.all
@@ -13,7 +13,7 @@ class TeamPartitionsController < ApplicationController
   # GET /team_partitions/1
   def show
     @team_partition = TeamPartition.find params[:id]
-    @team = Team.new :partition => @team_partition 
+    @team = Team.new :partition => @team_partition
 
     respond_to do |format|
       format.html # show.html.erb
@@ -31,7 +31,7 @@ class TeamPartitionsController < ApplicationController
     @team_partition = TeamPartition.find params[:id]
     new_edit
   end
-  
+
   def new_edit
     respond_to do |format|
       format.html { render :action => :new_edit }
@@ -50,7 +50,7 @@ class TeamPartitionsController < ApplicationController
     @team_partition = TeamPartition.find params[:id]
     create_update
   end
-  
+
   def create_update
     @is_new_record = @team_partition.new_record?
     if @is_new_record
@@ -58,7 +58,7 @@ class TeamPartitionsController < ApplicationController
     else
       success = @team_partition.update_attributes team_params
     end
-    
+
     respond_to do |format|
       if success
         if @is_new_record
@@ -91,52 +91,52 @@ class TeamPartitionsController < ApplicationController
       format.html { redirect_to(team_partitions_url) }
     end
   end
-  
+
   def unlock
     team_partition = TeamPartition.find(params[:id])
     team_partition.editable = true
     team_partition.save
-    
+
     respond_to do |format|
       format.html { redirect_to :action => 'show', :id => params[:id] }
     end
   end
-  
+
   def lock
     team_partition = TeamPartition.find(params[:id])
     team_partition.editable = false
     team_partition.save
-    
+
     respond_to do |format|
       format.html { redirect_to :action => 'show', :id => params[:id] }
     end
   end
-  
+
   def view_problem
     id = params[:id]
     part = TeamPartition.find_by_id(id)
-    
+
     if !part.min_size.nil?
-      @toosmall = Team.where(:partition_id => id) 
+      @toosmall = Team.where(:partition_id => id)
       @toosmall = @toosmall.reject {|t| t.size >= part.min_size }
     end
     if !part.max_size.nil?
-      @toobig = Team.where(:partition_id => id) 
+      @toobig = Team.where(:partition_id => id)
       @toobig = @toobig.reject {|t| t.size <= part.max_size }
     end
-    
-    @nonassigned = User.where(:admin => false) 
+
+    @nonassigned = User.where(:admin => false)
     @nonassigned = @nonassigned.reject {|t| t.team_in_partition(id) != nil}
-    
+
     respond_to do |format|
       format.html
     end
   end
-  
+
   # Permit updating and creating team partitions.
   def team_params
     params.require(:team_partition).permit(:name, :automated, :min_size, :max_size, :published)
-  end 
+  end
   private :team_params
 
 end

@@ -1,7 +1,7 @@
 class RecitationPartitionsController < ApplicationController
-  before_filter :authenticated_as_user, only: [:new, :create, :edit, :update,
+  before_action :authenticated_as_user, only: [:new, :create, :edit, :update,
                                                :new_or_edit]
-  before_filter :authenticated_as_admin, only: [:index, :show, :destroy]
+  before_action :authenticated_as_admin, only: [:index, :show, :destroy]
 
   # GET /recitation_partition
   def index

@@ -1,5 +1,5 @@
 class SurveyQuestionsController < ApplicationController
-  before_filter :authenticated_as_admin
+  before_action :authenticated_as_admin
 
   # GET /survey_questions
   def index
@@ -71,9 +71,9 @@ class SurveyQuestionsController < ApplicationController
   end
 
   # Permits creating and updating survey questions.
-  def survey_question_params 
+  def survey_question_params
     params.require(:survey_question).permit :human_string, :targets_user, :allows_comments, :scaled, :scale_min, :scale_max, :scale_min_label, :scale_max_label
-  end 
+  end
   private :survey_question_params
 
 end

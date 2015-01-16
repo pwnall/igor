@@ -1,10 +1,10 @@
 class GradesController < ApplicationController
-  before_filter :authenticated_as_admin, :except => [:index]
-  before_filter :authenticated_as_user, :only => [:index]
+  before_action :authenticated_as_admin, :except => [:index]
+  before_action :authenticated_as_user, :only => [:index]
 
   # GET /grades
   def index
-    grades_by_metric_id = current_user.grades.index_by &:metric_id
+    grades_by_metric_id = current_user.grades.index_by(&:metric_id)
     @recitation = current_user.recitation_section
 
     @assignments = []

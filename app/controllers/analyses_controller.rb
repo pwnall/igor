@@ -1,8 +1,8 @@
 class AnalysesController < ApplicationController
-  before_filter :authenticated_as_admin, :only => :index
-  
-  before_filter :authenticated_as_user, :only => :show
-  
+  before_action :authenticated_as_admin, :only => :index
+
+  before_action :authenticated_as_user, :only => :show
+
   # GET /analyses/1
   def show
     @analysis = Analysis.find params[:id]

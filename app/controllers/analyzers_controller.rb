@@ -1,5 +1,5 @@
 class AnalyzersController < ApplicationController
-  before_filter :authenticated_as_admin
+  before_action :authenticated_as_admin
 
   # GET /analyzers/1/source
   def source
@@ -9,7 +9,7 @@ class AnalyzersController < ApplicationController
               filename: db_file.f.original_filename,
               type: db_file.f.content_type
   end
-  
+
   # GET /analyzers/help
   def help
     render 'script_analyzers/help'

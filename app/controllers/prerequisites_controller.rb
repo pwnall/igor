@@ -1,6 +1,6 @@
-class PrerequisitesController < ApplicationController  
-  before_filter :authenticated_as_admin, :except => [:new, :index, :show] 
-  
+class PrerequisitesController < ApplicationController
+  before_action :authenticated_as_admin, :except => [:new, :index, :show]
+
   # GET /prerequisites
   def index
     @prerequisites = Prerequisite.all
@@ -28,7 +28,7 @@ class PrerequisitesController < ApplicationController
   def edit
     @prerequisite = Prerequisite.find params[:id]
   end
-  
+
   # POST /prerequisites
   def create
     @prerequisite = Prerequisite.new prerequisite_params
@@ -71,9 +71,9 @@ class PrerequisitesController < ApplicationController
   end
 
   # Permits creating and updating prerequisites.
-  def prerequisite_params 
+  def prerequisite_params
     params[:prerequisite].permit :prerequisite_number, :waiver_question
-  end 
+  end
   private :prerequisite_params
 
 end

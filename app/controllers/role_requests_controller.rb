@@ -1,7 +1,7 @@
 class RoleRequestsController < ApplicationController
   before_action :set_role_request, only: [:destroy, :approve, :deny]
-  before_filter :authenticated_as_user, only: [:show, :new, :create, :destroy]
-  before_filter :authenticated_as_admin, except: [:show, :new, :create,
+  before_action :authenticated_as_user, only: [:show, :new, :create, :destroy]
+  before_action :authenticated_as_admin, except: [:show, :new, :create,
                                                   :destroy]
 
   # GET /role_requests

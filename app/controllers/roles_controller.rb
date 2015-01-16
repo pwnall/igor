@@ -1,5 +1,5 @@
 class RolesController < ApplicationController
-  before_filter :authenticated_as_admin
+  before_action :authenticated_as_admin
 
   # DELETE /roles/1
   def destroy

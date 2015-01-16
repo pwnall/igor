@@ -1,9 +1,9 @@
 class SubmissionsController < ApplicationController
   include CoverSheet
 
-  before_filter :authenticated_as_user,
+  before_action :authenticated_as_user,
                 :only => [:new, :create, :update, :file, :info]
-  before_filter :authenticated_as_admin,
+  before_action :authenticated_as_admin,
                 :except => [:new, :create, :update, :file, :info]
 
   # XHR /submissions/xhr_deliverables?assignment_id=1
@@ -218,7 +218,7 @@ class SubmissionsController < ApplicationController
   # Permit updating and creating submissions.
   def submission_params
     params.require(:submission).permit(:deliverable_id, db_file_attributes: [:f])
-  end 
+  end
   private :submission_params
 
 end

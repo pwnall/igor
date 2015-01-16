@@ -1,5 +1,5 @@
 class SurveysController < ApplicationController
-  before_filter :authenticated_as_admin
+  before_action :authenticated_as_admin
 
   # GET /surveys
   def index
@@ -69,15 +69,15 @@ class SurveysController < ApplicationController
       format.html { redirect_to surveys_path }
     end
   end
-  
+
   # POST /surveys/question
   def add_question
     @survey = Survey.find params[:id]
     question = SurveyQuestion.find params[:question_id]
-    
+
     SurveyQuestionMembership.create :survey_question => question,
         :survey => @survey
-    
+
     redirect_to edit_survey_path @survey
   end
 
@@ -87,14 +87,14 @@ class SurveysController < ApplicationController
     membership = @survey.memberships.
         where(:survey_question_id => params[:question_id]).first
     membership.destroy
-    
+
     redirect_to edit_survey_path @survey
   end
 
   # Permits creating and updating surveys.
-  def survey_params 
+  def survey_params
     params.require(:survey).permit :name
-  end 
+  end
   private :survey_params
 
 end

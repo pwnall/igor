@@ -1,6 +1,6 @@
 class SurveyAnswersController < ApplicationController
-  before_filter :authenticated_as_user, :except => [:index, :show, :destroy]
-  before_filter :authenticated_as_admin, :only => [:index, :show, :destory]  
+  before_action :authenticated_as_user, :except => [:index, :show, :destroy]
+  before_action :authenticated_as_admin, :only => [:index, :show, :destory]
 
   # GET /survey_answers
   def index
@@ -27,7 +27,7 @@ class SurveyAnswersController < ApplicationController
       format.html # show.html.erb
     end
   end
-  
+
   # GET /survey_answers/new
   # GET /survey_answers/new?survey_answer[assignment_id]=3
   def new
@@ -36,7 +36,7 @@ class SurveyAnswersController < ApplicationController
 
       @survey_answer = current_user.survey_answers.
                                     where(:assignment_id => assignment.id).first
-        
+
       unless @survey_answer
         @survey_answer = SurveyAnswer.new :assignment => assignment,
                                           :user => current_user
@@ -46,7 +46,7 @@ class SurveyAnswersController < ApplicationController
       assignment = nil
       @survey_answer = SurveyAnswer.new :user => current_user
     end
-  
+
     new_edit
   end
 
@@ -54,22 +54,22 @@ class SurveyAnswersController < ApplicationController
   def edit
     @survey_answer = SurveyAnswer.find params[:id]
     return bounce_user if @survey_answer.user_id != current_user.id
-    
+
     new_edit
   end
-  
+
   def new_edit
     respond_to do |format|
       format.html { render :action => :new_edit }
       format.js   { render :action => :new_edit }
-    end    
+    end
   end
 
   # POST /survey_answers
   def create
     @survey_answer = SurveyAnswer.new params[:survey_answer]
     @survey_answer.user = current_user
-    create_update    
+    create_update
   end
 
   # PUT /survey_answerss/1
@@ -78,7 +78,7 @@ class SurveyAnswersController < ApplicationController
     return bounce_user if @survey_answer.user_id != current_user.id
 
     # updating is not allowed to move feedback around assignments
-    params[:survey_answer].delete :assignment_id 
+    params[:survey_answer].delete :assignment_id
     create_update
   end
 
@@ -89,7 +89,7 @@ class SurveyAnswersController < ApplicationController
     else
       success = @survey_answer.update_attributes params[:survey_answer]
     end
-    
+
     respond_to do |format|
       if success
         flash[:notice] = "Feedback for #{@survey_answer.assignment.name} successfully #{@is_new_record ? 'submitted' : 'updated'}."
@@ -99,7 +99,7 @@ class SurveyAnswersController < ApplicationController
         format.html { render :action => :new_edit }
         format.js   { render :action => :new_edit }
       end
-    end    
+    end
   end
 
   # DELETE /survey_answers/1
@@ -114,9 +114,9 @@ class SurveyAnswersController < ApplicationController
 
   # Permits creating and updating survey answers.
   def survey_answer_params
-    params.require(:survey_answer).permit! 
+    params.require(:survey_answer).permit!
     #TODO: fill in permitted parameters once feature is fixed
-  end 
+  end
   private :survey_answer_params
 
 end

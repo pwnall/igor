@@ -1,5 +1,5 @@
 class TeamsStudentController < ApplicationController
-  before_filter :authenticated_as_user
+  before_action :authenticated_as_user
 
   def show
     @team_memberships = TeamMembership.where(:user_id => current_user.id)

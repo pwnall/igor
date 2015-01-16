@@ -1,5 +1,5 @@
 class TeamsController < ApplicationController
-  before_filter :authenticated_as_admin
+  before_action :authenticated_as_admin
 
   # GET /teams/1/edit
   def edit
@@ -8,7 +8,7 @@ class TeamsController < ApplicationController
 
   # POST /teams
   def create
-    @team = Team.new team_params 
+    @team = Team.new team_params
     @team_partition = @team.partition
 
     if !@team_partition.editable
@@ -58,7 +58,7 @@ class TeamsController < ApplicationController
   def team_params
     params.require(:team).permit!
     # TODO(mingy): fill in once update_page is fixed
-  end 
+  end
   private :team_params
 
 end

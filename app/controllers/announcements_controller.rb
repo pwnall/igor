@@ -1,6 +1,6 @@
 class AnnouncementsController < ApplicationController
-  before_filter :authenticated_as_admin, :except => [:show]
-  before_filter :authenticated_as_user, :only => [:show]
+  before_action :authenticated_as_admin, :except => [:show]
+  before_action :authenticated_as_user, :only => [:show]
 
   # GET /announcements
   def index

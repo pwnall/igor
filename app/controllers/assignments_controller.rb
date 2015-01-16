@@ -1,6 +1,6 @@
 class AssignmentsController < ApplicationController
-  before_filter :authenticated_as_admin, :except => [:index, :show]
-  before_filter :authenticated_as_user, :only => [:index, :show]
+  before_action :authenticated_as_admin, :except => [:index, :show]
+  before_action :authenticated_as_user, :only => [:index, :show]
 
   layout lambda { |controller|
     controller.current_user.try(:admin?) ? 'assignments' : 'session'

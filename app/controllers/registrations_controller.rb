@@ -1,7 +1,7 @@
 class RegistrationsController < ApplicationController
-  before_filter :authenticated_as_user, only: [:show, :new, :create, :edit,
+  before_action :authenticated_as_user, only: [:show, :new, :create, :edit,
                                                :update]
-  before_filter :authenticated_as_admin,
+  before_action :authenticated_as_admin,
                 except: [:show, :new, :create, :edit, :update]
 
   # GET /registrations

@@ -1,5 +1,5 @@
 class CrashController < ApplicationController
-  before_filter :authenticated_as_admin
+  before_action :authenticated_as_admin
 
   # GET /crash/crash
   def crash

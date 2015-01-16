@@ -1,5 +1,5 @@
 class ProfilesController < ApplicationController
-  before_filter :authenticated_as_user, only: [:show]
+  before_action :authenticated_as_user, only: [:show]
 
   # GET /profiles/1
   def show
