@@ -51,7 +51,7 @@ gem 'uglifier', '>= 2.7.0'
 
 # TODO(pwnall): allow therubyracer 0.12+ after Ubuntu crash gets fixed
 #               https://github.com/cowboyd/therubyracer/issues/317
-gem 'therubyracer', '>= 0.12.1', require: false
+#gem 'therubyracer', '>= 0.12.1'
 
 # Don't log BLOB values (file attachments).
 group :development, :production do

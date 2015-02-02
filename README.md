@@ -18,7 +18,8 @@ embedded CoffeeScript compilation method is disabled, and the project needs
 [node.js](https://nodejs.org/) installed.
 
 ```bash
-sudo apt-get install nodejs
+sudo apt-get install -y nodejs
+sudo yum install -y nodejs npm
 ```
 
 The command below runs the development server. Ctrl+C stops it.
@@ -63,3 +64,31 @@ plugin. Re-generate them using the following command.
 bundle exec annotate
 ```
 
+
+## Production Deployment on alg.csail.mit.edu
+
+Back up the previous site version.
+
+```bash
+sudo rpwn backup
+```
+
+Update the OS layer.
+
+```bash
+sudo apt-get update && sudo apt-get -y dist-upgrade
+sudo gem update --system
+sudo gem update
+```
+
+Update the application code.
+
+```bash
+sudo rpwn update seven
+```
+
+Reset the database.
+
+```bash
+sudo rpwn dbreset seven
+```

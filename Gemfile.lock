@@ -124,7 +124,6 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (1.8.2)
-    libv8 (3.16.14.7)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -206,7 +205,6 @@ GEM
     rdoc (4.2.0)
       json (~> 1.4)
     redcarpet (3.2.2)
-    ref (1.0.5)
     rmagick (2.13.4)
     ruby-rc4 (0.1.5)
     rubypants (0.2.0)
@@ -232,9 +230,6 @@ GEM
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
     sys-proctable (0.9.4)
-    therubyracer (0.12.1)
-      libv8 (~> 3.16.14.0)
-      ref
     thin (1.6.3)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0)
@@ -303,7 +298,6 @@ DEPENDENCIES
   rmagick (>= 2.13.4)
   sass-rails (>= 5.0.1)
   sdoc
-  therubyracer (>= 0.12.1)
   thin (>= 1.6.3)
   trim_blobs
   uglifier (>= 2.7.0)
