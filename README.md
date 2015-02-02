@@ -13,6 +13,14 @@ bundle install
 rake db:create db:migrate
 ```
 
+Due to [a nasty crash](https://github.com/cowboyd/therubyracer/issues/317), the
+embedded CoffeeScript compilation method is disabled, and the project needs
+[node.js](https://nodejs.org/) installed.
+
+```bash
+sudo apt-get install nodejs
+```
+
 The command below runs the development server. Ctrl+C stops it.
 
 ```bash
