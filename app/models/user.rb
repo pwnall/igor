@@ -121,10 +121,6 @@ class User
   def registration
     registrations.where(course_id: Course.main.id).first
   end
-
-  def recitation_section
-    registration && registration.recitation_section
-  end
 end
 
 # :nodoc: homework submission feature.
@@ -160,6 +156,22 @@ class User
   end
 end
 
+# :nodoc: recitations
+class User
+  has_many :recitation_assignments, dependent: :destroy, inverse_of: :user
+
+  # Sections led by this user.
+  #
+  # This association is mostly useful to nullify the leader field if the user
+  # is destroyed.
+  has_many :led_recitation_sections, class_name: 'RecitationSection',
+      dependent: :nullify, inverse_of: :leader
+
+  def recitation_section
+    registration && registration.recitation_section
+  end
+end
+
 # :nodoc: teams feature.
 class User
   # Backing model for the teams association.
@@ -173,11 +185,6 @@ end
 class User
   # The user's answers to homework surveys.
   has_many :survey_answers, dependent: :destroy, inverse_of: :user
-end
-
-# :nodoc: recitation assignment proposals
-class User
-  has_many :recitation_assignments, inverse_of: :user
 end
 
 # :nodoc: TeamPartition / Teams searching.

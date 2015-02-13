@@ -28,7 +28,13 @@
 	  <% @recitation_sections.each do |recitation_section| %>
 	  <tr>
 	    <td><%= recitation_section.serial %></td>
-      <td><%= recitation_section.leader.name %></td>
+      <td>
+        <% if recitation_section.leader %>
+          <%= recitation_section.leader.name %>
+        <% else %>
+          (no leader assigned)
+        <% end %>
+      </td>
       <td><%= recitation_section.time %></td>
       <td><%= recitation_section.location %></td>
       <td><%= recitation_section.users.length %></td>

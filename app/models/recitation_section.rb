@@ -4,7 +4,7 @@
 #
 #  id         :integer          not null, primary key
 #  course_id  :integer          not null
-#  leader_id  :integer          not null
+#  leader_id  :integer
 #  serial     :integer          not null
 #  time       :string(64)       not null
 #  location   :string(64)       not null
@@ -20,8 +20,6 @@ class RecitationSection < ActiveRecord::Base
 
   # The course staff member leading the section.
   belongs_to :leader, class_name: 'User'
-  validates :leader, presence: true
-  accepts_nested_attributes_for :leader
 
   # Serial number of the section. 1 is displayed as "R01".
   validates :serial, presence: true, numericality: { greater_than: 0 },
