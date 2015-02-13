@@ -27,7 +27,7 @@ class AssignmentsController < ApplicationController
   def dashboard
     @assignment = Assignment.where(:id => params[:id]).
         includes(:deliverables, :submissions => :subject).first
-    @recitation_sections = RecitationSection.all
+    @recitation_sections = @assignment.course.recitation_sections
 
     respond_to do |format|
       format.html  # dashboard.html.erb

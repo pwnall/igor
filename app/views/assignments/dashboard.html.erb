@@ -27,7 +27,7 @@
 <% @assignment.metrics.each do |metric| %>
   <li>
     <span class="name"><%= metric.name %></span>
-    <%= grading_stats_tags metric %>  
+    <%= grading_stats_tags metric %>
   </li>
 <% end %>
 </ul>
@@ -42,7 +42,7 @@
           class: 'button' do %>
       <%= edit_icon_tag %> Enter Grades
     <% end %>
-  </span>  
+  </span>
 </h3>
 <ul class="dashboard-list">
   <li>
@@ -57,8 +57,8 @@
 <% end %>
 </ul>
 <% end %>
-
-<% if @assignment.grades.length > 0 %>
+0
+<% unless @recitation_sections.empty? or @assignment.grades.empty? %>
 <h3 class="dashboard-heading">
   <%= grades_icon_tag %>
   Recitation Grades
@@ -68,7 +68,7 @@
   <% @recitation_sections.each do |recitation| %>
     <li>
       <span class="name"><strong><%= recitation.recitation_name %></strong></span>
-      <%= grading_recitation_tags(@assignment, recitation) %>  
+      <%= grading_recitation_tags(@assignment, recitation) %>
     </li>
   <% end %>
 </ul>
@@ -77,7 +77,7 @@
 <h3 class="dashboard-heading">
   <%= homework_icon_tag %>
   Submissions
-  <%= submissions_progress_tag @assignment %>  
+  <%= submissions_progress_tag @assignment %>
 </h3>
 <ul class="dashboard-list">
 <% @assignment.deliverables.each do |deliverable| %>
@@ -96,7 +96,7 @@
     <div data-pwnfx-scope="submissions-list"
          data-pwnfx-delayed-target="submission-states">
       <%= render 'deliverables/submission_list', deliverable: deliverable %>
-    </div>  
+    </div>
   </li>
 <% end %>
 </ul>

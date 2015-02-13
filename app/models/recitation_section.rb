@@ -45,10 +45,11 @@ class RecitationSection < ActiveRecord::Base
   validates_presence_of :location
 
   def recitation_name
+    leader_name = leader ? leader.name : '(no leader)'
     if location.blank?
-      "#{time} #{leader.name}"
+      "#{time} #{leader_name}"
     else
-      "#{time} #{location} #{leader.name}"
+      "#{time} #{location} #{leader_name}"
     end
   end
 
