@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 4.2.0'
+gem 'rails', '>= 4.2.1'
 
 gem 'mysql2', '>= 0.3.17'
 
@@ -15,7 +15,7 @@ gem 'paperclip_database', '>= 2.3.1'
 gem 'rack-noie', '>= 1.0', require: 'noie',
     git: 'https://github.com/juliocesar/rack-noie.git',
     ref: 'ce8313c6f327e5c524e3e903a05044ec31c98fd8'
-gem 'rmagick', '>= 2.13.4'
+gem 'rmagick', '>= 2.14.0'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
 # Background processing.
@@ -42,7 +42,7 @@ gem 'mit_stalker', '>= 1.0.6'
 gem 'exception_notification', '>= 4.0.1'
 
 # Assets.
-gem 'sass-rails', '>= 5.0.1'
+gem 'sass-rails', '>= 5.0.3'
 gem 'pwnstyles_rails', '>= 0.2.1'
 #gem 'pwnstyles_rails', '>= 0.2.1', path: '../pwnstyles_rails'
 gem 'jquery-rails', '>= 4.0.3'
