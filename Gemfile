@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '>= 4.2.1'
 
-gem 'mysql2', '>= 0.3.17'
+gem 'mysql2', '>= 0.3.18'
 
 # Core.
 gem 'authpwn_rails', '>= 0.17.2'
