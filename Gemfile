@@ -7,6 +7,7 @@ gem 'mysql2', '>= 0.3.18'
 # Core.
 gem 'authpwn_rails', '>= 0.17.2'
 gem 'dynamic_form', '>= 1.1.4'
+gem 'foreman', '>= 0.78.0', require: false
 gem 'markdpwn', '>= 0.2.0'
 gem 'mail', '>= 2.6.3'
 gem 'nokogiri', '>= 1.6.6.2'
@@ -18,8 +19,9 @@ gem 'rack-noie', '>= 1.0', require: 'noie',
 gem 'rmagick', '>= 2.14.0'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
+gem 'thin', '>= 1.6.3'
+
 # Background processing.
-gem 'daemonz', '>= 0.3.9'
 gem 'daemons'  # Required by delayed_job.
 gem 'delayed_job', '>= 4.0.6'
 gem 'delayed_job_active_record', '>= 4.0.3'  # Required by delayed_job.
@@ -61,7 +63,6 @@ end
 group :development, :test do
   gem 'minitest-rails', '>= 0'
   gem 'binary_fixtures', '>= 0.1.3'
-  gem 'thin', '>= 1.6.3'
   #gem 'turn', '>= 0.9.7'
 end
 
@@ -72,10 +73,6 @@ group :development do
   gem 'byebug'
   gem 'faker', '>= 1.4.3'
   gem 'railroady', '>= 1.3.0'
-end
-
-group :production do
-  gem 'thin', '>= 1.6.3'
 end
 
 group :doc do

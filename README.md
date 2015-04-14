@@ -19,13 +19,13 @@ embedded CoffeeScript compilation method is disabled, and the project needs
 
 ```bash
 sudo apt-get install -y nodejs
-sudo yum install -y nodejs npm
+sudo dnf install -y nodejs npm
 ```
 
 The command below runs the development server. Ctrl+C stops it.
 
 ```bash
-rails s
+foreman start
 ```
 
 The first user registered on the system automatically receives administrative
