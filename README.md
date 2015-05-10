@@ -3,6 +3,22 @@
 Course homework submission website.
 
 
+## Prerequisites
+
+The site requires a very recent Ruby and a few libraries. The recommended way
+to get Ruby set up is to get [rbenv](https://github.com/sstephenson/rbenv) and
+[ruby-build](https://github.com/sstephenson/ruby-build).
+
+The recommended way to get the libraries is your system's package manager, or
+[Homebrew](http://brew.sh/) on Mac OS.
+
+### Mac OS
+
+```bash
+brew install imagemagick pkg-config
+```
+
+
 ## Installation
 
 Follow the standard steps for setting up a Rails development environment.
@@ -42,9 +58,12 @@ cases.
 rake db:seed
 ```
 
+The seeded database has `costan@mit.edu` set up as an admin, with the password
+`mit`.
+
 Much of the CSS running this site is in the
-[pwnstyles](https://github.com/pwnall/pwnstyles) Rails engine.  Follow the
-steps below to change it.
+[pwnstyles](https://github.com/pwnall/pwnstyles_rails) Rails engine.  Follow
+the steps below to change it.
 
 1. clone the repository in a sibling directory to seven
 1. look for pwnstyles in the Gemfile, un-comment the directive that has a `path:` option, and comment out the other directive (that uses a gem)
