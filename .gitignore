@@ -5,11 +5,14 @@
 /log/*.log
 /tmp
 
+# Ignore generated assets.
+/public/assets
+
 # Production configuration.
-config/rails_pwnerer
+/config/rails_pwnerer
 
 # Auto-generated class diagrams.
-doc/*.svg
+/doc/*.svg
 
 # Platform-specific.
 *~

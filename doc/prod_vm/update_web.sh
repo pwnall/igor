@@ -19,18 +19,23 @@ fi
 sudo chown root:root /etc/nginx/conf.d/seven-web.conf
 
 # Get SELinux out of the way.
-#sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
-#sudo /usr/sbin/setenforce 0
+sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+sudo /usr/sbin/setenforce 0
 
 # Load the new configuration into nginx.
 sudo systemctl stop nginx
 sudo systemctl start nginx
 
+# Poke firewall holes for nginx.
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --add-service=http
+sudo firewall-cmd --add-service=https
 
-# MySQL.
-sudo dnf install mariadb-server mariadb-devel
-sudo systemctl enable mariadb
-sudo systemctl start mariadb
+# The evil MySQL.
+sudo dnf install -y community-mysql community-mysql-server
+sudo systemctl enable mysqld
+sudo systemctl start mysqld
 
 # Postgres.
 cd /
@@ -86,15 +91,15 @@ cd ~/seven/web
 if [ -f /etc/seven/prod.keys ] ; then
   "$GEM_BINDIR/rake" assets:precompile
   sudo "$GEM_BINDIR/foreman" export systemd /usr/lib/systemd/system \
-      --app=seven-web \
-      --procfile=Procfile --env=config/production.env --user=$USER \
+      --app=seven \
+      --procfile=Procfile --env=production.env --user=$USER \
       --port=9000
 fi
 if [ ! -f /etc/seven/prod.keys ] ; then
   sudo "$GEM_BINDIR/foreman" export systemd /usr/lib/systemd/system \
-      --app=seven-web \
+      --app=seven \
       --procfile=Procfile --env=.env --user=$USER --port=9000
 fi
-sudo systemctl enable seven-web.target
-sudo systemctl stop seven-web.target
-sudo systemctl start seven-web.target
+sudo systemctl enable seven.target
+sudo systemctl stop seven.target
+sudo systemctl start seven.target
