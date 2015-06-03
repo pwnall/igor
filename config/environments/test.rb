@@ -13,7 +13,7 @@ Seven::Application.configure do
   config.eager_load = false
 
   # Configure static asset server for tests with Cache-Control for performance.
-  config.serve_static_assets  = true
+  config.serve_static_files  = true
   config.static_cache_control = "public, max-age=3600"
 
   # Show full error reports and disable caching.
@@ -35,4 +35,7 @@ Seven::Application.configure do
   config.active_support.deprecation = :stderr
 
   config.action_controller.action_on_unpermitted_parameters = :raise
+
+  # Run tests alphabetically by method name.
+  config.active_support.test_order = :sorted
 end

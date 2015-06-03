@@ -21,5 +21,8 @@ module Seven
     # config.i18n.default_locale = :de
 
     config.active_job.queue_adapter = :delayed_job
+
+    # Propagate errors raised within `after_rollback/after_commit` callbacks.
+    config.active_record.raise_in_transactional_callbacks = true
   end
 end
