@@ -83,6 +83,14 @@ plugin. Re-generate them using the following command.
 bundle exec annotate
 ```
 
+Updating the bundled gems requires bundler 1.9 for now. Bundler 1.10 breaks for
+some reason that we don't want to look into.
+
+```bash
+gem uninstall bundler --all
+gem install bundler --version '~> 1.9.9'
+```
+
 
 ## Production Deployment on alg.csail.mit.edu
 
