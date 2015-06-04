@@ -1,6 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 4.2.1'
+gem 'rails',
+    git: 'https://github.com/rails/rails', branch: 'master'
+
+gem 'sprockets-rails',
+    git: 'https://github.com/rails/sprockets-rails', branch: 'master'
+
+gem 'arel',
+    git: 'https://github.com/rails/arel', branch: 'master'
 
 gem 'mysql2', '>= 0.3.18'
 
@@ -61,7 +68,6 @@ group :development, :production do
 end
 
 group :development, :test do
-  gem 'minitest-rails', '>= 0'
   gem 'binary_fixtures', '>= 0.1.3'
   #gem 'turn', '>= 0.9.7'
 end
