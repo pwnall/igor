@@ -91,6 +91,13 @@ gem uninstall bundler --all
 gem install bundler --version '~> 1.9.9'
 ```
 
+To run an individual spec, use the [m](https://github.com/qrush/m) gem and
+reference the line number of the spec.
+
+```bash
+$ m test/example_test.rb:4
+```
+
 
 ## Production Deployment on alg.csail.mit.edu
 
