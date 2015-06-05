@@ -1,9 +1,8 @@
 require 'set'
 
 # A privilege granted to an user.
-class Role < RoleBase
-  # Needed because we're not using STI.
-  self.table_name = 'roles'
+class Role < ActiveRecord::Base
+  include RoleBase
 
   # Checks if a user has a privilege.
   def self.has_entry?(user, role_name, course = nil)
