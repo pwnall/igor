@@ -83,6 +83,8 @@ end
 
 group :test do
   gem 'm'
+  gem 'minitest-rails',
+      git: 'https://github.com/blowmage/minitest-rails.git', branch: 'rails5'
 end
 
 group :doc do

@@ -1,4 +1,13 @@
 GIT
+  remote: https://github.com/blowmage/minitest-rails.git
+  revision: acea177b38d78d723a1ff236b8b013410c3ca3be
+  branch: rails5
+  specs:
+    minitest-rails (3.0.0.20141204144115)
+      minitest (~> 5.4)
+      railties (~> 5.0.0.alpha)
+
+GIT
   remote: https://github.com/juliocesar/rack-noie.git
   revision: ce8313c6f327e5c524e3e903a05044ec31c98fd8
   ref: ce8313c6f327e5c524e3e903a05044ec31c98fd8
@@ -290,6 +299,7 @@ DEPENDENCIES
   m
   mail (>= 2.6.3)
   markdpwn (>= 0.2.0)
+  minitest-rails!
   mit_stalker (>= 1.0.6)
   mysql2 (>= 0.3.18)
   nokogiri (>= 1.6.6.2)
