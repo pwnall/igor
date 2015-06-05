@@ -36,8 +36,7 @@ class Profile < ActiveRecord::Base
 
   # The user's account.
   belongs_to :user, inverse_of: :profile
-  validates :user, presence: true
-  validates :user_id, uniqueness: true
+  validates :user, presence: true, uniqueness: true
 
   # The user's avatar.
   has_one :photo, class_name: 'ProfilePhoto', inverse_of: :profile
