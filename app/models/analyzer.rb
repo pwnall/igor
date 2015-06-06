@@ -6,11 +6,11 @@
 #  deliverable_id :integer          not null
 #  type           :string(32)       not null
 #  auto_grading   :boolean          default(FALSE), not null
-#  exec_limits    :text
+#  exec_limits    :text(65535)
 #  db_file_id     :integer
 #  message_name   :string(64)
-#  created_at     :datetime
-#  updated_at     :datetime
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #
 
 # Performs an automated sanity check on submissions and offers instant feedback.

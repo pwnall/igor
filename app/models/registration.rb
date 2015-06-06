@@ -6,11 +6,11 @@
 #  user_id               :integer          not null
 #  course_id             :integer          not null
 #  dropped               :boolean          default(FALSE), not null
-#  for_credit            :boolean          default(TRUE), not null
-#  allows_publishing     :boolean          default(TRUE), not null
+#  for_credit            :boolean          not null
+#  allows_publishing     :boolean          not null
 #  recitation_section_id :integer
-#  created_at            :datetime
-#  updated_at            :datetime
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
 #
 
 # A student's commitment to participate in a class.

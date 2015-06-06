@@ -13,8 +13,8 @@
 #  deliverables_ready :boolean          default(FALSE), not null
 #  metrics_ready      :boolean          default(FALSE), not null
 #  accepts_feedback   :boolean          default(FALSE), not null
-#  created_at         :datetime
-#  updated_at         :datetime
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
 # A piece of work that students have to complete.

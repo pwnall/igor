@@ -10,8 +10,8 @@
 #  department      :string(64)       not null
 #  year            :string(4)        not null
 #  athena_username :string(32)       not null
-#  created_at      :datetime
-#  updated_at      :datetime
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 
 # User data, asides from credentials which are stored in the User model.

@@ -4,8 +4,8 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string(128)      not null
-#  created_at :datetime
-#  updated_at :datetime
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 # The set of questions used in a survey.

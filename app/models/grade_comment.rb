@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: grade_comments
+#
+#  id         :integer          not null, primary key
+#  grade_id   :integer          not null
+#  grader_id  :integer          not null
+#  comment    :string(4096)     not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 # A comment for a grade.
 #
 # Graders can leave comments to explain their grading. Comments are expected to

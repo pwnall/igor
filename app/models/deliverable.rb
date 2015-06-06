@@ -7,8 +7,8 @@
 #  file_ext      :string(16)       not null
 #  name          :string(80)       not null
 #  description   :string(2048)     not null
-#  created_at    :datetime
-#  updated_at    :datetime
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 
 # The description of a file that students must submit for an assignment.

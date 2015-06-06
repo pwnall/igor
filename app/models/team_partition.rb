@@ -9,8 +9,8 @@
 #  automated  :boolean          default(TRUE), not null
 #  editable   :boolean          default(TRUE), not null
 #  published  :boolean          default(FALSE), not null
-#  created_at :datetime
-#  updated_at :datetime
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 # A partitioning of students into teams.

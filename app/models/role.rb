@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: roles
+#
+#  id         :integer          not null, primary key
+#  user_id    :integer          not null
+#  name       :string(8)        not null
+#  course_id  :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 require 'set'
 
 # A privilege granted to an user.
