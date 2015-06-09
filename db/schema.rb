@@ -246,8 +246,8 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.integer  "user_id",               limit: 4,                 null: false
     t.integer  "course_id",             limit: 4,                 null: false
     t.boolean  "dropped",                         default: false, null: false
-    t.boolean  "for_credit",                      default: true,  null: false
-    t.boolean  "allows_publishing",               default: true,  null: false
+    t.boolean  "for_credit",                                      null: false
+    t.boolean  "allows_publishing",                               null: false
     t.integer  "recitation_section_id", limit: 4
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false

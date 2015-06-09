@@ -21,3 +21,12 @@ python:
   course: main
   prerequisite_number: "6.01"
   waiver_question: "What is your experience with Python?"
+
+# This fixture is for testing prerequisites that have not been answered yet.
+#
+# NOTE: Do not create any prerequisite_answer fixtures that reference this
+#   fixture.
+unanswered:
+  course: main
+  prerequisite_number: "0.001"
+  waiver_question: "Are we there yet?"
