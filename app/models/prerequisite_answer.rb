@@ -17,6 +17,7 @@ class PrerequisiteAnswer < ActiveRecord::Base
 
   # The prerequisite that this answer covers.
   belongs_to :prerequisite, inverse_of: :prerequisite_answers
+  validates :prerequisite, uniqueness: { scope: :registration }
 
   # True if the student took the prerequisite course, false otherwise.
   #

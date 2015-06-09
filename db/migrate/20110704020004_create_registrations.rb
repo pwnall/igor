@@ -4,9 +4,8 @@ class CreateRegistrations < ActiveRecord::Migration
       t.references :user, null: false
       t.references :course, null: false
       t.boolean :dropped, null: false, default: false
-
-      t.boolean :for_credit, null: false, default: true
-      t.boolean :allows_publishing, null: false, default: true
+      t.boolean :for_credit, null: false
+      t.boolean :allows_publishing, null: false
 
       # TODO: move this to some partition class.
       t.references :recitation_section, null: true

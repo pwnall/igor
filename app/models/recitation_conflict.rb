@@ -8,6 +8,7 @@
 #  class_name      :string(255)      not null
 #
 
+# A scheduling conflict between a recitation assignment and some other course.
 class RecitationConflict < ActiveRecord::Base
   # The time slot where the registration has a conflict.
   validates_presence_of :timeslot
@@ -17,7 +18,7 @@ class RecitationConflict < ActiveRecord::Base
 
   # The student registration containing this recitation conflict.
   belongs_to :registration
-  
+
   # TODO(costan): figure out a way to check that the registration is valid
   #validates_presence_of :registration_id
   #validates_uniqueness_of :timeslot, :scope => [:registration_id]

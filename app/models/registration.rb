@@ -52,16 +52,26 @@ class Registration < ActiveRecord::Base
     user and (user == self.user or user.admin?)
   end
 
-  # Populates prerequisite_answers for a new registration
+  # Populates unanswered prerequisite_answers for a new registration.
   def build_prerequisite_answers
+    existing_answers = prerequisite_answers.index_by &:prerequisite_id
     course.prerequisites.each do |p|
+      next if existing_answers.has_key? p.id
       prerequisite_answers.build registration: self, prerequisite: p
     end
   end
 
-  # new_conflicts is an array of hashes formatted like...
-  # [{"timeslot": <integer>, "class_name": <string>},
-  #  {"timeslot": 9, "class_name": "6.042"}...]
+  # Process updates to the student's reported availability.
+  #
+  # TODO(spark008): Add tests for this functionality after implementing
+  # non-MIT-specific timeslots.
+  #
+  # @param [Hash<String, Hash<String, String>>] new_conflicts maps each timeslot
+  #   to a potential scheduling conflict
+  #
+  # An example of the `new_conflicts` parameter:
+  #   {"90"=>{"class_name"=>"6.042", "timeslot"=>"90"},
+  #    "91"=>{"class_name"=>"", "timeslot"=>"91"}}
   def update_conflicts(new_conflicts)
     old_conflicts = recitation_conflicts.index_by(&:timeslot)
 
