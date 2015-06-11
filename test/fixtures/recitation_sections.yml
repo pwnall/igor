@@ -12,16 +12,9 @@
 #  updated_at :datetime
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-#one:
-#  serial: 1
-#  leader_id: 1
-#  time: MyString
-#  location: MyString
-#
-#two:
-#  serial: 1
-#  leader_id: 1
-#  time: MyString
-#  location: MyString
+r01:
+  course: main
+  leader: main_staff
+  serial: 1
+  time: "TR 2pm"
+  location: 10-250

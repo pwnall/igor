@@ -58,7 +58,7 @@ describe Role do
   end
 
   it 'rejects course-specific duplicates' do
-    @role.user = users(:grader)
+    @role.user = users(:main_grader)
     @role.name = 'grader'
     @role.course = courses(:main)
     assert_equal false, @role.valid?
@@ -71,7 +71,7 @@ describe Role do
     end
 
     it 'works for course-specific roles' do
-      assert_equal true, Role.has_entry?(users(:grader), 'grader',
+      assert_equal true, Role.has_entry?(users(:main_grader), 'grader',
                                          courses(:main))
       assert_equal false, Role.has_entry?(users(:dexter), 'grader',
                                           courses(:main))
@@ -80,7 +80,7 @@ describe Role do
     it 'fails gracefully with bad course args' do
       assert_equal false, Role.has_entry?(users(:admin), 'admin',
                                           courses(:main))
-      assert_equal false, Role.has_entry?(users(:grader), 'grader')
+      assert_equal false, Role.has_entry?(users(:main_grader), 'grader')
     end
   end
 
@@ -109,10 +109,10 @@ describe Role do
       end
 
       it "doesn't crash if the Role exists" do
-        assert_equal true, Role.has_entry?(users(:grader), 'grader',
+        assert_equal true, Role.has_entry?(users(:main_grader), 'grader',
                                            courses(:main))
-        Role.grant users(:grader), 'grader', courses(:main)
-        assert_equal true, Role.has_entry?(users(:grader), 'grader',
+        Role.grant users(:main_grader), 'grader', courses(:main)
+        assert_equal true, Role.has_entry?(users(:main_grader), 'grader',
                                            courses(:main))
       end
     end
@@ -135,10 +135,10 @@ describe Role do
 
     describe 'for course-specific roles' do
       it 'destroys a Role when necessary' do
-        assert_equal true, Role.has_entry?(users(:grader), 'grader',
+        assert_equal true, Role.has_entry?(users(:main_grader), 'grader',
                                            courses(:main))
-        Role.revoke users(:grader), 'grader', courses(:main)
-        assert_equal false, Role.has_entry?(users(:grader), 'grader',
+        Role.revoke users(:main_grader), 'grader', courses(:main)
+        assert_equal false, Role.has_entry?(users(:main_grader), 'grader',
                                             courses(:main))
       end
 

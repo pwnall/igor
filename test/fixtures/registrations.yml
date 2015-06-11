@@ -19,3 +19,10 @@ dexter:
   dropped: false
   for_credit: true
   allows_publishing: true
+
+dropout:
+  course: main
+  user: dropout
+  dropped: true
+  for_credit: false
+  allows_publishing: false

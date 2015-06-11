@@ -25,3 +25,14 @@ main:
   has_surveys: false
   has_teams: false
   section_size: 20
+
+not_main:
+  number: "0.000"
+  title: "Chocolate Bunnies"
+  ga_account: UA-00000000-0
+  email: 0.000-tas@mit.edu"
+  email_on_role_requests: true
+  has_recitations: true
+  has_surveys: true
+  has_teams: true
+  section_size: 1

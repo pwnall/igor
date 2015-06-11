@@ -6,12 +6,22 @@ robot_is_robot:
   user: robot
   name: robot
 
-staff_is_staff:
-  user: staff
+main_staff_is_staff:
+  user: main_staff
   name: staff
   course: main
 
-grader_is_grader:
-  user: grader
+not_main_staff_is_staff:
+  user: not_main_staff
+  name: staff
+  course: not_main
+
+main_grader_is_grader:
+  user: main_grader
   name: grader
   course: main
+
+not_main_grader_is_grader:
+  user: not_main_grader
+  name: grader
+  course: not_main

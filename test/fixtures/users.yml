@@ -24,8 +24,17 @@ inactive:
 solo:
   exuid: 98765
 
-staff:
+dropout:
+  exuid: 43210
+
+main_staff:
   exuid: 424242
 
-grader:
+not_main_staff:
+  exuid: 242424
+
+main_grader:
   exuid: 80085
+
+not_main_grader:
+  exuid: 58008
