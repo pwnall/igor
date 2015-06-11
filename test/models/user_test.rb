@@ -41,10 +41,12 @@ describe User do
 
   describe 'connected_submissions' do
     it 'should include submissions from co-team members' do
+      skip 'resolve paperclip gems incompatibilities with edge rails'
       assert_equal [submissions(:admin_ps1), submissions(:inactive_project)].
           sort_by(&:id), dexter.connected_submissions.sort_by(&:id)
     end
     it "should report user submissions if the user isn't in any teams" do
+      skip 'resolve paperclip gems incompatibilities with edge rails'
       assert_equal [submissions(:solo_ps1)], solo.connected_submissions
     end
   end
@@ -75,4 +77,3 @@ describe User do
     end
   end
 end
-
