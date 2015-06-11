@@ -4,7 +4,8 @@ class CreateMainCourse < ActiveRecord::Migration
     Course.create! number: '6.006', title: 'Introduction to Algorithms',
                    email: '6.006-tas@mit.edu', ga_account: 'UA-19600078-2',
                    email_on_role_requests: true,
-                   has_recitations: false, has_surveys: false, has_teams: false
+                   has_recitations: false, has_surveys: false, has_teams: false,
+                   section_size: 20
   end
 
   def down

@@ -11,7 +11,7 @@
 #  has_recitations        :boolean          not null
 #  has_surveys            :boolean          not null
 #  has_teams              :boolean          not null
-#  section_size           :integer          default(20)
+#  section_size           :integer
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -29,10 +29,15 @@ class Course < ActiveRecord::Base
                                                   allow_nil: false }
 
   # True if the course has recitation sections.
-  validates :has_recitations, inclusion: { in: [true, false],
-                                           allow_nil: false }
-  validates :section_size, numericality: { only_integer: true,
-                                           greater_than: 0 }
+  validates :has_recitations, inclusion: { in: [true, false], allow_nil: false }
+
+  # Maximum number of students per recitation.
+  #
+  # TODO: Take this attribute out of the Course model and move it into the
+  #     recitation partitioning/assigning code.
+  validates :section_size,
+      numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
+
   # True if the course has homework surveys.
   validates :has_surveys, inclusion: { in: [true, false], allow_nil: false }
   # True if the course has homework teams.

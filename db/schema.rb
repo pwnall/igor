@@ -72,17 +72,17 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   end
 
   create_table "courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.string   "number",                 limit: 16,               null: false
-    t.string   "title",                  limit: 256,              null: false
-    t.string   "ga_account",             limit: 32,               null: false
-    t.string   "email",                  limit: 64,               null: false
-    t.boolean  "email_on_role_requests",                          null: false
-    t.boolean  "has_recitations",                                 null: false
-    t.boolean  "has_surveys",                                     null: false
-    t.boolean  "has_teams",                                       null: false
-    t.integer  "section_size",           limit: 4,   default: 20
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.string   "number",                 limit: 16,  null: false
+    t.string   "title",                  limit: 256, null: false
+    t.string   "ga_account",             limit: 32,  null: false
+    t.string   "email",                  limit: 64,  null: false
+    t.boolean  "email_on_role_requests",             null: false
+    t.boolean  "has_recitations",                    null: false
+    t.boolean  "has_surveys",                        null: false
+    t.boolean  "has_teams",                          null: false
+    t.integer  "section_size",           limit: 4
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.index ["number"], name: "index_courses_on_number", unique: true, using: :btree
   end
 

@@ -9,7 +9,7 @@ class CreateCourses < ActiveRecord::Migration
       t.boolean :has_recitations, null: false
       t.boolean :has_surveys, null: false
       t.boolean :has_teams, null: false
-      t.integer :section_size, null: true, default: 20
+      t.integer :section_size, null: true
 
       t.timestamps
     end
