@@ -12,7 +12,6 @@
 #  name               :string(64)       not null
 #  deliverables_ready :boolean          default(FALSE), not null
 #  metrics_ready      :boolean          default(FALSE), not null
-#  accepts_feedback   :boolean          default(FALSE), not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #

@@ -57,7 +57,9 @@ class SurveyAnswer < ActiveRecord::Base
   def self.assignments_for_user(user)
     # TODO(costan): this should be renamed to subjects_for_user
     assignments = Assignment.all.select(&:feedback_survey_id)
-    assignments = assignments.select(&:accepts_feedback?) unless user.admin?
+    unless user.admin?
+      assignments = assignments.select { |a| a.feedback_survey.published? }
+    end
     assignments
   end
 end

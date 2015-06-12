@@ -99,7 +99,7 @@ class AssignmentsController < ApplicationController
   # Permits updating and creating assignments.
   def assignment_params
     params.require(:assignment).permit :name, :deadline, :weight, :author_id,
-        :team_partition_id, :feedback_survey_id, :accepts_feedback,
+        :team_partition_id, :feedback_survey_id,
         :deliverables_ready, :metrics_ready,
         deliverables_attributes: [:name, :file_ext, :_destroy,
             :description, :id, { analyzer_attributes: [:id, :type,
@@ -107,7 +107,7 @@ class AssignmentsController < ApplicationController
                 :file_limit, :file_size_limit, :process_limit,
                 { db_file_attributes: :f }] } ],
         metrics_attributes: [:name, :max_score, :id, :_destroy]
-    # Note: feedback_survey_id and accepts_feedback are protected in the model but are allowed here
+    # Note: feedback_survey_id is protected in the model but is allowed here
   end
   private :assignment_params
 end

@@ -14,7 +14,6 @@ class CreateAssignments < ActiveRecord::Migration
 
       t.boolean :deliverables_ready, null: false, default: false
       t.boolean :metrics_ready, null: false, default: false
-      t.boolean :accepts_feedback, null: false, default: false
 
       t.timestamps
     end

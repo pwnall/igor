@@ -8,26 +8,26 @@
 #  created_at         :datetime
 #
 
-hours_psets:
+hours_ps1:
   survey_question: hours
-  survey: psets
+  survey: ps1
 
-prepared_psets:
+prepared_ps1:
   survey_question: prepared
-  survey: psets
+  survey: ps1
 
-reliable_psets:
+reliable_ps1:
   survey_question: reliable
-  survey: psets
+  survey: ps1
 
-coding_psets:
-  survey_question: coding_ammount
-  survey: psets
+coding_ps1:
+  survey_question: coding_amount
+  survey: ps1
 
-theory_psets:
-  survey_question: theory_ammount
-  survey: psets
-  
-hours_projects:
+theory_ps1:
+  survey_question: theory_amount
+  survey: ps1
+
+hours_project:
   survey_question: hours
-  survey: projects
+  survey: project

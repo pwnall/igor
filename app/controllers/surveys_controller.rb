@@ -37,6 +37,7 @@ class SurveysController < ApplicationController
   # POST /surveys
   def create
     @survey = Survey.new survey_params
+    @survey.published = false
 
     respond_to do |format|
       if @survey.save

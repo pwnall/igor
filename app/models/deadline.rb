@@ -85,7 +85,7 @@ class Deadline
                                                           assignment.id } }],
                                    {:remote => true}],
                          :assignment => assignment,
-                         :active => assignment.accepts_feedback
+                         :active => assignment.feedback_survey.published?
         d.done = true if answers_by_aid[assignment.id]
         deadlines << d
       end

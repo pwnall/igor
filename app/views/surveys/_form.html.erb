@@ -1,6 +1,7 @@
+<%# TODO(spark008): Add UI for publishing surveys. %>
 <%= form_for(@survey, :html => {:class => 'student_form'}) do |f| %>
   <%= f.error_messages %>
-  
+
   <div class="form_box">
     <div class="form_entry">
       <div class="form_label">
@@ -9,8 +10,8 @@
       <div class="form_field_box">
         <%= f.text_field :name, :class => 'form_field' %>
       </div>
-    </div>    
-    
+    </div>
+
     <div class="form_submit_box">
       <%= f.submit((@survey.new_record? ? "Add Questions" : "Update"),
                    :class => 'form_submit') %>
