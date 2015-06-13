@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'rails',
-    git: 'https://github.com/rails/rails', branch: 'master'
+    git: 'https://github.com/rails/rails', branch: 'master',
+    ref: 'ae5f2b4e79f3e41aad8280109d8bfc788a1a2733'
 
 gem 'sprockets-rails',
     git: 'https://github.com/rails/sprockets-rails', branch: 'master'
@@ -12,7 +13,8 @@ gem 'arel',
 gem 'mysql2', '>= 0.3.18'
 
 # Core.
-gem 'authpwn_rails', '>= 0.17.2'
+gem 'authpwn_rails', '>= 0.17.2',
+    git: 'https://github.com/pwnall/authpwn_rails.git', branch: 'rails5'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'foreman', '>= 0.78.0', require: false
 gem 'markdpwn', '>= 0.2.0'

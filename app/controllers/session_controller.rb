@@ -5,7 +5,10 @@ class SessionController < ApplicationController
   # Sets up the 'session/welcome' view. No user is logged in.
   def welcome
     @session = Session.from_params params
-    render action: :new
+    respond_to do |format|
+      format.html { render action: :new }
+      format.json { render json: {} }
+    end
   end
   private :welcome
 

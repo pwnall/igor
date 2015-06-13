@@ -36,10 +36,10 @@ describe GradesController do
       @student = users :dexter
       @problem = assignment_metrics :assessment_overall
       @params = { grade: {
-          subject_id: @student.to_param, 
+          subject_id: @student.to_param,
           subject_type: 'User',
-          metric_id: @problem.to_param, 
-          score: 4.0 }, 
+          metric_id: @problem.to_param,
+          score: 4.0 },
           comment: { comment: '' }
           }
     end
@@ -48,9 +48,8 @@ describe GradesController do
       scores = [1.0, 1, 0.0, 0]
       scores.each do |score|
         @params[:grade][:score] = score
-        post :create, 
-            grade: @params[:grade], 
-            comment: @params[:comment]
+        post :create, params: {
+            grade: @params[:grade], comment: @params[:comment] }
         grade = Grade.where(
             subject_type: 'User',
             subject_id: @student.id,
@@ -64,9 +63,8 @@ describe GradesController do
       # Change problem to one that has not been already graded
       @params[:grade][:metric_id] = assignment_metrics(:assessment_quality).id
       assert_difference 'Grade.count' do
-        post :create, 
-            grade: @params[:grade], 
-            comment: @params[:comment]
+        post :create, params: {
+            grade: @params[:grade], comment: @params[:comment] }
         assert_response :success
         assert_equal nil, Grade.where(
             subject_type: 'User',
@@ -80,18 +78,16 @@ describe GradesController do
       problems.each do |problem|
         @params[:grade][:metric_id] = problem.id
         assert_difference 'GradeComment.count' do
-          post :create, 
-              grade: @params[:grade], 
-              comment: { comment: 'New comment!' }
+          post :create, params: {
+              grade: @params[:grade], comment: { comment: 'New comment!' } }
           assert_response :success
           assert_equal 'New comment!', Grade.where(
               subject_type: 'User',
               subject_id: @student.id,
               metric_id: problem.id).first.comment.comment
         end
-        post :create, 
-            grade: @params[:grade], 
-            comment: { comment: 'Changed comment!' }
+        post :create, params: {
+            grade: @params[:grade], comment: { comment: 'Changed comment!' } }
         assert_response :success
         assert_equal 'Changed comment!', Grade.where(
             subject_type: 'User',
