@@ -8,12 +8,12 @@ class CreateAssignments < ActiveRecord::Migration
       t.references :feedback_survey, null: true
 
       t.datetime :deadline, null: false
-      t.decimal :weight, precision: 16, scale: 8, null: false, default: 1.0
+      t.decimal :weight, precision: 16, scale: 8, null: false
 
       t.string :name, limit: 64, null: false
 
-      t.boolean :deliverables_ready, null: false, default: false
-      t.boolean :metrics_ready, null: false, default: false
+      t.boolean :deliverables_ready, null: false
+      t.boolean :metrics_ready, null: false
 
       t.timestamps
     end

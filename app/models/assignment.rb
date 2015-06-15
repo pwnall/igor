@@ -8,10 +8,10 @@
 #  team_partition_id  :integer
 #  feedback_survey_id :integer
 #  deadline           :datetime         not null
-#  weight             :decimal(16, 8)   default(1.0), not null
+#  weight             :decimal(16, 8)   not null
 #  name               :string(64)       not null
-#  deliverables_ready :boolean          default(FALSE), not null
-#  metrics_ready      :boolean          default(FALSE), not null
+#  deliverables_ready :boolean          not null
+#  metrics_ready      :boolean          not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
@@ -96,7 +96,7 @@ end
 class Assignment
   # The assignment's weight when computing total class scores.
   validates :weight, numericality: { greater_than_or_equal_to: 0,
-      less_than_or_equal_to: 100, allow_nil: true }
+      less_than_or_equal_to: 100 }
 
   # If true, students can see their grades on the assignment.
   validates :metrics_ready, inclusion: { in: [true, false], allow_nil: false }

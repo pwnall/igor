@@ -53,6 +53,8 @@ class AssignmentsController < ApplicationController
   # POST /assignments
   def create
     @assignment = Course.main.assignments.build assignment_params
+    @assignment.deliverables_ready = false
+    @assignment.metrics_ready = false
 
     respond_to do |format|
       if @assignment.save
