@@ -14,8 +14,7 @@
       <%= link_to assignment.name, dashboard_assignment_path(assignment) %>
     </span>
     <span class="deadline">
-      <%= time_tag assignment.deadline,
-                   assignment.deadline.to_s(:deadline_long) %>
+      <%= time_tag assignment.due_at, assignment.due_at.to_s(:deadline_long) %>
     </span>
   </li>
   <% end %>

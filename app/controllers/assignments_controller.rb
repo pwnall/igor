@@ -52,7 +52,8 @@ class AssignmentsController < ApplicationController
 
   # POST /assignments
   def create
-    @assignment = Course.main.assignments.build assignment_params
+    @course = Course.main
+    @assignment = @course.assignments.build assignment_params
     @assignment.deliverables_ready = false
     @assignment.metrics_ready = false
 
@@ -100,7 +101,7 @@ class AssignmentsController < ApplicationController
 
   # Permits updating and creating assignments.
   def assignment_params
-    params.require(:assignment).permit :name, :deadline, :weight, :author_id,
+    params.require(:assignment).permit :name, :due_at, :weight, :author_id,
         :team_partition_id, :feedback_survey_id,
         :deliverables_ready, :metrics_ready,
         deliverables_attributes: [:name, :file_ext, :_destroy,

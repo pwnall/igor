@@ -107,17 +107,17 @@ puts 'Staff created'
 # Exams.
 
 exam_data = [
-  { deadline: -6.weeks - 5.days, state: :graded },
-  { deadline: -5.days, state: :draft },
-  { deadline: 8.weeks - 5.days, state: :draft }
+  { due_at: -6.weeks - 5.days, state: :graded },
+  { due_at: -5.days, state: :draft },
+  { due_at: 8.weeks - 5.days, state: :draft }
 ]
 
 exams = exam_data.map.with_index do |data, index|
   i = index + 1
 
-  exam = Assignment.new name: "Exam #{i}", weight: 5.0, author: admin,
-                        deadline: Time.now + data[:deadline]
+  exam = Assignment.new name: "Exam #{i}", weight: 5.0, author: admin
   exam.course = course
+  exam.build_deadline due_at: (Time.now + data[:due_at]), course: course
   exam.deliverables_ready = data[:state] != :draft
   exam.metrics_ready = data[:state] == :graded
   exam.save!
@@ -131,7 +131,7 @@ end
 
 ([admin] + users).each_with_index do |user, i|
   exams.each_with_index do |exam, j|
-    next unless exam.deadline < Time.now
+    next unless exam.due_at < Time.now
     exam.metrics.each.with_index do |metric, k|
       next if i + j == k
       grade = metric.grades.build subject: user,
@@ -147,21 +147,21 @@ puts 'Exams created'
 # Psets.
 
 pset_data = [
-  { deadline: -12.weeks - 1.day, state: :graded },
-  { deadline: -9.weeks - 1.day, state: :graded },
-  { deadline: -6.weeks - 1.day, state: :graded },
-  { deadline: -3.weeks - 1.day, state: :grading },
-  { deadline: -1.day, state: :grading },
-  { deadline: 3.weeks - 1.day, state: :open },
-  { deadline: 6.weeks - 1.day, state: :open },
-  { deadline: 9.weeks - 1.day, state: :draft }
+  { due_at: -12.weeks - 1.day, state: :graded },
+  { due_at: -9.weeks - 1.day, state: :graded },
+  { due_at: -6.weeks - 1.day, state: :graded },
+  { due_at: -3.weeks - 1.day, state: :grading },
+  { due_at: -1.day, state: :grading },
+  { due_at: 3.weeks - 1.day, state: :open },
+  { due_at: 6.weeks - 1.day, state: :open },
+  { due_at: 9.weeks - 1.day, state: :draft }
 ]
 
 psets = pset_data.map.with_index do |data, index|
   i = index + 1
-  pset = Assignment.new name: "Problem Set #{i}", weight: 1.0, author: admin,
-                        deadline: Time.now + data[:deadline]
+  pset = Assignment.new name: "Problem Set #{i}", weight: 1.0, author: admin
   pset.course = course
+  pset.build_deadline due_at: (Time.now + data[:due_at]), course: course
   pset.deliverables_ready = data[:state] != :draft
   pset.metrics_ready = data[:state] == :graded
   pset.save!
@@ -196,12 +196,12 @@ end
 
 ([admin] + users).each_with_index do |user, i|
   psets.each_with_index do |pset, j|
-    next unless pset.deadline < Time.now
+    next unless pset.due_at < Time.now
 
     unless (i + j) % 20 == 1
       # Submit PDF.
       writeup = pset.deliverables.where(file_ext: 'pdf').first
-      time = pset.deadline - 1.day + i * 1.minute
+      time = pset.due_at - 1.day + i * 1.minute
       submission = Submission.create! deliverable: writeup, subject: user,
            db_file_attributes: {
              f: fixture_file_upload('test/fixtures/submission_files/small.pdf',
@@ -216,7 +216,7 @@ end
     if (i + j) % 3 == 0
       # Submit code.
       code = pset.deliverables.where(file_ext: 'rb').first
-      time = pset.deadline - 1.day + i * 1.minute + 30.seconds
+      time = pset.due_at - 1.day + i * 1.minute + 30.seconds
       submission = Submission.create! deliverable: code, subject: user,
           db_file_attributes: {
             f: fixture_file_upload(
@@ -239,8 +239,8 @@ end
         grade = metric.grades.build subject: user,
             score: metric.max_score * (0.1 * ((i + j + k) % 10))
         grade.grader = admin
-        grade.created_at = pset.deadline + 1.day
-        grade.updated_at = pset.deadline + 1.day
+        grade.created_at = pset.due_at + 1.day
+        grade.updated_at = pset.due_at + 1.day
         grade.save!
 
         if (i + j) % 4 == 1

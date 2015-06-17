@@ -1,5 +1,5 @@
 <!-- submissions/index -->
-<div class="full_section">	
+<div class="full_section">
 	<h3 class="full_section">Filter Submissions</h3>
 	<%= form_tag submissions_path, :method => :get, :class => 'user_form' do %>
 		<div class="form_box">
@@ -15,7 +15,7 @@
 				<%= link_to 'Go home', root_path %>
 			</div>
 		</div>
-	<% end %>	
+	<% end %>
 
 	<%= form_tag submissions_path, :method => :get, :class => 'user_form' do %>
 		<div class="form_box">
@@ -31,12 +31,12 @@
 				<%= link_to 'Go home', root_path %>
 			</div>
 		</div>
-	<% end %>	
+	<% end %>
 </div>
 
-<div class="full_section">	
+<div class="full_section">
 	<h3 class="full_section">Individual Submissions</h3>
-	
+
 	<% if @submissions.empty? %>
 		No submissions match the criteria.
 	<% else %>
@@ -47,7 +47,7 @@
 					<td>Student</td>
 					<td>Submitted</td>
 					<td>Status</td>
-				</tr>		
+				</tr>
 			</thead>
 			<tbody>
 				<% @submissions.each do |submission| %>
@@ -58,7 +58,7 @@
 					</td>
 					<td><%= submission.subject.name %></td>
 					<td title="<%=h submission.updated_at %>">
-						<%= (submission.updated_at < submission.deliverable.assignment.deadline) ? 'on time' : "late by #{distance_of_time_in_words(submission.deliverable.assignment.deadline, submission.updated_at)}" %>
+						<%= (submission.updated_at < submission.deliverable.assignment.due_at) ? 'on time' : "late by #{distance_of_time_in_words(submission.deliverable.assignment.due_at, submission.updated_at)}" %>
 					</td>
 					<td>
 						<% if submission.analysis %>
@@ -80,7 +80,7 @@
 				<% end %>
 			</tbody>
 		</table>
-		
-		<%= @submissions.length %> total submissions	
-	<% end %>	
+
+		<%= @submissions.length %> total submissions
+	<% end %>
 </div>

@@ -58,15 +58,12 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.integer  "course_id",          limit: 4,                           null: false
     t.integer  "author_id",          limit: 4,                           null: false
     t.integer  "team_partition_id",  limit: 4
-    t.integer  "feedback_survey_id", limit: 4
-    t.datetime "deadline",                                               null: false
     t.decimal  "weight",                        precision: 16, scale: 8, null: false
     t.string   "name",               limit: 64,                          null: false
     t.boolean  "deliverables_ready",                                     null: false
     t.boolean  "metrics_ready",                                          null: false
     t.datetime "created_at",                                             null: false
     t.datetime "updated_at",                                             null: false
-    t.index ["course_id", "deadline", "name"], name: "index_assignments_on_course_id_and_deadline_and_name", unique: true, using: :btree
     t.index ["course_id", "name"], name: "index_assignments_on_course_id_and_name", unique: true, using: :btree
   end
 
@@ -109,6 +106,15 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.string   "f_content_type", limit: 255
     t.integer  "f_file_size",    limit: 4
     t.datetime "f_updated_at"
+  end
+
+  create_table "deadlines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string   "subject_type", limit: 255, null: false
+    t.integer  "subject_id",   limit: 4,   null: false
+    t.datetime "due_at",                   null: false
+    t.integer  "course_id",    limit: 4,   null: false
+    t.index ["course_id", "subject_id", "subject_type"], name: "index_deadlines_on_course_id_and_subject_id_and_subject_type", unique: true, using: :btree
+    t.index ["subject_type", "subject_id"], name: "index_deadlines_on_subject_type_and_subject_id", using: :btree
   end
 
   create_table "delayed_jobs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -285,12 +291,13 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   end
 
   create_table "survey_answers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.integer  "user_id",       limit: 4, null: false
-    t.integer  "assignment_id", limit: 4, null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.index ["assignment_id"], name: "index_survey_answers_on_assignment_id", using: :btree
-    t.index ["user_id", "assignment_id"], name: "index_survey_answers_on_user_id_and_assignment_id", unique: true, using: :btree
+    t.integer  "user_id",    limit: 4, null: false
+    t.integer  "survey_id",  limit: 4, null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.index ["survey_id"], name: "index_survey_answers_on_survey_id", using: :btree
+    t.index ["user_id", "survey_id"], name: "index_survey_answers_on_user_id_and_survey_id", unique: true, using: :btree
+    t.index ["user_id"], name: "index_survey_answers_on_user_id", using: :btree
   end
 
   create_table "survey_question_answers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -328,6 +335,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   create_table "surveys", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "name",       limit: 128, null: false
     t.boolean  "published",              null: false
+    t.integer  "course_id",  limit: 4,   null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end

@@ -10,6 +10,13 @@
       <div class="form_field_box">
         <%= f.text_field :name, :class => 'form_field' %>
       </div>
+      <div class="form_label">
+        <%= f.label :due_at, 'Response Deadline' %>
+      </div>
+      <div class="form_field_box">
+        <%= f.datetime_select :due_at, use_short_month: true, minute_step: 15,
+                datetime_separator: ' at ', time_separator: ':' %>
+      </div>
     </div>
 
     <div class="form_submit_box">

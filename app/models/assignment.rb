@@ -6,8 +6,6 @@
 #  course_id          :integer          not null
 #  author_id          :integer          not null
 #  team_partition_id  :integer
-#  feedback_survey_id :integer
-#  deadline           :datetime         not null
 #  weight             :decimal(16, 8)   not null
 #  name               :string(64)       not null
 #  deliverables_ready :boolean          not null
@@ -36,20 +34,16 @@ class Assignment < ActiveRecord::Base
   def can_read?(user)
     deliverables_ready? || metrics_ready? || (user && user.admin?)
   end
+end
 
-  # Adds deadline ordering to an assignment query.
-  scope :by_deadline, -> { order('deadline DESC').order(:name) }
+# :nodoc: homework submission feature.
+class Assignment
+  include HasDeadline
 
   # The assignments in a course that are visible to a user.
   def self.for(user, course)
     course.assignments.by_deadline.select { |a| a.can_read? user }
   end
-end
-
-# :nodoc: homework submission feature.
-class Assignment
-  # The time when all the deliverables of the assignment are due.
-  validates :deadline, presence: true, timeliness: true
 
   # If true, students can read deliverables and make submissions.
   validates :deliverables_ready, inclusion: { in: [true, false],
@@ -63,21 +57,6 @@ class Assignment
 
   # All students' submissions for this assignment.
   has_many :submissions, through: :deliverables, inverse_of: :assignment
-
-  # The assignment deadline, customized to a specific user.
-  #
-  # This method will eventually account for deadline extensions.
-  def deadline_for(user)
-    deadline
-  end
-
-  # True if the sumbissions for this assignment should be marked as late.
-  #
-  # This method takes an user as an argument so that we can later account for
-  # deadline extensions.
-  def deadline_passed_for?(user)
-    deadline_for(user) < Time.now
-  end
 
   # Deliverables that a user can submit files for.
   def deliverables_for(user)
@@ -164,18 +143,5 @@ class Assignment
   # The object to be set as the subject on this assignment's grades for a user.
   def grade_subject_for(user)
     team_partition.nil? ? user : team_partition.team_for_user(user)
-  end
-end
-
-# :nodoc: feedback survey integration.
-class Assignment
-  # The set of survey questions for getting feedback on this assignment.
-  belongs_to :feedback_survey, class_name: 'Survey'
-
-  # The questions in the feedback survey for this assignment.
-  def feedback_questions
-    # NOTE: this should be a has_many :through association, except ActiveRecord
-    #       doesn't support nested :through associations
-    feedback_survey.questions
   end
 end

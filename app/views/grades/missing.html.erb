@@ -20,7 +20,7 @@
 				<tr>
 					<td><%= link_to subject.name, subject %></td>
 					<td>
-						<% assignments.keys.sort_by { |a| a.deadline }.each do |assignment| %>
+						<% assignments.keys.sort_by { |a| a.due_at }.each do |assignment| %>
 							<%= assignment.name %>:
 							<%= assignments[assignment].map { |m_id| @metrics_by_id[m_id].name }.join(', ') %>
 							<br />

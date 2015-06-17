@@ -116,6 +116,9 @@ class User
   has_many :registrations, dependent: :destroy, inverse_of: :user
   has_many :recitation_sections, through: :registrations
 
+  # The courses in which the student is registered.
+  has_many :courses, through: :registrations
+
   # The user's registration for the main class on this site.
   def registration
     registrations.where(course_id: Course.main.id).first
@@ -182,7 +185,7 @@ end
 
 # :nodoc: feedback survey integration.
 class User
-  # The user's answers to homework surveys.
+  # The user's answers to surveys.
   has_many :survey_answers, dependent: :destroy, inverse_of: :user
 end
 

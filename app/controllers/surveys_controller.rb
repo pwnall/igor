@@ -22,6 +22,7 @@ class SurveysController < ApplicationController
   # GET /surveys/new
   def new
     @survey = Survey.new
+    @survey.course = Course.main
 
     respond_to do |format|
       format.html # new.html.erb
@@ -36,7 +37,8 @@ class SurveysController < ApplicationController
 
   # POST /surveys
   def create
-    @survey = Survey.new survey_params
+    @course = Course.main
+    @survey = @course.surveys.build survey_params
     @survey.published = false
 
     respond_to do |format|
@@ -94,7 +96,7 @@ class SurveysController < ApplicationController
 
   # Permits creating and updating surveys.
   def survey_params
-    params.require(:survey).permit :name
+    params.require(:survey).permit :name, :due_at
   end
   private :survey_params
 

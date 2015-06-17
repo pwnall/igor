@@ -1,7 +1,7 @@
 <section class="assignment">
   <h2 class="heading">
     <%= assignment.name %>
-  
+
     <% if current_user.admin? %>
     <span class="actions">
       <%= link_to dashboard_assignment_path(assignment), class: 'button' do %>
@@ -17,11 +17,11 @@
 
   <p>
     Due
-    <%= assignment.deadline.to_s(:deadline_long) %>
-    <% if assignment.deadline >= Time.now %>
-    (in <%= time_ago_in_words assignment.deadline %>)
+    <%= assignment.due_at.to_s(:deadline_long) %>
+    <% if assignment.due_at >= Time.now %>
+    (in <%= time_ago_in_words assignment.deadline.due_at %>)
     <% else %>
-    (<%= time_ago_in_words assignment.deadline %> ago)
+    (<%= time_ago_in_words assignment.due_at %> ago)
     <% end %>
   </p>
 

@@ -10,7 +10,7 @@ class GradesController < ApplicationController
     @assignments = []
     @assignment_metrics = {}
     @assignment_grades = {}
-    Assignment.includes(:metrics).order('deadline DESC').each do |assignment|
+    Assignment.includes(:metrics).by_deadline.each do |assignment|
       assignment_metrics = assignment.metrics.select do |metric|
         metric.can_read? current_user
       end
@@ -31,7 +31,7 @@ class GradesController < ApplicationController
     if params[:assignment_id]
       query = query.where(:id => params[:assignment_id])
     else
-      query = query.where(['deadline < ?', Time.now]).order('deadline DESC')
+      query = query.by_deadline.where('deadlines.due_at < ?', Time.now)
     end
 
     @assignment = query.first || Assignment.last
@@ -234,7 +234,7 @@ class GradesController < ApplicationController
 
     # generate the CSV
     csv_text = (defined?(FasterCSV) ? FasterCSV : CSV).generate do |csv|
-      @ordered_metrics = @assignments_by_aid.values.sort { |a, b| a.deadline <=> b.deadline }.map { |a| @metrics_by_aid[a.id].sort_by { |m| m.name } }.flatten
+      @ordered_metrics = @assignments_by_aid.values.sort_by(&:due_at).map { |a| @metrics_by_aid[a.id].sort_by { |m| m.name } }.flatten
 
       csv << ['GRADES']
       csv << []

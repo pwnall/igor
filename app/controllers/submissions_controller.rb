@@ -19,13 +19,13 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions/request_package
   def request_package
-    @assignments = Assignment.order('deadline DESC').includes(:deliverables).all
+    @assignments = Assignment.by_deadline.includes(:deliverables).all
     @deliverables = @assignments.map(&:deliverables).flatten
   end
 
   # GET /submissions
   def index
-    @assignments = Assignment.order('deadline DESC').includes(:deliverables).
+    @assignments = Assignment.by_deadline.includes(:deliverables).
         all.reject { |assignment| assignment.deliverables.empty? }
     @deliverables = @assignments.map(&:deliverables).flatten
 

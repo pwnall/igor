@@ -29,7 +29,7 @@ class SurveyAnswersController < ApplicationController
   end
 
   # GET /survey_answers/new
-  # GET /survey_answers/new?survey_answer[assignment_id]=3
+  # GET /survey_answers/new?survey_answer[survey_id]=3
   def new
     if params[:survey_answer] and params[:survey_answer][:assignment_id]
       assignment = Assignment.find params[:survey_answer][:assignment_id]

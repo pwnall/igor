@@ -1,0 +1,34 @@
+ps1:
+  subject: ps1 (Assignment)
+  due_at: <%= 1.week.ago.to_s(:db) %>
+  course: main
+
+ps2:
+  subject: ps2 (Assignment)
+  due_at: <%= 1.day.ago.to_s(:db) %>
+  course: main
+
+project:
+  subject: project (Assignment)
+  due_at: <%= 1.month.from_now.to_s(:db) %>
+  course: main
+
+assessment:
+  subject: assessment (Assignment)
+  due_at: <%= 1.week.ago.to_s(:db) %>
+  course: main
+
+not_main_exam:
+  subject: not_main_exam (Assignment)
+  due_at: <%= 1.day.from_now.to_s(:db) %>
+  course: not_main
+
+ps1_survey:
+  subject: ps1 (Survey)
+  due_at: <%= 5.days.ago.to_s(:db) %>
+  course: main
+
+project_survey:
+  subject: project (Survey)
+  due_at: <%= 2.months.from_now.to_s(:db) %>
+  course: main

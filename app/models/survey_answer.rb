@@ -2,21 +2,21 @@
 #
 # Table name: survey_answers
 #
-#  id            :integer          not null, primary key
-#  user_id       :integer          not null
-#  assignment_id :integer          not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id         :integer          not null, primary key
+#  user_id    :integer          not null
+#  survey_id  :integer          not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 # A user's response to a set of questions.
 class SurveyAnswer < ActiveRecord::Base
   # The user responding to the survey.
   belongs_to :user, inverse_of: :survey_answers
+  validates :user, presence: true
 
-  # The subject of this feedback.
-  # TODO(costan): make this polymorphic, rename to subject
-  belongs_to :assignment
+  belongs_to :survey, inverse_of: :survey_answers
+  validates :survey, uniqueness: { scope: :user_id }, presence: true
 
   # The answers that are part of this feedback.
   has_many :answers, -> { order(:target_user_id, :question_id) },
@@ -30,7 +30,7 @@ class SurveyAnswer < ActiveRecord::Base
 
     # NOTE: this should be a has_many :through association, but ActiveRecord
     #       doesn't support nested :through associations
-    assignment.feedback_questions
+    survey.questions
   end
 
   # Creates empty answers to all the questions in this feedback.
@@ -51,15 +51,5 @@ class SurveyAnswer < ActiveRecord::Base
       end
     end
     answers
-  end
-
-  # The assignments that a user can choose from for completing feedback surveys.
-  def self.assignments_for_user(user)
-    # TODO(costan): this should be renamed to subjects_for_user
-    assignments = Assignment.all.select(&:feedback_survey_id)
-    unless user.admin?
-      assignments = assignments.select { |a| a.feedback_survey.published? }
-    end
-    assignments
   end
 end

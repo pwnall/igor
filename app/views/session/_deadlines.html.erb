@@ -1,29 +1,29 @@
 <h2 class="deadlines-heading">Deadlines</h2>
 
 <ol class="deadlines">
-<% Deadline.for(current_user).each do |deadline| %>
-  <li class="deadline-<%= deadline.state %>">
+<% ActionItem.for(current_user).each do |item| %>
+  <li class="deadline-<%= item.state %>">
     <div class="heading">
       <span class="icon">
-        <%= deadline_state_icon_tag deadline.state %>
+        <%= deadline_state_icon_tag item.state %>
       </span>
       <span class="assignment">
-        <% if deadline.active? %>
-          <%= link_to deadline.assignment.name, deadline.assignment %>
+        <% if item.active? %>
+          <%= link_to item.subject.name, item.subject %>
         <% else %>
-          <%= deadline.assignment.name %>
+          <%= item.subject.name %>
         <% end %>
       </span>
-      <span class="date" title="<%= deadline.due.to_s(:deadline_long) %>">
-        <%= deadline.due.to_s(:deadline_short) %>
+      <span class="date" title="<%= item.due_at.to_s(:deadline_long) %>">
+        <%= item.due_at.to_s(:deadline_short) %>
       </span>
     </div>
     <div class="description">
-      <% if deadline.active? %>
-        <%= link_to deadline.description, self.send(*deadline.link[0]),
-                    deadline.link[1] || {} %>
+      <% if item.active? %>
+        <%= link_to item.description, self.send(*item.link[0]),
+                item.link[1] || {} %>
       <% else %>
-        <%= deadline.headline %>
+        <%= item.description %>
       <% end %>
     </div>
   </li>

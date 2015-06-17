@@ -38,7 +38,9 @@ class Course < ActiveRecord::Base
   validates :section_size,
       numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
 
-  # True if the course has homework surveys.
+  # Surveys on the difficulty of an assignment, general feedback, etc.
+  has_many :surveys, dependent: :destroy, inverse_of: :course
+  # True if the course has surveys.
   validates :has_surveys, inclusion: { in: [true, false], allow_nil: false }
   # True if the course has homework teams.
   validates :has_teams, inclusion: { in: [true, false], allow_nil: false }
@@ -54,6 +56,10 @@ class Course < ActiveRecord::Base
 
   # Assignments issued for this course.
   has_many :assignments, dependent: :destroy, inverse_of: :course
+
+  # The deadlines for all assignments and surveys in this course.
+  has_many :deadlines, -> { order(due_at: :desc) }, dependent: :destroy,
+      inverse_of: :course
 
   # Sections for this course's recitations.
   has_many :recitation_sections, dependent: :destroy, inverse_of: :course

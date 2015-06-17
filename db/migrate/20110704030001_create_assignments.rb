@@ -5,9 +5,7 @@ class CreateAssignments < ActiveRecord::Migration
       t.references :author, null: false
 
       t.references :team_partition, null: true
-      t.references :feedback_survey, null: true
 
-      t.datetime :deadline, null: false
       t.decimal :weight, precision: 16, scale: 8, null: false
 
       t.string :name, limit: 64, null: false
@@ -19,6 +17,5 @@ class CreateAssignments < ActiveRecord::Migration
     end
 
     add_index :assignments, [:course_id, :name], unique: true
-    add_index :assignments, [:course_id, :deadline, :name], unique: true
   end
 end

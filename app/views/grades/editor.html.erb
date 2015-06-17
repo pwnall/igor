@@ -4,7 +4,7 @@
   <p>
     <%= label_tag :assignment_id, 'Switch assignment' %>
     <%= select_tag :assignment_id,
-          options_for_select(Course.main.assignments.order('deadline DESC').map { |a| [a.name, a.id] }, @assignment.id)
+          options_for_select(Course.main.assignments.by_deadline.map { |a| [a.name, a.id] }, @assignment.id)
     %>
     <%= submit_tag "Switch" %>
 	</p>

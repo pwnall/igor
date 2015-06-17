@@ -33,22 +33,22 @@ module RoleBase
         inclusion: { in: RoleBase::ROLES },
         uniqueness: { scope: [:user_id, :course_id] }
 
-    validate :course_matches_role
-  end
+    # Ensures that only course-specific roles have the course field set.
+    def course_matches_role
+      is_course_specific = RoleBase::ROLES[name]
+      return if is_course_specific.nil?  # The inclusion validation catches this.
 
-  # Ensures that only course-specific roles have the course field set.
-  def course_matches_role
-    is_course_specific = RoleBase::ROLES[name]
-    return if is_course_specific.nil?  # The inclusion validation catches this.
-
-    if is_course_specific
-      unless course
-        errors.add :course, "Course-specific role #{name} requires a course"
-      end
-    else
-      if course
-        errors.add :course, "Site-wide role #{name} should not have a course"
+      if is_course_specific
+        unless course
+          errors.add :course, "Course-specific role #{name} requires a course"
+        end
+      else
+        if course
+          errors.add :course, "Site-wide role #{name} should not have a course"
+        end
       end
     end
+    private :course_matches_role
+    validate :course_matches_role
   end
 end

@@ -7,9 +7,9 @@
     </span>
   </p>
   <p class="field">
-    <%= f.label :deadline, 'Submission Deadline' %>
+    <%= f.label :due_at, 'Submission Deadline' %>
     <span class="value">
-      <%= f.datetime_select :deadline, :use_short_month => true,
+      <%= f.datetime_select :due_at, :use_short_month => true,
              :minute_step => 15, :datetime_separator => ' at ',
              :time_separator => ':' %>
     </span>

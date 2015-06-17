@@ -7,15 +7,15 @@ module CoverSheet
   include ApplicationHelper
   include AnalysesHelper
   include RecitationSectionsHelper
-  
+
   def cover_sheet_for_assignment(target, assignment, file_name)
     submissions = target.submissions.
         where(:deliverable_id => assignment.deliverables.map(&:id)).
         index_by { |s| s.deliverable.id }
-  
+
     # letter: 612pts x 792pts
     pdf = Prawn::Document.new :page_size => 'LETTER', :page_layout => :portrait
-    
+
     # course footer
     course = Course.main
     pdf.font "Helvetica"
@@ -43,7 +43,7 @@ module CoverSheet
       section_title = ""
     end
     pdf.text section_title, :align => :left, :size => 24
-    
+
     # MIT e-mail and real name
     pdf.font "Courier"
     target_title = target.respond_to?(:email) ?
@@ -61,11 +61,11 @@ module CoverSheet
                :align => :left, :size => 24)
       v_offset = 24
     end
-    
+
     # Submissions
     pdf.y = 792 - 36 - (36 + 24 + v_offset) - 40
     pdf.font "Times-Roman"
-    table_data = 
+    table_data =
 
     pdf.text "Submissions for #{assignment.name}", :size => 24, :align => :center
     table_data = [['Name', 'Size', 'Validation', 'Submitted', 'Extension']] +
@@ -74,17 +74,17 @@ module CoverSheet
       if s.nil?
         [d.name, 'N / A', 'no submission', 'N / A', 'N / A']
       else
-        submitted_text = (s.updated_at < d.assignment.deadline) ?
+        submitted_text = (s.updated_at < d.assignment.due_at) ?
             'on time' : 'late by ' +
-            distance_of_time_in_words(d.assignment.deadline, s.updated_at)
+            distance_of_time_in_words(d.assignment.due_at, s.updated_at)
         if target.respond_to?(:users)
           submitted_text += ' by ' + user.name
         end
-        [d.name, 
+        [d.name,
          number_to_human_size(s.db_file.f.size),
          analysis_status_text(s.analysis),
          submitted_text,
-         (s.updated_at < d.assignment.deadline) ? 'not needed' : '']
+         (s.updated_at < d.assignment.due_at) ? 'not needed' : '']
       end
     end
     pdf.table table_data, :header => true do |table|
@@ -92,7 +92,7 @@ module CoverSheet
       table.row_colors = ['ffffff', 'f3f3f3']
       table.cells.size = 12
       table.row(0).font_style = :bold
-      [:left, :right, :left, :center, :center].each_with_index do |a, i|      
+      [:left, :right, :left, :center, :center].each_with_index do |a, i|
         table.column(i).align = a
       end
     end
@@ -105,7 +105,7 @@ module CoverSheet
     pdf.y -= 40
     pdf.font "Times-Roman"
     table_data = [['Problem', 'Grade', 'Grader', 'Points', 'Comments']] +
-                 assignment.metrics.map do |m|        
+                 assignment.metrics.map do |m|
       [m.name,
        '',
        '',
@@ -126,16 +126,16 @@ module CoverSheet
     pdf.y -= 2
     pdf.text "Please check the course site if any of your grades is not " +
              "listed above.", :align => :center, :size => 13
-    
+
     # Total score
     pdf.font_size = 24
     pdf.y = 792 - 36 - 24
     max_score = assignment.metrics.map(&:max_score).sum
     pdf.text "/ #{max_score}", :align => :right, :size => 36
-    
-    
+
+
     pdf.start_new_page
-    
+
     if file_name.nil?
       pdf.render
     else

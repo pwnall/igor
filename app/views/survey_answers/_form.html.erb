@@ -1,53 +1,53 @@
+<%# TODO(spark008): In addition to 'observe_field' being deprecated, the ajax
+  #   for linking to this form through the survey's deadline seems broken. %>
 <%= form_for @survey_answer,
              :html => {:class => 'survey-answer-picker'} do |f| %>
   <dl>
-    <dt><%= f.label :assignment_id, 'For' %></dt>
+    <dt><%= f.label :survey_id, 'For' %></dt>
     <dd>
-      <%= f.select :assignment_id, SurveyAnswer.assignments_for_user(current_user).
+      <%= f.select :survey_id, current_user.courses.map(&:surveys).flatten.
                                                 map { |a| [a.name, a.id] } %>
     </dd>
-		<span id="survey-assignment-ajax-indicator"></span>
-  </dl>  
+		<span id="survey-ajax-indicator"></span>
+  </dl>
 <% end %>
-<%= observe_field 'survey_answer_assignment_id',
+<%= observe_field 'survey_answer_survey_id',
       :url => new_survey_answer_path, :method => :get, :frequency => 0.5,
       :before => update_page { |p|
-        p.replace_html 'survey-assignment-ajax-indicator', ajax_spinner_image_tag
+        p.replace_html 'survey-ajax-indicator', ajax_spinner_image_tag
       },
-      :with => "'survey_answer[assignment_id]=' + encodeURIComponent(value)" %>
+      :with => "'survey_answer[survey_id]=' + encodeURIComponent(value)" %>
 
-
-<% if @survey_answer.assignment %>
 <%= remote_form_for @survey_answer,
       :html => {:class => 'survey-answer-form'},
-      :before => update_page { |p|            
+      :before => update_page { |p|
         p.replace_html 'survey-answer-ajax-indicator', ajax_spinner_image_tag
-      } do |f| %>	
+      } do |f| %>
   <%= f.error_messages %>
-  <%= f.hidden_field :assignment_id %>  
+  <%= f.hidden_field :survey_id %>
 
 	<% last_target_user = nil %>
 	<dl>
 	<%= f.fields_for :answers do |a| %>
-	
+
 	<% if last_target_user != a.object.target_user %>
 	<% last_target_user = a.object.target_user %>
 	</dl>
 	<h3>
-	 	<%= user_image_tag last_target_user %>				
+	 	<%= user_image_tag last_target_user %>
 	  <%= last_target_user.display_name_for current_user %>
 	</h3>
 	<dl>
 	<% end %>
-	
+
 	<dt>
-		<%= a.hidden_field :question_id %>		
+		<%= a.hidden_field :question_id %>
 		<% if last_target_user %>
       <%= a.hidden_field :target_user_id %>
 		<% end %>
     <% question = a.object.question %>
     <%= question.human_string %>
-	</dt>		
+	</dt>
 	<dd>
 		<% if question.scaled? %>
 		  <%= question.scale_min_label %>
@@ -69,12 +69,11 @@
 
   <% end %>
 	</dl>
-	
+
 	<p class="privacy-policy">
 		Only you and <%= Course.main.number %> Staff can see this.
 	</p>
   <span id="survey-answer-ajax-indicator">
     <%= f.submit "Submit" %>
 	</span>
-<% end %>
 <% end %>
