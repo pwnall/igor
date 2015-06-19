@@ -44,8 +44,7 @@ class TeamPartition < ActiveRecord::Base
   #
   # Returns nil if the given user isn't contained in any team.
   def team_for_user(user)
-    membership = TeamMembership.first conditions: { user_id: user.id,
-        team_id: teams.map(&:id)}
+    membership = TeamMembership.find_by user: user, team: teams
     membership && membership.team
   end
 

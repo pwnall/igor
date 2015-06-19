@@ -4,7 +4,7 @@ admin_is_admin:
 
 robot_is_robot:
   user: robot
-  name: robot
+  name: bot
 
 main_staff_is_staff:
   user: main_staff

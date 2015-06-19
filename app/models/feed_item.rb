@@ -88,8 +88,8 @@ class FeedItem
   def self.add_grades(items, user, options)
     Assignment.where(metrics_ready: true).includes(:metrics).
                each do |assignment|
-      last_metric = assignment.metrics.sort_by(&:updated_at).last
-      last_grade = last_metric.grades.sort_by(&:updated_at).last
+      next unless last_metric = assignment.metrics.sort_by(&:updated_at).last
+      next unless last_grade = last_metric.grades.sort_by(&:updated_at).last
 
       item = FeedItem.new time: (last_grade || last_metric).updated_at,
           author: assignment.author, flavor: :grade,
