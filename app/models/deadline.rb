@@ -21,6 +21,21 @@ class Deadline < ActiveRecord::Base
 
   # The course in which the assignment or survey is administered.
   belongs_to :course, inverse_of: :deadlines
+  # Get the course, if nil, from the subject before validating its presence.
+  before_validation :get_subject_course
+  def get_subject_course
+    self.course = subject.course if subject && course.nil?
+  end
+  private :get_subject_course
   validates :course, uniqueness: { scope: [:subject_id, :subject_type] },
       presence: true
+
+  # Ensures that the course matches the subject's course.
+  def course_matches_subject
+    return unless subject && course
+    return if subject.course_id == course_id
+    errors.add :course, 'does not match the course of the subject.'
+  end
+  private :course_matches_subject
+  validate :course_matches_subject
 end

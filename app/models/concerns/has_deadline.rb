@@ -13,19 +13,6 @@ module HasDeadline
     validates :deadline, presence: true
     accepts_nested_attributes_for :deadline
 
-    # Ensures that the deadline's course matches the subject's course.
-    def deadline_matches_course
-      return unless deadline && course
-      return if deadline.course_id == course_id
-      if deadline.course_id.nil?
-        self.deadline.course_id = course_id
-      else
-        errors.add :deadline, 'does not have the same course as the subject.'
-      end
-    end
-    private :deadline_matches_course
-    validate :deadline_matches_course
-
     # Adds deadline ordering to a survey or assignment query.
     scope :by_deadline, -> { joins(:deadline).includes(:deadline).
         order('deadlines.due_at DESC').order(:name) }
