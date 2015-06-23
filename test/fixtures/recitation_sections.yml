@@ -18,3 +18,10 @@ r01:
   serial: 1
   time: "TR 2pm"
   location: 10-250
+
+r02:
+  course: main
+  leader: main_staff
+  serial: 2
+  time: "MW 2pm"
+  location: 10-250

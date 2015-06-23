@@ -17,6 +17,9 @@ admin:
 dexter:
   exuid: 56789
 
+deedee:
+  exuid: 24680
+
 inactive:
   exuid: 66666
 

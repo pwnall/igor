@@ -1,0 +1,14 @@
+r01_dexter:
+  recitation_partition: main
+  user: dexter
+  recitation_section: r01
+
+r01_solo:
+  recitation_partition: main
+  user: solo
+  recitation_section: r01
+
+r02_deedee:
+  recitation_partition: main
+  user: deedee
+  recitation_section: r02

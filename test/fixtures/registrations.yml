@@ -19,6 +19,23 @@ dexter:
   dropped: false
   for_credit: true
   allows_publishing: true
+  recitation_section: r01
+
+solo:
+  course: main
+  user: solo
+  dropped: false
+  for_credit: true
+  allows_publishing: false
+  recitation_section: r01
+
+deedee:
+  course: main
+  user: deedee
+  dropped: false
+  for_credit: false
+  allows_publishing: true
+  recitation_section: r02
 
 dropout:
   course: main

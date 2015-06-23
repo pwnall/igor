@@ -32,7 +32,7 @@ class Assignment < ActiveRecord::Base
 
   # True if the user is allowed to see this assignment.
   def can_read?(user)
-    deliverables_ready? || metrics_ready? || (user && user.admin?)
+    deliverables_ready? || metrics_ready? || !!(user && user.admin?)
   end
 end
 
@@ -46,6 +46,9 @@ class Assignment
   end
 
   # If true, students can read deliverables and make submissions.
+  #
+  # For some assignments, such as exams, that do not have deliverables, this
+  # attribute will always remain false.
   validates :deliverables_ready, inclusion: { in: [true, false],
                                               allow_nil: false }
 

@@ -53,7 +53,7 @@ describe User do
 
   describe 'grades' do
     it 'should include grades on team assignments' do
-      golden = [:awesome_ps1_p1, :awesome_project, :dexter_assessment].
+      golden = [:awesome_ps1_p1, :awesome_project, :dexter_assessment_overall].
           map { |i| grades(i) }
       assert_equal golden.sort_by(&:id), dexter.grades.sort_by(&:id)
     end

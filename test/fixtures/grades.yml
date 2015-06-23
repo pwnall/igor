@@ -17,7 +17,7 @@ awesome_ps1_p1:
   subject: awesome_pset (Team)
   grader: admin
   score: 10.0
-  
+
 boo_ps1_p1:
   metric: ps1_p1
   subject: boo_pset (Team)
@@ -29,15 +29,33 @@ awesome_project:
   subject: awesome_project (Team)
   grader: admin
   score: 100.0
-  
+
 boo_project:
   metric: project_overall
   subject: boo_project (Team)
   grader: admin
   score: 42.0
 
-dexter_assessment:
+dexter_assessment_overall:
   metric: assessment_overall
   subject: dexter (User)
   grader: admin
-  score: 42.0
+  score: 70.0
+
+solo_assessment_overall:
+  metric: assessment_overall
+  subject: solo (User)
+  grader: admin
+  score: 10.0
+
+solo_assessment_quality:
+  metric: assessment_quality
+  subject: solo (User)
+  grader: admin
+  score: 10.0
+
+deedee_assessment_quality:
+  metric: assessment_quality
+  subject: deedee (User)
+  grader: admin
+  score: 6.0

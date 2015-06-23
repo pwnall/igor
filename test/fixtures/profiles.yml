@@ -31,3 +31,12 @@ solo:
   department: Electrical Eng & Computer Sci
   year: 4
   athena_username: solo
+
+deedee:
+  user: deedee
+  name: Annoying DeeDee
+  nickname: Dee
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: 1
+  athena_username: dd
