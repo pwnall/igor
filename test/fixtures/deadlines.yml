@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: deadlines
+#
+#  id           :integer          not null, primary key
+#  subject_type :string(255)      not null
+#  subject_id   :integer          not null
+#  due_at       :datetime         not null
+#  course_id    :integer          not null
+#
+
 ps1:
   subject: ps1 (Assignment)
   due_at: <%= 1.week.ago.to_s(:db) %>

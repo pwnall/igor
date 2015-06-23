@@ -5,11 +5,11 @@
 #  id           :integer          not null, primary key
 #  metric_id    :integer          not null
 #  grader_id    :integer          not null
-#  subject_id   :integer          not null
 #  subject_type :string(64)
+#  subject_id   :integer          not null
 #  score        :decimal(8, 2)    not null
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #
 
 awesome_ps1_p1:

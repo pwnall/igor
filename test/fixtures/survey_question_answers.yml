@@ -6,10 +6,10 @@
 #  survey_answer_id :integer          not null
 #  question_id      :integer          not null
 #  target_user_id   :integer
-#  number           :float            not null
+#  number           :float(24)        not null
 #  comment          :string(1024)
-#  created_at       :datetime
-#  updated_at       :datetime
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

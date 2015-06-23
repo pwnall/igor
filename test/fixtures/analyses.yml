@@ -7,8 +7,9 @@
 #  status_code   :integer          not null
 #  score         :integer
 #  log           :text(16777215)   not null
-#  created_at    :datetime
-#  updated_at    :datetime
+#  private_log   :text(16777215)   not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

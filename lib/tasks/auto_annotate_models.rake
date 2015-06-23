@@ -17,7 +17,7 @@ if Rails.env.development?
       'include_version'      => "false",
       'require'              => "",
       'exclude_tests'        => "true",
-      'exclude_fixtures'     => "true",
+      'exclude_fixtures'     => "false",
       'exclude_factories'    => "true",
       'ignore_model_sub_dir' => "false",
       'skip_on_db_migrate'   => "false",

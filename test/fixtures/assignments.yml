@@ -6,15 +6,12 @@
 #  course_id          :integer          not null
 #  author_id          :integer          not null
 #  team_partition_id  :integer
-#  feedback_survey_id :integer
-#  deadline           :datetime         not null
-#  weight             :decimal(16, 8)   default(1.0), not null
+#  weight             :decimal(16, 8)   not null
 #  name               :string(64)       not null
-#  deliverables_ready :boolean          default(FALSE), not null
-#  metrics_ready      :boolean          default(FALSE), not null
-#  accepts_feedback   :boolean          default(FALSE), not null
-#  created_at         :datetime
-#  updated_at         :datetime
+#  deliverables_ready :boolean          not null
+#  metrics_ready      :boolean          not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
 ps1:

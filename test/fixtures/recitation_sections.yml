@@ -4,12 +4,12 @@
 #
 #  id         :integer          not null, primary key
 #  course_id  :integer          not null
-#  leader_id  :integer          not null
+#  leader_id  :integer
 #  serial     :integer          not null
 #  time       :string(64)       not null
 #  location   :string(64)       not null
-#  created_at :datetime
-#  updated_at :datetime
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 r01:

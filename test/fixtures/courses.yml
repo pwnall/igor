@@ -2,17 +2,18 @@
 #
 # Table name: courses
 #
-#  id              :integer          not null, primary key
-#  number          :string(16)       not null
-#  title           :string(256)      not null
-#  ga_account      :string(32)       not null
-#  email           :string(64)       not null
-#  has_recitations :boolean          default(TRUE), not null
-#  has_surveys     :boolean          default(TRUE), not null
-#  has_teams       :boolean          default(TRUE), not null
-#  section_size    :integer          default(20)
-#  created_at      :datetime
-#  updated_at      :datetime
+#  id                     :integer          not null, primary key
+#  number                 :string(16)       not null
+#  title                  :string(256)      not null
+#  ga_account             :string(32)       not null
+#  email                  :string(64)       not null
+#  email_on_role_requests :boolean          not null
+#  has_recitations        :boolean          not null
+#  has_surveys            :boolean          not null
+#  has_teams              :boolean          not null
+#  section_size           :integer
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
 #
 
 main:

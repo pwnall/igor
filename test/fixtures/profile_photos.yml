@@ -4,8 +4,8 @@
 #
 #  id               :integer          not null, primary key
 #  profile_id       :integer          not null
-#  created_at       :datetime
-#  updated_at       :datetime
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #  pic_file_name    :string(255)
 #  pic_content_type :string(255)
 #  pic_file_size    :integer

@@ -4,8 +4,10 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string(128)      not null
-#  created_at :datetime
-#  updated_at :datetime
+#  published  :boolean          not null
+#  course_id  :integer          not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 ps1:

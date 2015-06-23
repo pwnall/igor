@@ -6,9 +6,9 @@
 #  registration_id :integer          not null
 #  prerequisite_id :integer          not null
 #  took_course     :boolean          not null
-#  waiver_answer   :text
-#  created_at      :datetime
-#  updated_at      :datetime
+#  waiver_answer   :text(65535)
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
