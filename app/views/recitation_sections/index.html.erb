@@ -1,43 +1,52 @@
 <div class="full_section">
 
-	<div style="z-index: 10; float: right; width: 275; text-align: left;">
+  <div style="z-index: 10; float: right; width: 275; text-align: left;">
     <h3>
-			<%= link_to 'New', new_recitation_section_path %>
-		</h3>
+      <%= link_to 'New', new_recitation_section_path %>
+    </h3>
     <h3>
       <%= link_to 'Assignments', recitation_partitions_path %>
     </h3>
-	</div>
-	<h2 class="full_section" style="margin-right: 100px; ">
-		Recitation Sections
-	</h2>
+  </div>
+  <h2 class="full_section" style="margin-right: 100px;">
+    Recitation Sections
+  </h2>
 
-	<span class="validation-errors"></span>
+  <span class="validation-errors"></span>
 
-	<table>
-	  <tr>
-	    <th style="text-align: left; width: 75px;">Serial</th>
-	    <th style="text-align: left; width: 150px;">Leader</th>
-	    <th style="text-align: left; width: 135px;">Time</th>
-	    <th style="text-align: left; width: 135px;">Location</th>
-      <th style="text-align: left; width: 135px;"># Students</th>
-      <th style="text-align: left;"></th>
-      <th style="text-align: left;"></th>
-	  </tr>
+  <table class="recitations">
+    <colgroup>
+      <col span="1" class="serials">
+      <col span="1" class="leaders">
+      <col span="1" class="times">
+      <col span="1" class="location">
+      <col span="1" class="student-counts">
+      <col span="2" class="actions">
+    </colgroup>
+    <tr>
+      <th>Serial</th>
+      <th>Leader</th>
+      <th>Times</th>
+      <th>Location</th>
+      <th># Students</th>
+    </tr>
 
-	  <% @recitation_sections.each do |recitation_section| %>
-	  <tr>
-	    <td><%= recitation_section.serial %></td>
+    <% @recitation_sections.each do |recitation_section| %>
+    <tr>
+      <td><%= recitation_section.serial %></td>
       <% if recitation_section.leader %>
       <td>
-          <%= recitation_section.leader.name %>
+        <%= recitation_section.leader.name %>
       </td>
       <% else %>
       <td class="no-leader">
-          (no leader assigned)
+        (no leader assigned)
       </td>
       <% end %>
-      <td><%= recitation_section.time %></td>
+      <td>
+        <%= render partial: 'time_slots/list',
+              object: recitation_section.time_slots %>
+      </td>
       <td><%= recitation_section.location %></td>
       <td><%= recitation_section.users.length %></td>
       <td>
@@ -47,12 +56,12 @@
       </td>
       <td>
         <%= link_to recitation_section, method: :delete,
-              confirm: 'Are you sure?' do %>
+              data: { confirm: 'Are you sure?' } do %>
           Delete
         <% end %>
       </td>
-	  </tr>
-	  <% end %>
+    </tr>
+    <% end %>
 
-	</table>
+  </table>
 </div>

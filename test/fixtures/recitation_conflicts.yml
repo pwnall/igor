@@ -4,31 +4,31 @@
 #
 #  id              :integer          not null, primary key
 #  registration_id :integer          not null
-#  timeslot        :integer          not null
+#  time_slot_id    :integer          not null
 #  class_name      :string(255)      not null
 #
 
 dexter_6001_monday_1pm:
   registration: dexter
   class_name: 6.001
-  timeslot: 130
+  time_slot: m13to14
 
 dexter_6001_monday_2pm:
   registration: dexter
   class_name: 6.001
-  timeslot: 140
+  time_slot: m14to15
 
 dexter_6002_wednesday_1pm:
   registration: dexter
   class_name: 6.002
-  timeslot: 132
+  time_slot: w13to14
 
 dexter_6002_wednesday_2pm:
   registration: dexter
   class_name: 6.002
-  timeslot: 142
+  time_slot: w14to15
 
 dexter_doesnt_get_registration:
   registration: dexter
   class_name: 6.006
-  timeslot: 134
+  time_slot: f13to14

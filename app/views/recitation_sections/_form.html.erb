@@ -15,12 +15,12 @@
                 include_blank: '(no leader specified)' %>
       </span>
     </p>
-    <p class="field">
-      <%= f.label :time, 'Scheduled time' %>
+    <div class="field">
+      <%= f.label :time_slot_ids, 'Time slots' %>
       <span class="value">
-				<%= f.text_field :time, required: true, placeholder: 'MW1' %>
+        <%= time_slot_check_box_list_tag @recitation_section %>
       </span>
-    </p>
+    </div>
     <p class="field">
       <%= f.label :location, 'Scheduled location' %>
       <span class="value">
@@ -34,4 +34,3 @@
     <% end %>
   </p>
 <% end %>
-

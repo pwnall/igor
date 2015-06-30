@@ -225,6 +225,11 @@ module IconsHelper
     image_tag 'icons/recitation.png', alt: 'Recitation', class: 'ui_icon'
   end
 
+  # Show this icon next to time-slot-related functionality.
+  def time_slot_icon_tag
+    image_tag 'icons/timer.png', alt: 'Time Slot', class: 'ui_icon'
+  end
+
   # Show this icon next to links that lead to displaying contact information.
   def contacts_icon_tag
     image_tag 'icons/contacts.png', alt: 'Contacts', class: 'ui_icon'

@@ -1,0 +1,11 @@
+<%= form_for @course.time_slots.build do |f| %>
+  <%= f.error_messages %>
+    <td><%= f.select :day, day_select_option_tags %></td>
+    <td><%= f.time_select :start_time, ampm: true, minute_step: 5 %></td>
+    <td><%= f.time_select :end_time, ampm: true, minute_step: 5 %></td>
+    <td>
+      <%= button_tag do %>
+        <%= create_icon_tag %> Create Time Slot
+      <% end %>
+    </td>
+<% end %>

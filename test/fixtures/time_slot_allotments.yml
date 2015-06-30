@@ -1,0 +1,12 @@
+# == Schema Information
+#
+# Table name: time_slot_allotments
+#
+#  id                    :integer          not null, primary key
+#  time_slot_id          :integer          not null
+#  recitation_section_id :integer          not null
+#
+
+r01_m14to15:
+  time_slot: m14to15
+  recitation_section: r01

@@ -1,0 +1,30 @@
+<h2>Recitation Time Slots</h2>
+
+<table class="time-slots">
+  <thead>
+    <tr>
+      <th>Day</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @time_slots.each do |slot| %>
+    <tr>
+      <td><%= time_slot_day_label slot %></td>
+      <td><%= slot.start_time.to_s :time_slot %></td>
+      <td><%= slot.end_time.to_s :time_slot %></td>
+      <td><%= time_slot_duration slot %></td>
+      <td>
+        <%= link_to 'Remove', slot, method: :delete, data: { confirm:
+              'Deleting this time slot will also delete any scheduling conflicts reported by students for this time. Continue?' } %>
+      </td>
+    </tr>
+    <% end %>
+
+    <tr class="form-row">
+      <%= render partial: 'time_slots/form' %>
+    </tr>
+  </tbody>
+</table>

@@ -81,8 +81,8 @@ class RecitationSectionsController < ApplicationController
   private :set_recitation_section
 
   def recitation_section_params
-    params.require(:recitation_section).permit :serial, :leader_id, :time,
-        :location
+    params.require(:recitation_section).permit :serial, :leader_id,
+        { time_slot_ids: [] }, :location
   end
   private :recitation_section_params
 end

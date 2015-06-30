@@ -1,0 +1,51 @@
+# == Schema Information
+#
+# Table name: time_slots
+#
+#  id        :integer          not null, primary key
+#  course_id :integer          not null
+#  day       :integer          not null
+#  starts_at :integer          not null
+#  ends_at   :integer          not null
+#
+m13to14:
+  course: main
+  day: 0
+  starts_at: 1300
+  ends_at: 1400
+
+m14to15:
+  course: main
+  day: 0
+  starts_at: 1400
+  ends_at: 1500
+
+w13to14:
+  course: main
+  day: 2
+  starts_at: 1300
+  ends_at: 1400
+
+w14to15:
+  course: main
+  day: 2
+  starts_at: 1400
+  ends_at: 1500
+
+f13to14:
+  course: main
+  day: 4
+  starts_at: 1300
+  ends_at: 1400
+
+s10to12:
+  course: not_main
+  day: 5
+  starts_at: 1000
+  ends_at: 1200
+
+s14to16:
+  course: not_main
+  day: 5
+  starts_at: 1400
+  ends_at: 1600

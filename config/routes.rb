@@ -5,6 +5,7 @@ Seven::Application.routes.draw do
 
   resources :courses
   resources :prerequisites
+  resources :time_slots, only: [:index, :create, :destroy]
 
   # Account registration.
   resources :users do

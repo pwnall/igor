@@ -41,6 +41,11 @@
         <%= recitation_icon_tag %> Recitations
       <% end %>
     </li>
+    <li>
+      <%= link_to time_slots_path do %>
+        <%= time_slot_icon_tag %> Time Slots
+      <% end %>
+    </li>
     <% end %>
     <% if Course.main.has_surveys? %>
     <li>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20110704070001) do
+ActiveRecord::Schema.define(version: 20150624050034) do
 
   create_table "analyses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "submission_id", limit: 4,        null: false
@@ -223,9 +223,9 @@ ActiveRecord::Schema.define(version: 20110704070001) do
 
   create_table "recitation_conflicts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "registration_id", limit: 4,   null: false
-    t.integer "timeslot",        limit: 4,   null: false
+    t.integer "time_slot_id",    limit: 4,   null: false
     t.string  "class_name",      limit: 255, null: false
-    t.index ["registration_id", "timeslot"], name: "index_recitation_conflicts_on_registration_id_and_timeslot", unique: true, using: :btree
+    t.index ["registration_id", "time_slot_id"], name: "index_recitation_conflicts_on_registration_id_and_time_slot_id", unique: true, using: :btree
   end
 
   create_table "recitation_partitions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -240,7 +240,6 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.integer  "course_id",  limit: 4,  null: false
     t.integer  "leader_id",  limit: 4
     t.integer  "serial",     limit: 4,  null: false
-    t.string   "time",       limit: 64, null: false
     t.string   "location",   limit: 64, null: false
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
@@ -376,6 +375,22 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.index ["partition_id", "name"], name: "index_teams_on_partition_id_and_name", unique: true, using: :btree
   end
 
+  create_table "time_slot_allotments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer "time_slot_id",          limit: 4, null: false
+    t.integer "recitation_section_id", limit: 4, null: false
+    t.index ["recitation_section_id", "time_slot_id"], name: "index_time_slot_allotments_on_recitation_section_and_time_slot", unique: true, using: :btree
+    t.index ["recitation_section_id"], name: "index_time_slot_allotments_on_recitation_section_id", using: :btree
+    t.index ["time_slot_id"], name: "index_time_slot_allotments_on_time_slot_id", using: :btree
+  end
+
+  create_table "time_slots", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer "course_id", limit: 4, null: false
+    t.integer "day",       limit: 1, null: false
+    t.integer "starts_at", limit: 4, null: false
+    t.integer "ends_at",   limit: 4, null: false
+    t.index ["course_id", "day", "starts_at", "ends_at"], name: "index_time_slots_on_course_id_and_day_and_starts_at_and_ends_at", unique: true, using: :btree
+  end
+
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "exuid",      limit: 32, null: false
     t.datetime "created_at",            null: false
@@ -383,4 +398,6 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.index ["exuid"], name: "index_users_on_exuid", unique: true, using: :btree
   end
 
+  add_foreign_key "time_slot_allotments", "recitation_sections"
+  add_foreign_key "time_slot_allotments", "time_slots"
 end

@@ -39,7 +39,7 @@ class Registration < ActiveRecord::Base
   belongs_to :recitation_section
 
   # Temporary excuse for a calendar.
-  has_many :recitation_conflicts, dependent: :destroy
+  has_many :recitation_conflicts, dependent: :destroy, inverse_of: :registration
   accepts_nested_attributes_for :recitation_conflicts
 
   # Answers to the course's prerequisites questions.

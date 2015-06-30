@@ -64,6 +64,9 @@ class Course < ActiveRecord::Base
   # Sections for this course's recitations.
   has_many :recitation_sections, dependent: :destroy, inverse_of: :course
 
+  # The time periods pre-allocated for this course's recitations.
+  has_many :time_slots, dependent: :destroy, inverse_of: :course
+
   # The students in this course.
   has_many :users, through: :registrations, source: :user
 

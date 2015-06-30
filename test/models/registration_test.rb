@@ -2,7 +2,7 @@ require 'test_helper'
 
 class RegistrationTest < ActiveSupport::TestCase
   before do
-    @registration = Registration.new user: users(:dexter), course: Course.new,
+    @registration = Registration.new user: users(:dexter), course: courses(:not_main),
         for_credit: true, allows_publishing: true
   end
 
@@ -50,6 +50,15 @@ class RegistrationTest < ActiveSupport::TestCase
 
     assert_empty registration.recitation_conflicts(true)
     assert_empty registration.prerequisite_answers(true)
+  end
+
+  it 'saves associated recitation conflicts through the parent registration' do
+    new_conflicts = time_slots(:s10to12, :s14to16).map { |ts|
+      { registration: @registration, class_name: 'x', time_slot: ts }
+    }
+    @registration.update! recitation_conflicts_attributes: new_conflicts
+
+    assert_equal 2, @registration.recitation_conflicts.count
   end
 
   describe '#can_edit?' do

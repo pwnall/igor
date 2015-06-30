@@ -129,7 +129,7 @@ module RecitationAssigner
     return_value
   end
 
-  # Computes the possible recitation sections that a student can attend.
+  # Computes which of the given recitation sections a student can attend.
   #
   # @param [Registration] registration registration information for
   #   each student to be assigned to a recitation section
@@ -148,10 +148,10 @@ module RecitationAssigner
       #               tell students when their data entry is ignored
       c.class_name == registration.course.number ||
           !(/\A(\w+)\.(\w+)\Z/.match(c.class_name))
-    }.map(&:timeslot))
+    }.map(&:time_slot))
 
     sections.reject do |section|
-      section.timeslots.any? { |ts| blocked_times.include? ts }
+      section.time_slots.any? { |ts| blocked_times.include? ts }
     end
   end
 

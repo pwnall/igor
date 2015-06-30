@@ -9,7 +9,7 @@ class CourseTest < ActiveSupport::TestCase
 
   let(:course) { courses(:main) }
 
-  it 'validates the setup profile' do
+  it 'validates the setup course' do
     assert @course.valid?
   end
 
@@ -98,6 +98,7 @@ class CourseTest < ActiveSupport::TestCase
     assert_equal true, course.prerequisites.any?
     assert_equal true, course.assignments.any?
     assert_equal true, course.recitation_sections.any?
+    assert_equal true, course.time_slots.any?
     assert_equal true, course.roles.any?
     assert_equal true, course.role_requests.any?
 
@@ -107,13 +108,15 @@ class CourseTest < ActiveSupport::TestCase
     assert_empty course.prerequisites(true)
     assert_empty course.assignments(true)
     assert_empty course.recitation_sections(true)
+    assert_empty course.time_slots(true)
     assert_empty course.roles(true)
     assert_empty course.role_requests(true)
   end
 
   describe '#students' do
     it 'returns only users currently enrolled in this course' do
-      assert_equal [users(:dexter)], course.students
+      golden = users(:solo, :deedee, :dexter)
+      assert_equal golden, course.students.sort_by(&:name)
     end
   end
 

@@ -67,7 +67,9 @@
 <ul class="dashboard-list">
   <% @recitation_sections.each do |recitation| %>
     <li>
-      <span class="name"><strong><%= recitation.recitation_name %></strong></span>
+      <span class="name">
+        <strong><%= recitation_name_label recitation %></strong>
+      </span>
       <%= grading_recitation_tags(@assignment, recitation) %>
     </li>
   <% end %>

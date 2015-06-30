@@ -6,7 +6,6 @@
 #  course_id  :integer          not null
 #  leader_id  :integer
 #  serial     :integer          not null
-#  time       :string(64)       not null
 #  location   :string(64)       not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -16,12 +15,16 @@ r01:
   course: main
   leader: main_staff
   serial: 1
-  time: "TR 2pm"
   location: 10-250
 
 r02:
   course: main
   leader: main_staff
   serial: 2
-  time: "MW 2pm"
+  location: 10-250
+
+r03:
+  course: not_main
+  leader: not_main_staff
+  serial: 3
   location: 10-250
