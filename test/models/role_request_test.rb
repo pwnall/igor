@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe RoleRequest do
+class RoleRequestTest < ActiveSupport::TestCase
   fixtures :users, :courses, :roles, :role_requests
 
   before do

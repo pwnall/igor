@@ -1,7 +1,6 @@
 require 'test_helper'
 
-describe Profile do
-
+class ProfileTest < ActiveSupport::TestCase
   before do
     @profile = Profile.new athena_username: 'mitstudent', name: 'Tim Beaver',
         nickname: 'timster', year: 'G', university: 'MIT', department: 'EECS',

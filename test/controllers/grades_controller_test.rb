@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe GradesController do
+class GradesControllerTest < ActionController::TestCase
   fixtures :grades, :users, :assignment_metrics
 
   describe 'authenticated as a normal user' do

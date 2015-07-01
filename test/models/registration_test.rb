@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Registration do
+class RegistrationTest < ActiveSupport::TestCase
   before do
     @registration = Registration.new user: users(:dexter), course: Course.new,
         for_credit: true, allows_publishing: true

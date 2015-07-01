@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe User do
+class UserTest < ActiveSupport::TestCase
   fixtures :users, :credentials, :profiles, :grades, :submissions
 
   let(:dvdjon) do

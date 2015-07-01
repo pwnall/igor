@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Assignment do
+class AssignmentTest < ActiveSupport::TestCase
   before do
     @due_at = 1.week.from_now
     @assignment = Assignment.new course: courses(:main), name: 'Final Exam',

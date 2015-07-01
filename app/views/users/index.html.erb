@@ -2,11 +2,11 @@
 
 <table>
   <tbody>
-    <% @users.sort_by { |u| [u.has_role?('admin') ? 0 : 1, u.name] }.each do |user| %>
+    <% @users.sort_by { |u| [u.has_role?('admin') ? 0 : 1, u.name || ''] }.each do |user| %>
       <tr>
         <td><%= link_to user.name, user %></td>
         <td>
-          <% if user.email_credential.verified? %>
+          <% if user.email_credential && user.email_credential.verified? %>
             <%= valid_icon_tag %>
           <% else %>
             <%= invalid_icon_tag %>
@@ -39,7 +39,7 @@
                         method: :put, class: 'button' do %>
               <%= role_icon_tag :student %> User
             <% end %>
-          <% elsif user.email_credential.verified? %>
+          <% elsif user.email_credential && user.email_credential.verified? %>
             <%= link_to set_admin_user_path(user, :to => true),
                         method: :put, class: 'button' do %>
               <%= role_icon_tag :admin %> Admin
@@ -58,8 +58,8 @@
     <tr>
       <th><%= pluralize @users.length, 'user' %></th>
       <th>
-        <%= pluralize @users.select { |u| u.email_credential.verified? }.length,
-                      'verified e-mails' %>
+        <%= pluralize @users.select { |u| u.email_credential &&
+              u.email_credential.verified? }.length, 'verified e-mails' %>
       </th>
     </tr>
   </tfoot>

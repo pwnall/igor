@@ -1,7 +1,6 @@
 require 'test_helper'
 
-describe Course do
-
+class CourseTest < ActiveSupport::TestCase
   before do
     @course = Course.new number: '1.234', title: 'Intro', email: 'a@mit.edu',
         email_on_role_requests: true, has_recitations: true, has_surveys: true,

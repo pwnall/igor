@@ -1,8 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails',
-    git: 'https://github.com/rails/rails', branch: 'master',
-    ref: 'ae5f2b4e79f3e41aad8280109d8bfc788a1a2733'
+    git: 'https://github.com/rails/rails', branch: 'master'
 
 gem 'sprockets-rails',
     git: 'https://github.com/rails/sprockets-rails', branch: 'master'
@@ -88,9 +87,8 @@ group :development do
 end
 
 group :test do
-  gem 'm'
-  gem 'minitest-rails',
-      git: 'https://github.com/blowmage/minitest-rails.git', branch: 'rails5'
+  gem 'minitest-spec-rails',
+    git: 'https://github.com/pwnall/minitest-spec-rails', branch: 'rails5'
 end
 
 group :doc do

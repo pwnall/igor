@@ -167,7 +167,7 @@ class User
   # This association is mostly useful to nullify the leader field if the user
   # is destroyed.
   has_many :led_recitation_sections, class_name: 'RecitationSection',
-      dependent: :nullify, inverse_of: :leader
+      foreign_key: :leader_id, dependent: :nullify, inverse_of: :leader
 
   def recitation_section
     registration && registration.recitation_section

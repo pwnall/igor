@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe AnalyzersController do
+class AnalyzersControllerTest < ActionController::TestCase
   fixtures :users
 
   before do
