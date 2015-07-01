@@ -13,7 +13,10 @@
     <td><%= profile_photo.pic %></td>
     <td><%= link_to 'Show', profile_photo %></td>
     <td><%= link_to 'Edit', edit_profile_photo_path(profile_photo) %></td>
-    <td><%= link_to 'Destroy', profile_photo, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td>
+      <%= link_to 'Destroy', profile_photo, data: { confirm: 'Are you sure?' },
+            method: :delete %>
+    </td>
   </tr>
 <% end %>
 </table>

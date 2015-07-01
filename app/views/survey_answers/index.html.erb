@@ -1,83 +1,86 @@
 <div class="full_section">
-	<h3 class="full_section">Show Survey Feedback for Assignment</h3>
-	<%= form_tag survey_answers_path, :method => :get, :class => 'user_form' do %>
-		<div class="form_box">
-			<div class="form_entry">
-				<div class="form_label">Assignment</div>
-				<div class="form_field_box">
-					<%= select_tag :assignment_id, options_for_select(@assignments.map { |a| [a.name, a.id] }, nil), :class => 'form_field', :id => 'assignment_id' %>
-				</div>
-			</div>
-			<div class="form_submit_box">
-			    <%= submit_tag "Show Feedback", :class => 'form_submit', :id => 'submission_submit_button' %>
-				or
-				<%= link_to 'Go home', root_path %>
-			</div>
-		</div>
-	
-	<% end %>	
+  <h3 class="full_section">Show Survey Feedback for Assignment</h3>
+  <%= form_tag survey_answers_path, :method => :get, :class => 'user_form' do %>
+    <div class="form_box">
+      <div class="form_entry">
+        <div class="form_label">Assignment</div>
+        <div class="form_field_box">
+          <%= select_tag :assignment_id,
+                options_for_select(@assignments.map { |a| [a.name, a.id] }, nil),
+                class: 'form_field', id: 'assignment_id' %>
+        </div>
+      </div>
+      <div class="form_submit_box">
+        <%= submit_tag "Show Feedback", class: 'form_submit',
+              id: 'submission_submit_button' %>
+        or
+        <%= link_to 'Go home', root_path %>
+      </div>
+    </div>
+  <% end %>
 </div>
 
 <div class="full_section">
-	
-	<h3 class="full_section">Survey answers
-	<% if @assignment %>
-		for <%=h @assignment.name %>
-	<% else %>
-		for all assignments
-	<% end %>
-	</h3>
 
-	<% if @survey_answers.empty? %>
-		No feedback
-	<% else %>		
-		<% @survey_answers.each do |answer| %>
-		  <div class="answer_piece">
-		  	<h4>
-		  		<%= display_name_for_user answer.user %> on <%= answer.assignment.name %>
-		  	</h4>
-				<% answer.answers.reject(&:target_user).each do |question_answer| %>
-				<p class="question">
-					<span class="text">
-						<%= question_answer.question.human_string %>
-					</span>
-					<span class="answer">
-						<%= question_answer.number %>
-					</span>
-				</p>
-				<% end %>
-				<% last_user = nil;
-           answer.answers.select(&:target_user).sort_by { |a| [a.target_user.id, a.question_id] }.each do |question_answer| %>
-				<% if last_user != question_answer.target_user %>
-				<% unless last_user %>
-				</div>
-				<% end %>
-				<% last_user = question_answer.target_user %>
-				<div class="teammate">
-					<p class="name">
-						<%= display_name_for_user last_user %>
-					</p>
-				<% end %>
-				<p class="question team">
+  <h3 class="full_section">Survey answers
+  <% if @assignment %>
+    for <%=h @assignment.name %>
+  <% else %>
+    for all assignments
+  <% end %>
+  </h3>
+
+  <% if @survey_answers.empty? %>
+    No feedback
+  <% else %>
+    <% @survey_answers.each do |answer| %>
+      <div class="answer_piece">
+        <h4>
+          <%= display_name_for_user answer.user %> on <%= answer.assignment.name %>
+        </h4>
+        <% answer.answers.reject(&:target_user).each do |question_answer| %>
+        <p class="question">
           <span class="text">
             <%= question_answer.question.human_string %>
           </span>
           <span class="answer">
             <%= question_answer.number %>
-          </span>					
-				</p>
-				<% end %>
-				</div>
-				<p class="actions">
-	        <%= link_to 'Show', answer %>
-	        <%= link_to 'Edit', edit_survey_answer_path(answer) %>
-	        <%= link_to 'Destroy', answer, :confirm => 'Are you sure?', :method => :delete %>					
-				</p>
-			</div>
-		<% end %>		
-		</table>
-		<p>
-			<%= @survey_answers.length %> answers
-		</p>
-	<% end %>
+          </span>
+        </p>
+        <% end %>
+        <% last_user = nil;
+            answer.answers.select(&:target_user).sort_by { |a| [a.target_user.id, a.question_id] }.each do |question_answer| %>
+        <% if last_user != question_answer.target_user %>
+        <% unless last_user %>
+        </div>
+        <% end %>
+        <% last_user = question_answer.target_user %>
+        <div class="teammate">
+          <p class="name">
+            <%= display_name_for_user last_user %>
+          </p>
+        <% end %>
+        <p class="question team">
+          <span class="text">
+            <%= question_answer.question.human_string %>
+          </span>
+          <span class="answer">
+            <%= question_answer.number %>
+          </span>
+        </p>
+        <% end %>
+        </div>
+        <p class="actions">
+          <%= link_to 'Show', answer %>
+          <%= link_to 'Edit', edit_survey_answer_path(answer) %>
+          <%= link_to 'Destroy', answer, data: { confirm: 'Are you sure?' },
+                method: :delete %>
+        </p>
+      </div>
+    <% end %>
+    </table>
+    <p>
+      <%= @survey_answers.length %> answers
+    </p>
+  <% end %>
 </div>

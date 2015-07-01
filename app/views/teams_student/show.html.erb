@@ -1,4 +1,3 @@
-
 <h1>Student view for the teams</h1>
 
 <% if !@team_memberships.nil? %>
@@ -9,13 +8,13 @@
     <th>Team Name</th>
     <th>Min / Max size</th>
     <th>Leave Team?</th>
-		<th>Invite (athena)</th>
-		<th></th>
+    <th>Invite (athena)</th>
+    <th></th>
     <th>Members</th>
   </tr>
-<% @team_memberships.each do |team_membership| %>
+  <% @team_memberships.each do |team_membership| %>
   <tr>
-      <% @team = Team.find_by_id(team_membership.team_id) %>
+    <% @team = Team.find_by_id(team_membership.team_id) %>
       <% @partition = TeamPartition.find_by_id(@team.partition_id) %>
       <% @friend_memberships = TeamMembership.where(:team_id => @team.id) %>
     <td>
@@ -37,43 +36,42 @@
     </td>
     <td>
       <% if @partition.editable %>
-      <%= button_to "Leave Team", { :action => "leave_team", :id => @team.id },
-        :confirm => "Are you sure?", :method => :post %>
+      <%= button_to "Leave Team", leave_team_path(@team), method: :post,
+            data: { confirm: 'Are you sure?' } %>
       <% else %>
       <span style="background-color: gray">TEAM FINAL</span>
       <% end %>
     </td>
     <% if @partition.editable %>
-        <% if @team.size >= @team.max_size %>
+      <% if @team.size >= @team.max_size %>
         <td><span style="background-color: gray">Team at max</span></td>
         <td><span style="background-color: gray"></span></td>
-        <% else %>
-		    <td>		
-	        <%= form_tag("/teams_student/invite_member") do -%>
+      <% else %>
+        <td>
+          <%= form_tag("/teams_student/invite_member") do -%>
           <%= text_field_tag 'athena', nil, :placeholder => 'bbitdiddle', :size => 10 %>
-			    <%= hidden_field_tag 'team_id', @team.id %>
+          <%= hidden_field_tag 'team_id', @team.id %>
         </td>
         <td>
           <%= button_to "Invite", :action => "invite_member" %>
-			    <% end -%>
-		    </td>
-        <% end %>
-        <% else %>
-    <td><span style="background-color: gray">TEAM FINAL</span></td>
-    <td><span style="background-color: gray">TEAM FINAL</span></td>
+          <% end -%>
+        </td>
+      <% end %>
+    <% else %>
+      <td><span style="background-color: gray">TEAM FINAL</span></td>
+      <td><span style="background-color: gray">TEAM FINAL</span></td>
     <% end %>
-      <% @friend_memberships.each do |friend_membership| %> 
+    <% @friend_memberships.each do |friend_membership| %>
       <% if friend_membership != team_membership %>
-      <% @friend = User.find_by_id(friend_membership.user_id) %>
-      <% @profile = Profile.find_by_user_id(@friend.id) %>
-    <td>
-      <%= @profile.name %>
-    </td>
-    
-    <% end %>
+        <% @friend = User.find_by_id(friend_membership.user_id) %>
+        <% @profile = Profile.find_by_user_id(@friend.id) %>
+        <td>
+          <%= @profile.name %>
+        </td>
+      <% end %>
     <% end %>
   </tr>
-<% end %>
+  <% end %>
 <% else %>
 <h4>You are associated with no teams.</h4>
 <% end %>
@@ -93,17 +91,17 @@
       <%= part.name %>
     </td>
     <td>
-	  	<%= form_tag("/teams_student/create_team") do -%>
+      <%= form_tag("/teams_student/create_team") do -%>
       <%= text_field_tag ('name' + part.id.to_s), nil, :placeholder => 'Team Awesome' %>
-			<%= hidden_field_tag 'part_id', part.id %>
+      <%= hidden_field_tag 'part_id', part.id %>
     </td>
     <td>
       <%= button_to "Create Team", :action => "create_team" %>
-			<% end -%>
-		</td>
+      <% end -%>
+    </td>
   </tr>
   <% end %>
-  <% end %>
+<% end %>
 </table>
 <% end %>
 <br />
@@ -125,16 +123,16 @@
     <td><%= Team.find_by_id(inv.team_id).name %></td>
     <td><%= TeamPartition.find_by_id(Team.find_by_id(inv.team_id).partition_id).name %></td>
     <td>
-	  	<%= form_tag("/teams_student/accept_invitation") do -%>
-			<%= hidden_field_tag 'invitation_id', inv.id %>
+      <%= form_tag("/teams_student/accept_invitation") do -%>
+      <%= hidden_field_tag 'invitation_id', inv.id %>
       <%= button_to "Join Team", :action => "accept_invitation" %>
-			<% end -%>
-		</td>
+      <% end -%>
+    </td>
     <td>
-	  	<%= form_tag("/teams_student/ignore_invitation") do -%>
-			<%= hidden_field_tag 'invitation_id', inv.id %>
+      <%= form_tag("/teams_student/ignore_invitation") do -%>
+      <%= hidden_field_tag 'invitation_id', inv.id %>
       <%= button_to "Ignore", :action => "ignore_invitation" %>
-			<% end -%>
+      <% end -%>
     </td>
   </tr>
   <% end %>

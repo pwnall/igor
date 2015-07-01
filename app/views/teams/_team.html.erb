@@ -2,8 +2,8 @@
 	<%= team.partition.name %>:
 	<%= team.name %>
   <% if team.partition.editable %>
-  <%= link_to 'Remove', team, :method => :delete,
-        :confirm => "Remove #{team.name} from #{team.partition.name}?"%>
+  <%= link_to 'Remove', team, method: :delete,
+        data: { "Remove #{team.name} from #{team.partition.name}?" } %>
   <% else %>
   <% end %>
 </dt>
@@ -12,8 +12,8 @@
 	<% team.memberships.includes(:user).sort_by { |m| m.user.display_name_for current_user }.each do |membership| %>
 	  <li>
 	    <%= user_image_tag membership.user %>
-	    <%= link_to membership.user.display_name_for(current_user), membership.user,
-                  :class => 'name' %>
+	    <%= link_to membership.user.display_name_for(current_user),
+			      membership.user, class: 'name' %>
 	    <% if current_user.admin? %>
 			<span class="status">
 	    <%= membership.user.registration.for_credit ? 'Credit' : 'Listener' %>
@@ -21,8 +21,8 @@
 			<% end %>
       <% if team.can_edit? current_user %>
       <% if team.partition.editable %>
-	    <%= link_to 'Remove', membership, :method => :delete,
-	            :confirm => "Remove #{membership.user.name} from #{team.name}" %>
+	    <%= link_to 'Remove', membership, method: :delete,
+	       		data: { "Remove #{membership.user.name} from #{team.name}" }%>
       <% end %>
 	    <% end %>
 	  </li>
@@ -34,8 +34,8 @@
 	<%= form_for TeamMembership.new(team: team) do |f| %>
 	  <%= f.hidden_field :team_id %>
 
-	  <%= text_field_tag :query, '', :id => "query_#{team.id}",
-                               :autocomplete => false %>
+	  <%= text_field_tag :query, '', id: "query_#{team.id}",
+		      autocomplete: false %>
 		<%= f.submit "Add" %>
 	<% end %>
   <% else %>

@@ -1,14 +1,14 @@
 <% if assignment.metrics_ready? %>
   <%= link_to assignment_path(assignment,
-          assignment: { metrics_ready: false}), method: :put,
-          confirm: "Un-publish #{assignment.name} grades?",
-          class: 'button' do %>
+        assignment: { metrics_ready: false}), method: :put,
+        data: { confirm: "Un-publish #{assignment.name} grades?" },
+        class: 'button' do %>
     <%= pull_icon_tag %> Pull Grades
   <% end %>
 <% elsif assignment.grades.length > 0 %>
   <%= link_to assignment_path(assignment,
-          { assignment: { metrics_ready: true} }), method: :put,
-          class: 'button' do %>
+        { assignment: { metrics_ready: true} }), method: :put,
+        class: 'button' do %>
     <%= ship_icon_tag %> Release Grades
   <% end %>
 <% end %>

@@ -17,7 +17,7 @@
 				<td>Teams</td>
       </tr>
     </thead>
-    
+
     <tbody>
       <% @team_partitions.each do |partition| %>
         <tr>
@@ -25,10 +25,13 @@
 					<td><%= link_to partition.assignments.map(&:name).join(', ') %>
           <td><%= link_to 'Show', partition %></td>
           <td><%= link_to 'Edit', edit_team_partition_path(partition) %></td>
-          <td><%= link_to 'Destroy', partition, :confirm => 'Are you sure?', :method => :delete %></td>
+          <td>
+            <%= link_to 'Destroy', partition, method: :delete,
+                  data: { confirm: 'Are you sure?' } %>
+          </td>
           <td><%= link_to 'View Problems', view_problem_partition_path(partition) %>
         </tr>
-      <% end %>   
+      <% end %>
     </tbody>
   </table>
 </div>

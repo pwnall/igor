@@ -5,7 +5,7 @@
     <h3>
       <%= link_to 'Implement', implement_recitation_partition_url(@partition),
             method: :post,
-            confirm: "This will overwrite all current recitation assignments" %>
+            data: { confirm: "This will overwrite all current recitation assignments" } %>
     </h3>
 	</div>
 

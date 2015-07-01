@@ -112,15 +112,15 @@ Seven::Application.routes.draw do
   resources :team_partitions
   resources :teams, only: [:edit, :create, :update, :destroy]
   # Teams / Student view.
-  get '/teams_student' => 'teams_student#show'
-  post '/teams_student/leave_team' => 'teams_student#leave_team', as: :leave_team
-  post '/teams_student/create_team' => 'teams_student#create_team'
-  post '/teams_student/invite_member' => 'teams_student#invite_member'
-  post '/teams_student/accept_invitation' => 'teams_student#accept_invitation'
-  post '/teams_student/ignore_invitation' => 'teams_student#ignore_invitation'
-  post '/team_partitions/unlock/:id' => 'team_partitions#unlock'
-  post '/team_partitions/lock/:id' => 'team_partitions#lock'
-  get '/team_partitions/view_problem/:id' => 'team_partitions#view_problem', as: :view_problem_partition
+  get '/teams_student', to: 'teams_student#show'
+  post '/teams_student/leave_team', to: 'teams_student#leave_team', as: :leave_team
+  post '/teams_student/create_team', to: 'teams_student#create_team'
+  post '/teams_student/invite_member', to: 'teams_student#invite_member'
+  post '/teams_student/accept_invitation', to: 'teams_student#accept_invitation'
+  post '/teams_student/ignore_invitation', to: 'teams_student#ignore_invitation'
+  post '/team_partitions/unlock/:id', to: 'team_partitions#unlock', as: :unlock_partition
+  post '/team_partitions/lock/:id', to: 'team_partitions#lock', as: :lock_partition
+  get '/team_partitions/view_problem/:id', to: 'team_partitions#view_problem', as: :view_problem_partition
   resources :teams_student
 
   # Exception handling test.

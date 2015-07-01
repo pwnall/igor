@@ -1,6 +1,6 @@
 <h3 class="user-info">
   <%= user_image_tag user %>
-  <%= link_to user.display_name_for(current_user), user %>  
+  <%= link_to user.display_name_for(current_user), user %>
 </h3>
 <dl class="user-info">
   <dt>E-mail</dt>
@@ -19,8 +19,8 @@
                 :method => :put) %>
   </li>
   <li>
-    <%= link_to 'Destroy', user, :confirm => 'Are you sure?',
-                                 :method => :delete %>
+    <%= link_to 'Destroy', user, data: { confirm: 'Are you sure?' },
+          method: :delete %>
   </li>
 	<% end %>
 </ul>

@@ -11,7 +11,10 @@
   <tr>
     <td><%= link_to 'Show', team_membership %></td>
     <td><%= link_to 'Edit', edit_team_membership_path(team_membership) %></td>
-    <td><%= link_to 'Destroy', team_membership, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td>
+      <%= link_to 'Destroy', team_membership, method: :delete
+            data: { confirm: 'Are you sure?' } %>
+    </td>
   </tr>
 <% end %>
 </table>

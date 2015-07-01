@@ -7,24 +7,24 @@
   <h1 class="full_section" style="margin-right: 100px; ">
     Surveys
   </h1>
-  
+
   <table>
     <tr>
       <th>Name</th>
       <th>Questions</th>
     </tr>
-  
+
   <% @surveys.each do |survey| %>
     <tr>
       <td><%= survey.name %></td>
       <td><%= survey.questions.length %></td>
       <td>
-      	<%= link_to 'Edit', edit_survey_path(survey) %>
-			</td>
+        <%= link_to 'Edit', edit_survey_path(survey) %>
+      </td>
       <td>
-      	<%= link_to 'Destroy', survey, :confirm => 'Are you sure?',
-                                       :method => :delete %>
-			</td>
+        <%= link_to 'Destroy', survey, data: { confirm: 'Are you sure?' },
+              method: :delete %>
+      </td>
     </tr>
   <% end %>
   </table>
@@ -39,39 +39,39 @@
   <h1 class="full_section" style="margin-right: 100px; ">
     Survey Questions
   </h1>
-  
+
   <table>
     <tr>
       <th>Text</th>
       <th>For User</th>
       <th>Scale</th>
-			<th>Comments</th>
+      <th>Comments</th>
     </tr>
-  
+
   <% @survey_questions.each do |survey_question| %>
-	  <tr>
-	    <td><%= survey_question.human_string %></td>
+    <tr>
+      <td><%= survey_question.human_string %></td>
       <td><%= survey_question.targets_user ? 'Yes' : 'No' %></td>
-	    <td>
-	    	<% if survey_question.scaled? %>
-				<%= survey_question.scale_min %>
-				(<%= survey_question.scale_min_label %>) -
+      <td>
+        <% if survey_question.scaled? %>
+        <%= survey_question.scale_min %>
+        (<%= survey_question.scale_min_label %>) -
         <%= survey_question.scale_max %>
-        (<%= survey_question.scale_max_label %>)				
-				<% else %>
-				None
-				<% end %>
-			</td>
-			<td>
-				<%= survey_question.allows_comments? ? 'Yes' : 'No' %>
-	    <td>
-	    	<%= link_to 'Edit', edit_survey_question_path(survey_question) %>
-			</td>
-	    <td>
-	    	<%= link_to 'Destroy', survey_question, :confirm => 'Are you sure?',
-                                                :method => :delete %>
+        (<%= survey_question.scale_max_label %>)
+        <% else %>
+        None
+        <% end %>
       </td>
-	  </tr>	
+      <td>
+        <%= survey_question.allows_comments? ? 'Yes' : 'No' %>
+      <td>
+        <%= link_to 'Edit', edit_survey_question_path(survey_question) %>
+      </td>
+      <td>
+        <%= link_to 'Destroy', survey_question, method: :delete,
+              data: { confirm: 'Are you sure?' } %>
+      </td>
+    </tr>
   <% end %>
   </table>
 </div>

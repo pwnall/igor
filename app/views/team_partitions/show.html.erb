@@ -1,13 +1,13 @@
 <h2><%= @team_partition.name %></h2>
   <% if !@team_partition.editable %>
   <p>
-    This partition is locked. Click <%= link_to "here", {:controller => 'team_partitions', :action => 'unlock', :id => @team_partition},{ 
-        :method => 'post', :confirm => "Really unlock #{@team_partition.name}?"} %> to unlock it.
+    This partition is locked. Click <%= link_to "here", unlock_partition_path(@team_partition),
+        method: :post, data: { confirm: "Really unlock #{@team_partition.name}?" } %> to unlock it.
   </p>
   <% else %>
   <p>
-    This partition is unlocked. Click <%= link_to "here", {:controller => 'team_partitions', :action => 'lock', :id => @team_partition},{ 
-        :method => 'post', :confirm => "Really lock #{@team_partition.name}?"} %> to lock it.
+    This partition is unlocked. Click <%= link_to "here", lock_partition_path(@team_partition),
+        method: :post, data: { confirm: "Really lock #{@team_partition.name}?" } %> to lock it.
   </p>
   <% end %>
   <br />
