@@ -21,7 +21,8 @@ gem 'markdpwn', '>= 0.2.0'
 gem 'mail', '>= 2.6.3'
 gem 'nokogiri', '>= 1.6.6.2'
 gem 'paperclip', '>= 4.2.1'
-gem 'paperclip_database', '>= 2.3.1'
+gem 'paperclip_database', '>= 2.3.1',
+    git: 'https://github.com/pwnall/paperclip_database.git', branch: 'rails5'
 gem 'rack-noie', '>= 1.0', require: 'noie',
     git: 'https://github.com/juliocesar/rack-noie.git',
     ref: 'ce8313c6f327e5c524e3e903a05044ec31c98fd8'
@@ -32,8 +33,11 @@ gem 'thin', '>= 1.6.3'
 
 # Background processing.
 gem 'daemons'  # Required by delayed_job.
-gem 'delayed_job', '>= 4.0.6'
-gem 'delayed_job_active_record', '>= 4.0.3'  # Required by delayed_job.
+gem 'delayed_job', '>= 4.0.6',
+    git: 'https://github.com/pwnall/delayed_job.git', branch: 'rails5'
+gem 'delayed_job_active_record', '>= 4.0.3',  # Required by delayed_job.
+    git: 'https://github.com/pwnall/delayed_job_active_record.git',
+    branch: 'rails5'
 
 # PDF cover sheets.
 gem 'prawn', '~> 0.12.0'

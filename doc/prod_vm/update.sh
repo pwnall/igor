@@ -55,16 +55,12 @@ if [ -f /etc/$PRODUCT/prod.keys ] ; then
 
   # Production VMs
   if [ -f /etc/$PRODUCT/web ] ; then
-    script/update-web.sh
-  fi
-  if [ -f /etc/$PRODUCT/cast ] ; then
-    script/update-cast.sh
+    script/update_web.sh
   fi
 fi
 if [ ! -f /etc/$PRODUCT/prod.keys ] ; then
   # Development VMs run all the servers in the same VM.
-  script/update-web.sh
-  script/update-cast.sh
+  script/update_web.sh
 fi
 
 # Land in the user's home directory.
