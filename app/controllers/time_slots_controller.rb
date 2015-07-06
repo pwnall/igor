@@ -4,7 +4,7 @@ class TimeSlotsController < ApplicationController
   # GET /time_slots
   def index
     @course = Course.main
-    @time_slots = @course.time_slots
+    @time_slot = @course.time_slots.build
   end
 
   # POST /time_slots
@@ -18,7 +18,10 @@ class TimeSlotsController < ApplicationController
           redirect_to time_slots_path, notice: 'Time slot successfully created.'
         end
       else
-        format.html { render :index }
+        format.html do
+          @time_slots = @course.time_slots(true)
+          render :index
+        end
       end
     end
   end

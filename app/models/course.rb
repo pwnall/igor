@@ -96,4 +96,22 @@ class Course < ActiveRecord::Base
   def self.main
     first
   end
+
+  # Days when registrations for this course may have recitation conflicts.
+  #
+  # @return [Array<Integer>] the days, in integer representation
+  def days_with_time_slots
+    time_slots.map(&:day).uniq.sort!
+  end
+
+  # The course's time slots, indexed by start and end time.
+  #
+  # @return [Hash<Array<Integer, Integer>, TimeSlot] the time slots, indexed by
+  #   their :starts_at and :ends_at attributes
+  def time_slots_by_period
+    slots_by_period = time_slots.group_by { |ts| [ts.starts_at, ts.ends_at] }
+    slots_by_period.each do |period, slots|
+      slots_by_period[period] = slots.index_by(&:day)
+    end
+  end
 end

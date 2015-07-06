@@ -53,12 +53,33 @@ class RegistrationTest < ActiveSupport::TestCase
   end
 
   it 'saves associated recitation conflicts through the parent registration' do
-    new_conflicts = time_slots(:s10to12, :s14to16).map { |ts|
-      { registration: @registration, class_name: 'x', time_slot: ts }
+    new_conflicts_params = time_slots(:s10to12, :s14to16).map { |ts|
+      { class_name: 'x', time_slot: ts }
     }
-    @registration.update! recitation_conflicts_attributes: new_conflicts
+    @registration.update! recitation_conflicts_attributes: new_conflicts_params
 
     assert_equal 2, @registration.recitation_conflicts.count
+  end
+
+  it "doesn't save new recitation conflict hashes with a blank class name" do
+    blank_conflict_params = { class_name: '', time_slot: time_slots(:s10to12) }
+    registration_params =
+        { recitation_conflicts_attributes: [blank_conflict_params] }
+
+    assert_no_difference 'RecitationConflict.count' do
+      @registration.update! registration_params
+    end
+  end
+
+  it 'destroys recitation conflicts if the updated class name is blank' do
+    destroyed_conflict = recitation_conflicts(:dexter_6001_monday_1pm)
+    destroyed_conflict_params = { id: destroyed_conflict.id, class_name: '' }
+    registration_params =
+        { recitation_conflicts_attributes: [destroyed_conflict_params] }
+
+    assert_difference 'RecitationConflict.count', -1 do
+      registration.update! registration_params
+    end
   end
 
   describe '#can_edit?' do

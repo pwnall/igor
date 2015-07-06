@@ -2,34 +2,26 @@
 <h3>Availability</h3>
 
 <p>
-  Please only enter numbers for courses that you are registered for, or
-  that you will be registered for by the time recitations are assigned.
-  If a course covers half an hour, enter it as if it would take up the
-  entire hour. Enter a single course number per time slot.
+  Please only enter numbers for courses that you are registered for, or that you
+  will be registered for by the time recitations are assigned. If a course
+  overlaps part of a time slot, enter it in each of the time slots it overlaps.
+  Enter a single course number per time slot.
 </p>
 
 <table class="timetable">
   <thead>
     <tr>
       <th>Time</th>
-      <% ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].each do |day| %>
-      <th><%= day %></th>
-      <% end %>
+      <%= render 'registrations/time_slot_days_header' %>
     </tr>
   </thead>
   <tbody>
-    <% ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm'].zip((9..17).to_a).each do |hour, dhour| %>
+    <% @time_slot_periods.each do |period| %>
     <tr>
-      <th><%= hour %></th>
-      <% (0...5).each do |day| %>
+      <th><%= conflict_time_period_label period.first, period.last %></th>
+      <% @time_slot_days.each do |day| %>
       <td>
-        <% timeslot = day + dhour * 10 %>
-        <%= fields_for("recitation_conflicts[#{timeslot}]",
-              conflicts[timeslot].nil? ?
-              RecitationConflict.new(timeslot: timeslot) : conflicts[timeslot]) do |r|  %>
-          <%= r.text_field :class_name, class: 'form_field', id: "recitation_conflicts_#{timeslot}_class_name", size: 8 %>
-          <%= r.hidden_field :timeslot, id: "recitation_conflicts_#{timeslot}_timeslot" %>
-        <% end %>
+        <%= conflict_input_tag f, @time_slots[period][day], conflicts %>
       </td>
       <% end %>
     </tr>
@@ -37,4 +29,3 @@
   </tbody>
 </table>
 <% end %>
-

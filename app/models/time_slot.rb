@@ -32,7 +32,7 @@ class TimeSlot < ActiveRecord::Base
   #   course. All times currently use the app's default configured time zone
   #   (Eastern Time).
   #
-  # Eg. 900 is 9:00am (EDT)
+  # E.g., 900 is 9:00am (EDT)
   validates :starts_at, numericality: { only_integer: true },
       inclusion: { in: 0...2400 }
 
@@ -42,7 +42,7 @@ class TimeSlot < ActiveRecord::Base
   #   not be confused for the day on which the time slot is scheduled. Using a
   #   Time object lets us more easily format the time for views.
   def start_time
-    time_at starts_at
+    TimeSlot.time_at starts_at
   end
 
   # Set the start time (virtual attribute).
@@ -58,7 +58,7 @@ class TimeSlot < ActiveRecord::Base
   #   course. All times currently use the app's default configured time zone
   #   (Eastern Time).
   #
-  # Eg. 900 is 9:00am (EDT)
+  # E.g., 900 is 9:00am (EDT)
   #
   # NOTE: We don't validate that the end time occurs after the start time in
   #   order to support time periods that span across midnight.
@@ -71,7 +71,7 @@ class TimeSlot < ActiveRecord::Base
   #   not be confused for the day on which the time slot is scheduled. Using a
   #   Time object lets us more easily format the time for views.
   def end_time
-    time_at ends_at
+    TimeSlot.time_at ends_at
   end
 
   # Set the end time (virtual attribute).
@@ -84,16 +84,15 @@ class TimeSlot < ActiveRecord::Base
   # Convert the time stored in the database into an AS::TimeWithZone instance.
   #
   # @example
-  #   time_at(230) #=> Fri, 26 Jun 2015 02:30:00 EDT -04:00
+  #   TimeSlot.time_at(230) #=> Fri, 26 Jun 2015 02:30:00 EDT -04:00
   #
   # @param [Integer] database_time the time in 24-hour notation without a colon
   # @return [ActiveSupport::TimeWithZone] the input as a Time-like object
-  def time_at(database_time)
+  def self.time_at(database_time)
     return unless database_time
     hour, minute = database_time.divmod 100
     Time.zone.parse "#{hour}:#{minute}"
   end
-  private :time_at
 
   # Convert an HTML time form submission into number of minutes since midnight.
   #

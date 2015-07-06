@@ -1,4 +1,4 @@
-<%= form_for @course.time_slots.build do |f| %>
+<%= form_for @time_slot do |f| %>
   <%= f.error_messages %>
     <td><%= f.select :day, day_select_option_tags %></td>
     <td><%= f.time_select :start_time, ampm: true, minute_step: 5 %></td>

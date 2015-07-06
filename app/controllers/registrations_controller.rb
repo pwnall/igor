@@ -1,4 +1,5 @@
 class RegistrationsController < ApplicationController
+  before_action :set_registration, only: [:show, :edit, :update]
   before_action :authenticated_as_user, only: [:show, :new, :create, :edit,
                                                :update]
   before_action :authenticated_as_admin,
@@ -18,13 +19,13 @@ class RegistrationsController < ApplicationController
 
   # GET /registrations/1
   def show
-    @registration = Registration.find params[:id]
     return bounce_user unless @registration.can_edit?(current_user)
+    @registration.build_prerequisite_answers
 
     if @registration.can_edit?(current_user) and
         @registration.course.has_recitations?
-      @recitation_conflicts = @registration.recitation_conflicts.
-                                            index_by(&:timeslot)
+      set_recitation_conflicts_for @registration
+      set_time_slots_for @registration
     else
       @recitation_conflicts = nil
     end
@@ -37,18 +38,26 @@ class RegistrationsController < ApplicationController
   # GET /registrations/new
   def new
     course = Course.main
-    @registration = Registration.new user: current_user, course: course
+    # Keep registration instance from #create to show validation error messages. 
+    @registration ||= Registration.new user: current_user, course: course
     @registration.build_prerequisite_answers
     @recitation_conflicts = {}
+    set_time_slots_for @registration
+
+    # An explicit render is necessary when creating fails validations.
+    render :new
   end
 
   # GET /registrations/1/edit
   def edit
-    @registration = Registration.find params[:id]
     return bounce_user unless @registration.can_edit?(current_user)
+    @registration.build_prerequisite_answers
 
-    @recitation_conflicts = @registration.recitation_conflicts.
-                                          index_by(&:timeslot)
+    set_recitation_conflicts_for @registration
+    set_time_slots_for @registration
+
+    # An explicit render is necessary when updating fails validations.
+    render :edit
   end
 
   # POST /registrations
@@ -57,16 +66,6 @@ class RegistrationsController < ApplicationController
     @registration.user = current_user
     @registration.course = Course.main
 
-    if @registration.course.has_recitations?
-      if params[:recitation_conflicts]
-        @registration.update_conflicts params[:recitation_conflicts]
-        @recitation_conflicts = @registration.recitation_conflicts.
-                                              index_by(&:timeslot)
-      else
-        @recitation_conflicts = {}
-      end
-    end
-
     respond_to do |format|
       if @registration.save
         format.html do
@@ -74,32 +73,23 @@ class RegistrationsController < ApplicationController
               "You are now registered for #{@registration.course.number}."
         end
       else
-        format.html { render action: :new }
+        format.html { new }
       end
     end
   end
 
   # PUT /registrations/1
   def update
-    @registration = Registration.find params[:id]
     return bounce_user unless @registration.can_edit?(current_user)
 
-    if params[:recitation_conflicts]
-      @registration.update_conflicts params[:recitation_conflicts]
-      @recitation_conflicts = @registration.recitation_conflicts.
-                                            index_by(&:timeslot)
-    else
-      @recitation_conflicts = {}
-    end
-
     respond_to do |format|
-      if @registration.update_attributes registration_params
+      if @registration.update registration_params
         format.html do
           redirect_to @registration, notice:
               "#{@registration.course.number} registration info updated."
         end
       else
-        format.html { render action: :edit }
+        format.html { edit }
       end
     end
   end
@@ -117,34 +107,31 @@ class RegistrationsController < ApplicationController
     end
   end
 
+  def set_registration
+    @registration = Registration.find params[:id]
+  end
+  private :set_registration
+
+  def set_recitation_conflicts_for(registration)
+    @recitation_conflicts = registration.recitation_conflicts.
+        index_by &:time_slot_id
+  end
+  private :set_recitation_conflicts_for
+
+  def set_time_slots_for(registration)
+    @time_slots = registration.course.time_slots_by_period
+    @time_slot_periods = @time_slots.keys.sort!
+    @time_slot_days = registration.course.days_with_time_slots
+  end
+  private :set_time_slots_for
+
   def registration_params
     return {} unless params[:registration]
 
-    if params[:registration] and
-        params[:registration][:prerequisite_answers_attributes]
-      registration = Registration.where(id: params[:id]).first
-      if registration
-        answers_by_prerequisite_id =
-          registration.prerequisite_answers.index_by(&:prerequisite_id)
-      else
-        answers_by_prerequisite_id = {}
-      end
-
-      params[:registration][:prerequisite_answers_attributes].values.
-          each do |answer_attributes|
-        answer = answers_by_prerequisite_id[
-            answer_attributes[:prerequisite_id].to_i]
-        if answer
-          answer_attributes[:id] = answer.id
-        else
-          answer_attributes.delete :id
-        end
-      end
-    end
-
     params.require(:registration).permit :for_credit, :allows_publishing,
         prerequisite_answers_attributes: [:took_course, :prerequisite_id,
-                                          :waiver_answer, :id]
+                                          :waiver_answer, :id],
+        recitation_conflicts_attributes: [:class_name, :time_slot_id, :id]
   end
   private :registration_params
 

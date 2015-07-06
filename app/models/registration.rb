@@ -41,6 +41,12 @@ class Registration < ActiveRecord::Base
   # Temporary excuse for a calendar.
   has_many :recitation_conflicts, dependent: :destroy, inverse_of: :registration
   accepts_nested_attributes_for :recitation_conflicts
+  # Conflicts are destroyed in the UI by submitting a blank class name.
+  def destroy_blank_recitation_conflicts
+    recitation_conflicts.select { |rc| rc.class_name.blank? }.each &:destroy
+  end
+  private :destroy_blank_recitation_conflicts
+  before_validation :destroy_blank_recitation_conflicts
 
   # Answers to the course's prerequisites questions.
   has_many :prerequisite_answers, dependent: :destroy,
@@ -58,38 +64,6 @@ class Registration < ActiveRecord::Base
     course.prerequisites.each do |p|
       next if existing_answers.has_key? p.id
       prerequisite_answers.build registration: self, prerequisite: p
-    end
-  end
-
-  # Process updates to the student's reported availability.
-  #
-  # TODO(spark008): Add tests for this functionality after implementing
-  # non-MIT-specific timeslots.
-  #
-  # @param [Hash<String, Hash<String, String>>] new_conflicts maps each timeslot
-  #   to a potential scheduling conflict
-  #
-  # An example of the `new_conflicts` parameter:
-  #   {"90"=>{"class_name"=>"6.042", "timeslot"=>"90"},
-  #    "91"=>{"class_name"=>"", "timeslot"=>"91"}}
-  def update_conflicts(new_conflicts)
-    old_conflicts = recitation_conflicts.index_by(&:timeslot)
-
-    # Update recitation conflicts.
-    new_conflicts.each_value do |rc|
-      next if rc[:class_name].blank?
-      timeslot = rc[:timeslot].to_i
-      if old_conflicts.has_key? timeslot
-        old_conflicts.delete(timeslot).update_attributes rc
-      else
-        rc[:registration] = self
-        conflict = RecitationConflict.new rc
-        recitation_conflicts << conflict
-      end
-    end
-    # Wipe cleared conflicts.
-    old_conflicts.each_value do |old_conflict|
-      recitation_conflicts.delete old_conflict
     end
   end
 end

@@ -3,17 +3,49 @@ module TimeSlotHelper
 
   # Option tags whose text is the day name, and value is the day's integer.
   #
-  # Eg. <option value="0">Monday</option>...<option value="6">Sunday</option>
+  # E.g., <option value="0">Monday</option>...<option value="6">Sunday</option>
   def day_select_option_tags
     options_for_select DAYS.map.with_index.to_a
   end
 
-  # The day of the week that the given time slot starts.
-  def time_slot_day_label(time_slot)
-    DAYS[time_slot.day]
+  # Convert the day of the week from an integer to the name of a day.
+  #
+  # E.g., day_label(0) #=> 'Monday'
+  def day_label(day)
+    DAYS[day]
   end
 
-  # The number of hours and minutes in a time slot. Eg. "1hr 30min"
+  # The day of the week that the given time slot starts.
+  def time_slot_day_label(time_slot)
+    day_label(time_slot.day)
+  end
+
+  # The range of a time slot displayed when viewing time slots.
+  #
+  # E.g., '10:00am (EDT) - 11:00am (EDT)'
+  def time_slot_range_label(time_slot)
+    start_time = time_slot.start_time.to_s(:time_slot_long)
+    end_time = time_slot.end_time.to_s(:time_slot_long)
+    "#{start_time} - #{end_time}"
+  end
+
+  # The range of a time slot displayed when viewing recitation conflicts.
+  #
+  # E.g., '10:00am - 11:00am (EDT)'
+  def conflict_time_period_label(start_time, end_time)
+    start_time = TimeSlot.time_at(start_time).to_s(:time_slot_short)
+    end_time = TimeSlot.time_at(end_time).to_s(:time_slot_long)
+    "#{start_time} - #{end_time}"
+  end
+
+  # A string representation of the time slot.
+  #
+  # E.g., 'Monday 10:00am (EDT) - 11:00am (EDT)'
+  def time_slot_label(time_slot)
+    "#{time_slot_day_label time_slot} #{time_slot_range_label time_slot}"
+  end
+
+  # The number of hours and minutes in a time slot. E.g., "1hr 30min"
   #
   # We currently support durations from 0 to 23:59 hours.
   def time_slot_duration(time_slot)
@@ -23,16 +55,6 @@ module TimeSlotHelper
     result = "#{hour}hr"
     result << " #{minute}min" unless minute == 0
     result
-  end
-
-  # A string representation of the time slot.
-  #
-  # Eg. 'Monday 10:00am (EDT) - 11:00am (EDT)'
-  def time_slot_label(time_slot)
-    start_time = time_slot.start_time.to_s :time_slot
-    end_time = time_slot.end_time.to_s :time_slot
-
-    "#{DAYS[time_slot.day]} #{start_time} - #{end_time}"
   end
 
   # A checkbox list of time slots you can allot to the given recitation.

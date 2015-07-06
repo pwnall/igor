@@ -30,3 +30,8 @@ unanswered:
   course: main
   prerequisite_number: "0.001"
   waiver_question: "Are we there yet?"
+
+not_main:
+  course: not_main
+  prerequisite_number: "6.042"
+  waiver_question: "What is your mathematics background?"

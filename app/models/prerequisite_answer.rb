@@ -14,10 +14,20 @@
 class PrerequisiteAnswer < ActiveRecord::Base
   # The registration containing this answer to a prerequisite class question.
   belongs_to :registration, inverse_of: :prerequisite_answers
+  validates :registration, presence: true
 
   # The prerequisite that this answer covers.
   belongs_to :prerequisite, inverse_of: :prerequisite_answers
-  validates :prerequisite, uniqueness: { scope: :registration }
+  validates :prerequisite, uniqueness: { scope: :registration }, presence: true
+
+  # Ensures that the registrant is answering a prerequisite in the right course.
+  def registration_course_matches_prerequisite
+    return unless registration && prerequisite
+    return if registration.course_id == prerequisite.course_id
+    errors.add :prerequisite, 'does not belong to the registered course.'
+  end
+  private :registration_course_matches_prerequisite
+  validate :registration_course_matches_prerequisite
 
   # True if the student took the prerequisite course, false otherwise.
   #
