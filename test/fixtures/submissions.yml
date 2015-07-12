@@ -5,7 +5,7 @@
 #  id             :integer          not null, primary key
 #  deliverable_id :integer          not null
 #  db_file_id     :integer          not null
-#  subject_type   :string(255)      not null
+#  subject_type   :string           not null
 #  subject_id     :integer          not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null

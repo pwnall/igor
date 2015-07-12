@@ -5,7 +5,7 @@
 #  id              :integer          not null, primary key
 #  registration_id :integer          not null
 #  time_slot_id    :integer          not null
-#  class_name      :string(255)      not null
+#  class_name      :string           not null
 #
 
 # A scheduling conflict between a recitation assignment and some other course.

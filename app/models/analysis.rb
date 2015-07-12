@@ -6,8 +6,8 @@
 #  submission_id :integer          not null
 #  status_code   :integer          not null
 #  score         :integer
-#  log           :text(16777215)   not null
-#  private_log   :text(16777215)   not null
+#  log           :text             not null
+#  private_log   :text             not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

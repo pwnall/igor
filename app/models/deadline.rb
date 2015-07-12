@@ -3,7 +3,7 @@
 # Table name: deadlines
 #
 #  id           :integer          not null, primary key
-#  subject_type :string(255)      not null
+#  subject_type :string           not null
 #  subject_id   :integer          not null
 #  due_at       :datetime         not null
 #  course_id    :integer          not null

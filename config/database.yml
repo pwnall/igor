@@ -1,9 +1,15 @@
+dev_pgsql: &dev_pgsql
+  adapter: postgresql
+  database: seven_dev
+  encoding: unicode
+  pool: 5
+
 dev_mysql: &dev_mysql
   adapter: mysql2
   database: seven_dev
   username: root
-  password: 
-  
+  password:
+
 # SQLite version 3.x
 #   gem install sqlite3-ruby (not necessary on OS X Leopard)
 dev_sqlite3: &dev_sqlite3
@@ -11,12 +17,18 @@ dev_sqlite3: &dev_sqlite3
   database: db/development.sqlite3
   timeout: 5000
 
+test_pgsql: &test_pgsql
+  adapter: postgresql
+  database: seven_dev
+  encoding: unicode
+  pool: 5
+
 test_mysql: &test_mysql
   adapter: mysql2
   database: seven_test
   username: root
   password:
-  
+
 # SQLite version 3.x
 #   gem install sqlite3-ruby (not necessary on OS X Leopard)
 test_sqlite3: &test_sqlite3
@@ -26,14 +38,14 @@ test_sqlite3: &test_sqlite3
 
 # use &dev_sqlite3 or &dev_mysql, depending on which db engine you want
 development:
-  <<: *dev_mysql
+  <<: *dev_pgsql
 
 # Warning: The database defined as 'test' will be erased and
 # re-generated from your development database when you run 'rake'.
 # Do not set this db to the same as development or production.
 test:
-  <<: *test_mysql
+  <<: *test_pgsql
 
 # This section is rewritten by rpwn, don't get your hopes up :)
 production:
-  <<: *dev_mysql
+  <<: *dev_pgsql

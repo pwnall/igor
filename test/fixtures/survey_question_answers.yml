@@ -6,7 +6,7 @@
 #  survey_answer_id :integer          not null
 #  question_id      :integer          not null
 #  target_user_id   :integer
-#  number           :float(24)        not null
+#  number           :float            not null
 #  comment          :string(1024)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null

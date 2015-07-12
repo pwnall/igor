@@ -6,7 +6,7 @@
 #  registration_id :integer          not null
 #  prerequisite_id :integer          not null
 #  took_course     :boolean          not null
-#  waiver_answer   :text(65535)
+#  waiver_answer   :text
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

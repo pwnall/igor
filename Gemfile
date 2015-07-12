@@ -9,7 +9,7 @@ gem 'sprockets-rails',
 gem 'arel',
     git: 'https://github.com/rails/arel', branch: 'master'
 
-gem 'mysql2', '>= 0.3.18'
+gem 'pg', '>= 0.18.2'
 
 # Core.
 gem 'authpwn_rails', '>= 0.17.2',

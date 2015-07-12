@@ -4,8 +4,8 @@
 #
 #  id             :integer          not null, primary key
 #  created_at     :datetime         not null
-#  f_file_name    :string(255)
-#  f_content_type :string(255)
+#  f_file_name    :string
+#  f_content_type :string
 #  f_file_size    :integer
 #  f_updated_at   :datetime
 #
