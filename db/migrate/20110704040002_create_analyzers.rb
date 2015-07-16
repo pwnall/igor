@@ -1,9 +1,9 @@
 class CreateAnalyzers < ActiveRecord::Migration
   def change
     create_table :analyzers do |t|
-      t.references :deliverable, null: false
+      t.references :deliverable, null: false, unique: true
       t.string :type, limit: 32, null: false
-      t.boolean :auto_grading, null: false, default: false
+      t.boolean :auto_grading, null: false
 
       t.text :exec_limits, limit: 1.kilobyte, null: true
       t.references :db_file, null: true
@@ -12,7 +12,5 @@ class CreateAnalyzers < ActiveRecord::Migration
 
       t.timestamps
     end
-
-    add_index :analyzers, :deliverable_id, unique: true
   end
 end

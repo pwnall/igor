@@ -5,8 +5,8 @@
 #  id             :integer          not null, primary key
 #  deliverable_id :integer          not null
 #  type           :string(32)       not null
-#  auto_grading   :boolean          default(FALSE), not null
-#  exec_limits    :text
+#  auto_grading   :boolean          not null
+#  exec_limits    :text(65535)
 #  db_file_id     :integer
 #  message_name   :string(64)
 #  created_at     :datetime         not null
@@ -20,7 +20,7 @@
 #  type: MyString
 #  proc_name: MyString
 #  file_uri: MyString
-#  file_contents: 
+#  file_contents:
 #  file_name: MyString
 #  file_mime_type: MyString
 #
@@ -29,6 +29,6 @@
 #  type: MyString
 #  proc_name: MyString
 #  file_uri: MyString
-#  file_contents: 
+#  file_contents:
 #  file_name: MyString
 #  file_mime_type: MyString
