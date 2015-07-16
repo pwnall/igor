@@ -100,6 +100,8 @@ class AssignmentsController < ApplicationController
   end
 
   # Permits updating and creating assignments.
+  # TODO(pwnall): Check that rails securely handles the :type field when
+  #   touching classes that use STI.
   def assignment_params
     params.require(:assignment).permit :name, :due_at, :weight, :author_id,
         :team_partition_id, :feedback_survey_id,

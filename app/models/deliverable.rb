@@ -25,45 +25,24 @@ class Deliverable < ActiveRecord::Base
 
   # The assignment that the deliverable is a part of.
   belongs_to :assignment, inverse_of: :deliverables
+  validates :assignment, presence: true
 
   # The method used to verify students' submissions for this deliverable.
   has_one :analyzer, dependent: :destroy, inverse_of: :deliverable
   accepts_nested_attributes_for :analyzer
   validates_associated :analyzer
 
-  # HACK: this nasty bit of code gets nested_attributes working with STI.
-  def analyzer_attributes=(attributes)
-    type = attributes[Analyzer.inheritance_column]
-    attributes = attributes.except Analyzer.inheritance_column, :id
-    if type
-      klass = Analyzer.send :find_sti_class, type
-      if !analyzer || !analyzer.kind_of?(klass)
-        # Don't save the new association before validation.
-        self.association(:analyzer).replace klass.new, false
-      end
-    end
-    analyzer.attributes = attributes
-  end
-
-  # The analyzer, if it's a proc_analyzer.
-  has_one :proc_analyzer, inverse_of: :deliverable
-  accepts_nested_attributes_for :proc_analyzer
-
-  # The analyzer, if it's a script_analyzer
-  has_one :script_analyzer, inverse_of: :deliverable
-  accepts_nested_attributes_for :script_analyzer
-
   # All the student submissions for this deliverable.
   has_many :submissions, dependent: :destroy, inverse_of: :deliverable
 
   # True if "user" should be allowed to see this deliverable.
   def can_read?(user)
-    assignment.deliverables_ready? || (user && user.admin?)
+    assignment.deliverables_ready? || !!(user && user.admin?)
   end
 
   # True if "user" should be able to submit (or re-submit) for this deliverable.
   def can_submit?(user)
-    assignment.deliverables_ready? || (user && user.admin?)
+    assignment.deliverables_ready? || !!(user && user.admin?)
   end
 
   # This deliverable's submission for the given user.
@@ -75,9 +54,9 @@ class Deliverable < ActiveRecord::Base
     team = assignment.team_partition &&
         assignment.team_partition.team_for_user(user)
     if team.nil?
-      submissions.where(subject: user).first
+      submissions.find_by subject: user
     else
-      submissions.where(subject: team).first
+      submissions.find_by subject: team
     end
   end
 

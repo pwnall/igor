@@ -10,6 +10,7 @@ class AssignmentTest < ActiveSupport::TestCase
 
   let(:assignment) { assignments(:assessment) }
   let(:any_user) { User.new }
+  let(:admin) { users(:admin) }
 
   it 'validates the setup assignment' do
     assert @assignment.valid?, @assignment.errors.full_messages
@@ -56,6 +57,7 @@ class AssignmentTest < ActiveSupport::TestCase
 
       it 'lets only admin view assignments under construction' do
         assignment.update! deliverables_ready: false, metrics_ready: false
+        assert_equal true, assignment.can_read?(admin)
         assert_equal false, assignment.can_read?(any_user)
         assert_equal false, assignment.can_read?(nil)
       end
@@ -63,79 +65,89 @@ class AssignmentTest < ActiveSupport::TestCase
   end
 
   describe 'homework submission feature' do
-    it 'requires a deadline' do
-      @assignment.deadline = nil
-      assert @assignment.invalid?
-    end
-
-    it 'saves the associated deadline through the parent assignment' do
-      new_time = @due_at + 1.day
-      params = { deadline_attributes: { due_at: new_time } }
-      @assignment.update! params
-
-      assert_equal new_time, @assignment.due_at
-    end
-
-    describe 'by_deadline scope' do
-      it 'sorts assignments by ascending deadline, then by name' do
-        golden = assignments(:project, :not_main_exam, :ps2, :assessment, :ps1)
-        actual = Assignment.by_deadline
-        assert_equal golden, actual, actual.map(&:name)
-      end
-    end
-
-    describe '#due_at' do
-      it 'returns the date when the assignment is due' do
-        assert_equal @due_at, @assignment.due_at
-      end
-
-      it 'returns nil if the deadline has not been set' do
+    describe 'HasDeadline module' do
+      it 'requires a deadline' do
         @assignment.deadline = nil
-        assert_nil @assignment.due_at
+        assert @assignment.invalid?
       end
-    end
 
-    describe '#due_at=' do
-      it 'builds a deadline with the given date if one does not exist' do
-        @assignment.deadline = nil
+      it 'destroys dependent records' do
+        assert assignment.deadline
+
+        assignment.destroy
+
+        assert_nil assignment.deadline(true)
+      end
+
+      it 'saves the associated deadline through the parent assignment' do
         new_time = @due_at + 1.day
-        @assignment.due_at = new_time
+        params = { deadline_attributes: { due_at: new_time } }
+        @assignment.update! params
 
-        assert_equal new_time, @assignment.deadline.due_at
-        assert_equal courses(:main), @assignment.deadline.course
+        assert_equal new_time, @assignment.due_at
       end
 
-      it 'updates the due date of an existing deadline' do
-        assert @assignment.deadline
-        new_time = @due_at + 1.day
-        @assignment.due_at = new_time
-
-        assert_equal new_time, @assignment.deadline.due_at
+      describe 'by_deadline scope' do
+        it 'sorts assignments by ascending deadline, then by name' do
+          golden = assignments(:project, :not_main_exam, :ps2, :assessment, :ps1)
+          actual = Assignment.by_deadline
+          assert_equal golden, actual, actual.map(&:name)
+        end
       end
-    end
 
-    # TODO(spark008): Retest this method when extensions have been implemented.
-    describe '#deadline_for' do
-      it 'returns the deadline for the given user' do
-        assert_equal @due_at, @assignment.deadline_for(any_user)
+      describe '#due_at' do
+        it 'returns the date when the assignment is due' do
+          assert_equal @due_at, @assignment.due_at
+        end
+
+        it 'returns nil if the deadline has not been set' do
+          @assignment.deadline = nil
+          assert_nil @assignment.due_at
+        end
       end
-    end
 
-    # TODO(spark008): Retest this method when extensions have been implemented.
-    describe '#deadline_passed_for?' do
-      it 'return whether the deadline has passed' do
-        assignment.deadline.update! due_at: 1.day.from_now
-        assert_equal false, assignment.deadline_passed_for?(any_user)
+      describe '#due_at=' do
+        it 'builds a deadline with the given date if one does not exist' do
+          @assignment.deadline = nil
+          new_time = @due_at + 1.day
+          @assignment.due_at = new_time
 
-        assignment.deadline.update! due_at: 1.day.ago
-        assert_equal true, assignment.deadline_passed_for?(any_user)
+          assert_equal new_time, @assignment.deadline.due_at
+          assert_equal courses(:main), @assignment.deadline.course
+        end
+
+        it 'updates the due date of an existing deadline' do
+          assert @assignment.deadline
+          new_time = @due_at + 1.day
+          @assignment.due_at = new_time
+
+          assert_equal new_time, @assignment.deadline.due_at
+        end
+      end
+
+      # TODO(spark008): Retest this method after extensions are implemented.
+      describe '#deadline_for' do
+        it 'returns the deadline for the given user' do
+          assert_equal @due_at, @assignment.deadline_for(any_user)
+        end
+      end
+
+      # TODO(spark008): Retest this method after extensions are implemented.
+      describe '#deadline_passed_for?' do
+        it 'returns whether the deadline has passed' do
+          assignment.deadline.update! due_at: 1.day.from_now
+          assert_equal false, assignment.deadline_passed_for?(any_user)
+
+          assignment.deadline.update! due_at: 1.day.ago
+          assert_equal true, assignment.deadline_passed_for?(any_user)
+        end
       end
     end
 
     describe '.for' do
       it 'returns all assignments for the course if the user is an admin' do
         golden = assignments(:project, :ps2, :assessment, :ps1)
-        actual = Assignment.for users(:admin), courses(:main)
+        actual = Assignment.for admin, courses(:main)
         assert_equal golden, actual, actual.map(&:name)
       end
 
@@ -196,7 +208,7 @@ class AssignmentTest < ActiveSupport::TestCase
 
       it 'returns all deliverables, even if not ready, for admins' do
         assignment.update! deliverables_ready: false
-        actual = assignment.deliverables_for(users(:admin)).sort_by(&:name)
+        actual = assignment.deliverables_for(admin).sort_by(&:name)
         assert_equal golden, actual, actual.map(&:name)
       end
 

@@ -1,0 +1,210 @@
+require 'test_helper'
+
+class DeliverableTest < ActiveSupport::TestCase
+  before do
+    @deliverable = Deliverable.new assignment: assignments(:ps1),
+        file_ext: 'pdf', name: 'Extra Credit', description: 'Bonus for PS1'
+  end
+
+  let(:deliverable) { deliverables(:ps1_writeup) }
+  let(:any_user) { User.new }
+  let(:admin) { users(:admin) }
+
+  it 'validates the setup deliverable' do
+    assert @deliverable.valid?
+  end
+
+  it 'requires a name' do
+    @deliverable.name = nil
+    assert @deliverable.invalid?
+  end
+
+  it 'rejects lengthy names' do
+    @deliverable.name = 'n' * 65
+    assert @deliverable.invalid?
+  end
+
+  it 'forbids deliverables for the same assignment from sharing names' do
+    @deliverable.name = assignments(:ps1).deliverables.first.name
+    assert @deliverable.invalid?
+  end
+
+  it 'requires a description' do
+    @deliverable.description = nil
+    assert @deliverable.invalid?
+  end
+
+  it 'rejects lengthy descriptions' do
+    @deliverable.description = 'd' * 2049
+    assert @deliverable.invalid?
+  end
+
+  it 'requires a file extension' do
+    @deliverable.file_ext = nil
+    assert @deliverable.invalid?
+  end
+
+  it 'rejects lengthy file extensions' do
+    @deliverable.file_ext = 'f' * 17
+    assert @deliverable.invalid?
+  end
+
+  it 'requires an assignment' do
+    @deliverable.assignment = nil
+    assert @deliverable.invalid?
+  end
+
+  it 'destroys dependent records' do
+    assert deliverable.analyzer
+    assert_equal true, deliverable.submissions.any?
+
+    deliverable.destroy
+
+    assert_nil deliverable.analyzer(true)
+    assert_empty deliverable.submissions(true)
+  end
+
+  it 'validates an associated analyzer' do
+    analyzer = @deliverable.build_analyzer
+    assert_equal false, analyzer.valid?
+    assert_equal false, @deliverable.valid?
+  end
+
+  it 'saves the associated ProcAnalyzer through the parent deliverable' do
+    assert_nil @deliverable.analyzer
+    deliverable_params = { analyzer_attributes: {
+      type: 'ProcAnalyzer', auto_grading: 0, message_name: 'analyze_pdf'
+    } }
+    @deliverable.update! deliverable_params
+
+    assert_instance_of ProcAnalyzer, @deliverable.analyzer(true)
+  end
+
+  it 'saves the associated ScriptAnalyzer through the parent deliverable' do
+    assert_nil @deliverable.analyzer
+    attachment = fixture_file_upload 'analyzer_files/fib.zip',
+        'application/zip', :binary
+    deliverable_params = { analyzer_attributes: {
+      type: 'ScriptAnalyzer', auto_grading: 1, time_limit: 2, ram_limit: 1024,
+      file_limit: 10, file_size_limit: 100, process_limit: 5,
+      db_file_attributes: { f: attachment }
+    } }
+    @deliverable.update! deliverable_params
+
+    assert_instance_of ScriptAnalyzer, @deliverable.analyzer(true)
+  end
+
+  describe 'read/submit permissions' do
+    describe '#can_read?' do
+      it 'lets any user view deliverable if :deliverables_ready is true' do
+        deliverable.assignment.update! deliverables_ready: true
+        assert_equal true, deliverable.can_read?(any_user)
+        assert_equal true, deliverable.can_read?(nil)
+      end
+
+      it 'lets only admins view deliverable if :deliverables_ready is false' do
+        deliverable.assignment.update! deliverables_ready: false
+        assert_equal true, deliverable.can_read?(admin)
+        assert_equal false, deliverable.can_read?(any_user)
+        assert_equal false, deliverable.can_read?(nil)
+      end
+    end
+
+    describe '#can_submit?' do
+      it 'lets any user submit deliverable if :deliverables_ready is true' do
+        deliverable.assignment.update! deliverables_ready: true
+        assert_equal true, deliverable.can_submit?(any_user)
+        assert_equal true, deliverable.can_submit?(nil)
+      end
+
+      it 'lets only admins submit deliverable if :deliverables_ready is false' do
+        deliverable.assignment.update! deliverables_ready: false
+        assert_equal true, deliverable.can_submit?(admin)
+        assert_equal false, deliverable.can_submit?(any_user)
+        assert_equal false, deliverable.can_submit?(nil)
+      end
+    end
+  end
+
+  describe '#submission_for' do
+    describe 'individual assignments' do
+      let(:individual_deliverable) { deliverables(:assessment_code) }
+
+      it 'if the user has a submission, returns that submission' do
+        golden = Submission.find_by deliverable: individual_deliverable,
+            subject: users(:dexter)
+        result = individual_deliverable.submission_for users(:dexter)
+        nil_result = individual_deliverable.submission_for nil
+
+        assert_equal golden, result
+        assert_nil nil_result
+      end
+    end
+
+    # TODO(spark008): Write test for team assignments.
+    describe 'team assignments' do
+    end
+  end
+
+  # TODO(spark008): Retest this method after extensions are implemented.
+  describe '#deadline_for' do
+    it 'returns the deadline for the given user' do
+      assert_in_delta 1.week.ago, deliverable.deadline_for(any_user), 10
+    end
+  end
+
+  # TODO(spark008): Retest this method after extensions are implemented.
+  describe '#deadline_passed_for?' do
+    it 'returns whether the deadline has passed' do
+      deliverable.assignment.deadline.update! due_at: 1.day.from_now
+      assert_equal false, deliverable.deadline_passed_for?(any_user)
+
+      deliverable.assignment.deadline.update! due_at: 1.day.ago
+      assert_equal true, deliverable.deadline_passed_for?(any_user)
+    end
+  end
+
+  describe '#expected_submissions' do
+    it 'returns the number of students currently enrolled' do
+      assert_equal 3, deliverable.expected_submissions
+    end
+  end
+
+  describe '#reanalyze_submissions' do
+    let(:submission_count) { deliverable.submissions.count }
+
+    before do
+      assert_operator 2, :<=, submission_count
+    end
+
+    describe 'deliverable has analyzer' do
+      before { assert deliverable.analyzer }
+
+      it 'queues all submissions for reanalysis' do
+        assert_difference 'Delayed::Job.count', submission_count do
+          deliverable.reanalyze_submissions
+        end
+      end
+
+      it 'reanalyzes all submissions' do
+        deliverable.reanalyze_submissions
+
+        assert_equal [submission_count, 0], Delayed::Worker.new.work_off
+        statuses = deliverable.submissions(true).map { |s| s.analysis.status }
+        assert_equal true, statuses.all? { |status| status == :ok }
+      end
+    end
+
+    describe 'deliverable has no analyzer' do
+      before { deliverable.analyzer.destroy }
+
+      it 'sets analysis status to :no_analyzer for all submissions' do
+        assert_no_difference 'Delayed::Job.count' do
+          deliverable.reanalyze_submissions
+        end
+        statuses = deliverable.submissions(true).map { |s| s.analysis.status }
+        assert_equal true, statuses.all? { |status| status == :no_analyzer }
+      end
+    end
+  end
+end
