@@ -12,16 +12,20 @@
 #  updated_at    :datetime         not null
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+dexter_assessment:
+  submission: dexter_assessment
+  status_code: 2
+  log: ''
+  private_log: ''
 
-#one:
-#  submission_id: 1
-#  score: 1
-#  status: 1
-#  log:
-#
-#two:
-#  submission_id: 1
-#  score: 1
-#  status: 1
-#  log: 
+dexter_code:
+  submission: dexter_code
+  status_code: 2
+  log: ''
+  private_log: ''
+
+deedee_assessment:
+  submission: deedee_assessment
+  status_code: 2
+  log: ''
+  private_log: ''
