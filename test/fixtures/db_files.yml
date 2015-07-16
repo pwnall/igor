@@ -20,9 +20,19 @@ admin_project:
   f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
   f_content_type: application/pdf
 
-admin_assessment:
-  f_file_name: admin_assessment.pdf
+dexter_assessment:
+  f_file_name: dexter_assessment.pdf
   f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
+  f_content_type: application/pdf
+
+dexter_code:
+  f_file_name: dexter_code.py
+  f_file_size: <%= binary_file_size('submission_files/good_fib.py') %>
+  f_content_type: application/x-python
+
+deedee_assessment:
+  f_file_name: deedee_assessment.pdf
+  f_file_size: <%= binary_file_size('submission_files/truncated.pdf') %>
   f_content_type: application/pdf
 
 submission_catch_all:
@@ -30,3 +40,7 @@ submission_catch_all:
   f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
   f_content_type: application/pdf
 
+ps1_script_analyzer:
+  f_file_name: fib_grading.zip
+  f_file_size: <%= binary_file_size('analyzer_files/fib_grading.zip') %>
+  f_content_type: application/zip

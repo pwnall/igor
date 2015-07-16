@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: db_file_blobs
+#
+#  id            :integer          not null, primary key
+#  db_file_id    :integer          not null
+#  style         :string(16)
+#  file_contents :binary(429496729
+#
+
 admin_ps1:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:admin_ps1) %>
   style: original
@@ -8,13 +18,27 @@ admin_project:
   style: original
   file_contents: <%= binary_file('submission_files/small.pdf') %>
 
-admin_assessment:
-  db_file_id: <%= ActiveRecord::FixtureSet.identify(:admin_assessment) %>
+dexter_assessment:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:dexter_assessment) %>
   style: original
   file_contents: <%= binary_file('submission_files/small.pdf') %>
+
+dexter_code:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:dexter_code) %>
+  style: original
+  file_contents: <%= binary_file('submission_files/good_fib.py') %>
+
+deedee_assessment:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:deedee_assessment) %>
+  style: original
+  file_contents: <%= binary_file('submission_files/truncated.pdf') %>
 
 submission_catch_all:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:submission_catch_all) %>
   style: original
   file_contents: <%= binary_file('submission_files/small.pdf') %>
 
+ps1_script_analyzer:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:ps1_script_analyzer) %>
+  style: original
+  file_contents: <%= binary_file('analyzer_files/fib_grading.zip') %>

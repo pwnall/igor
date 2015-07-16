@@ -19,3 +19,6 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 end
+
+# The 'test/support/' directory contains helper methods for writing tests.
+Dir[Rails.root.join('test', 'support', '*.rb')].each { |file| require file }

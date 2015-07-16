@@ -8,6 +8,9 @@
 # Ignore generated assets.
 /public/assets
 
+# Ignore files generated during testing.
+/test/fixtures/test_files
+
 # Production configuration.
 /config/rails_pwnerer
 
