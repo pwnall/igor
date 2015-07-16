@@ -5,7 +5,7 @@
 #  id            :integer          not null, primary key
 #  assignment_id :integer          not null
 #  name          :string(64)       not null
-#  max_score     :integer
+#  max_score     :integer          not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

@@ -3,7 +3,7 @@ class CreateAssignmentMetrics < ActiveRecord::Migration
     create_table :assignment_metrics do |t|
       t.references :assignment, null: false
       t.string :name, limit: 64, null: false
-      t.integer :max_score, null: true
+      t.integer :max_score, null: false
 
       t.timestamps
     end
