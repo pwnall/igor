@@ -108,7 +108,7 @@ class Deliverable < ActiveRecord::Base
   # Calling this will cause a lot of load on the site.
   def reanalyze_submissions
     submissions.includes(:analysis).each do |submission|
-      submission.queue_analysis true
+      submission.queue_analysis
     end
   end
 end

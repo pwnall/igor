@@ -11,32 +11,37 @@
 #  updated_at     :datetime         not null
 #
 
-# TODO: Uncomment these when we resolve the edge Rails incompatibility issues
-#   with the paperclip/paperclip_database gems. The paperclip_database gem fails
-#   to destroy submissions, so destroy callback chains that touch submissions
-#   will also fail.
+admin_ps1:
+  deliverable: ps1_writeup
+  subject: awesome_pset (Team)
+  db_file: admin_ps1
 
-# admin_ps1:
-#   deliverable: ps1_writeup
-#   subject: awesome_pset (Team)
-#   db_file: admin_ps1
-#
-# admin_project:
-#   deliverable: project_writeup
-#   subject: boo_project (Team)
-#   db_file: admin_project
-#
-# admin_assessment:
-#   deliverable: assessment_writeup
-#   subject: admin (User)
-#   db_file: admin_assessment
-#
-# inactive_project:
-#   deliverable: project_writeup
-#   subject: awesome_project (Team)
-#   db_file: submission_catch_all
-#
-# solo_ps1:
-#   deliverable: ps1_writeup
-#   subject: solo (User)
-#   db_file: submission_catch_all
+admin_project:
+  deliverable: project_writeup
+  subject: boo_project (Team)
+  db_file: admin_project
+
+dexter_assessment:
+  deliverable: assessment_writeup
+  subject: dexter (User)
+  db_file: dexter_assessment
+
+dexter_code:
+  deliverable: assessment_code
+  subject: dexter (User)
+  db_file: dexter_code
+
+deedee_assessment:
+  deliverable: assessment_writeup
+  subject: deedee (User)
+  db_file: deedee_assessment
+
+inactive_project:
+  deliverable: project_writeup
+  subject: awesome_project (Team)
+  db_file: submission_catch_all
+
+solo_ps1:
+  deliverable: ps1_writeup
+  subject: solo (User)
+  db_file: submission_catch_all

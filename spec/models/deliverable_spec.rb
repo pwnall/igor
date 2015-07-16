@@ -44,8 +44,8 @@ describe Deliverable do
       let(:assessment) { deliverables(:assessment_writeup) }
       
       it 'should find direct submission' do
-        assessment.submission_for(admin).should ==
-            submissions(:admin_assessment)
+        assessment.submission_for(dexter).should ==
+            submissions(:dexter_assessment)
       end
       it "should be nil for users who didn't submit" do
         assessment.submission_for(inactive).should be_nil
