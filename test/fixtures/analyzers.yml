@@ -13,22 +13,20 @@
 #  updated_at     :datetime         not null
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+proc_ps1_writeup:
+  deliverable: ps1_writeup
+  type: ProcAnalyzer
+  auto_grading: false
+  message_name: analyze_pdf
 
-#one:
-#  deliverable_id: 1
-#  type: MyString
-#  proc_name: MyString
-#  file_uri: MyString
-#  file_contents:
-#  file_name: MyString
-#  file_mime_type: MyString
-#
-#two:
-#  deliverable_id: 1
-#  type: MyString
-#  proc_name: MyString
-#  file_uri: MyString
-#  file_contents:
-#  file_name: MyString
-#  file_mime_type: MyString
+script_assessment_code:
+  deliverable: assessment_code
+  type: ScriptAnalyzer
+  auto_grading: true
+  db_file: ps1_script_analyzer
+  exec_limits:
+    time_limit: 2
+    ram_limit: 1024
+    file_limit: 10
+    file_size_limit: 100
+    process_limit: 5

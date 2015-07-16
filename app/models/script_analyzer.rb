@@ -19,7 +19,13 @@ class ScriptAnalyzer < Analyzer
   belongs_to :db_file, dependent: :destroy
   validates :db_file, presence: true
   validates_associated :db_file
-  accepts_nested_attributes_for :db_file
+  accepts_nested_attributes_for :db_file, reject_if: :all_blank
+  def destroy_former_db_file
+    return unless db_file_id_changed?
+    DbFile.find(db_file_id_was).destroy
+  end
+  after_update :destroy_former_db_file
+  private :destroy_former_db_file
 
   # Database-backed file association, including the file contents.
   def full_db_file
