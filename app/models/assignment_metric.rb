@@ -24,7 +24,7 @@ class AssignmentMetric < ActiveRecord::Base
 
   # The user-friendly name for this metric.
   validates :name, length: 1..64, presence: true,
-                   uniqueness: { scope: [:assignment_id] }
+                   uniqueness: { scope: :assignment }
 
   # The maximum score (grade) that can be received on this metric.
   #

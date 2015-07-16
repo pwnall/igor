@@ -15,7 +15,7 @@
 class Deliverable < ActiveRecord::Base
   # The user-visible deliverable name.
   validates :name, length: 1..64, presence: true,
-                   uniqueness: { scope: [:assignment_id] }
+                   uniqueness: { scope: :assignment }
 
   # Instructions on preparing submissions for this deliverable.
   validates :description, length: 1..(2.kilobytes), presence: true
