@@ -9,8 +9,8 @@ class CreateAnalyses < ActiveRecord::Migration
       t.text :private_log, limit: 64.kilobytes, null: false
 
       t.timestamps
-    end
 
-    add_index :analyses, :submission_id, unique: true
+      t.index :submission_id, unique: true
+    end
   end
 end

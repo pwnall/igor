@@ -28,15 +28,14 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   end
 
   create_table "analyzers", force: :cascade do |t|
-    t.integer  "deliverable_id",                            null: false
-    t.string   "type",           limit: 32,                 null: false
-    t.boolean  "auto_grading",              default: false, null: false
+    t.integer  "deliverable_id",            null: false
+    t.string   "type",           limit: 32, null: false
+    t.boolean  "auto_grading",              null: false
     t.text     "exec_limits"
     t.integer  "db_file_id"
     t.string   "message_name",   limit: 64
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-    t.index ["deliverable_id"], name: "index_analyzers_on_deliverable_id", unique: true, using: :btree
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "announcements", force: :cascade do |t|
@@ -51,7 +50,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   create_table "assignment_metrics", force: :cascade do |t|
     t.integer  "assignment_id",            null: false
     t.string   "name",          limit: 64, null: false
-    t.integer  "max_score"
+    t.integer  "max_score",                null: false
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.index ["assignment_id", "name"], name: "index_assignment_metrics_on_assignment_id_and_name", unique: true, using: :btree
