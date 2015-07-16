@@ -81,11 +81,6 @@ class Deliverable < ActiveRecord::Base
     end
   end
 
-  # The deliverables that a user is allowed to submit.
-  def self.submittable_by(user)
-    Deliverable.where(user.admin? ? {} : {published: true})
-  end
-
   # The deliverable deadline, customized to a specific user.
   def deadline_for(user)
     assignment.deadline_for user
