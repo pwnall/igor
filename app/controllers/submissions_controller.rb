@@ -118,6 +118,11 @@ class SubmissionsController < ApplicationController
     db_file = @submission.full_db_file
     filename = @submission.subject.email.gsub(/[^A-Za-z0-9]/, '_') + '_' +
         db_file.f.original_filename
+
+    # NOTE: The CSP header provides some protection against an attacker who
+    #       tries to serve active content (HTML+JS) using the server's origin.
+    #       DbFile also explicitly disallows the HTML and XHTML MIME types.
+    response.headers['Content-Security-Policy'] = "default-src 'none'"
     send_data db_file.f.file_contents, :filename => filename,
               :type => db_file.f.content_type,
               :disposition => params[:inline] ? 'inline' : 'attachment'
@@ -201,6 +206,13 @@ class SubmissionsController < ApplicationController
       cur_dir = Dir.pwd
       Dir.chdir(tempdir) { Kernel.system "zip #{cur_dir}/#{tempdir}.zip *" }
       package_fname = "assignment_#{@assignment.id}.zip"
+
+      # NOTE: We don't really need a CSP here, because we're serving a zip
+      #       file. We're adding it in to make sure no terrible incident
+      #       happens where a misconfigured nginx unpacks the archive  and
+      #       serves some file inside that happens to look like HTML to the
+      #       MIME type sniffer in the browser.
+      response.headers['Content-Security-Policy'] = "default-src 'none'"
       send_data File.open("#{tempdir}.zip", 'rb') { |f| f.read }, :filename => package_fname, :disposition => 'inline'
     end
     File.delete "#{temp_dir}.zip"

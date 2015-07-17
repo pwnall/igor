@@ -270,7 +270,13 @@ class GradesController < ApplicationController
       csv << []
     end
 
-    # push the CSV
+    # Serve the CSV.
+
+    # NOTE: We don't really need a CSP here, because we're serving a CSV file.
+    #       We're adding it in to make sure no terrible incident
+    #       happens where a browser's MIME type sniffer does something dumb.
+    #       See https://xkcd.com/327/
+    response.headers['Content-Security-Policy'] = "default-src 'none'"
     send_data csv_text, :filename => 'grades.csv', :type => 'text/csv', :disposition => 'inline'
   end
 
