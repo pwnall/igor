@@ -104,13 +104,13 @@ class CourseTest < ActiveSupport::TestCase
 
     course.destroy
 
-    assert_empty course.registrations(true)
-    assert_empty course.prerequisites(true)
-    assert_empty course.assignments(true)
-    assert_empty course.recitation_sections(true)
-    assert_empty course.time_slots(true)
-    assert_empty course.roles(true)
-    assert_empty course.role_requests(true)
+    assert_empty course.registrations.reload
+    assert_empty course.prerequisites.reload
+    assert_empty course.assignments.reload
+    assert_empty course.recitation_sections.reload
+    assert_empty course.time_slots.reload
+    assert_empty course.roles.reload
+    assert_empty course.role_requests.reload
   end
 
   describe '#students' do

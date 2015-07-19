@@ -156,7 +156,7 @@ class AssignmentTest < ActiveSupport::TestCase
 
       assignment.destroy
 
-      assert_empty assignment.deliverables(true)
+      assert_empty assignment.deliverables.reload
     end
 
     it 'validates associated deliverables' do
@@ -237,7 +237,7 @@ class AssignmentTest < ActiveSupport::TestCase
 
       assignment.destroy
 
-      assert_empty assignment.metrics(true)
+      assert_empty assignment.metrics.reload
     end
 
     it 'validates associated metrics' do

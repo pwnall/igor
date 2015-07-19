@@ -48,7 +48,7 @@ class RecitationSectionTest < ActiveSupport::TestCase
 
     recitation.destroy
 
-    assert_empty recitation.time_slot_allotments(true)
+    assert_empty recitation.time_slot_allotments.reload
   end
 
   it 'saves associated time slots through the parent recitation' do

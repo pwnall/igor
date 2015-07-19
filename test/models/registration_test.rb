@@ -48,8 +48,8 @@ class RegistrationTest < ActiveSupport::TestCase
 
     registration.destroy
 
-    assert_empty registration.recitation_conflicts(true)
-    assert_empty registration.prerequisite_answers(true)
+    assert_empty registration.recitation_conflicts.reload
+    assert_empty registration.prerequisite_answers.reload
   end
 
   it 'saves associated recitation conflicts through the parent registration' do
