@@ -44,7 +44,7 @@ gem 'prawn', '~> 0.12.0'
 # Instant feedback.
 gem 'exec_sandbox', '>= 0.3.0'
 gem 'pdf-reader', '>= 1.3.3'
-gem 'zip', '>= 2.0.2'
+gem 'rubyzip', '>= 1.1.7', require: 'zip'
 
 # Gravatar fall-back avatars.
 gem 'gravatar-ultimate', '>= 2.0.0'

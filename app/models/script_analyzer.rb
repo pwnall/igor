@@ -91,21 +91,13 @@ class ScriptAnalyzer < Analyzer
   #
   # Returns a hash containing the parsed script configuration.
   def unpack_script
-    package_file = Tempfile.new 'seven_package_'
-    package_file.close
-    File.open package_file.path, 'wb' do |f|
-      f.write full_db_file.f.file_contents
-    end
-
-    Zip::ZipFile.open package_file.path do |zip_file|
-      zip_file.each do |f|
-        next if f.name.index '..'
-        f_dir = File.dirname f.name
-        FileUtils.mkdir_p f_dir unless f_dir.empty?
-        zip_file.extract f, f.name unless File.exist?(f.name)
+    Zip::File.open_buffer full_db_file.f.file_contents do |zip|
+      zip.each do |entry|
+        file_dir = File.dirname entry.name
+        FileUtils.mkdir_p file_dir unless file_dir.empty?
+        entry.extract entry.name unless File.exist?(entry.name)
       end
     end
-    package_file.unlink
 
     begin
       manifest = File.open('analyzer.yml') { |f| YAML.load f }

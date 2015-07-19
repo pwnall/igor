@@ -139,8 +139,7 @@ class SubmissionsController < ApplicationController
   def package_assignment
     @assignment = Assignment.find(params[:assignment_id])
 
-    deliverable_ids = params[:package_include].select { |k, v| v == '1' }.
-                                               map(&:first)
+    deliverable_ids = params[:package_include].select { |k, v| v == '1' }.keys
     @deliverables = Deliverable.where(:id => deliverable_ids).
                                 includes(:assignment)
 
@@ -171,7 +170,7 @@ class SubmissionsController < ApplicationController
       return
     end
 
-    temp_dir = with_temp_dir do |tempdir|
+    zip_buffer = Zip::OutputStream.write_buffer do |zip|
       # write out submissions
       unless @deliverables.empty?
         @submissions.each do |s|
@@ -183,8 +182,9 @@ class SubmissionsController < ApplicationController
               subject.name.underscore.gsub(' ', '_')
           db_file = s.full_db_file
           extension = db_file.f.original_filename.split('.').last
-          fname = "#{tempdir}/#{prefix}#{basename}#{suffix}.#{extension}"
-          File.open(fname, 'wb') { |f| f.write db_file.f.file_contents }
+
+          zip.put_next_entry "#{prefix}#{basename}#{suffix}.#{extension}"
+          zip.write db_file.f.file_contents
         end
       end
 
@@ -197,25 +197,23 @@ class SubmissionsController < ApplicationController
               subject.email.split('@').first :
               subject.name.underscore.gsub(' ', '_')
           extension = 'pdf'
-          fname = "#{tempdir}/#{prefix}#{basename}#{suffix}.#{extension}"
-          cover_sheet_for_assignment subject, @assignment, fname
+
+          pdf_contents = cover_sheet_for_assignment subject, @assignment
+
+          zip.put_next_entry "#{prefix}#{basename}#{suffix}.#{extension}"
+          zip.write pdf_contents
         end
       end
-
-      # zip up the submissions
-      cur_dir = Dir.pwd
-      Dir.chdir(tempdir) { Kernel.system "zip #{cur_dir}/#{tempdir}.zip *" }
-      package_fname = "assignment_#{@assignment.id}.zip"
-
-      # NOTE: We don't really need a CSP here, because we're serving a zip
-      #       file. We're adding it in to make sure no terrible incident
-      #       happens where a misconfigured nginx unpacks the archive  and
-      #       serves some file inside that happens to look like HTML to the
-      #       MIME type sniffer in the browser.
-      response.headers['Content-Security-Policy'] = "default-src 'none'"
-      send_data File.open("#{tempdir}.zip", 'rb') { |f| f.read }, :filename => package_fname, :disposition => 'inline'
     end
-    File.delete "#{temp_dir}.zip"
+
+    # NOTE: We don't really need a CSP here, because we're serving a zip
+    #       file. We're adding it in to make sure no terrible incident
+    #       happens where a misconfigured nginx unpacks the archive  and
+    #       serves some file inside that happens to look like HTML to the
+    #       MIME type sniffer in the browser.
+    response.headers['Content-Security-Policy'] = "default-src 'none'"
+    send_data zip_buffer.string, type: 'application/zip',
+        disposition: 'download', filename: "assignment_#{@assignment.id}.zip"
   end
 
   def with_temp_dir

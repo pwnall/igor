@@ -16,21 +16,21 @@ class Deliverable < ActiveRecord::Base
   # The user-visible deliverable name.
   validates :name, length: 1..64, presence: true,
                    uniqueness: { scope: [:assignment_id] }
-  
+
   # Instructions on preparing submissions for this deliverable.
   validates :description, length: 1..(2.kilobytes), presence: true
 
   # The extension of files to be submitted for this deliverable. (e.g., "pdf")
   validates :file_ext, length: 1..16, presence: true
-  
+
   # The assignment that the deliverable is a part of.
   belongs_to :assignment, inverse_of: :deliverables
-  
+
   # The method used to verify students' submissions for this deliverable.
   has_one :analyzer, dependent: :destroy, inverse_of: :deliverable
   accepts_nested_attributes_for :analyzer
   validates_associated :analyzer
-  
+
   # HACK: this nasty bit of code gets nested_attributes working with STI.
   def analyzer_attributes=(attributes)
     type = attributes[Analyzer.inheritance_column]
@@ -44,23 +44,23 @@ class Deliverable < ActiveRecord::Base
     end
     analyzer.attributes = attributes
   end
-  
+
   # The analyzer, if it's a proc_analyzer.
   has_one :proc_analyzer, inverse_of: :deliverable
   accepts_nested_attributes_for :proc_analyzer
-  
+
   # The analyzer, if it's a script_analyzer
   has_one :script_analyzer, inverse_of: :deliverable
   accepts_nested_attributes_for :script_analyzer
-  
+
   # All the student submissions for this deliverable.
   has_many :submissions, dependent: :destroy, inverse_of: :deliverable
-  
+
   # True if "user" should be allowed to see this deliverable.
   def can_read?(user)
     assignment.deliverables_ready? || (user && user.admin?)
   end
-  
+
   # True if "user" should be able to submit (or re-submit) for this deliverable.
   def can_submit?(user)
     assignment.deliverables_ready? || (user && user.admin?)
@@ -71,36 +71,31 @@ class Deliverable < ActiveRecord::Base
   # The result is non-trivial in the presence of teams.
   def submission_for(user)
     return nil unless user
-    team = nil
-    if (partition = assignment.team_partition) and
-       (team = partition.team_for_user(user))
-      users = team.users
+
+    team = assignment.team_partition &&
+        assignment.team_partition.team_for_user(user)
+    if team.nil?
+      submissions.where(subject: user).first
     else
-      users = [user]
+      submissions.where(subject: team).first
     end
-    if !team.nil?
-      return Submission.where(deliverable_id: self.id, subject_type: "team", subject_id: team.id).first
-    else
-      return Submission.where(deliverable_id: self.id, subject_type: "user", subject_id: user.id).first
-    end
-#    Submission.where(deliverable_id: self.id, user_id: users.map(&:id)).first
   end
-  
+
   # The deliverables that a user is allowed to submit.
   def self.submittable_by(user)
     Deliverable.where(user.admin? ? {} : {published: true})
   end
-  
+
   # The deliverable deadline, customized to a specific user.
   def deadline_for(user)
     assignment.deadline_for user
   end
-  
+
   # True if the submissions for this deliverable should be marked as late.
   def deadline_passed_for?(user)
     assignment.deadline_passed_for? user
   end
-  
+
   # Number of submissions that will be received for this deliverable.
   #
   # The estimation is based on the number of students in the class.
@@ -111,7 +106,7 @@ class Deliverable < ActiveRecord::Base
   # Queues re-analysis requests for every submission on this deliverable.
   #
   # Calling this will cause a lot of load on the site.
-  def reanalyze_submissions  
+  def reanalyze_submissions
     submissions.includes(:analysis).each do |submission|
       submission.queue_analysis true
     end

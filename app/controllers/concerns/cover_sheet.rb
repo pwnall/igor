@@ -8,7 +8,7 @@ module CoverSheet
   include AnalysesHelper
   include RecitationSectionsHelper
 
-  def cover_sheet_for_assignment(target, assignment, file_name)
+  def cover_sheet_for_assignment(target, assignment)
     submissions = target.submissions.
         where(:deliverable_id => assignment.deliverables.map(&:id)).
         index_by { |s| s.deliverable.id }
@@ -65,8 +65,6 @@ module CoverSheet
     # Submissions
     pdf.y = 792 - 36 - (36 + 24 + v_offset) - 40
     pdf.font "Times-Roman"
-    table_data =
-
     pdf.text "Submissions for #{assignment.name}", :size => 24, :align => :center
     table_data = [['Name', 'Size', 'Validation', 'Submitted', 'Extension']] +
                  assignment.deliverables.map do |d|
@@ -136,10 +134,6 @@ module CoverSheet
 
     pdf.start_new_page
 
-    if file_name.nil?
-      pdf.render
-    else
-      pdf.render_file file_name
-    end
+    pdf.render
   end
 end

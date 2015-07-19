@@ -49,14 +49,14 @@ GIT
 
 GIT
   remote: https://github.com/rails/arel
-  revision: 4767bb11c280f97262d221c47af8d39ab4fd583f
+  revision: 935796f4fd7d75950db87156d6540028a9044fdf
   branch: master
   specs:
     arel (7.0.0.alpha)
 
 GIT
   remote: https://github.com/rails/rails
-  revision: 1099e54b497ec3ec08d8913f8a899681719a0e4b
+  revision: e19acbb8831e214eb38d589bf8c424edf80c2970
   branch: master
   specs:
     actionmailer (5.0.0.alpha)
@@ -89,6 +89,7 @@ GIT
       activesupport (= 5.0.0.alpha)
       arel (= 7.0.0.alpha)
     activesupport (5.0.0.alpha)
+      concurrent-ruby (~> 0.9.0)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
@@ -114,13 +115,13 @@ GIT
 
 GIT
   remote: https://github.com/rails/sprockets-rails
-  revision: 34ae184693db41b4e3338940073af9d728881a9c
+  revision: 6389649358846f37507206885e3ece145862a0be
   branch: master
   specs:
-    sprockets-rails (3.0.0.beta1)
+    sprockets-rails (3.0.0)
       actionpack (>= 4.0)
       activesupport (>= 4.0)
-      sprockets (>= 3.0.0, < 4.0)
+      sprockets (>= 3.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -156,6 +157,7 @@ GEM
       execjs
     coffee-script-source (1.9.1.1)
     columnize (0.9.0)
+    concurrent-ruby (0.9.0)
     creole (0.5.0)
     daemons (1.2.3)
     debug_inspector (0.0.2)
@@ -181,7 +183,7 @@ GEM
       activesupport (>= 2.3.14)
       rack
     hashery (2.1.1)
-    htmlentities (4.3.3)
+    htmlentities (4.3.4)
     i18n (0.7.0)
     jc-validates_timeliness (3.1.1)
       timeliness (~> 0.3.7)
@@ -254,7 +256,8 @@ GEM
     rmagick (2.15.2)
     ruby-rc4 (0.1.5)
     rubypants (0.2.0)
-    sass (3.4.15)
+    rubyzip (1.1.7)
+    sass (3.4.16)
     sass-rails (5.0.3)
       railties (>= 4.0.0, < 5.0)
       sass (~> 3.1)
@@ -294,7 +297,6 @@ GEM
       nokogiri
       twitter-text
     yajl-ruby (1.2.1)
-    zip (2.0.2)
 
 PLATFORMS
   ruby
@@ -334,13 +336,13 @@ DEPENDENCIES
   railroady (>= 1.3.0)
   rails!
   rmagick (>= 2.14.0)
+  rubyzip (>= 1.1.7)
   sass-rails (>= 5.0.3)
   sdoc
   sprockets-rails!
   thin (>= 1.6.3)
   trim_blobs
   uglifier (>= 2.7.0)
-  zip (>= 2.0.2)
 
 BUNDLED WITH
    1.10.5
