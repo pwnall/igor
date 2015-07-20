@@ -39,7 +39,8 @@ gem 'delayed_job_active_record', '>= 4.0.3',  # Required by delayed_job.
     branch: 'rails5'
 
 # PDF cover sheets.
-gem 'prawn', '~> 0.12.0'
+gem 'prawn', '>= 2.0.2'
+gem 'prawn-table', '>= 0.2.2'
 
 # Instant feedback.
 gem 'exec_sandbox', '>= 0.3.0'
