@@ -19,7 +19,7 @@ dev_sqlite3: &dev_sqlite3
 
 test_pgsql: &test_pgsql
   adapter: postgresql
-  database: seven_dev
+  database: seven_test
   encoding: unicode
   pool: 5
 
