@@ -9,13 +9,20 @@
     <%= grades_icon_tag %> Grades
   <% end %>
 </li>
-<% if Course.main.has_surveys %>
+<% if current_course.has_surveys %>
 <li>
   <%= link_to 'Surveys', root_path(:flavor => :survey_answer) %>
 </li>
 <% end %>
-<% if Course.main.has_teams %>
+<% if current_course.has_teams %>
 <li>
   <%= link_to 'Teams', teams_student_path %>
 </li>
 <% end %>
+<li>
+  <%= link_to registration_path(
+        current_user.registration_for(current_course),
+        course_id: current_course) do %>
+    Registration
+  <% end %>
+<li>

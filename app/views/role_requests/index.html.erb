@@ -27,6 +27,14 @@
           <%= destroy_icon_tag %> Revoke
         <% end %>
       </td>
+      <% if current_user.admin? %>
+      <td>
+        <%= link_to impersonate_user_path(role.user), class: 'button',
+              method: :post do %>
+          <%= debug_icon_tag %> Impersonate
+        <% end %>
+      </td>
+      <% end %>
     </tr>
   <% end %>
   </tbody>
@@ -62,14 +70,16 @@
       </td>
 
       <td>
-        <%= link_to approve_role_request_path(role_request), method: :post,
-                    class: 'button' do %>
+        <%= link_to approve_role_request_path(role_request,
+              course_id: role_request.course), method: :post,
+              class: 'button' do %>
           <%= create_icon_tag %> Approve
         <% end %>
       </td>
       <td>
-        <%= link_to deny_role_request_path(role_request), method: :post,
-                    class: 'button' do %>
+        <%= link_to deny_role_request_path(role_request,
+              course_id: role_request.course), method: :post,
+              class: 'button' do %>
           <%= destroy_icon_tag %> Deny
         <% end %>
       </td>

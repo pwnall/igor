@@ -1,0 +1,19 @@
+<h2>Student Registration</h2>
+
+<% @new_courses.each do |course| %>
+<p>
+  <%= link_to new_registration_path(course_id: course), class: 'button' do %>
+    Register for <%= course.number %>
+  <% end %>
+</p>
+<% end %>
+
+<h2>Staff Registration</h2>
+
+<% @new_courses.each do |course| %>
+<p>
+  <%= link_to new_role_request_path(course_id: course), class: 'button' do %>
+    <%= course.number %> Staff Access Request
+  <% end %>
+</p>
+<% end %>

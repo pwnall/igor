@@ -17,8 +17,8 @@
 <h3>
   Log
   <span class="actions">
-    <%= link_to reanalyze_submission_path(@analysis.submission), method: :post,
-                class: 'button' do %>
+    <%= link_to reanalyze_submission_path(@analysis.submission,
+          course_id: @analysis.course), method: :post, class: 'button' do %>
       <%= recompute_icon_tag %> Re-analyze
     <% end %>
   </span>

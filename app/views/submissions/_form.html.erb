@@ -1,4 +1,5 @@
-<%= form_for submission, html: { multipart: true } do |f| %>
+<%= form_for submission, url: polymorphic_url(submission,
+      course_id: submission.course), html: { multipart: true } do |f| %>
   <% f.object.build_db_file unless f.object.db_file %>
   <%= f.fields_for :db_file do |fu| %>
     <%= fu.file_field :f %>

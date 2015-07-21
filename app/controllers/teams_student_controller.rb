@@ -1,4 +1,5 @@
 class TeamsStudentController < ApplicationController
+  before_action :set_current_course
   before_action :authenticated_as_user
 
   def show

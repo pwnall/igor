@@ -1,4 +1,5 @@
-<%= form_for @recitation_section do |f| %>
+<%= form_for @recitation_section, url: polymorphic_url(@recitation_section,
+      course_id: @recitation_section.course) do |f| %>
   <%= f.error_messages %>
 
   <section class="fields">
@@ -11,8 +12,8 @@
     <p class="field">
       <%= f.label :leader_id, 'Recitation leader' %>
       <span class="value">
-        <%= f.collection_select :leader_id, recitation_leaders, :id, :name,
-                include_blank: '(no leader specified)' %>
+        <%= f.collection_select :leader_id, @recitation_section.course.staff,
+                :id, :name, include_blank: '(no leader specified)' %>
       </span>
     </p>
     <div class="field">

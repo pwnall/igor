@@ -1,15 +1,16 @@
 <h2 class="assignment-builder-heading">
   Assignment Builder
-  
+
   <span class="actions">
-    <%= link_to dashboard_assignment_path(@assignment), class: 'button' do %>
+    <%= link_to dashboard_assignment_path(@assignment,
+          course_id: @assignment.course), class: 'button' do %>
       <%= dashboard_icon_tag %> Dashboard
     <% end %>
-    <%= link_to @assignment, class: 'button' do %>
+    <%= link_to assignment_path(@assignment, course_id: @assignment.course),
+          class: 'button' do %>
       <%= role_icon_tag :student %> Student View
     <% end %>
   </span>
 </h2>
 
-
-<%= render 'assignments/form', :assignment => @assignment %>
+<%= render 'assignments/form', assignment: @assignment %>

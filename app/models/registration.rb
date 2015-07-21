@@ -43,7 +43,7 @@ class Registration < ActiveRecord::Base
   accepts_nested_attributes_for :recitation_conflicts
   # Conflicts are destroyed in the UI by submitting a blank class name.
   def destroy_blank_recitation_conflicts
-    recitation_conflicts.select { |rc| rc.class_name.blank? }.each &:destroy
+    recitation_conflicts.select { |rc| rc.class_name.blank? }.each(&:destroy)
   end
   private :destroy_blank_recitation_conflicts
   before_validation :destroy_blank_recitation_conflicts
@@ -55,12 +55,17 @@ class Registration < ActiveRecord::Base
 
   # Returns true if the given user is allowed to edit this registration.
   def can_edit?(user)
-    user and (user == self.user or user.admin?)
+    self.user == user || !!(user && user.admin?)
+  end
+
+  # Returns true if the given user is allowed to see this registration.
+  def can_view?(user)
+    user == self.user || course.is_staff?(user) || !!(user && user.admin?)
   end
 
   # Populates unanswered prerequisite_answers for a new registration.
   def build_prerequisite_answers
-    existing_answers = prerequisite_answers.index_by &:prerequisite_id
+    existing_answers = prerequisite_answers.index_by(&:prerequisite_id)
     course.prerequisites.each do |p|
       next if existing_answers.has_key? p.id
       prerequisite_answers.build registration: self, prerequisite: p

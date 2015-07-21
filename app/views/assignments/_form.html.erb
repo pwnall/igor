@@ -1,5 +1,6 @@
 <div class="assignment-builder" data-pwnfx-scope="assignment">
-  <%= form_for assignment, :multipart => true do |f| %>
+  <%= form_for assignment, url: polymorphic_url(assignment,
+        course_id: assignment.course), multipart: true do |f| %>
     <% if @assignment.errors.any? %>
       <div class="error-explanation">
         <p>

@@ -1,7 +1,7 @@
 Dear <%= @role_request.course.number %> staff members,
 
 <%= @role_request.user.name %> <<%= @role_request.user.email %>> has requested
-to be approved as a <%= @role_request.course.number %> <%= @role_request.name == 'staff' ? 'instructor' : 'grader' %>.
+<%= @role_request.course.number %> <%= @role_request.name == 'staff' ? 'instructor' : 'grader' %>access.
 
 Please go to the address below to approve or deny the request.
-<%= role_requests_url host: @host, protocol: @protocol %>
+<%= role_requests_url host: @host, protocol: @protocol, course_id: @role_request.course %>

@@ -30,9 +30,14 @@ class Assignment < ActiveRecord::Base
   belongs_to :author, class_name: 'User'
   validates :author, presence: true
 
-  # True if the user is allowed to see this assignment.
+  # True if the given user is allowed to see this assignment.
   def can_read?(user)
-    deliverables_ready? || metrics_ready? || !!(user && user.admin?)
+    deliverables_ready? || metrics_ready? || course.can_edit?(user)
+  end
+
+  # True if the given user is allowed to change this assignment.
+  def can_edit?(user)
+    course.can_edit? user
   end
 end
 
@@ -63,7 +68,7 @@ class Assignment
 
   # Deliverables that a user can submit files for.
   def deliverables_for(user)
-    (deliverables_ready? || (user && user.admin?)) ? deliverables : []
+    (deliverables_ready? || course.can_edit?(user)) ? deliverables : []
   end
 
   # Number of submissions that will be received for this assignment.

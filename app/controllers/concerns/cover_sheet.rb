@@ -9,6 +9,11 @@ module CoverSheet
   include RecitationSectionsHelper
 
   def cover_sheet_for_assignment(target, assignment)
+    user = target.respond_to?(:users) ? target.users.first : target
+    course = assignment.course
+    registration = user.registration_for course
+    recitation_section = registration && registration.recitation_section
+
     submissions = target.submissions.
         where(:deliverable_id => assignment.deliverables.map(&:id)).
         index_by { |s| s.deliverable.id }
@@ -17,7 +22,6 @@ module CoverSheet
     pdf = Prawn::Document.new :page_size => 'LETTER', :page_layout => :portrait
 
     # course footer
-    course = Course.main
     pdf.font "Helvetica"
     pdf.y = 40 + 18 * 4
     pdf.font_size = 14
@@ -31,11 +35,9 @@ module CoverSheet
     # Recitation Section
     pdf.y = 792 - 36
     pdf.font "Times-Roman"
-    user = target.respond_to?(:users) ? target.users.first : target
-    if Course.main.has_recitations?
-      if user.registration and user.registration.recitation_section
-        section_title =
-            display_name_for_recitation_section user.recitation_section
+    if course.has_recitations?
+      if recitation_section
+        section_title = display_name_for_recitation_section recitation_section
       else
         section_title = "R00 - 00am, No Section Info"
       end

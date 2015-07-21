@@ -3,6 +3,7 @@
 # Table name: grades
 #
 #  id           :integer          not null, primary key
+#  course_id    :integer          not null
 #  metric_id    :integer          not null
 #  grader_id    :integer          not null
 #  subject_type :string(64)
@@ -14,48 +15,56 @@
 
 awesome_ps1_p1:
   metric: ps1_p1
+  course: main
   subject: awesome_pset (Team)
   grader: admin
   score: 10.0
 
 boo_ps1_p1:
   metric: ps1_p1
+  course: main
   subject: boo_pset (Team)
   grader: admin
   score: 1.0
 
 awesome_project:
   metric: project_overall
+  course: main
   subject: awesome_project (Team)
   grader: admin
   score: 100.0
 
 boo_project:
   metric: project_overall
+  course: main
   subject: boo_project (Team)
   grader: admin
   score: 42.0
 
 dexter_assessment_overall:
   metric: assessment_overall
+  course: main
   subject: dexter (User)
   grader: admin
   score: 70.0
 
 solo_assessment_overall:
   metric: assessment_overall
+  course: main
   subject: solo (User)
   grader: admin
   score: 10.0
 
 solo_assessment_quality:
   metric: assessment_quality
+  course: main
   subject: solo (User)
   grader: admin
   score: 10.0
 
 deedee_assessment_quality:
   metric: assessment_quality
+  course: main
   subject: deedee (User)
   grader: admin
   score: 6.0

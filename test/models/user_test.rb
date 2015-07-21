@@ -51,11 +51,15 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'grades' do
+  describe 'grades_for' do
     it 'should include grades on team assignments' do
       golden = [:awesome_ps1_p1, :awesome_project, :dexter_assessment_overall].
           map { |i| grades(i) }
-      assert_equal golden.sort_by(&:id), dexter.grades.sort_by(&:id)
+      assert_equal golden.to_set, dexter.grades_for(courses(:main)).to_set
+    end
+
+    it 'takes the course argument into account' do
+      assert_equal [], dexter.grades_for(courses(:not_main))
     end
   end
 

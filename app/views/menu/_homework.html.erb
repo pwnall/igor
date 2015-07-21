@@ -1,29 +1,35 @@
+<% if current_course %>
 <li>
-  <%= link_to assignments_path do %>
+  <%= link_to assignments_path(course_id: current_course) do %>
     <%= homework_icon_tag %> Homework
   <% end %>
   <ol>
-    <% if current_user.admin? %>
+    <% if current_course.can_edit?(current_user) %>
     <li>
-      <%= link_to new_assignment_path do %>
+      <%= link_to new_assignment_path(course_id: current_course) do %>
         <%= create_icon_tag %> Add Homework
       <% end %>
     </li>
     <% end %>
-    <% Assignment.for(current_user, Course.main).each do |assignment| %>
+    <% Assignment.for(current_user, current_course).each do |assignment| %>
     <li>
-      <% if current_user.admin? %>
-        <%= link_to dashboard_assignment_path(assignment) do %>
-          <%= assignment_state_icon_tag assignment.ui_state_for(current_user) %>
+      <% if current_course.can_edit?(current_user) %>
+        <%= link_to dashboard_assignment_path(assignment,
+              course_id: assignment.course) do %>
+          <%= assignment_state_icon_tag(
+                assignment.ui_state_for(current_user)) %>
           <%= assignment.name %>
         <% end %>
       <% else %>
-        <%= link_to assignment do %>
-          <%= assignment_state_icon_tag assignment.ui_state_for(current_user) %>
-          <%= assignment.name %>        
+        <%= link_to assignment_path(assignment,
+              course_id: assignment.course) do %>
+          <%= assignment_state_icon_tag(
+                assignment.ui_state_for(current_user)) %>
+          <%= assignment.name %>
         <% end %>
       <% end %>
     </li>
     <% end %>
   </ol>
 </li>
+<% end %>

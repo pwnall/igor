@@ -34,6 +34,9 @@ class User
   # The user's requests for privileges.
   has_many :role_requests, dependent: :destroy, inverse_of: :user
 
+  # The courses that this user is a staff of.
+  has_many :staff_courses, through: :roles, source: :course
+
   # Checks if this user has a privilege.
   def has_role?(role_name, course = nil)
     Role.has_entry? self, role_name, course
@@ -42,10 +45,6 @@ class User
   # Checks if the user is a site-wide admin.
   def admin?
     return true if has_role?('admin')
-
-    # HACK(pwnall): remove this when the rest of the code checks for the
-    #               correct privileges
-    has_role?('staff', Course.main)
   end
 
   # Checks if the user is an automated robot.
@@ -112,16 +111,21 @@ class User
     user == self || (user && user.admin?)
   end
 
-  # Class registration info, e.g. survey answers and credit / listener status.
+  # Course registration info, e.g. survey answers and credit / listener status.
   has_many :registrations, dependent: :destroy, inverse_of: :user
   has_many :recitation_sections, through: :registrations
 
   # The courses in which the student is registered.
-  has_many :courses, through: :registrations
+  has_many :registered_courses, through: :registrations, source: :course
 
-  # The user's registration for the main class on this site.
-  def registration
-    registrations.where(course_id: Course.main.id).first
+  # The user's registration for the given course.
+  def registration_for(course)
+    registrations.where(course: course).first
+  end
+
+  # The user's recitation sections for the given course.
+  def recitation_section_for(course)
+    recitation_sections.where(course: course).first
   end
 end
 
@@ -147,14 +151,14 @@ class User
   has_many :direct_grades, class_name: 'Grade', dependent: :destroy,
            as: :subject
 
-  # All the grades connected to a user.
+  # All the grades connected to a user for a given course.
   #
   # The returned set includes the user's direct grades, as well as grades
   # recorded for a team that the user is a part of.
-  def grades
-    direct_grades.includes(metric: :assignment) +
-        teams.includes(grades: {metric: :assignment}).
-              map(&:grades).flatten
+  def grades_for(course)
+    direct_grades.where(course: course).includes(metric: :assignment) +
+        teams_for(course).includes(grades: {metric: :assignment}).
+        map(&:grades).flatten
   end
 end
 
@@ -181,6 +185,12 @@ class User
 
   # Teams that this user belongs to.
   has_many :teams, through: :team_memberships, inverse_of: :users
+
+  # All the teams connected to a user for a given course.
+  def teams_for(course)
+    Team.joins(:memberships).where team_memberships: { user_id: id,
+                                                       course_id: course.id }
+  end
 end
 
 # :nodoc: feedback survey integration.

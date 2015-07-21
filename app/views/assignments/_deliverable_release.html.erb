@@ -1,13 +1,13 @@
 <% if assignment.deliverables_ready? %>
-  <%= link_to assignment_path(assignment,
-        assignment: { deliverables_ready: false}), method: :put,
+  <%= link_to assignment_path(assignment, course_id: assignment.course,
+        assignment: { deliverables_ready: false }), method: :put,
         data: { confirm: "Un-publish #{assignment.name}? Prepare for hate mail :(" },
         class: 'button' do %>
     <%= pull_icon_tag %> Pull
   <% end %>
 <% elsif assignment.deliverables.length > 0 %>
-  <%= link_to assignment_path(assignment,
-        { assignment: { deliverables_ready: true} }), method: :put,
+  <%= link_to assignment_path(assignment, course_id: assignment.course,
+        assignment: { deliverables_ready: true }), method: :put,
         class: 'button' do %>
     <%= ship_icon_tag %> Release
   <% end %>

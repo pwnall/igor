@@ -51,7 +51,8 @@ class FeedItem
           author: answer.user, flavor: :survey_answer,
           headline: "answered a survey on #{answer.assignment.name}",
           contents: '',
-          actions: [['Edit', [:edit_survey_answer_path, answer]]],
+          actions: [['Edit', [:edit_survey_answer_path, answer,
+                              { course_id: answer.course }]]],
           replies: []
       items << item
     end
@@ -67,7 +68,8 @@ class FeedItem
           contents: number_to_human_size(submission.db_file.f.size) +
                     " #{submission.db_file.f_content_type} file",
           actions: [
-            ['Download', [:file_submission_path, submission]]
+            ['Download', [:file_submission_path, submission,
+                          { course_id: submission.course }]]
           ],
           replies: []
       items << item
@@ -76,7 +78,8 @@ class FeedItem
             author: User.robot, flavor: :announcement,
             contents: analysis_status_text(submission.analysis),
             actions: [
-              ['Details', [:url_for, analysis]]
+              ['Details', [:analysis_path, analysis,
+                           { course_id: analysis.course }]]
             ],
             replies: []
         item.replies << reply
@@ -95,7 +98,8 @@ class FeedItem
           author: assignment.author, flavor: :grade,
           headline: "released the grades for #{assignment.name}",
           contents: '',
-          actions: [['View', [:grades_path]]],
+          actions: [['View', [:grades_path,
+                              { course_id: assignment.course }]]],
           replies: []
       items << item
     end
@@ -114,7 +118,8 @@ class FeedItem
               "#{deliverable.assignment.name}'s #{deliverable.name} " +
               "for submissions",
           contents: deliverable.description,
-          actions: [['Submit', [:url_for, deliverable.assignment]]],
+          actions: [['Submit', [:assignment_path, deliverable.assignment,
+                                { course_id: deliverable.course }]]],
           replies: []
       items << item
 
@@ -145,9 +150,11 @@ class FeedItem
 
       if announcement.can_edit? user
         item.actions = [
-          ['Edit', [:edit_announcement_path, announcement],
+          ['Edit', [:edit_announcement_path, announcement,
+                    { course_id: announcement.course }],
                    {remote: true}],
-          ['Delete', [:url_for, announcement],
+          ['Delete', [:announcement_path, announcement,
+                      { course_id: announcement.course }],
                      { confirm: 'Are you sure?', method: :delete }]
         ]
       end

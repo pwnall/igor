@@ -1,20 +1,21 @@
 class DeliverablesController < ApplicationController
-  before_action :authenticated_as_admin
+  before_action :authenticated_as_course_editor
 
-  # POST /deliverables/1/reanalyze
+  # POST /6.006/deliverables/1/reanalyze
   def reanalyze
-    @deliverable = Deliverable.where(id: params[:id]).includes(:assignment).
-                               first!
+    @deliverable = current_course.deliverables.where(id: params[:id]).
+        includes(:assignment).first!
     @deliverable.reanalyze_submissions
 
-    redirect_to dashboard_assignment_url(@deliverable.assignment),
+    redirect_to dashboard_assignment_url(@deliverable.assignment,
+                                         course_id: @deliverable.course),
         notice: "All submissions for #{@deliverable.name} queued for analysis"
   end
 
-  # XHR GET /deliverables/1/submission_dashboard
+  # XHR GET /6.006/deliverables/1/submission_dashboard
   def submission_dashboard
-    @deliverable = Deliverable.where(id: params[:id]).includes(:assignment).
-                               first!
+    @deliverable = current_course.deliverables.where(id: params[:id]).
+        includes(:assignment).first!
     render layout: false if request.xhr?
   end
 end

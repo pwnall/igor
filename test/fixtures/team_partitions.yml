@@ -13,8 +13,6 @@
 #  updated_at :datetime         not null
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
 psets:
   name: "Pset Team Assignment"
   automated: true

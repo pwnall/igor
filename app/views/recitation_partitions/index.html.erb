@@ -1,9 +1,16 @@
 <div class="full_section">
 
   <div style="z-index: 10; float: right; width: 275; text-align: left;">
-    <h3><%= link_to 'Recitations', recitation_sections_path %></h3>
     <h3>
-      <%= link_to 'Generate New Proposal', autoassign_recitation_sections_path, method: :post %>
+      <%= link_to recitation_sections_path(course_id: current_course) do %>
+        Recitations
+      <% end %>
+    </h3>
+    <h3>
+      <%= link_to autoassign_recitation_sections_path(
+            course_id: current_course), method: :post do %>
+        Generate New Proposal
+      <% end %>
     </h3>
   </div>
 
@@ -16,20 +23,29 @@
         <td style="text-align: left; width: 100px;"># Recitations</td>
         <td style="text-align: left; width: 100px;"># Conflicts</td>
         <td style="text-align: left; width: 300px;">Date Created</td>
+        <td></td>
       </tr>
     </thead>
 
     <tbody>
-      <% for partition in @partitions %>
+      <% @partitions.each do |partition| %>
         <tr>
           <td><%= partition.section_size %></td>
           <td><%= partition.section_count %></td>
           <td><%= partition.conflict_count %></td>
           <td><%= partition.created_at.strftime "%B %d, %Y %I:%M%p" %></td>
-          <td><%= link_to 'Show', partition %></td>
           <td>
-            <%= link_to 'Discard', partition, method: :delete,
-                  data: { confirm: 'Are you sure?' } %>
+            <%= link_to recitation_partition_path(partition,
+                  course_id: partition.course) do %>
+              Show
+            <% end %>
+          </td>
+          <td>
+            <%= link_to recitation_partition_path(partition,
+                  course_id: partition.course), method: :delete,
+                  data: { confirm: 'Are you sure?' } do %>
+              Discard
+            <% end %>
           </td>
         </tr>
       <% end %>

@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   end
 
   create_table "grades", force: :cascade do |t|
+    t.integer  "course_id",                                       null: false
     t.integer  "metric_id",                                       null: false
     t.integer  "grader_id",                                       null: false
     t.string   "subject_type", limit: 64
@@ -162,6 +163,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
     t.index ["metric_id"], name: "index_grades_on_metric_id", using: :btree
+    t.index ["subject_id", "subject_type", "course_id"], name: "grades_by_subject_and_course", using: :btree
     t.index ["subject_id", "subject_type", "metric_id"], name: "grades_by_subject_and_metric", unique: true, using: :btree
   end
 
@@ -277,6 +279,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.index ["course_id", "name", "user_id"], name: "index_roles_on_course_id_and_name_and_user_id", unique: true, using: :btree
+    t.index ["user_id", "course_id"], name: "index_roles_on_user_id_and_course_id", using: :btree
   end
 
   create_table "submissions", force: :cascade do |t|
@@ -352,8 +355,10 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   create_table "team_memberships", force: :cascade do |t|
     t.integer  "team_id",    null: false
     t.integer  "user_id",    null: false
+    t.integer  "course_id",  null: false
     t.datetime "created_at"
     t.index ["team_id", "user_id"], name: "index_team_memberships_on_team_id_and_user_id", unique: true, using: :btree
+    t.index ["user_id", "course_id"], name: "index_team_memberships_on_user_id_and_course_id", using: :btree
     t.index ["user_id", "team_id"], name: "index_team_memberships_on_user_id_and_team_id", unique: true, using: :btree
   end
 

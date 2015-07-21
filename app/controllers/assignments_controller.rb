@@ -1,14 +1,20 @@
 class AssignmentsController < ApplicationController
-  before_action :authenticated_as_admin, :except => [:index, :show]
-  before_action :authenticated_as_user, :only => [:index, :show]
+  before_action :set_current_course
+  before_action :authenticated_as_course_editor, except: [:index, :show]
+  before_action :authenticated_as_user, only: [:index, :show]
+  before_action :set_assignment, only: [:show, :edit, :update, :destroy]
 
   layout lambda { |controller|
-    controller.current_user.try(:admin?) ? 'assignments' : 'session'
+    if controller.current_course.is_staff? controller.current_user
+      'assignments'
+    else
+      'session'
+    end
   }
 
   # GET /assignments
   def index
-    @assignments = Assignment.for current_user, Course.main
+    @assignments = Assignment.for current_user, current_course
 
     respond_to do |format|
       format.html  # index.html.erb
@@ -17,7 +23,7 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments/1
   def show
-    @assignment = Assignment.find params[:id]
+    @assignment = current_course.assignments.find params[:id]
     respond_to do |format|
       format.html  # show.html.erb
     end
@@ -25,8 +31,9 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments/1/dashboard
   def dashboard
-    @assignment = Assignment.where(:id => params[:id]).
-        includes(:deliverables, :submissions => :subject).first
+    @assignment = current_course.assignments.where(id: params[:id]).
+        includes(:deliverables, submissions: :subject).first
+
     @recitation_sections = @assignment.course.recitation_sections
 
     respond_to do |format|
@@ -36,9 +43,7 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments/new
   def new
-    @assignment = Assignment.new
-    @assignment.course = Course.main
-    @assignment.author = current_user
+    @assignment = Assignment.new course: current_course, author: current_user
 
     respond_to do |format|
       format.html  # new.html.erb
@@ -52,16 +57,19 @@ class AssignmentsController < ApplicationController
 
   # POST /assignments
   def create
-    @course = Course.main
-    @assignment = @course.assignments.build assignment_params
+    @assignment = Assignment.new assignment_params
+    @assignment.course = current_course
     @assignment.deliverables_ready = false
     @assignment.metrics_ready = false
 
     respond_to do |format|
       if @assignment.save
-        format.html { redirect_to edit_assignment_path(@assignment) }
+        format.html do
+          redirect_to edit_assignment_url(@assignment,
+                                          course_id: @assignment.course)
+        end
       else
-        format.html { render :action => :new }
+        format.html { render :new }
       end
     end
   end
@@ -73,11 +81,12 @@ class AssignmentsController < ApplicationController
     respond_to do |format|
       if @assignment.update_attributes assignment_params
         format.html do
-          redirect_to dashboard_assignment_url(@assignment),
+          redirect_to dashboard_assignment_url(@assignment,
+                                               course_id: @assignment.course),
               notice: 'Assignment successfully updated.'
         end
       else
-        format.html { render :action => :edit }
+        format.html { render :edit }
       end
     end
   end
@@ -89,14 +98,15 @@ class AssignmentsController < ApplicationController
     @assignment.destroy
 
     respond_to do |format|
-      format.html { redirect_to(assignments_url) }
-      format.js do
-        render :update do |page|
-          add_site_status page, "Assignment #{@assignment.name} destroyed", true
-          page.visual_effect :fade, "assignment_row_#{@assignment.id}"
-        end
+      format.html do
+        redirect_to assignments_url(course_id, @assignment.course),
+            notice: "Deleted assignment #{@assignment.name}"
       end
     end
+  end
+
+  def set_assignment
+    @assignment = current_course.assignments.find params[:id]
   end
 
   # Permits updating and creating assignments.

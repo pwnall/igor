@@ -1,15 +1,16 @@
 class SubmissionsController < ApplicationController
   include CoverSheet
 
+  before_action :set_current_course
   before_action :authenticated_as_user,
-                :only => [:new, :create, :update, :file, :info]
-  before_action :authenticated_as_admin,
-                :except => [:new, :create, :update, :file, :info]
+                only: [:new, :create, :update, :file, :info]
+  before_action :authenticated_as_course_editor,
+                except: [:new, :create, :update, :file, :info]
 
-  # XHR /submissions/xhr_deliverables?assignment_id=1
+  # XHR /6.006/submissions/xhr_deliverables?assignment_id=1
   def xhr_deliverables
-    @assignment = Assignment.where(:id => params[:assignment_id]).
-                             includes(:deliverables).first
+    @assignment = current_course.assignments.where(id: params[:assignment_id]).
+        includes(:deliverables).first
     unless @assignment
       render :text => ''
       return
@@ -17,16 +18,18 @@ class SubmissionsController < ApplicationController
     render :layout => false if request.xhr?
   end
 
-  # GET /submissions/request_package
+  # GET /6.006/submissions/request_package
   def request_package
-    @assignments = Assignment.by_deadline.includes(:deliverables).all
+    @assignments = current_course.assignments.by_deadline.
+        includes(:deliverables).all
     @deliverables = @assignments.map(&:deliverables).flatten
   end
 
-  # GET /submissions
+  # GET /6.006/submissions
   def index
-    @assignments = Assignment.by_deadline.includes(:deliverables).
-        all.reject { |assignment| assignment.deliverables.empty? }
+    @assignments = current_course.assignments.by_deadline.
+        includes(:deliverables).all.
+        reject { |assignment| assignment.deliverables.empty? }
     @deliverables = @assignments.map(&:deliverables).flatten
 
     query = Submission.order('updated_at DESC').
@@ -49,13 +52,15 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  # GET /submissions/new
-  # GET /submissions/new?submission[deliverable_id]=3
+  # GET /6.006/submissions/new
+  # GET /6.006/submissions/new?submission[deliverable_id]=3
   def new
     if params[:submission] and params[:submission][:deliverable_id]
-      deliverable = Deliverable.find(params[:submission][:deliverable_id])
-      @submission = Submission.where(:deliverable_id => deliverable.id).first
-      @submission ||= Submission.new :deliverable => deliverable
+      deliverable = current_course.deliverables.
+          find(params[:submission][:deliverable_id])
+      @submission = current_course.submissions.
+          where(deliverable_id: deliverable.id).first
+      @submission ||= Submission.new deliverable: deliverable
     else
       @submission = Submission.new
     end
@@ -68,7 +73,8 @@ class SubmissionsController < ApplicationController
 
   # POST /submissions
   def create
-    deliverable = Deliverable.find params[:submission][:deliverable_id]
+    deliverable = current_course.deliverables.
+        find params[:submission][:deliverable_id]
     return bounce_user unless deliverable.can_submit? current_user
 
     @submission = deliverable.submission_for current_user
@@ -86,10 +92,16 @@ class SubmissionsController < ApplicationController
         @submission.queue_analysis
 
         flash[:notice] = "Uploaded #{@submission.db_file.f.original_filename} for #{@submission.assignment.name}: #{@submission.deliverable.name}."
-        format.html { redirect_to @submission.assignment || root_path }
+        format.html do
+          redirect_to assignment_url(@submission.assignment,
+                                     course_id: @submission.course)
+        end
       else
         flash[:notice] = "Submission for #{@submission.assignment.name}: #{@submission.deliverable.name} failed."
-        format.html { redirect_to @submission.assignment || root_path }
+        format.html do
+          redirect_to assignment_url(@submission.assignment,
+                                     course_id: @submission.course)
+        end
       end
     end
   end
@@ -106,7 +118,10 @@ class SubmissionsController < ApplicationController
 
     flash[:notice] = "Reanalysis request queued."
     respond_to do |format|
-      format.html { redirect_to @submission.analysis }
+      format.html do
+        redirect_to analysis_url(@submission.analysis,
+                                 course_id: @submission.course)
+      end
     end
   end
 

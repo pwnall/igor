@@ -1,4 +1,5 @@
-<%= form_for @prerequisite do |f| %>
+<%= form_for @prerequisite, url: polymorphic_url(@prerequisite,
+      course_id: @prerequisite.course) do |f| %>
   <%= f.error_messages %>
 
   <section class="fields">

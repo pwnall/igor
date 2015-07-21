@@ -12,7 +12,12 @@
   <% end %>
   <ol>
     <li>
-      <%= link_to 'Submissions', submissions_path %>
+      <%= link_to courses_path do %>
+        Courses
+      <% end %>
+    </li>
+    <li>
+      <%= link_to 'Submissions', submissions_path(course_id: Course.main) %>
     </li>
 
     <li>

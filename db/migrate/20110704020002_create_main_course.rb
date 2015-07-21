@@ -9,6 +9,6 @@ class CreateMainCourse < ActiveRecord::Migration
   end
 
   def down
-    Course.main && Course.main.destroy
+    Course.first && Course.first.destroy
   end
 end

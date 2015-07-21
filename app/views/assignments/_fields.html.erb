@@ -24,7 +24,7 @@
   <p class="field">
     <%= f.label :author, 'Author' %>
     <span class="value">
-      <%= f.collection_select :author_id, Course.main.staff, :id, :name %>
+      <%= f.collection_select :author_id, f.object.course.staff, :id, :name %>
     </span>
   </p>
 

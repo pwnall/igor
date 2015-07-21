@@ -9,7 +9,7 @@ class AnalyzersControllerTest < ActionController::TestCase
   end
 
   it "must not crash on /analyzers/help" do
-    get :help
+    get :help, params: { course_id: courses(:main).to_param }
     assert_response :success, response.body
   end
 end

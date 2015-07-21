@@ -135,8 +135,8 @@ end
     exam.metrics.each.with_index do |metric, k|
       next if i + j == k
       grade = metric.grades.build subject: user,
-          score: metric.max_score * (0.1 * ((i + j + k) % 10))
-      grade.grader = admin
+          score: metric.max_score * (0.1 * ((i + j + k) % 10)),
+          course: metric.course, grader: admin
       grade.save!
     end
   end
@@ -237,8 +237,8 @@ end
         next if i + j == k
 
         grade = metric.grades.build subject: user,
-            score: metric.max_score * (0.1 * ((i + j + k) % 10))
-        grade.grader = admin
+            score: metric.max_score * (0.1 * ((i + j + k) % 10)),
+            course: metric.course, grader: admin
         grade.created_at = pset.due_at + 1.day
         grade.updated_at = pset.due_at + 1.day
         grade.save!

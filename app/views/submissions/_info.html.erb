@@ -2,11 +2,13 @@
   <span class="submission-info">
     <span class="author">
       <%= user_image_tag submission.subject %>
-      <%= link_to submission.subject.display_name_for(current_user),
-                  submission.subject %>
+      <%= link_to submission.subject do %>
+        <% submission.subject.display_name_for current_user %>
+      <% end %>
     </span>
     submitted a
-    <%= link_to file_submission_path(submission) do %>
+    <%= link_to file_submission_path(submission,
+                                     course_id: submission.course) do %>
       <%= download_icon_tag %>
       <%= number_to_human_size submission.db_file.f.size %> file
     <% end %>
@@ -15,13 +17,15 @@
   </span>
   <span class="submission-result">
   <% if submission.analysis %>
-    <%= link_to submission.analysis do %>
+    <%= link_to analysis_path(submission.analysis,
+                              course_id: submission.course) do %>
       <%= analysis_status_icon_tag submission.analysis %>
       <%= analysis_status_text submission.analysis %>
     <% end %>
     <% if submission.analysis.status_will_change? %>
       <span data-pwnfx-delayed="submission-info" data-pwnfx-delayed-method="GET"
-            data-pwnfx-delayed-url="<%= info_submission_path(submission) %>"
+            data-pwnfx-delayed-url="<%= info_submission_path(submission,
+                course_id: submission.course) %>"
             data-pwnfx-delayed-ms="5000"
             data-pwnfx-delayed-scope="submission-info">
         <%= ajax_spinner_image_tag %>

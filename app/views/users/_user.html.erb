@@ -11,12 +11,13 @@
 <ul class="user-info-actions">
 	<% if current_user.admin? %>
   <li>
-    <%= link_to 'Impersonate', impersonate_user_path(user), :method => :post %>
+    <%= link_to impersonate_user_path(user), method: :post do %>
+      <%= debug_icon_tag %> Impersonate
+    <% end %>
   </li>
   <li>
     <%= link_to((user.admin ? 'Strip Admin' : 'Make Admin'),
-                set_admin_user_path(user, :to => !user.admin),
-                :method => :put) %>
+                set_admin_user_path(user, to: !user.admin), method: :put) %>
   </li>
   <li>
     <%= link_to 'Destroy', user, data: { confirm: 'Are you sure?' },

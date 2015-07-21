@@ -9,8 +9,4 @@ module RecitationSectionsHelper
     return 'no assignment' unless recitation_section
     "R#{'%02d' % recitation_section.serial} - #{recitation_section.location} #{recitation_section.leader.display_name_for}"
   end
-
-  def recitation_leaders
-    Course.main.staff
-  end
 end

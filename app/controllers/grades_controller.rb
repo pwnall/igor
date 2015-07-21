@@ -1,16 +1,19 @@
 class GradesController < ApplicationController
-  before_action :authenticated_as_admin, :except => [:index]
-  before_action :authenticated_as_user, :only => [:index]
+  before_action :set_current_course
+  before_action :authenticated_as_course_editor, except: [:index]
+  before_action :authenticated_as_user, only: [:index]
 
-  # GET /grades
+  # GET /6.006/grades
   def index
-    grades_by_metric_id = current_user.grades.index_by(&:metric_id)
-    @recitation = current_user.recitation_section
+    grades_by_metric_id = current_user.grades_for(current_course).
+        index_by(&:metric_id)
+    @recitation = current_user.recitation_section_for(current_course)
 
     @assignments = []
     @assignment_metrics = {}
     @assignment_grades = {}
-    Assignment.includes(:metrics).by_deadline.each do |assignment|
+    current_course.assignments.includes(:metrics).by_deadline.
+        each do |assignment|
       assignment_metrics = assignment.metrics.select do |metric|
         metric.can_read? current_user
       end
@@ -24,20 +27,20 @@ class GradesController < ApplicationController
     end
   end
 
-  # GET /grades/editor
+  # GET /6.006/grades/editor
   def editor
-    @subjects = Course.main.students.includes(:profile).sort_by(&:name)
-    query = Course.main.assignments
+    @subjects = current_course.students.includes(:profile).sort_by(&:name)
+    query = current_course.assignments
     if params[:assignment_id]
-      query = query.where(:id => params[:assignment_id])
+      query = query.where(id: params[:assignment_id])
     else
-      query = query.by_deadline.where('deadlines.due_at < ?', Time.now)
+      query = query.by_deadline.where('deadlines.due_at < ?', Time.current)
     end
 
-    @assignment = query.first || Assignment.last
+    @assignment = query.first || current_course.assignments.last
     unless @assignment
       respond_to do |format|
-        format.html { render :action => :editor_blank }
+        format.html { render :editor_blank }
       end
       return
     end
@@ -50,7 +53,7 @@ class GradesController < ApplicationController
     end
   end
 
-  # POST /grades
+  # POST /6.006/grades
   def create
     case params[:grade][:subject_type]
     when 'User'
@@ -71,17 +74,21 @@ class GradesController < ApplicationController
       if params[:grade][:score].blank?
         # Delete a grade. This will remove its comment as well.
         @grade.destroy
-        @grade = Grade.new metric: @grade.metric  # Render a clean slate.
+
+        # Render a clean slate.
+        @grade = Grade.new metric: @grade.metric, course: @grade.course
         params[:comment][:comment] = ''
         success = true
       else
         # Create / update a grade.
         @grade.grader = current_user
-        success = @grade.update_attributes grade_params
+        @grade.course = current_course
+        success = @grade.update grade_params
       end
     else
       @grade = Grade.new grade_params
       @grade.grader = current_user
+      @grade.course = current_course
       success = @grade.save
     end
 
@@ -123,23 +130,22 @@ class GradesController < ApplicationController
     end
   end
 
-  # GET /grades/request_missing/0
+  # GET /6.006/grades/request_missing/0
   def request_missing
-    @assignments = Assignment.all
+    @assignments = current_course.assignments
   end
 
-  # GET /grades/request_report/0
+  # GET /6.006/grades/request_report/0
   def request_report
     render layout: 'assignments'
   end
 
   def missing
-    course = Course.main
-    assignments = course.assignments.includes :deliverables,
-                                              metrics: :assignment
+    assignments = current_course.assignments.includes :deliverables,
+                                                      metrics: :assignment
     @assignments = assignments
     unless params[:filter_aid].blank?
-      assignments = course.assignments.where(id: params[:filter_aid])
+      assignments = current_course.assignments.where id: params[:filter_aid]
       @assignment = assignments.first
     else
       @assignment = nil
@@ -155,7 +161,7 @@ class GradesController < ApplicationController
 
       if assignment.deliverables.empty?
         # No deliverables (quiz?). Include all registered students.
-        subjects = course.students
+        subjects = current_course.students
       else
         # Only consider students / teams who submitted something for the assignment.
         deliverable_ids = assignment.deliverables.map(&:id)
@@ -241,8 +247,11 @@ class GradesController < ApplicationController
       csv << ['Name', 'Rec'] + @ordered_metrics.map { |m| "#{m.assignment.name}: #{m.name}" } + [params[:use_weights] ? 'Weighted Total' : 'Raw Total']
       @users.each do |user|
         section_number = 'None'
-        if user.registration && user.registration.recitation_section
-          section_number = user.registration.recitation_section.serial
+        registration = user.registration_for(current_course)
+        if registration && registration.recitation_section
+          section_number = registration.recitation_section.serial
+        else
+          section_number = ''
         end
         csv << [@names_by_uid[user.id], section_number] +
                @ordered_metrics.map { |m| g = @grades_by_uid_and_mid[user.id][m.id]; next (g ? g.score || 'N' : 'N') } +
@@ -281,7 +290,7 @@ class GradesController < ApplicationController
   end
 
   def pull_metrics(only_published = true)
-    @metrics = AssignmentMetric.includes :assignment
+    @metrics = current_course.assignment_metrics.includes :assignment
     @metrics = @metrics.where(:published => true) if only_published
     if params[:filter_aid] && !params[:filter_aid].empty?
       @metrics = @metrics.where(:assignment_id => params[:filter_aid].to_i)
@@ -299,7 +308,8 @@ class GradesController < ApplicationController
 
   # Permits updating grades.
   def grade_params
-    params.require(:grade).permit :subject_id, :subject_type, :metric_id, :score
+    params.require(:grade).permit :subject_id, :subject_type, :metric_id,
+                                  :score
   end
   private :grade_params
 

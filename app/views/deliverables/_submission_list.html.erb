@@ -4,8 +4,9 @@
 <ol class="submission-list">
   <% submissions.each do |submission| %>
   <li>
-    <%= link_to submission.analysis || submission do %>
-    <figure title="<%= submission.subject.name %>">
+    <%= link_to polymorphic_url(submission.analysis || submission,
+                                course_id: submission.course) do %>
+      <figure title="<%= submission.subject.name %>">
         <%= user_image_tag submission.subject, size: :large %>
         <%= analysis_status_icon_tag submission.analysis %>
       </figure>

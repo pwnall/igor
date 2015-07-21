@@ -244,4 +244,9 @@ module IconsHelper
   def tools_icon_tag
     image_tag 'icons/tools.png', alt: 'Toolbox', class: 'ui_icon'
   end
+
+  # Site debugging functionality.
+  def debug_icon_tag
+    image_tag 'icons/debug.png', alt: 'Debugging', class: 'ui_icon'
+  end
 end

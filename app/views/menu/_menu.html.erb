@@ -1,4 +1,8 @@
-<%= render "menu/for_#{menu_type(current_user, Course.main)}" %>
+<% if current_course %>
+  <%= render "menu/for_#{menu_type(current_user, current_course)}" %>
+<% else %>
+  <%= render "menu/for_#{menu_type(current_user, nil)}" %>
+<% end %>
 
 <li>
   <%= link_to current_user do %>
@@ -11,13 +15,6 @@
     <li>
       <%= link_to 'Profile', current_user %>
     </li>
-    <% if current_user.registration %>
-    <li>
-      <%= link_to current_user.registration do %>
-        Registration
-      <% end %>
-    <li>
-    <% end %>
     <li>
       <%= link_to 'Change Password', change_password_session_path %>
     </li>

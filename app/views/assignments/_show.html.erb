@@ -2,12 +2,14 @@
   <h2 class="heading">
     <%= assignment.name %>
 
-    <% if current_user.admin? %>
+    <% if assignment.can_edit?(current_user) %>
     <span class="actions">
-      <%= link_to dashboard_assignment_path(assignment), class: 'button' do %>
+      <%= link_to dashboard_assignment_path(assignment,
+            course_id: assignment.course), class: 'button' do %>
         <%= dashboard_icon_tag %> Dashboard
       <% end %>
-      <%= link_to edit_assignment_path(assignment), class: 'button' do %>
+      <%= link_to edit_assignment_path(assignment,
+            course_id: assignment.course), class: 'button' do %>
         <%= edit_icon_tag %> Edit
       <% end %>
     </span>

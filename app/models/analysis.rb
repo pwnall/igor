@@ -30,6 +30,9 @@ class Analysis < ActiveRecord::Base
   # The analyzer's private logging output. This is only shown to staff.
   validates :private_log, length: { in: 0..LOG_LIMIT, allow_nil: false }
 
+  # The course whose submission was analyzed.
+  has_one :course, through: :submission
+
   # True if the given user is allowed to see the analysis.
   def can_read?(user)
     user && (user == submission.subject || user.admin?)

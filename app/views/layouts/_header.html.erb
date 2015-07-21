@@ -2,16 +2,52 @@
   <nav id="main-menu">
     <ol>
       <li>
-        <%= link_to root_path do %>
-          <h1>
-            <%= image_tag 'mit-blackred-footer3.gif', :class => 'logo', :alt => '' %>
-            <span class="course-number">
-              <%= Course.main.number %>
-              <% unless current_user %>
-              <%= Course.main.title %>
-              <% end %>
-            </span>
-          </h1>
+        <% if current_course %>
+          <%= link_to course_root_path course_id: current_course do %>
+            <h1>
+              <span class="course-number">
+                <%= current_course.number %>
+                <% unless current_user %>
+                <%= current_course.title %>
+                <% end %>
+              </span>
+            </h1>
+          <% end %>
+        <% else %>
+          <%= link_to root_path do %>
+            <h1>
+              <span class="course-number">
+                <% if current_user %>
+                  Courses
+                <% else %>
+                  Six
+                <% end %>
+              </span>
+            </h1>
+          <% end %>
+        <% end %>
+        <% if current_user %>
+        <ol>
+          <% current_user.staff_courses.each do |course| %>
+          <li>
+            <%= link_to course_root_path(course_id: course) do %>
+              <%= role_icon_tag :staff %> <%= course.number %>
+            <% end %>
+          </li>
+          <% end %>
+          <% current_user.registered_courses.each do |course| %>
+          <li>
+            <%= link_to course_root_path(course_id: course) do %>
+              <%= role_icon_tag :student %> <%= course.number %>
+            <% end %>
+          </li>
+          <% end %>
+          <li>
+            <%= link_to connect_courses_path do %>
+              <%= create_icon_tag %> Add Course
+            <% end %>
+          </li>
+        </ol>
         <% end %>
       </li>
       <% if current_user %>

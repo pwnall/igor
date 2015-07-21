@@ -1,29 +1,30 @@
+<% if current_course %>
 <li>
-  <%= link_to editor_grades_path do %>
+  <%= link_to editor_grades_path(course_id: current_course) do %>
     <%= grades_icon_tag %> Grades
   <% end %>
   <ol>
     <li>
-      <%= link_to editor_grades_path do %>
+      <%= link_to editor_grades_path(course_id: current_course) do %>
         <%= edit_icon_tag %> Enter Grades
       <% end %>
     </li>
     <li>
-      <%= link_to request_package_submissions_path do %>
+      <%= link_to request_package_submissions_path(
+            course_id: current_course) do %>
         <%= download_icon_tag %> Get Submissions
       <% end %>
     </li>
     <li>
-      <%= link_to request_missing_grades_path do %>
+      <%= link_to request_missing_grades_path(course_id: current_course) do %>
         <%= search_icon_tag %> Missing Grades
       <% end %>
     </li>
     <li>
-      <%= link_to request_report_grades_path do %>
+      <%= link_to request_report_grades_path(course_id: current_course) do %>
         <%= report_icon_tag %> Grade Spreadsheet
       <% end %>
     </li>
   </ol>
 </li>
-
-
+<% end %>

@@ -1,10 +1,12 @@
 <h2 class="assignment-heading">
   <%= @assignment.name %>
   <span class="actions">
-    <%= link_to @assignment, class: 'button' do %>
+    <%= link_to assignment_path(@assignment, course_id: @assignment.course),
+          class: 'button' do %>
       <%= role_icon_tag :student %> Student View
     <% end %>
-    <%= link_to edit_assignment_path(@assignment), class: 'button' do %>
+    <%= link_to edit_assignment_path(@assignment,
+          course_id: @assignment.course), class: 'button' do %>
       <%= edit_icon_tag %> Edit
     <% end %>
     <%= render 'assignments/deliverable_release', assignment: @assignment %>
@@ -38,8 +40,8 @@
   <%= waiting_icon_tag %>
   Grading Process
   <span class="actions">
-    <%= link_to editor_grades_path(:assignment_id => @assignment.id),
-          class: 'button' do %>
+    <%= link_to editor_grades_path(course_id: @assignment.course,
+          assignment_id: @assignment), class: 'button' do %>
       <%= edit_icon_tag %> Enter Grades
     <% end %>
   </span>
@@ -88,8 +90,9 @@
       <%= upload_icon_tag %>
       <span class="name"><%= deliverable.name %></span>
       <span class="actions">
-        <%= link_to reanalyze_deliverable_path(deliverable), method: :post,
-                    class: 'button' do %>
+        <%= link_to reanalyze_deliverable_path(deliverable,
+              course_id: deliverable.course), method: :post,
+              class: 'button' do %>
           <%= recompute_icon_tag %> Re-analyze All
         <% end %>
       </span>

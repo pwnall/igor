@@ -35,6 +35,9 @@ class AssignmentMetric < ActiveRecord::Base
   validates :max_score, numericality: { greater_than_or_equal_to: 0 },
                         presence: true
 
+  # The course that this metric applies to.
+  has_one :course, through: :assignment
+
   # True if the given user should be allowed to see the metric.
   def can_read?(user)
     assignment.metrics_ready? || (user && user.admin?)
@@ -42,7 +45,7 @@ class AssignmentMetric < ActiveRecord::Base
 
   # True if the given user should be allowed to post grades for the metric.
   def can_grade?(user)
-    user && (user.admin? || user.robot?)
+    course.can_grade? user
   end
 
   # True if this metric can be destroyed without a warning.
@@ -52,7 +55,10 @@ class AssignmentMetric < ActiveRecord::Base
 
   # A user's grade on this assignment metric.
   def grade_for(user)
-    grades.with_subject(assignment.grade_subject_for(user)).first_or_initialize
+    subject = assignment.grade_subject_for(user)
+    grade = grades.with_subject(subject).first
+    return grade unless grade.nil?
+    Grade.new metric: self, course: course, subject: subject
   end
 
   # The average grade dispensed in the given recitation for this metric.

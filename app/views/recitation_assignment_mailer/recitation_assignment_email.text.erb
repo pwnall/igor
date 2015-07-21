@@ -1,5 +1,6 @@
 A new recitation assignment proposal has been created.
 
 Please go to the address below to inspect the assignment.
-<%= recitation_partition_url @recitation_partition, host: @host,
-                                                    protocol: @protocol %>
+<%= recitation_partition_url @recitation_partition,
+      course_id: @recitation_partition.course, host: @host,
+      protocol: @protocol %>

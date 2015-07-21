@@ -1,62 +1,65 @@
+<% if current_course %>
 <li>
-  <%= link_to root_path do %>
+  <%= link_to course_root_path(course_id: current_course) do %>
     <%= role_icon_tag(:staff) %> Course
   <% end %>
   <ol>
     <li>
-      <%= link_to edit_course_path(Course.main) do %>
+      <%= link_to edit_course_path(current_course) do %>
         <%= config_icon_tag %> Course Info
       <% end %>
     </li>
     <li>
-      <%= link_to prerequisites_path do %>
+      <%= link_to prerequisites_path(course_id: current_course) do %>
         <%= edit_icon_tag %> Prerequisites
       <% end %>
     </li>
     <li>
-      <%= link_to role_requests_path do %>
+      <%= link_to role_requests_path(course_id: current_course) do %>
         <%= role_icon_tag :staff %> Staff
       <% end %>
     </li>
     <li>
-      <%= link_to assignments_path do %>
+      <%= link_to assignments_path(course_id: current_course) do %>
         <%= homework_icon_tag %> Assignments
       <% end %>
     </li>
     <li>
-      <%= link_to registrations_path do %>
+      <%= link_to registrations_path(course_id: current_course) do %>
         <%= role_icon_tag :student %> Students
       <% end %>
     </li>
-    <% if Course.main.has_teams? %>
+    <% if current_course.has_teams? %>
     <li>
-      <%= link_to team_partitions_path do %>
+      <%= link_to team_partitions_path(course_id: current_course) do %>
         <%= role_icon_tag :team %> Teams
       <% end %>
     </li>
     <% end %>
-    <% if Course.main.has_recitations? %>
+    <% if current_course.has_recitations? %>
     <li>
-      <%= link_to recitation_sections_path do %>
+      <%= link_to recitation_sections_path(course_id: current_course) do %>
         <%= recitation_icon_tag %> Recitations
       <% end %>
     </li>
     <li>
-      <%= link_to time_slots_path do %>
+      <%= link_to time_slots_path(course_id: current_course) do %>
         <%= time_slot_icon_tag %> Time Slots
       <% end %>
     </li>
     <% end %>
-    <% if Course.main.has_surveys? %>
+    <% if current_course.has_surveys? %>
     <li>
-      <%= link_to 'Surveys', survey_questions_path %>
+      <%= link_to survey_questions_path(course_id: current_course) do %>
+        Surveys
+      <% end %>
+    </li>
+    <li>
+      <%= link_to survey_answers_path(course_id: current_course) do %>
+        Survey Answers
+      <% end %>
     </li>
     <% end %>
-    <% if Course.main.has_surveys? %>
-    <li>
-      <%= link_to 'Survey Answers', survey_answers_path %>
-    </li>
-    <% end %>
-
   </ol>
 </li>
+<% end %>

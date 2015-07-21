@@ -55,7 +55,7 @@ class ActionItem
   def self.for(user, options = {})
     items = []
     if user && !user.admin?
-      courses = user.courses
+      courses = user.registered_courses
     else
       courses = Course.all
     end
@@ -67,7 +67,8 @@ class ActionItem
           item = ActionItem.new default_attrs(deadline)
           item.description = deliverable.name
           item.active = true
-          item.link = [[:assignment_path, deadline.subject]]
+          item.link = [[:assignment_path, deadline.subject,
+                        { course_id: deadline.course }]]
           if submission = deliverable.submission_for(user)
             item.done = !submission.analysis ||
                         submission.analysis.submission_ok?

@@ -36,9 +36,12 @@ class Submission < ActiveRecord::Base
   # Analyzer used to perform an automated health-check for this submission.
   has_one :analyzer, through: :deliverable
 
+  # The course that this homework submission is for.
+  has_one :course, through: :deliverable
+
   # True if the given user is allowed to see the submission.
   def can_read?(user)
-    !!user && (is_owner?(user) || user.admin?)
+    !!user && (is_owner?(user) || course.can_grade?(user))
   end
 
   # Queues up a request to run an automated health-check for this submission.

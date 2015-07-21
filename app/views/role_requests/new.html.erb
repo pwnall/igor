@@ -13,9 +13,9 @@
   grades. Professors and teaching assistants are usually course instructors.
 </p>
 
-<%= form_for @role_request  do |f| %>
+<%= form_for @role_request, url: polymorphic_url(@role_request,
+      course_id: @role_request.course) do |f| %>
   <%= f.hidden_field :name, value: 'staff' %>
-  <%= f.hidden_field :course_id %>
 
   <p class="actions">
     <%= f.button class: 'emphasized', type: :submit do %>
@@ -31,9 +31,9 @@
   grades. Graders are usually students with hourly jobs.
 </p>
 
-<%= form_for @role_request  do |f| %>
+<%= form_for @role_request, url: polymorphic_url(@role_request,
+      course_id: @role_request.course) do |f| %>
   <%= f.hidden_field :name, value: 'grader' %>
-  <%= f.hidden_field :course_id %>
 
   <p class="actions">
     <%= f.button class: 'emphasized', type: :submit do %>

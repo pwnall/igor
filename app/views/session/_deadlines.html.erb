@@ -9,7 +9,8 @@
       </span>
       <span class="assignment">
         <% if item.active? %>
-          <%= link_to item.subject.name, item.subject %>
+          <%= link_to item.subject.name, id: item.subject,
+                course_id: item.subject.course %>
         <% else %>
           <%= item.subject.name %>
         <% end %>

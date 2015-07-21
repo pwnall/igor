@@ -32,12 +32,24 @@ class GradeEditor
     $indicator = $ '.progress-indicator', $td
     @setIndicator $indicator, 'upload-pending', false
 
-    url = '/grades.html'
+    # NOTE: Each row has a <th> followed by <td>s.
+    td = $td[0]
+    tdIndex = null
+    for rowTd, i in $('td', $row)
+      if rowTd is td
+        tdIndex = i
+    console.log tdIndex
+
+    $table = $row.parents('table').first()
+    th = $table.find('thead').find('tr').children('th')[tdIndex + 1]
+    $th = $ th
+
+    url = "/#{$th.attr('data-metric-course-id')}/grades.html"
     $.ajax url,
       data:
         'grade[subject_id]': $row.attr('data-subject-id')
         'grade[subject_type]': $row.attr('data-subject-type')
-        'grade[metric_id]': $td.attr('data-metric-id')
+        'grade[metric_id]': $th.attr('data-metric-id')
         'grade[score]': $td.find('input#score').val()
         'comment[comment]': $td.find("div.comment > textarea").val()
       dataType: 'text'

@@ -1,38 +1,29 @@
 class PrerequisitesController < ApplicationController
-  before_action :authenticated_as_admin, :except => [:new, :index, :show]
+  before_action :authenticated_as_course_editor
+  before_action :set_prerequisite, only: [:edit, :update, :destroy]
 
   # GET /prerequisites
   def index
-    @prerequisites = Prerequisite.all
+    @prerequisites = current_course.prerequisites
 
     respond_to do |format|
       format.html # index.html.erb
     end
   end
 
-  # GET /prerequisites/1
-  def show
-    @prerequisite = Prerequisite.find params[:id]
-
-    respond_to do |format|
-      format.html # show.html.erb
-    end
-  end
-
   # GET /prerequisites/new
   def new
-    @prerequisite = Prerequisite.new
+    @prerequisite = Prerequisite.new course: current_course
   end
 
   # GET /prerequisites/1/edit
   def edit
-    @prerequisite = Prerequisite.find params[:id]
   end
 
   # POST /prerequisites
   def create
     @prerequisite = Prerequisite.new prerequisite_params
-    @prerequisite.course = Course.main
+    @prerequisite.course = current_course
     respond_to do |format|
       if @prerequisite.save
         format.html do
@@ -46,7 +37,6 @@ class PrerequisitesController < ApplicationController
 
   # PUT /prerequisites/1
   def update
-    @prerequisite = Prerequisite.find params[:id]
     respond_to do |format|
       if @prerequisite.update_attributes prerequisite_params
         format.html do
@@ -60,14 +50,17 @@ class PrerequisitesController < ApplicationController
 
   # DELETE /prerequisites/1
   def destroy
-    @prerequisite = Prerequisite.find params[:id]
     @prerequisite.destroy
 
     notice = "Prerequisite #{@prerequisite.prerequisite_number} removed."
-
     respond_to do |format|
       format.html { redirect_to prerequisites_url, :notice => notice }
     end
+  end
+
+  # Common code for fetching the prerequisite.
+  def set_prerequisite
+    @prerequisite = current_course.prerequisites.find params[:id]
   end
 
   # Permits creating and updating prerequisites.

@@ -2,14 +2,16 @@
   <nav>
   	<ul>
   		<li>
-  			<a href="mailto:<%= Course.main.email %>">
-  				<%= Course.main.number %> TA Mailing List
+        <% if current_course %>
+  			<a href="mailto:<%= current_course.email %>">
+  				<%= current_course.number %> TA Mailing List
   			</a>
+        <% end %>
         <a href="http://web.mit.edu/registrar/calendar/">MIT Academic Calendar</a>
         <a href="http://www.eecs.mit.edu/">MIT EECS Department</a>
   			<a href="http://student.mit.edu/catalog/index.cgi">MIT Course Catalog</a>
   		</li>
-  	</ul>		
+  	</ul>
     <p class="copyright">
       <%= link_to image_tag('cc_by_nd.png', :alt => 'Creative Commons License'),
                   'http://creativecommons.org/licenses/by-nd/3.0/us/' %>

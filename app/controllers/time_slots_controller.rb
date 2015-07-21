@@ -1,16 +1,15 @@
 class TimeSlotsController < ApplicationController
-  before_action :authenticated_as_admin
+  before_action :authenticated_as_course_editor
 
-  # GET /time_slots
+  # GET /6.006/time_slots
   def index
-    @course = Course.main
-    @time_slot = @course.time_slots.build
+    @time_slots = current_course.time_slots
+    @time_slot = TimeSlot.new course: current_course
   end
 
-  # POST /time_slots
+  # POST /6.006/time_slots
   def create
-    @course = Course.main
-    @time_slot = @course.time_slots.build time_slot_params
+    @time_slot = current_course.time_slots.build time_slot_params
 
     respond_to do |format|
       if @time_slot.save
@@ -19,21 +18,23 @@ class TimeSlotsController < ApplicationController
         end
       else
         format.html do
-          @time_slots = @course.time_slots(true)
+          @time_slots = current_course.time_slots.reload
           render :index
         end
       end
     end
   end
 
-  # DELETE /time_slots/1
+  # DELETE /6.006/time_slots/1
   def destroy
     @time_slot = TimeSlot.find params[:id]
     @time_slot.destroy
 
     respond_to do |format|
-      notice = 'Time slot was removed.'
-      format.html { redirect_to time_slots_path, notice: notice }
+      format.html do
+        redirect_to time_slots_url(course_id: @time_slot.course),
+            notice: 'Time slot removed.'
+      end
     end
   end
 

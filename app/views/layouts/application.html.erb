@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MIT <%= Course.main.number %></title>
+<% if current_course %>
+  <title><%= current_course.number %> <%= current_course.title %></title>
+<% else %>
+  <title>Six</title>
+<% end %>
 <%= stylesheet_link_tag 'application' %>
 <%= javascript_include_tag 'application' %>
 <%= render 'layouts/google_analytics' %>

@@ -44,20 +44,22 @@
       </td>
       <% end %>
       <td>
-        <%= render partial: 'time_slots/list',
-              object: recitation_section.time_slots %>
+        <%= render 'time_slots/list',
+              time_slots: recitation_section.time_slots %>
       </td>
       <td><%= recitation_section.location %></td>
       <td><%= recitation_section.users.length %></td>
       <td>
-        <%= link_to edit_recitation_section_path(recitation_section) do %>
+        <%= link_to edit_recitation_section_path(recitation_section,
+              course_id: recitation_section.course) do %>
           Edit
         <% end %>
       </td>
       <td>
-        <%= link_to recitation_section, method: :delete,
+        <%= link_to recitation_section_path(recitation_section,
+              course_id: recitation_section.course), method: :delete,
               data: { confirm: 'Are you sure?' } do %>
-          Delete
+          <%= destroy_icon_tag %> Delete
         <% end %>
       </td>
     </tr>

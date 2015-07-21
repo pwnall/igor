@@ -14,17 +14,17 @@
           <%= user.email %>
         </td>
         <td>
-          <% if user.has_role?('admin') %>
+          <% if user.admin? %>
             <%= role_icon_tag :admin %> admin
           <% else %>
             <%= role_icon_tag :student %> user
           <% end %>
         </td>
         <td>
-        <% unless user.has_role?('admin') %>
+        <% unless user.admin? %>
           <%= link_to impersonate_user_path(user), method: :post,
-                      class: 'button' do %>
-            <%= search_icon_tag %> Impersonate
+                class: 'button' do %>
+            <%= debug_icon_tag %> Impersonate
           <% end %>
         <% end %>
         </td>
@@ -34,7 +34,7 @@
           <% end %>
         </td>
         <td>
-          <% if user.has_role?('admin') %>
+          <% if user.admin? %>
             <%= link_to set_admin_user_path(user, :to => false),
                         method: :put, class: 'button' do %>
               <%= role_icon_tag :student %> User

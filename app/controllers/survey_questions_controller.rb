@@ -1,4 +1,5 @@
 class SurveyQuestionsController < ApplicationController
+  before_action :set_current_course
   before_action :authenticated_as_admin
 
   # GET /survey_questions

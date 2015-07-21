@@ -1,30 +1,32 @@
 class RecitationSectionsController < ApplicationController
+  before_action :set_current_course
+  before_action :authenticated_as_course_editor
   before_action :set_recitation_section, only: [:edit, :update, :destroy]
-  before_action :authenticated_as_admin
 
-  # GET /recitation_sections
+  # GET /6.006/recitation_sections
   def index
-    @recitation_sections = RecitationSection.includes(:leader).all
+    @recitation_sections = current_course.recitation_sections.
+        includes(:leader).all
 
     respond_to do |format|
       format.html # index.html.erb
     end
   end
 
-  # GET /recitation_sections/new
+  # GET /6.006/recitation_sections/new
   def new
-    @recitation_section = RecitationSection.new course: Course.main,
-        serial: 1 + RecitationSection.count
+    @recitation_section = RecitationSection.new course: current_course,
+        serial: 1 + current_course.recitation_sections.count
   end
 
-  # GET /recitation_sections/1/edit
+  # GET /6.006/recitation_sections/1/edit
   def edit
   end
 
-  # POST /recitation_sections
+  # POST /6.006/recitation_sections
   def create
     @recitation_section = RecitationSection.new recitation_section_params
-    @recitation_section.course = Course.main
+    @recitation_section.course = current_course
 
     respond_to do |format|
       if @recitation_section.save
@@ -38,7 +40,7 @@ class RecitationSectionsController < ApplicationController
     end
   end
 
-  # PUT /recitation_sections/1
+  # PUT /6.006/recitation_sections/1
   def update
     respond_to do |format|
       if @recitation_section.update_attributes recitation_section_params
@@ -53,9 +55,9 @@ class RecitationSectionsController < ApplicationController
   end
 
 
-  # POST /recitation_sections/autoassign
+  # POST /6.006/recitation_sections/autoassign
   def autoassign
-    RecitationAssigner.delay.assign_and_email current_user, Course.main,
+    RecitationAssigner.delay.assign_and_email current_user, current_course,
                                               root_url
 
     respond_to do |format|
@@ -66,17 +68,20 @@ class RecitationSectionsController < ApplicationController
     end
   end
 
-  # DELETE /recitation_sections/1
+  # DELETE /6.006/recitation_sections/1
   def destroy
     @recitation_section.destroy
 
     respond_to do |format|
-      format.html { redirect_to recitation_sections_url }
+      format.html do
+        redirect_to recitation_sections_url(
+            course_id: @recitation_section.course)
+      end
     end
   end
 
   def set_recitation_section
-    @recitation_section = RecitationSection.find params[:id]
+    @recitation_section = current_course.recitation_sections.find params[:id]
   end
   private :set_recitation_section
 

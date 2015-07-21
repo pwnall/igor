@@ -8,7 +8,8 @@
     <p>
       Please go
       <%= link_to 'here', recitation_partition_url(@recitation_partition,
-              host: @host, protocol: @protocol) %>
+            course_id: @recitation_partition.course, host: @host,
+            protocol: @protocol) %>
       to inspect the assignment.
     </p>
 
@@ -20,7 +21,8 @@
       "action": {
         "@type": "ViewAction",
         "url": <%= recitation_partition_url(@recitation_partition,
-                       host: @host, protocol: @protocol).to_json.html_safe %>,
+                     course_id: @recitation_partition.course, host: @host,
+                     protocol: @protocol).to_json.html_safe %>,
         "name": "Inspect proposal"
       }
     }

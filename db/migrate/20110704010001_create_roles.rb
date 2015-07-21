@@ -10,5 +10,8 @@ class CreateRoles < ActiveRecord::Migration
 
     # List all staff members in a course. Prevent duplicate role entries.
     add_index :roles, [:course_id, :name, :user_id], unique: true
+
+    # Lists all the courses that a user has privileges for.
+    add_index :roles, [:user_id, :course_id]
   end
 end

@@ -1,10 +1,17 @@
 <div class="full_section">
   <div style="z-index: 10; float: right; width: 275; text-align: left;">
-    <h3><%= link_to 'Recitation Proposals', recitation_partitions_path %></h3>
     <h3>
-      <%= link_to 'Implement', implement_recitation_partition_url(@partition),
-            method: :post,
-            data: { confirm: "This will overwrite all current recitation assignments" } %>
+      <%= link_to recitation_partitions_path(
+            course_id: @partition.course) do %>
+        Recitation Proposals
+      <% end %>
+    </h3>
+    <h3>
+      <%= link_to implement_recitation_partition_path(@partition,
+            course_id: @partition.course), method: :post,
+            data: { confirm: "This will overwrite all current recitation assignments" } do %>
+        Implement
+      <% end %>
     </h3>
   </div>
 
@@ -26,7 +33,7 @@
         <%= assignments.length %>
       </h4>
       <h5>
-        <%= render partial: 'time_slots/list', object: section.time_slots %>
+        <%= render 'time_slots/list', time_slots: section.time_slots %>
       </h5>
 
       <ol class="recitation-section">

@@ -1,25 +1,25 @@
 class RegistrationsController < ApplicationController
-  before_action :set_registration, only: [:show, :edit, :update]
+  before_action :set_current_course
+  before_action :set_registration, only: [:show, :edit, :update, :restricted]
   before_action :authenticated_as_user, only: [:show, :new, :create, :edit,
                                                :update]
-  before_action :authenticated_as_admin,
+  before_action :authenticated_as_course_editor,
                 except: [:show, :new, :create, :edit, :update]
 
-  # GET /registrations
+  # GET /6.006/registrations
   def index
-    @course = Course.main
-    @prerequisites = @course.prerequisites
-    @registrations = @course.registrations
-    @staff = @course.staff
+    @prerequisites = current_course.prerequisites
+    @registrations = current_course.registrations
+    @staff = current_course.staff
 
     respond_to do |format|
       format.html # index.html.erb
     end
   end
 
-  # GET /registrations/1
+  # GET /6.006/registrations/1
   def show
-    return bounce_user unless @registration.can_edit?(current_user)
+    return bounce_user unless @registration.can_view?(current_user)
     @registration.build_prerequisite_answers
 
     if @registration.can_edit?(current_user) and
@@ -35,11 +35,11 @@ class RegistrationsController < ApplicationController
     end
   end
 
-  # GET /registrations/new
+  # GET /6.006/registrations/new
   def new
-    course = Course.main
-    # Keep registration instance from #create to show validation error messages. 
-    @registration ||= Registration.new user: current_user, course: course
+    # Keep registration instance from #create to show validation error messages.
+    @registration ||= Registration.new user: current_user,
+                                       course: current_course
     @registration.build_prerequisite_answers
     @recitation_conflicts = {}
     set_time_slots_for @registration
@@ -48,7 +48,7 @@ class RegistrationsController < ApplicationController
     render :new
   end
 
-  # GET /registrations/1/edit
+  # GET /6.006/registrations/1/edit
   def edit
     return bounce_user unless @registration.can_edit?(current_user)
     @registration.build_prerequisite_answers
@@ -60,11 +60,11 @@ class RegistrationsController < ApplicationController
     render :edit
   end
 
-  # POST /registrations
+  # POST /6.006/registrations
   def create
     @registration = Registration.new registration_params
     @registration.user = current_user
-    @registration.course = Course.main
+    @registration.course = current_course
 
     respond_to do |format|
       if @registration.save
@@ -78,7 +78,7 @@ class RegistrationsController < ApplicationController
     end
   end
 
-  # PUT /registrations/1
+  # PUT /6.006/registrations/1
   def update
     return bounce_user unless @registration.can_edit?(current_user)
 
@@ -94,10 +94,8 @@ class RegistrationsController < ApplicationController
     end
   end
 
-  # XHR PATCH /registrations/1/restricted
+  # XHR PATCH /6.006/registrations/1/restricted
   def restricted
-    @registration = Registration.find params[:id]
-
     respond_to do |format|
       if @registration.update_attributes restricted_registration_params
         format.js { head :ok }
@@ -108,7 +106,7 @@ class RegistrationsController < ApplicationController
   end
 
   def set_registration
-    @registration = Registration.find params[:id]
+    @registration = current_course.registrations.find params[:id]
   end
   private :set_registration
 

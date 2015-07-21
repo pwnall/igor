@@ -5,7 +5,9 @@ class GradeTest < ActiveSupport::TestCase
 
   describe 'when creating a new grade' do
     before do
-      @grade = Grade.new subject: users(:dexter), grader: users(:admin), subject_type: 'User', metric: assignment_metrics(:ps1_p1), score: 3.0
+      @grade = Grade.new subject: users(:dexter), grader: users(:admin),
+          metric: assignment_metrics(:ps1_p1), course: courses(:main),
+          score: 3.0
     end
 
     it 'accepts valid grades' do
@@ -20,6 +22,16 @@ class GradeTest < ActiveSupport::TestCase
 
     it 'requires a metric' do
       @grade.metric = nil
+      assert_equal false, @grade.valid?
+    end
+
+    it 'requires a course' do
+      @grade.course = nil
+      assert_equal false, @grade.valid?
+    end
+
+    it "requires that the course matches the metric's course" do
+      @grade.course = courses(:not_main)
       assert_equal false, @grade.valid?
     end
 

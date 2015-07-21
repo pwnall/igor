@@ -10,15 +10,18 @@
     </tr>
   </thead>
   <tbody>
-    <% @course.time_slots(true).each do |slot| %>
+    <% @time_slots.each do |time_slot| %>
     <tr>
-      <td><%= time_slot_day_label slot %></td>
-      <td><%= slot.start_time.to_s :time_slot_long %></td>
-      <td><%= slot.end_time.to_s :time_slot_long %></td>
-      <td><%= time_slot_duration slot %></td>
+      <td><%= time_slot_day_label time_slot %></td>
+      <td><%= time_slot.start_time.to_s :time_slot_long %></td>
+      <td><%= time_slot.end_time.to_s :time_slot_long %></td>
+      <td><%= time_slot_duration time_slot %></td>
       <td>
-        <%= link_to 'Remove', slot, method: :delete, data: { confirm:
-              'Deleting this time slot will also delete any scheduling conflicts reported by students for this time. Continue?' } %>
+        <%= link_to time_slot_path(time_slot, course_id: time_slot.course),
+              method: :delete, data: { confirm:
+              'Deleting this time slot will also delete any scheduling conflicts reported by students for this time. Continue?' } do %>
+          <%= destroy_icon_tag %> Remove
+        <% end %>
       </td>
     </tr>
     <% end %>

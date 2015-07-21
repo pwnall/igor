@@ -4,6 +4,8 @@ class SessionController < ApplicationController
 
   # Sets up the 'session/welcome' view. No user is logged in.
   def welcome
+    set_current_course if params[:course_id]
+
     @session = Session.from_params params
     respond_to do |format|
       format.html { render action: :new }
@@ -14,9 +16,21 @@ class SessionController < ApplicationController
 
   # Sets up the 'session/home' view. A user is logged in.
   def home
-    if current_user.registrations.empty? and current_user.roles.empty?
-      redirect_to new_registration_url
-      return
+    set_current_course if params[:course_id]
+
+    if current_course.nil? && !current_user.admin?
+      course_count = current_user.registered_courses.count +
+          current_user.staff_courses.count
+      if course_count == 0
+        redirect_to connect_courses_url
+        return
+      end
+      if course_count == 1
+        redirect_to course_root_url(course_id:
+            current_user.registered_courses.first ||
+            current_user.staff_courses.first)
+        return
+      end
     end
 
     # Pull information about the current user.

@@ -10,21 +10,21 @@ class GradesControllerTest < ActionController::TestCase
     end
 
     it 'user can view /grades page' do
-      get :index
+      get :index, params: { course_id: courses(:main).to_param }
       assert_response :success
     end
 
     it 'user cannot view other pages' do
       # 403 refers to a forbidden page
-      get :editor
+      get :editor, params: { course_id: courses(:main).to_param }
       assert_response 403
-      post :create
+      post :create, params: { course_id: courses(:main).to_param }
       assert_response 403
-      get :request_missing
+      get :request_missing, params: { course_id: courses(:main).to_param }
       assert_response 403
-      get :request_report
+      get :request_report, params: { course_id: courses(:main).to_param }
       assert_response 403
-      get :report
+      get :report, params: { course_id: courses(:main).to_param }
       assert_response 403
     end
   end
@@ -35,20 +35,17 @@ class GradesControllerTest < ActionController::TestCase
       set_session_current_user users(:admin)
       @student = users :dexter
       @problem = assignment_metrics :assessment_overall
-      @params = { grade: {
-          subject_id: @student.to_param,
-          subject_type: 'User',
-          metric_id: @problem.to_param,
-          score: 4.0 },
-          comment: { comment: '' }
-          }
+      @params = { course_id: courses(:main).to_param, grade: {
+          subject_id: @student.to_param, subject_type: 'User',
+          metric_id: @problem.to_param, score: 4.0 },
+          comment: { comment: '' } }
     end
 
     it 'can update existing grades without a comment' do
       scores = [1.0, 1, 0.0, 0]
       scores.each do |score|
         @params[:grade][:score] = score
-        post :create, params: {
+        post :create, params: { course_id: @params[:course_id],
             grade: @params[:grade], comment: @params[:comment] }
         grade = Grade.where(
             subject_type: 'User',
@@ -63,7 +60,7 @@ class GradesControllerTest < ActionController::TestCase
       # Change problem to one that has not been already graded
       @params[:grade][:metric_id] = assignment_metrics(:assessment_quality).id
       assert_difference 'Grade.count' do
-        post :create, params: {
+        post :create, params: { course_id: @params[:course_id],
             grade: @params[:grade], comment: @params[:comment] }
         assert_response :success
         assert_equal nil, Grade.where(
@@ -78,7 +75,7 @@ class GradesControllerTest < ActionController::TestCase
       problems.each do |problem|
         @params[:grade][:metric_id] = problem.id
         assert_difference 'GradeComment.count' do
-          post :create, params: {
+          post :create, params: { course_id: @params[:course_id],
               grade: @params[:grade], comment: { comment: 'New comment!' } }
           assert_response :success
           assert_equal 'New comment!', Grade.where(
@@ -86,7 +83,7 @@ class GradesControllerTest < ActionController::TestCase
               subject_id: @student.id,
               metric_id: problem.id).first.comment.comment
         end
-        post :create, params: {
+        post :create, params: { course_id: @params[:course_id],
             grade: @params[:grade], comment: { comment: 'Changed comment!' } }
         assert_response :success
         assert_equal 'Changed comment!', Grade.where(

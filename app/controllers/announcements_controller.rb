@@ -1,4 +1,5 @@
 class AnnouncementsController < ApplicationController
+  before_action :set_current_course
   before_action :authenticated_as_admin, :except => [:show]
   before_action :authenticated_as_user, :only => [:show]
 

@@ -1,4 +1,5 @@
 class TeamMembershipsController < ApplicationController
+  before_action :set_current_course
   before_action :authenticated_as_admin
 
   # POST /team_memberships

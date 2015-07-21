@@ -3,16 +3,17 @@
   <body>
     <h3>Dear <%= @role_request.user.name %>,</h3>
     <p>
-      Your registration as a <%= @role_request.course.number %>
+      Your request for <%= @role_request.course.number %>
       <em><%= @role_request.name == 'staff' ? 'instructor' : 'grader' %></em>
-      has been
+      access has been
       <em><%= @was_approved ? 'approved' : 'denied' %></em>.
     </p>
 
     <% if @was_approved %>
     <p>
       Please go
-      <%= link_to 'here', root_url(host: @host, protocol: @protocol) %>
+      <%= link_to 'here', course_root_url(host: @host, protocol: @protocol,
+                                          course_id: @role_request.course) %>
       to work on the course.
     </p>
     <% end %>

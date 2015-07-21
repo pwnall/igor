@@ -1,36 +1,79 @@
 class CoursesController < ApplicationController
-  before_action :authenticated_as_admin
+  before_action :authenticated_as_admin, except: [:connect, :edit, :update]
+  before_action :authenticated_as_user, only: [:connect, :edit, :update]
+  before_action :set_course, only: [:show, :edit, :update, :destroy]
 
-  # GET /courses/1/edit
+  # GET /_/courses/connect
+  def connect
+    courses = Course.all
+
+    @new_courses = courses - current_user.registered_courses -
+        current_user.staff_courses
+  end
+
+  # GET /_/courses
+  def index
+    @courses = Course.all
+  end
+
+  # GET /6.006/course
+  def show
+  end
+
+  # GET /_/courses/new
+  def new
+    @course = Course.new
+  end
+
+  # GET /6.006/edit
   def edit
-    @course = Course.main
+  end
 
-    respond_to do |format|
-      format.html  # edit.html.erb
+  # POST /_/courses
+  def create
+    @course = Course.new(course_params)
+
+    if @course.save
+      redirect_to courses_url, notice: "Course #{@course.number} created."
+    else
+      render :new
     end
   end
 
-  # PUT /courses/1
+  # PATCH/PUT /6.006/course
   def update
-    @course = Course.main
-
-    respond_to do |format|
-      if @course.update_attributes course_params
-        format.html do
-          redirect_to root_url,
-                      notice: "#{@course.number} course settings updated"
-        end
+    if @course.update(course_params)
+      if current_user.admin?
+        target_url = courses_url
       else
-        format.html { render action: :edit }
+        target_url = course_root_url course_id: @course
       end
+
+      redirect_to target_url,
+                  notice: "Course #{@course.number} settings updated."
+    else
+      render :edit
     end
   end
 
-  # Permit updating courses
-  def course_params
-    params.require(:course).permit :number, :title, :email, :ga_account,
-        :email_on_role_requests, :has_recitations, :has_surveys, :has_teams,
-        :section_size
+  # DELETE /6.006/course
+  def destroy
+    @course.destroy
+    redirect_to courses_url, notice: 'Course was successfully destroyed.'
   end
-  private :course_params
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_course
+      @course = Course.find_by! number: params[:id]
+      bounce_user unless @course.can_edit? current_user
+      @current_course = @course
+    end
+
+    # Only allow a trusted parameter "white list" through.
+    def course_params
+      params.require(:course).permit :number, :title, :email, :ga_account,
+          :email_on_role_requests, :has_recitations, :has_surveys, :has_teams,
+          :section_size
+    end
 end

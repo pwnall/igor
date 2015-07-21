@@ -1,49 +1,52 @@
 class RecitationPartitionsController < ApplicationController
-  before_action :authenticated_as_user, only: [:new, :create, :edit, :update,
-                                               :new_or_edit]
-  before_action :authenticated_as_admin, only: [:index, :show, :destroy]
+  before_action :authenticated_as_course_editor
 
-  # GET /recitation_partition
+  # GET /6.006/recitation_partition
   def index
-    @partitions = RecitationPartition.all
+    @partitions = current_course.recitation_partitions
     respond_to do |format|
       format.html
     end
   end
 
-  # GET /recitation_partition/1
+  # GET /6.006/recitation_partition/1
   def show
-    @partition = RecitationPartition.where(id: params[:id]).
-                                     includes(:recitation_assignments).first!
+    @partition = current_course.recitation_partitions.where(id: params[:id]).
+                                includes(:recitation_assignments).first!
     respond_to do |format|
       format.html
     end
   end
 
-  # DELETE /recitation_partitions/1
+  # DELETE /6.006/recitation_partitions/1
   def destroy
-    @partition = RecitationPartition.find(params[:id])
+    @partition = current_course.recitation_partitions.find params[:id]
     @partition.destroy
 
     respond_to do |format|
-      flash[:notice] = "Assignment partition has been deleted"
-      format.html { redirect_to recitation_partitions_url }
+      format.html do
+        redirect_to recitation_partitions_url(course_id: @partition.course),
+            notice: 'Assignment partition deleted'
+      end
     end
   end
 
-  # POST /recitation_partitions/1
+  # POST /6.006/recitation_partitions/1/implement
   def implement
-    @partition = RecitationPartition.find(params[:id])
+    @partition = current_course.recitation_partitions.find params[:id]
+    course = @partition.course
 
     @partition.recitation_assignments.each do |assignment|
-      registration = assignment.user.registration
+      registration = assignment.user.registration_for(course)
       registration.recitation_section = assignment.recitation_section
       registration.save!
     end
 
     respond_to do |format|
-      flash[:notice] = "Recitation sections updated"
-      format.html { redirect_to recitation_partitions_url }
+      format.html do
+        redirect_to recitation_sections_url(course_id: @partition.course),
+            notice: 'Recitation sections updated'
+      end
     end
   end
 end

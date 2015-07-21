@@ -1,11 +1,14 @@
 <% if current_user %>
-  <%= render :partial => 'session/deadlines' %>
-  <%= render :partial => 'layouts/groups' %>
+  <%= render 'session/deadlines' %>
+  <%= render 'layouts/groups' %>
 <% else %>
   <h2>Welcome</h2>
+
+  <% if current_course %>
   <p>
     This is the homework submission website for MIT course
-    <%= Course.main.number %>, <%= Course.main.title %>.
+    <%= current_course.number %>, <%= current_course.title %>.
   </p>
-  <%= render :partial => 'session/deadlines' %>
+  <%= render 'session/deadlines' %>
+  <% end %>
 <% end %>

@@ -37,7 +37,7 @@ class Team < ActiveRecord::Base
 
   # Returns true if the given user is allowed to edit this team's membership.
   def can_edit?(user)
-    user.admin?
+    course.can_edit? user
   end
 
   def size
@@ -61,6 +61,6 @@ class Team < ActiveRecord::Base
   end
 
   def has_user?(user)
-    memberships.where(:user_id => user.id).count != 0
+    memberships.where(user: user).count != 0
   end
 end
