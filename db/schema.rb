@@ -115,8 +115,8 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.integer  "subject_id",   null: false
     t.datetime "due_at",       null: false
     t.integer  "course_id",    null: false
-    t.index ["course_id", "subject_id", "subject_type"], name: "index_deadlines_on_course_id_and_subject_id_and_subject_type", unique: true, using: :btree
-    t.index ["subject_type", "subject_id"], name: "index_deadlines_on_subject_type_and_subject_id", using: :btree
+    t.index ["course_id"], name: "index_deadlines_on_course_id", using: :btree
+    t.index ["subject_type", "subject_id"], name: "index_deadlines_on_subject_type_and_subject_id", unique: true, using: :btree
   end
 
   create_table "delayed_jobs", force: :cascade do |t|

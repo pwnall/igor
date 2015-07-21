@@ -1,12 +1,11 @@
 class CreateDeadlines < ActiveRecord::Migration
   def change
     create_table :deadlines do |t|
-      t.references :subject, polymorphic: true, index: true, unique: true,
+      t.references :subject, polymorphic: true, index: { unique: true },
           null: false
       t.datetime :due_at, null: false
-      t.references :course, null: false
-
-      t.index [:course_id, :subject_id, :subject_type], unique: true
+      # Get all deadlines for a course.
+      t.references :course, index: true, null: false
     end
   end
 end
