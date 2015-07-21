@@ -72,11 +72,11 @@ class AssignmentTest < ActiveSupport::TestCase
       end
 
       it 'destroys dependent records' do
-        assert assignment.deadline
+        assert_not_nil assignment.deadline
 
         assignment.destroy
 
-        assert_nil assignment.deadline(true)
+        assert_nil Deadline.find_by(subject_id: assignment.id)
       end
 
       it 'saves the associated deadline through the parent assignment' do

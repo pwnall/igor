@@ -55,13 +55,13 @@ class DeliverableTest < ActiveSupport::TestCase
   end
 
   it 'destroys dependent records' do
-    assert deliverable.analyzer
+    assert_not_nil deliverable.analyzer
     assert_equal true, deliverable.submissions.any?
 
     deliverable.destroy
 
-    assert_nil deliverable.analyzer(true)
-    assert_empty deliverable.submissions(true)
+    assert_nil Analyzer.find_by(deliverable_id: deliverable.id)
+    assert_empty deliverable.submissions.reload
   end
 
   it 'validates an associated analyzer' do
@@ -77,7 +77,7 @@ class DeliverableTest < ActiveSupport::TestCase
     } }
     @deliverable.update! deliverable_params
 
-    assert_instance_of ProcAnalyzer, @deliverable.analyzer(true)
+    assert_instance_of ProcAnalyzer, @deliverable.reload.analyzer
   end
 
   it 'saves the associated ScriptAnalyzer through the parent deliverable' do
@@ -91,7 +91,7 @@ class DeliverableTest < ActiveSupport::TestCase
     } }
     @deliverable.update! deliverable_params
 
-    assert_instance_of ScriptAnalyzer, @deliverable.analyzer(true)
+    assert_instance_of ScriptAnalyzer, @deliverable.reload.analyzer
   end
 
   describe 'read/submit permissions' do
@@ -190,7 +190,7 @@ class DeliverableTest < ActiveSupport::TestCase
         deliverable.reanalyze_submissions
 
         assert_equal [submission_count, 0], Delayed::Worker.new.work_off
-        statuses = deliverable.submissions(true).map { |s| s.analysis.status }
+        statuses = deliverable.submissions.reload.map { |s| s.analysis.status }
         assert_equal true, statuses.all? { |status| status == :ok }
       end
     end
@@ -202,7 +202,7 @@ class DeliverableTest < ActiveSupport::TestCase
         assert_no_difference 'Delayed::Job.count' do
           deliverable.reanalyze_submissions
         end
-        statuses = deliverable.submissions(true).map { |s| s.analysis.status }
+        statuses = deliverable.submissions.reload.map { |s| s.analysis.status }
         assert_equal true, statuses.all? { |status| status == :no_analyzer }
       end
     end

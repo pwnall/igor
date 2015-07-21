@@ -46,7 +46,7 @@ class ScriptAnalyzerTest < ActiveSupport::TestCase
 
       analyzer.destroy
 
-      assert_nil analyzer.db_file(true)
+      assert_nil DbFile.find_by(id: analyzer.db_file_id)
     end
 
     it 'validates associated database-backed files' do
@@ -58,13 +58,13 @@ class ScriptAnalyzerTest < ActiveSupport::TestCase
     it 'saves associated database-backed files through the parent analyzer' do
       assert_equal true, @analyzer.new_record?
       @analyzer.save!
-      assert_not_nil @analyzer.db_file(true)
+      assert_not_nil @analyzer.reload.db_file
     end
 
     it 'rejects database file associations with a blank attachment' do
       assert_equal 'fib_grading.zip', analyzer.db_file.f_file_name
       analyzer.update! db_file_attributes: { f: '' }
-      assert_equal 'fib_grading.zip', analyzer.db_file(true).f_file_name
+      assert_equal 'fib_grading.zip', analyzer.reload.db_file.f_file_name
     end
 
     it 'destroys the database file when it is replaced' do
