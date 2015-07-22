@@ -6,7 +6,7 @@ class DeliverableTest < ActiveSupport::TestCase
         file_ext: 'pdf', name: 'Extra Credit', description: 'Bonus for PS1'
   end
 
-  let(:deliverable) { deliverables(:ps1_writeup) }
+  let(:deliverable) { deliverables(:assessment_writeup) }
   let(:any_user) { User.new }
   let(:admin) { users(:admin) }
 
@@ -178,7 +178,7 @@ class DeliverableTest < ActiveSupport::TestCase
     end
 
     describe 'deliverable has analyzer' do
-      before { assert deliverable.analyzer }
+      before { assert_not_nil deliverable.analyzer }
 
       it 'queues all submissions for reanalysis' do
         assert_difference 'Delayed::Job.count', submission_count do
@@ -190,8 +190,8 @@ class DeliverableTest < ActiveSupport::TestCase
         deliverable.reanalyze_submissions
 
         assert_equal [submission_count, 0], Delayed::Worker.new.work_off
-        statuses = deliverable.submissions.reload.map { |s| s.analysis.status }
-        assert_equal true, statuses.all? { |status| status == :ok }
+        statuses = deliverable.reload.submissions.map { |s| s.analysis.status }
+        assert_equal [:ok, :wrong], statuses.sort!
       end
     end
 

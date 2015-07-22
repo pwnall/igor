@@ -19,17 +19,13 @@ class Submission < ActiveRecord::Base
 
   # The deliverable that the submission is for.
   belongs_to :deliverable
-  validates :deliverable, presence: true
+  validates :deliverable, presence: true,
+      uniqueness: { scope: [:subject_id, :subject_type] }
 
   # The database-backed file holding the submission.
   belongs_to :db_file, dependent: :destroy
-  validates :db_file, presence: true
+  validates :db_file, presence: true, uniqueness: true
   accepts_nested_attributes_for :db_file
-
-  # Database-backed file association, including the file contents.
-  def full_db_file
-    DbFile.unscoped.where(id: db_file_id).first
-  end
 
   # The assignment that this submission is for.
   has_one :assignment, through: :deliverable
@@ -42,7 +38,7 @@ class Submission < ActiveRecord::Base
 
   # True if the given user is allowed to see the submission.
   def can_read?(user)
-    user && (is_owner?(user) || user.admin?)
+    !!user && (is_owner?(user) || user.admin?)
   end
 
   # Queues up a request to run an automated health-check for this submission.
@@ -71,7 +67,6 @@ class Submission < ActiveRecord::Base
   def ensure_analysis_exists
     unless analysis
       build_analysis status: :queued, log: ''
-      analysis.status = :queued
     end
   end
 

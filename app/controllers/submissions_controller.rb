@@ -115,7 +115,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
     return bounce_user unless @submission.can_read? current_user
 
-    db_file = @submission.full_db_file
+    db_file = @submission.db_file
     filename = @submission.subject.email.gsub(/[^A-Za-z0-9]/, '_') + '_' +
         db_file.f.original_filename
 
@@ -180,7 +180,7 @@ class SubmissionsController < ApplicationController
           basename = subject.respond_to?(:email) ?
               subject.email.split('@').first :
               subject.name.underscore.gsub(' ', '_')
-          db_file = s.full_db_file
+          db_file = s.db_file
           extension = db_file.f.original_filename.split('.').last
 
           zip.put_next_entry "#{prefix}#{basename}#{suffix}.#{extension}"

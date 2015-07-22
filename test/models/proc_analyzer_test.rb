@@ -6,7 +6,7 @@ class ProcAnalyzerTest < ActiveSupport::TestCase
         auto_grading: false, message_name: 'analyze_pdf'
   end
 
-  let(:analyzer) { analyzers(:proc_ps1_writeup) }
+  let(:analyzer) { analyzers(:proc_assessment_writeup) }
   let(:ok_pdf_submission) { submissions(:dexter_assessment) }
   let(:truncated_pdf_submission) { submissions(:deedee_assessment) }
   let(:py_submission) { submissions(:dexter_code) }

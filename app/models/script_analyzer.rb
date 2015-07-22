@@ -27,11 +27,6 @@ class ScriptAnalyzer < Analyzer
   after_update :destroy_former_db_file
   private :destroy_former_db_file
 
-  # Database-backed file association, including the file contents.
-  def full_db_file
-    DbFile.unscoped.where(id: db_file_id).first
-  end
-
   # Limits that apply when running the analyzer script.
   store :exec_limits
 
@@ -97,7 +92,7 @@ class ScriptAnalyzer < Analyzer
   #
   # Returns a hash containing the parsed script configuration.
   def unpack_script
-    Zip::File.open_buffer full_db_file.f.file_contents do |zip|
+    Zip::File.open_buffer db_file.f.file_contents do |zip|
       zip.each do |entry|
         file_dir = File.dirname entry.name
         FileUtils.mkdir_p file_dir unless file_dir.empty?
@@ -127,7 +122,7 @@ class ScriptAnalyzer < Analyzer
   #
   # Returns the manifest key matching the submission's extension.
   def write_submission(submission, manifest)
-    paperclip = submission.full_db_file.f
+    paperclip = submission.db_file.f
     ext_key = File.extname(paperclip.original_filename)
     return nil unless manifest[ext_key] && manifest[ext_key]['get']
     File.open manifest[ext_key]['get'], 'wb' do |f|

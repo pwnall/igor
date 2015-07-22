@@ -13,8 +13,8 @@
 #  updated_at     :datetime         not null
 #
 
-proc_ps1_writeup:
-  deliverable: ps1_writeup
+proc_assessment_writeup:
+  deliverable: assessment_writeup
   type: ProcAnalyzer
   auto_grading: false
   message_name: analyze_pdf

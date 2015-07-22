@@ -33,6 +33,11 @@ deedee_assessment:
   style: original
   file_contents: <%= binary_file('submission_files/truncated.pdf') %>
 
+solo_ps1:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:solo_ps1) %>
+  style: original
+  file_contents: <%= binary_file('submission_files/small.pdf') %>
+
 submission_catch_all:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:submission_catch_all) %>
   style: original

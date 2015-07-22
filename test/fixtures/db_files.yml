@@ -35,6 +35,16 @@ deedee_assessment:
   f_file_size: <%= binary_file_size('submission_files/truncated.pdf') %>
   f_content_type: application/pdf
 
+deedee_code:
+  f_file_name: deedee_code.py
+  f_file_size: <%= binary_file_size('submission_files/good_fib.py') %>
+  f_content_type: application/x-python
+
+solo_ps1:
+  f_file_name: solo_ps1.pdf
+  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
+  f_content_type: application/pdf
+
 submission_catch_all:
   f_file_name: catch_all.pdf
   f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
