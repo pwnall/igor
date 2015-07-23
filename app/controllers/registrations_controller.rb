@@ -9,7 +9,8 @@ class RegistrationsController < ApplicationController
   # GET /6.006/registrations
   def index
     @prerequisites = current_course.prerequisites
-    @registrations = current_course.registrations
+    @registrations = current_course.registrations.includes(user: :profile).
+        sort_by { |r| r.user.profile.name }
     @staff = current_course.staff
 
     respond_to do |format|
@@ -85,7 +86,8 @@ class RegistrationsController < ApplicationController
     respond_to do |format|
       if @registration.update registration_params
         format.html do
-          redirect_to @registration, notice:
+          redirect_to registration_url(@registration,
+              course_id: @registration.course), notice:
               "#{@registration.course.number} registration info updated."
         end
       else

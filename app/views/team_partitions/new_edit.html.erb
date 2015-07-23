@@ -1,7 +1,8 @@
 <h2>Team Partition</h2>
 
 
-<%= form_for @team_partition do |f| %>
+<%= form_for @team_partition, url: polymorphic_url(@team_partition,
+      course_id: @team_partition.course) do |f| %>
   <%= f.error_messages %>
 
   <section class="fields">

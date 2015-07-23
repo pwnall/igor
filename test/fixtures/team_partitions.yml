@@ -3,6 +3,7 @@
 # Table name: team_partitions
 #
 #  id         :integer          not null, primary key
+#  course_id  :integer          not null
 #  name       :string(64)       not null
 #  min_size   :integer          not null
 #  max_size   :integer          not null
@@ -14,6 +15,7 @@
 #
 
 psets:
+  course: main
   name: "Pset Team Assignment"
   automated: true
   editable: true
@@ -22,6 +24,7 @@ psets:
   max_size: 3
 
 project:
+  course: main
   name: "Final Project Team Assignment"
   automated: false
   editable: true

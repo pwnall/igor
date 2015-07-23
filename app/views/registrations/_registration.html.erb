@@ -33,6 +33,16 @@
 
   <% if registration.course.has_recitations? %>
   <tr>
+    <th>Recitation Section</th>
+    <td>
+    <% if registration.recitation_section %>
+      <%= registration.recitation_section.serial %>
+    <% else %>
+      Unassigned
+    <% end %>
+    </td>
+  </tr>
+  <tr>
     <th>Availability</th>
     <td>
       <table class="timetable" style="width:100%;">

@@ -5,8 +5,6 @@
 <dl class="user-info">
   <dt>E-mail</dt>
   <dd><%= user.email %></dd>
-  <dt>Admin</dt>
-  <dd><%= user.admin? ? 'Yes' : 'No' %></dd>
 </dl>
 <ul class="user-info-actions">
 	<% if current_user.admin? %>
@@ -14,14 +12,6 @@
     <%= link_to impersonate_user_path(user), method: :post do %>
       <%= debug_icon_tag %> Impersonate
     <% end %>
-  </li>
-  <li>
-    <%= link_to((user.admin ? 'Strip Admin' : 'Make Admin'),
-                set_admin_user_path(user, to: !user.admin), method: :put) %>
-  </li>
-  <li>
-    <%= link_to 'Destroy', user, data: { confirm: 'Are you sure?' },
-          method: :delete %>
   </li>
 	<% end %>
 </ul>

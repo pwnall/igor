@@ -23,7 +23,7 @@ class TeamMembership < ActiveRecord::Base
   # The course of the team's partition.
   #
   # This is redundant, but helps find a student's grades for a specific course.
-  belongs_to :course
+  belongs_to :course, inverse_of: :team_memberships
   validates_each :course do |record, attr, value|
     if value.nil?
       record.errors.add attr, 'is not present'
@@ -34,4 +34,9 @@ class TeamMembership < ActiveRecord::Base
 
   # Convenience proxy for the team's partition.
   has_one :partition, through: :team
+
+  # The team member's registration for the team's course.
+  def registration
+    user.registration_for course
+  end
 end

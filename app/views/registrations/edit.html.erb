@@ -1,6 +1,7 @@
 <h3>Student Registration</h2>
 
-<%= form_for @registration do |f| %>
+<%= form_for @registration, url: polymorphic_url(@registration,
+      course_id: @registration.course) do |f| %>
 <%= render 'registrations/fields', f: f %>
 <%= render 'registrations/conflicts', conflicts: @recitation_conflicts, f: f %>
 

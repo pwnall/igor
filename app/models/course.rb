@@ -38,15 +38,30 @@ class Course < ActiveRecord::Base
   validates :section_size,
       numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
 
-  # Surveys on the difficulty of an assignment, general feedback, etc.
-  has_many :surveys, dependent: :destroy, inverse_of: :course
   # True if the course has surveys.
   validates :has_surveys, inclusion: { in: [true, false], allow_nil: false }
+
   # True if the course has homework teams.
   validates :has_teams, inclusion: { in: [true, false], allow_nil: false }
 
   # Google Analytics account ID for the course.
   validates :ga_account, length: 1..32, presence: true
+
+  # Use the course ID as the parameter field.
+  def to_param
+    number
+  end
+
+  # The main (and only) course on the website.
+  def self.main
+    first
+  end
+end
+
+# :nodoc: Students.
+class Course
+  # The students in this course.
+  has_many :users, through: :registrations, source: :user
 
   # Student registrations for this course.
   has_many :registrations, dependent: :destroy, inverse_of: :course
@@ -54,55 +69,38 @@ class Course < ActiveRecord::Base
   # Prerequisite courses for this course.
   has_many :prerequisites, dependent: :destroy, inverse_of: :course
 
-  # Assignments issued for this course.
-  has_many :assignments, dependent: :destroy, inverse_of: :course
-
-  # The deadlines for all assignments and surveys in this course.
-  has_many :deadlines, -> { order(due_at: :desc) }, dependent: :destroy,
-      inverse_of: :course
-
-  # Sections for this course's recitations.
-  has_many :recitation_sections, dependent: :destroy, inverse_of: :course
-
-  has_many :recitation_partitions, dependent: :destroy, inverse_of: :course
-
-  # The time periods pre-allocated for this course's recitations.
-  has_many :time_slots, dependent: :destroy, inverse_of: :course
-
-  # The course-specific privileges assigned for this course.
-  has_many :roles, inverse_of: :course, dependent: :destroy
-
-  # The requests for course-specific privileges for this course.
-  has_many :role_requests, inverse_of: :course, dependent: :destroy
-
-  # The students in this course.
-  has_many :users, through: :registrations, source: :user
-
-  # The grading metrics defined for this course.
-  has_many :assignment_metrics, through: :assignments, source: :metrics
-
-  # The deliverables defined for this course.
-  has_many :deliverables, through: :assignments
-
   # Students registered for this course.
   def students
     User.joins(:registrations).where(
         registrations: { course_id: id, dropped: false })
   end
 
-  # Course staff members.
-  def staff
-    User.joins(:roles).where roles: { name: 'staff', course_id: id }
+  # True if the given user is registered for this class.
+  def is_student?(user)
+    # NOTE: We're not doing an exist? query here because we expect that the
+    #       Registration record will be fetched when this check passes. The
+    #       query cache will be able to reuse the resullts of the query issued
+    #       below, so we're saving one SQL query.
+    !!Registration.where(course: self, user: user).first
+  end
+end
+
+# :nodoc: Staff permissions.
+class Course
+  # The course-specific privileges assigned for this course.
+  has_many :roles, inverse_of: :course, dependent: :destroy
+
+  # The requests for course-specific privileges for this course.
+  has_many :role_requests, inverse_of: :course, dependent: :destroy
+
+  # True if the given user belongs to the course staff.
+  def is_staff?(user)
+    Role.has_entry? user, :staff, self
   end
 
-  # Graders for the course.
-  def graders
-    User.joins(:roles).where roles: { name: 'grader', course_id: id }
-  end
-
-  # Use the course ID as the parameter field.
-  def to_param
-    number
+  # True if the user is a grader for the course.
+  def is_grader?(user)
+    Role.has_entry? user, :grader, self
   end
 
   # True if the given user can edit the course information.
@@ -116,29 +114,43 @@ class Course < ActiveRecord::Base
         (user && (user.admin? || user.robot?))
   end
 
-  # True if the given user belongs to the course staff.
-  def is_staff?(user)
-    Role.has_entry? user, :staff, self
+  # Course staff members.
+  def staff
+    User.joins(:roles).where roles: { name: 'staff', course_id: id }
   end
 
-  # True if the user is a grader for the course.
-  def is_grader?(user)
-    Role.has_entry? user, :grader, self
+  # Graders for the course.
+  def graders
+    User.joins(:roles).where roles: { name: 'grader', course_id: id }
   end
+end
 
-  # True if the given user is registered for this class.
-  def is_student?(user)
-    # NOTE: We're not doing an exist? query here because we expect that the
-    #       Registration record will be fetched when this check passes. The
-    #       query cache will be able to reuse the resullts of the query issued
-    #       below, so we're saving one SQL query.
-    !!Registration.where(course: self, user: user).first
-  end
+# :nodoc: Homework.
+class Course
+  # Assignments issued for this course.
+  has_many :assignments, dependent: :destroy, inverse_of: :course
 
-  # The main (and only) course on the website.
-  def self.main
-    first
-  end
+  # The deadlines for all assignments and surveys in this course.
+  has_many :deadlines, -> { order(due_at: :desc) }, dependent: :destroy,
+      inverse_of: :course
+
+  # The grading metrics defined for this course.
+  has_many :assignment_metrics, through: :assignments, source: :metrics
+
+  # The deliverables defined for this course.
+  has_many :deliverables, through: :assignments
+end
+
+# :nodoc: Recitation sections.
+class Course
+  # Sections for this course's recitations.
+  has_many :recitation_sections, dependent: :destroy, inverse_of: :course
+
+  # Proposals for assigning this course's students to recitations.
+  has_many :recitation_partitions, dependent: :destroy, inverse_of: :course
+
+  # The time periods pre-allocated for this course's recitations.
+  has_many :time_slots, dependent: :destroy, inverse_of: :course
 
   # Days when registrations for this course may have recitation conflicts.
   #
@@ -157,4 +169,19 @@ class Course < ActiveRecord::Base
       slots_by_period[period] = slots.index_by(&:day)
     end
   end
+end
+
+# :nodoc: Surveys.
+class Course
+  # Surveys on the difficulty of an assignment, general feedback, etc.
+  has_many :surveys, dependent: :destroy, inverse_of: :course
+end
+
+# :nodoc: Teams
+class Course
+  # Groupings of students into teams for this course.
+  has_many :team_partitions, dependent: :destroy, inverse_of: :course
+
+  # Assignments of students to teams for this course.
+  has_many :team_memberships, inverse_of: :course
 end

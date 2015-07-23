@@ -138,7 +138,14 @@ Seven::Application.routes.draw do
 
     # Teams.
     resources :team_memberships, only: [:create, :destroy]
-    resources :team_partitions
+    resources :team_partitions do
+      member do
+        patch :lock
+        patch :unlock
+        get :issues
+      end
+    end
+
     resources :teams, only: [:edit, :create, :update, :destroy]
     # Teams / Student view.
     get '/teams_student', to: 'teams_student#show'
@@ -147,13 +154,9 @@ Seven::Application.routes.draw do
     post '/teams_student/invite_member', to: 'teams_student#invite_member'
     post '/teams_student/accept_invitation', to: 'teams_student#accept_invitation'
     post '/teams_student/ignore_invitation', to: 'teams_student#ignore_invitation'
-    post '/team_partitions/unlock/:id', to: 'team_partitions#unlock', as: :unlock_partition
-    post '/team_partitions/lock/:id', to: 'team_partitions#lock', as: :lock_partition
-    get '/team_partitions/view_problem/:id', to: 'team_partitions#view_problem', as: :view_problem_partition
     resources :teams_student
 
     # Deprecated.
     resources :announcements
-
   end
 end

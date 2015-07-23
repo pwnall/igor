@@ -289,6 +289,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.integer  "subject_id",     null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.index ["db_file_id"], name: "index_submissions_on_db_file_id", unique: true, using: :btree
     t.index ["deliverable_id", "updated_at"], name: "index_submissions_on_deliverable_id_and_updated_at", using: :btree
     t.index ["subject_id", "subject_type", "deliverable_id"], name: "index_submissions_on_subject_id_and_type_and_deliverable_id", unique: true, using: :btree
     t.index ["updated_at"], name: "index_submissions_on_updated_at", using: :btree
@@ -363,6 +364,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   end
 
   create_table "team_partitions", force: :cascade do |t|
+    t.integer  "course_id",                             null: false
     t.string   "name",       limit: 64,                 null: false
     t.integer  "min_size",                              null: false
     t.integer  "max_size",                              null: false
@@ -371,7 +373,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.boolean  "published",             default: false, null: false
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
-    t.index ["name"], name: "index_team_partitions_on_name", unique: true, using: :btree
+    t.index ["course_id", "name"], name: "index_team_partitions_on_course_id_and_name", unique: true, using: :btree
   end
 
   create_table "teams", force: :cascade do |t|

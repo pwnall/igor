@@ -2,7 +2,7 @@
 <div class="full_section">
   <div style="z-index: 10; float: right; width: 100px; text-align: right;">
     <h1 class="full_section">
-      <%= link_to 'New', new_team_partition_path %>
+      <%= link_to 'New', new_team_partition_path(course_id: current_course) %>
     </h1>
   </div>
   <h1 class="full_section" style="margin-right: 100px; ">
@@ -21,15 +21,34 @@
     <tbody>
       <% @team_partitions.each do |partition| %>
         <tr>
-          <td><%= link_to partition.name, partition %></td>
-					<td><%= link_to partition.assignments.map(&:name).join(', ') %>
-          <td><%= link_to 'Show', partition %></td>
-          <td><%= link_to 'Edit', edit_team_partition_path(partition) %></td>
           <td>
-            <%= link_to 'Destroy', partition, method: :delete,
-                  data: { confirm: 'Are you sure?' } %>
+            <%= link_to team_partition_path(partition,
+                                            course_id: partition.course) do %>
+              <%= partition.name %>
+            <% end %>
           </td>
-          <td><%= link_to 'View Problems', view_problem_partition_path(partition) %>
+          <td>
+            <%= partition.assignments.map(&:name).join(', ') %>
+          </td>
+          <td>
+            <%= link_to edit_team_partition_path(partition,
+                  course_id: partition.course) do %>
+              <%= edit_icon_tag %> Edit
+            <% end %>
+          </td>
+          <td>
+            <%= link_to team_partition_path(partition,
+                  course_id: partition.course), method: :delete,
+                  data: { confirm: 'Are you sure?' } do %>
+              <%= destroy_icon_tag %> Delete
+            <% end %>
+          </td>
+          <td>
+            <%= link_to issues_team_partition_path(partition,
+                  course_id: partition.course) do %>
+              Issues
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>

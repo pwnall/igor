@@ -3,6 +3,7 @@
 # Table name: team_partitions
 #
 #  id         :integer          not null, primary key
+#  course_id  :integer          not null
 #  name       :string(64)       not null
 #  min_size   :integer          not null
 #  max_size   :integer          not null
@@ -15,6 +16,13 @@
 
 # A partitioning of students into teams.
 class TeamPartition < ActiveRecord::Base
+  # The course using this partitioning.
+  belongs_to :course, inverse_of: :team_partitions
+  validates :course, presence: true
+
+  # The admin-visible name for the partitioning.
+  validates :name, length: 1..64, presence: true, uniqueness: [scope: :course]
+
   # True if this partitioning is visible to the students.
   validates :published, inclusion: { in: [true, false], allow_nil: false }
 
@@ -25,14 +33,14 @@ class TeamPartition < ActiveRecord::Base
   # True if the teams in this partitioning can still be changed.
   validates :editable, inclusion: { in: [true, false], allow_nil: false }
 
-  # The admin-visible name for the partitioning.
-  validates :name, length: 1..64, presence: true, uniqueness: true
-
   # The teams in this partitioning.
   has_many :teams, foreign_key: 'partition_id', dependent: :destroy
 
   # The memberships tying users to the teams in this partitioning.
   has_many :memberships, through: :teams
+
+  # The users assigned to teams by this partitioning.
+  has_many :assigned_users, through: :memberships, source: :user
 
   # The assignments using this partitioning.
   has_many :assignments, dependent: :nullify, inverse_of: :team_partition
@@ -62,7 +70,8 @@ class TeamPartition < ActiveRecord::Base
     team_mapping = {}
     partition.memberships.includes(:team, :user).each do |template|
       unless team = team_mapping[template.team]
-        team = Team.create name: template.team.name, partition: self
+        team = Team.create name: template.team.name, partition: self,
+                           course: course
         teams << team
         team_mapping[template.team] = team
       end
@@ -73,13 +82,13 @@ class TeamPartition < ActiveRecord::Base
 
   # Automatically assigns users to teams for this partitioning.
   def auto_assign_users(team_size)
-    all_registrations = Course.main.registrations.where(:for_credit => true).
+    all_registrations = course.registrations.where(for_credit: true).
                                includes(:user).all
 
     team_sets = []
     overflow = []
     all_registrations.group_by(&:for_credit?).each do |credit, registrations|
-      students = registrations.map(&:user).reject(&:admin?).shuffle!
+      students = registrations.map(&:user).shuffle!
       (0...students.length).step(team_size) do |i|
         team_set = students[i, team_size]
         if team_set.length == team_size
@@ -97,7 +106,7 @@ class TeamPartition < ActiveRecord::Base
     teams = team_sets.map.with_index do |members, i|
       team = Team.create! partition: self, name: "Team #{i + 1}"
       members.each do |member|
-        TeamMembership.create! user: member, team: team
+        TeamMembership.create! user: member, team: team, course: course
       end
       team
     end

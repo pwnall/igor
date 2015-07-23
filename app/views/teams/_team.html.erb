@@ -2,9 +2,10 @@
 	<%= team.partition.name %>:
 	<%= team.name %>
   <% if team.partition.editable %>
-  <%= link_to 'Remove', team, method: :delete,
-        data: { "Remove #{team.name} from #{team.partition.name}?" } %>
-  <% else %>
+  <%= link_to team_path(team, course_id: team.course), method: :delete, data:
+        { confirm: "Remove #{team.name} from #{team.partition.name}?" } do %>
+    <%= destroy_icon_tag %> Remove
+  <% end %>
   <% end %>
 </dt>
 <dd>
@@ -15,31 +16,31 @@
 	    <%= link_to membership.user.display_name_for(current_user),
 			      membership.user, class: 'name' %>
 	    <% if current_user.admin? %>
-			<span class="status">
-	    <%= membership.user.registration.for_credit ? 'Credit' : 'Listener' %>
-			</span>
+        <span class="status">
+        <%= membership.registration.for_credit ? 'Credit' : 'Listener' %>
+        </span>
 			<% end %>
-      <% if team.can_edit? current_user %>
-      <% if team.partition.editable %>
-	    <%= link_to 'Remove', membership, method: :delete,
-	       		data: { "Remove #{membership.user.name} from #{team.name}" }%>
-      <% end %>
+      <% if team.can_edit?(current_user) && team.partition.editable? %>
+        <%= link_to team_membership_path(membership,
+              course_id: membership.course), method: :delete, data: {
+              confirm: "Remove #{membership.user.name} from #{team.name}"
+              } do %>
+          <%= destroy_icon_tag %> Remove
+        <% end %>
 	    <% end %>
 	  </li>
 	<% end %>
 	</ul>
 
-  <% if team.can_edit? current_user %>
-  <% if team.partition.editable %>
+<% if team.can_edit?(current_user) && team.partition.editable? %>
 	<%= form_for TeamMembership.new(team: team) do |f| %>
 	  <%= f.hidden_field :team_id %>
 
 	  <%= text_field_tag :query, '', id: "query_#{team.id}",
 		      autocomplete: false %>
-		<%= f.submit "Add" %>
+    <%= f.button type: :submit do %>
+      <%= create_icon_tag %> Add
+    <% end %>
 	<% end %>
-  <% else %>
-  <br />
-  <% end %>
-  <% end %>
+<% end %>
 </dd>

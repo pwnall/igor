@@ -35,29 +35,24 @@ class Team < ActiveRecord::Base
   has_many :submissions, dependent: :destroy, inverse_of: :subject,
            as: :subject
 
+  # The course of the team's partition.
+  has_one :course, through: :partition
+
   # Returns true if the given user is allowed to edit this team's membership.
   def can_edit?(user)
     course.can_edit? user
   end
 
   def size
-    TeamMembership.count(:conditions => ["team_id = ?", self.id])
+    memberships.count
   end
 
   def min_size
-    min = TeamPartition.find_by_id(self.partition_id).min_size
-    if min.nil?
-      return 0
-    end
-    return min.to_i
+    partition.min_size
   end
 
   def max_size
-    max = TeamPartition.find_by_id(self.partition_id).max_size
-    if max.nil?
-      return 1.0/0.0 ## Infinity hackery
-    end
-    return max.to_i
+    partition.max_size
   end
 
   def has_user?(user)

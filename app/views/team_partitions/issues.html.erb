@@ -1,0 +1,36 @@
+<h2>Team Partition Issues</h2>
+
+<h3>Teams Without Enough Members</h3>
+
+<% if @too_small.empty? %>
+<p>No teams have too few students.</p>
+<% else %>
+<% @too_small.each do |team| %>
+<%= render team %>
+<br />
+<% end %>
+<% end %>
+
+
+<h3>Teams With Too Many Members</h3>
+
+<% if @too_large.empty? %>
+<p>No teams have too many students.</p>
+<% else %>
+<% @too_large.each do |team| %>
+<%= render team %>
+<br />
+<% end %>
+<% end %>
+
+
+<h3>Students Without Teams</h3>
+
+<% if @not_assigned.empty? %>
+<p>All students have teams.</p>
+<% else %>
+<% @not_assigned.each do |user| %>
+<%= render user %>
+<br />
+<% end %>
+<% end %>

@@ -108,6 +108,7 @@ class AssignmentsController < ApplicationController
   def set_assignment
     @assignment = current_course.assignments.find params[:id]
   end
+  private :set_assignment
 
   # Permits updating and creating assignments.
   # TODO(pwnall): Check that rails securely handles the :type field when

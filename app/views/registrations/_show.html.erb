@@ -2,8 +2,9 @@
 <h3>
   Registration for <%= registration.course.number %>
   <% if registration.can_edit? current_user %>
-  <%= link_to edit_registration_path(registration), class: 'button' do %>
-    <%= edit_icon_tag %> Edit Profile
+  <%= link_to edit_registration_path(registration,
+        course_id: registration.course), class: 'button' do %>
+    <%= edit_icon_tag %> Edit
   <% end %>
   <% end %>
 </h3>

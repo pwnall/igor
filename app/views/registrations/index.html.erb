@@ -10,7 +10,7 @@
 			<% @prerequisites.sort_by(&:id).each do |prerequisite| %>
 			<th><%= prerequisite.prerequisite_number %></th>
   		<% end %>
-      <% if @course.has_recitations? %>
+      <% if current_course.has_recitations? %>
       <th>Recitation</th>
       <% end %>
       <th></th>
@@ -34,17 +34,28 @@
       </td>
 			<% end %>
 
-      <% if @course.has_recitations? %>
+      <% if registration.course.has_recitations? %>
       <td id="registration-<%= registration.id %>">
         <%= form_for registration, method: :patch,
-        			url: restricted_registration_url(registration) do |f| %>
-          	<%= recitation_select_tag registration %>
-						<span class="progress-indicator"></span>
+              url: restricted_registration_path(registration,
+                                                course_id: registration.course) do |f| %>
+          <%= recitation_select_tag registration %>
+          <span class="progress-indicator"></span>
         <% end %>
       </td>
       <% end %>
-      <td><%= link_to 'Details', registration %></td>
-      <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
+      <td>
+        <%= link_to registration_path(registration,
+                                      course_id: registration.course) do %>
+          Details
+        <% end %>
+      </td>
+      <td>
+        <%= link_to edit_registration_path(registration,
+                                           course_id: registration.course) do %>
+          Edit
+        <% end %>
+      </td>
 	  </tr>
 	<% end %>
 	</tbody>
