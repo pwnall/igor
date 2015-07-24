@@ -63,18 +63,19 @@
 					<td>
 						<% if submission.analysis %>
 						<%= link_to analysis_status_text(submission.analysis),
-                        submission.analysis %>
+            			analysis_path(submission.analysis, course_id: submission.course) %>
 						<% else %>
 						no status
 						<% end %>
+					</td>
 					<td>
 						<%= link_to "Re-analyze",
-                        reanalyze_submission_path(submission),
-                        :method => :post %>
+            			reanalyze_submission_path(submission, course_id: submission.course),
+                  method: :post %>
 					</td>
 					<td>
 						<%= link_to "Download (#{number_to_human_size submission.db_file.f.size})",
-                        file_submission_path(submission) %>
+            			file_submission_path(submission, course_id: submission.course) %>
 				  </td>
 				</tr>
 				<% end %>
