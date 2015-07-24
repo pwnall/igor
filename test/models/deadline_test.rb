@@ -3,9 +3,10 @@ require 'test_helper'
 class DeadlineTest < ActiveSupport::TestCase
   before do
     @course = courses(:main)
-    @assignment = @course.assignments.build
-    @deadline = Deadline.new subject: @assignment, due_at: Time.current,
-        course: @course
+    assignment_params = { name: 'PS1', author: users(:main_staff), weight: 1,
+        deliverables_ready: true, metrics_ready: false }
+    @assignment = @course.assignments.build assignment_params
+    @deadline = @assignment.build_deadline due_at: Time.current
   end
 
   let(:deadline) { deadlines(:ps1) }
@@ -30,16 +31,10 @@ class DeadlineTest < ActiveSupport::TestCase
   end
 
   describe '#get_subject_course' do
-    before do
-      deadline_params = { deadline_attributes: { due_at: Time.current } }
-      assignment_params = { name: 'PS1', author: users(:main_staff), weight: 1,
-          deliverables_ready: true, metrics_ready: false }.merge deadline_params
-      @new_assignment = @course.assignments.build assignment_params
-    end
-
     it "sets the deadline's course, if nil, to that of the subject" do
-      @new_assignment.save!
-      assert_equal @course, @new_assignment.deadline.course
+      assert_nil @deadline.course
+      @assignment.save!
+      assert_equal @assignment.course, @deadline.course
     end
   end
 
