@@ -69,7 +69,7 @@ class ActionItem
           item.active = true
           item.link = [[:assignment_path, deadline.subject,
                         { course_id: deadline.course }]]
-          if submission = deliverable.submission_for(user)
+          if submission = deliverable.submission_for_grading(user)
             item.done = !submission.analysis ||
                         submission.analysis.submission_ok?
           end

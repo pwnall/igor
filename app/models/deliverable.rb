@@ -48,18 +48,18 @@ class Deliverable < ActiveRecord::Base
     assignment.deliverables_ready? || course.can_edit?(user)
   end
 
-  # This deliverable's submission for the given user.
+  # The submission that determines the student's grade for this deliverable.
   #
   # The result is non-trivial in the presence of teams.
-  def submission_for(user)
+  def submission_for_grading(user)
     return nil unless user
 
     team = assignment.team_partition &&
         assignment.team_partition.team_for_user(user)
     if team.nil?
-      submissions.find_by subject: user
+      submissions.where(subject: user).order(:updated_at).last
     else
-      submissions.find_by subject: team
+      submissions.where(subject: team).order(:updated_at).last
     end
   end
 

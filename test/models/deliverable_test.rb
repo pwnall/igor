@@ -126,18 +126,33 @@ class DeliverableTest < ActiveSupport::TestCase
     end
   end
 
-  describe '#submission_for' do
+  describe '#submission_for_grading' do
     describe 'individual assignments' do
       let(:individual_deliverable) { deliverables(:assessment_code) }
+      let(:student) { users(:dexter) }
 
-      it 'if the user has a submission, returns that submission' do
-        golden = Submission.find_by deliverable: individual_deliverable,
-            subject: users(:dexter)
-        result = individual_deliverable.submission_for users(:dexter)
-        nil_result = individual_deliverable.submission_for nil
+      it 'if the user has no submissions for this deliverable, return nil' do
+        Submission.where(deliverable: individual_deliverable, subject: student).
+            destroy_all
 
-        assert_equal golden, result
-        assert_nil nil_result
+        assert_nil individual_deliverable.submission_for_grading(student)
+        assert_nil individual_deliverable.submission_for_grading(nil)
+      end
+
+      it "returns the user's most recently updated submission" do
+        earlier = submissions(:dexter_code)
+        later = submissions(:dexter_code_v2)
+        assert_operator earlier.updated_at, :<, later.created_at
+        assert_equal later,
+            individual_deliverable.submission_for_grading(student)
+
+        earlier.touch
+        assert_equal earlier,
+            individual_deliverable.submission_for_grading(student)
+
+        later.touch
+        assert_equal later,
+            individual_deliverable.submission_for_grading(student)
       end
     end
 

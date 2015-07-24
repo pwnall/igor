@@ -24,19 +24,19 @@ describe Deliverable do
   let(:dexter) { users(:dexter) }
   let(:inactive) { users(:inactive) }
   
-  describe 'submission_for' do
+  describe 'submission_for_grading' do
     let(:ps1_writeup) { deliverables(:ps1_writeup) }
     let(:admin_ps1) { submissions(:admin_ps1) }
     
     describe 'on a team assignment' do
       it "should find a user's direct submission" do
-        ps1_writeup.submission_for(admin).should == admin_ps1
+        ps1_writeup.submission_for_grading(admin).should == admin_ps1
       end
       it "should find a user's teammate's submission" do
-        ps1_writeup.submission_for(dexter).should == admin_ps1
+        ps1_writeup.submission_for_grading(dexter).should == admin_ps1
       end
       it 'should be nil if nobody in a team submitted' do
-        ps1_writeup.submission_for(inactive).should be_nil      
+        ps1_writeup.submission_for_grading(inactive).should be_nil      
       end 
     end
     
@@ -44,11 +44,11 @@ describe Deliverable do
       let(:assessment) { deliverables(:assessment_writeup) }
       
       it 'should find direct submission' do
-        assessment.submission_for(dexter).should ==
+        assessment.submission_for_grading(dexter).should ==
             submissions(:dexter_assessment)
       end
       it "should be nil for users who didn't submit" do
-        assessment.submission_for(inactive).should be_nil
+        assessment.submission_for_grading(inactive).should be_nil
       end 
     end
   end

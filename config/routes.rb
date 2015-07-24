@@ -117,6 +117,7 @@ Seven::Application.routes.draw do
         get :file
         get :info
         post :reanalyze
+        post :promote
       end
       collection do
         get :request_package

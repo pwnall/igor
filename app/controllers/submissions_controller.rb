@@ -3,9 +3,9 @@ class SubmissionsController < ApplicationController
 
   before_action :set_current_course
   before_action :authenticated_as_user,
-                only: [:new, :create, :update, :file, :info]
+                only: [:new, :create, :update, :destroy, :file, :info, :promote]
   before_action :authenticated_as_course_editor,
-                except: [:new, :create, :update, :file, :info]
+      except: [:new, :create, :update, :destroy, :file, :info, :promote]
 
   # XHR /6.006/submissions/xhr_deliverables?assignment_id=1
   def xhr_deliverables
@@ -77,18 +77,11 @@ class SubmissionsController < ApplicationController
         find params[:submission][:deliverable_id]
     return bounce_user unless deliverable.can_submit? current_user
 
-    @submission = deliverable.submission_for current_user
-    @submission ||= Submission.new submission_params
+    @submission = Submission.new submission_params
     @submission.subject = current_user
 
-    success = if @submission.new_record?
-      @submission.save
-    else
-      @submission.update_attributes submission_params
-    end
-
     respond_to do |format|
-      if success
+      if @submission.save
         @submission.queue_analysis
 
         flash[:notice] = "Uploaded #{@submission.db_file.f.original_filename} for #{@submission.assignment.name}: #{@submission.deliverable.name}."
@@ -111,6 +104,21 @@ class SubmissionsController < ApplicationController
     create
   end
 
+  # DELETE /6.006/submissions/1
+  def destroy
+    submission = Submission.find params[:id]
+    return bounce_user unless submission.can_delete? current_user
+    submission.destroy
+
+    flash[:notice] = "Submission for #{submission.assignment.name}: #{submission.deliverable.name} removed."
+    respond_to do |format|
+      format.html do
+        redirect_to assignment_url(submission.assignment,
+            course_id: submission.course)
+      end
+    end
+  end
+
   # POST /submissions/1/reanalyze
   def reanalyze
     @submission = Submission.find params[:id]
@@ -121,6 +129,21 @@ class SubmissionsController < ApplicationController
       format.html do
         redirect_to analysis_url(@submission.analysis,
                                  course_id: @submission.course)
+      end
+    end
+  end
+
+  # POST /6.006/submissions/1/promote
+  def promote
+    submission = Submission.find params[:id]
+    return bounce_user unless submission.can_promote? current_user
+    submission.touch
+
+    flash[:notice] = "The submission that will determine your grade for #{submission.deliverable.name} has changed."
+    respond_to do |format|
+      format.html do
+        redirect_to assignment_url(submission.assignment,
+            course_id: submission.course)
       end
     end
   end
@@ -143,9 +166,9 @@ class SubmissionsController < ApplicationController
               :disposition => params[:inline] ? 'inline' : 'attachment'
   end
 
-  # GET /submissions/1/info
+  # XHR GET /6.006/submissions/1/info
   def info
-    @submission = Submission.find(params[:id])
+    @submission = Submission.find params[:id]
     return bounce_user unless @submission.can_read? current_user
     render :layout => false if request.xhr?
   end

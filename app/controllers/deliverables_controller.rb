@@ -3,8 +3,7 @@ class DeliverablesController < ApplicationController
 
   # POST /6.006/deliverables/1/reanalyze
   def reanalyze
-    @deliverable = current_course.deliverables.where(id: params[:id]).
-        includes(:assignment).first!
+    @deliverable = current_course.deliverables.find params[:id]
     @deliverable.reanalyze_submissions
 
     redirect_to dashboard_assignment_url(@deliverable.assignment,
@@ -14,8 +13,7 @@ class DeliverablesController < ApplicationController
 
   # XHR GET /6.006/deliverables/1/submission_dashboard
   def submission_dashboard
-    @deliverable = current_course.deliverables.where(id: params[:id]).
-        includes(:assignment).first!
+    @deliverable = current_course.deliverables.find params[:id]
     render layout: false if request.xhr?
   end
 end

@@ -30,6 +30,11 @@ dexter_code:
   f_file_size: <%= binary_file_size('submission_files/good_fib.py') %>
   f_content_type: application/x-python
 
+dexter_code_v2:
+  f_file_name: dexter_code_v2.py
+  f_file_size: <%= binary_file_size('submission_files/good_fib.py') %>
+  f_content_type: application/x-python
+
 deedee_assessment:
   f_file_name: deedee_assessment.pdf
   f_file_size: <%= binary_file_size('submission_files/truncated.pdf') %>

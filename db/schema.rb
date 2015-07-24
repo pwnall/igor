@@ -291,7 +291,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.datetime "updated_at",     null: false
     t.index ["db_file_id"], name: "index_submissions_on_db_file_id", unique: true, using: :btree
     t.index ["deliverable_id", "updated_at"], name: "index_submissions_on_deliverable_id_and_updated_at", using: :btree
-    t.index ["subject_id", "subject_type", "deliverable_id"], name: "index_submissions_on_subject_id_and_type_and_deliverable_id", unique: true, using: :btree
+    t.index ["subject_id", "subject_type", "deliverable_id"], name: "index_submissions_on_subject_id_and_type_and_deliverable_id", using: :btree
     t.index ["updated_at"], name: "index_submissions_on_updated_at", using: :btree
   end
 

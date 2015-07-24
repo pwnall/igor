@@ -27,11 +27,6 @@ class SubmissionTest < ActiveSupport::TestCase
     assert @submission.invalid?
   end
 
-  it 'allows a user to have at most one submission per deliverable' do
-    @submission.deliverable = deliverables(:assessment_writeup)
-    assert @submission.invalid?
-  end
-
   it 'requires a database-backed file' do
     @submission.db_file = nil
     assert @submission.invalid?

@@ -9,14 +9,14 @@ section.assignment {
   ul.deliverables {
     display: table;
     width: 100%;
-    
+
     li {
       display: block;
-      
+
       .summary {
         display: table-row;
         width: 100%;
-        
+
         .name {
           display: table-cell;
           font-size: 1.1em;
@@ -27,12 +27,12 @@ section.assignment {
       }
       .details {
         display: block;
-        
+
         .description {
           display: block;
           color: hsl(0deg, 0%, 35%);
         }
-        .submission {
+        .submissions {
           display: block;
           padding: 0.5ex 0;
         }

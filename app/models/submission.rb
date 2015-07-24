@@ -19,8 +19,7 @@ class Submission < ActiveRecord::Base
 
   # The deliverable that the submission is for.
   belongs_to :deliverable
-  validates :deliverable, presence: true,
-      uniqueness: { scope: [:subject_id, :subject_type] }
+  validates :deliverable, presence: true
 
   # The database-backed file holding the submission.
   belongs_to :db_file, dependent: :destroy
@@ -42,6 +41,19 @@ class Submission < ActiveRecord::Base
   # True if the given user is allowed to see the submission.
   def can_read?(user)
     !!user && (is_owner?(user) || course.can_grade?(user))
+  end
+
+  # True if the given user is allowed to remove the submission.
+  def can_delete?(user)
+    !!user && (is_owner?(user) || user.admin?)
+  end
+
+  # True if the given user is allowed to select the submission for grading.
+  #
+  # Staff members can promote submissions if a student wants to change their
+  #     final submission after the deadline has passed.
+  def can_promote?(user)
+    !!user && (is_owner?(user) || course.can_edit?(user))
   end
 
   # Queues up a request to run an automated health-check for this submission.

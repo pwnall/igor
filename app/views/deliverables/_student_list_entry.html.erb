@@ -11,8 +11,19 @@
   <p class="description">
     <%= deliverable.description %>
   </p>
-  <p class="submission" data-pwnfx-scope="submission-info"
-                        data-pwnfx-delayed-target="submission-info">
-    <%= render 'submissions/info', submission: submission %>
-  </p>
+  <div class="submissions">
+    <% submissions = deliverable.submissions.where subject: current_user %>
+    <% if submissions.any? %>
+      <% submissions.map do |submission| %>
+        <div data-pwnfx-scope="submission-info-<%= submission.to_param %>"
+             data-pwnfx-delayed-target="submission-info-<%= submission.to_param %>" >
+          <%= render 'submissions/info', submission: submission %>
+        </div>
+      <% end %>
+    <% else %>
+      <span class="no-submission">
+        <%= invalid_icon_tag %> No submission yet
+      </span>
+    <% end %>
+  </div>
 </div>

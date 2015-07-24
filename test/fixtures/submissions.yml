@@ -33,6 +33,15 @@ dexter_code:
   deliverable: assessment_code
   subject: dexter (User)
   db_file: dexter_code
+  created_at: <%= 6.days.ago.to_s(:db) %>
+  updated_at: <%= 5.days.ago.to_s(:db) %>
+
+dexter_code_v2:
+  deliverable: assessment_code
+  subject: dexter (User)
+  db_file: dexter_code_v2
+  created_at: <%= 3.days.ago.to_s(:db) %>
+  updated_at: <%= 2.days.ago.to_s(:db) %>
 
 deedee_assessment:
   deliverable: assessment_writeup
