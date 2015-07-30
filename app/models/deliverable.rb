@@ -48,19 +48,18 @@ class Deliverable < ActiveRecord::Base
     assignment.deliverables_ready? || course.can_edit?(user)
   end
 
-  # The submission that determines the student's grade for this deliverable.
+  # The submission that determines the submitter's grade for this deliverable.
   #
   # The result is non-trivial in the presence of teams.
-  def submission_for_grading(user)
-    return nil unless user
+  #
+  # @param [User, Team] submitter the user or team that authored the submission
+  # @return [Submission] the submission used to grade the given submitter
+  def submission_for_grading(submitter)
+    return nil unless submitter
 
-    team = assignment.team_partition &&
-        assignment.team_partition.team_for_user(user)
-    if team.nil?
-      submissions.where(subject: user).order(:updated_at).last
-    else
-      submissions.where(subject: team).order(:updated_at).last
-    end
+    partition = assignment.team_partition
+    author = (partition && partition.team_for_user(submitter)) || submitter
+    submissions.where(subject: author).order(:updated_at).last
   end
 
   # The deliverable deadline, customized to a specific user.

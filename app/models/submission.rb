@@ -13,7 +13,7 @@
 
 # A file submitted by a student for an assignment.
 class Submission < ActiveRecord::Base
-  # The user doing the submission.
+  # The user or team doing the submission.
   belongs_to :subject, polymorphic: true, inverse_of: :submissions
   validates :subject, presence: true
 
@@ -25,6 +25,16 @@ class Submission < ActiveRecord::Base
   belongs_to :db_file, dependent: :destroy
   validates :db_file, presence: true, uniqueness: true
   accepts_nested_attributes_for :db_file
+
+  # The name of the uploaded file.
+  def file_name
+    db_file && db_file.f_file_name
+  end
+
+  # The contents of the uploaded file.
+  def contents
+    db_file && db_file.f.file_contents
+  end
 
   # The assignment that this submission is for.
   has_one :assignment, through: :deliverable
@@ -38,22 +48,35 @@ class Submission < ActiveRecord::Base
   # The course that this homework submission is for.
   has_one :course, through: :deliverable
 
+  # Collaborations with classmates reported for this submission.
+  has_many :collaborations, dependent: :destroy, inverse_of: :submission
+
+  # The students who collaborated on this submission.
+  has_many :collaborators, through: :collaborations
+
   # True if the given user is allowed to see the submission.
   def can_read?(user)
-    !!user && (is_owner?(user) || course.can_grade?(user))
+    is_owner?(user) || course.can_grade?(user)
   end
 
   # True if the given user is allowed to remove the submission.
   def can_delete?(user)
-    !!user && (is_owner?(user) || user.admin?)
+    is_owner?(user) || (!!user && user.admin?)
   end
 
-  # True if the given user is allowed to select the submission for grading.
+  # True if the given user is allowed to change the submission's metadata.
   #
-  # Staff members can promote submissions if a student wants to change their
-  #     final submission after the deadline has passed.
-  def can_promote?(user)
-    !!user && (is_owner?(user) || course.can_edit?(user))
+  # NOTE: In order to maintain a submission history, the submitted file should
+  #     never be changed. Metadata, however, can be modified. For example, staff
+  #     members can promote submissions if a student wants a different
+  #     submission to count toward their grade after the deadline has passed.
+  def can_edit?(user)
+    is_owner?(user) || course.can_edit?(user)
+  end
+
+  # True if the given user is allowed to collaborate on the submission.
+  def can_collaborate?(user)
+    course.is_student?(user) || course.is_staff?(user)
   end
 
   # Queues up a request to run an automated health-check for this submission.

@@ -11,9 +11,8 @@ class AnalyzersController < ApplicationController
     #       tries to serve active content (HTML+JS) using the server's origin.
     #       DbFile also explicitly disallows the HTML and XHTML MIME types.
     response.headers['Content-Security-Policy'] = "default-src 'none'"
-    send_data @analyzer.db_file.f.file_contents,
-              filename: db_file.f.original_filename,
-              type: db_file.f.content_type
+    send_data @analyzer.contents, filename: @analyzer.file_name,
+        type: db_file.f.content_type
   end
 
   # GET /analyzers/help

@@ -15,9 +15,15 @@
     <% submissions = deliverable.submissions.where subject: current_user %>
     <% if submissions.any? %>
       <% submissions.map do |submission| %>
-        <div data-pwnfx-scope="submission-info-<%= submission.to_param %>"
-             data-pwnfx-delayed-target="submission-info-<%= submission.to_param %>" >
-          <%= render 'submissions/info', submission: submission %>
+        <div class="submission">
+          <div data-pwnfx-scope="submission-info-<%= submission.to_param %>"
+               data-pwnfx-delayed-target="submission-info-<%= submission.to_param %>" >
+            <%= render 'submissions/info', submission: submission %>
+          </div>
+          Collaborators:
+          <%= render partial: 'collaborations/collaborator',
+                collection: submission.collaborations, as: :collaboration %>
+          <%= render 'collaborations/form', submission: submission %>
         </div>
       <% end %>
     <% else %>

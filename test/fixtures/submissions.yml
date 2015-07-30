@@ -23,6 +23,15 @@ admin_project:
   deliverable: project_writeup
   subject: boo_project (Team)
   db_file: admin_project
+  created_at: <%= 6.days.ago.to_s(:db) %>
+  updated_at: <%= 5.days.ago.to_s(:db) %>
+
+admin_project_v2:
+  deliverable: project_writeup
+  subject: boo_project (Team)
+  db_file: admin_project_v2
+  created_at: <%= 3.days.ago.to_s(:db) %>
+  updated_at: <%= 2.days.ago.to_s(:db) %>
 
 dexter_assessment:
   deliverable: assessment_writeup

@@ -68,7 +68,7 @@ class Registration < ActiveRecord::Base
     existing_answers = prerequisite_answers.index_by(&:prerequisite_id)
     course.prerequisites.each do |p|
       next if existing_answers.has_key? p.id
-      prerequisite_answers.build registration: self, prerequisite: p
+      prerequisite_answers.build prerequisite: p
     end
   end
 end

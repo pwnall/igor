@@ -44,7 +44,7 @@ class User
 
   # Checks if the user is a site-wide admin.
   def admin?
-    return true if has_role?('admin')
+    has_role?('admin')
   end
 
   # Checks if the user is an automated robot.

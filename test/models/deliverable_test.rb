@@ -156,8 +156,26 @@ class DeliverableTest < ActiveSupport::TestCase
       end
     end
 
-    # TODO(spark008): Write test for team assignments.
     describe 'team assignments' do
+      let(:team_deliverable) { deliverables(:project_writeup) }
+      let(:teammate) { users(:admin) }
+      let(:team) { teams(:boo_project) }
+      let(:earlier) { submissions(:admin_project) }
+      let(:later) { submissions(:admin_project_v2) }
+
+      it 'returns the latest team submission' do
+        assert_operator earlier.updated_at, :<, later.created_at
+        assert_equal later, team_deliverable.submission_for_grading(teammate)
+        assert_equal later, team_deliverable.submission_for_grading(team)
+
+        earlier.touch
+        assert_equal earlier, team_deliverable.submission_for_grading(teammate)
+        assert_equal earlier, team_deliverable.submission_for_grading(team)
+
+        later.touch
+        assert_equal later, team_deliverable.submission_for_grading(teammate)
+        assert_equal later, team_deliverable.submission_for_grading(team)
+      end
     end
   end
 

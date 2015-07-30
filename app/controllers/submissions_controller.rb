@@ -52,48 +52,31 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  # GET /6.006/submissions/new
-  # GET /6.006/submissions/new?submission[deliverable_id]=3
-  def new
-    if params[:submission] and params[:submission][:deliverable_id]
-      deliverable = current_course.deliverables.
-          find(params[:submission][:deliverable_id])
-      @submission = current_course.submissions.
-          where(deliverable_id: deliverable.id).first
-      @submission ||= Submission.new deliverable: deliverable
-    else
-      @submission = Submission.new
-    end
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.js   # new.js.rjs
-    end
-  end
-
   # POST /submissions
   def create
-    deliverable = current_course.deliverables.
-        find params[:submission][:deliverable_id]
-    return bounce_user unless deliverable.can_submit? current_user
-
     @submission = Submission.new submission_params
-    @submission.subject = current_user
+    return bounce_user unless @submission.deliverable.can_submit? current_user
+    @submission.subject = @submission.assignment.grade_subject_for current_user
+    collaborators = @submission.deliverable.
+        submission_for_grading(@submission.subject).collaborators
+    @submission.collaborators = collaborators
 
     respond_to do |format|
       if @submission.save
         @submission.queue_analysis
 
-        flash[:notice] = "Uploaded #{@submission.db_file.f.original_filename} for #{@submission.assignment.name}: #{@submission.deliverable.name}."
         format.html do
           redirect_to assignment_url(@submission.assignment,
-                                     course_id: @submission.course)
+              course_id: @submission.course), notice: "Uploaded
+              #{@submission.file_name} for #{@submission.assignment.name}:
+              #{@submission.deliverable.name}."
         end
       else
-        flash[:notice] = "Submission for #{@submission.assignment.name}: #{@submission.deliverable.name} failed."
         format.html do
           redirect_to assignment_url(@submission.assignment,
-                                     course_id: @submission.course)
+              course_id: @submission.course), notice: "Submission for
+              #{@submission.assignment.name}: #{@submission.deliverable.name}
+              failed."
         end
       end
     end
@@ -110,11 +93,12 @@ class SubmissionsController < ApplicationController
     return bounce_user unless submission.can_delete? current_user
     submission.destroy
 
-    flash[:notice] = "Submission for #{submission.assignment.name}: #{submission.deliverable.name} removed."
     respond_to do |format|
       format.html do
         redirect_to assignment_url(submission.assignment,
-            course_id: submission.course)
+            course_id: submission.course), notice: "Submission for
+            #{submission.assignment.name}: #{submission.deliverable.name}
+            removed."
       end
     end
   end
@@ -124,11 +108,10 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find params[:id]
     @submission.queue_analysis
 
-    flash[:notice] = "Reanalysis request queued."
     respond_to do |format|
       format.html do
         redirect_to analysis_url(@submission.analysis,
-                                 course_id: @submission.course)
+            course_id: @submission.course), notice: 'Reanalysis request queued.'
       end
     end
   end
@@ -136,14 +119,15 @@ class SubmissionsController < ApplicationController
   # POST /6.006/submissions/1/promote
   def promote
     submission = Submission.find params[:id]
-    return bounce_user unless submission.can_promote? current_user
+    return bounce_user unless submission.can_edit? current_user
     submission.touch
 
-    flash[:notice] = "The submission that will determine your grade for #{submission.deliverable.name} has changed."
     respond_to do |format|
       format.html do
         redirect_to assignment_url(submission.assignment,
-            course_id: submission.course)
+            course_id: submission.course), notice: "The submission that will
+            determine your grade for #{submission.assignment.name}:
+            #{submission.deliverable.name} has changed."
       end
     end
   end
@@ -155,13 +139,13 @@ class SubmissionsController < ApplicationController
 
     db_file = @submission.db_file
     filename = @submission.subject.email.gsub(/[^A-Za-z0-9]/, '_') + '_' +
-        db_file.f.original_filename
+        @submission.file_name
 
     # NOTE: The CSP header provides some protection against an attacker who
     #       tries to serve active content (HTML+JS) using the server's origin.
     #       DbFile also explicitly disallows the HTML and XHTML MIME types.
     response.headers['Content-Security-Policy'] = "default-src 'none'"
-    send_data db_file.f.file_contents, :filename => filename,
+    send_data @submission.contents, :filename => filename,
               :type => db_file.f.content_type,
               :disposition => params[:inline] ? 'inline' : 'attachment'
   end
@@ -218,11 +202,10 @@ class SubmissionsController < ApplicationController
           basename = subject.respond_to?(:email) ?
               subject.email.split('@').first :
               subject.name.underscore.gsub(' ', '_')
-          db_file = s.db_file
-          extension = db_file.f.original_filename.split('.').last
+          extension = s.file_name.split('.').last
 
           zip.put_next_entry "#{prefix}#{basename}#{suffix}.#{extension}"
-          zip.write db_file.f.file_contents
+          zip.write s.contents
         end
       end
 
@@ -265,7 +248,8 @@ class SubmissionsController < ApplicationController
 
   # Permit updating and creating submissions.
   def submission_params
-    params.require(:submission).permit(:deliverable_id, db_file_attributes: [:f])
+    params.require(:submission).permit(:deliverable_id,
+        db_file_attributes: [:f])
   end
   private :submission_params
 

@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class SubmissionTest < ActiveSupport::TestCase
+  include ActionDispatch::TestProcess  # For fixture_file_upload.
+
   before do
     @submission = Submission.new deliverable: deliverables(:assessment_code),
         subject: users(:deedee), db_file: db_files(:deedee_code)
@@ -32,14 +34,40 @@ class SubmissionTest < ActiveSupport::TestCase
     assert @submission.invalid?
   end
 
+  describe '#file_name' do
+    it 'returns the name of the uploaded file' do
+      assert_equal 'dexter_assessment.pdf', submission.file_name
+    end
+
+    it 'returns nil if no file has been uploaded' do
+      submission.db_file = nil
+      assert_nil submission.file_name
+    end
+  end
+
+  describe '#contents' do
+    it 'returns the contents of the uploaded file' do
+      path = File.join ActiveSupport::TestCase.fixture_path, 'submission_files',
+          'small.pdf'
+      assert_equal File.binread(path), submission.contents
+    end
+
+    it 'returns nil if no file has been uploaded' do
+      submission.db_file = nil
+      assert_nil submission.contents
+    end
+  end
+
   it 'destroys dependent records' do
     assert_not_nil submission.db_file
     assert_not_nil submission.analysis
+    assert_equal true, submission.collaborations.any?
 
     submission.destroy
 
     assert_nil DbFile.find_by(id: submission.db_file_id)
     assert_nil Analysis.find_by(submission_id: submission.id)
+    assert_empty submission.collaborations.reload
   end
 
   it 'forbids multiple submissions from using the same file in the database' do
@@ -52,7 +80,8 @@ class SubmissionTest < ActiveSupport::TestCase
         'application/x-python', :binary
     @submission.update! db_file_attributes: { f: attachment }
 
-    assert_equal File.size(@submission.db_file.f.to_io), @submission.db_file.f_file_size
+    assert_equal File.size(@submission.db_file.f.to_io),
+        @submission.db_file.f_file_size
     assert_equal 'application/x-python', @submission.db_file.f_content_type
     path = File.join ActiveSupport::TestCase.fixture_path, 'submission_files',
         'good_fib.py'
@@ -60,11 +89,56 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   describe '#can_read?' do
-    it 'lets only the author or an admin view a submission' do
+    it 'forbids non-author students from viewing a submission' do
       assert_equal true, submission.can_read?(student_author)
+      assert_equal true, submission.can_read?(users(:robot))
+      assert_equal true, submission.can_read?(users(:main_grader))
+      assert_equal true, submission.can_read?(users(:main_staff))
       assert_equal true, submission.can_read?(users(:admin))
       assert_equal false, submission.can_read?(student_not_author)
       assert_equal false, submission.can_read?(nil)
+    end
+  end
+
+  describe '#can_delete?' do
+    it 'lets only the author or an admin delete a submission' do
+      assert_equal true, submission.can_delete?(student_author)
+      assert_equal false, submission.can_delete?(users(:robot))
+      assert_equal false, submission.can_delete?(users(:main_grader))
+      assert_equal false, submission.can_delete?(users(:main_staff))
+      assert_equal true, submission.can_delete?(users(:admin))
+      assert_equal false, submission.can_delete?(student_not_author)
+      assert_equal false, submission.can_delete?(nil)
+    end
+  end
+
+  describe '#can_edit?' do
+    it 'lets only the author, staff, or admin edit submission metadata' do
+      assert_equal true, submission.can_edit?(student_author)
+      assert_equal false, submission.can_edit?(users(:robot))
+      assert_equal false, submission.can_edit?(users(:main_grader))
+      assert_equal true, submission.can_edit?(users(:main_staff))
+      assert_equal true, submission.can_edit?(users(:admin))
+      assert_equal false, submission.can_edit?(student_not_author)
+      assert_equal false, submission.can_edit?(nil)
+    end
+  end
+
+  describe '#can_collaborate?' do
+    it 'lets students in the submission course collaborate' do
+      assert_includes users(:deedee).registered_courses, submission.course
+      assert_equal true, submission.can_collaborate?(users(:deedee))
+    end
+
+    it 'lets staff members of the submission course collaborate' do
+      assert_equal true, submission.course.is_staff?(users(:main_staff))
+      assert_equal true, submission.can_collaborate?(users(:main_staff))
+    end
+
+    it 'forbids non-student/non-staff users to collaborate' do
+      assert_not_includes users(:inactive).registered_courses, submission.course
+      assert_equal false, submission.course.is_staff?(users(:inactive))
+      assert_equal false, submission.can_collaborate?(users(:inactive))
     end
   end
 

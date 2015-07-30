@@ -26,7 +26,7 @@ class ProcAnalyzer < Analyzer
 
   # Checks that a submitted file looks like a PDF.
   def analyze_pdf(submission)
-    bytes = submission.db_file.f.file_contents
+    bytes = submission.contents
     result = submission.analysis
     if bytes[0, 5] == '%PDF-'
       if bytes[([0, bytes.length - 1024].max)..-1] =~ /\%\%EOF/

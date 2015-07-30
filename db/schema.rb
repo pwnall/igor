@@ -69,6 +69,12 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.index ["course_id", "name"], name: "index_assignments_on_course_id_and_name", unique: true, using: :btree
   end
 
+  create_table "collaborations", force: :cascade do |t|
+    t.integer "submission_id",   null: false
+    t.integer "collaborator_id", null: false
+    t.index ["submission_id", "collaborator_id"], name: "index_collaborations_on_submission_id_and_collaborator_id", unique: true, using: :btree
+  end
+
   create_table "courses", force: :cascade do |t|
     t.string   "number",                 limit: 16,  null: false
     t.string   "title",                  limit: 256, null: false
@@ -407,6 +413,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.index ["exuid"], name: "index_users_on_exuid", unique: true, using: :btree
   end
 
+  add_foreign_key "collaborations", "submissions"
   add_foreign_key "time_slot_allotments", "recitation_sections"
   add_foreign_key "time_slot_allotments", "time_slots"
 end

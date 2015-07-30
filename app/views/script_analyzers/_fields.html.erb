@@ -12,7 +12,7 @@
     <span class="comment">
     <% if f.object.db_file && !f.object.db_file.new_record? %>
     <%= download_icon_tag %>
-    <%= link_to f.object.db_file.f.original_filename,
+    <%= link_to f.object.file_name,
                 source_analyzer_path(f.object) %>
     (<%= number_to_human_size f.object.db_file.f.size %>)
     <% end %>

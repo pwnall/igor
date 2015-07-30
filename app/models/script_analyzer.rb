@@ -27,6 +27,16 @@ class ScriptAnalyzer < Analyzer
   after_update :destroy_former_db_file
   private :destroy_former_db_file
 
+  # The name of the uploaded file.
+  def file_name
+    db_file && db_file.f_file_name
+  end
+
+  # The contents of the uploaded file.
+  def contents
+    db_file && db_file.f.file_contents
+  end
+
   # Limits that apply when running the analyzer script.
   store :exec_limits
 
@@ -92,7 +102,7 @@ class ScriptAnalyzer < Analyzer
   #
   # Returns a hash containing the parsed script configuration.
   def unpack_script
-    Zip::File.open_buffer db_file.f.file_contents do |zip|
+    Zip::File.open_buffer contents do |zip|
       zip.each do |entry|
         file_dir = File.dirname entry.name
         FileUtils.mkdir_p file_dir unless file_dir.empty?

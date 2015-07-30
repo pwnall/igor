@@ -112,7 +112,7 @@ Seven::Application.routes.draw do
       end
     end
     resources :assignment_metrics
-    resources :submissions do
+    resources :submissions, only: [:index, :create, :update, :destroy] do
       member do
         get :file
         get :info
@@ -124,6 +124,7 @@ Seven::Application.routes.draw do
         post :xhr_deliverables
         post :package_assignment
       end
+      resources :collaborations, only: [:create, :destroy], shallow: true
     end
     resources :analyses, only: [:show]
 

@@ -1,0 +1,12 @@
+# == Schema Information
+#
+# Table name: collaborations
+#
+#  id              :integer          not null, primary key
+#  submission_id   :integer          not null
+#  collaborator_id :integer          not null
+#
+
+deedee_on_dexter_assessment:
+  submission: dexter_assessment
+  collaborator: deedee

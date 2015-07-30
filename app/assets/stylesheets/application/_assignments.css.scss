@@ -35,6 +35,10 @@ section.assignment {
         .submissions {
           display: block;
           padding: 0.5ex 0;
+
+          .submission {
+            margin-bottom: 1rem;
+          }
         }
       }
     }

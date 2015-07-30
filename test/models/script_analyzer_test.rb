@@ -32,10 +32,6 @@ class ScriptAnalyzerTest < ActiveSupport::TestCase
   end
 
   describe 'database-backed file association' do
-    let(:fib_analyzer_script) do
-      fixture_file_upload 'analyzer_files/fib.zip', 'application/zip', :binary
-    end
-
     it 'requires a database-backed file with the analyzer script' do
       @analyzer.db_file = nil
       assert @analyzer.invalid?
@@ -70,8 +66,34 @@ class ScriptAnalyzerTest < ActiveSupport::TestCase
     it 'destroys the database file when it is replaced' do
       assert_not_nil analyzer.db_file
       former_db_file_id = analyzer.db_file.id
-      analyzer.update! db_file_attributes: { f: fib_analyzer_script }
+      new_db_file = fixture_file_upload 'analyzer_files/fib.zip',
+          'application/zip', :binary
+      analyzer.update! db_file_attributes: { f: new_db_file }
       assert_nil DbFile.find_by(id: former_db_file_id)
+    end
+
+    describe '#file_name' do
+      it 'returns the name of the uploaded file' do
+        assert_equal 'fib_grading.zip', analyzer.file_name
+      end
+
+      it 'returns nil if no file has been uploaded' do
+        analyzer.db_file = nil
+        assert_nil analyzer.file_name
+      end
+    end
+
+    describe '#contents' do
+      it 'returns the contents of the uploaded file' do
+        path = File.join ActiveSupport::TestCase.fixture_path, 'analyzer_files',
+            'fib_grading.zip'
+        assert_equal File.binread(path), analyzer.contents
+      end
+
+      it 'returns nil if no file has been uploaded' do
+        analyzer.db_file = nil
+        assert_nil analyzer.contents
+      end
     end
   end
 end

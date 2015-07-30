@@ -113,22 +113,70 @@ class CourseTest < ActiveSupport::TestCase
     assert_empty course.role_requests.reload
   end
 
-  describe '#students' do
-    it 'returns only users currently enrolled in this course' do
-      golden = users(:solo, :deedee, :dexter)
-      assert_equal golden, course.students.sort_by(&:name)
+  describe 'students' do
+    describe '#students' do
+      it 'returns only users currently enrolled in this course' do
+        golden = users(:solo, :deedee, :dexter)
+        assert_equal golden, course.students.sort_by(&:name)
+      end
     end
   end
 
-  describe '#staff' do
-    it 'returns all users with the staff role for only this course' do
-      assert_equal [users(:main_staff)], course.staff
+  describe 'staff permissions' do
+    describe '#is_staff?' do
+      it 'returns true for staff members only' do
+        assert_equal false, course.is_staff?(users(:dexter))
+        assert_equal false, course.is_staff?(users(:robot))
+        assert_equal false, course.is_staff?(users(:main_grader))
+        assert_equal true, course.is_staff?(users(:main_staff))
+        assert_equal false, course.is_staff?(users(:admin))
+        assert_equal false, course.is_staff?(nil)
+      end
     end
-  end
 
-  describe '#graders' do
-    it 'returns all users with the grader role for only this course' do
-      assert_equal [users(:main_grader)], course.graders
+    describe '#is_grader?' do
+      it 'returns true for graders only' do
+        assert_equal false, course.is_grader?(users(:dexter))
+        assert_equal false, course.is_grader?(users(:robot))
+        assert_equal true, course.is_grader?(users(:main_grader))
+        assert_equal false, course.is_grader?(users(:main_staff))
+        assert_equal false, course.is_grader?(users(:admin))
+        assert_equal false, course.is_grader?(nil)
+      end
+    end
+
+    describe '#can_edit?' do
+      it 'returns true for staff members and admins only' do
+        assert_equal false, course.can_edit?(users(:dexter))
+        assert_equal false, course.can_edit?(users(:robot))
+        assert_equal false, course.can_edit?(users(:main_grader))
+        assert_equal true, course.can_edit?(users(:main_staff))
+        assert_equal true, course.can_edit?(users(:admin))
+        assert_equal false, course.can_edit?(nil)
+      end
+    end
+
+    describe '#can_grade?' do
+      it 'returns true for all users except students' do
+        assert_equal false, course.can_grade?(users(:dexter))
+        assert_equal true, course.can_grade?(users(:robot))
+        assert_equal true, course.can_grade?(users(:main_grader))
+        assert_equal true, course.can_grade?(users(:main_staff))
+        assert_equal true, course.can_grade?(users(:admin))
+        assert_equal false, course.can_grade?(nil)
+      end
+    end
+
+    describe '#staff' do
+      it 'returns all users with the staff role for only this course' do
+        assert_equal [users(:main_staff)], course.staff
+      end
+    end
+
+    describe '#graders' do
+      it 'returns all users with the grader role for only this course' do
+        assert_equal [users(:main_grader)], course.graders
+      end
     end
   end
 end

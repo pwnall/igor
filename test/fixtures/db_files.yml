@@ -20,6 +20,11 @@ admin_project:
   f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
   f_content_type: application/pdf
 
+admin_project_v2:
+  f_file_name: admin_project_v2.pdf
+  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
+  f_content_type: application/pdf
+
 dexter_assessment:
   f_file_name: dexter_assessment.pdf
   f_file_size: <%= binary_file_size('submission_files/small.pdf') %>

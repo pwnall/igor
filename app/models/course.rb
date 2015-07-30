@@ -111,7 +111,7 @@ class Course
   # True if the given user can post grades to the course.
   def can_grade?(user)
     is_grader?(user) || is_staff?(user) ||
-        (user && (user.admin? || user.robot?))
+        (!!user && (user.admin? || user.robot?))
   end
 
   # Course staff members.
