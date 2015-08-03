@@ -40,7 +40,7 @@ class PrerequisiteAnswerTest < ActiveSupport::TestCase
   end
 
   it 'rejects lengthy waiver answers' do
-    @answer.waiver_answer = 'w' * 4096
+    @answer.waiver_answer = 'w' * 4.kilobytes
     assert @answer.invalid?
   end
 

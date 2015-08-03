@@ -33,7 +33,7 @@ class GradesControllerTest < ActionController::TestCase
     before do
       @grader = users :admin
       set_session_current_user users(:admin)
-      @student = users :dexter
+      @student = users :deedee
       @problem = assignment_metrics :assessment_overall
       @params = { course_id: courses(:main).to_param, grade: {
           subject_id: @student.to_param, subject_type: 'User',
@@ -47,26 +47,21 @@ class GradesControllerTest < ActionController::TestCase
         @params[:grade][:score] = score
         post :create, params: { course_id: @params[:course_id],
             grade: @params[:grade], comment: @params[:comment] }
-        grade = Grade.where(
-            subject_type: 'User',
-            subject_id: @student.id,
-            metric_id: @problem.id)
-        assert_equal score, grade.first.score
-        assert_equal nil, grade.first.comment
+        grade = Grade.find_by subject: @student, metric: @problem
+        assert_equal score, grade.score
+        assert_nil grade.comment
       end
     end
 
     it 'can create new grades without a comment' do
       # Change problem to one that has not been already graded
-      @params[:grade][:metric_id] = assignment_metrics(:assessment_quality).id
+      @problem = assignment_metrics(:assessment_overall)
+      @params[:grade][:metric_id] = @problem.to_param
       assert_difference 'Grade.count' do
         post :create, params: { course_id: @params[:course_id],
             grade: @params[:grade], comment: @params[:comment] }
         assert_response :success
-        assert_equal nil, Grade.where(
-            subject_type: 'User',
-            subject_id: @student.id,
-            metric_id: @problem.id).first.comment
+        assert_nil Grade.find_by(subject: @student, metric: @problem).comment
       end
     end
 

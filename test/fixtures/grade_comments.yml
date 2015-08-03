@@ -1,0 +1,16 @@
+# == Schema Information
+#
+# Table name: grade_comments
+#
+#  id         :integer          not null, primary key
+#  grade_id   :integer          not null
+#  grader_id  :integer          not null
+#  comment    :string(4096)     not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+dexter_assessment_overall:
+  grade: dexter_assessment_overall
+  grader: main_grader
+  comment: "Good job."

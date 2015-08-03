@@ -66,7 +66,7 @@ class SubmissionTest < ActiveSupport::TestCase
     submission.destroy
 
     assert_nil DbFile.find_by(id: submission.db_file_id)
-    assert_nil Analysis.find_by(submission_id: submission.id)
+    assert_nil Analysis.find_by(submission: submission)
     assert_empty submission.collaborations.reload
   end
 

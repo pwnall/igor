@@ -13,12 +13,12 @@
 #  updated_at   :datetime         not null
 #
 
+# The grade awarded to a student/team for their performance on a metric.
 class Grade < ActiveRecord::Base
   # The metric that this grade is for.
   belongs_to :metric, class_name: 'AssignmentMetric', inverse_of: :grades
-  validates :metric, presence: true,
-                     permission: { subject: :grader, can: :grade }
-  validates :metric_id, uniqueness: { scope: [:subject_id, :subject_type] }
+  validates :metric, uniqueness: { scope: [:subject_id, :subject_type] },
+      permission: { subject: :grader, can: :grade }, presence: true
 
   # The course of the grade's metric.
   #
@@ -39,12 +39,6 @@ class Grade < ActiveRecord::Base
   # The user who posted this grade (on the course staff).
   belongs_to :grader, class_name: 'User'
   validates :grader, presence: true
-  validates_each :grader do |record, attr, value|
-    next unless record.metric
-    unless record.metric.can_grade? value
-      record.errors.add attr, "cannot post grades for the metric"
-    end
-  end
 
   # The numeric grade.
   validates_numericality_of :score, only_integer: false
@@ -52,11 +46,6 @@ class Grade < ActiveRecord::Base
   # An optional comment that will be missing on most grades.
   has_one :comment, class_name: 'GradeComment', inverse_of: :grade,
                     dependent: :destroy
-
-  # Because the polymorphic association doesn't allow .where(subject: subject).
-  scope :with_subject, lambda { |subject|
-    where subject_id: subject.id, subject_type: subject.class.name
-  }
 
   # The users impacted by a grade.
   def users

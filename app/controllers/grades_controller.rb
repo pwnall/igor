@@ -171,7 +171,7 @@ class GradesController < ApplicationController
 
       # find those without all the grades
       subjects.index_by(&:name).each do |_, subject|
-        subject_grades = Grade.with_subject subject do |grade|
+        subject_grades = Grade.where(subject: subject) do |grade|
           metric_ids.include? grade.metric_id
         end
         next if subject_grades.length == metric_ids.length

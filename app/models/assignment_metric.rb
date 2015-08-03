@@ -55,8 +55,8 @@ class AssignmentMetric < ActiveRecord::Base
 
   # A user's grade on this assignment metric.
   def grade_for(user)
-    subject = assignment.grade_subject_for(user)
-    grade = grades.with_subject(subject).first
+    subject = assignment.grade_subject_for user
+    grade = grades.find_by subject: subject
     return grade unless grade.nil?
     Grade.new metric: self, course: course, subject: subject
   end

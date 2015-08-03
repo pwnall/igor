@@ -35,7 +35,7 @@ class DeliverableTest < ActiveSupport::TestCase
   end
 
   it 'rejects lengthy descriptions' do
-    @deliverable.description = 'd' * 2049
+    @deliverable.description = 'd' * (2.kilobytes + 1)
     assert @deliverable.invalid?
   end
 
@@ -60,7 +60,7 @@ class DeliverableTest < ActiveSupport::TestCase
 
     deliverable.destroy
 
-    assert_nil Analyzer.find_by(deliverable_id: deliverable.id)
+    assert_nil Analyzer.find_by(deliverable: deliverable)
     assert_empty deliverable.submissions.reload
   end
 

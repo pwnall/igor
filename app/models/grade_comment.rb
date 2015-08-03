@@ -17,9 +17,9 @@
 # records and slowing down stat computations that have to instantiate a lot of
 # Grade models.
 class GradeComment < ActiveRecord::Base
-  # The grade that this comment applies to.
+  # The grade to which this comment applies.
   belongs_to :grade, inverse_of: :comment
-  validates :grade, presence: true
+  validates :grade, presence: true, uniqueness: true
 
   # The grader who left this comment.
   belongs_to :grader, class_name: 'User'
