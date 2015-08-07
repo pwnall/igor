@@ -24,7 +24,7 @@ Seven::Application.routes.draw do
     resources :profiles, only: [] do
       collection do
         post :websis_lookup
-        put :websis_lookup
+        patch :websis_lookup
       end
     end
     resources :profile_photos do
@@ -95,6 +95,7 @@ Seven::Application.routes.draw do
         post :for_user, :missing, :report
       end
     end
+    resources :grade_comments, only: [:create]
 
     # Homework submission.
     resources :analyzers, only: [] do

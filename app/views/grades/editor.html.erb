@@ -45,7 +45,8 @@
         </th>
         <% @metrics.each do |metric| %>
         <td class="grade">
-          <%= render 'grades/individual_form', grade: (@grades[[subject, metric]] || [Grade.new(subject: subject, metric: metric)]).first %>
+          <%= render 'grades/individual_form', metric: metric,
+                                               subject: subject %>
         </td>
         <% end %>
         <td class="summary">

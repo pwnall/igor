@@ -11,7 +11,7 @@
       <% end %>
     </li>
     <% end %>
-    <% Assignment.for(current_user, current_course).each do |assignment| %>
+    <% current_course.assignments_for(current_user).each do |assignment| %>
     <li>
       <% if current_course.can_edit?(current_user) %>
         <%= link_to dashboard_assignment_path(assignment,

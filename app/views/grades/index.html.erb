@@ -4,7 +4,7 @@
 <% @assignments.each do |assignment| %>
   <h3 class="grades">
     <%= assignment.name %>
-    <% if grades_have_comments @assignment_grades[assignment] %>
+    <% if @assignment_comments[assignment].any? %>
     <button id="comments-toggle-button">Show Comments</button>
     <% end %>
   </h3>
@@ -32,8 +32,8 @@
     </div>
     <div class="comments">
       <span class="comment-head">Comments:</span>
-      <% if @assignment_grades[assignment][i] && @assignment_grades[assignment][i].comment %>
-      <%= @assignment_grades[assignment][i].comment.comment %>
+      <% if @assignment_comments[assignment][i] %>
+      <%= @assignment_comments[assignment][i].text %>
       <% else %>
       No comments
       <% end %>

@@ -13,9 +13,13 @@ module HasDeadline
     validates :deadline, presence: true
     accepts_nested_attributes_for :deadline
 
-    # Adds deadline ordering to a survey or assignment query.
+    # Orders a survey or assignment query by deadline, latest to earliest.
     scope :by_deadline, -> { joins(:deadline).includes(:deadline).
         order('deadlines.due_at DESC').order(:name) }
+
+    # Filter for surveys or assignments whose deadlines have passed.
+    scope :past_due, -> { joins(:deadline).includes(:deadline).
+        where('deadlines.due_at < ?', Time.current) }
   end
 
   # The date of the deadline (virtual attribute).

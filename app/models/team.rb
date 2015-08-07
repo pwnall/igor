@@ -31,6 +31,10 @@ class Team < ActiveRecord::Base
   # The grades assigned to this team.
   has_many :grades, dependent: :destroy, as: :subject
 
+  # The comments posted regarding this team's performance.
+  has_many :comments, dependent: :destroy, as: :subject,
+                      class_name: 'GradeComment'
+
   # Submissions by this team's members to this team's assignments.
   has_many :submissions, dependent: :destroy, inverse_of: :subject,
            as: :subject
@@ -57,5 +61,13 @@ class Team < ActiveRecord::Base
 
   def has_user?(user)
     memberships.where(user: user).count != 0
+  end
+
+  # True if the team's partition belongs to the given course.
+  #
+  # This same method is defined for User so that the method can be called on
+  #     either a Team or User instance.
+  def enrolled_in_course?(course)
+    self.course == course
   end
 end

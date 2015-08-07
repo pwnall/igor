@@ -65,7 +65,7 @@ class AssignmentTest < ActiveSupport::TestCase
   end
 
   describe 'homework submission feature' do
-    describe 'HasDeadline module' do
+    describe 'HasDeadline concern' do
       it 'requires a deadline' do
         @assignment.deadline = nil
         assert @assignment.invalid?
@@ -89,7 +89,8 @@ class AssignmentTest < ActiveSupport::TestCase
 
       describe 'by_deadline scope' do
         it 'sorts assignments by ascending deadline, then by name' do
-          golden = assignments(:project, :not_main_exam, :ps2, :assessment, :ps1)
+          golden = assignments(:project, :ps3, :not_main_exam, :ps2,
+                               :assessment, :ps1)
           actual = Assignment.by_deadline
           assert_equal golden, actual, actual.map(&:name)
         end
@@ -141,20 +142,6 @@ class AssignmentTest < ActiveSupport::TestCase
           assignment.deadline.update! due_at: 1.day.ago
           assert_equal true, assignment.deadline_passed_for?(any_user)
         end
-      end
-    end
-
-    describe '.for' do
-      it 'returns all assignments for the course if the user is an admin' do
-        golden = assignments(:project, :ps2, :assessment, :ps1)
-        actual = Assignment.for admin, courses(:main)
-        assert_equal golden, actual, actual.map(&:name)
-      end
-
-      it 'returns assignments with released deliverables/grades if non-admin' do
-        golden = assignments(:project, :assessment, :ps1)
-        actual = Assignment.for any_user, courses(:main)
-        assert_equal golden, actual, actual.map(&:name)
       end
     end
 

@@ -38,3 +38,8 @@ inactive_project:
   team: awesome_project
   user: inactive
   course: main
+
+deedee_lab:
+  team: not_main_lab
+  user: deedee
+  course: not_main

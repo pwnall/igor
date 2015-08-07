@@ -37,6 +37,13 @@ deedee:
   allows_publishing: true
   recitation_section: r02
 
+deedee_not_main:
+  course: not_main
+  user: deedee
+  dropped: false
+  for_credit: true
+  allows_publishing: true
+
 dropout:
   course: main
   user: dropout

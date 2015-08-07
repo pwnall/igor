@@ -1,4 +1,6 @@
 class GradesController < ApplicationController
+  include GradeEditor
+
   before_action :set_current_course
   before_action :authenticated_as_course_editor, except: [:index]
   before_action :authenticated_as_user, only: [:index]
@@ -7,11 +9,14 @@ class GradesController < ApplicationController
   def index
     grades_by_metric_id = current_user.grades_for(current_course).
         index_by(&:metric_id)
+    comments_by_metric_id = current_user.comments_for(current_course).
+        index_by(&:metric_id)
     @recitation = current_user.recitation_section_for(current_course)
 
     @assignments = []
     @assignment_metrics = {}
     @assignment_grades = {}
+    @assignment_comments = {}
     current_course.assignments.includes(:metrics).by_deadline.
         each do |assignment|
       assignment_metrics = assignment.metrics.select do |metric|
@@ -24,20 +29,22 @@ class GradesController < ApplicationController
       @assignment_grades[assignment] = assignment_metrics.map do |metric|
         grades_by_metric_id[metric.id]
       end
+      @assignment_comments[assignment] = assignment_metrics.map do |metric|
+        comments_by_metric_id[metric.id]
+      end
     end
   end
 
   # GET /6.006/grades/editor
   def editor
-    @subjects = current_course.students.includes(:profile).sort_by(&:name)
-    query = current_course.assignments
+    @subjects = current_course.students.includes(:profile).sort_by &:name
+
     if params[:assignment_id]
-      query = query.where(id: params[:assignment_id])
+      @assignment = current_course.assignments.find params[:assignment_id]
     else
-      query = query.by_deadline.where('deadlines.due_at < ?', Time.current)
+      @assignment = current_course.most_relevant_assignment_for_graders
     end
 
-    @assignment = query.first || current_course.assignments.last
     unless @assignment
       respond_to do |format|
         format.html { render :editor_blank }
@@ -46,100 +53,32 @@ class GradesController < ApplicationController
     end
 
     @metrics = @assignment.metrics
-    @grades = @assignment.grades.includes(:comment, :subject).
-                          group_by { |g| [g.subject, g.metric] }
     respond_to do |format|
       format.html
     end
   end
 
-  # POST /6.006/grades
+  # XHR POST /6.006/grades
   def create
-    case params[:grade][:subject_type]
-    when 'User'
-      user = User.with_param(params[:grade][:subject_id]).first!
-      params[:grade][:subject_id] = user.id
-    when 'Team'
-      # Teams don't use external UIDs yet.
+    grade = find_or_build_feedback Grade, grade_params
+    if grade.act_on_user_input grade_params[:score]
+      render 'grades/edit', layout: false
     else
       head :not_acceptable
-      return
-    end
-
-    @grade = Grade.where(
-        subject_type: params[:grade][:subject_type],
-        subject_id: params[:grade][:subject_id],
-        metric_id: params[:grade][:metric_id]).first
-    if @grade
-      if params[:grade][:score].blank?
-        # Delete a grade. This will remove its comment as well.
-        @grade.destroy
-
-        # Render a clean slate.
-        @grade = Grade.new metric: @grade.metric, course: @grade.course
-        params[:comment][:comment] = ''
-        success = true
-      else
-        # Create / update a grade.
-        @grade.grader = current_user
-        @grade.course = current_course
-        success = @grade.update grade_params
-      end
-    else
-      @grade = Grade.new grade_params
-      @grade.grader = current_user
-      @grade.course = current_course
-      success = @grade.save
-    end
-
-    if success
-      comment = @grade.comment
-      if comment
-        if params[:comment][:comment].empty?
-          # Delete a grade's comment.
-          comment.comment = nil
-          comment.destroy
-        else
-          # Update a grade's comment.
-          comment.grader = current_user
-          success = comment.update_attributes grade_comment_params
-        end
-      else
-        unless params[:comment][:comment].empty?
-          # Create a comment for a grade.
-          comment = GradeComment.new grade_comment_params
-          comment.grade = @grade
-          comment.grader = current_user
-          success = comment.save
-        end
-      end
-    end
-
-    if success
-      if request.xhr?
-        render action: 'edit', layout: false
-      else
-        render action: 'edit'
-      end
-    else
-      if request.xhr?
-        head :not_acceptable
-      else
-        render action: 'edit'
-      end
     end
   end
 
-  # GET /6.006/grades/request_missing/0
+  # GET /6.006/grades/request_missing
   def request_missing
     @assignments = current_course.assignments
   end
 
-  # GET /6.006/grades/request_report/0
+  # GET /6.006/grades/request_report
   def request_report
     render layout: 'assignments'
   end
 
+  # POST /6.006/grades/missing
   def missing
     assignments = current_course.assignments.includes :deliverables,
                                                       metrics: :assignment
@@ -186,7 +125,7 @@ class GradesController < ApplicationController
     @subjects = gradeless_subjects
   end
 
-  # GET /grades/report/0
+  # POST /6.006/grades/report
   def report
     # pull data
     pull_metrics false
@@ -308,13 +247,7 @@ class GradesController < ApplicationController
 
   # Permits updating grades.
   def grade_params
-    params.require(:grade).permit :subject_id, :subject_type, :metric_id,
-                                  :score
+    params.require(:grade).permit :subject_id, :subject_type, :metric_id, :score
   end
   private :grade_params
-
-  def grade_comment_params
-    params.require(:comment).permit :comment
-  end
-  private :grade_comment_params
 end

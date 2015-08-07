@@ -1,10 +1,11 @@
-<%= number_field_tag :score, grade.score, min: 0, step: :any %>
+<%= number_field_tag :score, grade_score_text(metric, subject), min: 0,
+                     step: :any %>
 <span class="max-points">
-  / <%= grade.metric.max_score %>
+  / <%= metric.max_score %>
 </span>
 <span class="progress-indicator"></span>
 <div class="comment">
-  <%= text_area_tag :comment, grade_comment_text(grade), size: '15x3',
+  <%= text_area_tag :comment, grade_comment_text(metric, subject), size: '15x3',
                     placeholder: 'Comments', tabindex: -1  %>
   <span><%= image_tag("icons/edit.png") %></span>
 </div>

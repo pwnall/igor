@@ -114,7 +114,7 @@ class GradeEditor
           'comment[subject_id]': subjectId
           'comment[subject_type]': subjectType
           'comment[metric_id]': metricId
-          'comment[comment]': fieldValue
+          'comment[text]': fieldValue
     else
       # Grade field.
       url = "/#{courseId}/grades.html"

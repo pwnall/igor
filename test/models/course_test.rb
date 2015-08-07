@@ -179,4 +179,45 @@ class CourseTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe 'homework' do
+    describe '.most_relevant_assignment_for_graders' do
+      describe 'there are assignments whose deadlines have passed' do
+        it 'retrieves the assignment that was due most recently' do
+          assert_equal assignments(:ps2),
+                       course.most_relevant_assignment_for_graders
+        end
+      end
+
+      describe 'no assignment deadlines have passed yet' do
+        it 'retrieves the assignment that was last created' do
+          courses(:main).assignments.joins(:deadline).each do |assignment|
+            assignment.update due_at: 1.year.from_now
+          end
+
+          assert_equal Assignment.last,
+                       course.most_relevant_assignment_for_graders
+        end
+      end
+    end
+
+    describe '#assignments_for' do
+      describe 'the given user is a site or course admin' do
+        it 'returns all assignments for the course, ordered by deadline' do
+          golden = assignments(:project, :ps3, :ps2, :assessment, :ps1)
+          actual = course.assignments_for users(:admin)
+          assert_equal golden, actual, actual.map(&:name)
+        end
+      end
+
+      describe 'the given user is not a site or course admin' do
+        it 'returns assignments with released deliverables/grades, ordered by
+            deadline' do
+          golden = assignments(:project, :assessment, :ps1)
+          actual = course.assignments_for users(:dexter)
+          assert_equal golden, actual, actual.map(&:name)
+        end
+      end
+    end
+  end
 end

@@ -22,6 +22,10 @@ class AssignmentMetric < ActiveRecord::Base
   has_many :grades, foreign_key: :metric_id, dependent: :destroy,
                     inverse_of: :metric
 
+  # The comments made for this metric.
+  has_many :comments, foreign_key: :metric_id, dependent: :destroy,
+      inverse_of: :metric, class_name: 'GradeComment'
+
   # The user-friendly name for this metric.
   validates :name, length: 1..64, presence: true,
                    uniqueness: { scope: :assignment }

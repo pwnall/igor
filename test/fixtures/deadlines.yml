@@ -19,6 +19,11 @@ ps2:
   due_at: <%= 1.day.ago.to_s(:db) %>
   course: main
 
+ps3:
+  subject: ps3 (Assignment)
+  due_at: <%= 1.month.from_now.to_s(:db) %>
+  course: main
+
 project:
   subject: project (Assignment)
   due_at: <%= 1.month.from_now.to_s(:db) %>

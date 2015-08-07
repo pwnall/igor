@@ -151,12 +151,16 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   end
 
   create_table "grade_comments", force: :cascade do |t|
-    t.integer  "grade_id",                null: false
+    t.integer  "course_id",               null: false
+    t.integer  "metric_id",               null: false
     t.integer  "grader_id",               null: false
-    t.string   "comment",    limit: 4096, null: false
+    t.string   "subject_type", limit: 16
+    t.integer  "subject_id",              null: false
+    t.text     "text",                    null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
-    t.index ["grade_id"], name: "index_grade_comments_on_grade_id", unique: true, using: :btree
+    t.index ["subject_id", "subject_type", "course_id"], name: "index_grade_comments_on_subject_and_course_id", using: :btree
+    t.index ["subject_id", "subject_type", "metric_id"], name: "index_grade_comments_on_subject_and_metric_id", unique: true, using: :btree
   end
 
   create_table "grades", force: :cascade do |t|

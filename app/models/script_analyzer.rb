@@ -332,7 +332,7 @@ END_LOG
       unless grade.valid?
         run_state[:private_log] <<
             "Produced invalid grade for metric #{metric_name}\n"
-        run_state[:private_log] << grade.errors.message.inspect + "\n"
+        run_state[:private_log] << grade.errors.messages.inspect + "\n"
         return false
       end
       grades << grade

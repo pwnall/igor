@@ -32,6 +32,15 @@ ps2:
   deliverables_ready: false
   metrics_ready: false
 
+ps3:
+  author: admin
+  course: main
+  name: PSet 3
+  team_partition: psets
+  weight: 1.0
+  deliverables_ready: false
+  metrics_ready: false
+
 project:
   author: admin
   course: main

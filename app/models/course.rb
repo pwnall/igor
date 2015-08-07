@@ -130,6 +130,19 @@ class Course
   # Assignments issued for this course.
   has_many :assignments, dependent: :destroy, inverse_of: :course
 
+  # The assignment that was either due last, or created last.
+  #
+  # This method is used by the grade editor to predict which assignment a grader
+  #     would be most interested in seeing.
+  def most_relevant_assignment_for_graders
+    assignments.by_deadline.past_due.first || assignments.last
+  end
+
+  # The assignments in this course that are visible to the given user.
+  def assignments_for(user)
+    assignments.by_deadline.select { |a| a.can_read? user }
+  end
+
   # The deadlines for all assignments and surveys in this course.
   has_many :deadlines, -> { order(due_at: :desc) }, dependent: :destroy,
       inverse_of: :course

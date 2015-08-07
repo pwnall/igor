@@ -31,3 +31,12 @@ project:
   published: true
   min_size: 1
   max_size: 3
+
+labs:
+  course: not_main
+  name: "Lab Team Assignment"
+  automated: false
+  editable: true
+  published: true
+  min_size: 1
+  max_size: 3

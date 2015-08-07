@@ -2,15 +2,34 @@
 #
 # Table name: grade_comments
 #
-#  id         :integer          not null, primary key
-#  grade_id   :integer          not null
-#  grader_id  :integer          not null
-#  comment    :string(4096)     not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id           :integer          not null, primary key
+#  course_id    :integer          not null
+#  metric_id    :integer          not null
+#  grader_id    :integer          not null
+#  subject_type :string(16)
+#  subject_id   :integer          not null
+#  text         :text             not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #
 
 dexter_assessment_overall:
-  grade: dexter_assessment_overall
+  course: main
+  metric: assessment_overall
   grader: main_grader
-  comment: "Good job."
+  subject: dexter (User)
+  text: "Good job."
+
+dexter_ps1_p1:
+  course: main
+  metric: ps1_p1
+  grader: main_grader
+  subject: awesome_pset (Team)
+  text: "Good teamwork."
+
+deedee_assessment_overall:
+  course: main
+  metric: assessment_overall
+  grader: main_grader
+  subject: deedee (User)
+  text: "No score yet."

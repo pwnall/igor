@@ -127,6 +127,14 @@ class User
   def recitation_section_for(course)
     recitation_sections.where(course: course).first
   end
+
+  # True if the user is a registered student in the given course.
+  #
+  # This same method is defined for Team so that the method can be called on
+  #     either a Team or User instance.
+  def enrolled_in_course?(course)
+    !!course && course.is_student?(self)
+  end
 end
 
 # :nodoc: homework submission feature.
@@ -145,10 +153,14 @@ class User
   end
 end
 
-# :nodoc: grade submission and publishing feature.
+# :nodoc: submission feedback and grading.
 class User
   # Grades assigned to the user, not to a team that the user belongs to.
   has_many :direct_grades, class_name: 'Grade', dependent: :destroy,
+           as: :subject
+
+  # Comments on the user, not on a team that the user belongs to.
+  has_many :direct_comments, class_name: 'GradeComment', dependent: :destroy,
            as: :subject
 
   # All the grades connected to a user for a given course.
@@ -157,8 +169,18 @@ class User
   # recorded for a team that the user is a part of.
   def grades_for(course)
     direct_grades.where(course: course).includes(metric: :assignment) +
-        teams_for(course).includes(grades: {metric: :assignment}).
+        teams_for(course).includes(grades: { metric: :assignment }).
         map(&:grades).flatten
+  end
+
+  # All the comments connected to a user for a given course.
+  #
+  # The returned set includes the user's direct comments, as well as comments
+  # recorded for a team that the user is a part of.
+  def comments_for(course)
+    direct_comments.where(course: course).includes(metric: :assignment) +
+        teams_for(course).includes(comments: { metric: :assignment }).
+        map(&:comments).flatten
   end
 end
 

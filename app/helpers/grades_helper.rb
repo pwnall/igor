@@ -1,11 +1,14 @@
 module GradesHelper
-  # True if any of the given grades has a comment)
-  def grades_have_comments(grades)
-    grades.any? { |grade| grade && grade.comment }
+  # The score of the grade for the given metric and subject.
+  def grade_score_text(metric, subject)
+    grade = Grade.find_by metric: metric, subject: subject
+    grade && grade.score
   end
 
-  def grade_comment_text(grade)
-    grade.comment ? grade.comment.comment : nil
+  # The text of the comment for the given metric and subject.
+  def grade_comment_text(metric, subject)
+    comment = GradeComment.find_by metric: metric, subject: subject
+    comment && comment.text
   end
 
   # Sums up all the scores in an array of grades.

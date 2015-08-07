@@ -39,6 +39,14 @@ class UserTest < ActiveSupport::TestCase
     assert !dvdjon.valid?
   end
 
+  describe '#enrolled_in_course?' do
+    it 'returns true of the user is registered for the course' do
+      assert_equal true, dexter.enrolled_in_course?(courses(:main))
+      assert_equal false, dexter.enrolled_in_course?(courses(:not_main))
+      assert_equal false, dexter.enrolled_in_course?(nil)
+    end
+  end
+
   describe 'connected_submissions' do
     it 'should include submissions from co-team members' do
       skip 'resolve paperclip gems incompatibilities with edge rails'
@@ -53,13 +61,24 @@ class UserTest < ActiveSupport::TestCase
 
   describe 'grades_for' do
     it 'should include grades on team assignments' do
-      golden = [:awesome_ps1_p1, :awesome_project, :dexter_assessment_overall].
-          map { |i| grades(i) }
+      golden = grades(:awesome_ps1_p1, :awesome_project,
+                      :dexter_assessment_overall)
       assert_equal golden.to_set, dexter.grades_for(courses(:main)).to_set
     end
 
     it 'takes the course argument into account' do
       assert_equal [], dexter.grades_for(courses(:not_main))
+    end
+  end
+
+  describe '#comments_for' do
+    it 'includes comments on both individual and team assignments' do
+      golden = grade_comments(:dexter_assessment_overall, :dexter_ps1_p1)
+      assert_equal golden.to_set, dexter.comments_for(courses(:main)).to_set
+    end
+
+    it 'includes comments made in the given course only' do
+      assert_equal [], dexter.comments_for(courses(:not_main))
     end
   end
 

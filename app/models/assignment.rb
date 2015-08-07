@@ -45,11 +45,6 @@ end
 class Assignment
   include HasDeadline
 
-  # The assignments in a course that are visible to a user.
-  def self.for(user, course)
-    course.assignments.by_deadline.select { |a| a.can_read? user }
-  end
-
   # If true, students can read deliverables and make submissions.
   #
   # For some assignments, such as exams, that do not have deliverables, this

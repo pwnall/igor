@@ -129,7 +129,7 @@ exams = exam_data.map.with_index do |data, index|
   exam
 end
 
-([admin] + users).each_with_index do |user, i|
+users.each_with_index do |user, i|
   exams.each_with_index do |exam, j|
     next unless exam.due_at < Time.now
     exam.metrics.each.with_index do |metric, k|
@@ -229,6 +229,8 @@ end
       submission.analysis.save!
     end
 
+    next if user.admin?
+
     # NOTE: the last condition is not a typo; we skip over some of the students
     #       who submitted the writeup, to test the "missing grades" finder
     unless (i + j) % 3 == 0 || (i + j) % 10 == 1
@@ -244,8 +246,8 @@ end
         grade.save!
 
         if (i + j) % 4 == 1
-          comment = GradeComment.new grade: grade, grader: admin,
-              comment: Faker::Lorem.paragraphs(3).join("\n")
+          comment = metric.comments.build subject: user, course: metric.course,
+              grader: admin, text: Faker::Lorem.paragraphs(3).join("\n")
           comment.save!
         end
       end

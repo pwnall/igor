@@ -15,40 +15,26 @@
 
 # The grade awarded to a student/team for their performance on a metric.
 class Grade < ActiveRecord::Base
-  # The metric that this grade is for.
-  belongs_to :metric, class_name: 'AssignmentMetric', inverse_of: :grades
-  validates :metric, uniqueness: { scope: [:subject_id, :subject_type] },
-      permission: { subject: :grader, can: :grade }, presence: true
-
-  # The course of the grade's metric.
-  #
-  # This is redundant, but helps find a student's grades for a specific course.
-  belongs_to :course
-  validates_each :course do |record, attr, value|
-    if value.nil?
-      record.errors.add attr, 'is not present'
-    elsif record.metric && record.metric.course != value
-      record.errors.add attr, "does not match the metric's course"
-    end
-  end
-
-  # The subject being graded (a user or a team).
-  belongs_to :subject, polymorphic: true
-  validates :subject, presence: true
-
-  # The user who posted this grade (on the course staff).
-  belongs_to :grader, class_name: 'User'
-  validates :grader, presence: true
+  include AssignmentFeedback
 
   # The numeric grade.
   validates_numericality_of :score, only_integer: false
 
-  # An optional comment that will be missing on most grades.
-  has_one :comment, class_name: 'GradeComment', inverse_of: :grade,
-                    dependent: :destroy
-
   # The users impacted by a grade.
   def users
     subject.respond_to?(:users) ? subject.users : [subject]
+  end
+
+  # Update/destroy this grade in response to a request from the grade editor.
+  #
+  # @param [String, Integer] score_text the numeric score
+  # @return [Boolean] true if the grade was updated successfully
+  def act_on_user_input(score_text)
+    self.score = score_text
+    if score_text.blank?
+      destroy
+      return true
+    end
+    save
   end
 end

@@ -9,8 +9,6 @@
 #  updated_at   :datetime         not null
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
 awesome_pset:
   partition: psets
   name: "Team Awesome"
@@ -26,3 +24,7 @@ awesome_project:
 boo_project:
   partition: project
   name: "Team Boo"
+
+not_main_lab:
+  partition: labs
+  name: "Team Not Main"
