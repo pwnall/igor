@@ -1,74 +1,59 @@
 class GradeEditor
   # Toggles DOM classes in an indicator container to reflect an event.
   #
-  # @param {Element} indicator DOM element that hosts the indicator image
+  # @param {jQuery} $indicator DOM element that hosts the indicator image
   # @param {String} activeClass the indicator that will be shown
   # @param {Number, Boolean} temporary if not false, the indicator will be
   #   hidden after the number of milliseconds in this argument
   # @return {GradeEditor} this
-  setIndicator: (indicator, activeClass, temporary) ->
+  setIndicator: ($indicator, activeClass, temporary) ->
     if activeClass.length is 0
-      $(indicator).attr 'class', 'progress-indicator'
+      $indicator.attr 'class', 'progress-indicator'
     else
-      $(indicator).attr 'class', 'progress-indicator ' + activeClass
+      $indicator.attr 'class', 'progress-indicator ' + activeClass
 
     if temporary isnt false
       remove = =>
-        @setIndicator indicator, '', false
+        @setIndicator $indicator, '', false
       setTimeout remove, temporary
     @
 
   # Saves a grade via AJAX if it is changed.
-  onBlur: (event) ->
+  onDataFieldBlur: (event) ->
     $target = $ event.target
+    $td = $target.parents('td').first()
+    $td.removeClass 'focused'
     $row = $target.parents('tr').first()
     $row.removeClass 'focused'
     @redoSummary $row
 
-    oldValue = $target.attr 'data-old-value'
-    return if JSON.stringify($target.val()) is oldValue
+    # Don't post data that hasn't changed.
+    if @lastFocusedElement is $target[0] and
+        @lastFocusedValue is $target.val()
+      return
 
-    $td = $target.parents('td').first()
-    $indicator = $ '.progress-indicator', $td
-    @setIndicator $indicator, 'upload-pending', false
-
-    # NOTE: Each row has a <th> followed by <td>s.
-    td = $td[0]
-    tdIndex = null
-    for rowTd, i in $('td', $row)
-      if rowTd is td
-        tdIndex = i
-    console.log tdIndex
-
-    $table = $row.parents('table').first()
-    th = $table.find('thead').find('tr').children('th')[tdIndex + 1]
-    $th = $ th
-
-    url = "/#{$th.attr('data-metric-course-id')}/grades.html"
-    $.ajax url,
-      data:
-        'grade[subject_id]': $row.attr('data-subject-id')
-        'grade[subject_type]': $row.attr('data-subject-type')
-        'grade[metric_id]': $th.attr('data-metric-id')
-        'grade[score]': $td.find('input#score').val()
-        'comment[comment]': $td.find("div.comment > textarea").val()
-      dataType: 'text'
-      method: 'post'
-      success: (data, status, xhr) => @onAjaxSuccess $target, data
-      error: (xhr, status, error) => @onAjaxError $target
-
+    @uploadFieldData $target, $td, $row
     return
 
   # Takes note of a grade's current value.
-  onFocus: (event) ->
+  onDataFieldFocus: (event) ->
+    unless @lastFocusedElement is null
+      @onDataFieldBlur target: @lastFocusedElement
+      @lastFocusedElement = null
+
     $target = $ event.target
-    $target.attr 'data-old-value', JSON.stringify($target.val())
+    $td = $target.parents('td').first()
+    $td.addClass 'focused'
     $row = $target.parents('tr').first()
     $row.addClass 'focused'
+
+    @lastFocusedElement = $target[0]
+    @lastFocusedValue = $target.val()
+
     return
 
   # Tabs to the next grade field if the user presses Enter.
-  onKeyDown: (event) ->
+  onDataFieldKeyDown: (event) ->
     event.preventDefault() if event.which in {13; 67}
     $target = $ event.target
 
@@ -107,6 +92,41 @@ class GradeEditor
     $indicator = $ '.progress-indicator', $container
     @setIndicator $indicator, 'upload-fail', 10000
     return
+
+  # Uploads a grade or a comment.
+  uploadFieldData: ($field, $td, $row) ->
+    $indicator = $ '.progress-indicator', $td
+    @setIndicator $indicator, 'upload-pending', false
+
+    tdIndex = $('td', $row).index $td
+    return if tdIndex is -1
+
+    metricId = @metricIds[tdIndex]
+    courseId = @metricCourseIds[tdIndex]
+    subjectId = $row.attr 'data-subject-id'
+    subjectType = $row.attr 'data-subject-type'
+    fieldValue = $field.val()
+
+    if $field.prop('tagName') is 'TEXTAREA'
+      # Comment field.
+      url = "/#{courseId}/grade_comments.html"
+      data =
+          'comment[subject_id]': subjectId
+          'comment[subject_type]': subjectType
+          'comment[metric_id]': metricId
+          'comment[comment]': fieldValue
+    else
+      # Grade field.
+      url = "/#{courseId}/grades.html"
+      data =
+          'grade[subject_id]': subjectId
+          'grade[subject_type]': subjectType
+          'grade[metric_id]': metricId
+          'grade[score]': fieldValue
+    $.ajax url,
+      data: data, dataType: 'text', method: 'post',
+      success: (data, status, xhr) => @onAjaxSuccess $field, data
+      error: (xhr, status, error) => @onAjaxError $field
 
   # Re-computes the summary values for a collection of grades.
   #
@@ -154,27 +174,35 @@ class GradeEditor
   constructor: (@domRoot) ->
     @$domRoot = $ @domRoot
     @$table = @$domRoot
+    @lastFocusedElement = null
+    @lastFocusedValue = null
 
     @subjectRows = @domRoot.querySelectorAll 'tbody tr[data-subject-name]'
     @subjectNames = []
-    for row, index in @subjectRows
-      @subjectNames[index] = row.getAttribute('data-subject-name').toLowerCase()
+    for row in @subjectRows
+      @subjectNames.push row.getAttribute('data-subject-name').toLowerCase()
       @redoSummary row
+
+    @metricCourseIds = []
+    @metricIds = []
+    for th in @domRoot.querySelectorAll('thead th[data-metric-id]')
+      @metricCourseIds.push th.getAttribute('data-metric-course-id')
+      @metricIds.push th.getAttribute('data-metric-id')
 
     @oldNameFilter = ''
 
     # Event handler functions are bound to the instance, Python-style.
-    @onBlur = @onBlur.bind @
-    @onFocus = @onFocus.bind @
-    @onKeyDown = @onKeyDown.bind @
+    @onDataFieldBlur = @onDataFieldBlur.bind @
+    @onDataFieldFocus = @onDataFieldFocus.bind @
+    @onDataFieldKeyDown = @onDataFieldKeyDown.bind @
     @onSearchChange = @onSearchChange.bind @
     @onAjaxSuccess = @onAjaxSuccess.bind @
     @onAjaxError = @onAjaxError.bind @
 
     @$domRoot.
-        on('blur', 'input[type=number], textarea', @onBlur).
-        on('focus', 'input[type=number], textarea', @onFocus).
-        on('keydown', 'input[type=number]', @onKeyDown).
+        on('blur', 'input[type=number], textarea', @onDataFieldBlur).
+        on('focus', 'input[type=number], textarea', @onDataFieldFocus).
+        on('keydown', 'input[type=number]', @onDataFieldKeyDown).
         on('ajax:success', 'form', @onAjaxSuccess).
         on('ajax:error', 'form', @onAjaxError)
 

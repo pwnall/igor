@@ -36,25 +36,17 @@ table.grades-table {
       width: 3em;
       text-align: right;
       background-color:  hsl(0deg, 0%, 100%);
-
-      ~ div.comment > textarea:not(:focus) {
-        display: none;
-        + span {
-        display: none;
-        }
-      }
-      &:focus ~ div.comment > textarea {
-        display: inherit;
-        & + span {
-          display: inherit;
-        }
-      }
     }
     .max-points {
       font-weight: 300;
     }
+
+    &.focused div.comment {
+      display: block;
+    }
     div.comment {
       position: absolute;
+      display: none;
       margin: 3px 0px 0px -3px;
       box-shadow: 2px 1px 3px #666;
       background: #F1D7C6;
