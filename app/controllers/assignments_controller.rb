@@ -1,16 +1,10 @@
 class AssignmentsController < ApplicationController
+  include SidebarLayout
+
   before_action :set_current_course
   before_action :authenticated_as_course_editor, except: [:index, :show]
   before_action :authenticated_as_user, only: [:index, :show]
   before_action :set_assignment, only: [:show, :edit, :update, :destroy]
-
-  layout lambda { |controller|
-    if controller.current_course.is_staff? controller.current_user
-      'assignments'
-    else
-      'session'
-    end
-  }
 
   # GET /assignments
   def index
@@ -23,7 +17,8 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments/1
   def show
-    @assignment = current_course.assignments.find params[:id]
+    return bounce_user unless @assignment.can_read? current_user
+
     respond_to do |format|
       format.html  # show.html.erb
     end
@@ -52,7 +47,6 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments/1/edit
   def edit
-    @assignment = Assignment.find params[:id]
   end
 
   # POST /assignments
@@ -76,8 +70,6 @@ class AssignmentsController < ApplicationController
 
   # PUT /assignments/1
   def update
-    @assignment = Assignment.find params[:id]
-
     respond_to do |format|
       if @assignment.update_attributes assignment_params
         format.html do
@@ -94,7 +86,6 @@ class AssignmentsController < ApplicationController
 
   # DELETE /assignments/1
   def destroy
-    @assignment = Assignment.find params[:id]
     @assignment.destroy
 
     respond_to do |format|

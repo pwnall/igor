@@ -19,3 +19,13 @@ project:
   name: Project Survey
   published: false
   course: main
+
+lab:
+  name: Lab 1 Survey
+  published: true
+  course: main
+
+not_main:
+  name: Not Main Survey
+  published: false
+  course: not_main

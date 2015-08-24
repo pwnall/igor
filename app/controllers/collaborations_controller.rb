@@ -1,14 +1,8 @@
 class CollaborationsController < ApplicationController
+  include SidebarLayout
+
   before_action :set_current_course
   before_action :authenticated_as_user
-
-  layout lambda { |controller|
-    if controller.current_course.is_staff? controller.current_user
-      'assignments'
-    else
-      'session'
-    end
-  }
 
   # POST /6.006/collaborations
   def create

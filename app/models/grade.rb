@@ -18,7 +18,7 @@ class Grade < ActiveRecord::Base
   include AssignmentFeedback
 
   # The numeric grade.
-  validates_numericality_of :score, only_integer: false
+  validates :score, numericality: { only_integer: false }
 
   # The users impacted by a grade.
   def users

@@ -1,0 +1,49 @@
+section.survey {
+  padding-bottom: 1rem;
+  > .heading {
+    font-size: 1.44em;
+  }
+  > .deadline {
+    margin: 0.5ex 0 1em 0;
+  }
+  .single-response {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    margin-bottom: 1rem;
+
+    .prompt, .answer {
+      padding: 0.5rem;
+    }
+    .prompt {
+      flex: 1 1 50%;
+      text-align: right;
+    }
+    .answer {
+      flex: 1 1 50%;
+      .numerical-answer, .comment {
+        margin: 0.3rem auto;
+      }
+      .numerical-answer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        > input {
+          flex: 0 1 auto;
+        }
+      }
+      .comment {
+        textarea {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  border-bottom: 1px solid #B18566;
+  &:last-child {
+    border-bottom: none;
+  }
+}

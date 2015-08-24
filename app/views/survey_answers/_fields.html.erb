@@ -1,0 +1,31 @@
+<% question = f.object.question %>
+
+<div class="single-response">
+  <p class="prompt">
+    <%= question.prompt %>
+  </p>
+
+  <% if question.can_answer? current_user %>
+  <div class="answer">
+    <section class="numerical-answer">
+      <% if question.instance_of? QuantitativeScaledQuestion %>
+        <%= question.scale_min_label %>
+        <% question.scale_min.upto(question.scale_max) do |scale_index| %>
+          <%= f.radio_button :number, scale_index.to_f %>
+        <% end %>
+        <%= question.scale_max_label %>
+      <% elsif question.instance_of? QuantitativeOpenQuestion %>
+        <%= f.number_field :number, step: question.step_size %>
+      <% end %>
+    </section>
+
+    <% if question.allows_comments? %>
+    <section class="comment">
+      <%= f.text_area :comment, rows: 5, placeholder: 'Additional comments' %>
+    </section>
+    <% end %>
+
+    <%= f.hidden_field :question_id %>
+  </div>
+  <% end %>
+</div>

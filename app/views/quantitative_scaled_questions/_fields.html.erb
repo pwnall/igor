@@ -1,0 +1,33 @@
+<div class="field">
+  <%= f.label :scale_min, 'Low value' %>
+  <span class="value">
+    <%= f.number_field :scale_min, step: 1, placeholder: '1', required: true,
+                                   class: 'scale-limit' %>
+  </span>
+</div>
+
+<div class="field">
+  <%= f.label :scale_max, 'High value' %>
+  <span class="value">
+    <%= f.number_field :scale_max, step: 1, placeholder: '5', required: true,
+                                   class: 'scale-limit' %>
+  </span>
+</div>
+
+<div class="field">
+  <%= f.label :scale_min_label, 'Low value text' %>
+  <span class="value">
+    <%= f.text_field :scale_min_label, placeholder: 'Too easy', required: true,
+                                       maxlength: 64, class: 'scale-label' %>
+  </span>
+</div>
+
+<div class="field">
+  <%= f.label :scale_max_label, 'High value text' %>
+  <span class="value">
+    <%= f.text_field :scale_max_label, placeholder: 'Too hard', required: true,
+                                       maxlength: 64, class: 'scale-label' %>
+  </span>
+</div>
+
+<%= f.hidden_field :type %>

@@ -1,0 +1,26 @@
+# == Schema Information
+#
+# Table name: survey_responses
+#
+#  id         :integer          not null, primary key
+#  course_id  :integer          not null
+#  user_id    :integer          not null
+#  survey_id  :integer          not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+dexter_ps1:
+  course: main
+  user: dexter
+  survey: ps1
+
+dexter_project:
+  course: main
+  user: dexter
+  survey: project
+
+solo_project:
+  course: main
+  user: solo
+  survey: project

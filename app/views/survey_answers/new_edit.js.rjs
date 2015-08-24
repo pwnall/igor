@@ -1,3 +1,0 @@
-page.select('.new-feed-item-form-container').each do |element|
-  element.update render('survey_answers/form')
-end

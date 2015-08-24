@@ -107,4 +107,10 @@ class Submission < ActiveRecord::Base
       raise "Unexpected subject type #{subject.class}"
     end
   end
+
+  # Set the collaborators to those of the previous submission used for grading.
+  def copy_collaborators_from_previous_submission
+    last_submission = deliverable.submission_for_grading subject
+    self.collaborators = last_submission.collaborators if last_submission
+  end
 end

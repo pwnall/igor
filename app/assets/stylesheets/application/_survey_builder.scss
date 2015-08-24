@@ -1,0 +1,44 @@
+.survey-builder h3 {
+  margin-top: 0.75em;
+  border-top: 2px solid $header-border-color;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+}
+
+.survey-builder-actions {
+  padding: 0 0 0 4em;
+}
+
+.survey-builder-questions {
+  .header {
+    display: flex;
+    align-items: baseline;
+
+    input.prompt {
+      flex: 1 1 50%;
+    }
+    > select, > input, > span {
+      margin: 0 0.2em 0 0;
+    }
+    .destroy {
+      white-space: nowrap;
+    }
+  }
+  input[type=number] {
+    &.step-size, &.scale-limit {
+      width: 4rem;
+    }
+  }
+  input[type=text].scale-label {
+    width: 10rem;
+  }
+}
+
+section.question {
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid $header-border-color;
+  &:last-of-type {
+    border-bottom: none;
+  }
+  margin-bottom: 0.5em;
+}

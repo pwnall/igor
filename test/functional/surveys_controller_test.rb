@@ -5,24 +5,24 @@ class SurveysControllerTest < ActionController::TestCase
     @admin = users(:admin)
     @user = users(:dexter)
   end
-  
+
   test "admin should get index" do
     set_session_current_user users(:admin)
     get :index
     assert_response :success
     assert_not_nil assigns(:surveys)
   end
-  
+
   test "user should not get index" do
     set_session_current_user users(:dexter)
     get :index
     assert_response 403
   end
-  
+
   test "visitor should not get index" do
     get :index
     assert_response 403
-  end  
+  end
 
   test "admin should get new" do
     set_session_current_user users(:admin)
@@ -55,7 +55,7 @@ class SurveysControllerTest < ActionController::TestCase
     set_session_current_user users(:admin)
     put :update, { :id => surveys(:psets).to_param,
                    :survey => surveys(:psets).attributes }
-    assert_redirected_to survey_questions_path
+    assert_redirected_to surveys_url(course_id: surveys(:psets).course)
   end
 
   test "admin should destroy survey" do

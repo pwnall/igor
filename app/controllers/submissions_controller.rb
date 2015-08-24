@@ -57,9 +57,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new submission_params
     return bounce_user unless @submission.deliverable.can_submit? current_user
     @submission.subject = @submission.assignment.grade_subject_for current_user
-    old_submission =
-        @submission.deliverable.submission_for_grading @submission.subject
-    @submission.collaborators = old_submission.collaborators if old_submission
+    @submission.copy_collaborators_from_previous_submission
 
     respond_to do |format|
       if @submission.save

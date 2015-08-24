@@ -1,12 +1,14 @@
 class CreateSurveyAnswers < ActiveRecord::Migration
   def change
     create_table :survey_answers do |t|
-      t.references :user, index: true, null: false
-      t.references :survey, index: true, null: false
+      t.references :question, null: false
+      t.references :response, null: false
+      t.decimal :number, null: true, precision: 7, scale: 2
+      t.string :comment, limit: 1.kilobyte, null: true
 
-      t.index [:user_id, :survey_id], unique: true
-      
       t.timestamps
+
+      t.index [:response_id, :question_id], unique: true
     end
   end
 end

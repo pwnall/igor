@@ -15,25 +15,42 @@ class Survey < ActiveRecord::Base
   include HasDeadline
 
   # A name for the question set. Visible to admins.
-  validates :name, length: 1..128
+  validates :name, length: { in: 1..128, allow_nil: false },
+      uniqueness: { scope: :course }
 
   # Whether the survey has been released and users can submit responses.
   validates :published, inclusion: { in: [true, false], allow_nil: false }
-
-  # Memberships for the questions in this set.
-  has_many :memberships, class_name: 'SurveyQuestionMembership',
-                         dependent: :destroy
-
-  # The questions in this set.
-  has_many :questions, through: :memberships, source: :survey_question
 
   # The course in which this survey is administered.
   belongs_to :course, inverse_of: :surveys
   validates :course, presence: true
 
-  # The given user's response for this survey.
-  def answer_for(user)
-    return nil unless user
-    SurveyAnswer.find_by user: user, survey: self
+  # The questions that constitute this survey.
+  has_many :questions, class_name: 'SurveyQuestion', inverse_of: :survey,
+                       dependent: :destroy
+  accepts_nested_attributes_for :questions, allow_destroy: true,
+                                            reject_if: :all_blank
+
+  # The responses to this survey.
+  has_many :responses, class_name: 'SurveyResponse', inverse_of: :survey,
+      dependent: :destroy
+
+  # True if the given user has responded to this survey.
+  def answered_by?(user)
+    !!responses.where(user: user).first
+  end
+
+  # True if the given user is allowed to see or respond to this survey.
+  def can_respond?(user)
+    (published? && course.is_student?(user)) || course.can_edit?(user)
+  end
+
+  # True if the given user is allowed to change or delete this survey.
+  def can_edit?(user)
+    course.can_edit? user
+  end
+
+  def can_delete?(user)
+    ((!published? || responses.empty?) && can_edit?(user)) || user.admin?
   end
 end

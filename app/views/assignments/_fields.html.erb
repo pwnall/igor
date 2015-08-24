@@ -2,23 +2,23 @@
   <p class="field">
     <%= f.label :name %>
     <span class="value">
-      <%= f.text_field :name, :placeholder => 'PS 1', :required => true,
-              :autofocus => true %>
+      <%= f.text_field :name, placeholder: 'PS 1', required: true,
+              autofocus: true %>
     </span>
   </p>
   <p class="field">
     <%= f.label :due_at, 'Submission Deadline' %>
     <span class="value">
-      <%= f.datetime_select :due_at, :use_short_month => true,
-             :minute_step => 15, :datetime_separator => ' at ',
-             :time_separator => ':' %>
+      <%= f.datetime_select :due_at, use_short_month: true,
+             minute_step: 15, datetime_separator:' at ',
+             time_separator: ':', required: true %>
     </span>
   </p>
   <p class="field">
     <%= f.label :weight, 'Grade Weight' %>
     <span class="value">
-      <%= f.number_field :weight, :min => 0, :step => 0.1, :required => true,
-                                  :placeholder => 1.0 %>
+      <%= f.number_field :weight, min: 0, step: 0.1, required: true,
+                                  placeholder: 1.0 %>
     </span>
   </p>
   <p class="field">
@@ -33,8 +33,8 @@
     <%= f.label :team_partition_id, 'Teams' %>
     <span class="value">
       <%= f.select :team_partition_id,
-              ([['(none)', nil]] + TeamPartition.all.map { |p| [p.name, p.id] }),
-              :class => 'form_field' %>
+            ([['(none)', nil]] + TeamPartition.all.map { |p| [p.name, p.id] }),
+            class: 'form_field' %>
     </span>
   </p>
   <% end %>

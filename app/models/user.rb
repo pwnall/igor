@@ -217,8 +217,8 @@ end
 
 # :nodoc: feedback survey integration.
 class User
-  # The user's answers to surveys.
-  has_many :survey_answers, dependent: :destroy, inverse_of: :user
+  # The user's responses to surveys.
+  has_many :survey_responses, dependent: :destroy, inverse_of: :user
 end
 
 # :nodoc: TeamPartition / Teams searching.

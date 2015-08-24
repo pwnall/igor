@@ -15,6 +15,7 @@ class TimeSlot < ActiveRecord::Base
   belongs_to :course, inverse_of: :time_slots
   validates :course, presence: true
 
+  # The allotments of this time slot for various recitations.
   has_many :time_slot_allotments, inverse_of: :time_slot, dependent: :destroy
 
   # The recitation scheduling conflicts reported for this time slot.

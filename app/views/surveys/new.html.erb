@@ -1,5 +1,13 @@
-<div class="full_section">
-  <h1 class="full_section">New Survey</h1>
+<h2>New Survey</h2>
 
-<%= render 'surveys/form' %>
-</div>
+<%= form_for @survey, url: polymorphic_path(@survey,
+      course_id: @survey.course) do |f| %>
+  <%= f.error_messages %>
+  <%= render 'surveys/fields', f: f %>
+
+  <p class="actions">
+    <%= button_tag do %>
+      <%= next_step_icon_tag %> Build Survey
+    <% end %>
+  </p>
+<% end %>

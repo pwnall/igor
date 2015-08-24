@@ -13,7 +13,7 @@
 class RecitationPartition < ActiveRecord::Base
   # The course whose students and sections are covered by this partition.
   belongs_to :course, inverse_of: :recitation_partitions
-  validates_presence_of :course
+  validates :course, presence: true
 
   # Maximum number of students in a recitation section.
   validates :section_size,

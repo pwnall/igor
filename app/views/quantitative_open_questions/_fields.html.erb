@@ -1,0 +1,12 @@
+<div class="field">
+  <%= f.label :step_size, 'Step Size' %>
+  <span class="value">
+    <%= f.number_field :step_size, min: 0, step: 0.01, placeholder: '0.1',
+          class: 'step-size' %>
+    <%= f.label :step_size do %>
+      the granularity for acceptable numerical answers
+    <% end %>
+  </span>
+</div>
+
+<%= f.hidden_field :type %>

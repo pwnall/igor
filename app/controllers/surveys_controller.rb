@@ -1,10 +1,14 @@
 class SurveysController < ApplicationController
+  include SidebarLayout
+
   before_action :set_current_course
-  before_action :authenticated_as_admin
+  before_action :authenticated_as_user, only: [:index, :show]
+  before_action :authenticated_as_course_editor, except: [:index, :show]
+  before_action :set_survey, only: [:show, :edit, :update, :destroy]
 
   # GET /surveys
   def index
-    @surveys = Survey.all
+    @surveys = current_course.surveys_for current_user
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +17,7 @@ class SurveysController < ApplicationController
 
   # GET /surveys/1
   def show
-    @survey = Survey.find(params[:id])
+    return bounce_user unless @survey.can_respond? current_user
 
     respond_to do |format|
       format.html # show.html.erb
@@ -22,8 +26,7 @@ class SurveysController < ApplicationController
 
   # GET /surveys/new
   def new
-    @survey = Survey.new
-    @survey.course = Course.main
+    @survey = Survey.new course: current_course
 
     respond_to do |format|
       format.html # new.html.erb
@@ -32,73 +35,70 @@ class SurveysController < ApplicationController
 
   # GET /surveys/1/edit
   def edit
-    @survey = Survey.find params[:id]
-    @survey_questions = SurveyQuestion.all
   end
 
   # POST /surveys
   def create
-    @course = Course.main
-    @survey = @course.surveys.build survey_params
+    @survey = Survey.new survey_params
+    @survey.course = current_course
     @survey.published = false
 
     respond_to do |format|
       if @survey.save
-        format.html { redirect_to edit_survey_path(@survey) }
+        format.html do
+          redirect_to edit_survey_url(@survey, course_id: @survey.course)
+        end
       else
-        format.html { render :action => "new" }
+        format.html { render :new }
       end
     end
   end
 
   # PUT /surveys/1
   def update
-    @survey = Survey.find params[:id]
-
     respond_to do |format|
-      if @survey.update_attributes survey_params
-        format.html { redirect_to(survey_questions_path, :notice => 'Survey was successfully updated.') }
+      if @survey.update survey_params
+        format.html do
+          redirect_to surveys_url(course_id: @survey.course),
+              notice: 'Survey was successfully updated.'
+        end
       else
-        format.html { render :action => "edit" }
+        format.html { render :edit }
       end
     end
   end
 
   # DELETE /surveys/1
   def destroy
-    @survey = Survey.find params[:id]
-    @survey.destroy
-
     respond_to do |format|
-      format.html { redirect_to surveys_path }
+      if @survey.can_delete? current_user
+        @survey.destroy
+        format.html do
+          redirect_to surveys_url(course_id: @survey.course),
+              notice: 'Survey was deleted.'
+        end
+      else
+        format.html do
+          redirect_to surveys_url(course_id: @survey.course),
+              notice: 'Survey could not be deleted.'
+        end
+      end
     end
   end
 
-  # POST /surveys/question
-  def add_question
-    @survey = Survey.find params[:id]
-    question = SurveyQuestion.find params[:question_id]
-
-    SurveyQuestionMembership.create :survey_question => question,
-        :survey => @survey
-
-    redirect_to edit_survey_path @survey
+  def set_survey
+    @survey = current_course.surveys.find params[:id]
   end
+  private :set_survey
 
-  # DELETE /surveys/question
-  def remove_question
-    @survey = Survey.find params[:id]
-    membership = @survey.memberships.
-        where(:survey_question_id => params[:question_id]).first
-    membership.destroy
-
-    redirect_to edit_survey_path @survey
-  end
-
-  # Permits creating and updating surveys.
+  # NOTE: We allow the :id parameter in the has_many association's attributes
+  #     hash since accepts_nested_attributes_for checks that each nested record
+  #     actually belongs to the parent record.
   def survey_params
-    params.require(:survey).permit :name, :due_at
+    params.require(:survey).permit :name, :published, :due_at,
+        questions_attributes: [:id, :prompt, :_destroy, :type, :step_size,
+        :allows_comments, :scaled, :scale_min, :scale_max, :scale_min_label,
+        :scale_max_label ]
   end
   private :survey_params
-
 end

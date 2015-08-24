@@ -13,7 +13,7 @@ module SubmissionsHelper
   # The object of a new collaboration form for the given submission.
   #
   # @param [Collaboration] invalid_collaboration a collaboration from the
-  #     previous request, if it failed validations
+  #     previous request, if it failed validations; otherwise, nil
   # @param [Submission] submission the object of the collaboration
   # @return [Submission] the previous invalid submission, or a new submission
   def new_collaboration(invalid_collaboration, submission)

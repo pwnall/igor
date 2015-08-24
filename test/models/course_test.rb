@@ -94,13 +94,14 @@ class CourseTest < ActiveSupport::TestCase
   end
 
   it 'destroys dependent records' do
-    assert_equal true, course.registrations.any?
-    assert_equal true, course.prerequisites.any?
-    assert_equal true, course.assignments.any?
-    assert_equal true, course.recitation_sections.any?
-    assert_equal true, course.time_slots.any?
-    assert_equal true, course.roles.any?
-    assert_equal true, course.role_requests.any?
+    assert_not_empty course.registrations
+    assert_not_empty course.prerequisites
+    assert_not_empty course.assignments
+    assert_not_empty course.recitation_sections
+    assert_not_empty course.time_slots
+    assert_not_empty course.roles
+    assert_not_empty course.role_requests
+    assert_not_empty course.surveys
 
     course.destroy
 
@@ -111,6 +112,7 @@ class CourseTest < ActiveSupport::TestCase
     assert_empty course.time_slots.reload
     assert_empty course.roles.reload
     assert_empty course.role_requests.reload
+    assert_empty course.surveys.reload
   end
 
   describe 'students' do
@@ -216,6 +218,34 @@ class CourseTest < ActiveSupport::TestCase
           golden = assignments(:project, :assessment, :ps1)
           actual = course.assignments_for users(:dexter)
           assert_equal golden, actual, actual.map(&:name)
+        end
+      end
+    end
+  end
+
+  describe 'surveys' do
+    describe '#surveys_for' do
+      describe 'the given user is a site or course admin' do
+        it 'returns all surveys in the course, ordered by deadline' do
+          golden = surveys(:lab, :project, :ps1)
+          actual = course.surveys_for users(:main_staff)
+          assert_equal golden, actual
+        end
+      end
+
+      describe 'the given user is a student registered for the course' do
+        it 'returns all published surveys in the course, ordered by deadline' do
+          assert_includes users(:dexter).registered_courses, course
+          golden = surveys(:lab, :ps1)
+          actual = course.surveys_for users(:dexter)
+          assert_equal golden, actual
+        end
+      end
+
+      describe 'the given user is not registered for the course' do
+        it 'returns no surveys' do
+          assert_not_includes users(:inactive).registered_courses, course
+          assert_empty course.surveys_for users(:inactive)
         end
       end
     end

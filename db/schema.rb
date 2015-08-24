@@ -318,45 +318,33 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   end
 
   create_table "survey_answers", force: :cascade do |t|
+    t.integer  "question_id",                                      null: false
+    t.integer  "response_id",                                      null: false
+    t.decimal  "number",                   precision: 7, scale: 2
+    t.string   "comment",     limit: 1024
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.index ["response_id", "question_id"], name: "index_survey_answers_on_response_id_and_question_id", unique: true, using: :btree
+  end
+
+  create_table "survey_questions", force: :cascade do |t|
+    t.integer  "survey_id",                    null: false
+    t.string   "prompt",          limit: 1024, null: false
+    t.boolean  "allows_comments",              null: false
+    t.string   "type",            limit: 32,   null: false
+    t.text     "features",                     null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  create_table "survey_responses", force: :cascade do |t|
+    t.integer  "course_id",  null: false
     t.integer  "user_id",    null: false
     t.integer  "survey_id",  null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["survey_id"], name: "index_survey_answers_on_survey_id", using: :btree
-    t.index ["user_id", "survey_id"], name: "index_survey_answers_on_user_id_and_survey_id", unique: true, using: :btree
-    t.index ["user_id"], name: "index_survey_answers_on_user_id", using: :btree
-  end
-
-  create_table "survey_question_answers", force: :cascade do |t|
-    t.integer  "survey_answer_id",              null: false
-    t.integer  "question_id",                   null: false
-    t.integer  "target_user_id"
-    t.float    "number",                        null: false
-    t.string   "comment",          limit: 1024
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-    t.index ["survey_answer_id", "question_id", "target_user_id"], name: "survey_question_answers_by_answer_question_user", unique: true, using: :btree
-  end
-
-  create_table "survey_question_memberships", force: :cascade do |t|
-    t.integer  "survey_question_id", null: false
-    t.integer  "survey_id",          null: false
-    t.datetime "created_at"
-    t.index ["survey_id", "survey_question_id"], name: "survey_questions_to_surveys", unique: true, using: :btree
-    t.index ["survey_question_id", "survey_id"], name: "surveys_to_survey_questions", unique: true, using: :btree
-  end
-
-  create_table "survey_questions", force: :cascade do |t|
-    t.integer  "scale_min",                    default: 1,       null: false
-    t.integer  "scale_max",                    default: 5,       null: false
-    t.boolean  "scaled",                       default: false,   null: false
-    t.boolean  "targets_user",                 default: false,   null: false
-    t.boolean  "allows_comments",              default: false,   null: false
-    t.string   "human_string",    limit: 1024,                   null: false
-    t.string   "scale_min_label", limit: 64,   default: "Small", null: false
-    t.string   "scale_max_label", limit: 64,   default: "Large", null: false
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
+    t.index ["course_id"], name: "index_survey_responses_on_course_id", using: :btree
+    t.index ["user_id", "survey_id"], name: "index_survey_responses_on_user_id_and_survey_id", unique: true, using: :btree
   end
 
   create_table "surveys", force: :cascade do |t|
@@ -365,6 +353,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.integer  "course_id",              null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.index ["course_id", "name"], name: "index_surveys_on_course_id_and_name", unique: true, using: :btree
   end
 
   create_table "team_invitations", force: :cascade do |t|

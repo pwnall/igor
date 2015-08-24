@@ -1,29 +1,52 @@
-<%# TODO(spark008): Add UI for publishing surveys. %>
-<%= form_for(@survey, :html => {:class => 'student_form'}) do |f| %>
-  <%= f.error_messages %>
+<div class="survey-builder" data-pwnfx-scope="survey">
+  <%= form_for survey, url: polymorphic_path(survey,
+        course_id: survey.course) do |f| %>
+    <%= f.error_messages %>
 
-  <div class="form_box">
-    <div class="form_entry">
-      <div class="form_label">
-        <%= f.label :name, 'Name' %>
-      </div>
-      <div class="form_field_box">
-        <%= f.text_field :name, :class => 'form_field' %>
-      </div>
-      <div class="form_label">
-        <%= f.label :due_at, 'Response Deadline' %>
-      </div>
-      <div class="form_field_box">
-        <%= f.datetime_select :due_at, use_short_month: true, minute_step: 15,
-                datetime_separator: ' at ', time_separator: ':' %>
-      </div>
-    </div>
+    <%= render 'surveys/fields', f: f %>
 
-    <div class="form_submit_box">
-      <%= f.submit((@survey.new_record? ? "Add Questions" : "Update"),
-                   :class => 'form_submit') %>
-      or
-      <%= link_to 'Go back', survey_questions_path %>
+    <h3>Questions</h3>
+    <div class="survey-builder-questions"
+         data-pwnfx-render-target="qo-question qs-question">
+      <%= f.fields_for :questions do |qf| %>
+        <%= render 'survey_questions/fields', f: qf %>
+      <% end %>
     </div>
-  </div>
-<% end %>
+    <p class="survey-builder-actions">
+      <%= select_tag :type, question_types_for_select,
+            data: { pwnfx_showif_source: 'question-type' },
+            class: 'question-type' %>
+      <%= button_tag data: { pwnfx_render_scope: 'survey',
+            pwnfx_render_randomize: 'IDID', pwnfx_render: 'qo-question',
+            pwnfx_showif: 'question-type',
+            pwnfx_showif_is: 'QuantitativeScaledQuestion',
+            pwnfx_showif_scope: 'survey', pwnfx_showif_replace: 'button' } do %>
+        <%= create_icon_tag %> Add a question
+      <% end %>
+      <%= button_tag data: { pwnfx_render_scope: 'survey',
+            pwnfx_render_randomize: 'IDID', pwnfx_render: 'qs-question',
+            pwnfx_showif: 'question-type',
+            pwnfx_showif_is: 'QuantitativeOpenQuestion',
+            pwnfx_showif_scope: 'survey', pwnfx_showif_replace: 'button' } do %>
+        <%= create_icon_tag %> Add a question
+      <% end %>
+    </p>
+    <script type="text/html" data-pwnfx-render-source="qo-question">
+      <%= f.fields_for :questions, QuantitativeScaledQuestion.new,
+                                   child_index: 'IDID' do |qf| %>
+        <%= render 'survey_questions/fields', f: qf %>
+      <% end %>
+    </script>
+    <script type="text/html" data-pwnfx-render-source="qs-question">
+      <%= f.fields_for :questions, QuantitativeOpenQuestion.new,
+                                   child_index: 'IDID' do |qf| %>
+        <%= render 'survey_questions/fields', f: qf %>
+      <% end %>
+    </script>
+
+    <p class="actions">
+      <%= button_tag class: 'emphasized' do %>
+        <%= save_icon_tag %> Update Survey
+      <% end %>
+  <% end %>
+</div>

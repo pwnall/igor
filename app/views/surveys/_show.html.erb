@@ -1,0 +1,42 @@
+<section class="survey">
+  <h2 class="heading">
+    <%= survey.name %>
+
+    <% if survey.can_edit? current_user %>
+    <span class="actions">
+      <%= link_to survey_responses_path(survey_id: survey,
+            course_id: survey.course), class: 'button' do %>
+        <%= dashboard_icon_tag %> Responses
+      <% end %>
+      <%= link_to edit_survey_path(survey, course_id: survey.course),
+            class: 'button' do %>
+        <%= edit_icon_tag %> Edit
+      <% end %>
+      <% if survey.can_delete?(current_user) %>
+        <%= link_to survey_path(survey, course_id: survey.course), data: {
+              confirm: 'Are you sure?' }, class: 'button', method: :delete do %>
+          <%= destroy_icon_tag %> Delete
+        <% end %>
+      <% end %>
+      <%= link_to survey_path(survey, course_id: survey.course,
+            survey: { published: !survey.published? }), class: 'button',
+            method: :patch do %>
+        <%= ship_icon_tag %> <%= survey_publish_text survey %>
+      <% end %>
+    </span>
+    <% end %>
+  </h2>
+
+  <p class="deadline">
+    Due
+    <%= survey.due_at.to_s(:deadline_long) %>
+    <%= time_delta_in_words survey.due_at %>
+  </p>
+
+  <section class="response">
+    <% if survey.can_respond? current_user %>
+      <%= render 'survey_responses/form',
+            response: response_for(@response, current_user, survey) %>
+    <% end %>
+  </section>
+</section>

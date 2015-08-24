@@ -16,7 +16,7 @@
 class ProfilePhoto < ActiveRecord::Base
   # The profile whose avatar is stored by this.
   belongs_to :profile, inverse_of: :photo
-  validates_presence_of :profile
+  validates :profile, presence: true
 
   # The picture bits.
   has_attached_file :pic, storage: :database, database_table: :photo_blobs,

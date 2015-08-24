@@ -1,0 +1,28 @@
+<%# Show results in more informative format. E.g. graphs %>
+<h2>
+  <%= @survey.responses.length %> responses to survey: <%= @survey.name %>
+</h2>
+
+<% @survey.questions.each do |question| %>
+  <h4><%= question.prompt %></h4>
+
+  <table class="survey-responses-table">
+    <thead>
+      <tr>
+        <th>Responder's Name</th>
+        <th>Answer</th>
+        <th>Comments</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% question.answers.each do |answer| %>
+        <tr>
+          <td><%= display_name_for_user answer.user, :long %></td>
+          <td><%= answer.number %></td>
+          <td><%= answer.comment %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

@@ -11,7 +11,7 @@
 </li>
 <% if current_course.has_surveys %>
 <li>
-  <%= link_to 'Surveys', root_path(:flavor => :survey_answer) %>
+  <%= link_to 'Surveys', surveys_path(course_id: current_course) %>
 </li>
 <% end %>
 <% if current_course.has_teams %>

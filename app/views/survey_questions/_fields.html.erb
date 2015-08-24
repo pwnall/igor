@@ -1,0 +1,35 @@
+<section class="question" data-pwnfx-hide-positive="question-section"
+                          data-pwnfx-scope="question">
+  <section class="header">
+    <%= f.text_field :prompt, required: true, class: 'prompt',
+          placeholder: survey_question_prompt_placeholder(f.object) %>
+    <span class="destroy">
+      <%= f.label :_destroy do %>
+        <%= f.check_box :_destroy, data: { pwnfx_hide: 'question-section',
+              pwnfx_hide_scope: 'question', pwnfx_hide_trigger: 'checked',
+              pwnfx_hide_class: 'destroyed-blur' } %>
+        <%= destroy_icon_tag %> Remove
+      <% end %>
+    </span>
+  </section>
+
+  <section class="fields">
+    <% if f.object.instance_of? QuantitativeOpenQuestion %>
+      <%= render 'quantitative_open_questions/fields', f: f %>
+    <% end %>
+
+    <% if f.object.instance_of? QuantitativeScaledQuestion %>
+      <%= render 'quantitative_scaled_questions/fields', f: f %>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :allows_comments, 'Comments' %>
+      <span class="value">
+        <%= f.check_box :allows_comments %>
+        <%= f.label :allows_comments do %>
+          allow additional comments
+        <% end %>
+      </span>
+    </div>
+  </section>
+</section>

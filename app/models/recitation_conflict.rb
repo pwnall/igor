@@ -15,7 +15,7 @@ class RecitationConflict < ActiveRecord::Base
   validates :time_slot, presence: true, uniqueness: { scope: :registration }
 
   # The class invoked to justify this recitation conflict.
-  validates_length_of :class_name, in: 1..64, allow_nil: false
+  validates :class_name, length: { in: 1..64, allow_nil: false }
 
   # The student registration containing this recitation conflict.
   belongs_to :registration

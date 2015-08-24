@@ -103,6 +103,49 @@ end
 
 puts 'Staff created'
 
+# Surveys.
+
+survey_data = [
+  { due_at: 1.week.ago, published: true },
+  { due_at: 1.week.from_now, published: true },
+  { due_at: 2.weeks.from_now, published: false }
+]
+
+surveys = survey_data.map.with_index do |data, index|
+  i = index + 1
+
+  survey = Survey.new name: "Survey #{i}"
+  survey.course = course
+  survey.due_at = data[:due_at]
+  survey.published = data[:published]
+  (1..3).map do |j|
+    survey.questions.build prompt: Faker::Lorem.sentence, step_size: 1,
+        allows_comments: (j % 2) == 0, type: QuantitativeOpenQuestion
+  end
+  (1..3).map do |j|
+    survey.questions.build prompt: Faker::Lorem.sentence,
+        allows_comments: (j % 2) == 0, type: QuantitativeScaledQuestion,
+        scale_min: 1, scale_max: j + 5, scale_min_label: Faker::Lorem.word,
+        scale_max_label: Faker::Lorem.word
+  end
+  survey.save!
+  survey
+end
+
+([admin] + users).each_with_index do |user, i|
+  surveys.each_with_index do |survey, j|
+    next unless survey.published? && (i % (j + 2) == 0)
+    response = SurveyResponse.new user: user, survey: survey, course: course
+    survey.questions.each_with_index do |question, k|
+      answer = response.answers.build question: question
+      answer.number = rand(question.features[:scale_max] || 8)
+      answer.comment = Faker::Lorem.sentence if question.allows_comments
+    end
+    response.save!
+  end
+end
+
+puts 'Surveys created'
 
 # Exams.
 

@@ -188,6 +188,14 @@ end
 class Course
   # Surveys on the difficulty of an assignment, general feedback, etc.
   has_many :surveys, dependent: :destroy, inverse_of: :course
+
+  # Responses to surveys administered in this course.
+  has_many :survey_responses, inverse_of: :course
+
+  # The surveys in this course that are visible to the given user.
+  def surveys_for(user)
+    surveys.by_deadline.select { |s| s.can_respond? user }
+  end
 end
 
 # :nodoc: Teams

@@ -2,54 +2,51 @@
 #
 # Table name: survey_answers
 #
-#  id         :integer          not null, primary key
-#  user_id    :integer          not null
-#  survey_id  :integer          not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :integer          not null, primary key
+#  question_id :integer          not null
+#  response_id :integer          not null
+#  number      :decimal(7, 2)
+#  comment     :string(1024)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 
-# A user's response to a set of questions.
+# An answer to a question in a survey.
 class SurveyAnswer < ActiveRecord::Base
-  # The user responding to the survey.
-  belongs_to :user, inverse_of: :survey_answers
-  validates :user, presence: true
+  # The survey question at which this response is directed.
+  belongs_to :question, class_name: 'SurveyQuestion', inverse_of: :answers
+  validates :question, presence: true, uniqueness: { scope: :response }
 
-  belongs_to :survey, inverse_of: :survey_answers
-  validates :survey, uniqueness: { scope: :user_id }, presence: true
-
-  # The answers that are part of this feedback.
-  has_many :answers, -> { order(:target_user_id, :question_id) },
-      class_name: 'SurveyQuestionAnswer', dependent: :destroy
-  accepts_nested_attributes_for :answers
-
-  # The questions asked for this feedback.
-  def questions
-    # TODO(costan): when generalizing Survey, duplicate the survey_id in
-    #               SurveyAnswer, to get the questions directly from there
-
-    # NOTE: this should be a has_many :through association, but ActiveRecord
-    #       doesn't support nested :through associations
-    survey.questions
+  # The response containing all of the student's answers to the survey.
+  belongs_to :response, class_name: 'SurveyResponse', inverse_of: :answers,
+                        foreign_key: :response_id
+  validates_each :response do |record, attr, value|
+    if value.nil?
+      record.errors.add attr, 'is not present'
+    elsif record.survey != value.survey
+      record.errors.add attr, "does not match the question's survey"
+    end
   end
 
-  # Creates empty answers to all the questions in this feedback.
-  def create_question_answers
-    user_questions, global_questions = *questions.partition(&:targets_user?)
-    global_questions.each do |question|
-      answers.build question: question
-    end
+  # The numeric answer for the question.
+  validates :number, numericality: { greater_than_or_equal_to: 0,
+      less_than: 10000000, allow_nil: true }
 
-    return answers unless assignment.team_partition
-    unless teammates = assignment.team_partition.teammates_for_user(user)
-      return answers
-    end
+  # A comment on the rating meant for the course administrators.
+  validates :comment, length: { in: 1..(1.kilobyte), allow_nil: true }
 
-    teammates.each do |teammate|
-      user_questions.each do |question|
-        answers.build question: question, target_user: teammate
-      end
-    end
-    answers
+  # The survey containing the question.
+  has_one :survey, through: :question
+
+  # The course in which the question has been asked.
+  has_one :course, through: :question
+
+  # The author of the answer.
+  has_one :user, through: :response
+
+  # Nullify an empty comment.
+  def comment=(new_comment)
+    new_comment = nil if new_comment.empty?
+    super new_comment
   end
 end

@@ -135,14 +135,12 @@ Seven::Application.routes.draw do
     resources :analyses, only: [:show]
 
     # Surveys.
-    resources :survey_questions
-    resources :surveys do
-      member do
-        post :add_question
-        delete :remove_question
+    scope shallow_prefix: :survey do
+      resources :surveys do
+        resources :responses, controller: :survey_responses,
+            only: [:index, :create, :update], shallow: true
       end
     end
-    resources :survey_answers
 
     # Teams.
     resources :team_memberships, only: [:create, :destroy]

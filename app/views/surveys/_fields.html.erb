@@ -1,0 +1,16 @@
+<section class="fields">
+  <p class="field">
+    <%= f.label :name %>
+    <span class="value">
+      <%= f.text_field :name, placeholder: 'Lab 1 Survey', required: true,
+                              autofocus: true %>
+    </span>
+  </p>
+  <p class="field">
+    <%= f.label :due_at, 'Response Deadline' %>
+    <span class="value">
+      <%= f.datetime_select :due_at, use_short_month: true, minute_step: 15,
+              datetime_separator: ' at ', time_separator: ':' %>
+    </span>
+  </p>
+</section>

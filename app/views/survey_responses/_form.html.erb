@@ -1,0 +1,17 @@
+<%= form_for response, url: polymorphic_path(response,
+      course_id: response.course, survey_id: response.survey) do |f| %>
+  <%= f.error_messages %>
+
+  <% response.build_answers %>
+  <%= f.fields_for :answers do |af| %>
+    <%= render 'survey_answers/fields', response: response, f: af %>
+  <% end %>
+
+  <p class="privacy-policy">
+    Only you and <%= response.course.number %> Staff can see this.
+  </p>
+
+  <%= button_tag do %>
+    <%= save_icon_tag %> Save Response
+  <% end %>
+<% end %>

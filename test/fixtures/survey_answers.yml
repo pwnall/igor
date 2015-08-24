@@ -2,21 +2,22 @@
 #
 # Table name: survey_answers
 #
-#  id         :integer          not null, primary key
-#  user_id    :integer          not null
-#  survey_id  :integer          not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :integer          not null, primary key
+#  question_id :integer          not null
+#  response_id :integer          not null
+#  number      :decimal(7, 2)
+#  comment     :string(1024)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+dexter_coding_amount:
+  question: coding_amount
+  response: dexter_ps1
+  number: 3
 
-#one:
-#  hours: 1.5
-#  difficulty: 1
-#  comments: MyString
-
-#two:
-#  hours: 1.5
-#  difficulty: 1
-#  comments: MyString
+dexter_prepared:
+  question: prepared
+  response: dexter_ps1
+  number: 0
+  comment: Very prepared

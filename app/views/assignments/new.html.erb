@@ -1,6 +1,6 @@
 <h2>New Assignment</h2>
 
-<%= form_for @assignment, url: polymorphic_url(@assignment,
+<%= form_for @assignment, url: polymorphic_path(@assignment,
       course_id: @assignment.course) do |f| %>
   <%= f.error_messages %>
   <%= render 'assignments/fields', f: f %>

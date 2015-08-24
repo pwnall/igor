@@ -79,10 +79,9 @@ class ActionItem
         item = ActionItem.new default_attrs(deadline)
         item.description = deadline.subject.name
         item.active = deadline.subject.published?
-        item.link = [[:new_survey_answer_path, { survey_answer:
-                        { survey_id: deadline.subject.to_param } }],
-                     { remote: true }]
-        item.done = true if deadline.subject.answer_for(user)
+        item.link = [[:survey_path, deadline.subject,
+                      { course_id: deadline.course }]]
+        item.done = true if deadline.subject.answered_by?(user)
         items << item
       else
         raise "Un-implemented subject type: #{subject.inspect}"

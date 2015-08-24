@@ -34,7 +34,7 @@ class FeedItem
     items = []
 
     if user
-      add_survey_answers items, user, options
+      add_survey_responses items, user, options
       add_submissions items, user, options
     end
     add_grades items, user, options
@@ -45,14 +45,14 @@ class FeedItem
   end
 
   # Generates feed items for the user's submitted surveys.
-  def self.add_survey_answers(items, user, options)
-    user.survey_answers.each do |answer|
-      item = FeedItem.new time: answer.updated_at,
-          author: answer.user, flavor: :survey_answer,
-          headline: "answered a survey on #{answer.assignment.name}",
+  def self.add_survey_responses(items, user, options)
+    user.survey_responses.each do |response|
+      item = FeedItem.new time: response.updated_at,
+          author: response.user, flavor: :survey_answer,
+          headline: "responded to a survey: #{response.survey.name}",
           contents: '',
-          actions: [['Edit', [:edit_survey_answer_path, answer,
-                              { course_id: answer.course }]]],
+          actions: [['Edit', [:survey_path, response.survey,
+                              { course_id: response.course }]]],
           replies: []
       items << item
     end

@@ -3,59 +3,63 @@
 # Table name: survey_questions
 #
 #  id              :integer          not null, primary key
-#  scale_min       :integer          default(1), not null
-#  scale_max       :integer          default(5), not null
-#  scaled          :boolean          default(FALSE), not null
-#  targets_user    :boolean          default(FALSE), not null
-#  allows_comments :boolean          default(FALSE), not null
-#  human_string    :string(1024)     not null
-#  scale_min_label :string(64)       default("Small"), not null
-#  scale_max_label :string(64)       default("Large"), not null
+#  survey_id       :integer          not null
+#  prompt          :string(1024)     not null
+#  allows_comments :boolean          not null
+#  type            :string(32)       not null
+#  features        :text             not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
 
 hours:
-  human_string: Hours spent
-  scaled: false
-  scale_min: 0
-  scale_max: 0
-  scale_min_label: Easy
-  scale_max_label: Hard
-  targets_user: false
-  
-coding_ammount:
-  human_string: Ammount of coding
-  scaled: true
-  scale_min: 1
-  scale_max: 5
-  scale_min_label: Too little
-  scale_max_label: Too much
-  targets_user: false
+  survey: ps1
+  prompt: Hours spent
+  allows_comments: false
+  type: QuantitativeOpenQuestion
+  features:
+    step_size: 0.1
 
-theory_ammount:
-  human_string: Ammount of theory
-  scaled: true
-  scale_min: 1
-  scale_max: 5
-  scale_min_label: Too little
-  scale_max_label: Too much
-  targets_user: false
+coding_amount:
+  survey: ps1
+  prompt: Amount of coding
+  allows_comments: false
+  type: QuantitativeScaledQuestion
+  features:
+    scale_min: 1
+    scale_max: 5
+    scale_min_label: Too little
+    scale_max_label: Too much
+
+theory_amount:
+  survey: ps1
+  prompt: Amount of theory
+  allows_comments: false
+  type: QuantitativeScaledQuestion
+  features:
+    scale_min: 1
+    scale_max: 5
+    scale_min_label: Too little
+    scale_max_label: Too much
 
 prepared:
-  human_string: Prepared for meetings
-  scaled: true
-  scale_min: 1
-  scale_max: 5
-  scale_min_label: Not at all
-  scale_max_label: Extremely
-  targets_user: true
+  survey: project
+  prompt: Prepared for meetings
+  allows_comments: true
+  type: QuantitativeScaledQuestion
+  features:
+    scale_min: 1
+    scale_max: 5
+    scale_min_label: Not at all
+    scale_max_label: Extremely
 
 reliable:
-  human_string: Reliably carries out engagements
-  scaled: true
-  scale_min: 1
-  scale_max: 5
-  scale_min_label: Not at all
-  scale_max_label: Extremely
-  targets_user: true
+  survey: project
+  prompt: Reliably carries out engagements
+  allows_comments: true
+  type: QuantitativeScaledQuestion
+  features:
+    scale_min: 1
+    scale_max: 5
+    scale_min_label: Not at all
+    scale_max_label: Extremely

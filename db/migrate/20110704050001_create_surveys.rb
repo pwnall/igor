@@ -6,6 +6,8 @@ class CreateSurveys < ActiveRecord::Migration
       t.references :course, null: false
 
       t.timestamps
+
+      t.index [:course_id, :name], unique: true
     end
   end
 end

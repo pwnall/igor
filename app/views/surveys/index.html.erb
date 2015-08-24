@@ -1,0 +1,12 @@
+<h2>
+  Surveys
+  <% if current_course.can_edit? current_user %>
+  <span class="actions">
+    <%= link_to new_survey_path(course_id: current_course),
+          class: 'button' do %>
+      <%= create_icon_tag %> New
+    <% end %>
+  </span>
+  <% end %>
+</h2>
+<%= render 'surveys/list', surveys: @surveys %>

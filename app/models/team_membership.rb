@@ -13,7 +13,7 @@
 class TeamMembership < ActiveRecord::Base
   # The team that the user belongs to.
   belongs_to :team
-  validates_presence_of :team
+  validates :team, presence: true
 
   # The user that belongs to a team.
   belongs_to :user, inverse_of: :team_memberships

@@ -50,13 +50,8 @@
     <% end %>
     <% if current_course.has_surveys? %>
     <li>
-      <%= link_to survey_questions_path(course_id: current_course) do %>
+      <%= link_to surveys_path(course_id: current_course) do %>
         Surveys
-      <% end %>
-    </li>
-    <li>
-      <%= link_to survey_answers_path(course_id: current_course) do %>
-        Survey Answers
       <% end %>
     </li>
     <% end %>

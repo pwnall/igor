@@ -9,6 +9,7 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   let(:submission) { submissions(:dexter_assessment) }
+  let(:deliverable) { submission.deliverable }
   let(:student_author) { submission.subject }
   let(:student_not_author) { users(:deedee) }
 
@@ -248,6 +249,31 @@ class SubmissionTest < ActiveSupport::TestCase
 
       assert_raises(RuntimeError) do
         unrecognized_submission.is_owner? student_author
+      end
+    end
+  end
+
+  describe '#copy_collaborators_from_previous_submission' do
+    describe 'user does not have existing submissions for the deliverable' do
+      it 'does not change the submission collaborators' do
+        assert_empty Submission.where(subject: @submission.subject,
+                                      deliverable: @submission.deliverable)
+        @submission.copy_collaborators_from_previous_submission
+        assert_empty @submission.collaborators.reload
+      end
+    end
+
+    describe 'user has existing submissions for the deliverable' do
+      it 'uses the collaborators of the previous submission' do
+        previous_submission = deliverable.submissions.
+            where(subject: student_author).last
+        assert_equal [users(:deedee)].to_set,
+            previous_submission.collaborators.to_set
+
+        new_submission = deliverable.submissions.build subject: student_author
+        new_submission.copy_collaborators_from_previous_submission
+        assert_equal [users(:deedee)].to_set,
+            new_submission.collaborators.to_set
       end
     end
   end

@@ -20,11 +20,7 @@
   <p>
     Due
     <%= assignment.due_at.to_s(:deadline_long) %>
-    <% if assignment.due_at >= Time.now %>
-    (in <%= time_ago_in_words assignment.deadline.due_at %>)
-    <% else %>
-    (<%= time_ago_in_words assignment.due_at %> ago)
-    <% end %>
+    <%= time_delta_in_words assignment.due_at %>
   </p>
 
   <ul class="deliverables">
