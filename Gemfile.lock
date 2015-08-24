@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/pwnall/authpwn_rails.git
-  revision: e7b9c7d4218aa8620f2b70d2c9a246a581e49abe
+  revision: 068a380036b9c9878baf9d50f2ffe98660eeb1cc
   branch: rails5
   specs:
     authpwn_rails (0.18.2)
@@ -39,6 +39,14 @@ GIT
       paperclip (>= 2.3.0)
 
 GIT
+  remote: https://github.com/rack/rack
+  revision: 6ca36dbe2eb5ff27bc49a313f38a3eef93dd3885
+  branch: master
+  specs:
+    rack (2.0.0.alpha)
+      json
+
+GIT
   remote: https://github.com/rails/arel
   revision: 77ec13b46af2926bfcfc3073685711c874b0d272
   branch: master
@@ -46,8 +54,17 @@ GIT
     arel (7.0.0.alpha)
 
 GIT
+  remote: https://github.com/rails/coffee-rails
+  revision: c05fb725613d96ce969c30a11e7b613e90f9e5e8
+  branch: master
+  specs:
+    coffee-rails (4.1.0)
+      coffee-script (>= 2.2.0)
+      railties (>= 4.0.0, < 5.0)
+
+GIT
   remote: https://github.com/rails/rails
-  revision: 6ffec3c16c0ee0b0ab4643907af1f2ed80a71a9a
+  revision: 10762e9e550a8221ae4b28e6274fd01992004591
   branch: master
   specs:
     actionmailer (5.0.0.alpha)
@@ -59,7 +76,7 @@ GIT
     actionpack (5.0.0.alpha)
       actionview (= 5.0.0.alpha)
       activesupport (= 5.0.0.alpha)
-      rack (~> 1.6)
+      rack (~> 2.x)
       rack-test (~> 0.6.3)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
@@ -80,11 +97,11 @@ GIT
       activesupport (= 5.0.0.alpha)
       arel (= 7.0.0.alpha)
     activesupport (5.0.0.alpha)
-      concurrent-ruby (~> 0.9.0)
+      concurrent-ruby (~> 1.0.0.pre2, < 2.0.0)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
+      method_source
       minitest (~> 5.1)
-      thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     rails (5.0.0.alpha)
       actionmailer (= 5.0.0.alpha)
@@ -96,7 +113,7 @@ GIT
       activesupport (= 5.0.0.alpha)
       bundler (>= 1.3.0, < 2.0)
       railties (= 5.0.0.alpha)
-      sprockets-rails
+      sprockets-rails (>= 2.0.0)
     railties (5.0.0.alpha)
       actionpack (= 5.0.0.alpha)
       activesupport (= 5.0.0.alpha)
@@ -105,14 +122,40 @@ GIT
       thor (>= 0.18.1, < 2.0)
 
 GIT
-  remote: https://github.com/rails/sprockets-rails
-  revision: 6389649358846f37507206885e3ece145862a0be
+  remote: https://github.com/rails/sass-rails
+  revision: a3b25261a3d31ed9ff5dd6e841b777790fc86c55
   branch: master
   specs:
-    sprockets-rails (3.0.0)
+    sass-rails (6.0.0)
+      railties (>= 4.0.0, < 5.0)
+      sass (~> 3.4)
+      sprockets (>= 4.0)
+      sprockets-rails (< 4.0)
+
+GIT
+  remote: https://github.com/rails/sprockets
+  revision: 509e9cb234d80ab1de4baf88253c9c5b3e89cceb
+  branch: master
+  specs:
+    sprockets (4.0.0)
+      rack (> 1, < 3)
+
+GIT
+  remote: https://github.com/rails/sprockets-rails
+  revision: 246228146a27a2b9592341e0de0293a78e42d554
+  branch: master
+  specs:
+    sprockets-rails (3.0.0.beta2)
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+
+PATH
+  remote: ../pwnstyles_rails
+  specs:
+    pwnstyles_rails (0.2.4)
+      rails (>= 4.2.4)
+      sass-rails (>= 5.0.3)
 
 GEM
   remote: https://rubygems.org/
@@ -133,22 +176,17 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
-    byebug (5.0.0)
-      columnize (= 0.9.0)
+    byebug (6.0.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.7)
       climate_control (>= 0.0.3, < 1.0)
     coderay (1.1.0)
-    coffee-rails (4.1.0)
-      coffee-script (>= 2.2.0)
-      railties (>= 4.0.0, < 5.0)
     coffee-script (2.4.1)
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
-    columnize (0.9.0)
-    concurrent-ruby (0.9.1)
+    concurrent-ruby (1.0.0.pre2)
     contained_mr (0.2.0)
       docker-api (>= 1.22.4)
       rubyzip (>= 1.1.7)
@@ -165,15 +203,15 @@ GEM
     excon (0.45.4)
     exec_sandbox (0.3.0)
       ffi (>= 1.9.6)
-    execjs (2.5.2)
+    execjs (2.6.0)
     expression_parser (0.9.0)
-    faker (1.4.3)
+    faker (1.5.0)
       i18n (~> 0.5)
     ffi (1.9.10)
     foreman (0.78.0)
       thor (~> 0.19.1)
-    github-markup (1.3.3)
-    globalid (0.3.5)
+    github-markup (1.4.0)
+    globalid (0.3.6)
       activesupport (>= 4.1.0)
     gravatar-ultimate (2.0.0)
       activesupport (>= 2.3.14)
@@ -183,12 +221,12 @@ GEM
     i18n (0.7.0)
     jc-validates_timeliness (3.1.1)
       timeliness (~> 0.3.7)
-    jquery-rails (4.0.4)
+    jquery-rails (4.0.5)
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (1.8.3)
-    loofah (2.0.2)
+    loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
@@ -203,10 +241,10 @@ GEM
       wikicloth (>= 0.8.1)
     metaclass (0.0.4)
     method_source (0.8.2)
-    mime-types (2.6.1)
+    mime-types (2.6.2)
     mimemagic (0.3.0)
     mini_portile (0.6.2)
-    minitest (5.8.0)
+    minitest (5.8.1)
     minitest-spec-rails (5.3.0)
       minitest (~> 5.0)
       rails (>= 4.1)
@@ -217,7 +255,7 @@ GEM
       mini_portile (~> 0.6.0)
     org-ruby (0.9.12)
       rubypants (~> 0.2)
-    paperclip (4.3.0)
+    paperclip (4.3.1)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
       cocaine (~> 0.5.5)
@@ -230,27 +268,23 @@ GEM
       hashery (~> 2.0)
       ruby-rc4
       ttfunk
-    pg (0.18.2)
+    pg (0.18.3)
     posix-spawn (0.3.11)
     prawn (2.0.2)
       pdf-core (~> 0.6.0)
       ttfunk (~> 1.4.0)
     prawn-table (0.2.2)
       prawn (>= 1.3.0, < 3.0.0)
-    puma (2.13.4)
-    pwnstyles_rails (0.2.4)
-      rails (>= 4.2.4)
-      sass-rails (>= 5.0.3)
+    puma (2.14.0)
     pygments.rb (0.6.3)
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.2.0)
-    rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
-    railroady (1.3.0)
+    railroady (1.3.1)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
-    rails-dom-testing (1.0.6)
+    rails-dom-testing (1.0.7)
       activesupport (>= 4.2.0.beta, < 5.0)
       nokogiri (~> 1.6.0)
       rails-deprecated_sanitizer (>= 1.0.1)
@@ -259,34 +293,26 @@ GEM
     rake (10.4.2)
     rdoc (4.2.0)
     redcarpet (3.3.2)
-    rmagick (2.15.2)
+    rmagick (2.15.4)
     ruby-rc4 (0.1.5)
     rubypants (0.2.0)
     rubyzip (1.1.7)
-    sass (3.4.16)
-    sass-rails (5.0.3)
-      railties (>= 4.0.0, < 5.0)
-      sass (~> 3.1)
-      sprockets (>= 2.8, < 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
-      tilt (~> 1.1)
+    sass (3.4.18)
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    sprockets (3.2.0)
-      rack (~> 1.0)
+    spring (1.4.0)
     thor (0.19.1)
     thread_safe (0.3.5)
-    tilt (1.4.1)
     timeliness (0.3.7)
     trim_blobs (0.0.2)
       activerecord (>= 3.2.0)
     ttfunk (1.4.0)
-    twitter-text (1.12.0)
+    twitter-text (1.13.0)
       unf (~> 0.1.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    uglifier (2.7.1)
+    uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     unf (0.1.4)
@@ -311,7 +337,7 @@ DEPENDENCIES
   binary_fixtures (>= 0.1.3)
   binding_of_caller
   byebug
-  coffee-rails (>= 4.1.0)
+  coffee-rails!
   contained_mr (>= 0.2.0)
   delayed_job (>= 4.0.6)!
   delayed_job_active_record (>= 4.0.3)!
@@ -336,14 +362,17 @@ DEPENDENCIES
   prawn (>= 2.0.2)
   prawn-table (>= 0.2.2)
   puma (>= 2.13.4)
-  pwnstyles_rails (>= 0.2.4)
+  pwnstyles_rails (>= 0.2.4)!
+  rack!
   rack-noie (>= 1.0)!
   railroady (>= 1.3.0)
   rails!
   rmagick (>= 2.14.0)
   rubyzip (>= 1.1.7)
-  sass-rails (>= 5.0.3)
+  sass-rails!
   sdoc
+  spring
+  sprockets!
   sprockets-rails!
   trim_blobs
   uglifier (>= 2.7.0)

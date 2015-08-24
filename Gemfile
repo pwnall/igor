@@ -3,11 +3,16 @@ source 'https://rubygems.org'
 gem 'rails',
     git: 'https://github.com/rails/rails', branch: 'master'
 
+# TODO(pwnall): Remove these when Rails 5 comes out.
 gem 'sprockets-rails',
     git: 'https://github.com/rails/sprockets-rails', branch: 'master'
-
+gem 'sprockets', git: 'https://github.com/rails/sprockets', branch: 'master'
+gem 'sass-rails', git: 'https://github.com/rails/sass-rails', branch: 'master'
 gem 'arel',
     git: 'https://github.com/rails/arel', branch: 'master'
+gem 'rack', git: 'https://github.com/rack/rack', branch: 'master'
+gem 'coffee-rails', git: 'https://github.com/rails/coffee-rails',
+    branch: 'master'
 
 gem 'pg', '>= 0.18.2'
 
@@ -58,11 +63,11 @@ gem 'net-ldap', '>= 0.11'
 gem 'exception_notification', '>= 4.0.1'
 
 # Assets.
-gem 'sass-rails', '>= 5.0.3'
-gem 'pwnstyles_rails', '>= 0.2.4'
-# gem 'pwnstyles_rails', '>= 0.2.4', path: '../pwnstyles_rails'
+# gem 'sass-rails', '>= 5.0.3'
+# gem 'pwnstyles_rails', '>= 0.2.4'
+gem 'pwnstyles_rails', '>= 0.2.4', path: '../pwnstyles_rails'
 gem 'jquery-rails', '>= 4.0.3'
-gem 'coffee-rails', '>= 4.1.0'
+# gem 'coffee-rails', '>= 4.1.0'
 gem 'uglifier', '>= 2.7.0'
 
 # TODO(pwnall): allow therubyracer 0.12+ after Ubuntu crash gets fixed
@@ -86,6 +91,7 @@ group :development do
   gem 'byebug'
   gem 'faker', '>= 1.4.3'
   gem 'railroady', '>= 1.3.0'
+  gem 'spring'
 end
 
 group :test do
