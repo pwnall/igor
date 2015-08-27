@@ -11,7 +11,7 @@
 class TimeSlotAllotment < ActiveRecord::Base
   # The time slot that is being reserved.
   belongs_to :time_slot, inverse_of: :time_slot_allotments
-  validates :time_slot, uniqueness: { scope: :recitation_section_id },
+  validates :time_slot, uniqueness: { scope: :recitation_section },
       presence: true
 
   # The recitation that takes place during the allotted time.

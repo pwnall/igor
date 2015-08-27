@@ -15,7 +15,7 @@ class Collaboration < ActiveRecord::Base
 
   # The classmate who collaborated on the submission.
   belongs_to :collaborator, class_name: :User
-  validates :collaborator, presence: true, uniqueness: { scope: :submission_id }
+  validates :collaborator, presence: true, uniqueness: { scope: :submission }
 
   # The assignment on which the students collaborated.
   has_one :assignment, through: :submission

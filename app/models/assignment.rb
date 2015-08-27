@@ -23,7 +23,7 @@ class Assignment < ActiveRecord::Base
   validates :course, presence: true
 
   # The user-visible assignment name (e.g., "PSet 1").
-  validates :name, length: 1..64, uniqueness: { scope: :course_id },
+  validates :name, length: 1..64, uniqueness: { scope: :course },
                    presence: true
 
   # The user that will be reported as the assignment's author.

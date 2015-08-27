@@ -22,7 +22,7 @@ class Registration < ActiveRecord::Base
   # The course for which the student registered.
   belongs_to :course, inverse_of: :registrations
   validates :course, presence: true
-  validates :course_id, uniqueness: { scope: [:user_id] }
+  validates :course_id, uniqueness: { scope: :user }
 
   # True if the student is taking the class for credit.
   validates :for_credit, inclusion: { in: [true, false] }

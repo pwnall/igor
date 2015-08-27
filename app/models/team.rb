@@ -15,7 +15,7 @@
 class Team < ActiveRecord::Base
   # The team's user-visible name.
   validates :name, length: 1..64, presence: true,
-                   uniqueness: { scope: [:partition_id] }
+                   uniqueness: { scope: :partition }
 
   # The partition that this team is part of.
   belongs_to :partition, class_name: 'TeamPartition', inverse_of: :teams

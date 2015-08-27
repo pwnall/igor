@@ -31,7 +31,7 @@ module RoleBase
     # The type of privilege.
     validates :name, presence: true, length: 1..8,
         inclusion: { in: RoleBase::ROLES },
-        uniqueness: { scope: [:user_id, :course_id] }
+        uniqueness: { scope: [:user, :course] }
 
     # Ensures that only course-specific roles have the course field set.
     def course_matches_role

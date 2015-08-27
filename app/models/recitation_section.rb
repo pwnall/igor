@@ -22,7 +22,7 @@ class RecitationSection < ActiveRecord::Base
 
   # Serial number of the section. 1 is displayed as "R01".
   validates :serial, presence: true, numericality: { greater_than: 0 },
-                     uniqueness: { scope: [:course_id] }
+                     uniqueness: { scope: :course }
 
   # Allotments of time slots for this recitation.
   has_many :time_slot_allotments, dependent: :destroy,
