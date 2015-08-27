@@ -110,9 +110,9 @@ class AssignmentsController < ApplicationController
   end
   private :set_assignment
 
-  # Permits updating and creating assignments.
-  # TODO(pwnall): Check that rails securely handles the :type field when
-  #   touching classes that use STI.
+  # NOTE: We allow the :id parameter in the has_many association's attributes
+  #     hash since accepts_nested_attributes_for checks that each nested record
+  #     actually belongs to the parent record.
   def assignment_params
     params.require(:assignment).permit :name, :due_at, :weight, :author_id,
         :team_partition_id, :feedback_survey_id,

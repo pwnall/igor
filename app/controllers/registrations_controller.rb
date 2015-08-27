@@ -125,6 +125,9 @@ class RegistrationsController < ApplicationController
   end
   private :set_time_slots_for
 
+  # NOTE: We allow the :id parameter in the has_many association's attributes
+  #     hash since accepts_nested_attributes_for checks that each nested record
+  #     actually belongs to the parent record.
   def registration_params
     return {} unless params[:registration]
 

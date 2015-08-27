@@ -134,7 +134,9 @@ class UsersController < ApplicationController
     end
   end
 
-  # Permit creating and updating user.
+  # NOTE: We allow the :id parameter in the has_many association's attributes
+  #     hash since accepts_nested_attributes_for checks that each nested record
+  #     actually belongs to the parent record.
   def user_params
     return {} unless params[:user]
 
