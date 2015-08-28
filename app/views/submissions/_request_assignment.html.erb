@@ -7,20 +7,18 @@
         <span class="value">
           <%= select_tag :assignment_id,
                 options_for_select(@assignments.map { |a| [a.name, a.id] }),
-                'data-pwnfx-refresh' => 'submission-deliverables',
-                'data-pwnfx-refresh-url' => xhr_deliverables_submissions_path,
-                'data-pwnfx-refresh-method' => 'POST',
-                'data-pwnfx-refresh-scope' => 'grading-kit',
-                'data-pwnfx-refresh-ms' => 100 %>
+                data: { pwnfx_refresh: 'submission-deliverables',
+                pwnfx_refresh_url: xhr_deliverables_submissions_path,
+                pwnfx_refresh_method: 'POST',
+                pwnfx_refresh_scope: 'grading-kit', pwnfx_refresh_ms: 100 } %>
         </span>
   		</p>
   		<p class="field">
   			<%= label_tag :use_cutoff, 'Late submissions' %>
         <span class="value">
-          <%= check_box_tag :use_cutoff, '1', false,
-                'data-pwnfx-hide' => 'submission-cutoff',
-                'data-pwnfx-hide-trigger' => 'checked',
-                'data-pwnfx-hide-scope' => 'grading-kit' %>
+          <%= check_box_tag :use_cutoff, '1', false, data: {
+                pwnfx_hide: 'submission-cutoff', pwnfx_hide_trigger: 'checked',
+                pwnfx_hide_scope: 'grading-kit' } %>
           <%= label_tag :use_cutoff,
                         'only get the submissions after the cutoff below' %>
         </span>

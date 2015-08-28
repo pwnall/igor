@@ -1,7 +1,7 @@
 <h3>
-  <%= check_box_tag "package_include[#{id}]", "1", true,
-        'data-pwnfx-hide' => "submission_package_#{id}",
-        'data-pwnfx-hide-trigger' => 'checked' %>
+  <%= check_box_tag "package_include[#{id}]", "1", true, data: {
+        pwnfx_hide: "submission_package_#{id}",
+        pwnfx_hide_trigger: 'checked' } %>
 	<%= label_tag "submission_package_#{id}", title %>
 </h3>
 
@@ -9,21 +9,21 @@
   <p class="field">
     <%= label_tag :filename, 'Filename' %>
     <span class="value">
-      <span id="submission_package_fexample_<%= id %>"><%= basename %></span>.<%= extension %>    
+      <span id="submission_package_fexample_<%= id %>"><%= basename %></span>.<%= extension %>
     </span>
   </p>
   <p class="field">
-    <%= label_tag "submission_package_fprefix_#{id}", 'File prefix' %>		
+    <%= label_tag "submission_package_fprefix_#{id}", 'File prefix' %>
   	<span class="value">
       <%= text_field_tag "filename_prefix[#{id}]", default_prefix,
-                         :id => "submission_package_fprefix_#{id}" %>
+                         id: "submission_package_fprefix_#{id}" %>
   	</span>
   </p>
   <p class="field">
-    <%= label_tag "submission_package_fsuffix_#{id}", 'File suffix' %>    
+    <%= label_tag "submission_package_fsuffix_#{id}", 'File suffix' %>
     <span class="value">
       <%= text_field_tag "filename_suffix[#{id}]", default_suffix,
-                         :id => "submission_package_fsuffix_#{id}" %>
+                         id: "submission_package_fsuffix_#{id}" %>
     </span>
   </p>
 </section>

@@ -3,11 +3,10 @@
     <%= f.label :athena_username, 'Athena username' %>
     <span class="value">
       <%= f.text_field :athena_username, :autocomplete => :off,
-              :autofocus => true, 'data-pwnfx-refresh' => 'athena-lookup-js',
-              'data-pwnfx-refresh-url' => websis_lookup_profiles_path,
-              'data-pwnfx-refresh-method' => 'POST',
-              'data-pwnfx-refresh-scope' => 'profile',
-              'data-pwnfx-refresh-ms' => 1000 %>
+            :autofocus => true, data: { pwnfx_refresh: 'athena-lookup-js',
+            pwnfx_refresh_url: websis_lookup_profiles_path,
+            pwnfx_refresh_method: 'POST', pwnfx_refresh_scope: 'profile',
+            pwnfx_refresh_ms: 1000 } %>
     </span>
     <span class="comment" id="profile-athena-success">
     </span>

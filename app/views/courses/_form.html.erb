@@ -40,8 +40,9 @@
     <p class="field">
       <%= f.label :has_recitations, 'Recitation sections' %>
       <span class="value">
-        <%= f.check_box :has_recitations, 'data-pwnfx-hide' => 'section_size_field',
-              'data-pwnfx-hide-trigger' => 'checked' %>
+        <%= f.check_box :has_recitations, data: {
+              pwnfx_hide: 'section_size_field',
+              pwnfx_hide_trigger: 'checked' } %>
         <%= f.label :has_recitations do %>
           students are assigned to recitation sections which show up on their
           cover sheets

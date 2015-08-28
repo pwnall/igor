@@ -39,8 +39,8 @@
       <span data-pwnfx-move="prerequisites">
         <%= p.label :took_course do %>
           <%= p.object.prerequisite.prerequisite_number %>
-          <%= p.check_box :took_course, 'data-pwnfx-hide' => p.object_name,
-                  'data-pwnfx-hide-trigger' => 'checked' %>
+          <%= p.check_box :took_course, data: { pwnfx_hide: p.object_name,
+                pwnfx_hide_trigger: 'checked' } %>
         <% end %>
         <%= p.hidden_field :prerequisite_id %>
       </span>

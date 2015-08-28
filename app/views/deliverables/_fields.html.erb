@@ -7,14 +7,14 @@
                                 class: 'file-ext' %>
     <%= f.fields_for :analyzer, f.object.analyzer || ProcAnalyzer.new do |fa| %>
       <%= fa.select :type, analyzer_types_for_select, {},
-                           'data-pwnfx-showif-source' => 'analyzer-type' %>
+                           data: { pwnfx_showif_source: 'analyzer-type' } %>
     <% end %>
     <span class="destroy">
       <%= f.label :_destroy do %>
-        <%= f.check_box :_destroy, 'data-pwnfx-hide' => 'deliverable-div',
-                'data-pwnfx-hide-scope' => 'deliverable',
-                'data-pwnfx-hide-class' => 'destroyed-blur',
-                'data-pwnfx-hide-trigger' => 'checked' %>
+        <%= f.check_box :_destroy, data: { pwnfx_hide: 'deliverable-div',
+              pwnfx_hide_scope: 'deliverable',
+              pwnfx_hide_class: 'destroyed-blur',
+              pwnfx_hide_trigger: 'checked' } %>
         <%= destroy_icon_tag %> Remove
       <% end %>
     </span>

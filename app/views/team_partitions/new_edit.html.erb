@@ -17,9 +17,8 @@
       <%= f.label :automated, 'Automated partitioning' %>
       <span class="value">
       	<% if @team_partition.new_record? %>
-          <%= f.check_box :automated,
-                'data-pwnfx-hide' => 'auto-partition',
-                'data-pwnfx-hide-trigger' => 'checked' %>
+          <%= f.check_box :automated, data: { pwnfx_hide: 'auto-partition',
+                pwnfx_hide_trigger: 'checked' } %>
 				<% else %>
           <%= @team_partition.automated? ? 'Yes' : 'No' %>
 				<% end %>
