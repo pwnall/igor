@@ -88,6 +88,11 @@ Seven::Application.routes.draw do
         get :dashboard
       end
     end
+    resources :assignment_files, only: [] do
+      member do
+        get :download
+      end
+    end
     resources :grades, only: [:index, :create] do
       collection do
         get :editor
@@ -113,7 +118,7 @@ Seven::Application.routes.draw do
       end
     end
     resources :assignment_metrics
-    resources :submissions, only: [:index, :create, :update, :destroy] do
+    resources :submissions, only: [:index, :create, :destroy] do
       member do
         get :file
         get :info

@@ -15,27 +15,7 @@
 
 # Submission checker that runs an external script.
 class ScriptAnalyzer < Analyzer
-  # The database-backed file holding the analyzer script.
-  belongs_to :db_file, dependent: :destroy
-  validates :db_file, presence: true
-  validates_associated :db_file
-  accepts_nested_attributes_for :db_file, reject_if: :all_blank
-  def destroy_former_db_file
-    return unless db_file_id_changed?
-    DbFile.find(db_file_id_was).destroy
-  end
-  after_update :destroy_former_db_file
-  private :destroy_former_db_file
-
-  # The name of the uploaded file.
-  def file_name
-    db_file && db_file.f_file_name
-  end
-
-  # The contents of the uploaded file.
-  def contents
-    db_file && db_file.f.file_contents
-  end
+  include HasDbFile
 
   # Limits that apply when running the analyzer script.
   store :exec_limits

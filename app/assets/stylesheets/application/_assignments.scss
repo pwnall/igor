@@ -2,6 +2,10 @@ section.assignment {
   > .heading {
     font-size: 1.44em;
   }
+  > .sub-heading {
+    font-size: 1.33em;
+    margin-top: 1rem;
+  }
   > p:first-child {
     margin: 0.5ex 0 1em 0;
   }
@@ -41,6 +45,27 @@ section.assignment {
           }
         }
       }
+    }
+  }
+
+  table.files {
+    width: 100%;
+    table-layout: fixed;
+    margin-bottom: 1rem;
+
+    .file-name {
+      width: 25%;
+      word-wrap: break-word;
+    }
+    .description {
+      width: 35%;
+      word-wrap: break-word;
+    }
+    .size {
+      width: 15%;
+    }
+    .uploaded {
+      width: 25%
     }
   }
 

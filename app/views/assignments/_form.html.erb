@@ -42,6 +42,27 @@
 <% end %>
 </script>
 
+    <h3>Resource Files</h3>
+    <div class="assignment-builder-files"
+         data-pwnfx-render-target="assignment-files">
+      <%= f.fields_for :files do |ff| %>
+        <%= render 'assignment_files/fields', f: ff %>
+      <% end %>
+    </div>
+    <p class="assignment-builder-actions">
+      <%= button_tag data: { pwnfx_render_randomize: 'IDID',
+            pwnfx_render_scope: 'assignment',
+            pwnfx_render: 'assignment-files' } do %>
+        <%= create_icon_tag %> Add File
+      <% end %>
+    </p>
+
+<script type="text/html" data-pwnfx-render-source="assignment-files">
+<%= f.fields_for :files, AssignmentFile.new, child_index: 'IDID' do |ff| %>
+  <%= render 'assignment_files/fields', f: ff %>
+<% end %>
+</script>
+
     <h3>Grading Breakdown</h3>
     <div class="assignment-builder-metrics"
          data-pwnfx-render-target="assignment-metrics">

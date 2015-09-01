@@ -81,13 +81,17 @@
   margin: 0 0.5em 1em;
 }
 
-section.deliverable {
+section.deliverable, section.file {
   padding-bottom: 0.5em;
   border-bottom: 1px solid $header-border-color;
   &:last-of-type {
     border-bottom: none;
   }
   margin-bottom: 0.5em;
+}
+
+section.file .destroy {
+  padding-left: 0.375em;
 }
 
 // Uncomment to hide the "Assignment Builder" heading.

@@ -34,4 +34,11 @@
     </li>
   <% end %>
   </ul>
+
+  <h3 class="sub-heading">Resource Files</h3>
+  <% unless assignment.files_for(current_user).empty? %>
+    <%= render 'assignment_files/list', assignment: assignment %>
+  <% else %>
+    <p>No files are available at this time.</p>
+  <% end %>
 </section>

@@ -2,20 +2,20 @@
   <p class="field">
   <%= f.fields_for :db_file, DbFile.new do |ff| %>
     <%= ff.label :f do %>
-      <%= link_to help_icon_tag, help_analyzers_path, :target => '_blank' %>
+      <%= link_to help_icon_tag, help_analyzers_path, target: '_blank' %>
       Script .zip
     <% end %>
     <span class="value">
-    <%= ff.file_field :f, :accept => 'application/zip',
-          :required => (!f.object.db_file || f.object.db_file.new_record?) %>
+    <%= ff.file_field :f, accept: 'application/zip',
+          required: (!f.object.db_file || f.object.db_file.new_record?) %>
     </span>
     <span class="comment">
-    <% if f.object.db_file && !f.object.db_file.new_record? %>
-    <%= download_icon_tag %>
-    <%= link_to f.object.file_name,
-                source_analyzer_path(f.object) %>
-    (<%= number_to_human_size f.object.db_file.f.size %>)
-    <% end %>
+      <% if f.object.db_file && !f.object.db_file.new_record? %>
+        <%= download_icon_tag %>
+        <%= link_to f.object.file_name, source_analyzer_path(f.object,
+              course_id: f.object.deliverable.course) %>
+        (<%= number_to_human_size f.object.db_file.f.size %>)
+      <% end %>
     </span>
   <% end %>
   </p>

@@ -29,32 +29,45 @@ class SubmissionTest < ActiveSupport::TestCase
     assert @submission.invalid?
   end
 
-  it 'requires a database-backed file' do
-    @submission.db_file = nil
-    assert @submission.invalid?
-  end
-
-  describe '#file_name' do
-    it 'returns the name of the uploaded file' do
-      assert_equal 'dexter_assessment.pdf', submission.file_name
+  describe 'HasDbFile concern' do
+    it 'requires a database-backed file' do
+      @submission.db_file = nil
+      assert @submission.invalid?
     end
 
-    it 'returns nil if no file has been uploaded' do
-      submission.db_file = nil
-      assert_nil submission.file_name
-    end
-  end
-
-  describe '#contents' do
-    it 'returns the contents of the uploaded file' do
-      path = File.join ActiveSupport::TestCase.fixture_path, 'submission_files',
-          'small.pdf'
-      assert_equal File.binread(path), submission.contents
+    it 'forbids multiple submissions from using the same file in the database' do
+      @submission.db_file = submission.db_file
+      assert @submission.invalid?
     end
 
-    it 'returns nil if no file has been uploaded' do
-      submission.db_file = nil
-      assert_nil submission.contents
+    it 'validates associated database-backed files' do
+      db_file = @submission.build_db_file
+      assert_equal false, db_file.valid?
+      assert_equal false, @submission.valid?
+    end
+
+    describe '#file_name' do
+      it 'returns the name of the uploaded file' do
+        assert_equal 'dexter_assessment.pdf', submission.file_name
+      end
+
+      it 'returns nil if no file has been uploaded' do
+        submission.db_file = nil
+        assert_nil submission.file_name
+      end
+    end
+
+    describe '#contents' do
+      it 'returns the contents of the uploaded file' do
+        path = File.join ActiveSupport::TestCase.fixture_path, 'submission_files',
+            'small.pdf'
+        assert_equal File.binread(path), submission.contents
+      end
+
+      it 'returns nil if no file has been uploaded' do
+        submission.db_file = nil
+        assert_nil submission.contents
+      end
     end
   end
 
@@ -68,11 +81,6 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_nil DbFile.find_by(id: submission.db_file_id)
     assert_nil Analysis.find_by(submission: submission)
     assert_empty submission.collaborations.reload
-  end
-
-  it 'forbids multiple submissions from using the same file in the database' do
-    @submission.db_file = submissions(:dexter_code).db_file
-    assert @submission.invalid?
   end
 
   it 'saves the associated db-file through the parent submission' do

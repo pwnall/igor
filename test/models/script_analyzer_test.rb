@@ -1,9 +1,11 @@
 require 'test_helper'
 
 class ScriptAnalyzerTest < ActiveSupport::TestCase
+  include ActionDispatch::TestProcess  # For fixture_file_upload.
+
   before do
     @analyzer = ScriptAnalyzer.new deliverable: deliverables(:project_writeup),
-        auto_grading: false, db_file: db_files(:ps1_script_analyzer),
+        auto_grading: false, db_file: db_files(:ps2_script_analyzer),
         time_limit: 2, ram_limit: 1024, file_limit: 10, file_size_limit: 100,
         process_limit: 5
   end
@@ -31,7 +33,7 @@ class ScriptAnalyzerTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'database-backed file association' do
+  describe 'HasDbFile concern' do
     it 'requires a database-backed file with the analyzer script' do
       @analyzer.db_file = nil
       assert @analyzer.invalid?
@@ -43,6 +45,11 @@ class ScriptAnalyzerTest < ActiveSupport::TestCase
       analyzer.destroy
 
       assert_nil DbFile.find_by(id: analyzer.db_file_id)
+    end
+
+    it 'forbids multiple analyzers from using the same file in the database' do
+      @analyzer.db_file = analyzer.db_file
+      assert @analyzer.invalid?
     end
 
     it 'validates associated database-backed files' do

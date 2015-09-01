@@ -1,0 +1,25 @@
+<table class="files">
+  <thead>
+    <tr>
+      <th class="file-name">File</th>
+      <th class="description">Description</th>
+      <th class="size">Size</th>
+      <th class="uploaded">Uploaded</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% assignment.files_for(current_user).each do |file| %>
+    <tr>
+      <td class="file-name">
+        <%= link_to download_assignment_file_path(file,
+              course_id: file.course) do %>
+          <%= download_icon_tag %> <%= file.file_name %>
+        <% end %>
+      </td>
+      <td class="description"><%= file.description %></td>
+      <td class="size"><%= number_to_human_size file.db_file.f.size %></td>
+      <td class="uploaded"><%= file.updated_at.to_s(:deadline_long) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

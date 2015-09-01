@@ -82,11 +82,6 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  # PUT /submissions/1
-  def update
-    create
-  end
-
   # DELETE /6.006/submissions/1
   def destroy
     submission = Submission.find params[:id]

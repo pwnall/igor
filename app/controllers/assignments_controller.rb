@@ -122,6 +122,8 @@ class AssignmentsController < ApplicationController
                 :message_name, :auto_grading, :time_limit, :ram_limit,
                 :file_limit, :file_size_limit, :process_limit,
                 { db_file_attributes: :f }] } ],
+        files_attributes: [:id, :description, :published_at, :_destroy,
+            { db_file_attributes: :f }],
         metrics_attributes: [:name, :max_score, :id, :_destroy]
     # Note: feedback_survey_id is protected in the model but is allowed here
   end

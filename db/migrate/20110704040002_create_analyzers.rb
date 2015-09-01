@@ -6,7 +6,8 @@ class CreateAnalyzers < ActiveRecord::Migration
       t.boolean :auto_grading, null: false
 
       t.text :exec_limits, limit: 1.kilobyte, null: true
-      t.references :db_file, null: true
+      t.references :db_file, index: { unique: true}, foreign_key: true,
+                             null: true
 
       t.string :message_name, limit: 64, null: true
 

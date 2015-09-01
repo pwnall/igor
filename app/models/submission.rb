@@ -13,6 +13,8 @@
 
 # A file submitted by a student for an assignment.
 class Submission < ActiveRecord::Base
+  include HasDbFile
+  
   # The user or team doing the submission.
   belongs_to :subject, polymorphic: true, inverse_of: :submissions
   validates :subject, presence: true
@@ -20,21 +22,6 @@ class Submission < ActiveRecord::Base
   # The deliverable that the submission is for.
   belongs_to :deliverable
   validates :deliverable, presence: true
-
-  # The database-backed file holding the submission.
-  belongs_to :db_file, dependent: :destroy
-  validates :db_file, presence: true, uniqueness: true
-  accepts_nested_attributes_for :db_file
-
-  # The name of the uploaded file.
-  def file_name
-    db_file && db_file.f_file_name
-  end
-
-  # The contents of the uploaded file.
-  def contents
-    db_file && db_file.f.file_contents
-  end
 
   # The assignment that this submission is for.
   has_one :assignment, through: :deliverable

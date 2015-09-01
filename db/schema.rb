@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.string   "message_name",   limit: 64
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.index ["db_file_id"], name: "index_analyzers_on_db_file_id", unique: true, using: :btree
   end
 
   create_table "announcements", force: :cascade do |t|
@@ -45,6 +46,17 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.boolean  "open_to_visitors",              default: false, null: false
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
+  end
+
+  create_table "assignment_files", force: :cascade do |t|
+    t.string   "description",   limit: 64, null: false
+    t.integer  "assignment_id",            null: false
+    t.integer  "db_file_id",               null: false
+    t.datetime "published_at",             null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.index ["assignment_id"], name: "index_assignment_files_on_assignment_id", using: :btree
+    t.index ["db_file_id"], name: "index_assignment_files_on_db_file_id", unique: true, using: :btree
   end
 
   create_table "assignment_metrics", force: :cascade do |t|
@@ -417,6 +429,9 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.index ["exuid"], name: "index_users_on_exuid", unique: true, using: :btree
   end
 
+  add_foreign_key "analyzers", "db_files"
+  add_foreign_key "assignment_files", "assignments"
+  add_foreign_key "assignment_files", "db_files"
   add_foreign_key "collaborations", "submissions"
   add_foreign_key "time_slot_allotments", "recitation_sections"
   add_foreign_key "time_slot_allotments", "time_slots"

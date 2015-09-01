@@ -47,3 +47,18 @@ ps1_script_analyzer:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:ps1_script_analyzer) %>
   style: original
   file_contents: <%= binary_file('analyzer_files/fib_grading.zip') %>
+
+ps2_script_analyzer:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:ps2_script_analyzer) %>
+  style: original
+  file_contents: <%= binary_file('analyzer_files/fib_grading.zip') %>
+
+ps1_solutions:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:ps1_solutions) %>
+  style: original
+  file_contents: <%= binary_file('submission_files/small.pdf') %>
+
+ps1_test_cases:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:ps1_test_cases) %>
+  style: original
+  file_contents: <%= binary_file('submission_files/small.pdf') %>

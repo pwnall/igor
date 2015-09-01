@@ -30,9 +30,14 @@ class Assignment < ActiveRecord::Base
   belongs_to :author, class_name: 'User'
   validates :author, presence: true
 
+  # True if components of the assignment have been released.
+  def ready?
+    deliverables_ready? || metrics_ready?
+  end
+
   # True if the given user is allowed to see this assignment.
   def can_read?(user)
-    deliverables_ready? || metrics_ready? || course.can_edit?(user)
+     ready? || course.can_edit?(user)
   end
 
   # True if the given user is allowed to change this assignment.
@@ -92,6 +97,16 @@ class Assignment
 
   # All students' grades for this assignment.
   has_many :grades, through: :metrics
+
+  # Resources relevant to this assignment, which students can download.
+  has_many :files, inverse_of: :assignment, class_name: 'AssignmentFile',
+      dependent: :destroy
+  accepts_nested_attributes_for :files, allow_destroy: true
+
+  # The resource files for this assignment that are visible to the given user.
+  def files_for(user)
+    files.select { |f| f.can_read? user }
+  end
 
   # Number of submissions that will be received for this assignment.
   #

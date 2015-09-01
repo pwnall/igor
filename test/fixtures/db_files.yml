@@ -64,3 +64,18 @@ ps1_script_analyzer:
   f_file_name: fib_grading.zip
   f_file_size: <%= binary_file_size('analyzer_files/fib_grading.zip') %>
   f_content_type: application/zip
+
+ps2_script_analyzer:
+  f_file_name: fib_grading_2.zip
+  f_file_size: <%= binary_file_size('analyzer_files/fib_grading.zip') %>
+  f_content_type: application/zip
+
+ps1_solutions:
+  f_file_name: ps1_solutions.pdf
+  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
+  f_content_type: application/pdf
+
+ps1_test_cases:
+  f_file_name: ps1_test_cases.pdf
+  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
+  f_content_type: application/pdf

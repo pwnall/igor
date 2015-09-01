@@ -42,6 +42,23 @@ class AssignmentTest < ActiveSupport::TestCase
       assert @assignment.invalid?
     end
 
+    describe '#ready?' do
+      it 'returns true if deliverables have been released' do
+        assignment.update! deliverables_ready: true
+        assert_equal true, assignment.ready?
+      end
+
+      it 'returns true if grades have been released' do
+        assignment.update! metrics_ready: true
+        assert_equal true, assignment.ready?
+      end
+
+      it 'returns false if the assignment is under construction' do
+        assignment.update! deliverables_ready: false, metrics_ready: false
+        assert_equal false, assignment.ready?
+      end
+    end
+
     describe '#can_read?' do
       it 'lets any user view assignment if deliverables have been released' do
         assignment.update! deliverables_ready: true
