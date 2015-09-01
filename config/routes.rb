@@ -1,4 +1,4 @@
-Seven::Application.routes.draw do
+Rails.application.routes.draw do
   root 'session#show'
 
   # Site-wide functionality.
