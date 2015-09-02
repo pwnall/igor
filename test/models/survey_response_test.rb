@@ -71,7 +71,7 @@ class SurveyResponseTest < ActiveSupport::TestCase
   end
 
   describe '#build_answers' do
-    let(:existing_answers) { response.answers.to_a }
+    let(:existing_answers) { response.answers }
 
     it 'ensures there is one answer for each survey question' do
       assert_operator response.answers.length, :<,

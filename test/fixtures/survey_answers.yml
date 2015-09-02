@@ -18,6 +18,6 @@ dexter_coding_amount:
 
 dexter_prepared:
   question: prepared
-  response: dexter_ps1
+  response: dexter_project
   number: 0
   comment: Very prepared

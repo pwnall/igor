@@ -12,54 +12,39 @@
 #  updated_at      :datetime         not null
 #
 
+# NOTE: Serialized attributes must be written in the format that the
+#     serialization coder understands, in this case, JSON.
 hours:
   survey: ps1
   prompt: Hours spent
   allows_comments: false
   type: QuantitativeOpenQuestion
-  features:
-    step_size: 0.1
+  features: '[{"step_size":"0.1"}]'
 
 coding_amount:
   survey: ps1
   prompt: Amount of coding
   allows_comments: false
   type: QuantitativeScaledQuestion
-  features:
-    scale_min: 1
-    scale_max: 5
-    scale_min_label: Too little
-    scale_max_label: Too much
+  features: '[{"scale_min":"1","scale_max":"5","scale_min_label":"Too little","scale_max_label":"Too much"}]'
 
 theory_amount:
   survey: ps1
   prompt: Amount of theory
   allows_comments: false
   type: QuantitativeScaledQuestion
-  features:
-    scale_min: 1
-    scale_max: 5
-    scale_min_label: Too little
-    scale_max_label: Too much
+  features: '[{"scale_min":"1","scale_max":"5","scale_min_label":"Too little","scale_max_label":"Too much"}]'
 
 prepared:
   survey: project
   prompt: Prepared for meetings
   allows_comments: true
   type: QuantitativeScaledQuestion
-  features:
-    scale_min: 1
-    scale_max: 5
-    scale_min_label: Not at all
-    scale_max_label: Extremely
+  features: '[{"scale_min":"1","scale_max":"5","scale_min_label":"Not al all","scale_max_label":"Extremely"}]'
 
 reliable:
   survey: project
   prompt: Reliably carries out engagements
   allows_comments: true
   type: QuantitativeScaledQuestion
-  features:
-    scale_min: 1
-    scale_max: 5
-    scale_min_label: Not at all
-    scale_max_label: Extremely
+  features: '[{"scale_min":"1","scale_max":"5","scale_min_label":"Not al all","scale_max_label":"Extremely"}]'

@@ -51,6 +51,7 @@ class Survey < ActiveRecord::Base
   end
 
   def can_delete?(user)
-    ((!published? || responses.empty?) && can_edit?(user)) || user.admin?
+    return true if user && user.admin?
+    (!published? || responses.empty?) && can_edit?(user)
   end
 end
