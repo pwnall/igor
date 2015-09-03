@@ -51,7 +51,7 @@
     <% if current_course.has_surveys? %>
     <li>
       <%= link_to surveys_path(course_id: current_course) do %>
-        Surveys
+        <%= survey_icon_tag %> Surveys
       <% end %>
     </li>
     <% end %>

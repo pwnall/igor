@@ -240,6 +240,11 @@ module IconsHelper
     image_tag 'icons/dashboard.png', alt: 'Dashboard', class: 'ui_icon'
   end
 
+  # Show this icon next to survey / polling related functionality.
+  def survey_icon_tag
+    image_tag 'icons/survey.png', alt: 'Survey', class: 'ui_icon'
+  end
+
   # A bunch of unrelated tools.
   def tools_icon_tag
     image_tag 'icons/tools.png', alt: 'Toolbox', class: 'ui_icon'
