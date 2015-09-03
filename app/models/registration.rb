@@ -53,6 +53,9 @@ class Registration < ActiveRecord::Base
                                   inverse_of: :registration
   accepts_nested_attributes_for :prerequisite_answers, allow_destroy: false
 
+  # Sort registrations by alphabetical order of the user's name.
+  scope :by_user_name, -> { includes(user: :profile).order('profiles.name') }
+
   # Returns true if the given user is allowed to edit this registration.
   def can_edit?(user)
     self.user == user || !!(user && user.admin?)

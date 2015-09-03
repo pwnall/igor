@@ -18,31 +18,31 @@ class ScriptAnalyzer < Analyzer
   include HasDbFile
 
   # Limits that apply when running the analyzer script.
-  store :exec_limits
+  store :exec_limits, coder: JSON
 
   # Maximum number of seconds of CPU time that the analyzer can use.
-  validates :time_limit, presence: true,
-      numericality: { only_integer: true, greater_than: 0 }
+  validates :time_limit,
+      numericality: { only_integer: true, greater_than: 0, allow_nil: false }
   store_accessor :exec_limits, :time_limit
 
   # Maximum number of megabytes of RAM that the analyzer can use.
-  validates :ram_limit, presence: true,
-      numericality: { only_integer: true, greater_than: 0 }
+  validates :ram_limit,
+      numericality: { only_integer: true, greater_than: 0, allow_nil: false }
   store_accessor :exec_limits, :ram_limit
 
   # Maximum number of file descriptors that the analyzer can use.
-  validates :file_limit, presence: true,
-      numericality: { only_integer: true, greater_than: 0 }
+  validates :file_limit,
+      numericality: { only_integer: true, greater_than: 0, allow_nil: false }
   store_accessor :exec_limits, :file_limit
 
   # Maximum number of megabytes that the analyzer can write to a single file.
-  validates :file_size_limit, presence: true,
-      numericality: { only_integer: true, greater_than: 0 }
+  validates :file_size_limit,
+      numericality: { only_integer: true, greater_than: 0, allow_nil: false }
   store_accessor :exec_limits, :file_size_limit
 
   # Maximum number of processes that the analyzer can use.
-  validates :process_limit, presence: true,
-      numericality: { only_integer: true, greater_than: 0 }
+  validates :process_limit,
+      numericality: { only_integer: true, greater_than: 0, allow_nil: false }
   store_accessor :exec_limits, :process_limit
 
   # :nodoc: overrides Analyzer#analyze

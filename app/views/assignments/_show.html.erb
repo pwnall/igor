@@ -16,12 +16,21 @@
     <% end %>
   </h2>
 
-
-  <p>
-    Due
-    <%= assignment.due_at.to_s(:deadline_long) %>
-    <%= time_delta_in_words assignment.due_at %>
-  </p>
+  <section class="deadline">
+    <p class="<%= deadline_class assignment, current_user %>">
+      Due
+      <%= assignment.due_at.to_s(:deadline_long) %>
+      <%= time_delta_in_words assignment.due_at %>
+    </p>
+    <% if extension = current_user.extension_for(assignment) %>
+    <p class="extension">
+      Due
+      <%= extension.due_at.to_s(:deadline_long) %>
+      - Extension granted by
+      <%= display_name_for_user extension.grantor, :long %>
+    </p>
+    <% end %>
+  </section>
 
   <ul class="deliverables">
   <% assignment.deliverables_for(current_user).each do |deliverable| %>

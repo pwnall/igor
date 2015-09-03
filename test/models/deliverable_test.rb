@@ -7,6 +7,8 @@ class DeliverableTest < ActiveSupport::TestCase
   end
 
   let(:deliverable) { deliverables(:assessment_writeup) }
+  let(:assignment) { deliverable.assignment }
+  let(:student) { users(:dexter) }
   let(:any_user) { User.new }
   let(:admin) { users(:admin) }
 
@@ -94,35 +96,18 @@ class DeliverableTest < ActiveSupport::TestCase
     assert_instance_of ScriptAnalyzer, @deliverable.reload.analyzer
   end
 
-  describe 'read/submit permissions' do
-    describe '#can_read?' do
-      it 'lets any user view deliverable if :deliverables_ready is true' do
-        deliverable.assignment.update! deliverables_ready: true
-        assert_equal true, deliverable.can_read?(any_user)
-        assert_equal true, deliverable.can_read?(nil)
-      end
-
-      it 'lets only admins view deliverable if :deliverables_ready is false' do
-        deliverable.assignment.update! deliverables_ready: false
-        assert_equal true, deliverable.can_read?(admin)
-        assert_equal false, deliverable.can_read?(any_user)
-        assert_equal false, deliverable.can_read?(nil)
-      end
+  describe '#can_read?' do
+    it 'lets any user view deliverable if :deliverables_ready is true' do
+      deliverable.assignment.update! deliverables_ready: true
+      assert_equal true, deliverable.can_read?(any_user)
+      assert_equal true, deliverable.can_read?(nil)
     end
 
-    describe '#can_submit?' do
-      it 'lets any user submit deliverable if :deliverables_ready is true' do
-        deliverable.assignment.update! deliverables_ready: true
-        assert_equal true, deliverable.can_submit?(any_user)
-        assert_equal true, deliverable.can_submit?(nil)
-      end
-
-      it 'lets only admins submit deliverable if :deliverables_ready is false' do
-        deliverable.assignment.update! deliverables_ready: false
-        assert_equal true, deliverable.can_submit?(admin)
-        assert_equal false, deliverable.can_submit?(any_user)
-        assert_equal false, deliverable.can_submit?(nil)
-      end
+    it 'lets only admins view deliverable if :deliverables_ready is false' do
+      deliverable.assignment.update! deliverables_ready: false
+      assert_equal true, deliverable.can_read?(admin)
+      assert_equal false, deliverable.can_read?(any_user)
+      assert_equal false, deliverable.can_read?(nil)
     end
   end
 
@@ -176,24 +161,6 @@ class DeliverableTest < ActiveSupport::TestCase
         assert_equal later, team_deliverable.submission_for_grading(teammate)
         assert_equal later, team_deliverable.submission_for_grading(team)
       end
-    end
-  end
-
-  # TODO(spark008): Retest this method after extensions are implemented.
-  describe '#deadline_for' do
-    it 'returns the deadline for the given user' do
-      assert_in_delta 1.week.ago, deliverable.deadline_for(any_user), 10
-    end
-  end
-
-  # TODO(spark008): Retest this method after extensions are implemented.
-  describe '#deadline_passed_for?' do
-    it 'returns whether the deadline has passed' do
-      deliverable.assignment.deadline.update! due_at: 1.day.from_now
-      assert_equal false, deliverable.deadline_passed_for?(any_user)
-
-      deliverable.assignment.deadline.update! due_at: 1.day.ago
-      assert_equal true, deliverable.deadline_passed_for?(any_user)
     end
   end
 

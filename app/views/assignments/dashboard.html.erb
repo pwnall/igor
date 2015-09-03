@@ -105,3 +105,15 @@
   </li>
 <% end %>
 </ul>
+
+<h3 class="dashboard-heading">
+  <%= deadline_state_icon_tag :overdue %>
+  Extensions
+  <span class="actions">
+    <%= link_to assignment_extensions_path(assignment_id: @assignment,
+          course_id: @assignment.course), class: 'button' do %>
+      <%= edit_icon_tag %> Grant extensions
+    <% end %>
+  </span>
+</h3>
+<p><%= @assignment.extensions.length %> extension(s) granted.</p>

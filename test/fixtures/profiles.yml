@@ -40,3 +40,12 @@ deedee:
   department: Electrical Eng & Computer Sci
   year: 1
   athena_username: dd
+
+dropout:
+  user: dropout
+  name: Not Interested
+  nickname: Nope
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: 4
+  athena_username: nothanks

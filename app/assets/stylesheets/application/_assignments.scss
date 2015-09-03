@@ -6,8 +6,15 @@ section.assignment {
     font-size: 1.33em;
     margin-top: 1rem;
   }
-  > p:first-child {
+  > .deadline {
     margin: 0.5ex 0 1em 0;
+
+    > .inapplicable {
+      text-decoration: line-through;
+    }
+    > .extension {
+      font-weight: bold;
+    }
   }
 
   ul.deliverables {

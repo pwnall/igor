@@ -55,7 +55,7 @@ class SubmissionsController < ApplicationController
   # POST /submissions
   def create
     @submission = Submission.new submission_params
-    return bounce_user unless @submission.deliverable.can_submit? current_user
+    return bounce_user unless @submission.assignment.can_submit? current_user
     @submission.subject = @submission.assignment.grade_subject_for current_user
     @submission.copy_collaborators_from_previous_submission
 
