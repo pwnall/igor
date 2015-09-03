@@ -110,21 +110,20 @@ class FeedItem
     Deliverable.includes(:assignment).each do |deliverable|
       next unless deliverable.can_read?(user)
 
-      with_teammates = deliverable.assignment.team_partition_id ?
-                       'and your teammates ' : ''
+      assignment = deliverable.assignment
+      with_teammates = assignment.team_partition_id ? 'and your teammates ' : ''
       item = FeedItem.new time: deliverable.updated_at,
-          author: deliverable.assignment.author, flavor: :deliverable,
-          headline: "opened up " +
-              "#{deliverable.assignment.name}'s #{deliverable.name} " +
+          author: assignment.author, flavor: :deliverable,
+          headline: "opened up " + "#{assignment.name}'s #{deliverable.name} " +
               "for submissions",
           contents: deliverable.description,
-          actions: [['Submit', [:assignment_path, deliverable.assignment,
+          actions: [['Submit', [:assignment_path, assignment,
                                 { course_id: deliverable.course }]]],
           replies: []
       items << item
 
-      if deliverable.deadline_passed_for? user
-        reply = FeedItem.new time: deliverable.deadline_for(user),
+      if assignment.deadline_passed_for? user
+        reply = FeedItem.new time: assignment.deadline_for(user),
             author: User.robot, flavor: :announcement,
             contents: "The deadline has passed.",
             actions: [], replies: []

@@ -7,9 +7,16 @@
 
 en:
   activerecord:
+    attributes:
+      deadline_extension:
+        due_at: "Extended deadline"
     errors:
       models:
         db_file:
           attributes:
             f:
               spoofed_media_type: "Detected MIME type does not match browser-set type."
+        deadline_extension:
+          attributes:
+            due_at:
+              after: "must occur after the original deadline."

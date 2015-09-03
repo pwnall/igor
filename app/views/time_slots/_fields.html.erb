@@ -1,0 +1,17 @@
+<td>
+  <%= f.select :day, day_select_option_tags, { form: 'time-slot-form' } %>
+</td>
+<td>
+  <%= f.time_select :start_time, { ampm: true, minute_step: 5 },
+        { form: 'time-slot-form' } %>
+</td>
+<td>
+  <%= f.time_select :end_time, { ampm: true, minute_step: 5 },
+        { form: 'time-slot-form' } %>
+</td>
+<td></td>
+<td>
+  <%= button_tag(form: 'time-slot-form') do %>
+    <%= create_icon_tag %> Create Time Slot
+  <% end %>
+</td>

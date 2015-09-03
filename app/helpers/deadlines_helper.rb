@@ -8,4 +8,9 @@ module DeadlinesHelper
       "(#{time} ago)"
     end
   end
+
+  # The class of the element containing the assignment's original deadline.
+  def deadline_class(assignment, user)
+    user.extension_for(assignment) ? 'inapplicable' : 'applicable'
+  end
 end

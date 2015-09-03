@@ -43,11 +43,6 @@ class Deliverable < ActiveRecord::Base
     assignment.deliverables_ready? || course.can_edit?(user)
   end
 
-  # True if "user" should be able to submit (or re-submit) for this deliverable.
-  def can_submit?(user)
-    assignment.deliverables_ready? || course.can_edit?(user)
-  end
-
   # The submission that determines the submitter's grade for this deliverable.
   #
   # The result is non-trivial in the presence of teams.
@@ -60,16 +55,6 @@ class Deliverable < ActiveRecord::Base
     partition = assignment.team_partition
     author = (partition && partition.team_for_user(submitter)) || submitter
     submissions.where(subject: author).order(:updated_at).last
-  end
-
-  # The deliverable deadline, customized to a specific user.
-  def deadline_for(user)
-    assignment.deadline_for user
-  end
-
-  # True if the submissions for this deliverable should be marked as late.
-  def deadline_passed_for?(user)
-    assignment.deadline_passed_for? user
   end
 
   # Number of submissions that will be received for this deliverable.

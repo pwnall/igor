@@ -128,6 +128,18 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.datetime "f_updated_at"
   end
 
+  create_table "deadline_extensions", force: :cascade do |t|
+    t.string   "subject_type", null: false
+    t.integer  "subject_id",   null: false
+    t.integer  "user_id",      null: false
+    t.integer  "grantor_id"
+    t.datetime "due_at",       null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["subject_id", "subject_type", "user_id"], name: "index_deadline_extensions_on_subject_and_user_id", unique: true, using: :btree
+    t.index ["user_id"], name: "index_deadline_extensions_on_user_id", using: :btree
+  end
+
   create_table "deadlines", force: :cascade do |t|
     t.string   "subject_type", null: false
     t.integer  "subject_id",   null: false
@@ -422,6 +434,8 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   add_foreign_key "assignment_files", "assignments"
   add_foreign_key "assignment_files", "db_files"
   add_foreign_key "collaborations", "submissions"
+  add_foreign_key "deadline_extensions", "users"
+  add_foreign_key "deadline_extensions", "users", column: "grantor_id", on_delete: :nullify
   add_foreign_key "time_slot_allotments", "recitation_sections"
   add_foreign_key "time_slot_allotments", "time_slots"
 end

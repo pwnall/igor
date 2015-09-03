@@ -55,6 +55,10 @@ class QuantitativeOpenQuestionTest < ActiveSupport::TestCase
   end
 
   describe 'quantitative-open-question-specific features' do
+    it 'validates fixture questions (validate JSON serialization)' do
+      assert question.valid?
+    end
+
     it 'requires a step size' do
       @question.step_size = nil
       assert @question.invalid?

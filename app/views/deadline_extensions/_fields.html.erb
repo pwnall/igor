@@ -1,0 +1,18 @@
+<td>
+  <%= f.collection_select :user_exuid,
+        current_course.students.without_extensions_for(@assignment).by_name,
+        :to_param, :name, { prompt: 'Select a student' },
+        { required: true, form: 'extension-form' } %>
+</td>
+<td>
+  <%= f.datetime_select :due_at, { use_short_month: true, minute_step: 15,
+        datetime_separator:' at ', time_separator: ':',
+        default: @assignment.due_at },
+        { required: true, form: 'extension-form' } %>
+</td>
+<td></td>
+<td>
+  <%= button_tag(form: 'extension-form') do %>
+    <%= create_icon_tag %> Grant Extension
+  <% end %>
+</td>

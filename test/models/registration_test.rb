@@ -82,6 +82,13 @@ class RegistrationTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'by_user_name scope' do
+    it "sorts the registrations by alphabetical order of the user's name" do
+      golden = registrations(:solo, :deedee, :dexter, :dropout)
+      assert_equal golden, courses(:main).registrations.by_user_name
+    end
+  end
+
   describe '#can_edit?' do
     it 'allows a user to edit their own registration' do
       assert_equal true, @registration.can_edit?(@registration.user)

@@ -87,7 +87,10 @@ Rails.application.routes.draw do
       member do
         get :dashboard
       end
+      resources :extensions, controller: :deadline_extensions,
+          only: [:index, :create]
     end
+    resources :deadline_extensions, only: [:destroy]
     resources :assignment_files, only: [] do
       member do
         get :download

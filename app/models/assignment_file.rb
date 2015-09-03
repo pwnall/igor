@@ -26,7 +26,7 @@ class AssignmentFile < ActiveRecord::Base
   has_one :course, through: :assignment
 
   # The time when this file will be visible to students.
-  validates :published_at, presence: true
+  validates :published_at, presence: true, timeliness: true
 
   # True if the given user is allowed to see this file.
   #

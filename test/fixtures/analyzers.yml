@@ -24,9 +24,9 @@ script_assessment_code:
   type: ScriptAnalyzer
   auto_grading: true
   db_file: ps1_script_analyzer
-  exec_limits:
-    time_limit: 2
-    ram_limit: 1024
-    file_limit: 10
-    file_size_limit: 100
-    process_limit: 5
+  exec_limits: >
+    {"time_limit":2,
+    "ram_limit":1024,
+    "file_limit":10,
+    "file_size_limit":100,
+    "process_limit":5}

@@ -14,7 +14,8 @@ class TimeSlotsController < ApplicationController
     respond_to do |format|
       if @time_slot.save
         format.html do
-          redirect_to time_slots_path, notice: 'Time slot successfully created.'
+          redirect_to time_slots_url(course_id: @time_slot.course),
+              notice: 'Time slot successfully created.'
         end
       else
         format.html do
