@@ -19,9 +19,9 @@ class GradesController < ApplicationController
     @assignment_comments = {}
     current_course.assignments.includes(:metrics).by_deadline.
         each do |assignment|
-      assignment_metrics = assignment.metrics.select do |metric|
+      assignment_metrics = assignment.metrics.select { |metric|
         metric.can_read? current_user
-      end
+      }.sort_by(&:to_param)
       next if assignment_metrics.empty?
 
       @assignments << assignment
