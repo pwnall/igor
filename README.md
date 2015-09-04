@@ -5,7 +5,14 @@ Course homework submission website.
 
 ## Prerequisites
 
-The site requires a very recent Ruby and a few libraries. The recommended way
+The site requires access to a [Docker](https://github.com/docker/docker)
+daemon, a very recent Ruby and a few libraries.
+
+Docker can only be installed directly on Linux, and is now packaged natively by
+every major distribution. [docker-machine](https://github.com/docker/machine)
+can be used to get access to a Docker daemon on other OSes.
+
+The recommended way
 to get Ruby set up is to get [rbenv](https://github.com/sstephenson/rbenv) and
 [ruby-build](https://github.com/sstephenson/ruby-build).
 
@@ -15,7 +22,13 @@ The recommended way to get the libraries is your system's package manager, or
 ### Mac OS
 
 ```bash
-brew install imagemagick pkg-config
+brew install docker docker-machine imagemagick pkg-config
+brew install caskroom/cask/brew-cask
+brew cask install virtualbox
+docker-machine create --driver virtualbox dev
+
+# The command below shows up when you run docker-machine env dev.
+eval "$(docker-machine env dev)"
 ```
 
 
@@ -52,7 +65,7 @@ the left-side menu.
 ## Development
 
 Seed the database to get a reasonably large data set that covers the most used
-cases.
+cases. Seeding will crash without access to a Docker daemon.
 
 ```bash
 rake db:seed
