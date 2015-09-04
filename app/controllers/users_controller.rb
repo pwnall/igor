@@ -44,13 +44,15 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        token = Tokens::EmailVerification.random_for @user.email_credential
-        SessionMailer.email_verification_email(token, root_url).deliver
-
         # Root of trust: if no site admin exists, create one.
+        # NOTE: The admin is set before the confirmation e-mail is sent out,
+        #       because sending the e-mail might crash.
         if Role.where(name: 'admin').empty?
           Role.create! user: @user, name: 'admin'
         end
+
+        token = Tokens::EmailVerification.random_for @user.email_credential
+        SessionMailer.email_verification_email(token, root_url).deliver
 
         format.html do
           redirect_to new_session_url,

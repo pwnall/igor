@@ -1,1 +1,1 @@
-MitStalker.finger_timeout = 10
+MitStalker.finger_timeout = 2
