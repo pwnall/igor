@@ -33,7 +33,11 @@ module AssignmentFeedback
       if value.nil?
         record.errors.add attr, 'is not present'
       elsif !value.enrolled_in_course?(record.course)
-        record.errors.add attr, 'is not connected to the course'
+        # NOTE: Auto-graders are allowed to assign grades to course staff, so
+        #       the staff can test their analyzers.
+        unless record.grader && record.grader.robot?
+          record.errors.add attr, 'is not connected to the course'
+        end
       end
     end
   end

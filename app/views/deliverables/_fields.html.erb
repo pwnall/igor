@@ -34,6 +34,14 @@
     <% end %>
     </div>
 
+    <div data-pwnfx-showif="analyzer-type" data-pwnfx-showif-is="DockerAnalyzer"
+         data-pwnfx-showif-scope="deliverable"
+         data-pwnfx-showif-replace="div">
+    <%= f.fields_for :analyzer, analyzer_for(f.object, DockerAnalyzer) do |fa| %>
+    <%= render 'docker_analyzers/fields', :f => fa  %>
+    <% end %>
+    </div>
+
     <div data-pwnfx-showif="analyzer-type" data-pwnfx-showif-is="ScriptAnalyzer"
          data-pwnfx-showif-scope="deliverable"
          data-pwnfx-showif-replace="div">

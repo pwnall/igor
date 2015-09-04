@@ -40,9 +40,9 @@
 
 <figure>
   <%= Markdpwn.markup(
-        File.read(Rails.root.join('lib/analyzer_sources/fib/analyzer.yml')),
-        :file_name => 'analyzer.yml').html_safe %>
-  <figcaption>Sample analyzer manifest (<code>analyzer.yml</code>)</figcaption>
+        File.read(Rails.root.join('lib/analyzer_sources/fib/Dockerfile')),
+        :file_name => 'Dockerfile').html_safe %>
+      <figcaption>Sample <code>Dockerfile</code></figcaption>
 </figure>
 
 <p>
@@ -73,8 +73,8 @@
 
 <figure>
   <%= Markdpwn.markup(
-        File.read(Rails.root.join('lib/analyzer_sources/fib_grading/analyzer.yml')),
-        :file_name => 'analyzer.yml').html_safe %>
+        File.read(Rails.root.join('lib/analyzer_sources/fib/mapreduced.yml')),
+        :file_name => 'mapreduced.yml').html_safe %>
   <figcaption>
     Auto-grading analyzer manifest (<code>analyzer.yml</code>)
   </figcaption>
@@ -137,14 +137,7 @@
 
 <figure>
   <%= Markdpwn.markup(
-        File.read(Rails.root.join('lib/analyzer_sources/fib_grading/grader.rb')),
-        :file_name => 'grader.rb').html_safe %>
-  <figcaption>Sample Ruby grader (<code>grader.rb</code>)</figcaption>
-</figure>
-
-<figure>
-  <%= Markdpwn.markup(
-        File.read(Rails.root.join('lib/analyzer_sources/fib_grading/grader.py')),
-        :file_name => 'grader.py').html_safe %>
+        File.read(Rails.root.join('lib/analyzer_sources/fib/reducer.py')),
+        :file_name => 'reducer.py').html_safe %>
   <figcaption>Sample Python grader (<code>grader.py</code>)</figcaption>
 </figure>

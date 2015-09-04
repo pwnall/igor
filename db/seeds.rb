@@ -219,16 +219,15 @@ psets = pset_data.map.with_index do |data, index|
   analyzer.deliverable = pdf_deliverable
   analyzer.save!
 
-  rb_deliverable = pset.deliverables.create! assignment: pset,
-      name: 'Fibonacci', file_ext: 'rb',
-      description: 'Please upload your modified fib.rb.'
-  analyzer_file = 'test/fixtures/analyzer_files/' +
-      ((i % 2 == 1) ? 'fib_grading.zip' : 'fib.zip')
-  analyzer = ScriptAnalyzer.new db_file_attributes: {
+  py_deliverable = pset.deliverables.create! assignment: pset,
+      name: 'Fibonacci', file_ext: 'py',
+      description: 'Please upload your modified fib.py.'
+  analyzer_file = 'test/fixtures/analyzer_files/fib_small.zip'
+  analyzer = DockerAnalyzer.new db_file_attributes: {
       f: fixture_file_upload(analyzer_file, 'application/zip', :binary) },
-      time_limit: '2', ram_limit: '1024', process_limit: '5',
-      file_limit: '10', file_size_limit: '100', auto_grading: (i % 2 == 1)
-  analyzer.deliverable = rb_deliverable
+      map_time_limit: '2', map_ram_limit: '1024', reduce_time_limit: '2',
+      reduce_ram_limit: '1024', auto_grading: i % 2 == 0
+  analyzer.deliverable = py_deliverable
   analyzer.save!
 
   unless pset.ui_state_for(admin) == data[:state]
@@ -258,13 +257,13 @@ end
 
     if (i + j) % 3 == 0
       # Submit code.
-      code = pset.deliverables.where(file_ext: 'rb').first
+      code = pset.deliverables.where(file_ext: 'py').first
       time = pset.due_at - 1.day + i * 1.minute + 30.seconds
       submission = Submission.create! deliverable: code, subject: user,
           db_file_attributes: {
             f: fixture_file_upload(
-                'test/fixtures/submission_files/good_fib.rb',
-                'text/x-ruby', :binary)
+                'test/fixtures/submission_files/good_fib.py',
+                'text/x-python', :binary)
           }, created_at: time, updated_at: time
       submission.run_analysis
       submission.analysis.created_at = time + 1.second

@@ -1,0 +1,75 @@
+<section class="fields">
+  <p class="field">
+  <%= f.fields_for :db_file, DbFile.new do |ff| %>
+    <%= ff.label :f do %>
+      <%= link_to help_icon_tag, help_analyzers_path, target: '_blank' %>
+      Map-Reduce .zip
+    <% end %>
+    <span class="value">
+    <%= ff.file_field :f, accept: 'application/zip',
+          required: (!f.object.db_file || f.object.db_file.new_record?) %>
+    </span>
+    <span class="comment">
+      <% if f.object.db_file && !f.object.db_file.new_record? %>
+        <%= download_icon_tag %>
+        <%= link_to f.object.file_name, source_analyzer_path(f.object,
+              course_id: f.object.deliverable.course) %>
+        (<%= number_to_human_size f.object.db_file.f.size %>)
+      <% end %>
+    </span>
+  <% end %>
+  </p>
+
+  <p class="field">
+    <%= f.label :time_limit, 'Submission CPU time' %>
+    <span class="value">
+      <%= f.number_field :map_time_limit, required: true, placeholder: 5 %>
+    </span>
+    <span class="comment">
+      seconds
+    </span>
+  </p>
+
+  <p class="field">
+    <%= f.label :ram_limit, 'Submission RAM usage' %>
+    <span class="value">
+      <%= f.number_field :map_ram_limit, required: true, placeholder: 1024 %>
+    </span>
+    <span class="comment">
+      Mb
+    </span>
+  </p>
+
+  <p class="field">
+    <%= f.label :reduce_time_limit, 'Grader CPU time' %>
+    <span class="value">
+      <%= f.number_field :reduce_time_limit, required: true, placeholder: 5 %>
+    </span>
+    <span class="comment">
+      seconds
+    </span>
+  </p>
+
+  <p class="field">
+    <%= f.label :reduce_ram_limit, 'Grader RAM usage' %>
+    <span class="value">
+      <%= f.number_field :reduce_ram_limit, required: true,
+                         placeholder: 1024 %>
+    </span>
+    <span class="comment">
+      Mb
+    </span>
+  </p>
+
+  <p class="field">
+    <%= f.label :auto_grading, 'Auto grading' %>
+    <span class="value">
+      <%= f.label :auto_grading do %>
+        <%= f.check_box :auto_grading %>
+        use analyzer grade output
+      <% end %>
+    </span>
+    <span class="comment">
+    </span>
+  </p>
+</section>

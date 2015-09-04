@@ -1,7 +1,0 @@
----
-.py:
-  get: fib.py
-  run: /usr/bin/env python fib_test.py
-.rb:
-  get: fib.rb
-  run: /usr/bin/env ruby fib_test.rb

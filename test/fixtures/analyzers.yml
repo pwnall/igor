@@ -19,14 +19,13 @@ proc_assessment_writeup:
   auto_grading: false
   message_name: analyze_pdf
 
-script_assessment_code:
+docker_assessment_code:
   deliverable: assessment_code
-  type: ScriptAnalyzer
+  type: DockerAnalyzer
   auto_grading: true
-  db_file: ps1_script_analyzer
+  db_file: ps1_docker_analyzer
   exec_limits: >
-    {"time_limit":2,
-    "ram_limit":1024,
-    "file_limit":10,
-    "file_size_limit":100,
-    "process_limit":5}
+    { "map_time_limit": 2,
+      "map_ram_limit": 1024,
+      "reduce_time_limit": 2,
+      "reduce_ram_limit": 1024 }

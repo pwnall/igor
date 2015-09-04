@@ -14,7 +14,7 @@
 # A file submitted by a student for an assignment.
 class Submission < ActiveRecord::Base
   include HasDbFile
-  
+
   # The user or team doing the submission.
   belongs_to :subject, polymorphic: true, inverse_of: :submissions
   validates :subject, presence: true

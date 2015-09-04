@@ -1,0 +1,18 @@
+---
+items: 3  # Number of times the mapper needs to run.
+mapper:
+  input: /usr/testguest/code.py  # The user's input is stored here.
+  output: /usr/testguest/output  # The mapper's output is read from here.
+  chdir: /usr/testguest  # The current directory when launching the mapper.
+  env: ITEM  # The item number is passed in this environment variable.
+  cmd:  # Command used to launch the mapper.
+    - python2
+    - /usr/testhost/mapper.py
+reducer:
+  input: /usr/testguest/  # Mapper outputs are stored here.
+  output: /usr/testhost/output  # The reducer's output is read from here.
+  chdir: /usr/testhost  # The current directory when launching the reducer.
+  env: ITEMS  # The number of items is passed in this environment variable.
+  cmd:  # Command used to launch the reducer.
+    - python2
+    - /usr/testhost/reducer.py

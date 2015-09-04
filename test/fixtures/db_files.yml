@@ -60,14 +60,14 @@ submission_catch_all:
   f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
   f_content_type: application/pdf
 
-ps1_script_analyzer:
-  f_file_name: fib_grading.zip
-  f_file_size: <%= binary_file_size('analyzer_files/fib_grading.zip') %>
+ps1_docker_analyzer:
+  f_file_name: fib_small.zip
+  f_file_size: <%= binary_file_size('analyzer_files/fib_small.zip') %>
   f_content_type: application/zip
 
-ps2_script_analyzer:
-  f_file_name: fib_grading_2.zip
-  f_file_size: <%= binary_file_size('analyzer_files/fib_grading.zip') %>
+ps2_docker_analyzer:
+  f_file_name: fib_small_2.zip
+  f_file_size: <%= binary_file_size('analyzer_files/fib_small.zip') %>
   f_content_type: application/zip
 
 ps1_solutions:
