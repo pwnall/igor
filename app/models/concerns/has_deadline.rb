@@ -20,6 +20,13 @@ module HasDeadline
     # Filter for surveys or assignments whose deadlines have passed.
     scope :past_due, -> { joins(:deadline).includes(:deadline).
         where('deadlines.due_at < ?', Time.current) }
+
+    # The deadline extensions granted for this task.
+    has_many :extensions, as: :subject, class_name: 'DeadlineExtension',
+        dependent: :destroy, inverse_of: :subject
+
+    # User who have been granted extensions for this task.
+    has_many :extension_recipients, through: :extensions, source: :user
   end
 
   # The date of the deadline (virtual attribute).
@@ -36,18 +43,17 @@ module HasDeadline
     end
   end
 
-  # The deadline, customized to a specific user.
+  # The due date, customized to a specific user.
   #
-  # This method will eventually account for deadline extensions.
+  # @param [User] user the user to whom this deadline applies
+  # @return [ActiveSupport::TimeWithZone] the time when the task is due
   def deadline_for(user)
-    deadline.due_at
+    extension = extensions.find_by(user: user)
+    extension ? extension.due_at : deadline.due_at
   end
 
   # True if the sumbissions for this assignment/survey should be marked as late.
-  #
-  # This method takes an user as an argument so that we can later account for
-  # deadline extensions.
   def deadline_passed_for?(user)
-    deadline_for(user) < Time.now
+    deadline_for(user) < Time.current
   end
 end

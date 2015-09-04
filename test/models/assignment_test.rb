@@ -9,6 +9,7 @@ class AssignmentTest < ActiveSupport::TestCase
   end
 
   let(:assignment) { assignments(:assessment) }
+  let(:student) { users(:dexter) }
   let(:any_user) { User.new }
   let(:admin) { users(:admin) }
 
@@ -79,6 +80,110 @@ class AssignmentTest < ActiveSupport::TestCase
         assert_equal false, assignment.can_read?(nil)
       end
     end
+
+    describe '#can_submit?' do
+      describe ':deliverables_ready is true' do
+        before { assignment.update! deliverables_ready: true }
+
+        describe 'neither original deadline nor extension, if any, passed' do
+          before do
+            assignment.update! due_at: 1.day.from_now
+            deadline_extensions(:assessment_dexter).
+                update! due_at: 1.week.from_now
+          end
+
+          it 'lets any user submit' do
+            assert_equal true, assignment.can_submit?(any_user)
+            assert_equal true, assignment.can_submit?(student)
+            assert_equal true, assignment.can_submit?(admin)
+            assert_equal true, assignment.can_submit?(nil)
+          end
+        end
+
+        describe 'original deadline passed but user has active extension' do
+          before do
+            assert_operator assignment.due_at, :<, Time.current
+            assert_not_nil student.extensions.find_by subject: assignment
+          end
+
+          it 'lets the student submit' do
+            assert_equal true, assignment.can_submit?(student)
+          end
+
+          it 'forbids other students without an extension from submitting' do
+            assert_nil users(:solo).extensions.find_by subject: assignment
+            assert_equal false, assignment.can_submit?(users(:solo))
+            assert_equal false, assignment.can_submit?(nil)
+          end
+
+          it 'lets course/site admins submit' do
+            assert_equal true, assignment.can_submit?(users(:main_staff))
+            assert_equal true, assignment.can_submit?(admin)
+          end
+        end
+
+        describe 'both original deadline and extension, if any, have passed' do
+          before do
+            deadline_extensions(:assessment_dexter).update! due_at: 1.day.ago
+            assert_operator assignment.deadline_for(student), :<, Time.current
+          end
+
+          it 'lets only course/site admins submit' do
+            assert_equal false, assignment.can_submit?(student)
+            assert_equal false, assignment.can_submit?(nil)
+            assert_equal true, assignment.can_submit?(users(:main_staff))
+            assert_equal true, assignment.can_submit?(admin)
+          end
+        end
+      end
+
+      describe ':deliverables_ready is false' do
+        before { assignment.update! deliverables_ready: false }
+
+        describe 'neither original deadline nor extension, if any, passed' do
+          before do
+            assignment.update! due_at: 1.day.from_now
+            deadline_extensions(:assessment_dexter).
+                update! due_at: 1.week.from_now
+          end
+
+          it 'lets only course/site admins submit' do
+            assert_equal false, assignment.can_submit?(student)
+            assert_equal false, assignment.can_submit?(nil)
+            assert_equal true, assignment.can_submit?(users(:main_staff))
+            assert_equal true, assignment.can_submit?(admin)
+          end
+        end
+
+        describe 'original deadline passed but user has active extension' do
+          before do
+            assert_operator assignment.due_at, :<, Time.current
+            assert_not_nil student.extensions.find_by subject: assignment
+          end
+
+          it 'lets only course/site admins submit' do
+            assert_equal false, assignment.can_submit?(student)
+            assert_equal false, assignment.can_submit?(nil)
+            assert_equal true, assignment.can_submit?(users(:main_staff))
+            assert_equal true, assignment.can_submit?(admin)
+          end
+        end
+
+        describe 'both original deadline and extension, if any, have passed' do
+          before do
+            deadline_extensions(:assessment_dexter).update! due_at: 1.day.ago
+            assert_operator assignment.deadline_for(student), :<, Time.current
+          end
+
+          it 'lets only course/site admins submit' do
+            assert_equal false, assignment.can_submit?(student)
+            assert_equal false, assignment.can_submit?(nil)
+            assert_equal true, assignment.can_submit?(users(:main_staff))
+            assert_equal true, assignment.can_submit?(admin)
+          end
+        end
+      end
+    end
   end
 
   describe 'homework submission feature' do
@@ -106,9 +211,8 @@ class AssignmentTest < ActiveSupport::TestCase
 
       describe 'by_deadline scope' do
         it 'sorts assignments by ascending deadline, then by name' do
-          golden = assignments(:project, :ps3, :not_main_exam, :ps2,
-                               :assessment, :ps1)
-          actual = Assignment.by_deadline
+          golden = assignments(:project, :ps3, :assessment, :ps2, :ps1)
+          actual = courses(:main).assignments.by_deadline
           assert_equal golden, actual, actual.map(&:name)
         end
       end
@@ -143,21 +247,86 @@ class AssignmentTest < ActiveSupport::TestCase
         end
       end
 
-      # TODO(spark008): Retest this method after extensions are implemented.
-      describe '#deadline_for' do
-        it 'returns the deadline for the given user' do
-          assert_equal @due_at, @assignment.deadline_for(any_user)
+      describe 'student does not have an extension' do
+        before { assert_nil @assignment.extensions.find_by user: student }
+
+        describe '#deadline_for' do
+          it 'returns the original due date' do
+            assert_in_delta @due_at, @assignment.deadline_for(student), 10
+            assert_in_delta @due_at, @assignment.deadline_for(nil), 10
+          end
+        end
+
+        describe '#deadline_passed_for?' do
+          it 'returns whether the deadline has passed' do
+            @assignment.deadline.update! due_at: 1.day.from_now
+            assert_equal false, @assignment.deadline_passed_for?(any_user)
+            assert_equal false, @assignment.deadline_passed_for?(nil)
+
+            @assignment.deadline.update! due_at: 1.day.ago
+            assert_equal true, @assignment.deadline_passed_for?(any_user)
+            assert_equal true, @assignment.deadline_passed_for?(nil)
+          end
         end
       end
 
-      # TODO(spark008): Retest this method after extensions are implemented.
-      describe '#deadline_passed_for?' do
-        it 'returns whether the deadline has passed' do
-          assignment.deadline.update! due_at: 1.day.from_now
-          assert_equal false, assignment.deadline_passed_for?(any_user)
+      describe 'student has an extension' do
+        let(:extension) { assignment.extensions.find_by user: student }
 
-          assignment.deadline.update! due_at: 1.day.ago
-          assert_equal true, assignment.deadline_passed_for?(any_user)
+        describe '#deadline_for' do
+          it 'returns the extended due date' do
+            assert_in_delta 1.week.ago, assignment.due_at, 10
+            assert_in_delta 1.day.from_now, assignment.deadline_for(student), 10
+          end
+
+          it 'returns the original due date if subject is nil' do
+            assert_in_delta 1.week.ago, assignment.deadline_for(nil), 10
+          end
+        end
+
+        describe '#deadline_passed_for?' do
+          describe 'only the original deadline has passed' do
+            it 'returns false' do
+              assert_operator assignment.due_at, :<, Time.current
+              assert_operator Time.current, :<, extension.due_at
+              assert_equal false, assignment.deadline_passed_for?(student)
+            end
+
+            it 'returns true if the subject is nil' do
+              assert_equal true, assignment.deadline_passed_for?(nil)
+            end
+          end
+
+          describe 'both the original and extended deadlines have passed' do
+            before { extension.update! due_at: 1.day.ago }
+
+            it 'returns true' do
+              assert_operator assignment.due_at, :<, Time.current
+              assert_operator extension.due_at, :<, Time.current
+              assert_equal true, assignment.deadline_passed_for?(student)
+            end
+
+            it 'returns true if the subject is nil' do
+              assert_equal true, assignment.deadline_passed_for?(nil)
+            end
+          end
+
+          describe 'neither the original nor the extended deadline passed' do
+            before do
+              assignment.update! due_at: 1.week.from_now
+              extension.update! due_at: 2.weeks.from_now
+            end
+
+            it 'returns false' do
+              assert_operator Time.current, :<, assignment.due_at
+              assert_operator Time.current, :<, extension.due_at
+              assert_equal false, assignment.deadline_passed_for?(student)
+            end
+
+            it 'returns false if the subject is nil' do
+              assert_equal false, assignment.deadline_passed_for?(nil)
+            end
+          end
         end
       end
     end
@@ -168,11 +337,13 @@ class AssignmentTest < ActiveSupport::TestCase
     end
 
     it 'destroys dependent records' do
-      assert_equal true, assignment.deliverables.any?
+      assert_not_empty assignment.deliverables
+      assert_not_empty assignment.extensions
 
       assignment.destroy
 
       assert_empty assignment.deliverables.reload
+      assert_empty assignment.extensions.reload
     end
 
     it 'validates associated deliverables' do
@@ -204,22 +375,26 @@ class AssignmentTest < ActiveSupport::TestCase
     describe '#deliverables_for' do
       let(:golden) { deliverables(:assessment_writeup, :assessment_code) }
 
-      it 'returns all deliverables if :deliverables_ready is true' do
-        assignment.update! deliverables_ready: true
-        actual = assignment.deliverables_for(any_user).sort_by(&:name)
-        assert_equal golden, actual, actual.map(&:name)
+      describe ':deliverables_ready is true' do
+        it 'returns all deliverables' do
+          assignment.update! deliverables_ready: true
+          actual = assignment.deliverables_for(any_user).sort_by(&:name)
+          assert_equal golden, actual, actual.map(&:name)
+        end
       end
 
-      it 'returns all deliverables, even if not ready, for admins' do
-        assignment.update! deliverables_ready: false
-        actual = assignment.deliverables_for(admin).sort_by(&:name)
-        assert_equal golden, actual, actual.map(&:name)
-      end
+      describe ':deliverables_ready is false' do
+        before { assignment.update! deliverables_ready: false }
 
-      it "returns an empty array for non-admins if deliverables aren't ready" do
-        assignment.update! deliverables_ready: false
-        assignment.deliverables_ready = false
-        assert_equal [], assignment.deliverables_for(any_user)
+        it 'returns an empty collection for non-admin users' do
+          assert_empty assignment.deliverables_for(any_user)
+          assert_empty assignment.deliverables_for(nil)
+        end
+
+        it 'returns all deliverables for course/site admins' do
+          actual = assignment.deliverables_for(admin).sort_by(&:name)
+          assert_equal golden, actual, actual.map(&:name)
+        end
       end
     end
 

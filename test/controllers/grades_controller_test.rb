@@ -70,7 +70,7 @@ class GradesControllerTest < ActionController::TestCase
             get :editor, params: { course_id: courses(:main).to_param }
 
             assert_response :success
-            assert_select selected_assignment_value, assignments(:ps2).to_param
+            assert_select selected_assignment_value, assignments(:ps3).to_param
           end
         end
 
@@ -83,7 +83,7 @@ class GradesControllerTest < ActionController::TestCase
             get :editor, params: { course_id: courses(:main).to_param }
 
             assert_response :success
-            assert_select selected_assignment_value, Assignment.last.to_param
+            assert_select selected_assignment_value, courses(:main).assignments.last.to_param
           end
 
           it 'renders a blank editor if no assignments exist' do
@@ -119,7 +119,7 @@ class GradesControllerTest < ActionController::TestCase
         it 'renders the new score in the input field' do
           post :create, params: params, xhr: true
           assert_response :success
-          assert_select 'input[value=?]', '4.0'
+          assert_select "input[name='score'][value=?]", '4.0'
         end
       end
 
@@ -135,7 +135,7 @@ class GradesControllerTest < ActionController::TestCase
         it 'renders the updated score in the input field' do
           post :create, params: params, xhr: true
           assert_response :success
-          assert_select 'input[value=?]', '4.0'
+          assert_select "input[name='score'][value=?]", '4.0'
         end
       end
 
@@ -172,7 +172,7 @@ class GradesControllerTest < ActionController::TestCase
           post :create, params: params, xhr: true
 
           assert_response :success
-          assert_select 'input[value=?]', /.+/, false
+          assert_select "input[name='score'][value=?]", /.+/, false
         end
       end
     end

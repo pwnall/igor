@@ -1,5 +1,9 @@
 <h2>Recitation Time Slots</h2>
 
+<%= form_for @time_slot, url: polymorphic_path(@time_slot,
+      course_id: @time_slot.course), html: { id: 'time-slot-form' } do |f| %>
+  <%= f.error_messages %>
+
 <table class="time-slots">
   <thead>
     <tr>
@@ -18,8 +22,9 @@
       <td><%= time_slot_duration time_slot %></td>
       <td>
         <%= link_to time_slot_path(time_slot, course_id: time_slot.course),
-              method: :delete, data: { confirm:
-              'Deleting this time slot will also delete any scheduling conflicts reported by students for this time. Continue?' } do %>
+              method: :delete, data: { confirm: 'Deleting this time slot will '\
+              'also delete any scheduling conflicts reported by students for '\
+              'this time. Continue?' } do %>
           <%= destroy_icon_tag %> Remove
         <% end %>
       </td>
@@ -27,7 +32,9 @@
     <% end %>
 
     <tr class="form-row">
-      <%= render 'time_slots/form' %>
+      <%= render 'time_slots/fields', f: f %>
     </tr>
   </tbody>
 </table>
+
+<% end %>

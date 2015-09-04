@@ -11,22 +11,22 @@
 
 ps1:
   subject: ps1 (Assignment)
-  due_at: <%= 1.week.ago.to_s(:db) %>
+  due_at: <%= 2.weeks.ago.to_s(:db) %>
   course: main
 
 ps2:
   subject: ps2 (Assignment)
-  due_at: <%= 1.day.ago.to_s(:db) %>
+  due_at: <%= 1.week.ago.to_s(:db) %>
   course: main
 
 ps3:
   subject: ps3 (Assignment)
-  due_at: <%= 1.month.from_now.to_s(:db) %>
+  due_at: <%= 1.day.ago.to_s(:db) %>
   course: main
 
 project:
   subject: project (Assignment)
-  due_at: <%= 1.month.from_now.to_s(:db) %>
+  due_at: <%= 2.months.from_now.to_s(:db) %>
   course: main
 
 assessment:

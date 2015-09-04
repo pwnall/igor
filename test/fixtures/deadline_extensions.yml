@@ -1,0 +1,25 @@
+# == Schema Information
+#
+# Table name: deadline_extensions
+#
+#  id           :integer          not null, primary key
+#  subject_type :string           not null
+#  subject_id   :integer          not null
+#  user_id      :integer          not null
+#  grantor_id   :integer
+#  due_at       :datetime         not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#
+
+assessment_dexter:
+  subject: assessment (Assignment)
+  user: dexter
+  grantor: main_staff
+  due_at: <%= 1.day.from_now.to_s(:db) %>
+
+assessment_deedee:
+  subject: assessment (Assignment)
+  user: deedee
+  grantor: main_staff
+  due_at: <%= 2.days.from_now.to_s(:db) %>

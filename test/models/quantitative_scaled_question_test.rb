@@ -55,6 +55,10 @@ class QuantitativeScaledQuestionTest < ActiveSupport::TestCase
   end
 
   describe 'quantitative-scaled-question-specific features' do
+    it 'validates fixture questions (validate JSON serialization)' do
+      assert question.valid?
+    end
+    
     it 'requires a scale min' do
       @question.scale_min = nil
       assert @question.invalid?

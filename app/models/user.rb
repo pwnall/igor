@@ -68,6 +68,9 @@ class User
 
   accepts_nested_attributes_for :profile
 
+  # Sort users by name in alphabetical order.
+  scope :by_name, -> { includes(:profile).order('profiles.name') }
+
   # The user's real-life name.
   #
   # May return the user's e-mail if the user managed to register without
@@ -150,6 +153,27 @@ class User
     submissions = self.submissions
     teams.each { |team| submissions += team.submissions.all }
     submissions
+  end
+
+  # The deadline extensions that have been granted to this user.
+  has_many :extensions, class_name: 'DeadlineExtension', dependent: :destroy,
+      inverse_of: :subject
+
+  # Extensions granted by this user.
+  #
+  # This association is mostly useful to nullify the grantor field if the user
+  # is destroyed.
+  has_many :granted_extensions, class_name: 'DeadlineExtension',
+      foreign_key: :grantor_id, dependent: :nullify, inverse_of: :grantor
+
+  # Get users without an extension for the given assignment.
+  def self.without_extensions_for(assignment)
+    where.not id: assignment.extension_recipients
+  end
+
+  # The extension, if any, granted for the given assignment.
+  def extension_for(assignment)
+    extensions.find_by subject: assignment
   end
 end
 

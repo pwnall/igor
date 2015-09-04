@@ -9,8 +9,7 @@ class RegistrationsController < ApplicationController
   # GET /6.006/registrations
   def index
     @prerequisites = current_course.prerequisites
-    @registrations = current_course.registrations.includes(user: :profile).
-        sort_by { |r| r.user.profile.name }
+    @registrations = current_course.registrations.by_user_name
     @staff = current_course.staff
 
     respond_to do |format|

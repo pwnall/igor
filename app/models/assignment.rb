@@ -37,7 +37,12 @@ class Assignment < ActiveRecord::Base
 
   # True if the given user is allowed to see this assignment.
   def can_read?(user)
-     ready? || course.can_edit?(user)
+     ready? || can_edit?(user)
+  end
+
+  # True if the given user is allowed to submit solutions for this assignment.
+  def can_submit?(user)
+    (deliverables_ready? && !deadline_passed_for?(user)) || can_edit?(user)
   end
 
   # True if the given user is allowed to change this assignment.
@@ -66,9 +71,9 @@ class Assignment
   # All students' submissions for this assignment.
   has_many :submissions, through: :deliverables, inverse_of: :assignment
 
-  # Deliverables that a user can submit files for.
+  # Deliverables that the given user can see (not necessarily submit files for).
   def deliverables_for(user)
-    (deliverables_ready? || course.can_edit?(user)) ? deliverables : []
+    (deliverables_ready? || can_edit?(user)) ? deliverables : deliverables.none
   end
 
   # Number of submissions that will be received for this assignment.
