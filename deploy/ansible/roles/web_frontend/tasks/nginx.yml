@@ -27,6 +27,7 @@
   - restart nginx daemon
 
 - name: add nginx SElinux label to TLS files
+  when: ansible_selinux != False
   become: true
   become_user: root
   file:
@@ -38,6 +39,7 @@
   - seven_web.pem
 
 - name: add nginx SElinux label to seven_web assets
+  when: ansible_selinux != False
   become: true
   become_user: root
   file:
@@ -45,11 +47,6 @@
     state: directory
     setype: httpd_sys_content_t
     recurse: yes
-
-- name: allow nginx to connect to the backend
-  become: true
-  become_user: root
-  seboolean: name=httpd_can_network_connect persistent=yes state=yes
 
 - name: write nginx config
   become: true

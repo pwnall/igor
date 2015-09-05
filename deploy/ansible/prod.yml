@@ -9,7 +9,7 @@
   vars:
     ansible_ssh_user: "{{ os_image_user }}"
   roles:
-  - dnf_update
+  - os_package_update
     #- docker_storage
 
 - hosts: "{{ prod_master_group_name }}"

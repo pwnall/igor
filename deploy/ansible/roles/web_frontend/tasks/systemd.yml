@@ -3,7 +3,7 @@
   become_user: root
   template:
     src: fe_systemd.service.j2
-    dest: /usr/lib/systemd/system/seven_web.service
+    dest: /lib/systemd/system/seven_web.service
   register: frontend_systemd_unit
 
 - name: create systemd unit for frontend delayed_job
@@ -11,7 +11,7 @@
   become_user: root
   template:
     src: dj_systemd.service.j2
-    dest: /usr/lib/systemd/system/seven_dj.service
+    dest: /lib/systemd/system/seven_dj.service
   register: frontend_dj_systemd_unit
 
 - name: reload systemd configuration

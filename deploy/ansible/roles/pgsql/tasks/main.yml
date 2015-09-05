@@ -1,5 +1,6 @@
 ---
-- name: install postgresql
+- name: install postgresql with dnf
+  when: ansible_pkg_mgr == 'dnf'
   become: true
   become_user: root
   dnf: name={{ item }} state=present
@@ -8,7 +9,22 @@
   - postgresql-server
   - python-psycopg2
 
-- name: initialize postgresql data directory
+- name: install postgresql with apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name={{ item }} state=present
+  with_items:
+  - postgresql
+  - postgresql-client
+  - postgresql-contrib
+  - python-psycopg2
+
+# NOTE: Ubuntu's postgresql package automatically creates a cluster at
+#       /var/lib/postgresql/9.4/main. Fedora provides a postgresql-setup
+#       script that creates a cluster at /var/lib/pgsql/data.
+- name: initialize postgresql data directory on fedora
+  when: ansible_os_family == 'RedHat'
   become: true
   become_user: root
   command: postgresql-setup --initdb

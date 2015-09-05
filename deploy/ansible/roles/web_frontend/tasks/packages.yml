@@ -1,0 +1,33 @@
+---
+- name: install dnf packages used by the application's gems
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  dnf: name={{ item }} state=present
+  with_items:
+  - libxml2-devel  # nokogiri
+  - libxslt-devel
+  - postgresql-devel
+  - ImageMagick-devel  # rmagick
+  - ImageMagick
+  - nodejs  # asset pipeline
+  - npm
+  - file  # paperclip
+
+
+- name: install apt packages used by the application's gems
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name={{ item }} state=present
+  with_items:
+  - libxml2-dev  # nokogiri
+  - libxslt-dev
+  - libpq-dev
+  - libmagickwand-dev  # rmagick
+  - libmagickcore-dev
+  - imagemagick
+  - nodejs  # asset pipeline
+  - npm
+  - file  # paperclip
+

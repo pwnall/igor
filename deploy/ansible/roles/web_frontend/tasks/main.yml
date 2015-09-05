@@ -1,4 +1,6 @@
 ---
+- include: packages.yml
+
 - name: check out repository
   become: true
   become_user: seven_web
@@ -8,20 +10,6 @@
     dest: /home/seven_web/seven
     update: yes
     force: yes
-
-- name: install packages used by the application's gems
-  become: true
-  become_user: root
-  dnf: name={{ item }} state=present
-  with_items:
-  - libxml2-devel  # nokogiri
-  - libxslt-devel
-  - postgresql-devel
-  - ImageMagick-devel  # rmagick
-  - ImageMagick
-  - nodejs  # asset pipeline
-  - npm
-  - file  # paperclip
 
 - name: install or update core gems
   become: true
@@ -36,12 +24,11 @@
   become: true
   become_user: seven_web
   bundler:
-    executable: /home/seven_web/bin/bundler
+    executable: /home/seven_web/seven/bin/bundle
     chdir: /home/seven_web/seven
     deployment_mode: yes
     state: present
     user_install: yes
-    extra_args:
 
 - name: precompile assets
   become: true

@@ -1,0 +1,26 @@
+---
+- name: update dnf packages
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  command: dnf upgrade -y
+  register: dnf_update_result
+  changed_when: "'Nothing to do.' not in dnf_update_result.stdout"
+  notify:
+  - reboot machine
+  - wait for machine to come back up
+  - reload facts after OS upgrade
+
+- name: update apt packages
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: upgrade=full update_cache=yes
+  notify:
+  - reboot machine
+  - wait for machine to come back up
+  - reload facts after OS upgrade
+
+# NOTE: This makes sure that the machine reboots before Ansible proceeds to the
+#       next play.
+- meta: flush_handlers

@@ -4,6 +4,7 @@
   become_user: root
   user:
     name: seven_web
+    createhome: yes
     groups: docker
     append: yes
     state: present

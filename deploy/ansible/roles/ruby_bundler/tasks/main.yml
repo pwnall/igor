@@ -1,5 +1,6 @@
 ---
-- name: install ruby and packages needed to compile ruby gems
+- name: install ruby and dnf packages needed to compile ruby gems
+  when: ansible_pkg_mgr == 'dnf'
   become: true
   become_user: root
   dnf: name={{ item }} state=present
@@ -16,3 +17,28 @@
   - zlib-devel
   - patch
   - git
+
+# NOTE: We need the PPA because Ubuntu ships Ruby 2.1, but Rails 5 wants 2.2.2.
+# TODO(pwnall): Remove the custom repo when Ubuntu 15.10 is released.
+- name: set up Brightbox PPA
+  when: ansible_pkg_mgr == 'apt'
+  apt_repository: repo='ppa:brightbox/ruby-ng' update_cache=yes
+  become: true
+  become_user: root
+
+- name: install ruby and apt packages needed to compile ruby gems
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name={{ item }} state=present
+  with_items:
+  - ruby2.2
+  - ruby2.2-dev
+  - build-essential
+  - automake
+  - autoconf
+  - libcurl4-openssl-dev
+  - libssl-dev
+  - zlib1g-dev
+  - patch
+  - git-core

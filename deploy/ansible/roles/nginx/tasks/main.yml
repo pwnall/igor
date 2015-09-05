@@ -1,8 +1,22 @@
 ---
-- name: install nginx
+- name: install nginx with dnf
+  when: ansible_pkg_mgr == 'dnf'
   become: true
   become_user: root
   dnf: name=nginx state=present
+
+- name: install nginx with apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name=nginx-full state=present
+
+# NOTE: Ubuntu's nginx uses www-data, whereas Fedora's uses nginx. We
+#       standardize on nginx, for simplicty.
+- name: create nginx user
+  become: true
+  become_user: root
+  user: name=nginx system=yes createhome=no
 
 - name: write nginx config
   become: true
@@ -11,7 +25,23 @@
   notify:
   - restart nginx daemon
 
+# NOTE: This step is not necessary, but we perform it to avoid having admins
+#       with Debian / Ubuntu experience get confused.
+- name: wipe nginx sites-enabled / sites-available
+  become: true
+  become_user: root
+  file: path=/etc/nginx/{{ item }} state=absent
+  with_items:
+  - sites-available
+  - sites-enabled
+
 - name: enable and start nginx systemd unit
   become: true
   become_user: root
   service: name=nginx enabled=yes state=started
+
+- name: configure SElinux to allow nginx to be a reverse proxy
+  when: ansible_selinux != False
+  become: true
+  become_user: root
+  seboolean: name=httpd_can_network_connect persistent=yes state=yes

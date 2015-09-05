@@ -7,17 +7,17 @@
 - name: create tmp/images directory
   file: path=./tmp/images state=directory mode=0755
 
-- name: download Fedora Cloud image
+- name: download {{ image_name }} VM image
   get_url:
-    dest: ./tmp/images/fedora.qcow2
+    dest: ./tmp/images/{{ image_name }}.qcow2
     timeout: 3600
-    url: "{{ fedora_image_url }}"
+    url: "{{ cloud_image_url }}"
 
-- name: register Fedora Cloud image
+- name: register {{ image_name }} VM image
   os_image:
     name: "{{ image_name }}"
     container_format: bare
     disk_format: qcow2
     timeout: 3600
-    filename: ./tmp/images/fedora.qcow2
+    filename: ./tmp/images/{{ image_name }}.qcow2
     cloud: "{{ os_cloud }}"

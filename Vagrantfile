@@ -1,14 +1,19 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# 22 and 23 are supported.
-FEDORA_VERSION = 22
+# Supported values:
+# ubuntu-vivid, fedora-22, fedora-23
+OS = 'ubuntu-vivid'
 
 # Number of worker VMs.
 WORKERS = 1
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "fedora-server-cloud-#{FEDORA_VERSION}"
+  config.vm.box = {
+    'ubuntu-vivid' => 'ubuntu/vivid64',
+    'fedora-22' => 'fedora-server-cloud-22',
+    'fedora-23' => 'fedora-server-cloud-23',
+  }[OS]
   config.vm.box_check_update = true
 
   # Create a forwarded port mapping which allows access to a specific port
@@ -47,6 +52,7 @@ Vagrant.configure(2) do |config|
 
           # Uncomment for Ansible connection debugging.
           # ansible.verbose = "vvvv"
+          # ansible.verbose = "vvv"
         end
       end
     end
@@ -54,12 +60,10 @@ Vagrant.configure(2) do |config|
 
   config.vm.provider :virtualbox do |vb, override|
     vb.memory = 1024
-    case FEDORA_VERSION
-    when 22
-      override.vm.box_url = "https://download.fedoraproject.org/pub/fedora/linux/releases/22/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-22-20150521.x86_64.vagrant-virtualbox.box"
-    when 23
-      override.vm.box_url = "https://download.fedoraproject.org/pub/fedora/linux/releases/test/23_Alpha/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-23_Alpha-20150806.2.x86_64.vagrant-virtualbox.box"
-    end
+    override.vm.box_url = {
+      'fedora-22' => "https://download.fedoraproject.org/pub/fedora/linux/releases/22/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-22-20150521.x86_64.vagrant-virtualbox.box",
+      'fedora-23' => "https://download.fedoraproject.org/pub/fedora/linux/releases/test/23_Alpha/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-23_Alpha-20150806.2.x86_64.vagrant-virtualbox.box",
+    }[OS]
 
     # The NAT network adapter uses the Intel PRO/1000MT adapter by default.
     vb.customize ['modifyvm', :id, '--nictype1', 'virtio']
@@ -67,11 +71,9 @@ Vagrant.configure(2) do |config|
 
   config.vm.provider :libvirt do |domain, override|
     domain.memory = 1024
-    case FEDORA_VERSION
-    when 22
-      override.vm.box_url = "https://download.fedoraproject.org/pub/fedora/linux/releases/22/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-22-20150521.x86_64.vagrant-libvirt.box"
-    when 23
-      override.vm.box_url = "https://download.fedoraproject.org/pub/fedora/linux/releases/test/23_Alpha/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-23_Alpha-20150806.2.x86_64.vagrant-libvirt.box"
-    end
+    override.vm.box_url = {
+      'fedora-22' => "https://download.fedoraproject.org/pub/fedora/linux/releases/22/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-22-20150521.x86_64.vagrant-libvirt.box",
+      'fedora-23' => "https://download.fedoraproject.org/pub/fedora/linux/releases/test/23_Alpha/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-23_Alpha-20150806.2.x86_64.vagrant-libvirt.box",
+    }[OS]
   end
 end
