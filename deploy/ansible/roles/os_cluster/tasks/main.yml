@@ -1,0 +1,51 @@
+---
+# Brings up a set of VMs on OpenStack to be set up as a Seven cluster.
+
+- include: ssh_keys.yml
+- include: image.yml
+- include: network.yml
+
+- name: spin up master VM
+  os_server:
+    name: "{{ master_instance_name }}"
+    flavor: "{{ os_master_flavor }}"
+    nics:
+    - net-name: "{{ os_public_net }}"
+    image: "{{ image_name }}"
+    key_name: "{{ key_name }}"
+    security_groups: "{{ security_group_name }}"
+    meta:
+      system: "{{ os_prefix }}"
+      system_role: "{{ os_prefix }}_master"
+    # NOTE: Setting config_drive to no causes cloud-init to fail
+    #       occasionally, if it doesn't discover the correct route to
+    #       the metadata server (169.254.169.254).
+    config_drive: yes
+    # For cloudinit configuration details, see the Atomic article below.
+    # https://access.redhat.com/articles/rhel-atomic-cloud-init-faq
+    userdata: "{{ lookup('template', 'master_userdata.j2') }}"
+    timeout: "{{ os_vm_bringup_timeout }}"
+    cloud: "{{ os_cloud }}"
+  notify: refresh the dynamic inventory cache
+
+- name: spin up worker VMs
+  os_server:
+    name: "{{ worker_instance_prefix }}{{ item }}"
+    flavor: "{{ os_worker_flavor }}"
+    nics:
+    - net-name: "{{ os_public_net }}"
+    image: "{{ image_name }}"
+    key_name: "{{ key_name }}"
+    security_groups: "{{ security_group_name }}"
+    meta:
+      system: "{{ os_prefix }}"
+      system_role: "{{ os_prefix }}_worker"
+    config_drive: yes
+    userdata: "{{ lookup('template', 'worker_userdata.j2') }}"
+    timeout: "{{ os_vm_bringup_timeout }}"
+    cloud: "{{ os_cloud }}"
+  with_sequence: start=1 end={{ worker_count }}
+  when: worker_count > 0
+  notify: refresh the dynamic inventory cache
+
+- include: volumes.yml

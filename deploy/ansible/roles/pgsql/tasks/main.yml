@@ -1,0 +1,21 @@
+---
+- name: install postgresql
+  become: true
+  become_user: root
+  dnf: name={{ item }} state=present
+  with_items:
+  - postgresql
+  - postgresql-server
+  - python-psycopg2
+
+- name: initialize postgresql data directory
+  become: true
+  become_user: root
+  command: postgresql-setup --initdb
+  args:
+    creates: /var/lib/pgsql/data/base
+
+- name: enable and start postgresql systemd unit
+  become: true
+  become_user: root
+  service: name=postgresql enabled=yes state=started

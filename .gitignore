@@ -1,21 +1,25 @@
+# Ignore cloud credentials.
+clouds.yaml
+deploy/keys/
+
 # Ignore bundler config.
-/.bundle
+.bundle
 
 # Ignore all logfiles and tempfiles.
-/log/*.log
-/tmp
+log/*.log
+tmp
+
+# Ignore vagrant tempfiles.
+.vagrant
 
 # Ignore generated assets.
-/public/assets
+public/assets
 
 # Ignore files generated during testing.
-/test/fixtures/test_files
-
-# Production configuration.
-/config/rails_pwnerer
+test/fixtures/test_files
 
 # Auto-generated class diagrams.
-/doc/*.svg
+doc/*.svg
 
 # Platform-specific.
 *~

@@ -1,0 +1,39 @@
+upstream seven_web {
+  server 127.0.0.1:9000;
+}
+
+server {
+  listen 443 ssl;
+  listen 80;
+
+  ssl_certificate /home/seven_web/keys/seven_web.cer;
+  ssl_certificate_key /home/seven_web/keys/seven_web.pem;
+
+  charset utf-8;
+  root /home/seven_web/seven/public;
+  client_max_body_size 16M;
+  error_page 404 /404.html;
+  error_page 500 502 503 504 /500.html;
+  try_files $uri @rails;
+
+  location ~ ^/assets/ {
+    try_files $uri @rails;
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+
+    open_file_cache max=1000 inactive=500s;
+    open_file_cache_valid 600s;
+    open_file_cache_errors on;
+  }
+  location @rails {
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header Host $host;
+    proxy_redirect off;
+    proxy_connect_timeout 2;
+    proxy_read_timeout 86400;
+    proxy_pass http://seven_web;
+  }
+}

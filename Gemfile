@@ -28,7 +28,7 @@ gem 'rack-noie', '>= 1.0', require: 'noie',
 gem 'rmagick', '>= 2.14.0'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
-gem 'thin', '>= 1.6.3'
+gem 'unicorn', '>= 4.9.0', require: false
 
 # Background processing.
 gem 'daemons'  # Required by delayed_job.

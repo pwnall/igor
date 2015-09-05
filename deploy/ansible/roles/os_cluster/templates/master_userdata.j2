@@ -1,0 +1,15 @@
+#cloud-config
+user: {{ os_image_user }}
+password: {{ os_console_password }}
+chpasswd:
+  list: |
+    root:{{ os_console_password }}
+    {{ os_image_user }}:{{ os_console_password }}
+  expire: False
+ssh_pwauth: False
+ssh_authorized_keys:
+- {{ public_key }}
+ssh_keys:
+  rsa_private: |
+    {{ master_private_key | regex_replace('\n', '\n    ') }}
+  rsa_public: {{ master_public_key }}

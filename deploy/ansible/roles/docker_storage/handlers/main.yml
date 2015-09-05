@@ -1,0 +1,15 @@
+---
+- name: stop the docker daemon
+  become: true
+  become_user: root
+  service: name=docker state=stopped
+
+- name: reconfigure Docker LVM storage
+  command: docker-storage-setup
+  become: true
+  become_user: root
+
+- name: restart docker daemon
+  become: true
+  become_user: root
+  service: name=docker state=restarted

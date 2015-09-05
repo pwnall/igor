@@ -1,0 +1,12 @@
+[Service]
+User=seven_web
+WorkingDirectory=/home/seven_web/seven
+Environment=RAILS_ENV=production
+Environment=DATABASE_URL=postgres:///seven_production
+ExecStart=/home/seven_web/seven/bin/rake jobs:work
+Restart=always
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=%n
+KillMode=process

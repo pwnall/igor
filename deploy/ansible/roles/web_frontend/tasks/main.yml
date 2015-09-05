@@ -1,0 +1,73 @@
+---
+- name: check out repository
+  become: true
+  become_user: seven_web
+  git:
+    recursive: yes
+    repo: https://github.com/pwnall/seven.git
+    dest: /home/seven_web/seven
+    update: yes
+    force: yes
+
+- name: install packages used by the application's gems
+  become: true
+  become_user: root
+  dnf: name={{ item }} state=present
+  with_items:
+  - libxml2-devel  # nokogiri
+  - libxslt-devel
+  - postgresql-devel
+  - ImageMagick-devel  # rmagick
+  - ImageMagick
+  - nodejs  # asset pipeline
+  - npm
+  - file  # paperclip
+
+- name: install or update core gems
+  become: true
+  become_user: seven_web
+  gem: name={{ item }} state=latest
+  with_items:
+  - bundler
+  - foreman
+  - rake
+
+- name: install bundler packages
+  become: true
+  become_user: seven_web
+  bundler:
+    executable: /home/seven_web/bin/bundler
+    chdir: /home/seven_web/seven
+    deployment_mode: yes
+    state: present
+    user_install: yes
+    extra_args:
+
+- name: precompile assets
+  become: true
+  become_user: seven_web
+  command: /home/seven_web/seven/bin/rake assets:precompile
+  args:
+    chdir: /home/seven_web/seven
+  register: precompile_assets_result
+  changed_when: "'Writing' in precompile_assets_result.stdout"
+
+- name: apply database migrations
+  become: true
+  become_user: seven_web
+  command: /home/seven_web/seven/bin/rake db:migrate
+  args:
+    chdir: /home/seven_web/seven
+  environment:
+    RAILS_ENV: production
+    DATABASE_URL: postgres:///seven_production
+  register: rake_db_migrate_result
+  changed_when: "'migrating' in rake_db_migrate_result.stdout"
+
+- name: create keys directory
+  become: true
+  become_user: seven_web
+  file: dest=/home/seven_web/keys state=directory mode=0750
+
+- include: systemd.yml
+- include: nginx.yml

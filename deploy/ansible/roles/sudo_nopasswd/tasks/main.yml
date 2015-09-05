@@ -1,0 +1,8 @@
+---
+- name: configure password-less sudo
+  become: true
+  become_user: root
+  template:
+    src: nopasswd.j2
+    dest: /etc/sudoers.d/{{ ansible_ssh_user }}-nopasswd
+    validate: visudo -cf %s

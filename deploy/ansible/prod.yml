@@ -1,0 +1,36 @@
+---
+# NOTE: This has the side-effect of kicking off fact gathering on the workers.
+#       The Kubernetes master configuration needs the internal IPs of all the
+#       workers. If we don't do this before the master configuration, we'll
+#       need something like http://stackoverflow.com/questions/30024664
+- hosts: all
+  vars_files:
+  - ../openstack_vars.yml
+  vars:
+    ansible_ssh_user: "{{ os_image_user }}"
+  roles:
+  - dnf_update
+    #- docker_storage
+
+- hosts: "{{ prod_master_group_name }}"
+  vars_files:
+  - ../openstack_vars.yml
+  vars:
+    ansible_ssh_user: "{{ os_image_user }}"
+  roles:
+    - sudo_nopasswd
+    - docker
+    - nginx
+    - pgsql
+    - web_user
+    - web_db
+    - ruby_bundler
+    - web_frontend
+
+- hosts: "{{ prod_worker_group_name }}"
+  vars_files:
+  - ../openstack_vars.yml
+  vars:
+    ansible_ssh_user: "{{ os_image_user }}"
+  roles: []
+    #- docker_registry_client

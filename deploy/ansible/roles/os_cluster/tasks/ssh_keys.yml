@@ -1,0 +1,37 @@
+---
+# Creates the SSH keys used to connect to the VMs.
+
+- name: create keys directory
+  file: path=./deploy/keys state=directory mode=0755
+
+- name: create SSH host key for master
+  command: >
+      ssh-keygen -N '' -t rsa -b 2048 -f ./deploy/keys/master_host
+      -C "master@{{ os_prefix}}"
+  args:
+    creates: ./deploy/keys/master_host
+
+- name: create SSH host key for workers
+  command: >
+      ssh-keygen -N '' -t rsa -b 2048 -f ./deploy/keys/worker_host
+      -C "worker@{{ os_prefix}}"
+  args:
+    creates: ./deploy/keys/worker_host
+
+- name: read SSH keys
+  set_fact:
+    master_private_key: "{{ lookup('file', '../keys/master_host')  }}"
+    master_public_key: "{{ lookup('file', '../keys/master_host.pub') }}"
+    worker_private_key: "{{ lookup('file', '../keys/worker_host')  }}"
+    worker_public_key: "{{ lookup('file', '../keys/worker_host.pub') }}"
+
+- name: generate known_hosts
+  template:
+    src: templates/known_hosts.j2
+    dest: ./deploy/keys/known_hosts
+
+- name: register SSH key
+  os_keypair:
+    name: "{{ key_name }}"
+    public_key: "{{ public_key }}"
+    cloud: "{{ os_cloud }}"

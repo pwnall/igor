@@ -1,0 +1,24 @@
+---
+- name: create the seven_web postgresql role
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: seven_web
+    role_attr_flags: CREATEDB,NOSUPERUSER
+    state: present
+
+- name: create the seven_web user database
+  become: true
+  become_user: seven_web
+  postgresql_db: name=seven_web login_user=seven_web state=present
+
+- name: create the seven database
+  become: true
+  become_user: seven_web
+  postgresql_db:
+    name: seven_production
+    login_user: seven_web
+    state: present
+    lc_collate: en_US.UTF-8
+    lc_ctype: en_US.UTF-8
+

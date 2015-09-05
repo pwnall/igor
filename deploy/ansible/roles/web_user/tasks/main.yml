@@ -1,0 +1,9 @@
+---
+- name: create the seven_web user
+  become: true
+  become_user: root
+  user:
+    name: seven_web
+    groups: docker
+    append: yes
+    state: present

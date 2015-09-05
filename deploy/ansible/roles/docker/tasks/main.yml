@@ -1,0 +1,22 @@
+---
+- name: install docker
+  become: true
+  become_user: root
+  dnf: name=docker state=present
+
+- name: create docker group
+  become: true
+  become_user: root
+  group: name=docker system=yes state=present
+
+- name: write docker config
+  become: true
+  become_user: root
+  template: src=docker_config.j2 dest=/etc/sysconfig/docker
+  notify:
+  - restart docker daemon
+
+- name: enable and start docker daemon
+  become: true
+  become_user: root
+  service: name=docker enabled=yes state=started

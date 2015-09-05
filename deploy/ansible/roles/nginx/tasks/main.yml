@@ -1,0 +1,17 @@
+---
+- name: install nginx
+  become: true
+  become_user: root
+  dnf: name=nginx state=present
+
+- name: write nginx config
+  become: true
+  become_user: root
+  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+  notify:
+  - restart nginx daemon
+
+- name: enable and start nginx systemd unit
+  become: true
+  become_user: root
+  service: name=nginx enabled=yes state=started

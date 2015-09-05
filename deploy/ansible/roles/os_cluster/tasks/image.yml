@@ -1,0 +1,23 @@
+---
+# Creates the image that the VMs will boot from.
+
+- name: create tmp directory
+  file: path=./tmp state=directory mode=0755
+
+- name: create tmp/images directory
+  file: path=./tmp/images state=directory mode=0755
+
+- name: download Fedora Cloud image
+  get_url:
+    dest: ./tmp/images/fedora.qcow2
+    timeout: 3600
+    url: "{{ fedora_image_url }}"
+
+- name: register Fedora Cloud image
+  os_image:
+    name: "{{ image_name }}"
+    container_format: bare
+    disk_format: qcow2
+    timeout: 3600
+    filename: ./tmp/images/fedora.qcow2
+    cloud: "{{ os_cloud }}"

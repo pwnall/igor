@@ -21,10 +21,14 @@ The recommended way to get the libraries is your system's package manager, or
 
 ### Mac OS
 
+The following [Homebrew](http://brew.sh) commands install the requirements on
+OSX.
+
 ```bash
 brew install docker docker-machine imagemagick pkg-config
+brew install ansible --HEAD
 brew install caskroom/cask/brew-cask
-brew cask install virtualbox
+brew cask install vagrant virtualbox
 docker-machine create --driver virtualbox dev
 
 # The command below shows up when you run docker-machine env dev.
@@ -112,30 +116,38 @@ $ m test/example_test.rb:4
 ```
 
 
-## Production Deployment on alg.csail.mit.edu
+## Production Deployment with Ansible
 
-Back up the previous site version.
+The playbooks require an Ansible 2.0 from
+[master](https://github.com/ansible/ansible).
 
-```bash
-sudo rpwn backup
-```
+### Inventory Errors
 
-Update the OS layer.
+The dynamic inventory code was sourced from
+[Ansible's repository](https://github.com/ansible/ansible/blob/devel/contrib/inventory/openstack.py).
 
-```bash
-sudo apt-get update && sudo apt-get -y dist-upgrade
-sudo gem update --system
-sudo gem update
-```
+### Running the Playbooks
 
-Update the application code.
+Generate TLS certificates for the Web server.
 
 ```bash
-sudo rpwn update seven
+ansible-playbook -i "localhost," deploy/ansible/keys.yml
 ```
 
-Reset the database.
+Copy `clouds.example.yaml` into `clouds.yaml` and insert valid OpenStack
+credentials in it.
+
+Run the VM bringup playbook.
 
 ```bash
-sudo rpwn dbreset seven
+ansible-playbook -i "localhost," -e os_cloud=test deploy/ansible/openstack_up.yml
 ```
+
+Run the deployment playbook.
+
+```bash
+ansible-playbook deploy/ansible/prod.yml
+```
+
+Last, save the contents of the `deploy/keys/` directory somewhere safe.
+

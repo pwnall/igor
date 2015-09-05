@@ -1,0 +1,41 @@
+---
+# The name of an OpenStack network that is connected to the Internet.
+os_public_net: inet
+# Added to the beginning of various OpenStack names.
+# This is used to distinguish this deployment's hosts from other OpenStack
+# resources in the same project.
+os_prefix: algprod
+
+# The OpenStack configuration name in clouds.yml.
+os_cloud: test
+# The OpenStack flavor (VM type) for the Web server.
+# This is only used in the cluster bringup receipe.
+os_master_flavor: lg.4core
+# The OpenStack flavor (VM type) for the Docker workers.
+# This is only used in the cluster bringup receipe.
+os_worker_flavor: m1.2core
+# Number of Docker worker VMs that will be created.
+# This is only used in the cluster bringup receipe.
+worker_count: 0
+# Size in GB for the volume attached to the Web server.
+# This volume stores the data in the Docker registry.
+os_master_volume_gb: 32
+# Size in GB for each of the volumes attached to Docker workers.
+# These volumes store containers and data.
+os_worker_volume_gb: 32
+# Type for all the volumes created for the cluster.
+os_volume_type: production
+# The password for the root and unprivileged user on the image.
+# This can only be used to log in using the console. SSH password
+# authentication is disabled for security.
+# This is only used in the cluster bringup receipe.
+os_console_password: fedora
+
+# The SSH user name that can access the cloud image.
+# This only needs to change if the cloud image doesn't accept cloudinit data.
+os_image_user: fedora
+
+# The inventory group containing the Web server.
+prod_master_group_name: meta-system_role_{{ os_prefix }}_master
+# The inventory group containing the Docker workers.
+prod_worker_group_name: meta-system_role_{{ os_prefix }}_worker

@@ -1,0 +1,31 @@
+- name: create systemd unit for frontend
+  become: true
+  become_user: root
+  template:
+    src: fe_systemd.service.j2
+    dest: /usr/lib/systemd/system/seven_web.service
+  register: frontend_systemd_unit
+
+- name: create systemd unit for frontend delayed_job
+  become: true
+  become_user: root
+  template:
+    src: dj_systemd.service.j2
+    dest: /usr/lib/systemd/system/seven_dj.service
+  register: frontend_dj_systemd_unit
+
+- name: reload systemd configuration
+  command: systemctl daemon-reload
+  become: true
+  become_user: root
+  when: >
+    frontend_systemd_unit.changed == True or
+    frontend_dj_systemd_unit.changed == True
+
+- name: enable and start systemd units for frontend
+  become: true
+  become_user: root
+  service: name={{ item }} enabled=yes state=started
+  with_items:
+  - seven_web
+  - seven_dj
