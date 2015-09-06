@@ -16,13 +16,19 @@
   become_user: root
   group: name=docker system=yes state=present
 
-# NOTE: Ubuntu does not mess with the docker group, so this step is not
-#       necessary there.
 - name: write docker config for fedora
   when: ansible_os_family == 'RedHat'
   become: true
   become_user: root
   template: src=docker_config.j2 dest=/etc/sysconfig/docker
+  notify:
+  - restart docker daemon
+
+- name: write docker config for ubuntu
+  when: ansible_os_family == 'Debian'
+  become: true
+  become_user: root
+  template: src=docker_config.j2 dest=/etc/default/docker
   notify:
   - restart docker daemon
 
