@@ -1,10 +1,9 @@
 [Service]
 User=seven_web
 WorkingDirectory=/home/seven_web/seven
-Environment=PORT=9000
 Environment=RAILS_ENV=production
 Environment=DATABASE_URL=postgres:///seven_production
-ExecStart=/home/seven_web/seven/bin/rails server --port 9000 --bind 127.0.0.1
+ExecStart=/home/seven_web/seven/bin/puma -C config/puma.rb -b tcp://127.0.0.1:9000
 Restart=always
 StandardInput=null
 StandardOutput=syslog
