@@ -248,12 +248,14 @@ class AssignmentTest < ActiveSupport::TestCase
       end
 
       describe 'student does not have an extension' do
-        before { assert_nil @assignment.extensions.find_by user: student }
+        it 'has correct test conditions' do
+          assert_nil @assignment.extensions.find_by user: student
+        end
 
         describe '#deadline_for' do
           it 'returns the original due date' do
-            assert_in_delta @due_at, @assignment.deadline_for(student), 10
-            assert_in_delta @due_at, @assignment.deadline_for(nil), 10
+            assert_equal @assignment.due_at, @assignment.deadline_for(student)
+            assert_equal @assignment.due_at, @assignment.deadline_for(nil), 10
           end
         end
 
@@ -275,12 +277,11 @@ class AssignmentTest < ActiveSupport::TestCase
 
         describe '#deadline_for' do
           it 'returns the extended due date' do
-            assert_in_delta 1.week.ago, assignment.due_at, 10
-            assert_in_delta 1.day.from_now, assignment.deadline_for(student), 10
+            assert_equal extension.due_at, assignment.deadline_for(student)
           end
 
           it 'returns the original due date if subject is nil' do
-            assert_in_delta 1.week.ago, assignment.deadline_for(nil), 10
+            assert_equal assignment.due_at, assignment.deadline_for(nil)
           end
         end
 
