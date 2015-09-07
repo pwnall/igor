@@ -33,9 +33,12 @@ class Analysis < ActiveRecord::Base
   # The course whose submission was analyzed.
   has_one :course, through: :submission
 
+  # The user or team who created the submission being analyzed.
+  has_one :subject, through: :submission
+
   # True if the given user is allowed to see the analysis.
   def can_read?(user)
-    user && (user == submission.subject || user.admin?)
+    submission.can_read? user
   end
 
   # True if the given user is allowed to see the analyzer's private log.
