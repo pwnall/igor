@@ -8,7 +8,7 @@ module ApplicationHelper
            locals: { is_notice: is_notice }
   end
 
-  def time_delta(dtime, ref_time = Time.now)
+  def time_delta(dtime, ref_time = Time.current)
     ((dtime < ref_time) ? "%s ago" : "in %s") %
         distance_of_time_in_words(dtime, ref_time, include_seconds: true)
   end

@@ -23,7 +23,7 @@ class ActionItem
 
   # True if the deadline passed and the user hasn't fulfilled it.
   def overdue?
-    !done? && due_at < Time.now
+    !done? && due_at < Time.current
   end
 
   # Returns :pending, :done, :overdue, or :missed.

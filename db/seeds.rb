@@ -160,7 +160,7 @@ exams = exam_data.map.with_index do |data, index|
 
   exam = Assignment.new name: "Exam #{i}", weight: 5.0, author: admin
   exam.course = course
-  exam.build_deadline due_at: (Time.now + data[:due_at]), course: course
+  exam.build_deadline due_at: (Time.current + data[:due_at]), course: course
   exam.deliverables_ready = data[:state] != :draft
   exam.metrics_ready = data[:state] == :graded
   exam.save!
@@ -174,7 +174,7 @@ end
 
 users.each_with_index do |user, i|
   exams.each_with_index do |exam, j|
-    next unless exam.due_at < Time.now
+    next unless exam.due_at < Time.current
     exam.metrics.each.with_index do |metric, k|
       next if i + j == k
       grade = metric.grades.build subject: user,
@@ -204,7 +204,7 @@ psets = pset_data.map.with_index do |data, index|
   i = index + 1
   pset = Assignment.new name: "Problem Set #{i}", weight: 1.0, author: admin
   pset.course = course
-  pset.build_deadline due_at: (Time.now + data[:due_at]), course: course
+  pset.build_deadline due_at: (Time.current + data[:due_at]), course: course
   pset.deliverables_ready = data[:state] != :draft
   pset.metrics_ready = data[:state] == :graded
   pset.save!
@@ -238,7 +238,7 @@ end
 
 ([admin] + users).each_with_index do |user, i|
   psets.each_with_index do |pset, j|
-    next unless pset.due_at < Time.now
+    next unless pset.due_at < Time.current
 
     unless (i + j) % 20 == 1
       # Submit PDF.

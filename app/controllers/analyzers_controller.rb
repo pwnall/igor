@@ -2,7 +2,7 @@ class AnalyzersController < ApplicationController
   before_action :set_current_course
   before_action :authenticated_as_course_editor
 
-  # GET /analyzers/1/source
+  # GET /6.006/analyzers/1/source
   def source
     @analyzer = Analyzer.find params[:id]
     db_file = @analyzer.db_file
@@ -15,7 +15,7 @@ class AnalyzersController < ApplicationController
         type: db_file.f.content_type
   end
 
-  # GET /analyzers/help
+  # GET /6.006/analyzers/help
   def help
     render 'script_analyzers/help'
   end

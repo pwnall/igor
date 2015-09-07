@@ -151,10 +151,10 @@ class ScriptAnalyzer < Analyzer
 
       # TODO(pwnall): kill the main process from a thread, so we don't waste
       #               0.1 seconds for instant submissions
-      start_time = Time.now
+      start_time = Time.current
       status = nil
       loop do
-        elapsed_time = Time.now - start_time
+        elapsed_time = Time.current - start_time
         time_left = time_limit.to_i + 1 - elapsed_time
         if time_left < 0
           if time_left < -1
