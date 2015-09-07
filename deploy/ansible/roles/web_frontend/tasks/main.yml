@@ -10,6 +10,9 @@
     dest: /home/seven_web/seven
     update: yes
     force: yes
+  notify:
+  - restart frontend service
+  - restart frontend delayed_job service
 
 - name: install or update core gems
   become: true
