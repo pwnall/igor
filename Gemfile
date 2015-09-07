@@ -31,7 +31,6 @@ gem 'jc-validates_timeliness', '>= 3.1.1'
 gem 'puma', '>= 2.13.4', require: false
 
 # Background processing.
-gem 'daemons'  # Required by delayed_job.
 gem 'delayed_job', '>= 4.0.6',
     git: 'https://github.com/pwnall/delayed_job.git', branch: 'rails5'
 gem 'delayed_job_active_record', '>= 4.0.3',  # Required by delayed_job.

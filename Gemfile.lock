@@ -162,7 +162,6 @@ GEM
       docker-api (>= 1.22.4)
       rubyzip (>= 1.1.7)
     creole (0.5.0)
-    daemons (1.2.3)
     debug_inspector (0.0.2)
     docker-api (1.22.4)
       excon (>= 0.38.0)
@@ -317,7 +316,6 @@ DEPENDENCIES
   byebug
   coffee-rails (>= 4.1.0)
   contained_mr (>= 0.1.2)
-  daemons
   delayed_job (>= 4.0.6)!
   delayed_job_active_record (>= 4.0.3)!
   dynamic_form (>= 1.1.4)
