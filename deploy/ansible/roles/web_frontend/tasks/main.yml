@@ -37,6 +37,8 @@
   args:
     chdir: /home/seven_web/seven
   register: precompile_assets_result
+  environment:
+    RAILS_ENV: production
   changed_when: "'Writing' in precompile_assets_result.stdout"
 
 - name: apply database migrations

@@ -28,7 +28,7 @@ http {
   default_type        application/octet-stream;
 
 	gzip on;
-	gzip_disable "msie6";
+	gzip_proxied any;
 
   # Load modular configuration files from the /etc/nginx/conf.d directory.
   # See http://nginx.org/en/docs/ngx_core_module.html#include

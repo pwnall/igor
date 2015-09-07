@@ -3,6 +3,7 @@ User=seven_web
 WorkingDirectory=/home/seven_web/seven
 Environment=RAILS_ENV=production
 Environment=DATABASE_URL=postgres:///seven_production
+Environment=PUMA_WORKERS={{ ansible_processor_vcpus }}
 ExecStart=/home/seven_web/seven/bin/puma -C config/puma.rb -b tcp://127.0.0.1:9000
 Restart=always
 StandardInput=null

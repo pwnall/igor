@@ -3,3 +3,18 @@
   become: true
   become_user: root
   service: name=nginx state=restarted
+
+- name: reload systemd configuration
+  command: systemctl daemon-reload
+  become: true
+  become_user: root
+
+- name: restart frontend service
+  become: true
+  become_user: root
+  service: name=seven_web state=restarted
+
+- name: restart frontend delayed_job service
+  become: true
+  become_user: root
+  service: name=seven_dj state=restarted

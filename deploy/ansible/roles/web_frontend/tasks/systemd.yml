@@ -4,7 +4,9 @@
   template:
     src: fe_systemd.service.j2
     dest: /lib/systemd/system/seven_web.service
-  register: frontend_systemd_unit
+  notify:
+  - reload systemd configuration
+  - restart frontend service
 
 - name: create systemd unit for frontend delayed_job
   become: true
@@ -12,15 +14,9 @@
   template:
     src: dj_systemd.service.j2
     dest: /lib/systemd/system/seven_dj.service
-  register: frontend_dj_systemd_unit
-
-- name: reload systemd configuration
-  command: systemctl daemon-reload
-  become: true
-  become_user: root
-  when: >
-    frontend_systemd_unit.changed == True or
-    frontend_dj_systemd_unit.changed == True
+  notify:
+  - reload systemd configuration
+  - restart frontend delayed_job service
 
 - name: enable and start systemd units for frontend
   become: true

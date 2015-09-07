@@ -18,9 +18,13 @@ server {
 
   location ~ ^/assets/ {
     try_files $uri @rails;
-    gzip_static on;
-    expires max;
     add_header Cache-Control public;
+    expires max;
+
+    gzip_static on;
+    gzip_comp_level 6;
+    gzip_types *;
+    gzip_vary on;
 
     open_file_cache max=1000 inactive=500s;
     open_file_cache_valid 600s;
