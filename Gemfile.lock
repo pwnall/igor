@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/pwnall/delayed_job.git
-  revision: b1b0f982f852288e13e287ec49597c09ea95b408
+  revision: 6dac89307bd606a02f69cec697a60ee6f61af865
   branch: rails5
   specs:
     delayed_job (4.0.6)
@@ -157,7 +157,7 @@ GEM
       execjs
     coffee-script-source (1.9.1.1)
     columnize (0.9.0)
-    concurrent-ruby (0.9.0)
+    concurrent-ruby (0.9.1)
     contained_mr (0.1.2)
       docker-api (>= 1.22.4)
       rubyzip (>= 1.1.7)
@@ -214,7 +214,7 @@ GEM
     mime-types (2.6.1)
     mimemagic (0.3.0)
     mini_portile (0.6.2)
-    minitest (5.7.0)
+    minitest (5.8.0)
     mit_stalker (1.0.6)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
