@@ -1,2 +1,2 @@
-web: bundle exec rails server --port $PORT
-dj: bundle exec rake jobs:work
+web: bin/puma -C config/puma.rb
+dj: bin/rake jobs:work

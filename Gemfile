@@ -28,7 +28,7 @@ gem 'rack-noie', '>= 1.0', require: 'noie',
 gem 'rmagick', '>= 2.14.0'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
-gem 'unicorn', '>= 4.9.0', require: false
+gem 'puma', '>= 2.13.4', require: false
 
 # Background processing.
 gem 'daemons'  # Required by delayed_job.
@@ -59,8 +59,8 @@ gem 'exception_notification', '>= 4.0.1'
 
 # Assets.
 gem 'sass-rails', '>= 5.0.3'
-gem 'pwnstyles_rails', '>= 0.2.3'
-# gem 'pwnstyles_rails', '>= 0.2.3', path: '../pwnstyles_rails'
+gem 'pwnstyles_rails', '>= 0.2.4'
+# gem 'pwnstyles_rails', '>= 0.2.4', path: '../pwnstyles_rails'
 gem 'jquery-rails', '>= 4.0.3'
 gem 'coffee-rails', '>= 4.1.0'
 gem 'uglifier', '>= 2.7.0'
