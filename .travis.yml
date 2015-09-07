@@ -1,0 +1,8 @@
+language: ruby
+addons:
+  postgresql: 9.4
+before_script:
+  - RAILS_ENV=test bin/bundle exec rake db:create db:migrate
+script: bin/rails test test/models/ test/controllers/
+rvm:
+  - 2.2.3
