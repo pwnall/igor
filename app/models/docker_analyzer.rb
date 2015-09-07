@@ -96,7 +96,7 @@ class DockerAnalyzer < Analyzer
     return {} unless json_output
     begin
       JSON.parse json_output  # .split("\n", 2).first
-    rescue JSONError
+    rescue JSON::JSONError
       return {}
     end
   end
