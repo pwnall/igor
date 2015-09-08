@@ -2,16 +2,16 @@
   become: true
   become_user: seven_web
   copy:
-    src: ../keys/web_server.key.pem
-    dest: /home/seven_web/keys/seven_web.pem
+    src: ../keys/{{ os_prefix }}/web_server.key.pem
+    dest: /home/seven_web/keys/web.pem
     mode: 0640
 
 - name: copy server TLS certificate
   become: true
   become_user: seven_web
   copy:
-    src: ../keys/web_server.cert.pem
-    dest: /home/seven_web/keys/seven_web.cer
+    src: ../keys/{{ os_prefix }}/web_server.cert.pem
+    dest: /home/seven_web/keys/web.cer
     mode: 0644
 
 - name: enable group access to seven_web home directory
@@ -35,8 +35,8 @@
     state: file
     setype: httpd_sys_content_t
   with_items:
-  - seven_web.cer
-  - seven_web.pem
+  - web.cer
+  - web.pem
 
 - name: add nginx SElinux label to seven_web assets
   when: ansible_selinux != False

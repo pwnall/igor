@@ -1,2 +1,2 @@
 ---
-keys_dir: ./deploy/keys
+keys_dir: ./deploy/keys/{{ os_prefix }}

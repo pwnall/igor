@@ -9,25 +9,25 @@
   template: src=openssl.cnf.j2 dest={{ keys_dir }}/openssl.cnf
 
 - name: create CA database file
-  template: src=index.txt.j2 dest={{ keys_dir }}/ca.index.txt force=no
+  template: src=index.txt.j2 dest={{ keys_dir }}/web_ca.index.txt force=no
 
 - name: create CA serial file
-  template: src=serial.j2 dest={{ keys_dir }}/ca.serial force=no
+  template: src=serial.j2 dest={{ keys_dir }}/web_ca.serial force=no
 
 - name: create CA key
-  command: openssl genrsa -out {{ keys_dir }}/ca.key.pem 2048
+  command: openssl genrsa -out {{ keys_dir }}/web_ca.key.pem 2048
   args:
-    creates: "{{ keys_dir }}/ca.key.pem"
+    creates: "{{ keys_dir }}/web_ca.key.pem"
 
 - name: create CA certificate
   command: >
     openssl req -config {{ keys_dir }}/openssl.cnf
-        -key {{ keys_dir }}/ca.key.pem
+        -key {{ keys_dir }}/web_ca.key.pem
         -new -x509 -days 3650 -sha256 -extensions v3_ca -batch
-        -out {{ keys_dir }}/ca.cert.pem -set_serial 1
+        -out {{ keys_dir }}/web_ca.cert.pem -set_serial 1
         -subj "/C=US/O=Alg Dev Keys/CN=Dev CA"
   args:
-    creates: "{{ keys_dir }}/ca.cert.pem"
+    creates: "{{ keys_dir }}/web_ca.cert.pem"
 
 - name: create Web server key
   command: openssl genrsa -out {{ keys_dir }}/web_server.key.pem 2048
@@ -47,9 +47,9 @@
   command: >
     openssl ca -config {{ keys_dir }}/openssl.cnf -extensions server_cert
         -days 365 -name CA_default -batch -notext -md sha256
-        -keyfile {{ keys_dir }}/ca.key.pem -cert {{ keys_dir }}/ca.cert.pem
+        -keyfile {{ keys_dir }}/web_ca.key.pem
+        -cert {{ keys_dir }}/web_ca.cert.pem
         -in {{ keys_dir }}/web_server.csr.pem
-        -out {{ keys_dir }}/web_server.cert.pem
-        -outdir {{ keys_dir }}
+        -out {{ keys_dir }}/web_server.cert.pem -outdir {{ keys_dir }}
   args:
     creates: "{{ keys_dir }}/web_server.cert.pem"

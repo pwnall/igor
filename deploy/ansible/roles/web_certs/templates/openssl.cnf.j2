@@ -3,8 +3,8 @@ default_ca = CA_default
 
 [ CA_default ]
 # Directory and file locations.
-database          = ./keys/ca.index.txt
-serial            = ./keys/ca.serial
+database          = {{ keys_dir }}/web_ca.index.txt
+serial            = {{ keys_dir }}/web_ca.serial
 default_md        = sha256  # SHA-1 is deprecated, so use SHA-2 instead.
 default_days      = 3650
 preserve          = no
