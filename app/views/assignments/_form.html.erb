@@ -7,23 +7,55 @@
 
     <h3>Files to be Submitted</h3>
     <div class="assignment-builder-deliverables"
-         data-pwnfx-render-target="assignment-deliverables">
+         data-pwnfx-render-target="proc-deliverable docker-deliverable script-deliverable">
       <%= f.fields_for :deliverables do |df| %>
         <%= render 'deliverables/fields', f: df %>
       <% end %>
     </div>
     <p class="assignment-builder-actions">
-      <%= link_to new_deliverable_path(assignment_id: f.object,
-            course_id: f.object.course), class: 'button', data: {
-            pwnfx_render_randomize: 'IDID',
-            pwnfx_render_scope: 'assignment',
-            pwnfx_render: 'assignment-deliverables' } do %>
+      <%= f.fields_for :analyzer do |af| %>
+        <%= af.label :type, 'Analyze submitted files via: ' %>
+        <%= select_tag :type, analyzer_types_for_select, data: {
+              pwnfx_showif_source: 'analyzer-type' } %>
+      <% end %>
+      <%= button_tag data: { pwnfx_render_scope: 'assignment',
+            pwnfx_render_randomize: 'IDID', pwnfx_render: 'proc-deliverable',
+            pwnfx_showif: 'analyzer-type', pwnfx_showif_is: 'ProcAnalyzer',
+            pwnfx_showif_scope: 'assignment',
+            pwnfx_showif_replace: 'button' } do %>
+        <%= create_icon_tag %> Add File
+      <% end %>
+      <%= button_tag data: { pwnfx_render_scope: 'assignment',
+            pwnfx_render_randomize: 'IDID', pwnfx_render: 'docker-deliverable',
+            pwnfx_showif: 'analyzer-type', pwnfx_showif_is: 'DockerAnalyzer',
+            pwnfx_showif_scope: 'assignment',
+            pwnfx_showif_replace: 'button' } do %>
+        <%= create_icon_tag %> Add File
+      <% end %>
+      <%= button_tag data: { pwnfx_render_scope: 'assignment',
+            pwnfx_render_randomize: 'IDID', pwnfx_render: 'script-deliverable',
+            pwnfx_showif: 'analyzer-type', pwnfx_showif_is: 'ScriptAnalyzer',
+            pwnfx_showif_scope: 'assignment',
+            pwnfx_showif_replace: 'button' } do %>
         <%= create_icon_tag %> Add File
       <% end %>
     </p>
 
-<script type="text/html" data-pwnfx-render-source="assignment-deliverables">
-<%= f.fields_for :deliverables, Deliverable.new, child_index: 'IDID' do |df| %>
+<script type="text/html" data-pwnfx-render-source="proc-deliverable">
+<%= f.fields_for :deliverables, Deliverable.new(analyzer: ProcAnalyzer.new),
+      child_index: 'IDID' do |df| %>
+  <%= render 'deliverables/fields', f: df %>
+<% end %>
+</script>
+<script type="text/html" data-pwnfx-render-source="docker-deliverable">
+<%= f.fields_for :deliverables, Deliverable.new(analyzer: DockerAnalyzer.new),
+      child_index: 'IDID' do |df| %>
+  <%= render 'deliverables/fields', f: df %>
+<% end %>
+</script>
+<script type="text/html" data-pwnfx-render-source="script-deliverable">
+<%= f.fields_for :deliverables, Deliverable.new(analyzer: ScriptAnalyzer.new),
+      child_index: 'IDID' do |df| %>
   <%= render 'deliverables/fields', f: df %>
 <% end %>
 </script>

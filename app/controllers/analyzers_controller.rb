@@ -17,6 +17,6 @@ class AnalyzersController < ApplicationController
 
   # GET /6.006/analyzers/help
   def help
-    render 'script_analyzers/help'
+    render 'docker_analyzers/help'
   end
 end

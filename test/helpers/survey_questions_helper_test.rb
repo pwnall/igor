@@ -17,7 +17,7 @@ class SurveyQuestionsHelperTest < ActionView::TestCase
   end
 
   describe '#survey_question_prompt_placeholder' do
-    it 'returns an open-ended question for a QuantitativeOpenQuestion' do
+    it 'returns the appropriate question for the question type' do
       assert_match /many hours/, survey_question_prompt_placeholder(qo_question)
       assert_match /difficult/, survey_question_prompt_placeholder(qs_question)
       assert_raises(RuntimeError) do

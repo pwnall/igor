@@ -1,22 +1,40 @@
 module AnalyzersHelper
-  # Conjures up an analyzer of the desired type for the deliverable.
-  #
-  # If the deliverable has an analyzer, and the analyzer has the right type,
-  # that analyzer is returned. Otherwise, a new Analyzer of the right type is
-  # created and returned.
-  def analyzer_for(deliverable, klass = ProcAnalyzer)
-    analyzer = deliverable.analyzer
-    analyzer = klass.new unless analyzer.kind_of?(klass)
-    analyzer
+  # The placeholder to use for the given deliverable and form field.
+  def deliverable_field_placeholder(deliverable, field)
+    fields = case deliverable.analyzer
+    when ProcAnalyzer
+      { name: 'PDF Write-up', ext: 'pdf',
+        description: 'Please upload your write-up, in PDF format.' }
+    when DockerAnalyzer, ScriptAnalyzer
+      { name: 'Fibonacci Code', ext: 'py',
+        description: 'Please upload your modified fib.py.' }
+    else
+      raise "Un-implemented analyzer type: #{deliverable.analyzer.inspect}"
+    end
+    fields[field]
   end
 
-  # Array of Analyzer types suitable for use in a select_tag helper.
+  # The name of the partial with fields for the given deliverable's analyzer.
+  def analyzer_partial_for_deliverable(deliverable)
+    case deliverable.analyzer
+    when ProcAnalyzer
+      'proc_analyzers/fields'
+    when DockerAnalyzer
+      'docker_analyzers/fields'
+    when ScriptAnalyzer
+      'script_analyzers/fields'
+    else
+      raise "Un-implemented analyzer type: #{deliverable.analyzer.inspect}"
+    end
+  end
+
+  # The Analyzer types as option tags.
   def analyzer_types_for_select
-    [
-      ['Built-in Analyzer', 'ProcAnalyzer'],
-      ['Docker Analyzer', 'DockerAnalyzer'],
-      ['Script Analyzer', 'ScriptAnalyzer'],
-    ]
+    options_for_select({
+      'Built-in Analyzer' => 'ProcAnalyzer',
+      'Docker Analyzer' => 'DockerAnalyzer',
+      'Script Analyzer' => 'ScriptAnalyzer'
+    })
   end
 
   # Array of ProcAnalyzer message names suitable for use in a select_tag helper.

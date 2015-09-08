@@ -1,14 +1,10 @@
 <section class="deliverable" data-pwnfx-hide-positive="deliverable-div"
          data-pwnfx-scope="deliverable">
   <p class="header">
-    <%= f.text_field :name, placeholder: 'PDF Write-up', required: true,
-                            class: 'name' %>
-    <%= f.text_field :file_ext, placeholder: 'pdf', required: true,
-                                class: 'file-ext' %>
-    <%= f.fields_for :analyzer, f.object.analyzer || ProcAnalyzer.new do |fa| %>
-      <%= fa.select :type, analyzer_types_for_select, {},
-                           data: { pwnfx_showif_source: 'analyzer-type' } %>
-    <% end %>
+    <%= f.text_field :name, required: true, class: 'name',
+          placeholder: deliverable_field_placeholder(f.object, :name)%>
+    <%= f.text_field :file_ext, required: true, class: 'file-ext',
+          placeholder: deliverable_field_placeholder(f.object, :ext)%>
     <span class="destroy">
       <%= f.label :_destroy do %>
         <%= f.check_box :_destroy, data: { pwnfx_hide: 'deliverable-div',
@@ -21,33 +17,14 @@
   </p>
   <p class="description">
     <span class="description">
-      <%= f.text_area :description,
-              placeholder: 'Please upload your write-up, in PDF format.' %>
+      <%= f.text_area :description, placeholder: deliverable_field_placeholder(
+            f.object, :description) %>
     </span>
   </p>
   <p class="analyzer">
-    <div data-pwnfx-showif="analyzer-type" data-pwnfx-showif-is="ProcAnalyzer"
-         data-pwnfx-showif-scope="deliverable"
-         data-pwnfx-showif-replace="div">
-    <%= f.fields_for :analyzer, analyzer_for(f.object, ProcAnalyzer) do |fa| %>
-    <%= render 'proc_analyzers/fields', :f => fa  %>
+    <%= f.fields_for :analyzer do |af| %>
+      <%= render analyzer_partial_for_deliverable(f.object), f: af  %>
+      <%= af.hidden_field :type %>
     <% end %>
-    </div>
-
-    <div data-pwnfx-showif="analyzer-type" data-pwnfx-showif-is="DockerAnalyzer"
-         data-pwnfx-showif-scope="deliverable"
-         data-pwnfx-showif-replace="div">
-    <%= f.fields_for :analyzer, analyzer_for(f.object, DockerAnalyzer) do |fa| %>
-    <%= render 'docker_analyzers/fields', :f => fa  %>
-    <% end %>
-    </div>
-
-    <div data-pwnfx-showif="analyzer-type" data-pwnfx-showif-is="ScriptAnalyzer"
-         data-pwnfx-showif-scope="deliverable"
-         data-pwnfx-showif-replace="div">
-    <%= f.fields_for :analyzer, analyzer_for(f.object, ScriptAnalyzer) do |fa| %>
-    <%= render 'script_analyzers/fields', :f => fa  %>
-    <% end %>
-    </div>
   </p>
 </section>

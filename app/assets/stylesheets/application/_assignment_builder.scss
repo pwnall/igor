@@ -30,7 +30,7 @@
     input.file-ext {
       width: 4em;
     }
-    > input, select, span {
+    > input, > span {
       display: block;
       margin: 0 0.2em 0 0;
     }

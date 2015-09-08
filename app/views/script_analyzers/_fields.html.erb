@@ -1,10 +1,7 @@
 <section class="fields">
   <p class="field">
   <%= f.fields_for :db_file, DbFile.new do |ff| %>
-    <%= ff.label :f do %>
-      <%= link_to help_icon_tag, help_analyzers_path, target: '_blank' %>
-      Script .zip
-    <% end %>
+    <%= ff.label :f, 'Script .zip' %>
     <span class="value">
     <%= ff.file_field :f, accept: 'application/zip',
           required: (!f.object.db_file || f.object.db_file.new_record?) %>
