@@ -62,9 +62,10 @@ class DockerAnalyzer < Analyzer
     template_io = StringIO.new db_file.f.file_contents
     submission_string = submission.db_file.f.file_contents
     job_options = {
-      mapper: { ulimits: { cpu: map_time_limit, rss: map_ram_limit * 256 } },
-      reducer: { ulimits: { cpu: reduce_time_limit,
-                            rss: reduce_ram_limit * 256 } },
+      mapper: { ulimits: { cpu: map_time_limit.to_i,
+                           rss: map_ram_limit.to_i * 256 } },
+      reducer: { ulimits: { cpu: reduce_time_limit.to_i,
+                            rss: reduce_ram_limit.to_i * 256 } },
     }
 
     # NOTE: We release the ActiveRecord connection because we won't use it for
