@@ -153,3 +153,27 @@ ansible-playbook deploy/ansible/prod.yml
 
 Last, save the contents of the `deploy/keys/` directory somewhere safe.
 
+Re-running the deployment playbook will update the application.
+
+
+### Real TLS Certificates
+
+If you have a real TLS certificate for the Web server, run the TLS-generating
+playbook, then overwrite the following files.
+
+* deploy/ansible/algprod/web_server.key.pem - the server's private key
+* deploy/ansible/algprod/web_server.cert.pem - the server's certificate
+
+Re-running the playbook that generates TLS certificates will not overwrite your
+files.
+
+### Managing Multiple Deployments
+
+Defining the `os_prefix` variable on the command line is a convenient way to
+quickly switch between multiple deployments of the application.
+
+```bash
+ansible-playbook -i "localhost," -e os_prefix=algtest deploy/ansible/keys.yml
+ansible-playbook -i "localhost," -e os_cloud=test -e os_prefix=algtest deploy/ansible/openstack_up.yml
+ansible-playbook -i "localhost," -e os_prefix=algtest deploy/ansible/prod.yml
+```

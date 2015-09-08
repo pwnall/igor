@@ -114,7 +114,7 @@ class DockerAnalyzer < Analyzer
     if crashed
       :crashed
     elsif timed_out
-      :timed_out
+      :limit_exceeded
     else
       :ok
     end
