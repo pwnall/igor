@@ -116,9 +116,9 @@ class DeliverableTest < ActiveSupport::TestCase
       let(:individual_deliverable) { deliverables(:assessment_code) }
       let(:student) { users(:dexter) }
 
-      it 'if the user has no submissions for this deliverable, return nil' do
-        Submission.where(deliverable: individual_deliverable, subject: student).
-            destroy_all
+      it 'if the user has no submissions for this deliverable, returns nil' do
+        Submission.where(deliverable: individual_deliverable,
+                         subject: student).destroy_all
 
         assert_nil individual_deliverable.submission_for_grading(student)
         assert_nil individual_deliverable.submission_for_grading(nil)
@@ -160,6 +160,62 @@ class DeliverableTest < ActiveSupport::TestCase
         later.touch
         assert_equal later, team_deliverable.submission_for_grading(teammate)
         assert_equal later, team_deliverable.submission_for_grading(team)
+      end
+    end
+  end
+
+  describe '#submissions_for' do
+    describe 'individual assignments' do
+      let(:individual_deliverable) { deliverables(:assessment_code) }
+      let(:student) { users(:dexter) }
+
+      it 'if the user has no submissions for this deliverable, returns []' do
+        Submission.where(deliverable: individual_deliverable,
+                         subject: student).destroy_all
+
+        assert_equal [], individual_deliverable.submissions_for(student).all
+        assert_equal [], individual_deliverable.submissions_for(nil).all
+      end
+
+      it "returns the user's most recently updated submission" do
+        earlier = submissions(:dexter_code)
+        later = submissions(:dexter_code_v2)
+        assert_operator earlier.updated_at, :<, later.created_at
+        assert_equal [later, earlier],
+            individual_deliverable.submissions_for(student).all
+
+        earlier.touch
+        assert_equal [earlier, later],
+            individual_deliverable.submissions_for(student).all
+
+        later.touch
+        assert_equal [later, earlier],
+            individual_deliverable.submissions_for(student).all
+      end
+    end
+
+    describe 'team assignments' do
+      let(:team_deliverable) { deliverables(:project_writeup) }
+      let(:teammate) { users(:dexter) }
+      let(:team) { teams(:awesome_project) }
+      let(:earlier) { submissions(:dexter_project) }
+      let(:later) { submissions(:dexter_project_v2) }
+
+      it 'returns the latest team submission' do
+        assert_operator earlier.updated_at, :<, later.created_at
+        assert_equal [later, earlier],
+            team_deliverable.submissions_for(teammate)
+        assert_equal [later, earlier], team_deliverable.submissions_for(team)
+
+        earlier.touch
+        assert_equal [earlier, later],
+            team_deliverable.submissions_for(teammate)
+        assert_equal [earlier, later], team_deliverable.submissions_for(team)
+
+        later.touch
+        assert_equal [later, earlier],
+            team_deliverable.submissions_for(teammate)
+        assert_equal [later, earlier], team_deliverable.submissions_for(team)
       end
     end
   end

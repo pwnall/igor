@@ -32,9 +32,8 @@ class SubmissionsController < ApplicationController
         reject { |assignment| assignment.deliverables.empty? }
     @deliverables = @assignments.map(&:deliverables).flatten
 
-    query = Submission.order('updated_at DESC').
-        includes(:db_file, :analysis,
-                 {:deliverable => :assignment}, :subject)
+    query = Submission.order(updated_at: :desc).includes(
+        :db_file, :analysis, {deliverable: :assignment}, :subject)
 
     if params.has_key? :deliverable_id
       query = query.where(:deliverable_id => params[:deliverable_id])

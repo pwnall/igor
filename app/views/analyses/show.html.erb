@@ -9,7 +9,7 @@
     <li>
       <%= render 'deliverables/student_list_entry',
             deliverable: @analysis.submission.deliverable,
-            submission: @analysis.submission %>
+            submissions: [@analysis.submission] %>
     </li>
   </ul>
 <section>

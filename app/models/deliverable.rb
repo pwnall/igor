@@ -47,14 +47,19 @@ class Deliverable < ActiveRecord::Base
   #
   # The result is non-trivial in the presence of teams.
   #
-  # @param [User, Team] submitter the user or team that authored the submission
-  # @return [Submission] the submission used to grade the given submitter
-  def submission_for_grading(submitter)
-    return nil unless submitter
+  # @param {User} user the user or team that authored the submission
+  # @return {Submission} the submission used to grade the given submitter
+  def submission_for_grading(user)
+    return nil unless user
 
+    submissions_for(user).first
+  end
+
+  # Submissions that this user can take credit for.
+  def submissions_for(user)
     partition = assignment.team_partition
-    author = (partition && partition.team_for_user(submitter)) || submitter
-    submissions.where(subject: author).order(:updated_at).last
+    author = (partition && partition.team_for_user(user)) || user
+    submissions.where(subject: author).order(updated_at: :desc)
   end
 
   # Number of submissions that will be received for this deliverable.

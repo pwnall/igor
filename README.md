@@ -1,8 +1,8 @@
 # seven
 
-[![Build Status](https://travis-ci.org/pwnall/seven.svg?branch=master)](https://travis-ci.org/pwnall/seven)
-
 Course homework submission website.
+
+[![Build Status](https://travis-ci.org/pwnall/seven.svg?branch=master)](https://travis-ci.org/pwnall/seven)
 
 
 ## Prerequisites

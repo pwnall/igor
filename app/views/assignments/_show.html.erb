@@ -35,7 +35,8 @@
   <ul class="deliverables">
   <% assignment.deliverables_for(current_user).each do |deliverable| %>
     <li>
-      <%= render 'deliverables/student_list_entry', deliverable: deliverable %>
+      <%= render 'deliverables/student_list_entry', deliverable: deliverable,
+            submissions: deliverable.submissions_for(current_user).all %>
     </li>
   <% end %>
   </ul>

@@ -1,6 +1,6 @@
 <% submissions = deliverable.submissions.
       includes([:analysis, { subject: [ :credentials, { profile: :photo } ] }]).
-      order('updated_at DESC') %>
+      order(updated_at: :desc) %>
 <ol class="submission-list">
   <% submissions.each do |submission| %>
   <li>
