@@ -14,10 +14,10 @@
   </li>
 <% end %>
 <% if submissions.any? { |s| s.analysis && s.analysis.status_will_change? } %>
-  <li data-pwnfx-delayed="submission-states" data-pwnfx-delayed-method="GET"
-      data-pwnfx-delayed-url="<%= submission_dashboard_deliverable_path(deliverable) %>"
-      data-pwnfx-delayed-scope="submissions-list" data-pwnfx-delayed-ms="5000">
-    <%= ajax_spinner_image_tag %>
-  </li>
+  <%= content_tag :li, ajax_spinner_image_tag, data: {
+        pwnfx_delayed: 'states', pwnfx_delayed_method: 'GET',
+        pwnfx_delayed_scope: 'submissions-list', pwnfx_delayed_ms: 5000,
+        pwnfx_delayed_url: submission_dashboard_deliverable_path(deliverable,
+        course_id: deliverable.course) } %>
 <% end %>
 </ol>
