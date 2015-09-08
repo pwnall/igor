@@ -3,7 +3,7 @@
 <p>
 <% if @team_partition.editable? %>
   This partition is locked. Click
-  <%= link_to unlock_partition_path(@team_partition,
+  <%= link_to unlock_team_partition_path(@team_partition,
         course_id: @team_partition.course), method: :patch, data: {
         confirm: "Really unlock #{@team_partition.name}?" } do %>
     here
@@ -11,7 +11,7 @@
   to unlock it.
 <% else %>
   This partition is unlocked. Click
-  <%= link_to lock_partition_path(@team_partition,
+  <%= link_to lock_team_partition_path(@team_partition,
         course_id: @team_partition.course), method: :patch, data: {
         confirm: "Really lock #{@team_partition.name}?" } do %>
     here

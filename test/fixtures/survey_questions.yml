@@ -24,7 +24,7 @@ hours:
 coding_amount:
   survey: ps1
   prompt: Amount of coding
-  allows_comments: false
+  allows_comments: true
   type: QuantitativeScaledQuestion
   features: >
     {"scale_min":"1","scale_max":"5",

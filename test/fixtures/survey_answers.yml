@@ -15,6 +15,7 @@ dexter_coding_amount:
   question: coding_amount
   response: dexter_ps1
   number: 3
+  comment: Much code
 
 dexter_prepared:
   question: prepared

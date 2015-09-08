@@ -33,11 +33,12 @@
 	</ul>
 
 <% if team.can_edit?(current_user) && team.partition.editable? %>
-	<%= form_for TeamMembership.new(team: team) do |f| %>
+	<%= form_for TeamMembership.new(team: team),
+				url: team_memberships_path(course_id: team.course) do |f| %>
 	  <%= f.hidden_field :team_id %>
 
 	  <%= text_field_tag :query, '', id: "query_#{team.id}",
-		      autocomplete: false %>
+		      autocomplete: false, placeholder: 'jdoe@mit.edu' %>
     <%= f.button type: :submit do %>
       <%= create_icon_tag %> Add
     <% end %>

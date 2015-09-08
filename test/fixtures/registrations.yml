@@ -37,6 +37,14 @@ deedee:
   allows_publishing: true
   recitation_section: r02
 
+mandark:
+  course: main
+  user: mandark
+  dropped: false
+  for_credit: true
+  allows_publishing: true
+  recitation_section: r02
+
 deedee_not_main:
   course: not_main
   user: deedee

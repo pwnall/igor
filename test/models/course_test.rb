@@ -118,7 +118,7 @@ class CourseTest < ActiveSupport::TestCase
   describe 'students' do
     describe '#students' do
       it 'returns only users currently enrolled in this course' do
-        golden = users(:solo, :deedee, :dexter)
+        golden = users(:solo, :deedee, :dexter, :mandark)
         assert_equal golden, course.students.sort_by(&:name)
       end
     end

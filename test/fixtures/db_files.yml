@@ -10,18 +10,18 @@
 #  f_updated_at   :datetime
 #
 
-admin_ps1:
-  f_file_name: admin_ps1.pdf
+dexter_ps1:
+  f_file_name: dexter_ps1.pdf
   f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
   f_content_type: application/pdf
 
-admin_project:
-  f_file_name: admin_project.pdf
+dexter_project:
+  f_file_name: dexter_project.pdf
   f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
   f_content_type: application/pdf
 
-admin_project_v2:
-  f_file_name: admin_project_v2.pdf
+dexter_project_v2:
+  f_file_name: dexter_project_v2.pdf
   f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
   f_content_type: application/pdf
 

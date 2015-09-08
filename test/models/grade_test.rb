@@ -94,7 +94,7 @@ class GradeTest < ActiveSupport::TestCase
 
     describe 'team grades' do
       it 'returns an array containing the team members' do
-        assert_equal users(:admin, :dexter).to_set,
+        assert_equal [users(:dexter)].to_set,
             grades(:awesome_ps1_p1).users.to_set
       end
     end

@@ -143,10 +143,10 @@ class DeliverableTest < ActiveSupport::TestCase
 
     describe 'team assignments' do
       let(:team_deliverable) { deliverables(:project_writeup) }
-      let(:teammate) { users(:admin) }
-      let(:team) { teams(:boo_project) }
-      let(:earlier) { submissions(:admin_project) }
-      let(:later) { submissions(:admin_project_v2) }
+      let(:teammate) { users(:dexter) }
+      let(:team) { teams(:awesome_project) }
+      let(:earlier) { submissions(:dexter_project) }
+      let(:later) { submissions(:dexter_project_v2) }
 
       it 'returns the latest team submission' do
         assert_operator earlier.updated_at, :<, later.created_at
@@ -166,7 +166,7 @@ class DeliverableTest < ActiveSupport::TestCase
 
   describe '#expected_submissions' do
     it 'returns the number of students currently enrolled' do
-      assert_equal 3, deliverable.expected_submissions
+      assert_equal 4, deliverable.expected_submissions
     end
   end
 

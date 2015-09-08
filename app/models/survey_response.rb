@@ -56,7 +56,7 @@ class SurveyResponse < ActiveRecord::Base
 
   # True if the given user is allowed to edit this response.
   def can_edit?(user)
-    (self.user == user) || user.admin?
+    (self.user == user) || !!(user && user.admin?)
   end
 
   # Populates unanswered survey_questions for a new survey response.

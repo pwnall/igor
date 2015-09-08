@@ -13,7 +13,7 @@ class SubmissionTest < ActiveSupport::TestCase
   let(:student_author) { submission.subject }
   let(:student_not_author) { users(:deedee) }
 
-  let(:team_submission) { submissions(:admin_ps1) }
+  let(:team_submission) { submissions(:dexter_ps1) }
   let(:team_author) { team_submission.subject }
 
   it 'validates the setup submission' do

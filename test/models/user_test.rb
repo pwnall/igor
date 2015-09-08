@@ -66,7 +66,7 @@ class UserTest < ActiveSupport::TestCase
 
     describe 'by_name scope' do
       it 'sorts the users by name in alphabetical order' do
-        golden = users(:solo, :deedee, :dexter, :dropout)
+        golden = users(:solo, :deedee, :dexter, :mandark, :dropout)
         assert_equal golden, courses(:main).users.by_name
       end
     end
@@ -116,8 +116,8 @@ class UserTest < ActiveSupport::TestCase
 
     describe 'connected_submissions' do
       it 'should include submissions from co-team members' do
-        golden = submissions(:dexter_assessment, :dexter_code, :dexter_code_v2,
-                             :admin_ps1, :inactive_project)
+        golden = submissions(:dexter_ps1, :dexter_project, :dexter_project_v2,
+            :dexter_assessment, :dexter_code, :dexter_code_v2)
         assert_equal golden.to_set, dexter.connected_submissions.to_set
       end
 
@@ -128,9 +128,9 @@ class UserTest < ActiveSupport::TestCase
 
     describe '.without_extensions_for' do
       it 'filters for users without an extension for the given assignment' do
-        assert_equal [users(:solo)].to_set,
+        assert_equal users(:solo, :mandark).to_set,
             students.without_extensions_for(assignments(:assessment)).to_set
-        assert_equal users(:deedee, :dexter, :solo).to_set,
+        assert_equal users(:deedee, :dexter, :solo, :mandark).to_set,
             students.without_extensions_for(assignments(:ps1)).to_set
       end
     end

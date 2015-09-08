@@ -48,7 +48,7 @@ class Submission < ActiveRecord::Base
 
   # True if the given user is allowed to remove the submission.
   def can_delete?(user)
-    is_owner?(user) || (!!user && user.admin?)
+    is_owner?(user) || !!(user && user.admin?)
   end
 
   # True if the given user is allowed to change the submission's metadata.

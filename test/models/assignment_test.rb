@@ -402,8 +402,8 @@ class AssignmentTest < ActiveSupport::TestCase
     describe '#expected_submissions' do
       it 'returns the number of deliverables x number of enrolled students' do
         assert_equal 2, assignment.deliverables.count
-        assert_equal 3, assignment.course.students.count
-        assert_equal 6, assignment.expected_submissions
+        assert_equal 4, assignment.course.students.count
+        assert_equal 8, assignment.expected_submissions
       end
     end
   end
@@ -466,8 +466,8 @@ class AssignmentTest < ActiveSupport::TestCase
     describe '#expected_grades' do
       it 'returns the number of metrics x number of enrolled students' do
         assert_equal 2, assignment.metrics.count
-        assert_equal 3, assignment.course.students.count
-        assert_equal 6, assignment.expected_grades
+        assert_equal 4, assignment.course.students.count
+        assert_equal 8, assignment.expected_grades
       end
     end
 

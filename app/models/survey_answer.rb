@@ -44,9 +44,9 @@ class SurveyAnswer < ActiveRecord::Base
   # The author of the answer.
   has_one :user, through: :response
 
-  # Nullify an empty comment.
+  # Nullify a blank comment.
   def comment=(new_comment)
-    new_comment = nil if new_comment.empty?
+    new_comment = nil if new_comment.blank?
     super new_comment
   end
 end

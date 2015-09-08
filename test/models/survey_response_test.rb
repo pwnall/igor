@@ -70,6 +70,18 @@ class SurveyResponseTest < ActiveSupport::TestCase
     end
   end
 
+  describe '#can_edit?' do
+    it 'lets only the author and site admins edit the response' do
+      assert_equal true, response.can_edit?(users(:dexter))
+      assert_equal false, response.can_edit?(users(:robot))
+      assert_equal false, response.can_edit?(users(:main_grader))
+      assert_equal false, response.can_edit?(users(:main_staff))
+      assert_equal true, response.can_edit?(users(:admin))
+      assert_equal false, response.can_edit?(users(:deedee))
+      assert_equal false, response.can_edit?(nil)
+    end
+  end
+
   describe '#build_answers' do
     let(:existing_answers) { response.answers }
 

@@ -41,6 +41,15 @@ deedee:
   year: 1
   athena_username: dd
 
+mandark:
+  user: mandark
+  name: Evil Mandark
+  nickname: Mandark
+  university: Massachusetts Intitute of Technology
+  department: Electrical Eng & Computer Sci
+  year: 1
+  athena_username: evil
+
 dropout:
   user: dropout
   name: Not Interested

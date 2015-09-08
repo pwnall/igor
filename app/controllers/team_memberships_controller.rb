@@ -5,7 +5,7 @@ class TeamMembershipsController < ApplicationController
   # POST /6.006/team_memberships
   def create
     @team_membership = TeamMembership.new team_membership_new_params
-    @user = User.find_first_by_query!(params[:query])
+    @user = User.with_email(params[:query])
     @team_membership.user = @user
     respond_to do |format|
       if @team_membership.save
@@ -16,9 +16,14 @@ class TeamMembershipsController < ApplicationController
         end
       else
         format.html do
+          if @user && @team_membership.errors[:user].any?
+            alert = "#{@user.name} " +
+                    @team_membership.errors[:user].join(' and ')
+          elsif @user.nil?
+            alert = "Could not find a student with the email: #{params[:query]}"
+          end
           redirect_to team_partition_url(@team_membership.partition,
-              course_id: @team_membership.course), alert:
-              "#{@user.name} already belongs to a team in #{@team_membership.partition.name}"
+              course_id: @team_membership.course), alert: alert
         end
       end
     end

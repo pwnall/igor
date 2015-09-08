@@ -8,25 +8,14 @@
 #  course_id  :integer          not null
 #  created_at :datetime
 #
-
-admin_pset:
-  team: awesome_pset
-  user: admin
-  course: main
-
 dexter_pset:
   team: awesome_pset
   user: dexter
   course: main
 
-inactive_pset:
+deedee_pset:
   team: boo_pset
-  user: inactive
-  course: main
-
-admin_project:
-  team: boo_project
-  user: admin
+  user: deedee
   course: main
 
 dexter_project:
@@ -34,9 +23,14 @@ dexter_project:
   user: dexter
   course: main
 
-inactive_project:
+deedee_project:
   team: awesome_project
-  user: inactive
+  user: deedee
+  course: main
+
+mandark_project:
+  team: boo_project
+  user: mandark
   course: main
 
 deedee_lab:

@@ -55,7 +55,7 @@ class DeadlineExtensionsControllerTest < ActionController::TestCase
 
         assert_response :success
         # NOTE: You must use the :match pseudo-selector to use regex.
-        assert_select "#{user_select} > option:match('value', ?)", /\d+/, 1
+        assert_select "#{user_select} > option:match('value', ?)", /\d+/, 2
         assert_select "#{user_select} > option[value=?]", users(:solo).to_param
       end
     end

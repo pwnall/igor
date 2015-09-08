@@ -8,13 +8,13 @@
 #  file_contents :binary(429496729
 #
 
-admin_ps1:
-  db_file_id: <%= ActiveRecord::FixtureSet.identify(:admin_ps1) %>
+dexter_ps1:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:dexter_ps1) %>
   style: original
   file_contents: <%= binary_file('submission_files/small.pdf') %>
 
-admin_project:
-  db_file_id: <%= ActiveRecord::FixtureSet.identify(:admin_project) %>
+dexter_project:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:dexter_project) %>
   style: original
   file_contents: <%= binary_file('submission_files/small.pdf') %>
 

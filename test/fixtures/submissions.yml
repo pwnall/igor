@@ -14,29 +14,44 @@
 # NOTE: Do not create a submission for deliverable: assessment_code, subject:
 #   deedee (User), so that it can be built in model tests.
 
-admin_ps1:
+dexter_ps1:
   deliverable: ps1_writeup
   subject: awesome_pset (Team)
-  db_file: admin_ps1
+  db_file: dexter_ps1
 
-admin_project:
+solo_ps1:
+  deliverable: ps1_writeup
+  subject: solo (User)
+  db_file: solo_ps1
+
+dexter_project:
   deliverable: project_writeup
-  subject: boo_project (Team)
-  db_file: admin_project
+  subject: awesome_project (Team)
+  db_file: dexter_project
   created_at: <%= 6.days.ago.to_s(:db) %>
   updated_at: <%= 5.days.ago.to_s(:db) %>
 
-admin_project_v2:
+dexter_project_v2:
   deliverable: project_writeup
-  subject: boo_project (Team)
-  db_file: admin_project_v2
+  subject: awesome_project (Team)
+  db_file: dexter_project_v2
   created_at: <%= 3.days.ago.to_s(:db) %>
   updated_at: <%= 2.days.ago.to_s(:db) %>
+
+mandark_project:
+  deliverable: project_writeup
+  subject: boo_project (Team)
+  db_file: submission_catch_all
 
 dexter_assessment:
   deliverable: assessment_writeup
   subject: dexter (User)
   db_file: dexter_assessment
+
+deedee_assessment:
+  deliverable: assessment_writeup
+  subject: deedee (User)
+  db_file: deedee_assessment
 
 dexter_code:
   deliverable: assessment_code
@@ -51,18 +66,3 @@ dexter_code_v2:
   db_file: dexter_code_v2
   created_at: <%= 3.days.ago.to_s(:db) %>
   updated_at: <%= 2.days.ago.to_s(:db) %>
-
-deedee_assessment:
-  deliverable: assessment_writeup
-  subject: deedee (User)
-  db_file: deedee_assessment
-
-inactive_project:
-  deliverable: project_writeup
-  subject: awesome_project (Team)
-  db_file: submission_catch_all
-
-solo_ps1:
-  deliverable: ps1_writeup
-  subject: solo (User)
-  db_file: solo_ps1
