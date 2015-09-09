@@ -34,4 +34,9 @@ class Role < ActiveRecord::Base
     self.where(user_id: user.id, name: role_name, course_id: course_id).
          destroy_all
   end
+
+  # True if the given user can revoke this role.
+  def can_destroy?(user)
+    self.user == user || can_edit?(user)
+  end
 end

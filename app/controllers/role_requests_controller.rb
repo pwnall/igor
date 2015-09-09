@@ -1,9 +1,8 @@
 class RoleRequestsController < ApplicationController
   before_action :set_current_course
   before_action :set_role_request, only: [:destroy, :approve, :deny]
-  before_action :authenticated_as_user, only: [:show, :new, :create, :destroy]
-  before_action :authenticated_as_course_editor, except: [:show, :new, :create,
-                                                          :destroy]
+  before_action :authenticated_as_user, except: [:index]
+  before_action :authenticated_as_course_editor, only: [:index]
 
   # GET /6.006/role_requests
   def index
@@ -67,7 +66,7 @@ class RoleRequestsController < ApplicationController
 
   # DELETE /6.006/role_requests/1
   def destroy
-    return bounce_user unless @role_request.user == current_user
+    return bounce_user unless @role_request.can_destroy? current_user
 
     @role_request.destroy
     respond_to do |format|
@@ -81,24 +80,28 @@ class RoleRequestsController < ApplicationController
 
   # POST /6.006/role_requests/1/approve
   def approve
+    bounce_user unless @role_request.can_edit? current_user
+
     @role_request.approve
     @role_request.destroy
     RoleRequestMailer.decision_email(@role_request, true, root_url).deliver
 
     name = @role_request.user.name
     course = @role_request.course.number
-    redirect_to role_requests_url,
+    redirect_to role_requests_url(course_id: @role_request.course),
         notice: "#{name} is now a #{course} staff member"
   end
 
   # POST /role_requests/1/deny
   def deny
+    bounce_user unless @role_request.can_edit? current_user
+
     @role_request.destroy
     RoleRequestMailer.decision_email(@role_request, false, root_url).deliver
 
     name = @role_request.user.name
     course = @role_request.course.number
-    redirect_to role_requests_url,
+    redirect_to role_requests_url(course_id: @role_request.course),
         notice: "#{name} was denied #{course} staff access"
   end
 

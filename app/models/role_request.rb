@@ -18,4 +18,9 @@ class RoleRequest < ActiveRecord::Base
   def approve
     Role.grant user, name, course
   end
+
+  # True if the given user can remove this request.
+  def can_destroy?(user)
+    self.user == user || can_edit?(user)
+  end
 end
