@@ -1,143 +1,149 @@
-<h2>Script Analyzer Tutorial</h2>
+<div class="analyzer-help">
+  <h2>Docker Submission Analyzer Guide</h2>
 
-<p>
-  This is a short introduction to packaging your custom script for analyzing
-  student submissions into the .zip file expected by the grading site.
-</p>
+  <section>
+    <figure>
+      <div class="markdpwn-parsed-code">
+  .
+  ├── Dockerfile
+  ├── cases
+  │   ├── 1.in
+  │   ├── 1.out
+  │   ├── 2.in
+  │   ├── 2.out
+  │   ├── 3.in
+  │   └── 3.out
+  ├── mapper.py
+  ├── mapreduced.yml
+  └── reducer.py
+      </div>
+      <figcaption>
+        Analyzer .zip package structure for a test suite with 3 test cases
+      </figcaption>
+    </figure>
+    The automated grading software is modeled after the
+    <a href="https://en.wikipedia.org/wiki/MapReduce">MapReduce framework</a>
+    and uses <a href="https://www.docker.com/whatisdocker">Docker containers</a>
+    to ensure that potentially destructive code is executed in isolation. A
+    student’s submission is evaluated in a separate Docker container for each
+    test case, and the individual results are consolidated to generate a single
+    grade for the student’s code. This guide demonstrates how to package the
+    custom grading scripts (<span class="file-name">mapper.py</span> and
+    <span class="file-name">reducer.py</span>), configuration files
+    (<span class="file-name">Dockerfile</span> and
+    <span class="file-name">mapreduced.yml</span>), and test cases into a ZIP
+    file that the automated grading software can digest.
+  </section>
 
-<h3>Health Checks</h3>
+  <h3>Dockerfile</h3>
+  <section>
+    <figure>
+      <%= Markdpwn.markup(
+            File.read(Rails.root.join('lib/analyzer_sources/fib/Dockerfile')),
+            :file_name => 'Dockerfile').html_safe %>
+      <figcaption>Sample <span class="file-name">Dockerfile</span></figcaption>
+    </figure>
+    In order to launch a container with the correct environment set up, Docker
+    needs a Dockerfile. The <code>FROM</code> keyword specifies which base image
+    to use in the container, and the <code>RUN</code> keyword is used to execute
+    commands to further configure the container’s environment.
+  </section>
 
-<p>
-  Analyzers perform a (quick) health check on the files submitted by students,
-  and offer immediate feedback. This lets students fix their submissions early,
-  and gives TAs a good reason to reject any requests for manually tweaking a
-  student's submission.
-</p>
+  <h3>Test cases</h3>
+  <section>
+    We want to evaluate test cases independently of each other so that a
+    student’s submission does not receive a score of zero if the first test case
+    happens to exceed its time limit and prevents later tests from running at
+    all. As such, you should include an input and output file for each test case
+    (e.g., <span class="file-name">1.in</span>,
+    <span class="file-name">1.out</span>, etc.). The input file should contain
+    the test data you would like to pass to the student’s code, and the output
+    file should contain the expected results. The grading software looks for
+    test case files named 1 through <span class="variable">n</span> for
+    <span class="variable">n</span> total test cases. The total number of test
+    cases is specified in the <span class="file-name">mapreduced.yml</span>
+    file, which is discussed next.
+  </section>
 
-<p>
-  An analyzer that only does health checks typically consists of a script
-  containing unit tests and a manifest file named <code>analyzer.yml</code>.
-</p>
+  <h3>mapreduced.yml</h3>
+  <section>
+    <figure>
+      <%= Markdpwn.markup(File.read(
+            Rails.root.join('lib/analyzer_sources/fib/mapreduced.yml')),
+            file_name: 'mapreduced.yml').html_safe %>
+      <figcaption>
+        Auto-grading analyzer manifest
+        (<span class="file-name">mapreduced.yml</span>)
+      </figcaption>
+    </figure>
+    Most of the options for configuring the MapReduce process should be stored
+    in a manifest file called <span class="file-name">mapreduced.yml</span>. The
+    manifest should include <code>mapper</code> and <code>reducer</code>
+    sections with configuration options for their respective phases in the
+    MapReduce process. Each section should point to a file (e.g.,
+    <span class="file-name">mapper.py</span> or
+    <span class="file-name">reducer.py</span>), as well as the directory to
+    switch to when launching that file (e.g., <code>/usr/testguest</code> or
+    <code>/usr/testhost</code>).
+  </section>
 
-<figure>
-<div class="markdpwn-parsed-code">.
-|-- analyzer.yml
-|-- fib_test.py
-`-- fib_test.rb
+  <h3>mapper.py</h3>
+  <section>
+    <figure>
+      <%= Markdpwn.markup(
+            File.read(Rails.root.join('lib/analyzer_sources/fib/mapper.py')),
+            file_name: 'mapper.py').html_safe %>
+      <figcaption>
+        Sample mapper script (<span class="file-name">mapper.py</span>)
+      </figcaption>
+    </figure>
+    In the “map” phase, each test case is mapped to its own Docker container
+    instance. Each of these “mapper” instances has an input file (the student’s
+    code) and an output file (the test results), whose locations are specified
+    by the <code>input</code> and <code>output</code> keys, respectively, under
+    the <code>mapper</code> section of the manifest. The instance is spawned
+    with the number of the test case it should evaluate stored in an environment
+    variable specified by the <code>env</code> key. The <code>items</code> key
+    specifies how many test cases there are altogether, thus determining how
+    many times the grading software should spin up a new “mapper” instance. Your
+    custom <span class="file-name">mapper.py</span> defines how to evaluate a
+    student submission against a single test case. You should take extra
+    precautions when writing your script to withold root privileges from the
+    student's code.
+  </section>
+
+  <section>
+    During the transition from the “map” phase to the “reduce” phase, the output
+    file from each “mapper” instance is renamed to the number of the test case
+    whose results it contains. So, in our example files, the output of the
+    “mapper” instance running test case 1 would be renamed from
+    <code>/usr/testguest/output</code> to <code>/usr/testguest/1</code>.
+  </section>
+
+  <h3>reducer.py</h3>
+  <section>
+    <figure>
+      <%= Markdpwn.markup(
+            File.read(Rails.root.join('lib/analyzer_sources/fib/reducer.py')),
+            file_name: 'reducer.py').html_safe %>
+      <figcaption>
+        Sample reducer script (<span class="file-name">reducer.py</span>)
+      </figcaption>
+    </figure>
+    In the “reduce” phase, the instances from the “map” phase are torn down and
+    a fresh “reducer” image is built. The input to the reducer is the collection
+    of all “mapper” instance outputs, whose location is specified by the
+    <code>input</code> key in the <code>reducer</code> section. Your custom
+    <span class="file-name">reducer.py</span> outlines the comparison of
+    submission-generated test case results with expected test case results.
+    Anything your script prints to standard output will appear in the public log
+    for that submission’s analysis. Anything printed to standard error will
+    appear in the private log. The final grades for the submission must be
+    written as a JSON object to the file specified by the <code>output</code>
+    key in the <code>reducer</code> section. For each name/value pair in the
+    JSON object, the name must match the name of the metric being assessed, and
+    the value must be a number between 0 (zero credit) and 1 (full credit). The
+    number represents what percentage of the metric’s maximum score to award the
+    submission.
+  </section>
 </div>
-  <figcaption>Analyzer .zip package structure</figcaption>
-</figure>
-
-<p>
-  An analyzer can potentially handle multiple file types (e.g., both Ruby and
-  Python solution to the same problem). The manifest specifies the command that
-  will be run for each file type. The command typically invokes an interpreter
-  on a unit test file, though anything that behaves like a unit test (exit code
-  0 for success, non-zero for failures) is acceptable. The manifest also
-  specifies the file name to be used for the student submission, and it should
-  match the name expected by your unit testing code.
-</p>
-
-<figure>
-  <%= Markdpwn.markup(
-        File.read(Rails.root.join('lib/analyzer_sources/fib/Dockerfile')),
-        :file_name => 'Dockerfile').html_safe %>
-      <figcaption>Sample <code>Dockerfile</code></figcaption>
-</figure>
-
-<p>
-  The health-check scripts usually use the language's native unit-testing
-  framework (e.g., Ruby's <code>minitest</code> or Python's
-  <code>unittest</code>). It is good policy to give the health-check source code
-  to the students, so they can check their submissions on their own, without
-  overloading the server.
-</p>
-
-<h3>Automated Grading</h3>
-
-<p>
-  Automated grading goes beyond health checking, and uses the analyzer results
-  to fill in students' grades, which reduces load on the course staff. Grades
-  are a big deal at most schools, so the system has some minimal safeguards
-  against students changing their own grades. Unfortunately, this makes
-  auto-grading a bit more complex than it should be.
-</p>
-
-<p>
-  Analyzers that issue automated grades have a <code>grading</code> section in
-  their manifest, which contains default grades that will be assigned if the
-  analyzer doesn't successfully output grades (e.g., if it crashes), and the
-  name of a file that will contain a randomly-generated key that prevents
-  students from outputting grades.
-</p>
-
-<figure>
-  <%= Markdpwn.markup(
-        File.read(Rails.root.join('lib/analyzer_sources/fib/mapreduced.yml')),
-        :file_name => 'mapreduced.yml').html_safe %>
-  <figcaption>
-    Auto-grading analyzer manifest (<code>analyzer.yml</code>)
-  </figcaption>
-</figure>
-
-<p>
-  An analyzer that outputs grades should read the grading key and delete the
-  file before evaluating any student-submitted code. The grading key should be
-  stored in some location that is not easily accessible by the student code.
-  In most languages, method-local variables cannot be accessed through
-  introspection.
-</p>
-
-<p>
-  Grades should be output only after the student-submitted code has ran. The
-  analyzer should output the grading key on a separate line, immediately
-  followed by a JSON object whose keys are the names of the problems to be
-  graded. The value for each key should be a number between 0, meaning that the
-  problem's score is zero, and 1, meaning that the student gets the maximum
-  score for the problem.
-</p>
-
-<p>
-  An auto-grading analyzer typically has the grading code separated from the
-  unit-testing code.
-</p>
-
-<figure>
-<div class="markdpwn-parsed-code">.
-|-- analyzer.yml
-|-- fib_test.py
-|-- fib_test.rb
-|-- grader.py
-`-- grader.rb
-</div>
-  <figcaption>Analyzer .zip package structure</figcaption>
-</figure>
-
-<h4>Secret Test Cases</h4>
-
-<p>
-  Auto-grading analyzers usually have secret test cases, so that students cannot
-  easily get good grades. This conflicts with the best practice of giving
-  students the full code used to analyze their submissions.
-</p>
-
-<p>
-  A good compromise is to have the analyzer scan the <code>tests</code>
-  directory for files, and use them as test cases. Then students can receive the
-  full analyzer source code, and a subset of the files in <code>tests</code>, as
-  public test cases.
-</p>
-
-<h4>Example Graders</h4>
-
-<p>
-  The requirements for auto-grading analyzers are non-trivial. Hopefully, the
-  grading code samples below will help you get started.
-</p>
-
-<figure>
-  <%= Markdpwn.markup(
-        File.read(Rails.root.join('lib/analyzer_sources/fib/reducer.py')),
-        :file_name => 'reducer.py').html_safe %>
-  <figcaption>Sample Python grader (<code>grader.py</code>)</figcaption>
-</figure>

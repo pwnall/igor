@@ -90,8 +90,8 @@ class DockerAnalyzer < Analyzer
 
   # Extracts the grades produced by a Map-Reduce job.
   #
-  # @
-  # @return {Hash<String, Number>} JSON grades output by the
+  # @param {ContainedMr::Job} mr_job the job that produced the grades
+  # @return {Hash<String, Number>} JSON grades output by the Map-Reduce job
   def extract_grades(mr_job)
     json_output = mr_job.reducer_runner && mr_job.reducer_runner.output
     return {} unless json_output
