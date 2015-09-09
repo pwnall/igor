@@ -155,17 +155,27 @@ Last, save the contents of the `deploy/keys/` directory somewhere safe.
 
 Re-running the deployment playbook will update the application.
 
-
 ### Real TLS Certificates
 
-If you have a real TLS certificate for the Web server, run the TLS-generating
-playbook, then overwrite the following files.
+Most CAs can generate TLS certificates, given a
+[Certificate Signing Request (CSR)](https://en.wikipedia.org/wiki/Certificate_signing_request)
+with the server's DNS name in the DN. The TLS-generating playbook can be used
+to obtain the CSR.
 
-* deploy/ansible/algprod/web_server.key.pem - the server's private key
-* deploy/ansible/algprod/web_server.cert.pem - the server's certificate
+```bash
+ansible-playbook  -i "localhost," -e os_prefix=algtest \
+    -e web_server_cn=algtest.csail.mit.edu deploy/ansible/keys.yml
+```
 
-Re-running the playbook that generates TLS certificates will not overwrite your
-files.
+The CSR will be placed in `deploy/ansible/algtest/web_server_csr.pem` and can
+be submitted to a certificate authority. The certificate issued by the CA
+should be saved in `deploy/ansible/algtest/web_server.cert.pem`.
+
+Should you need to obtain TLS certificates via a different process, place the
+PEM-encoded server private key in `deploy/ansible/algtest/web_server.key.pem`,
+and place the PEM-encoded server certificate in
+`deploy/ansible/algtest/web_server.cert.pem` (same as in the previous
+paragraph).
 
 ### Managing Multiple Deployments
 
@@ -175,5 +185,36 @@ quickly switch between multiple deployments of the application.
 ```bash
 ansible-playbook -i "localhost," -e os_prefix=algtest deploy/ansible/keys.yml
 ansible-playbook -i "localhost," -e os_cloud=test -e os_prefix=algtest deploy/ansible/openstack_up.yml
-ansible-playbook -i "localhost," -e os_prefix=algtest deploy/ansible/prod.yml
+ansible-playbook -e os_prefix=algtest deploy/ansible/prod.yml
+```
+
+### Bare-Metal Servers
+
+The Ansible inventory at `deploy/ansible/inventory/openstack.py` assumes an
+OpenStack deployment. Bare-metal servers can be managed by writing an inventory
+file in `deploy/keys/inventory` and referencing it when invoking the deployment
+playlist.
+
+```ini
+[meta-system_role_algtest_master]
+alg.csail.mit.edu
+
+[meta-system_role_algtest_worker]
+```
+
+The `os_image_user` variable defines the username used to SSH into the servers.
+
+```bash
+ansible-playbook -i deploy/keys/inventory -e os_image_user=myuser \
+    -e os_prefix=algtest deploy/ansible/prod.yml
+```
+
+When running the deployment playbook the first time around, the
+`--ask-become-pass` flag might be necessary to set the `sudo` password. The
+deployment playbook sets up password-less sudo, so this flag is not necessary
+for subsequent runs.
+
+```bash
+ansible-playbook -i deploy/keys/inventory -e os_image_user=myuser \
+    -e os_prefix=algtest --ask-become-pass deploy/ansible/prod.yml
 ```

@@ -5,6 +5,8 @@
     src: ../keys/{{ os_prefix }}/web_server.key.pem
     dest: /home/seven_web/keys/web.pem
     mode: 0640
+  notify:
+  - restart nginx daemon
 
 - name: copy server TLS certificate
   become: true
@@ -13,6 +15,8 @@
     src: ../keys/{{ os_prefix }}/web_server.cert.pem
     dest: /home/seven_web/keys/web.cer
     mode: 0644
+  notify:
+  - restart nginx daemon
 
 - name: enable group access to seven_web home directory
   become: true
@@ -54,3 +58,12 @@
   template: src=nginx.conf.j2 dest=/etc/nginx/conf.d/seven_web.conf
   notify:
   - restart nginx daemon
+
+- name: open HTTP and HTTPS in firewalld
+  when: has_firewalld != False
+  become: true
+  become_user: root
+  firewalld: service={{item}} state=enabled immediate=yes permanent=yes
+  with_items:
+  - http
+  - https

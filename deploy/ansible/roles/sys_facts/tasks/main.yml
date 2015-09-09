@@ -1,0 +1,11 @@
+---
+# Facts that are not (yet) in ansible.
+
+# TODO(pwnall): Remove this in favor of ansible_firewalld when PR gets merged.
+#               https://github.com/ansible/ansible/pull/12288
+- name: look for firewalld
+  stat: path=/usr/bin/firewall-cmd
+  register: firewall_cmd_stat
+- name: set has_firewalld fact
+  set_fact:
+    has_firewalld: "{{ firewall_cmd_stat.stat.exists }}"

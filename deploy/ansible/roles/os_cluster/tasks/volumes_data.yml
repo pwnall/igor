@@ -1,0 +1,20 @@
+---
+# Creates storage volumes and attaches them to each of the worker VMs.
+
+- name: create worker data volumes
+  os_volume:
+    display_name: "{{ worker_volume_prefix }}{{ item }}"
+    display_description:
+      Stores Docker images and data for {{ worker_instance_prefix }}{{ item }}
+    size: "{{ os_worker_volume_gb }}"
+    volume_type: "{{ os_volume_type }}"
+    cloud: "{{ os_cloud }}"
+  with_sequence: count={{ worker_count }}
+
+- name: attach worker volumes to VMs
+  os_server_volume:
+    server: "{{ worker_instance_prefix }}{{ item }}"
+    device: /dev/vdb
+    volume: "{{ worker_volume_prefix }}{{ item }}"
+    cloud: "{{ os_cloud }}"
+  with_sequence: count={{ worker_count }}

@@ -4,6 +4,7 @@
 - include: ssh_keys.yml
 - include: image.yml
 - include: network.yml
+- include: volumes_root.yml
 
 - name: spin up master VM
   os_server:
@@ -11,7 +12,7 @@
     flavor: "{{ os_master_flavor }}"
     nics:
     - net-name: "{{ os_public_net }}"
-    image: "{{ image_name }}"
+    root_volume: "{{ master_volume_name }}"
     key_name: "{{ key_name }}"
     security_groups: "{{ security_group_name }}"
     meta:
@@ -44,8 +45,8 @@
     userdata: "{{ lookup('template', 'worker_userdata.j2') }}"
     timeout: "{{ os_vm_bringup_timeout }}"
     cloud: "{{ os_cloud }}"
-  with_sequence: start=1 end={{ worker_count }}
+  with_sequence: count={{ worker_count }}
   when: worker_count > 0
   notify: refresh the dynamic inventory cache
 
-- include: volumes.yml
+- include: volumes_data.yml

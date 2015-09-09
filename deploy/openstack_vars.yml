@@ -17,8 +17,7 @@ os_worker_flavor: m1.2core
 # Number of Docker worker VMs that will be created.
 # This is only used in the cluster bringup receipe.
 worker_count: 0
-# Size in GB for the volume attached to the Web server.
-# This volume stores the data in the Docker registry.
+# Size in GB for the volume storing the Web server's root filesystem.
 os_master_volume_gb: 32
 # Size in GB for each of the volumes attached to Docker workers.
 # These volumes store containers and data.

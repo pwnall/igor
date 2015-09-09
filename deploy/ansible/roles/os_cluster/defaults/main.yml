@@ -8,6 +8,6 @@ key_name: "{{ os_prefix }} Cluster Key"
 security_group_name: "{{ os_prefix }} Cluster Security"
 master_instance_name: "{{ os_prefix }}-master"
 worker_instance_prefix: "{{ os_prefix }}-worker"
-master_volume_name: "{{ os_prefix }}-master-volume"
-worker_volume_prefix: "{{ os_prefix }}-worker-volume"
+master_volume_name: "{{ os_prefix }}-master-rootfs"
+worker_volume_prefix: "{{ os_prefix }}-worker-rootfs"
 os_vm_bringup_timeout: 1800

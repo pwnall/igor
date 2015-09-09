@@ -3,13 +3,14 @@
 #       The Kubernetes master configuration needs the internal IPs of all the
 #       workers. If we don't do this before the master configuration, we'll
 #       need something like http://stackoverflow.com/questions/30024664
-- hosts: all
+- hosts: "{{ prod_master_group_name }}:{{ prod_worker_group_name }}"
   vars_files:
   - ../openstack_vars.yml
   vars:
     ansible_ssh_user: "{{ os_image_user }}"
   roles:
-  - os_package_update
+  - sys_package_update
+  - sys_facts
     #- docker_storage
 
 - hosts: "{{ prod_master_group_name }}"

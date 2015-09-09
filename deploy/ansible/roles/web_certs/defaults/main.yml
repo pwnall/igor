@@ -1,2 +1,15 @@
 ---
+# The DNS name used to access the Web server.
+web_server_cn: seven.dev
+
+# Used to identify and separate deployments.
+#
+# Other playbooks assume that this matches the os_prefix variable defined in
+# openstack_vars.yml, which is used to distinguish a deployment's hosts from
+# other OpenStack resources in the same project.
+os_prefix: algprod
+
+# The directory that holds all the keys for the deployment.
+#
+# Other playbooks expect to find keys in the directory below.
 keys_dir: ./deploy/keys/{{ os_prefix }}
