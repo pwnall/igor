@@ -51,9 +51,11 @@
         <% end %>
       </td>
       <td>
+        <% if registration.can_edit? current_user %>
         <%= link_to edit_registration_path(registration,
                                            course_id: registration.course) do %>
           Edit
+        <% end %>
         <% end %>
       </td>
 	  </tr>
