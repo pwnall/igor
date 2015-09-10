@@ -52,7 +52,7 @@ module AssignmentFeedback
   def self.find_subject(subject_type, subject_id)
     case subject_type
     when 'User'
-      User.with_param(subject_id).first
+      User.find_by_param subject_id
     when 'Team'
       Team.find_by id: subject_id
     else
