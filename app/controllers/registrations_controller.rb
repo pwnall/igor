@@ -22,12 +22,9 @@ class RegistrationsController < ApplicationController
     return bounce_user unless @registration.can_view?(current_user)
     @registration.build_prerequisite_answers
 
-    if @registration.can_edit?(current_user) and
-        @registration.course.has_recitations?
-      set_recitation_conflicts_for @registration
+    if @registration.course.has_recitations?
       set_time_slots_for @registration
-    else
-      @recitation_conflicts = nil
+      set_recitation_conflicts_for @registration
     end
 
     respond_to do |format|
