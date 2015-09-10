@@ -5,10 +5,9 @@
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+  ga('create', '<%= current_course.ga_account %>', 'auto');
 <% if current_user %>
-  ga('create', '<%= current_course.ga_account %>', {'userId': '<%= current_user.exuid %>'});
-<% else %>
-  ga('create', '<%= current_course.ga_account %>');
+  ga('set', '&uid',  '<%= current_user.exuid %>');
 <% end %>
   ga('send', 'pageview');
 </script>

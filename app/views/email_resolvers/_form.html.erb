@@ -1,0 +1,77 @@
+<%= form_for email_resolver  do |f| %>
+  <section class="fields">
+    <p class="field">
+      <%= f.label :domain, 'Domain' %>
+      <span class="value">
+        <%= f.text_field :domain, required: true, placeholder: 'mit.edu' %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :ldap_server, 'LDAP Server' %>
+      <span class="value">
+        <%= f.text_field :ldap_server, required: true,
+              placeholder: 'ldap.mit.edu' %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :use_ldaps, 'Use LDAPS' %>
+      <span class="value">
+        <%= f.check_box :use_ldaps %>
+        <%= f.label :use_ldaps do %>
+          establish a TLS connection before communicating with the server
+        <% end %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :ldap_auth_dn, 'LDAP Auth DN' %>
+      <span class="value">
+        <%= f.text_field :ldap_auth_dn,
+              placeholder: 'leave blank for anonymous authentication' %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :ldap_password, 'LDAP Password' %>
+      <span class="value">
+        <%= f.password_field :ldap_password %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :ldap_search_base, 'LDAP Search Base DN' %>
+      <span class="value">
+        <%= f.text_field :ldap_search_base, required: true,
+              placeholder: 'ou=users,ou=moira,dc=mit,dc=edu' %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :name_ldap_key, 'Full Name LDAP Attribute' %>
+      <span class="value">
+        <%= f.text_field :name_ldap_key, required: true,
+              placeholder: 'displayName' %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :dept_ldap_key, 'Department LDAP Attribute' %>
+      <span class="value">
+        <%= f.text_field :dept_ldap_key, required: true, placeholder: 'ou' %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :year_ldap_key, 'Year LDAP Attribute' %>
+      <span class="value">
+        <%= f.text_field :year_ldap_key, required: true,
+              placeholder: 'mitDirStudentYear' %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :user_ldap_key, 'Username LDAP Attribute' %>
+      <span class="value">
+        <%= f.text_field :user_ldap_key, required: true,
+              placeholder: 'uid' %>
+      </span>
+    </p>
+  </section>
+
+  <p class="actions">
+    <%= f.submit %>
+  </p>
+<% end %>

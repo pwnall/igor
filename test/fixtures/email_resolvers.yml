@@ -1,0 +1,41 @@
+# == Schema Information
+#
+# Table name: email_resolvers
+#
+#  id               :integer          not null, primary key
+#  domain           :string(128)      not null
+#  ldap_server      :text             not null
+#  ldap_auth_dn     :text
+#  ldap_password    :text             not null
+#  ldap_search_base :text             not null
+#  name_ldap_key    :text             not null
+#  dept_ldap_key    :text             not null
+#  year_ldap_key    :text             not null
+#  user_ldap_key    :text             not null
+#  use_ldaps        :boolean          not null
+#
+
+public_ldap:
+  domain: example.com
+  ldap_server: ldap.forumsys.com
+  ldap_auth_dn: cn=read-only-admin,dc=example,dc=com
+  ldap_password: password
+  ldap_search_base: ou=scientists,dc=example,dc=com
+  name_ldap_key: CN
+  year_ldap_key: mitDirStudentYear
+  dept_ldap_key: ou
+  user_ldap_key: DN
+  use_ldaps: false
+
+# NOTE: MIT's LDAP service hangs indefinitely when not used from campus IPs.
+mit_ldap:
+  domain: mit.edu
+  ldap_server: ldap.mit.edu
+  ldap_auth_dn: null
+  ldap_password: ""
+  ldap_search_base: ou=users,ou=moira,dc=mit,dc=edu
+  name_ldap_key: displayName
+  year_ldap_key: mitDirStudentYear
+  dept_ldap_key: ou
+  user_ldap_key: uid
+  use_ldaps: false

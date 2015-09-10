@@ -50,8 +50,8 @@ gem 'rubyzip', '>= 1.1.7', require: 'zip'
 # Gravatar fall-back avatars.
 gem 'gravatar-ultimate', '>= 2.0.0'
 
-# MIT WebSIS student lookup.
-gem 'mit_stalker', '>= 1.0.7'
+# LDAP lookup.
+gem 'net-ldap', '>= 0.11'
 
 # Report production exceptions.
 gem 'exception_notification', '>= 4.0.1'
@@ -88,8 +88,8 @@ group :development do
 end
 
 group :test do
-  gem 'minitest-spec-rails',
-    git: 'https://github.com/pwnall/minitest-spec-rails', branch: 'rails5'
+  gem 'minitest-spec-rails', '>= 5.3.0'
+  gem 'mocha', '>= 1.1.0'
 end
 
 group :doc do

@@ -1,5 +1,7 @@
 class CreateMainCourse < ActiveRecord::Migration
   def up
+    # TODO(pwnall): Remove this after removing Course.main.
+
     # Pre-populate with 6.006, since this is the course that founded the site.
     Course.create! number: '6.006', title: 'Introduction to Algorithms',
                    email: '6.006-tas@mit.edu', ga_account: 'UA-19600078-2',

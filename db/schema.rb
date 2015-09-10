@@ -174,6 +174,20 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.index ["assignment_id", "name"], name: "index_deliverables_on_assignment_id_and_name", unique: true, using: :btree
   end
 
+  create_table "email_resolvers", force: :cascade do |t|
+    t.string  "domain",           limit: 128, null: false
+    t.text    "ldap_server",                  null: false
+    t.text    "ldap_auth_dn"
+    t.text    "ldap_password",                null: false
+    t.text    "ldap_search_base",             null: false
+    t.text    "name_ldap_key",                null: false
+    t.text    "dept_ldap_key",                null: false
+    t.text    "year_ldap_key",                null: false
+    t.text    "user_ldap_key",                null: false
+    t.boolean "use_ldaps",                    null: false
+    t.index ["domain"], name: "index_email_resolvers_on_domain", unique: true, using: :btree
+  end
+
   create_table "grade_comments", force: :cascade do |t|
     t.integer  "course_id",               null: false
     t.integer  "metric_id",               null: false

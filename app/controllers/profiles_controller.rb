@@ -26,9 +26,10 @@ class ProfilesController < ApplicationController
     end
 
     if @athena_username.blank?
-      @athena_info = nil
+      @ldap_info = nil
     else
-      @athena_info = MitStalker.from_user_name @athena_username
+      # HACK(pwnall): Quick and dirty LDAP integration.
+      @ldap_info = EmailResolver.resolve @athena_username + '@mit.edu'
     end
     respond_to do |format|
       format.html { render layout: false }  # websis_lookup.html.erb

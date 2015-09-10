@@ -1,0 +1,35 @@
+<h2>Email Resolvers</h2>
+
+<table>
+  <tbody>
+    <% @email_resolvers.each do |resolver| %>
+    <tr>
+      <td>
+        <%= link_to resolver do %>
+          @<%= resolver.domain %>
+        <% end %>
+      </td>
+      <td>
+        <%= resolver.ldap_server %>
+      </td>
+      <td>
+        <%= link_to edit_email_resolver_path resolver do %>
+          <%= edit_icon_tag %> Edit
+        <% end %>
+      </td>
+      <td>
+        <%= link_to resolver, method: :delete,
+              data: { confirm: 'Are you sure?' } do %>
+          <%= destroy_icon_tag %> Remove
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<p>
+  <%= link_to new_email_resolver_path, class: 'button emphasized' do %>
+    <%= create_icon_tag %> New E-mail Resolver
+  <% end %>
+</p>

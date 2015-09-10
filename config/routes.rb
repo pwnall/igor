@@ -36,6 +36,9 @@ Rails.application.routes.draw do
     # Staff registration.
     resources :roles, only: [:destroy]
 
+    # E-mail resolver configuration.
+    resources :email_resolvers
+
     # Exception handling test.
     get '/crash' => 'crash#show'
   end
