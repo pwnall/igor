@@ -16,10 +16,11 @@
 class Analysis < ActiveRecord::Base
   # The submission that was analyzed.
   belongs_to :submission, inverse_of: :analysis
-  validates :submission, presence: true
-  validates :submission_id, uniqueness: true
+  validates :submission, presence: true, uniqueness: true
 
   # Grading advice produced by the analyzer.
+  #
+  # This attribute does not currently serve a purpose.
   validates :score, numericality: { integer_only: true,
       greater_than_or_equal_to: 0, allow_nil: true }
 
@@ -43,33 +44,43 @@ class Analysis < ActiveRecord::Base
 
   # True if the given user is allowed to see the analyzer's private log.
   def can_read_private_log?(user)
-    user.admin?
+    course.can_edit? user
   end
 end
 
 # :nodoc: Analysis life cycle.
 class Analysis
   # Analysis status, can be one of the following symbols.
-  STATUS_CODES = {
-    no_analyzer: 1,      # Submission's deliverable doesn't have an analyzer.
+  enum status_code: {
+    analyzer_bug: 1,     # The analyzer script crashed.
     queued: 2,           # Submission queued for analysis.
     running: 3,          # Submission is processed by an analyzer.
     limit_exceeded: 4,   # The analyzer consumed too many resources.
-    crashed: 5,          # The analyzer crashed.
+    crashed: 5,          # The submission crashed the analyzer.
     wrong: 6,            # The submission was analyzed to be incorrect.
-    ok: 7                # The submission seems correct.
-  }.freeze
-  STATUS_SYMBOLS = STATUS_CODES.invert.freeze
-  validates :status_code, presence: true, inclusion: { in: STATUS_CODES.values }
-
-  # :nodoc: synthetic attribute converting status to status_code
-  def status=(new_status)
-    new_status_code = STATUS_CODES[new_status]
-    raise ArgumentError, "Invalid status #{new_status}" unless new_status_code
-    self.status_code = new_status_code
+    ok: 7,               # The submission seems correct.
+    undefined: 8         # A safety net to catch invalid status code values.
+  }
+  validates_each :status_code do |record, attr, value|
+    if value.nil?
+      record.errors.add attr, 'is not present'
+    elsif record.undefined?
+      record.errors.add attr, 'was not valid'
+    end
   end
+
+  # The status of the analysis (virtual attribute).
   def status
-    STATUS_SYMBOLS[status_code]
+    status_code.to_sym
+  end
+
+  # Set the status of the analysis (virtual attribute).
+  def status=(new_status)
+    begin
+      self.status_code = new_status
+    rescue ArgumentError
+      self.status_code = :undefined
+    end
   end
 
   # True if the submission's analysis is in progress.
@@ -77,17 +88,17 @@ class Analysis
   # This is a hint for any UI that displays this analysis. If this method
   # returns true, the UI might choose to poll the database and refresh itself.
   def status_will_change?
-    status == :queued || status == :running
+    queued? || running?
   end
 
-  # True the submission appears to be correct.
+  # True if the analyzer ran and the submission was not rejected.
   def submission_ok?
-    status == :ok || status == :no_analyzer
+    ok? || analyzer_bug?
   end
 
   # True if the submission is definitely incorrect.
   def submission_rejected?
-    status == :wrong || status == :crashed || status == :limit_exceeded
+    wrong? || crashed? || limit_exceeded?
   end
 end
 

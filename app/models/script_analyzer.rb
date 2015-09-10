@@ -59,7 +59,7 @@ class ScriptAnalyzer < Analyzer
             outcome = extract_outcome run_state, manifest, ext_key
             if auto_grading?
               unless update_grades submission, grading, run_state
-                outcome[:status] = :no_analyzer
+                outcome[:status] = :analyzer_bug
                 outcome[:log] << "\nThe analyzer issued incorrect grades."
               end
             else
@@ -286,7 +286,7 @@ END_LOG
   end
 
   # Reports an error that happened before the submission got to run.
-  def setup_error(submission, message, status = :no_analyzer)
+  def setup_error(submission, message, status = :analyzer_bug)
     analysis = submission.analysis
     analysis.log = message + "\n"
     analysis.status = status

@@ -150,10 +150,10 @@ module IconsHelper
   # Icon representing an analysis' status property.
   def analysis_status_icon_tag(analysis)
     title = analysis_status_text analysis
-    status = analysis ? analysis.status : :no_analyzer
+    status = analysis ? analysis.status : :analyzer_bug
 
     path = case status
-    when :no_analyzer
+    when :analyzer_bug
       'icons/draft.png'
     when :queued
       'icons/waiting.png'

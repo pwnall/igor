@@ -64,4 +64,7 @@ class SubmissionsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  describe 'XHR GET #info' do
+  end
 end

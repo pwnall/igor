@@ -73,7 +73,7 @@ class Submission < ActiveRecord::Base
       self.analysis.reset_status! :queued
       self.delay.run_analysis
     else
-      self.analysis.reset_status! :no_analyzer
+      self.analysis.reset_status! :analyzer_bug
     end
   end
 
@@ -84,7 +84,7 @@ class Submission < ActiveRecord::Base
       self.analysis.reset_status! :running
       analyzer.analyze self
     else
-      self.analysis.reset_status! :no_analyzer
+      self.analysis.reset_status! :analyzer_bug
     end
   end
 

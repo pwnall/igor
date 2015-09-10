@@ -176,12 +176,12 @@ class SubmissionTest < ActiveSupport::TestCase
         submission.deliverable.analyzer.destroy
       end
 
-      it 'builds an analysis and sets the status to :no_analyzer' do
+      it 'builds an analysis and sets the status to :analyzer_bug' do
         assert_nil submission.analyzer
         submission.update! analysis: nil
         submission.queue_analysis
 
-        assert_equal :no_analyzer, submission.reload.analysis.status
+        assert_equal :analyzer_bug, submission.reload.analysis.status
       end
     end
   end
@@ -202,12 +202,12 @@ class SubmissionTest < ActiveSupport::TestCase
         submission.deliverable.analyzer.destroy
       end
 
-      it 'builds an analysis and sets the status to :no_analyzer' do
+      it 'builds an analysis and sets the status to :analyzer_bug' do
         assert_nil submission.analyzer
         submission.update! analysis: nil
         submission.run_analysis
 
-        assert_equal :no_analyzer, submission.reload.analysis.status
+        assert_equal :analyzer_bug, submission.reload.analysis.status
       end
     end
   end

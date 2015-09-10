@@ -254,12 +254,12 @@ class DeliverableTest < ActiveSupport::TestCase
     describe 'deliverable has no analyzer' do
       before { deliverable.analyzer.destroy }
 
-      it 'sets analysis status to :no_analyzer for all submissions' do
+      it 'sets analysis status to :analyzer_bug for all submissions' do
         assert_no_difference 'Delayed::Job.count' do
           deliverable.reanalyze_submissions
         end
         statuses = deliverable.submissions.reload.map { |s| s.analysis.status }
-        assert_equal true, statuses.all? { |status| status == :no_analyzer }
+        assert_equal true, statuses.all? { |status| status == :analyzer_bug }
       end
     end
   end

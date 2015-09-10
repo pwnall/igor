@@ -28,6 +28,9 @@ class Deliverable < ActiveRecord::Base
   validates :assignment, presence: true
 
   # The method used to verify students' submissions for this deliverable.
+  #
+  # A deliverable should always have an analyzer. This invariant is enforced in
+  # the UI for creating deliverables. 
   has_one :analyzer, dependent: :destroy, inverse_of: :deliverable
   accepts_nested_attributes_for :analyzer
   validates_associated :analyzer
