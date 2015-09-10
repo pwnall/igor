@@ -51,7 +51,7 @@ gem 'rubyzip', '>= 1.1.7', require: 'zip'
 gem 'gravatar-ultimate', '>= 2.0.0'
 
 # MIT WebSIS student lookup.
-gem 'mit_stalker', '>= 1.0.6'
+gem 'mit_stalker', '>= 1.0.7'
 
 # Report production exceptions.
 gem 'exception_notification', '>= 4.0.1'
