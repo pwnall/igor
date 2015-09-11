@@ -102,12 +102,14 @@ class UsersController < ApplicationController
   # POST /users/1/set_admin?to=true
   def set_admin
     @user = User.with_param(params[:id]).first!
-    if ActiveRecord::ConnectionAdapters::Column.value_to_boolean(params[:to])
+    if params[:to] == 'true'
       Role.grant @user, 'admin'
-      flash[:notice] = "#{@user.name} has been granted staff privileges."
-    else
+      flash[:notice] = "#{@user.name} has been granted site admin privileges."
+    elsif params[:to] == 'false'
       Role.revoke @user, 'admin'
-      flash[:notice] = "#{@user.name} no longer has staff privileges."
+      flash[:notice] = "#{@user.name} no longer has site admin privileges."
+    else
+      flash[:notice] = 'Invalid site admin flag value.'
     end
 
     redirect_to users_url
