@@ -2,6 +2,7 @@ require 'test_helper'
 
 class DbFileTest < ActiveSupport::TestCase
   include ActionDispatch::TestProcess  # For fixture_file_upload.
+  include FileGenerator
 
   before do
     attachment = fixture_file_upload 'analyzer_files/fib.zip',

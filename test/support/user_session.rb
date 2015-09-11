@@ -1,0 +1,3 @@
+class ActionDispatch::IntegrationTest
+  
+end

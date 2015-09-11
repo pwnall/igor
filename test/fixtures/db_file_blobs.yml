@@ -28,6 +28,11 @@ dexter_code:
   style: original
   file_contents: <%= binary_file('submission_files/good_fib.py') %>
 
+dexter_code_v2:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:dexter_code_v2) %>
+  style: original
+  file_contents: <%= binary_file('submission_files/good_fib.py') %>
+
 deedee_assessment:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:deedee_assessment) %>
   style: original

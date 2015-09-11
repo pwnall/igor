@@ -4,7 +4,9 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
   include ActionDispatch::TestProcess  # For fixture_file_upload.
 
   before do
-    @analyzer = DockerAnalyzer.new deliverable: deliverables(:project_writeup),
+    deliverable = assignments(:ps1).deliverables.build name: 'Moar code',
+        description: 'Waay more', file_ext: 'py'
+    @analyzer = DockerAnalyzer.new deliverable: deliverable,
         auto_grading: false, db_file: db_files(:ps2_docker_analyzer),
         map_time_limit: 2, map_ram_limit: 1024, reduce_time_limit: 2,
         reduce_ram_limit: 1024

@@ -1,9 +1,14 @@
 require 'test_helper'
 
 class DeliverableTest < ActiveSupport::TestCase
+  include ActionDispatch::TestProcess  # For fixture_file_upload.
+  include ActiveJob::TestHelper
+
   before do
     @deliverable = Deliverable.new assignment: assignments(:ps1),
-        file_ext: 'pdf', name: 'Extra Credit', description: 'Bonus for PS1'
+        file_ext: 'pdf', name: 'Extra Credit', description: 'Bonus for PS1',
+        analyzer_attributes: { type: 'ProcAnalyzer', auto_grading: 0,
+        message_name: 'analyze_pdf' }
   end
 
   let(:deliverable) { deliverables(:assessment_writeup) }
@@ -66,24 +71,26 @@ class DeliverableTest < ActiveSupport::TestCase
     assert_empty deliverable.submissions.reload
   end
 
+  it 'requires an analyzer' do
+    @deliverable.analyzer = nil
+    assert @deliverable.invalid?
+  end
+
   it 'validates an associated analyzer' do
-    analyzer = @deliverable.build_analyzer
-    assert_equal false, analyzer.valid?
+    @deliverable.analyzer.message_name = nil
+    assert_equal false, @deliverable.analyzer.valid?
     assert_equal false, @deliverable.valid?
   end
 
   it 'saves the associated ProcAnalyzer through the parent deliverable' do
-    assert_nil @deliverable.analyzer
-    deliverable_params = { analyzer_attributes: {
-      type: 'ProcAnalyzer', auto_grading: 0, message_name: 'analyze_pdf'
-    } }
-    @deliverable.update! deliverable_params
-
-    assert_instance_of ProcAnalyzer, @deliverable.reload.analyzer
+    assert_instance_of ProcAnalyzer, @deliverable.analyzer
+    assert_difference 'ProcAnalyzer.count' do
+      @deliverable.save!
+    end
   end
 
   it 'saves the associated ScriptAnalyzer through the parent deliverable' do
-    assert_nil @deliverable.analyzer
+    @deliverable.analyzer = nil
     attachment = fixture_file_upload 'analyzer_files/fib.zip',
         'application/zip', :binary
     deliverable_params = { analyzer_attributes: {
@@ -91,9 +98,10 @@ class DeliverableTest < ActiveSupport::TestCase
       file_limit: 10, file_size_limit: 100, process_limit: 5,
       db_file_attributes: { f: attachment }
     } }
-    @deliverable.update! deliverable_params
 
-    assert_instance_of ScriptAnalyzer, @deliverable.reload.analyzer
+    assert_difference 'ScriptAnalyzer.count' do
+      @deliverable.update! deliverable_params
+    end
   end
 
   describe '#can_read?' do
@@ -227,39 +235,48 @@ class DeliverableTest < ActiveSupport::TestCase
   end
 
   describe '#reanalyze_submissions' do
-    let(:submission_count) { deliverable.submissions.count }
-
-    before do
-      assert_operator 2, :<=, submission_count
-    end
-
-    describe 'deliverable has analyzer' do
-      before { assert_not_nil deliverable.analyzer }
-
+    describe 'deliverable analyzer is a ProcAnalyzer' do
       it 'queues all submissions for reanalysis' do
-        assert_difference 'Delayed::Job.count', submission_count do
+        assert_enqueued_jobs 2 do
           deliverable.reanalyze_submissions
         end
       end
 
       it 'reanalyzes all submissions' do
-        deliverable.reanalyze_submissions
+        skip 'requires docker'
+        deliverable.submissions.each do |s|
+          assert_equal :queued, s.analysis.status
+        end
+        perform_enqueued_jobs do
+          deliverable.reanalyze_submissions
+        end
 
-        assert_equal [submission_count, 0], Delayed::Worker.new.work_off
-        statuses = deliverable.reload.submissions.map { |s| s.analysis.status }
-        assert_equal [:ok, :wrong], statuses.sort!
+        statuses = deliverable.submissions.reload.map { |s| s.analysis.status }
+        assert_equal [:ok, :wrong].to_set, statuses.to_set
       end
     end
 
-    describe 'deliverable has no analyzer' do
-      before { deliverable.analyzer.destroy }
+    describe 'deliverable analyzer is a DockerAnalyzer' do
+      let(:code_deliverable) { deliverables(:assessment_code) }
 
-      it 'sets analysis status to :analyzer_bug for all submissions' do
-        assert_no_difference 'Delayed::Job.count' do
-          deliverable.reanalyze_submissions
+      it 'queues all submissions for reanalysis' do
+        assert_enqueued_jobs 2 do
+          code_deliverable.reanalyze_submissions
         end
-        statuses = deliverable.submissions.reload.map { |s| s.analysis.status }
-        assert_equal true, statuses.all? { |status| status == :analyzer_bug }
+      end
+
+      it 'reanalyzes all submissions' do
+        skip 'requires docker'
+        code_deliverable.submissions.each do |s|
+          assert_equal true, s.analysis.nil? || (s.analysis.status != :ok)
+        end
+        perform_enqueued_jobs do
+          code_deliverable.reanalyze_submissions
+        end
+
+        code_deliverable.submissions.reload.each do |s|
+          assert_equal :ok, s.analysis.status
+        end
       end
     end
   end

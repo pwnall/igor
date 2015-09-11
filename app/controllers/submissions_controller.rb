@@ -60,7 +60,7 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       if @submission.save
-        @submission.queue_analysis
+        SubmissionAnalysisJob.perform_later @submission
 
         format.html do
           redirect_to assignment_url(@submission.assignment,
@@ -98,7 +98,7 @@ class SubmissionsController < ApplicationController
   # POST /submissions/1/reanalyze
   def reanalyze
     @submission = Submission.find params[:id]
-    @submission.queue_analysis
+    SubmissionAnalysisJob.perform_later @submission
 
     respond_to do |format|
       format.html do

@@ -25,14 +25,14 @@ project_writeup:
   description: "Your team's write-up for the final project, in PDF format."
   file_ext: pdf
 
-assessment_code:
-  assignment: assessment
-  name: Python Source Code
-  description: "A code sample you are proud of, in one python file."
-  file_ext: py
-
 assessment_writeup:
   assignment: assessment
   name: PDF Write-Up
   description: "Your self-assessment, in PDF format."
   file_ext: pdf
+
+assessment_code:
+  assignment: assessment
+  name: Python Source Code
+  description: "A code sample you are proud of, in one python file."
+  file_ext: py

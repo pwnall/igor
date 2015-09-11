@@ -66,43 +66,22 @@ class Submission < ActiveRecord::Base
     course.is_student?(user) || course.is_staff?(user)
   end
 
-  # Queues up a request to run an automated health-check for this submission.
-  def queue_analysis
-    ensure_analysis_exists
-    if analyzer
-      self.analysis.reset_status! :queued
-      self.delay.run_analysis
-    else
-      self.analysis.reset_status! :analyzer_bug
-    end
+  # Prepares the submission's analysis before queueing the submission.
+  #
+  # NOTE: This method is a SubmissionAnalysisJob :before_enqueue callback,
+  #     so it will only be executed if the job is queued via `perform_later`.
+  def analysis_queued!
+    build_analysis unless analysis
+    self.analysis.reset_status! :queued
   end
 
-  # Performs an automated health-check for this submission.
-  def run_analysis
-    ensure_analysis_exists
-    if analyzer
-      self.analysis.reset_status! :running
-      begin
-        analyzer.analyze self
-      rescue StandardError => e
-        self.analysis.record_exception e
-
-        # NOTE: Re-raising the exception has a few benefits. In development, it
-        #       facilitates debugging. In production, it lets delayed_job use
-        #       its retrying mechanics, which can get us past transient errors
-        #       such as Docker being down, or the system getting rebooted.
-        raise e
-      end
-    else
-      self.analysis.reset_status! :analyzer_bug
-    end
-  end
-
-  # After this method completes, this submission's analysis will not be nil.
-  def ensure_analysis_exists
-    unless analysis
-      build_analysis status: :queued, log: ''
-    end
+  # Prepares the submission's analysis before running the analyzer.
+  #
+  # NOTE: This method is a SubmissionAnalysisJob :before_perform callback,
+  #     so it will be executed via both `perform_later` and `perform_now`.
+  def analysis_running!
+    build_analysis unless analysis
+    self.analysis.reset_status! :running
   end
 
   # True if the given user is an owner of this submission.

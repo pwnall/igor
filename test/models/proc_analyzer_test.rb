@@ -2,8 +2,10 @@ require 'test_helper'
 
 class ProcAnalyzerTest < ActiveSupport::TestCase
   before do
-    @analyzer = ProcAnalyzer.new deliverable: deliverables(:project_writeup),
-        auto_grading: false, message_name: 'analyze_pdf'
+    deliverable = assignments(:ps1).deliverables.build name: 'Moar answers',
+        description: 'No no moar', file_ext: 'pdf'
+    @analyzer = ProcAnalyzer.new deliverable: deliverable, auto_grading: false,
+        message_name: 'analyze_pdf'
   end
 
   let(:analyzer) { analyzers(:proc_assessment_writeup) }

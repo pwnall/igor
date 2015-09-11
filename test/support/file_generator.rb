@@ -1,4 +1,4 @@
-class ActiveSupport::TestCase
+module FileGenerator
   include ActionDispatch::TestProcess  # For fixture_file_upload.
 
   # Create a 16MB text file, if it doesn't exist.

@@ -9,6 +9,7 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   let(:submission) { submissions(:dexter_assessment) }
+  let(:analysis) { submission.analysis }
   let(:deliverable) { submission.deliverable }
   let(:student_author) { submission.subject }
   let(:student_not_author) { users(:deedee) }
@@ -151,81 +152,55 @@ class SubmissionTest < ActiveSupport::TestCase
     end
   end
 
-  describe '#queue_analysis' do
-    describe 'submission has an analyzer' do
-      it 'builds an analysis and queues the submission for analysis' do
-        assert_not_nil submission.analyzer
-        submission.update! analysis: nil
-
-        assert_difference 'Delayed::Job.count' do
-          submission.queue_analysis
+  describe '#analysis_queued!' do
+    describe 'submission does not have an analysis' do
+      it 'creates a blank analysis with status :queued' do
+        assert_nil @submission.analysis
+        assert_difference 'Analysis.count' do
+          @submission.analysis_queued!
         end
-        assert_equal :queued, submission.reload.analysis.status
-      end
-
-      it 'analyzes the queued submission' do
-        submission.queue_analysis
-
-        assert_equal [1, 0], Delayed::Worker.new.work_off
-        assert_equal :ok, submission.reload.analysis.status
+        assert_equal :queued, @submission.analysis.reload.status
+        assert_equal '', @submission.analysis.log
+        assert_equal '', @submission.analysis.private_log
       end
     end
 
-    describe 'submission has no analyzer' do
-      before do
-        submission.deliverable.analyzer.destroy
-      end
-
-      it 'builds an analysis and sets the status to :analyzer_bug' do
-        assert_nil submission.analyzer
-        submission.update! analysis: nil
-        submission.queue_analysis
-
-        assert_equal :analyzer_bug, submission.reload.analysis.status
+    describe 'submission has an analysis' do
+      it 'resets the analysis with status :queued' do
+        analysis.update! status: :wrong, log: 'log', private_log: 'private'
+        assert_no_difference 'Analysis.count' do
+          submission.analysis_queued!
+        end
+        assert_equal :queued, analysis.reload.status
+        assert_equal '', analysis.log
+        assert_equal '', analysis.private_log
       end
     end
   end
 
-  describe '#run_analysis' do
-    describe 'submission has an analyzer' do
-      it 'builds an analysis and analyzes the submission' do
-        assert_not_nil submission.analyzer
-        submission.update! analysis: nil
-        submission.run_analysis
-
-        assert_equal :ok, submission.reload.analysis.status
+  describe '#analysis_running!' do
+    describe 'submission does not have an analysis' do
+      it 'creates a blank analysis with status :running' do
+        assert_nil @submission.analysis
+        assert_difference 'Analysis.count' do
+          @submission.analysis_running!
+        end
+        assert_equal :running, @submission.analysis.reload.status
+        assert_equal '', @submission.analysis.log
+        assert_equal '', @submission.analysis.private_log
       end
     end
 
-    describe 'submission has no analyzer' do
-      before do
-        submission.deliverable.analyzer.destroy
+    describe 'submission has an analysis' do
+      it 'resets the analysis with status :queued' do
+        analysis.update! status: :wrong, log: 'log', private_log: 'private'
+        assert_no_difference 'Analysis.count' do
+          submission.analysis_running!
+        end
+        assert_equal :running, analysis.reload.status
+        assert_equal '', analysis.log
+        assert_equal '', analysis.private_log
       end
-
-      it 'builds an analysis and sets the status to :analyzer_bug' do
-        assert_nil submission.analyzer
-        submission.update! analysis: nil
-        submission.run_analysis
-
-        assert_equal :analyzer_bug, submission.reload.analysis.status
-      end
-    end
-  end
-
-  describe '#ensure_analysis_exists' do
-    it 'builds an associated analysis if one does not exist' do
-      assert_nil @submission.analysis
-      @submission.save!
-      @submission.ensure_analysis_exists
-      assert_not_nil @submission.analysis
-      assert_equal :queued, @submission.analysis.status
-    end
-
-    it 'does not change an existing analysis' do
-      submission.analysis.update! status: :ok
-      assert_equal :ok, submission.analysis.status
-      submission.ensure_analysis_exists
-      assert_equal :ok, submission.reload.analysis.status
     end
   end
 

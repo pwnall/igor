@@ -214,21 +214,19 @@ psets = pset_data.map.with_index do |data, index|
 
   pdf_deliverable = pset.deliverables.create! name: 'PDF write-up',
       file_ext: 'pdf',
-      description: 'Please upload your write-up, in PDF format.'
-  analyzer = ProcAnalyzer.new  message_name: 'analyze_pdf', auto_grading: true
-  analyzer.deliverable = pdf_deliverable
-  analyzer.save!
+      description: 'Please upload your write-up, in PDF format.',
+      analyzer_attributes: { type: 'ProcAnalyzer', message_name: 'analyze_pdf',
+      auto_grading: true }
 
+  analyzer_file = 'test/fixtures/analyzer_files/fib_small.zip'
+  analyzer_params = { type: 'DockerAnalyzer', map_time_limit: '2',
+      map_ram_limit: '1024', reduce_time_limit: '2', reduce_ram_limit: '1024',
+      auto_grading: i % 2 == 0, db_file_attributes: {
+      f: fixture_file_upload(analyzer_file, 'application/zip', :binary) } }
   py_deliverable = pset.deliverables.create! assignment: pset,
       name: 'Fibonacci', file_ext: 'py',
-      description: 'Please upload your modified fib.py.'
-  analyzer_file = 'test/fixtures/analyzer_files/fib_small.zip'
-  analyzer = DockerAnalyzer.new db_file_attributes: {
-      f: fixture_file_upload(analyzer_file, 'application/zip', :binary) },
-      map_time_limit: '2', map_ram_limit: '1024', reduce_time_limit: '2',
-      reduce_ram_limit: '1024', auto_grading: i % 2 == 0
-  analyzer.deliverable = py_deliverable
-  analyzer.save!
+      description: 'Please upload your modified fib.py.',
+      analyzer_attributes: analyzer_params
 
   unless pset.ui_state_for(admin) == data[:state]
     raise "Pset #{i} seeding bug: #{data[:state]} / #{pset.ui_state_for(admin)}"
@@ -249,7 +247,7 @@ end
              f: fixture_file_upload('test/fixtures/submission_files/small.pdf',
                                     'application/pdf', :binary)
            }, created_at: time, updated_at: time
-      submission.run_analysis
+      SubmissionAnalysisJob.perform_now submission
       submission.analysis.created_at = time + 1.second
       submission.analysis.updated_at = time + 5.seconds
       submission.analysis.save!
@@ -265,7 +263,7 @@ end
                 'test/fixtures/submission_files/good_fib.py',
                 'text/x-python', :binary)
           }, created_at: time, updated_at: time
-      submission.run_analysis
+      SubmissionAnalysisJob.perform_now submission
       submission.analysis.created_at = time + 1.second
       submission.analysis.updated_at = time + 5.seconds
       submission.analysis.save!
