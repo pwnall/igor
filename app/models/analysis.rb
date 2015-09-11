@@ -103,11 +103,25 @@ class Analysis
 end
 
 class Analysis
-  # Resets all the data in the analyzer.
+  # Resets all the data in the analysis.
   def reset_status!(new_status)
     self.status = new_status
     self.log = ''
     self.private_log = ''
+    self.score = nil
+    self.save!
+  end
+
+  # Resets the analysis data to reflect an internal exception.
+  def record_exception(exception)
+    self.status = :analyzer_bug
+    self.log = ''
+    self.private_log = <<ENDS
+The analyzer code raised the exception below.
+
+#{exception.class.name}: #{exception.message}
+#{exception.backtrace.join("\n")}
+ENDS
     self.score = nil
     self.save!
   end

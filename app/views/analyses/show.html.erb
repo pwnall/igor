@@ -24,16 +24,12 @@
   </span>
 </h3>
 
-<div class="markdpwn-parsed-code">
-<pre><%= @analysis.log %></pre>
-</div>
+<div class="markdpwn-parsed-code"><%= @analysis.log %></div>
 
 <% if @analysis.can_read_private_log?(current_user) %>
 <h3>Private Log</h3>
 
 <p>This is only visible to course staff members.</p>
 
-<div class="markdpwn-parsed-code">
-<pre><%= @analysis.private_log %></pre>
-</div>
+<div class="markdpwn-parsed-code"><%= @analysis.private_log %></div>
 <% end %>

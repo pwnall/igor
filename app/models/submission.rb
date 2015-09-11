@@ -82,7 +82,17 @@ class Submission < ActiveRecord::Base
     ensure_analysis_exists
     if analyzer
       self.analysis.reset_status! :running
-      analyzer.analyze self
+      begin
+        analyzer.analyze self
+      rescue StandardError => e
+        self.analysis.record_exception e
+
+        # NOTE: Re-raising the exception has a few benefits. In development, it
+        #       facilitates debugging. In production, it lets delayed_job use
+        #       its retrying mechanics, which can get us past transient errors
+        #       such as Docker being down, or the system getting rebooted.
+        raise e
+      end
     else
       self.analysis.reset_status! :analyzer_bug
     end
