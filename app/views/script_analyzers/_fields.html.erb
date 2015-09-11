@@ -1,3 +1,8 @@
+<p class="deprecation-warning">
+  <%= invalid_icon_tag %> The script analyzer has known security vulnerabilties
+  and is deprecated. Please use the Docker analyzer instead.
+</p>
+
 <section class="fields">
   <p class="field">
   <%= f.fields_for :db_file, DbFile.new do |ff| %>
