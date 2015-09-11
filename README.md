@@ -27,7 +27,9 @@ The following [Homebrew](http://brew.sh) commands install the requirements on
 OSX.
 
 ```bash
-brew install docker docker-machine imagemagick pkg-config
+brew install docker docker-machine imagemagick libxml2 libxslt openssl \
+    pkg-config postgresql
+brew link --force openssl
 brew install ansible --HEAD
 brew install caskroom/cask/brew-cask
 brew cask install vagrant virtualbox
