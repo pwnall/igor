@@ -9,6 +9,7 @@
   vars:
     ansible_ssh_user: "{{ os_image_user }}"
   roles:
+  - fix_f22_vagrant
   - sys_package_update
   - sys_facts
     #- docker_storage
@@ -19,19 +20,20 @@
   vars:
     ansible_ssh_user: "{{ os_image_user }}"
   roles:
-    - sudo_nopasswd
-    - docker
-    - nginx
-    - pgsql
-    - web_user
-    - web_db
-    - ruby_bundler
-    - web_frontend
+  - sudo_nopasswd
+  - docker
+  - nginx
+  - pgsql
+  - web_user
+  - web_db
+  - ruby_bundler
+  - web_frontend
 
 - hosts: "{{ prod_worker_group_name }}"
   vars_files:
   - ../openstack_vars.yml
   vars:
     ansible_ssh_user: "{{ os_image_user }}"
-  roles: []
-    #- docker_registry_client
+  roles:
+  - sudo_nopasswd
+  - docker

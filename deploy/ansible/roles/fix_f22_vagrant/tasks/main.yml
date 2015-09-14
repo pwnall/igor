@@ -1,0 +1,16 @@
+---
+- name: resize rootfs partition on Vagrant VM
+  when: ansible_ssh_user == 'vagrant'
+  become: true
+  become_user: root
+  command: growpart /dev/sda 1 --update on
+  register: growpart_result
+  changed_when: "'CHANGED' in growpart_result.stdout"
+
+- name: resize root filesystem on Vagrant VM
+  when: ansible_ssh_user == 'vagrant'
+  become: true
+  become_user: root
+  command: resize2fs /dev/sda1
+  register: resize2fs_result
+  changed_when: "'Nothing to do!' not in resize2fs_result.stdout"
