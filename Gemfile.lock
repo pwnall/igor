@@ -15,20 +15,20 @@ GIT
 
 GIT
   remote: https://github.com/pwnall/delayed_job.git
-  revision: 6dac89307bd606a02f69cec697a60ee6f61af865
+  revision: ee603ad6d05199f03f138d4d0da509c3df3e58a8
   branch: rails5
   specs:
-    delayed_job (4.0.6)
+    delayed_job (4.1.0)
       activesupport (>= 3.0)
 
 GIT
   remote: https://github.com/pwnall/delayed_job_active_record.git
-  revision: 55a74ca4718c75d5181d38c28343b5c1a6846bd9
+  revision: ebfb15404bacbd940e63214ac7327ca811075e1b
   branch: rails5
   specs:
     delayed_job_active_record (4.0.3)
       activerecord (>= 3.0)
-      delayed_job (>= 3.0, < 4.1)
+      delayed_job (>= 3.0, < 4.2)
 
 GIT
   remote: https://github.com/pwnall/paperclip_database.git
@@ -40,7 +40,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/arel
-  revision: 935796f4fd7d75950db87156d6540028a9044fdf
+  revision: 77ec13b46af2926bfcfc3073685711c874b0d272
   branch: master
   specs:
     arel (7.0.0.alpha)
