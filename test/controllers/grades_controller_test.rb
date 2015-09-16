@@ -36,8 +36,8 @@ class GradesControllerTest < ActionController::TestCase
     end
   end
 
-  describe 'authenticated as a grader' do
-    before { set_session_current_user users(:admin) }
+  describe 'authenticated as a staff' do
+    before { set_session_current_user users(:main_staff) }
 
     describe 'GET #index (not intended for use by non-students)' do
       it "renders an index of the grader's grades" do
@@ -222,6 +222,99 @@ class GradesControllerTest < ActionController::TestCase
             @response.headers['Content-Security-Policy']
         assert_match /inline/, @response.headers['Content-Disposition']
         assert_match /csv/, @response.headers['Content-Type']
+      end
+    end
+  end
+
+  describe 'authenticated as a grader' do
+    before { set_session_current_user users(:main_grader) }
+
+    describe 'GET #index (not intended for use by non-students)' do
+      it "renders an index of the grader's grades" do
+        get :index, params: { course_id: courses(:main).to_param }
+
+        assert_response :success
+        assert_select '.grades-list-heading', 'Grades'
+      end
+    end
+
+    describe 'GET #editor' do
+      let(:selected_assignment_value) do
+        'form select#assignment_id>option[selected="selected"][value=?]'
+      end
+
+      describe 'pass the id of a specific assignment' do
+        it 'opens the grade editor to the given assignment' do
+          query_assignment = assignments(:project)
+          get :editor, params: { course_id: courses(:main).to_param,
+              assignment_id: query_assignment.to_param }
+
+          assert_response :success
+          assert_select selected_assignment_value, query_assignment.to_param
+        end
+      end
+    end
+
+    describe 'XHR POST #create' do
+      let(:student) { users(:dexter) }
+      let(:metric) { assignment_metrics(:assessment_overall) }
+      let(:params) do
+        { course_id: courses(:main).to_param, grade: {
+          subject_id: student.to_param, subject_type: 'User',
+          metric_id: metric.to_param, score: '4.0' } }
+      end
+
+      describe 'enter a new score' do
+        before { Grade.where(subject: student, metric: metric).destroy_all }
+
+        it 'creates a new grade' do
+          assert_difference 'Grade.count' do
+            post :create, params: params, xhr: true
+          end
+          assert_equal 4.0, Grade.last.score
+        end
+
+        it 'renders the new score in the input field' do
+          post :create, params: params, xhr: true
+          assert_response :success
+          assert_select "input[name='score'][value=?]", '4.0'
+        end
+      end
+    end
+
+    describe 'GET #request_missing' do
+      it 'bounces the user' do
+        get :request_missing, params: { course_id: courses(:main).to_param }
+
+        assert_response :forbidden
+      end
+    end
+
+    describe 'GET #request_report' do
+      it 'bounces the user' do
+        get :request_report, params: { course_id: courses(:main).to_param }
+
+        assert_response :forbidden
+      end
+    end
+
+    describe 'POST #missing' do
+      it 'bounces the user' do
+        query_assignment = assignments(:assessment)
+        post :missing, params: { course_id: courses(:main).to_param,
+            filter_aid: query_assignment.id }
+
+        assert_response :forbidden
+      end
+    end
+
+    describe 'POST #report' do
+      it 'bounces the user' do
+        get :report, params: { filter_aid: '', sort_by: 'name', name_by: 'name',
+            use_weights: 'on', histogram_step: 10,
+            course_id: courses(:main).to_param }
+
+        assert_response :forbidden
       end
     end
   end

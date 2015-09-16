@@ -2,8 +2,10 @@ class GradesController < ApplicationController
   include GradeEditor
 
   before_action :set_current_course
-  before_action :authenticated_as_course_editor, except: [:index]
   before_action :authenticated_as_user, only: [:index]
+  before_action :authenticated_as_course_grader, only: [:editor, :create]
+  before_action :authenticated_as_course_editor, except:
+      [:index, :editor, :create]
 
   # GET /6.006/grades
   def index

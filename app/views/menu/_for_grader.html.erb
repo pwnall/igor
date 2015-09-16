@@ -3,5 +3,8 @@
     <%= feed_icon_tag %> Activity
   <% end %>
 </li>
-
-<%= render 'menu/grades' %>
+<li>
+  <%= link_to editor_grades_path(course_id: current_course) do %>
+    <%= edit_icon_tag %> Enter Grades
+  <% end %>
+</li>
