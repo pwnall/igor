@@ -4,12 +4,14 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
   include ActionDispatch::TestProcess  # For fixture_file_upload.
 
   before do
+    ContainedMr.stubs(:template_class).returns ContainedMr::Mock::Template
+
     deliverable = assignments(:ps1).deliverables.build name: 'Moar code',
         description: 'Waay more', file_ext: 'py'
     @analyzer = DockerAnalyzer.new deliverable: deliverable,
         auto_grading: false, db_file: db_files(:ps2_docker_analyzer),
-        map_time_limit: 2, map_ram_limit: 1024, reduce_time_limit: 2,
-        reduce_ram_limit: 1024
+        map_time_limit: '1.5', map_ram_limit: '128', reduce_time_limit: '3',
+        reduce_ram_limit: '1024'
   end
 
   let(:analyzer) { analyzers(:docker_assessment_code) }
@@ -103,6 +105,32 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
         analyzer.db_file = nil
         assert_nil analyzer.contents
       end
+    end
+  end
+
+  describe '#run_submission' do
+    it 'sets job time limits correctly' do
+      job = @analyzer.run_submission submissions(:dexter_code)
+      assert_equal 1.5, job.mapper_runner(1)._time_limit
+      assert_equal 3, job.reducer_runner._time_limit
+    end
+
+    it 'sets job ulimits correctly' do
+      job = @analyzer.run_submission submissions(:dexter_code)
+
+      assert_equal 2, job.mapper_runner(1)._ulimit('cpu')
+      assert_equal 128 * 256, job.mapper_runner(1)._ulimit('rss')
+      assert_equal 3, job.reducer_runner._ulimit('cpu')
+      assert_equal 1024 * 256, job.reducer_runner._ulimit('rss')
+    end
+
+    it 'provides the correct job input' do
+      job = @analyzer.run_submission submissions(:dexter_code)
+      good_fib_path =
+          Rails.root.join('test/fixtures').join 'submission_files/good_fib.py'
+      good_fib = File.read good_fib_path
+
+      assert_equal good_fib, job._mapper_input
     end
   end
 end

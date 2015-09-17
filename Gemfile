@@ -42,7 +42,8 @@ gem 'prawn', '>= 2.0.2'
 gem 'prawn-table', '>= 0.2.2'
 
 # Instant feedback.
-gem 'contained_mr', '>= 0.1.2'
+gem 'contained_mr', '>= 0.2.0'
+#gem 'contained_mr', '>= 0.1.2', path: '../contained_mr'
 gem 'exec_sandbox', '>= 0.3.0'
 gem 'pdf-reader', '>= 1.3.3'
 gem 'rubyzip', '>= 1.1.7', require: 'zip'

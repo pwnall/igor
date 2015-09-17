@@ -21,7 +21,7 @@ class DockerAnalyzer < Analyzer
 
   # Maximum number of seconds of CPU time that the student's code can use.
   validates :map_time_limit, presence: true,
-      numericality: { only_integer: true, greater_than: 0, allow_nil: false }
+      numericality: { greater_than: 0, allow_nil: false }
   store_accessor :exec_limits, :map_time_limit
 
   # Maximum number of megabytes of RAM that the student's code can use.
@@ -31,7 +31,7 @@ class DockerAnalyzer < Analyzer
 
   # Maximum number of seconds of CPU time that the grading code can use.
   validates :reduce_time_limit, presence: true,
-      numericality: { only_integer: true, greater_than: 0, allow_nil: false }
+      numericality: { greater_than: 0, allow_nil: false }
   store_accessor :exec_limits, :reduce_time_limit
 
   # Maximum number of megabytes of RAM that the grading code can use.
@@ -62,10 +62,14 @@ class DockerAnalyzer < Analyzer
     template_io = StringIO.new db_file.f.file_contents
     submission_string = submission.db_file.f.file_contents
     job_options = {
-      mapper: { ulimits: { cpu: map_time_limit.to_i,
-                           rss: map_ram_limit.to_i * 256 } },
-      reducer: { ulimits: { cpu: reduce_time_limit.to_i,
-                            rss: reduce_ram_limit.to_i * 256 } },
+      'mapper' => {
+        'wait_time' => map_time_limit.to_f,
+        'ulimits' => { 'cpu' => map_time_limit.to_f.ceil,
+                       'rss' => map_ram_limit.to_i * 256 } },
+      'reducer' => {
+        'wait_time' => reduce_time_limit.to_f,
+        'ulimits' => { 'cpu' => reduce_time_limit.to_f,
+                       'rss' => reduce_ram_limit.to_i * 256 } },
     }
 
     # NOTE: We release the ActiveRecord connection because we won't use it for
@@ -73,8 +77,8 @@ class DockerAnalyzer < Analyzer
     #       comment.
     ActiveRecord::Base.clear_active_connections!
 
-    template = ContainedMr::Template.new 'alg_mr', job_id, template_io
-    job = ContainedMr::Job.new template, job_id, job_options
+    template = ContainedMr.new_template 'alg_mr', job_id, template_io
+    job = template.new_job job_id, job_options
 
     job.build_mapper_image submission_string
     1.upto job.item_count do |i|
@@ -85,7 +89,7 @@ class DockerAnalyzer < Analyzer
     job.destroy!
     template.destroy!
 
-    return job
+    job
   end
 
   # Extracts the grades produced by a Map-Reduce job.
