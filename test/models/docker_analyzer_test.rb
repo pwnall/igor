@@ -10,7 +10,7 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
         description: 'Waay more', file_ext: 'py'
     @analyzer = DockerAnalyzer.new deliverable: deliverable,
         auto_grading: false, db_file: db_files(:ps2_docker_analyzer),
-        map_time_limit: '1.5', map_ram_limit: '128', reduce_time_limit: '3',
+        map_time_limit: '1.5', map_ram_limit: '128', reduce_time_limit: '2.9',
         reduce_ram_limit: '1024'
   end
 
@@ -112,7 +112,7 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
     it 'sets job time limits correctly' do
       job = @analyzer.run_submission submissions(:dexter_code)
       assert_equal 1.5, job.mapper_runner(1)._time_limit
-      assert_equal 3, job.reducer_runner._time_limit
+      assert_equal 2.9, job.reducer_runner._time_limit
     end
 
     it 'sets job ulimits correctly' do

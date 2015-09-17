@@ -68,7 +68,7 @@ class DockerAnalyzer < Analyzer
                        'rss' => map_ram_limit.to_i * 256 } },
       'reducer' => {
         'wait_time' => reduce_time_limit.to_f,
-        'ulimits' => { 'cpu' => reduce_time_limit.to_f,
+        'ulimits' => { 'cpu' => reduce_time_limit.to_f.ceil,
                        'rss' => reduce_ram_limit.to_i * 256 } },
     }
 
