@@ -1,5 +1,8 @@
 <h2 class="grades-list-heading">Grades</h2>
-<h3>Recitation: <%= @recitation.nil? ? 'Unassigned' : recitation_name_label(@recitation) %></h3>
+<h3>
+  Recitation:
+  <%= @recitation.nil? ? 'Unassigned' : recitation_name_label(@recitation) %>
+</h3>
 
 <% @assignments.each do |assignment| %>
   <h3 class="grades">
@@ -23,7 +26,9 @@
     </div>
     <% @assignment_metrics[assignment].each_with_index do |metric, i| %>
     <div class="problem">
-      <span class="assignment-name"><%= metric.name %></span>
+      <span class="assignment-name">
+        <%= "#{metric.name} (weight: #{metric.weight})" %>
+      </span>
       <span class="scores">
        <span class="score"><%= grade_display_text @assignment_grades[assignment][i] %></span>
        /

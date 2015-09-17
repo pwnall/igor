@@ -3,13 +3,59 @@ require 'test_helper'
 class AssignmentMetricTest < ActiveSupport::TestCase
   before do
     @metric = AssignmentMetric.new assignment: assignments(:ps1), name: 'x',
-        max_score: 1
+        max_score: 1, weight: 1
   end
 
   let(:metric) { assignment_metrics(:ps1_p1) }
 
   it 'validates the setup metric' do
     assert @metric.valid?, @metric.errors.full_messages
+  end
+
+  it 'requires an assignment' do
+    @metric.assignment = nil
+    assert @metric.invalid?
+  end
+
+  it 'requires a name' do
+    @metric.name = nil
+    assert @metric.invalid?
+  end
+
+  it 'rejects lengthy names' do
+    @metric.name = 'm' * 65
+    assert @metric.invalid?
+  end
+
+  it 'forbids metrics for the same assignment from sharing names' do
+    assert_equal @metric.assignment, metric.assignment
+    @metric.name = metric.name
+    assert @metric.invalid?
+  end
+
+  it 'requires a weight' do
+    @metric.weight = nil
+    assert @metric.invalid?
+  end
+
+  it 'accepts a weight of 0' do
+    @metric.weight = 0
+    assert @metric.valid?
+  end
+
+  it 'rejects negative weights' do
+    @metric.weight = -1
+    assert @metric.invalid?
+  end
+
+  it 'requires a maximum score' do
+    @metric.max_score = nil
+    assert @metric.invalid?
+  end
+
+  it 'rejects negative maximum scores' do
+    @metric.max_score = -1
+    assert @metric.invalid?
   end
 
   describe '#grade_for' do

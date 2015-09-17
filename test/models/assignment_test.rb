@@ -415,11 +415,6 @@ class AssignmentTest < ActiveSupport::TestCase
       assert @assignment.invalid?
     end
 
-    it 'rejects weights greater than 100' do
-      @assignment.weight = 200
-      assert @assignment.invalid?
-    end
-
     it 'must state whether or not students can view their grades' do
       @assignment.metrics_ready = nil
       assert @assignment.invalid?
@@ -440,7 +435,8 @@ class AssignmentTest < ActiveSupport::TestCase
     end
 
     it 'saves associated metrics through the parent assignment' do
-      params = { metrics_attributes: [{ name: 'Other', max_score: 20 }] }
+      params = { metrics_attributes: [{ name: 'Other', max_score: 20,
+                                        weight: 0 }] }
 
       assert_difference '@assignment.metrics.count' do
         @assignment.update! params
@@ -448,7 +444,7 @@ class AssignmentTest < ActiveSupport::TestCase
     end
 
     it "doesn't save associated metrics with blank nested attributes" do
-      params = { metrics_attributes: [{ name: '', max_score: '' }] }
+      params = { metrics_attributes: [{ name: '', max_score: '', weight: '' }] }
 
       assert_no_difference 'assignment.metrics.count' do
         @assignment.update! params

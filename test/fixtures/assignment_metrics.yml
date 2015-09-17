@@ -6,6 +6,7 @@
 #  assignment_id :integer          not null
 #  name          :string(64)       not null
 #  max_score     :integer          not null
+#  weight        :decimal(16, 8)   not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
@@ -14,18 +15,22 @@ ps1_p1:
   name: Problem 1
   assignment: ps1
   max_score: 10
+  weight: 10
 
 project_overall:
   name: Overall
   assignment: project
   max_score: 100
+  weight: 2
 
 assessment_quality:
   name: Quality
   assignment: assessment
   max_score: 10
+  weight: 2
 
 assessment_overall:
   name: Overall
   assignment: assessment
   max_score: 100
+  weight: 3

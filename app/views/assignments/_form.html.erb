@@ -84,9 +84,20 @@
     <h3>Grading Breakdown</h3>
     <div class="assignment-builder-metrics"
          data-pwnfx-render-target="assignment-metrics">
-      <%= f.fields_for :metrics do |mf| %>
-        <%= render 'assignment_metrics/fields', f: mf %>
-      <% end %>
+      <table>
+        <thead>
+          <tr>
+            <th>Metric Name</th>
+            <th>Maximum Score</th>
+            <th>Weight</th>
+          </tr>
+        </thead>
+        <tbody>
+        <%= f.fields_for :metrics do |mf| %>
+          <%= render 'assignment_metrics/fields', f: mf %>
+        <% end %>
+        </tbody>
+      </table>
     </div>
     <p class="assignment-builder-actions">
       <%= link_to new_assignment_metric_path(assignment_id: f.object),

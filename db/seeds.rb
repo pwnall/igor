@@ -165,7 +165,9 @@ exams = exam_data.map.with_index do |data, index|
   exam.metrics_ready = data[:state] == :graded
   exam.save!
   (1..(5 + i)).map do |j|
-    exam.metrics.build name: "Problem #{j}", max_score: 6 + (i + j) % 6
+    exam.metrics.build name: "Problem #{j}", weight: rand(20),
+                       max_score: 6 + (i + j) % 6
+
   end
 
   raise "Exam #{i} seeding bug" unless exam.ui_state_for(admin) == data[:state]
@@ -209,7 +211,9 @@ psets = pset_data.map.with_index do |data, index|
   pset.metrics_ready = data[:state] == :graded
   pset.save!
   (1..(2 + i)).map do |j|
-    pset.metrics.create! name: "Problem #{j}", max_score: 6 + (i + j) % 6
+    pset.metrics.create! name: "Problem #{j}", weight: rand(20),
+                         max_score: 6 + (i + j) % 6
+
   end
 
   pdf_deliverable = pset.deliverables.create! name: 'PDF write-up',

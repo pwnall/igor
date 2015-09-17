@@ -16,12 +16,16 @@
     <thead>
       <tr>
         <th scope="col">
-          <%= search_field_tag :name, '', :placeholder => 'name filter' %>
+          <%= search_field_tag :name, '', placeholder: 'name filter' %>
         </th>
         <% @metrics.each do |metric| %>
-          <%= content_tag :th, data: { metric_id: metric.to_param,
+          <%= content_tag :th, data: { metric_weight: metric.weight,
+                metric_id: metric.to_param,
                 metric_course_id: metric.course.to_param } do %>
             <%= metric.name %>
+            <p class="metric-weight">
+              weight: <%= metric.weight %>
+            </p>
           <% end %>
         <% end %>
         <th>

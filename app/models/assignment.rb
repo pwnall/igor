@@ -87,8 +87,12 @@ end
 # :nodoc: grade collection and publishing feature.
 class Assignment
   # The assignment's weight when computing total class scores.
-  validates :weight, numericality: { greater_than_or_equal_to: 0,
-      less_than_or_equal_to: 100 }
+  #
+  # The weight is relative to the weights of all the other assignments in this
+  # course. So an assignment of weight 3 is weighed 1.5x as heavily as an
+  # assignment of weight 2. If no other assignments are added, the latter
+  # assignment will account for 40% of the student's grade.
+  validates :weight, numericality: { greater_than_or_equal_to: 0 }
 
   # If true, students can see their grades on the assignment.
   validates :metrics_ready, inclusion: { in: [true, false], allow_nil: false }

@@ -11,14 +11,14 @@ module GradesHelper
     comment && comment.text
   end
 
-  # Sums up all the scores in an array of grades.
+  # The weighted sum of all the scores in an array of grades.
   def grades_sum(grades)
-    grades.map { |grade| (grade && grade.score) || 0 }.sum
+    grades.map { |grade| grade ? grade.score * grade.metric.weight : 0 }.sum
   end
 
-  # Sums up the maxium scores in an array of metrics.
+  # THe weighted sum of the maximum scores in an array of metrics.
   def metrics_max_score(metrics)
-    metrics.map(&:max_score).sum
+    metrics.map { |metric| metric.max_score * metric.weight }.sum
   end
 
   # The text shown to a student looking at a grade.

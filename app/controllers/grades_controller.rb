@@ -131,8 +131,9 @@ class GradesController < ApplicationController
   def report
     # pull data
     pull_metrics false
-    grades = Grade.where(:metric_id => @metrics.map(&:id)).
-                   includes({:metric => :assignment}, :subject)
+    grades = Grade.includes(:subject, metric: :assignment).
+                   where(metric: @metrics)
+
     @grades_by_uid_and_mid = {}
     @users = []
     grades.each do |grade|
@@ -162,9 +163,9 @@ class GradesController < ApplicationController
     @histogram_step = params[:histogram_step].to_i || 1
     @users.each do |user|
       if params[:use_weights]
-        @totals_by_uid[user.id] = @grades_by_uid_and_mid[user.id].values.inject(0) { |acc, grade| acc + (grade ? (grade.score || 0)  * grade.metric.assignment.weight : 0) }
+        @totals_by_uid[user.id] = @grades_by_uid_and_mid[user.id].values.inject(0) { |acc, grade| acc + (grade ? (grade.score || 0) * grade.metric.weight * grade.metric.assignment.weight : 0) }
       else
-        @totals_by_uid[user.id] = @grades_by_uid_and_mid[user.id].values.inject(0) { |acc, grade| acc + (grade ? (grade.score || 0) : 0) }
+        @totals_by_uid[user.id] = @grades_by_uid_and_mid[user.id].values.inject(0) { |acc, grade| acc + (grade ? (grade.score || 0) * grade.metric.weight : 0) }
       end
 
       hv = (@totals_by_uid[user.id] / @histogram_step).to_i * @histogram_step

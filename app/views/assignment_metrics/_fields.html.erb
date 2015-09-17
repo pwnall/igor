@@ -1,20 +1,22 @@
-<p class="item" data-pwnfx-hide-positive="assignment-metric-p"
+<tr class="item" data-pwnfx-hide-positive="assignment-metric-tr"
    data-pwnfx-scope="assignment-metric">
-  <span class="name">
+  <td class="name">
     <%= f.text_field :name, placeholder: 'Problem 1', required: true,
           autofocus: true %>
-  </span>
-  <span class="max_score">
-    <%= f.number_field :max_score, min: 0, required: true,
-                                   placeholder: 10 %>
-  </span>
-  <span class="destroy">
+  </td>
+  <td class="max_score">
+    <%= f.number_field :max_score, min: 0, required: true, placeholder: 10 %>
+  </td>
+  <td class="weight">
+    <%= f.number_field :weight, min: 0, required: true, placeholder: 1 %>
+  </td>
+  <td class="destroy">
     <%= f.label :_destroy do %>
-      <%= f.check_box :_destroy, data: { pwnfx_hide: 'assignment-metric-p',
+      <%= f.check_box :_destroy, data: { pwnfx_hide: 'assignment-metric-tr',
             pwnfx_hide_scope: 'assignment-metric',
             pwnfx_hide_class: 'destroyed-blur',
             pwnfx_hide_trigger: 'checked' } %>
       <%= destroy_icon_tag %> Remove
     <% end %>
-  </span>
-</p>
+  </td>
+</tr>

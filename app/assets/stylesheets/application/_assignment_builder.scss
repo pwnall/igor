@@ -51,30 +51,8 @@
   }
 }
 
-.assignment-builder-metrics {
-  display: table;
+table.assignment-builder-metrics {
   width: 100%;
-
-  p {
-    display: table-row;
-
-    > span {
-      display: table-cell;
-      padding: 1px 2px;
-
-      > span.field_with_errors {
-        display: block;
-        width: 100%;
-      }
-
-      > input[type=text], input[type=email], input[type=tel],
-        input[type=password], input[type=search], input[type=number], textarea {
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        width: 100%;
-      }
-    }
-  }
 }
 
 .assignment-builder .error-explanation {

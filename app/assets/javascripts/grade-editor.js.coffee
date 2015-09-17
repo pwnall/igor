@@ -130,13 +130,13 @@ class GradeEditor
 
   # Re-computes the summary values for a collection of grades.
   #
-  # @param {Element} row the DOM element holding a student's grades
+  # @param {jQuery} $row the DOM element holding a student's grades
   # @return {GradeEditor} this
-  redoSummary: (row) ->
+  redoSummary: ($row) ->
     sum = 0
-    $('input[type=number]', row).each (index, e) ->
-      sum += parseFloat $(e).val() or 0
-    $('span.grade-sum', row).text sum.toFixed(2)
+    $('input[type=number]', $row).each (index, e) =>
+      sum += (parseFloat($(e).val()) or 0) * @metricWeights[index]
+    $('span.grade-sum', $row).text sum.toFixed(2)
     @
 
   # Hides and shows grade rows to reflect searchbox changes
@@ -177,17 +177,19 @@ class GradeEditor
     @lastFocusedElement = null
     @lastFocusedValue = null
 
+    @metricCourseIds = []
+    @metricIds = []
+    @metricWeights = []
+    for th in @domRoot.querySelectorAll('thead th[data-metric-id]')
+      @metricCourseIds.push th.getAttribute('data-metric-course-id')
+      @metricIds.push th.getAttribute('data-metric-id')
+      @metricWeights.push th.getAttribute('data-metric-weight')
+
     @subjectRows = @domRoot.querySelectorAll 'tbody tr[data-subject-name]'
     @subjectNames = []
     for row in @subjectRows
       @subjectNames.push row.getAttribute('data-subject-name').toLowerCase()
       @redoSummary row
-
-    @metricCourseIds = []
-    @metricIds = []
-    for th in @domRoot.querySelectorAll('thead th[data-metric-id]')
-      @metricCourseIds.push th.getAttribute('data-metric-course-id')
-      @metricIds.push th.getAttribute('data-metric-id')
 
     @oldNameFilter = ''
 

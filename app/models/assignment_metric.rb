@@ -6,6 +6,7 @@
 #  assignment_id :integer          not null
 #  name          :string(64)       not null
 #  max_score     :integer          not null
+#  weight        :decimal(16, 8)   not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
@@ -30,14 +31,25 @@ class AssignmentMetric < ActiveRecord::Base
   validates :name, length: 1..64, presence: true,
                    uniqueness: { scope: :assignment }
 
+  # The metric's weight when computing the total grade for this assignment.
+  #
+  # In order to implement a manual 'checkoff' metric that students must earn
+  # directly from a course staff member in order to get credit for their auto-
+  # graded metric score, create two metrics with the same :max_score, and set
+  # the auto-graded metric's weight to 0. This way, the student does not earn
+  # their auto-graded score until they defend their score to a staff member in
+  # person.
+  validates :weight,
+      numericality: { greater_than_or_equal_to: 0, allow_nil: false }
+
   # The maximum score (grade) that can be received on this metric.
   #
   # This score is for display purposes, and it is not enforced.
   #
   # This decision was taken to allow for "bonus" points, e.g. a score of 11 out
   # of 10 for excellent work
-  validates :max_score, numericality: { greater_than_or_equal_to: 0 },
-                        presence: true
+  validates :max_score,
+      numericality: { greater_than_or_equal_to: 0, allow_nil: false }
 
   # The course that this metric applies to.
   has_one :course, through: :assignment

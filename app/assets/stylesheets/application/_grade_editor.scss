@@ -6,7 +6,11 @@ section.grades-table-container {
 
 table.grades-table {
   position: relative;
+  width: 100%;
 
+  thead p.metric-weight {
+    font-weight: 500;
+  }
   tbody {
     overflow: auto;
 
@@ -30,8 +34,6 @@ table.grades-table {
     white-space: nowrap;
   }
   td {
-    text-align: right;
-
     input[type=number] {
       width: 3em;
       text-align: right;
@@ -121,4 +123,3 @@ span.progress-indicator {
     opacity: 1.0;
   }
 }
-

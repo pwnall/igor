@@ -133,4 +133,60 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
       assert_equal good_fib, job._mapper_input
     end
   end
+
+  describe 'DockerAnalyzer-specific features' do
+    it 'validates fixture analyzers (validate JSON serialization)' do
+      assert analyzer.valid?
+    end
+
+    it 'requires a :map_time_limit' do
+      @analyzer.map_time_limit = nil
+      assert @analyzer.invalid?
+    end
+
+    it 'rejects non-positive values for :map_time_limit' do
+      @analyzer.map_time_limit = 0
+      assert @analyzer.invalid?
+    end
+
+    it 'requires a :map_ram_limit' do
+      @analyzer.map_ram_limit = nil
+      assert @analyzer.invalid?
+    end
+
+    it 'rejects non-integer values for :map_ram_limit' do
+      @analyzer.map_ram_limit = 1.5
+      assert @analyzer.invalid?
+    end
+
+    it 'rejects non-positive values for :map_ram_limit' do
+      @analyzer.map_ram_limit = 0
+      assert @analyzer.invalid?
+    end
+
+    it 'requires a :reduce_time_limit' do
+      @analyzer.reduce_time_limit = nil
+      assert @analyzer.invalid?
+    end
+
+    it 'rejects non-positive values for :reduce_time_limit' do
+      @analyzer.reduce_time_limit = 0
+      assert @analyzer.invalid?
+    end
+
+    it 'requires a :reduce_ram_limit' do
+      @analyzer.reduce_ram_limit = nil
+      assert @analyzer.invalid?
+    end
+
+    it 'rejects non-integer values for :reduce_ram_limit' do
+      @analyzer.reduce_ram_limit = 1.5
+      assert @analyzer.invalid?
+    end
+
+    it 'rejects non-positive values for :reduce_ram_limit' do
+      @analyzer.reduce_ram_limit = 0
+      assert @analyzer.invalid?
+    end
+  end
 end

@@ -60,11 +60,12 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   end
 
   create_table "assignment_metrics", force: :cascade do |t|
-    t.integer  "assignment_id",            null: false
-    t.string   "name",          limit: 64, null: false
-    t.integer  "max_score",                null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.integer  "assignment_id",                                     null: false
+    t.string   "name",          limit: 64,                          null: false
+    t.integer  "max_score",                                         null: false
+    t.decimal  "weight",                   precision: 16, scale: 8, null: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
     t.index ["assignment_id", "name"], name: "index_assignment_metrics_on_assignment_id_and_name", unique: true, using: :btree
   end
 

@@ -117,7 +117,7 @@ class AssignmentsController < ApplicationController
                 { db_file_attributes: :f }] } ],
         files_attributes: [:id, :description, :published_at, :_destroy,
             { db_file_attributes: :f }],
-        metrics_attributes: [:name, :max_score, :id, :_destroy]
+        metrics_attributes: [:name, :max_score, :weight, :id, :_destroy]
     # Note: feedback_survey_id is protected in the model but is allowed here
   end
   private :assignment_params
