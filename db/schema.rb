@@ -216,6 +216,14 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.index ["subject_id", "subject_type", "metric_id"], name: "index_grades_on_subject_id_and_subject_type_and_metric_id", unique: true, using: :btree
   end
 
+  create_table "invitations", force: :cascade do |t|
+    t.integer  "inviter_id"
+    t.integer  "invitee_id"
+    t.integer  "team_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "photo_blobs", force: :cascade do |t|
     t.integer "profile_photo_id",            null: false
     t.string  "style",            limit: 16
@@ -381,14 +389,6 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.index ["course_id", "name"], name: "index_surveys_on_course_id_and_name", unique: true, using: :btree
-  end
-
-  create_table "team_invitations", force: :cascade do |t|
-    t.integer  "inviter_id"
-    t.integer  "invitee_id"
-    t.integer  "team_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "team_memberships", force: :cascade do |t|
