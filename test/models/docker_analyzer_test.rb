@@ -126,8 +126,8 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
 
     it 'provides the correct job input' do
       job = @analyzer.run_submission submissions(:dexter_code)
-      good_fib_path =
-          Rails.root.join('test/fixtures').join 'submission_files/good_fib.py'
+      good_fib_path = File.join(
+          ActiveSupport::TestCase.fixture_path, 'submission_files/good_fib.py')
       good_fib = File.read good_fib_path
 
       assert_equal good_fib, job._mapper_input

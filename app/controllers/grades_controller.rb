@@ -171,7 +171,10 @@ class GradesController < ApplicationController
       hv = (@totals_by_uid[user.id] / @histogram_step).to_i * @histogram_step
       @histogram[hv] = (@histogram[hv] || 0) + 1
     end
-    @histogram_keys = []; 0.step(@histogram.keys.max, @histogram_step) { |i| @histogram_keys << i }
+    @histogram_keys = []
+    unless @histogram.empty?
+      0.step(@histogram.keys.max, @histogram_step) { |i| @histogram_keys << i }
+    end
 
     # sort users
     if params[:sort_by] == 'total'
@@ -210,7 +213,13 @@ class GradesController < ApplicationController
       csv << ['STATISTICS']
       csv << ['Count', @totals_by_uid.length]
       csv << ['Max', @totals_by_uid.values.max]
-      csv << ['Mean', @totals_by_uid.values.inject(0.0) { |acc, v| acc + v } / @totals_by_uid.length ]
+
+      mean = if @totals_by_uid.empty?
+        0
+      else
+        @totals_by_uid.values.sum / @totals_by_uid.length
+      end
+      csv << ['Mean', mean]
       sorted_scores = @totals_by_uid.values.sort
       if sorted_scores.length % 2
         median = sorted_scores[sorted_scores.length / 2]
