@@ -108,33 +108,7 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
     end
   end
 
-  describe '#run_submission' do
-    it 'sets job time limits correctly' do
-      job = @analyzer.run_submission submissions(:dexter_code)
-      assert_equal 1.5, job.mapper_runner(1)._time_limit
-      assert_equal 2.9, job.reducer_runner._time_limit
-    end
-
-    it 'sets job ulimits correctly' do
-      job = @analyzer.run_submission submissions(:dexter_code)
-
-      assert_equal 2, job.mapper_runner(1)._ulimit('cpu')
-      assert_equal 128 * 256, job.mapper_runner(1)._ulimit('rss')
-      assert_equal 3, job.reducer_runner._ulimit('cpu')
-      assert_equal 1024 * 256, job.reducer_runner._ulimit('rss')
-    end
-
-    it 'provides the correct job input' do
-      job = @analyzer.run_submission submissions(:dexter_code)
-      good_fib_path = File.join(
-          ActiveSupport::TestCase.fixture_path, 'submission_files/good_fib.py')
-      good_fib = File.read good_fib_path
-
-      assert_equal good_fib, job._mapper_input
-    end
-  end
-
-  describe 'DockerAnalyzer-specific features' do
+  describe 'DockerAnalyzer-specific attributes' do
     it 'validates fixture analyzers (validate JSON serialization)' do
       assert analyzer.valid?
     end
@@ -189,4 +163,31 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
       assert @analyzer.invalid?
     end
   end
+
+  describe '#run_submission' do
+    it 'sets job time limits correctly' do
+      job = @analyzer.run_submission submissions(:dexter_code)
+      assert_equal 1.5, job.mapper_runner(1)._time_limit
+      assert_equal 2.9, job.reducer_runner._time_limit
+    end
+
+    it 'sets job ulimits correctly' do
+      job = @analyzer.run_submission submissions(:dexter_code)
+
+      assert_equal 2, job.mapper_runner(1)._ulimit('cpu')
+      assert_equal 128 * 256, job.mapper_runner(1)._ulimit('rss')
+      assert_equal 3, job.reducer_runner._ulimit('cpu')
+      assert_equal 1024 * 256, job.reducer_runner._ulimit('rss')
+    end
+
+    it 'provides the correct job input' do
+      job = @analyzer.run_submission submissions(:dexter_code)
+      good_fib_path = File.join(
+          ActiveSupport::TestCase.fixture_path, 'submission_files/good_fib.py')
+      good_fib = File.read good_fib_path
+
+      assert_equal good_fib, job._mapper_input
+    end
+  end
+
 end
