@@ -5,7 +5,8 @@ class SubmissionTest < ActiveSupport::TestCase
 
   before do
     @submission = Submission.new deliverable: deliverables(:assessment_code),
-        uploader: users(:deedee), db_file: db_files(:deedee_code)
+        uploader: users(:deedee), upload_ip: '18.240.1.8',
+        db_file: db_files(:deedee_code)
   end
 
   let(:submission) { submissions(:dexter_assessment) }

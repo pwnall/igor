@@ -19,16 +19,22 @@
 dexter_ps1:
   deliverable: ps1_writeup
   subject: awesome_pset (Team)
+  uploader: dexter
+  upload_ip: "18.240.1.5"
   db_file: dexter_ps1
 
 solo_ps1:
   deliverable: ps1_writeup
   subject: solo (User)
+  uploader: solo
+  upload_ip: "18.240.2.6"
   db_file: solo_ps1
 
 dexter_project:
   deliverable: project_writeup
   subject: awesome_project (Team)
+  uploader: dexter
+  upload_ip: "18.240.1.5"
   db_file: dexter_project
   created_at: <%= 6.days.ago.to_s(:db) %>
   updated_at: <%= 5.days.ago.to_s(:db) %>
@@ -36,6 +42,8 @@ dexter_project:
 dexter_project_v2:
   deliverable: project_writeup
   subject: awesome_project (Team)
+  uploader: dexter
+  upload_ip: "18.240.1.5"
   db_file: dexter_project_v2
   created_at: <%= 3.days.ago.to_s(:db) %>
   updated_at: <%= 2.days.ago.to_s(:db) %>
@@ -43,21 +51,29 @@ dexter_project_v2:
 mandark_project:
   deliverable: project_writeup
   subject: boo_project (Team)
+  uploader: mandark
+  upload_ip: "18.233.9.9"
   db_file: submission_catch_all
 
 dexter_assessment:
   deliverable: assessment_writeup
   subject: dexter (User)
+  uploader: dexter
+  upload_ip: "18.240.1.5"
   db_file: dexter_assessment
 
 deedee_assessment:
   deliverable: assessment_writeup
   subject: deedee (User)
+  uploader: deedee
+  upload_ip: "18.240.1.8"
   db_file: deedee_assessment
 
 dexter_code:
   deliverable: assessment_code
   subject: dexter (User)
+  uploader: dexter
+  upload_ip: "18.240.1.5"
   db_file: dexter_code
   created_at: <%= 6.days.ago.to_s(:db) %>
   updated_at: <%= 5.days.ago.to_s(:db) %>
@@ -65,6 +81,8 @@ dexter_code:
 dexter_code_v2:
   deliverable: assessment_code
   subject: dexter (User)
+  uploader: dexter
+  upload_ip: "18.240.1.5"
   db_file: dexter_code_v2
   created_at: <%= 3.days.ago.to_s(:db) %>
   updated_at: <%= 2.days.ago.to_s(:db) %>
