@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/pwnall/delayed_job.git
-  revision: ee603ad6d05199f03f138d4d0da509c3df3e58a8
+  revision: 41cc30ff57e3a8bbf44f3587131befbb6f23daac
   branch: rails5
   specs:
     delayed_job (4.1.0)
