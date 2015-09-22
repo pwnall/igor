@@ -4,11 +4,13 @@
 #       workers. If we don't do this before the master configuration, we'll
 #       need something like http://stackoverflow.com/questions/30024664
 - hosts: "{{ prod_master_group_name }}:{{ prod_worker_group_name }}"
+  gather_facts: False
   vars_files:
   - ../openstack_vars.yml
   vars:
     ansible_ssh_user: "{{ os_image_user }}"
   roles:
+  - sys_python2
   - fix_f22_vagrant
   - sys_package_update
   - sys_facts

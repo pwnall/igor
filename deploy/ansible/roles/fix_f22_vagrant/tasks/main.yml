@@ -5,6 +5,8 @@
   become_user: root
   command: growpart /dev/sda 1 --update on
   register: growpart_result
+  failed_when: |
+    growpart_result.rc != 0 and 'NOCHANGE' not in growpart_result.stdout
   changed_when: "'CHANGED' in growpart_result.stdout"
 
 - name: resize root filesystem on Vagrant VM
@@ -13,4 +15,4 @@
   become_user: root
   command: resize2fs /dev/sda1
   register: resize2fs_result
-  changed_when: "'Nothing to do!' not in resize2fs_result.stdout"
+  changed_when: "'Nothing to do' not in resize2fs_result.stderr"
