@@ -7,6 +7,8 @@
 #  db_file_id     :integer          not null
 #  subject_type   :string           not null
 #  subject_id     :integer          not null
+#  uploader_id    :integer          not null
+#  upload_ip      :string(48)       not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #

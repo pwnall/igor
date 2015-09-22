@@ -5,7 +5,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
   before do
     @submission = Submission.new deliverable: deliverables(:assessment_code),
-        subject: users(:deedee), db_file: db_files(:deedee_code)
+        uploader: users(:deedee), db_file: db_files(:deedee_code)
   end
 
   let(:submission) { submissions(:dexter_assessment) }
@@ -21,7 +21,12 @@ class SubmissionTest < ActiveSupport::TestCase
     assert @submission.valid?, @submission.errors.full_messages
   end
 
-  it 'requires a submitter' do
+  it 'requires an uploader' do
+    @submission.uploader = nil
+    assert @submission.invalid?
+  end
+
+  it 'requires a subject' do
     @submission.subject = nil
     assert @submission.invalid?
   end
@@ -29,6 +34,23 @@ class SubmissionTest < ActiveSupport::TestCase
   it 'requires a deliverable' do
     @submission.deliverable = nil
     assert @submission.invalid?
+  end
+
+  it 'rejects inconsistencies between uploader and subject' do
+    @submission.subject = users(:dexter)
+    assert @submission.invalid?
+  end
+
+  describe '#uploader=' do
+    it 'handles nil' do
+      @submission.uploader = nil
+      assert_equal nil, @submission.subject
+    end
+
+    it 'handles a student' do
+      @submission.uploader = users(:dexter)
+      assert_equal users(:dexter), @submission.subject
+    end
   end
 
   describe 'HasDbFile concern' do

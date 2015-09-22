@@ -47,7 +47,7 @@ names = File.read('db/seeds/names.txt').split("\n").
 depts = File.read('db/seeds/depts.txt').split("\n").
     map { |line| line.split('(', 2).first.strip }
 
-users = []
+students = []
 names.each_with_index do |name, i|
   first_name = name.split(' ').first
   short_name = (first_name[0, 1] + name.split(' ').last).downcase
@@ -59,7 +59,7 @@ names.each_with_index do |name, i|
       }
   user.email_credential.verified = true
   user.email_credential.save!
-  users << user
+  students << user
 
   registration = Registration.create! user: user, course: course,
        for_credit: (i % 5 < 4), allows_publishing: (i % 7 < 5)
@@ -132,7 +132,7 @@ surveys = survey_data.map.with_index do |data, index|
   survey
 end
 
-([admin] + users).each_with_index do |user, i|
+([admin] + students).each_with_index do |user, i|
   surveys.each_with_index do |survey, j|
     next unless survey.published? && (i % (j + 2) == 0)
     response = SurveyResponse.new user: user, survey: survey, course: course
@@ -174,7 +174,7 @@ exams = exam_data.map.with_index do |data, index|
   exam
 end
 
-users.each_with_index do |user, i|
+students.each_with_index do |user, i|
   exams.each_with_index do |exam, j|
     next unless exam.due_at < Time.current
     exam.metrics.each.with_index do |metric, k|
@@ -238,7 +238,7 @@ psets = pset_data.map.with_index do |data, index|
   pset
 end
 
-([admin] + users).each_with_index do |user, i|
+([admin] + students).each_with_index do |user, i|
   psets.each_with_index do |pset, j|
     next unless pset.due_at < Time.current
 
@@ -246,11 +246,12 @@ end
       # Submit PDF.
       writeup = pset.deliverables.where(file_ext: 'pdf').first
       time = pset.due_at - 1.day + i * 1.minute
-      submission = Submission.create! deliverable: writeup, subject: user,
-           db_file_attributes: {
-             f: fixture_file_upload('test/fixtures/submission_files/small.pdf',
-                                    'application/pdf', :binary)
-           }, created_at: time, updated_at: time
+      submission = Submission.create! deliverable: writeup, uploader: user,
+          upload_ip: '127.0.0.1',
+          db_file_attributes: {
+            f: fixture_file_upload('test/fixtures/submission_files/small.pdf',
+                                   'application/pdf', :binary)
+          }, created_at: time, updated_at: time
       SubmissionAnalysisJob.perform_now submission
       submission.analysis.created_at = time + 1.second
       submission.analysis.updated_at = time + 5.seconds
@@ -261,7 +262,8 @@ end
       # Submit code.
       code = pset.deliverables.where(file_ext: 'py').first
       time = pset.due_at - 1.day + i * 1.minute + 30.seconds
-      submission = Submission.create! deliverable: code, subject: user,
+      submission = Submission.create! deliverable: code, uploader: user,
+          upload_ip: '127.0.0.1',
           db_file_attributes: {
             f: fixture_file_upload(
                 'test/fixtures/submission_files/good_fib.py',

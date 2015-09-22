@@ -340,12 +340,14 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   end
 
   create_table "submissions", force: :cascade do |t|
-    t.integer  "deliverable_id", null: false
-    t.integer  "db_file_id",     null: false
-    t.string   "subject_type",   null: false
-    t.integer  "subject_id",     null: false
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.integer  "deliverable_id",            null: false
+    t.integer  "db_file_id",                null: false
+    t.string   "subject_type",              null: false
+    t.integer  "subject_id",                null: false
+    t.integer  "uploader_id",               null: false
+    t.string   "upload_ip",      limit: 48, null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.index ["db_file_id"], name: "index_submissions_on_db_file_id", unique: true, using: :btree
     t.index ["deliverable_id", "updated_at"], name: "index_submissions_on_deliverable_id_and_updated_at", using: :btree
     t.index ["subject_id", "subject_type", "deliverable_id"], name: "index_submissions_on_subject_id_and_type_and_deliverable_id", using: :btree

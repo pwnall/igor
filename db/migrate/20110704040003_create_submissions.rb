@@ -4,6 +4,8 @@ class CreateSubmissions < ActiveRecord::Migration
       t.references :deliverable, null: false
       t.references :db_file, index: { unique: true }, null: false
       t.references :subject, polymorphic: true, null: false
+      t.references :uploader, null: false
+      t.string :upload_ip, limit: 48, null: false
 
       t.timestamps
 

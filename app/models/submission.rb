@@ -7,6 +7,8 @@
 #  db_file_id     :integer          not null
 #  subject_type   :string           not null
 #  subject_id     :integer          not null
+#  uploader_id    :integer          not null
+#  upload_ip      :string(48)       not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #
@@ -18,10 +20,41 @@ class Submission < ActiveRecord::Base
   # The user or team doing the submission.
   belongs_to :subject, polymorphic: true, inverse_of: :submissions
   validates :subject, presence: true
+  validates_each :subject do |record, attr, value|
+    unless record.assignment.nil?
+      if value != record.assignment.grade_subject_for(record.uploader)
+        record.errors.add attr, 'does not match the uploader'
+      end
+    end
+  end
 
   # The deliverable that the submission is for.
   belongs_to :deliverable
   validates :deliverable, presence: true
+
+  # The user who uploaded this submission.
+  #
+  # For individual submissions, the uploader is identical to the submission's
+  # subject. However, in team submissions, the uploader field identifies the
+  # team member who uploaded the submission.
+  belongs_to :uploader, class_name: 'User'
+  def uploader=(new_uploader)
+    return if assignment.nil?
+    self.subject = assignment.grade_subject_for new_uploader
+    super
+  end
+  validates_each :uploader do |record, attr, value|
+    if value.nil?
+      record.errors.add attr, 'is not present'
+    end
+    # TODO: Use can_submit when the check gets un-broken.
+    #unless record.assignment.can_submit? value
+    #  record.errors.add attr, 'cannot submit for this deliverable'
+    #end
+  end
+
+  # The IP address used to upload this submission.
+  validates :upload_ip, presence: true, length: 1..48
 
   # The assignment that this submission is for.
   has_one :assignment, through: :deliverable
