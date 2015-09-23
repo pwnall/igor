@@ -22,6 +22,10 @@ module AssignmentFeedback
     belongs_to :metric, class_name: 'AssignmentMetric', inverse_of: :grades
     validates :metric, uniqueness: { scope: [:subject_id, :subject_type] },
         permission: { subject: :grader, can: :grade }, presence: true
+    def metric=(new_metric)
+      self.course = new_metric && new_metric.course
+      super
+    end
 
     # The user (on the course staff) who last edited this grade or comment.
     belongs_to :grader, class_name: 'User'

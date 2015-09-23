@@ -27,8 +27,11 @@ class GradeEditor
     $row.removeClass 'focused'
     @redoSummary $row
 
+    lastFocusedElement = @lastFocusedElement
+    @lastFocusedElement = null
+
     # Don't post data that hasn't changed.
-    if @lastFocusedElement is $target[0] and
+    if lastFocusedElement is $target[0] and
         @lastFocusedValue is $target.val()
       return
 
@@ -123,6 +126,7 @@ class GradeEditor
           'grade[subject_type]': subjectType
           'grade[metric_id]': metricId
           'grade[score]': fieldValue
+
     $.ajax url,
       data: data, dataType: 'text', method: 'post',
       success: (data, status, xhr) => @onAjaxSuccess $field, data

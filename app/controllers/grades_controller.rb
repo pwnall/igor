@@ -62,8 +62,11 @@ class GradesController < ApplicationController
 
   # XHR POST /6.006/grades
   def create
-    grade = find_or_build_feedback Grade, grade_params
-    if grade.act_on_user_input grade_params[:score]
+    success = Grade.transaction do
+      grade = find_or_build_feedback Grade, grade_params
+      grade.act_on_user_input grade_params[:score]
+    end
+    if success
       render 'grades/edit', layout: false
     else
       head :not_acceptable

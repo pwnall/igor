@@ -1,87 +1,91 @@
 <!-- submissions/index -->
 <div class="full_section">
-	<h3 class="full_section">Filter Submissions</h3>
-	<%= form_tag submissions_path, :method => :get, :class => 'user_form' do %>
-		<div class="form_box">
-			<div class="form_entry">
-				<div class="form_label">Deliverable</div>
-				<div class="form_field_box">
-					<%= select_tag :deliverable_id, options_for_select(@deliverables.map { |d| [d.assignment.name + ': ' + d.name, d.id] }, nil), :class => 'form_field', :id => 'deliverable_filter_id' %>
-				</div>
-			</div>
-			<div class="form_submit_box">
-			    <%= submit_tag "Filter by deliverable", :class => 'form_submit', :id => 'deliverable_filter_submit_button' %>
-				or
-				<%= link_to 'Go home', root_path %>
-			</div>
-		</div>
-	<% end %>
+  <h3 class="full_section">Filter Submissions</h3>
+  <%= form_tag submissions_path, :method => :get, :class => 'user_form' do %>
+    <div class="form_box">
+      <div class="form_entry">
+        <div class="form_label">Deliverable</div>
+        <div class="form_field_box">
+          <%= select_tag :deliverable_id, options_for_select(@deliverables.map { |d| [d.assignment.name + ': ' + d.name, d.id] }, nil), :class => 'form_field', :id => 'deliverable_filter_id' %>
+        </div>
+      </div>
+      <div class="form_submit_box">
+          <%= submit_tag "Filter by deliverable", :class => 'form_submit', :id => 'deliverable_filter_submit_button' %>
+        or
+        <%= link_to 'Go home', root_path %>
+      </div>
+    </div>
+  <% end %>
 
-	<%= form_tag submissions_path, :method => :get, :class => 'user_form' do %>
-		<div class="form_box">
-			<div class="form_entry">
-				<div class="form_label">Assignment</div>
-				<div class="form_field_box">
-					<%= select_tag :assignment_id, options_for_select(@assignments.map { |a| [a.name, a.id] }, nil), :class => 'form_field', :id => 'assignment_filter_id' %>
-				</div>
-			</div>
-			<div class="form_submit_box">
-			    <%= submit_tag "Filter by assignment", :class => 'form_submit', :id => 'assignment_filter_submit_button' %>
-				or
-				<%= link_to 'Go home', root_path %>
-			</div>
-		</div>
-	<% end %>
+  <%= form_tag submissions_path, :method => :get, :class => 'user_form' do %>
+    <div class="form_box">
+      <div class="form_entry">
+        <div class="form_label">Assignment</div>
+        <div class="form_field_box">
+          <%= select_tag :assignment_id, options_for_select(@assignments.map { |a| [a.name, a.id] }, nil), :class => 'form_field', :id => 'assignment_filter_id' %>
+        </div>
+      </div>
+      <div class="form_submit_box">
+          <%= submit_tag "Filter by assignment", :class => 'form_submit', :id => 'assignment_filter_submit_button' %>
+        or
+        <%= link_to 'Go home', root_path %>
+      </div>
+    </div>
+  <% end %>
 </div>
 
 <div class="full_section">
-	<h3 class="full_section">Individual Submissions</h3>
+  <h3 class="full_section">Individual Submissions</h3>
 
-	<% if @submissions.empty? %>
-		No submissions match the criteria.
-	<% else %>
-		<table>
-			<thead style="font-size: 1.1em; font-weight: bold;">
-				<tr>
-					<td>Deliverable</td>
-					<td>Student</td>
-					<td>Submitted</td>
-					<td>Status</td>
-				</tr>
-			</thead>
-			<tbody>
-				<% @submissions.each do |submission| %>
-				<tr>
-					<td>
-						<%= submission.deliverable.assignment.name %>:
-						<%= submission.deliverable.name %>
-					</td>
-					<td><%= submission.subject.name %></td>
-					<td title="<%=h submission.updated_at %>">
-						<%= (submission.updated_at < submission.deliverable.assignment.due_at) ? 'on time' : "late by #{distance_of_time_in_words(submission.deliverable.assignment.due_at, submission.updated_at)}" %>
-					</td>
-					<td>
-						<% if submission.analysis %>
-						<%= link_to analysis_status_text(submission.analysis),
-            			analysis_path(submission.analysis, course_id: submission.course) %>
-						<% else %>
-						no status
-						<% end %>
-					</td>
-					<td>
-						<%= link_to "Re-analyze",
-            			reanalyze_submission_path(submission, course_id: submission.course),
+  <% if @submissions.empty? %>
+    No submissions match the criteria.
+  <% else %>
+    <table>
+      <thead style="font-size: 1.1em; font-weight: bold;">
+        <tr>
+          <td>Deliverable</td>
+          <td>Student</td>
+          <td>Submitted</td>
+          <td>IP</td>
+          <td>Status</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @submissions.each do |submission| %>
+        <tr>
+          <td>
+            <%= submission.deliverable.assignment.name %>:
+            <%= submission.deliverable.name %>
+          </td>
+          <td><%= submission.subject.name %></td>
+          <td title="<%=h submission.updated_at %>">
+            <%= (submission.updated_at < submission.deliverable.assignment.due_at) ? 'on time' : "late by #{distance_of_time_in_words(submission.deliverable.assignment.due_at, submission.updated_at)}" %>
+          </td>
+          <td>
+            <%= submission.upload_ip %>
+          </td>
+          <td>
+            <% if submission.analysis %>
+            <%= link_to analysis_status_text(submission.analysis),
+                  analysis_path(submission.analysis, course_id: submission.course) %>
+            <% else %>
+            no status
+            <% end %>
+          </td>
+          <td>
+            <%= link_to "Re-analyze",
+                  reanalyze_submission_path(submission, course_id: submission.course),
                   method: :post %>
-					</td>
-					<td>
-						<%= link_to "Download (#{number_to_human_size submission.db_file.f.size})",
-            			file_submission_path(submission, course_id: submission.course) %>
-				  </td>
-				</tr>
-				<% end %>
-			</tbody>
-		</table>
+          </td>
+          <td>
+            <%= link_to "Download (#{number_to_human_size submission.db_file.f.size})",
+                  file_submission_path(submission, course_id: submission.course) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
 
-		<%= @submissions.length %> total submissions
-	<% end %>
+    <%= @submissions.length %> total submissions
+  <% end %>
 </div>

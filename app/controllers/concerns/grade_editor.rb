@@ -11,11 +11,11 @@ module GradeEditor
     @subject = AssignmentFeedback.find_subject params[:subject_type],
                                                params[:subject_id]
     @metric = current_course.assignment_metrics.find params[:metric_id]
-    feedback = klass.where(subject: @subject, metric: @metric).
-                     first_or_initialize
+    unless feedback = klass.where(subject: @subject, metric: @metric).first
+      feedback = klass.new subject: @subject, metric: @metric
+    end
     # TODO: check that the subject is reasonable and belongs to the course
     feedback.grader = current_user
-    feedback.course = current_course
     feedback
   end
 end
