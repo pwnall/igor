@@ -69,9 +69,10 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
     end
 
     it 'rejects database file associations with a blank attachment' do
-      assert_equal 'fib_small.zip', analyzer.db_file.f_file_name
+      assert_equal 'fib_small_assessment.zip', analyzer.db_file.f_file_name
       analyzer.update! db_file_attributes: { f: '' }
-      assert_equal 'fib_small.zip', analyzer.reload.db_file.f_file_name
+      assert_equal 'fib_small_assessment.zip',
+          analyzer.reload.db_file.f_file_name
     end
 
     it 'destroys the database file when it is replaced' do
@@ -85,7 +86,7 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
 
     describe '#file_name' do
       it 'returns the name of the uploaded file' do
-        assert_equal 'fib_small.zip', analyzer.file_name
+        assert_equal 'fib_small_assessment.zip', analyzer.file_name
       end
 
       it 'returns nil if no file has been uploaded' do

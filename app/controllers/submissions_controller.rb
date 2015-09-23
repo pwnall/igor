@@ -51,7 +51,7 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  # POST /submissions
+  # POST /6.006/submissions
   def create
     @submission = Submission.new submission_params
     return bounce_user unless @submission.assignment.can_submit? current_user

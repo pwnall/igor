@@ -73,7 +73,7 @@ class UserTest < ActiveSupport::TestCase
 
     describe '#name' do
       it 'should report .edu e-mail if no profile is available' do
-        assert_equal 'costan@mit.edu', admin.name
+        assert_equal 'Admin', admin.name
       end
       it 'should use name on profile if available' do
         assert_equal 'Dexter Boy Genius', dexter.name
@@ -82,7 +82,7 @@ class UserTest < ActiveSupport::TestCase
 
     describe '#athena_id' do
       it 'should use e-mail prefix if no profile is available' do
-        assert_equal 'costan', admin.athena_id
+        assert_equal 'admin', admin.athena_id
       end
       it 'should user profile info if available' do
         assert_equal 'genius', dexter.athena_id

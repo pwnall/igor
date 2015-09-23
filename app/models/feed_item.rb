@@ -150,8 +150,7 @@ class FeedItem
       if announcement.can_edit? user
         item.actions = [
           ['Edit', [:edit_announcement_path, announcement,
-                    { course_id: announcement.course }],
-                   {remote: true}],
+                    { course_id: announcement.course }]],
           ['Delete', [:announcement_path, announcement,
                       { course_id: announcement.course }],
                      { confirm: 'Are you sure?', method: :delete }]

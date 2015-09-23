@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
 
   create_table "announcements", force: :cascade do |t|
     t.integer  "author_id",                                     null: false
+    t.integer  "course_id",                                     null: false
     t.string   "headline",         limit: 128,                  null: false
     t.string   "contents",         limit: 8192,                 null: false
     t.boolean  "open_to_visitors",              default: false, null: false

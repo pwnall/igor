@@ -5,79 +5,64 @@ class AnnouncementsController < ApplicationController
 
   # GET /announcements
   def index
-    @announcements = Announcement.all
+    @announcements = current_course.announcements
 
     respond_to do |format|
       format.html # index.html.erb
     end
   end
 
-  # GET /announcements/1
-  def show
-    @announcement = Announcement.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-    end
-  end
-
   # GET /announcements/new
   def new
-    @announcement = Announcement.new
-    new_edit
+    @announcement = Announcement.new course: current_course
   end
 
   # GET /announcements/1/edit
   def edit
-    @announcement = Announcement.find(params[:id])
-    new_edit
+    @announcement = current_course.announcements.find params[:id]
   end
-
-  def new_edit
-    respond_to do |format|
-      format.html { render :action => :new_edit }
-      format.js   { render :action => :new_edit }
-    end
-  end
-  private :new_edit
 
   # POST /announcements
   def create
-    params[:announcement][:author_id] = current_user.id
-    @announcement = Announcement.new(params[:announcement])
-    create_update
+    @announcement = Announcement.new announcement_params
+    @announcement.author = current_user
+    @announcement.course = current_course
+
+    respond_to do |format|
+      if @announcement.save
+        format.html do
+          redirect_to root_url(course_id: @announcement.course),
+              notice: 'Announcement successfully saved.'
+        end
+      else
+        format.html do
+          render :edit
+        end
+      end
+    end
   end
 
   # PUT /announcements/1
   def update
-    params[:announcement][:author_id] = current_user.id
-    @announcement = Announcement.find(params[:id])
-    create_update
-  end
-
-  def create_update
-    is_new_record = @announcement.new_record?
-    if is_new_record
-      success = @announcement.save
-    else
-      success = @announcement.update_attributes(params[:announcement])
-    end
+    @announcement = current_course.announcements.find params[:id]
 
     respond_to do |format|
-      if success
-        flash[:announcement] = "Site-wide announcement successfully #{is_new_record ? 'published' : 'updated'}."
-        format.html { redirect_to root_path }
-        format.js   { render :action => :create_update }
+      if @announcement.update announcement_params
+        format.html do
+          redirect_to root_url(course_id: @announcement.course),
+              notice: 'Announcement successfully updated.'
+        end
       else
-        format.html { render :action => :new_edit }
-        format.js   { render :action => :new_edit }
+        format.html do
+          render :edit
+        end
       end
     end
   end
 
   # DELETE /announcements/1
   def destroy
-    @announcement = Announcement.find(params[:id])
+    @announcement = current_course.announcements.find params[:id]
     @announcement.destroy
 
     respond_to do |format|
@@ -87,8 +72,7 @@ class AnnouncementsController < ApplicationController
 
   # Permits creating and updating announcements.
   def announcement_params
-    params.require(:announcement).permit :subject_id, :subject_type, :metric_id, :score
+    params.require(:announcement).permit :open_to_visitors, :headline, :contents
   end
   private :announcement_params
-
 end

@@ -23,3 +23,9 @@ assessment_deedee:
   user: deedee
   grantor: main_staff
   due_at: <%= 2.days.from_now.to_s(:db) %>
+
+assessment_mandark:
+  subject: assessment (Assignment)
+  user: mandark
+  grantor: main_staff
+  due_at: <%= 3.days.from_now.to_s(:db) %>
