@@ -107,7 +107,7 @@ class AssignmentFileTest < ActiveSupport::TestCase
     it 'destroys the database file when it is replaced' do
       assert_not_nil resource.db_file
       former_db_file_id = resource.db_file.id
-      new_db_file = fixture_file_upload 'analyzer_files/fib.zip',
+      new_db_file = fixture_file_upload 'files/analyzer/fib.zip',
           'application/zip', :binary
       resource.update! db_file_attributes: { f: new_db_file }
       assert_nil DbFile.find_by(id: former_db_file_id)
@@ -127,7 +127,7 @@ class AssignmentFileTest < ActiveSupport::TestCase
     describe '#contents' do
       it 'returns the contents of the uploaded file' do
         path = File.join ActiveSupport::TestCase.fixture_path,
-            'submission_files', 'small.pdf'
+            'files/submission', 'small.pdf'
         assert_equal File.binread(path), resource.contents
       end
 

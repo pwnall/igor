@@ -6,7 +6,7 @@ class ProfilePhotosControllerTest < ActionController::TestCase
     @profile_photo = profile_photos(:dexter)
     @profile = @profile_photo.profile
     @user = @profile.user
-    @bits = fixture_file_upload 'profile_pics/costan.png','image/png'
+    @bits = fixture_file_upload 'files/pics/costan.png','image/png'
   end
 
   #test "admin should get index" do

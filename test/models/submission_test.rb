@@ -84,7 +84,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
     describe '#contents' do
       it 'returns the contents of the uploaded file' do
-        path = File.join ActiveSupport::TestCase.fixture_path, 'submission_files',
+        path = File.join ActiveSupport::TestCase.fixture_path, 'files/submission',
             'small.pdf'
         assert_equal File.binread(path), submission.contents
       end
@@ -109,14 +109,14 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   it 'saves the associated db-file through the parent submission' do
-    attachment = fixture_file_upload 'submission_files/good_fib.py',
+    attachment = fixture_file_upload 'files/submission/good_fib.py',
         'application/x-python', :binary
     @submission.update! db_file_attributes: { f: attachment }
 
     assert_equal File.size(@submission.db_file.f.to_io),
         @submission.db_file.f_file_size
     assert_equal 'application/x-python', @submission.db_file.f_content_type
-    path = File.join ActiveSupport::TestCase.fixture_path, 'submission_files',
+    path = File.join ActiveSupport::TestCase.fixture_path, 'files/submission',
         'good_fib.py'
     assert_equal File.binread(path), @submission.db_file.f.file_contents
   end

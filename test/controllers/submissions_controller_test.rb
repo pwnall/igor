@@ -10,7 +10,7 @@ class SubmissionsControllerTest < ActionController::TestCase
   end
 
   let(:create_params) do
-    file = fixture_file_upload 'submission_files/small.pdf', 'application/pdf',
+    file = fixture_file_upload 'files/submission/small.pdf', 'application/pdf',
                                :binary
     { course_id: courses(:main).to_param, submission: {
       deliverable_id: @deliverable.to_param, db_file_attributes: { f: file } } }
@@ -75,7 +75,7 @@ class SubmissionsControllerTest < ActionController::TestCase
 
   describe 'POST #reanalyze' do
     before { set_session_current_user users(:main_staff) }
-    
+
     it 'queues the submission for analysis' do
       assert_enqueued_jobs 1 do
         post :reanalyze, params: member_params

@@ -5,7 +5,7 @@ class DbFileTest < ActiveSupport::TestCase
   include FileGenerator
 
   before do
-    attachment = fixture_file_upload 'analyzer_files/fib.zip',
+    attachment = fixture_file_upload 'files/analyzer/fib.zip',
         'application/zip', :binary
     @file = DbFile.new f: attachment
   end
@@ -15,7 +15,7 @@ class DbFileTest < ActiveSupport::TestCase
   end
 
   it 'saves the file contents to the database' do
-    path = File.join ActiveSupport::TestCase.fixture_path, 'analyzer_files',
+    path = File.join ActiveSupport::TestCase.fixture_path, 'files/analyzer',
         'fib.zip'
     golden = File.binread path
 

@@ -12,70 +12,70 @@
 
 dexter_ps1:
   f_file_name: dexter_ps1.pdf
-  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
+  f_file_size: <%= binary_file_size('files/submission/small.pdf') %>
   f_content_type: application/pdf
 
 dexter_project:
   f_file_name: dexter_project.pdf
-  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
+  f_file_size: <%= binary_file_size('files/submission/small.pdf') %>
   f_content_type: application/pdf
 
 dexter_project_v2:
   f_file_name: dexter_project_v2.pdf
-  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
+  f_file_size: <%= binary_file_size('files/submission/small.pdf') %>
   f_content_type: application/pdf
 
 dexter_assessment:
   f_file_name: dexter_assessment.pdf
-  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
+  f_file_size: <%= binary_file_size('files/submission/small.pdf') %>
   f_content_type: application/pdf
 
 dexter_code:
   f_file_name: dexter_code.py
-  f_file_size: <%= binary_file_size('submission_files/good_fib.py') %>
+  f_file_size: <%= binary_file_size('files/submission/good_fib.py') %>
   f_content_type: application/x-python
 
 dexter_code_v2:
   f_file_name: dexter_code_v2.py
-  f_file_size: <%= binary_file_size('submission_files/good_fib.py') %>
+  f_file_size: <%= binary_file_size('files/submission/good_fib.py') %>
   f_content_type: application/x-python
 
 deedee_assessment:
   f_file_name: deedee_assessment.pdf
-  f_file_size: <%= binary_file_size('submission_files/truncated.pdf') %>
+  f_file_size: <%= binary_file_size('files/submission/truncated.pdf') %>
   f_content_type: application/pdf
 
 deedee_code:
   f_file_name: deedee_code.py
-  f_file_size: <%= binary_file_size('submission_files/good_fib.py') %>
+  f_file_size: <%= binary_file_size('files/submission/good_fib.py') %>
   f_content_type: application/x-python
 
 solo_ps1:
   f_file_name: solo_ps1.pdf
-  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
+  f_file_size: <%= binary_file_size('files/submission/small.pdf') %>
   f_content_type: application/pdf
 
 submission_catch_all:
   f_file_name: catch_all.pdf
-  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
+  f_file_size: <%= binary_file_size('files/submission/small.pdf') %>
   f_content_type: application/pdf
 
 ps1_docker_analyzer:
   f_file_name: fib_small.zip
-  f_file_size: <%= binary_file_size('analyzer_files/fib_small.zip') %>
+  f_file_size: <%= binary_file_size('files/analyzer/fib_small.zip') %>
   f_content_type: application/zip
 
 ps2_docker_analyzer:
   f_file_name: fib_small_2.zip
-  f_file_size: <%= binary_file_size('analyzer_files/fib_small.zip') %>
+  f_file_size: <%= binary_file_size('files/analyzer/fib_small.zip') %>
   f_content_type: application/zip
 
 ps1_solutions:
   f_file_name: ps1_solutions.pdf
-  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
+  f_file_size: <%= binary_file_size('files/submission/small.pdf') %>
   f_content_type: application/pdf
 
 ps1_test_cases:
   f_file_name: ps1_test_cases.pdf
-  f_file_size: <%= binary_file_size('submission_files/small.pdf') %>
+  f_file_size: <%= binary_file_size('files/submission/small.pdf') %>
   f_content_type: application/pdf

@@ -11,59 +11,59 @@
 dexter_ps1:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:dexter_ps1) %>
   style: original
-  file_contents: <%= binary_file('submission_files/small.pdf') %>
+  file_contents: <%= binary_file('files/submission/small.pdf') %>
 
 dexter_project:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:dexter_project) %>
   style: original
-  file_contents: <%= binary_file('submission_files/small.pdf') %>
+  file_contents: <%= binary_file('files/submission/small.pdf') %>
 
 dexter_assessment:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:dexter_assessment) %>
   style: original
-  file_contents: <%= binary_file('submission_files/small.pdf') %>
+  file_contents: <%= binary_file('files/submission/small.pdf') %>
 
 dexter_code:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:dexter_code) %>
   style: original
-  file_contents: <%= binary_file('submission_files/good_fib.py') %>
+  file_contents: <%= binary_file('files/submission/good_fib.py') %>
 
 dexter_code_v2:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:dexter_code_v2) %>
   style: original
-  file_contents: <%= binary_file('submission_files/good_fib.py') %>
+  file_contents: <%= binary_file('files/submission/good_fib.py') %>
 
 deedee_assessment:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:deedee_assessment) %>
   style: original
-  file_contents: <%= binary_file('submission_files/truncated.pdf') %>
+  file_contents: <%= binary_file('files/submission/truncated.pdf') %>
 
 solo_ps1:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:solo_ps1) %>
   style: original
-  file_contents: <%= binary_file('submission_files/small.pdf') %>
+  file_contents: <%= binary_file('files/submission/small.pdf') %>
 
 submission_catch_all:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:submission_catch_all) %>
   style: original
-  file_contents: <%= binary_file('submission_files/small.pdf') %>
+  file_contents: <%= binary_file('files/submission/small.pdf') %>
 
 ps1_docker_analyzer:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:ps1_docker_analyzer) %>
   style: original
-  file_contents: <%= binary_file('analyzer_files/fib_small.zip') %>
+  file_contents: <%= binary_file('files/analyzer/fib_small.zip') %>
 
 ps2_docker_analyzer:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:ps2_docker_analyzer) %>
   style: original
-  file_contents: <%= binary_file('analyzer_files/fib_small.zip') %>
+  file_contents: <%= binary_file('files/analyzer/fib_small.zip') %>
 
 ps1_solutions:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:ps1_solutions) %>
   style: original
-  file_contents: <%= binary_file('submission_files/small.pdf') %>
+  file_contents: <%= binary_file('files/submission/small.pdf') %>
 
 ps1_test_cases:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:ps1_test_cases) %>
   style: original
-  file_contents: <%= binary_file('submission_files/small.pdf') %>
+  file_contents: <%= binary_file('files/submission/small.pdf') %>

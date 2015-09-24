@@ -91,7 +91,7 @@ class DeliverableTest < ActiveSupport::TestCase
 
   it 'saves the associated ScriptAnalyzer through the parent deliverable' do
     @deliverable.analyzer = nil
-    attachment = fixture_file_upload 'analyzer_files/fib.zip',
+    attachment = fixture_file_upload 'files/analyzer/fib.zip',
         'application/zip', :binary
     deliverable_params = { analyzer_attributes: {
       type: 'ScriptAnalyzer', auto_grading: 1, time_limit: 2, ram_limit: 1024,

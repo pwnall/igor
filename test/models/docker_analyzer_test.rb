@@ -77,7 +77,7 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
     it 'destroys the database file when it is replaced' do
       assert_not_nil analyzer.db_file
       former_db_file_id = analyzer.db_file.id
-      new_db_file = fixture_file_upload 'analyzer_files/fib.zip',
+      new_db_file = fixture_file_upload 'files/analyzer/fib.zip',
           'application/zip', :binary
       analyzer.update! db_file_attributes: { f: new_db_file }
       assert_nil DbFile.find_by(id: former_db_file_id)
@@ -96,7 +96,7 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
 
     describe '#contents' do
       it 'returns the contents of the uploaded file' do
-        path = File.join ActiveSupport::TestCase.fixture_path, 'analyzer_files',
+        path = File.join ActiveSupport::TestCase.fixture_path, 'files/analyzer',
             'fib_small.zip'
         assert_equal File.binread(path), analyzer.contents
       end
@@ -183,7 +183,7 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
     it 'provides the correct job input' do
       job = @analyzer.run_submission submissions(:dexter_code)
       good_fib_path = File.join(
-          ActiveSupport::TestCase.fixture_path, 'submission_files/good_fib.py')
+          ActiveSupport::TestCase.fixture_path, 'files/submission/good_fib.py')
       good_fib = File.read good_fib_path
 
       assert_equal good_fib, job._mapper_input

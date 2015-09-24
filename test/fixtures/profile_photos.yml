@@ -17,5 +17,5 @@
 dexter:
   profile: dexter
   pic_file_name: admin_project.pdf
-  pic_file_size: <%= binary_file_size('profile_pics/costan.png') %>
+  pic_file_size: <%= binary_file_size('files/pics/costan.png') %>
   pic_content_type: image/png
