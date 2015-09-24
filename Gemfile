@@ -64,8 +64,8 @@ gem 'exception_notification', '>= 4.0.1'
 
 # Assets.
 # gem 'sass-rails', '>= 5.0.3'
-# gem 'pwnstyles_rails', '>= 0.2.4'
-gem 'pwnstyles_rails', '>= 0.2.4', path: '../pwnstyles_rails'
+gem 'pwnstyles_rails', '>= 0.2.4'
+# gem 'pwnstyles_rails', '>= 0.2.4', path: '../pwnstyles_rails'
 gem 'jquery-rails', '>= 4.0.3'
 # gem 'coffee-rails', '>= 4.1.0'
 gem 'uglifier', '>= 2.7.0'

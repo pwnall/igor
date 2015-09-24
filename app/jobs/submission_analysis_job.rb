@@ -1,5 +1,5 @@
 # A background job to analyze a student's submission.
-class SubmissionAnalysisJob < ActiveJob::Base
+class SubmissionAnalysisJob < ApplicationJob
   queue_as :default
 
   # Update the submission's analysis to reflect its queued status.
