@@ -90,6 +90,8 @@ class User
   end
 
   # The user's name, suitable to be displayed to the given user.
+  #
+  # This method should also be defined for Team.
   def display_name_for(other_user = nil, identity_value = 'You')
     if self == other_user
       identity_value

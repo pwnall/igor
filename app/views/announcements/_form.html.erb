@@ -1,8 +1,5 @@
-<%= remote_form_for @announcement,
-      :html => {:class => 'announcement-form'},
-      :before => update_page { |p|            
-        p.replace_html 'announcement-ajax-indicator', ajax_spinner_image_tag
-      } do |f| %> 
+<%= form_for @announcement, url: polymorphic_path(@announcement,
+      course_id: @announcement.course), class: 'announcement-form' do |f| %>
   <%= f.error_messages %>
 
   <dl>
@@ -11,7 +8,7 @@
     <dt><%= f.label :contents %></dt>
     <dd><%= f.text_area :contents %></dd>
   </dl>
-  
+
   <p class="privacy-policy">
     Every site user can see this.
   </p>

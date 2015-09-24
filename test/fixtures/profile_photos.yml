@@ -11,11 +11,3 @@
 #  pic_file_size    :integer
 #  pic_updated_at   :datetime
 #
-
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-dexter:
-  profile: dexter
-  pic_file_name: admin_project.pdf
-  pic_file_size: <%= binary_file_size('files/pics/costan.png') %>
-  pic_content_type: image/png

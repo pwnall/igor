@@ -206,3 +206,9 @@ class Course
   # Assignments of students to teams for this course.
   has_many :team_memberships, inverse_of: :course
 end
+
+# :nodoc: Announcements.
+class Course
+  # The announcements made in this course.
+  has_many :announcements, dependent: :destroy, inverse_of: :course
+end
