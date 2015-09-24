@@ -43,8 +43,10 @@ table.grades-table {
       font-weight: 300;
     }
 
-    &.focused div.comment {
-      display: block;
+    &.focused, &.focused-latch {
+      div.comment {
+        display: block;
+      }
     }
     div.comment {
       position: absolute;

@@ -19,7 +19,7 @@ class GradeEditor
     @
 
   # Saves a grade via AJAX if it is changed.
-  onDataFieldBlur: (event) ->
+  _onDataFieldBlur: (event) ->
     $target = $ event.target
     $td = $target.parents('td').first()
     $td.removeClass 'focused'
@@ -39,9 +39,9 @@ class GradeEditor
     return
 
   # Takes note of a grade's current value.
-  onDataFieldFocus: (event) ->
+  _onDataFieldFocus: (event) ->
     unless @lastFocusedElement is null
-      @onDataFieldBlur target: @lastFocusedElement
+      @_onDataFieldBlur target: @lastFocusedElement
       @lastFocusedElement = null
 
     $target = $ event.target
@@ -50,13 +50,18 @@ class GradeEditor
     $row = $target.parents('tr').first()
     $row.addClass 'focused'
 
+    # NOTE: This makes sure that the <textarea> never gets display: none while
+    #       the focus shifts from a <td> to the <textarea>.
+    #       Details in https://github.com/pwnall/seven/issues/84
+    $td.removeClass 'focused-latch'
+
     @lastFocusedElement = $target[0]
     @lastFocusedValue = $target.val()
 
     return
 
   # Tabs to the next grade field if the user presses Enter.
-  onDataFieldKeyDown: (event) ->
+  _onDataFieldKeyDown: (event) ->
     event.preventDefault() if event.which in {13; 67}
     $target = $ event.target
 
@@ -77,11 +82,17 @@ class GradeEditor
       else
         return true
 
+    # NOTE: This makes sure that the <textarea> never gets display: none while
+    #       the focus shifts from a <td> to the <textarea>.
+    #       Details in https://github.com/pwnall/seven/issues/84
+    $td = $(nextField).parents('td').first()
+    $td.addClass 'focused-latch'
+
     nextField.focus()
     false
 
   # Reflects a successful grade save.
-  onAjaxSuccess: ($target, data) ->
+  _onAjaxSuccess: ($target, data) ->
     $container = $target.parents('td').first()
     if $container.find(':focus').length == 0
       $container.html data
@@ -90,7 +101,7 @@ class GradeEditor
     return
 
   # Reflects an unsuccessful grade save.
-  onAjaxError: ($target) ->
+  _onAjaxError: ($target) ->
     $container = $target.parents('td').first()
     $indicator = $ '.progress-indicator', $container
     @setIndicator $indicator, 'upload-fail', 10000
@@ -129,8 +140,8 @@ class GradeEditor
 
     $.ajax url,
       data: data, dataType: 'text', method: 'post',
-      success: (data, status, xhr) => @onAjaxSuccess $field, data
-      error: (xhr, status, error) => @onAjaxError $field
+      success: (data, status, xhr) => @_onAjaxSuccess $field, data
+      error: (xhr, status, error) => @_onAjaxError $field
 
   # Re-computes the summary values for a collection of grades.
   #
@@ -138,13 +149,13 @@ class GradeEditor
   # @return {GradeEditor} this
   redoSummary: ($row) ->
     sum = 0
-    $('input[type=number]', $row).each (index, e) =>
-      sum += (parseFloat($(e).val()) or 0) * @metricWeights[index]
+    $('input[type=number]', $row).each (index, input) =>
+      sum += (parseFloat($(input).val()) or 0) * @metricWeights[index]
     $('span.grade-sum', $row).text sum.toFixed(2)
     @
 
   # Hides and shows grade rows to reflect searchbox changes
-  onSearchChange: (event) ->
+  _onSearchChange: (event) ->
     nameFilter = (@$search.val() or '').toLowerCase()
     if nameFilter is @oldNameFilter
       return
@@ -198,26 +209,26 @@ class GradeEditor
     @oldNameFilter = ''
 
     # Event handler functions are bound to the instance, Python-style.
-    @onDataFieldBlur = @onDataFieldBlur.bind @
-    @onDataFieldFocus = @onDataFieldFocus.bind @
-    @onDataFieldKeyDown = @onDataFieldKeyDown.bind @
-    @onSearchChange = @onSearchChange.bind @
-    @onAjaxSuccess = @onAjaxSuccess.bind @
-    @onAjaxError = @onAjaxError.bind @
+    @_onDataFieldBlur = @_onDataFieldBlur.bind @
+    @_onDataFieldFocus = @_onDataFieldFocus.bind @
+    @_onDataFieldKeyDown = @_onDataFieldKeyDown.bind @
+    @_onSearchChange = @_onSearchChange.bind @
+    @_onAjaxSuccess = @_onAjaxSuccess.bind @
+    @_onAjaxError = @_onAjaxError.bind @
 
     @$domRoot.
-        on('blur', 'input[type=number], textarea', @onDataFieldBlur).
-        on('focus', 'input[type=number], textarea', @onDataFieldFocus).
-        on('keydown', 'input[type=number]', @onDataFieldKeyDown).
-        on('ajax:success', 'form', @onAjaxSuccess).
-        on('ajax:error', 'form', @onAjaxError)
+        on('blur', 'input[type=number], textarea', @_onDataFieldBlur).
+        on('focus', 'input[type=number], textarea', @_onDataFieldFocus).
+        on('keydown', 'input[type=number]', @_onDataFieldKeyDown).
+        on('ajax:success', 'form', @_onAjaxSuccess).
+        on('ajax:error', 'form', @_onAjaxError)
 
     @$search = $('input[type=search]', @domRoot).first()
     @$search.
-        on('change', @onSearchChange).
-        on('textInput', @onSearchChange).
-        on('input', @onSearchChange).
-        on('keydown', @onSearchChange)
+        on('change', @_onSearchChange).
+        on('textInput', @_onSearchChange).
+        on('input', @_onSearchChange).
+        on('keydown', @_onSearchChange)
 
   # If the page has a grade editor, wires it up to a GradeEditor instance.
   @setup: ->
