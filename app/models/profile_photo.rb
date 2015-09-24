@@ -13,6 +13,11 @@
 #
 
 # A profile's avatar.
+#
+# TODO(spark008): Re-implement this feature. Support for user-uploaded profile
+#     pictures has been removed from the UI, and completely replaced with
+#     Gravatar. The backend was written for user-uploaded files and is
+#     deprecated.
 class ProfilePhoto < ActiveRecord::Base
   # The profile whose avatar is stored by this.
   belongs_to :profile, inverse_of: :photo

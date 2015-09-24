@@ -31,13 +31,30 @@ proc_assessment_writeup:
   auto_grading: false
   message_name: analyze_pdf
 
-docker_assessment_code:
-  deliverable: assessment_code
+docker_project_code:
+  deliverable: project_code
   type: DockerAnalyzer
   auto_grading: true
-  db_file: ps1_docker_analyzer
+  db_file: project_code_docker_analyzer
   exec_limits: >
     { "map_time_limit": 2,
       "map_ram_limit": 1024,
       "reduce_time_limit": 2,
       "reduce_ram_limit": 1024 }
+
+docker_assessment_code:
+  deliverable: assessment_code
+  type: DockerAnalyzer
+  auto_grading: true
+  db_file: assessment_code_docker_analyzer
+  exec_limits: >
+    { "map_time_limit": 2,
+      "map_ram_limit": 1024,
+      "reduce_time_limit": 2,
+      "reduce_ram_limit": 1024 }
+
+proc_assessment_writeup:
+  deliverable: assessment_writeup
+  type: ProcAnalyzer
+  auto_grading: false
+  message_name: analyze_pdf

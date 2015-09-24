@@ -59,6 +59,17 @@ class Team < ActiveRecord::Base
     partition.max_size
   end
 
+  # The team's name, suitable to be displayed to the given user.
+  #
+  # This method should also be defined for User.
+  def display_name_for(other_user = nil, identity_value = 'Your team')
+    if has_user? other_user
+      "#{name} (#{identity_value})"
+    else
+      name
+    end
+  end
+
   def has_user?(user)
     memberships.where(user: user).count != 0
   end

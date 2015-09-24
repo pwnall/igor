@@ -65,8 +65,20 @@ ps1_docker_analyzer:
   f_file_size: <%= binary_file_size('files/analyzer/fib_small.zip') %>
   f_content_type: application/zip
 
+# NOTE: Do not create an Analyzer fixture using this DbFile. It is reserved for
+#     use in tests that need to create an Analyzer from scratch.
 ps2_docker_analyzer:
   f_file_name: fib_small_2.zip
+  f_file_size: <%= binary_file_size('files/analyzer/fib_small.zip') %>
+  f_content_type: application/zip
+
+project_code_docker_analyzer:
+  f_file_name: fib_small_project.zip
+  f_file_size: <%= binary_file_size('files/analyzer/fib_small.zip') %>
+  f_content_type: application/zip
+
+assessment_code_docker_analyzer:
+  f_file_name: fib_small_assessment.zip
   f_file_size: <%= binary_file_size('files/analyzer/fib_small.zip') %>
   f_content_type: application/zip
 

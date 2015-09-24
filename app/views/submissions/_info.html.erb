@@ -16,7 +16,7 @@
   <span class="submission-result">
   <% if submission.analysis %>
     <%= link_to analysis_path(submission.analysis,
-                              course_id: submission.course) do %>
+          course_id: submission.course), class: submission.analysis.status do %>
       <%= analysis_status_icon_tag submission.analysis %>
       <%= analysis_status_text submission.analysis %>
     <% end %>
@@ -32,5 +32,7 @@
     <% end %>
   <% end %>
   </span>
-  <%= submission_promotion_status(submission, current_user) %>
+  <span class="promotion-status">
+    <%= submission_promotion_status submission, current_user %>
+  </span>
 </p>
