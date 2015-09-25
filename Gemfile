@@ -98,6 +98,9 @@ end
 
 group :test do
   gem 'minitest-spec-rails', '>= 5.3.0'
+  gem 'capybara', '>= 2.5.0'
+  gem 'launchy', '>= 2.4.3'
+  gem 'poltergeist', '>= 1.6.0'
   gem 'mocha', '>= 1.1.0'
 end
 

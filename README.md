@@ -112,13 +112,13 @@ gem uninstall bundler --all
 gem install bundler --version '~> 1.9.9'
 ```
 
-To run an individual spec, use the [m](https://github.com/qrush/m) gem and
-reference the line number of the spec.
+To run integration tests that require Javascript/XHR, install PhantomJS 1.9.8.
+Uploading files is [broken](https://github.com/ariya/phantomjs/issues/12506) in
+version 2.0. For Mac users, use the following Homebrew command.
 
 ```bash
-$ m test/example_test.rb:4
+brew install homebrew/versions/phantomjs198
 ```
-
 
 ## Production Deployment with Ansible
 
