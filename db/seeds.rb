@@ -222,7 +222,7 @@ psets = pset_data.map.with_index do |data, index|
       analyzer_attributes: { type: 'ProcAnalyzer', message_name: 'analyze_pdf',
       auto_grading: true }
 
-  analyzer_file = 'test/fixtures/analyzer_files/fib_small.zip'
+  analyzer_file = 'test/fixtures/files/analyzer/fib_small.zip'
   analyzer_params = { type: 'DockerAnalyzer', map_time_limit: '2',
       map_ram_limit: '1024', reduce_time_limit: '2', reduce_ram_limit: '1024',
       auto_grading: i % 2 == 0, db_file_attributes: {
@@ -249,7 +249,7 @@ end
       submission = Submission.create! deliverable: writeup, uploader: user,
           upload_ip: '127.0.0.1',
           db_file_attributes: {
-            f: fixture_file_upload('test/fixtures/submission_files/small.pdf',
+            f: fixture_file_upload('test/fixtures/files/submission/small.pdf',
                                    'application/pdf', :binary)
           }, created_at: time, updated_at: time
       SubmissionAnalysisJob.perform_now submission
@@ -266,7 +266,7 @@ end
           upload_ip: '127.0.0.1',
           db_file_attributes: {
             f: fixture_file_upload(
-                'test/fixtures/submission_files/good_fib.py',
+                'test/fixtures/files/submission/good_fib.py',
                 'text/x-python', :binary)
           }, created_at: time, updated_at: time
       SubmissionAnalysisJob.perform_now submission
