@@ -29,9 +29,13 @@
   bundler:
     executable: /home/seven_web/seven/bin/bundle
     chdir: /home/seven_web/seven
+    clean: yes
     deployment_mode: yes
     state: present
     user_install: yes
+    exclude_groups:
+    - development
+    - test
 
 - name: precompile assets
   become: true
