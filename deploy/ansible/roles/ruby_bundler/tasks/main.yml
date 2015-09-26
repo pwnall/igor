@@ -17,6 +17,7 @@
   - zlib-devel
   - patch
   - git
+  - which
 
 # NOTE: We need the PPA because Ubuntu ships Ruby 2.1, but Rails 5 wants 2.2.2.
 # TODO(pwnall): Remove the custom repo when Ubuntu 15.10 is released.
