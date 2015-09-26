@@ -1,4 +1,11 @@
 ---
+# NOTE: This fixes some SElinux issues, such as the one documented below.
+#       https://major.io/2015/09/18/systemd-in-fedora-22-failed-to-restart-service-access-denied/
+- name: cast systemd reexec black magic
+  become: true
+  become_user: root
+  command: systemctl daemon-reexec
+
 - name: reboot machine
   become: true
   become_user: root
