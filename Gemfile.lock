@@ -40,7 +40,7 @@ GIT
 
 GIT
   remote: https://github.com/rack/rack
-  revision: 6ca36dbe2eb5ff27bc49a313f38a3eef93dd3885
+  revision: 028438ffffd95ce1f6197d38c04fa5ea6a034a85
   branch: master
   specs:
     rack (2.0.0.alpha)
@@ -64,7 +64,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/rails
-  revision: 10762e9e550a8221ae4b28e6274fd01992004591
+  revision: 9b16b49977125e767b5cb0c1d533ff7c173a2b6e
   branch: master
   specs:
     actionmailer (5.0.0.alpha)
@@ -134,7 +134,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/sprockets
-  revision: 509e9cb234d80ab1de4baf88253c9c5b3e89cceb
+  revision: d2bf0613d7bdc40225a663e65694332af59e53b0
   branch: master
   specs:
     sprockets (4.0.0)
@@ -363,7 +363,7 @@ DEPENDENCIES
   rack-noie (>= 1.0)!
   railroady (>= 1.3.0)
   rails!
-  rmagick (>= 2.14.0)
+  rmagick (>= 2.15.4)
   rubyzip (>= 1.1.7)
   sass-rails!
   sdoc

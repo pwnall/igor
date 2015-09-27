@@ -51,12 +51,19 @@ class UsersController < ApplicationController
           Role.create! user: @user, name: 'admin'
         end
 
-        token = Tokens::EmailVerification.random_for @user.email_credential
-        SessionMailer.email_verification_email(token, root_url).deliver
+        if SmtpServer.first
+          token = Tokens::EmailVerification.random_for @user.email_credential
+          SessionMailer.email_verification_email(token, root_url).deliver
 
-        format.html do
-          redirect_to new_session_url,
-              alert: 'Please check your e-mail to verify your account.'
+          format.html do
+            redirect_to new_session_url,
+                alert: 'Please check your e-mail to verify your account.'
+          end
+        else
+          @user.email_credential.update! verified: true
+          format.html do
+            redirect_to new_session_url, notice: 'You may log in now.'
+          end
         end
       else
         format.html { render action: :new }

@@ -39,6 +39,9 @@ Rails.application.routes.draw do
     # E-mail resolver configuration.
     resources :email_resolvers
 
+    # E-mail SMTP server configuration.
+    resource :smtp_server, only: [:edit, :update]
+
     # Exception handling test.
     get '/crash' => 'crash#show'
   end

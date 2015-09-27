@@ -20,4 +20,6 @@ class RecitationAssignmentMailer < ActionMailer::Base
     course = @recitation_partition.course
     %Q|"#{course.number} staff" <#{course.email}>|
   end
+
+  include DynamicSmtpServer
 end

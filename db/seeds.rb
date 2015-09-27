@@ -3,9 +3,19 @@
 
 include ActionDispatch::TestProcess  # Want fixture_file_upload.
 
-# Course.
-
 puts 'Starting seeds'
+
+# Infrastructure.
+
+SmtpServer.destroy_all
+SmtpServer.create! host: 'smtp.gmail.com', port: 587, domain: 'gmail.com',
+    user_name: 'seven.dev.mailer@gmail.com',
+    password: 'JC0VORvIGIMFwIkrF6dUJA', auth_kind: 'plain',
+    auto_starttls: true
+
+puts 'Infrastructure created'
+
+# Course.
 
 Course.destroy_all
 course = Course.new

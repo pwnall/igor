@@ -1,0 +1,60 @@
+<h2>SMTP Server Credentials</h2>
+
+<%= form_for @smtp_server, url: smtp_server_url, method: :patch do |f| %>
+  <section class="fields">
+    <p class="field">
+      <%= f.label :host, 'Hostname' %>
+      <span class="value">
+        <%= f.text_field :host, required: true,
+              placeholder: 'outgoing.mit.edu' %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :host, 'Port' %>
+      <span class="value">
+        <%= f.number_field :port, required: true, placeholder: '25' %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :domain, 'HELO Domain' %>
+      <span class="value">
+        <%= f.text_field :domain, required: true, placeholder: 'mit.edu' %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :user_name, 'Authentication' %>
+      <span class="value">
+        <%= f.select :auth_kind,
+              [['None', ''], ['Plain', 'plain'], ['Login (base64)', 'login'],
+               ['Challenge/Respose + MD5', 'cram_md5']] %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :user_name, 'Username' %>
+      <span class="value">
+        <%= f.text_field :user_name, placeholder: 'admin' %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :password, 'Password' %>
+      <span class="value">
+        <%= f.password_field :password %>
+      </span>
+    </p>
+    <p class="field">
+      <%= f.label :auto_starttls, 'Use STARTTLS' %>
+      <span class="value">
+        <%= f.check_box :auto_starttls %>
+        <%= f.label :auto_starttls do %>
+          use STARTTLS when the server supports it
+        <% end %>
+      </span>
+    </p>
+  </section>
+
+  <div class="actions">
+    <%= f.button type: :submit do %>
+      <%= save_icon_tag %> Save
+    <% end %>
+  </div>
+<% end %>

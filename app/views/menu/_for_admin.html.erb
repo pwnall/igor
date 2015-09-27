@@ -22,6 +22,11 @@
       <% end %>
     </li>
     <li>
+      <%= link_to edit_smtp_server_path do %>
+        SMTP Server
+      <% end %>
+    </li>
+    <li>
       <%= link_to 'Submissions', submissions_path(course_id: Course.main) %>
     </li>
 

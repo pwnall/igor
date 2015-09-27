@@ -30,7 +30,7 @@ gem 'paperclip_database', '>= 2.3.1',
 gem 'rack-noie', '>= 1.0', require: 'noie',
     git: 'https://github.com/juliocesar/rack-noie.git',
     ref: 'ce8313c6f327e5c524e3e903a05044ec31c98fd8'
-gem 'rmagick', '>= 2.14.0'
+gem 'rmagick', '>= 2.15.4'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
 gem 'puma', '>= 2.13.4', require: false

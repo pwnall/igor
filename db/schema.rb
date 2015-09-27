@@ -340,6 +340,16 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.index ["user_id", "course_id"], name: "index_roles_on_user_id_and_course_id", using: :btree
   end
 
+  create_table "smtp_servers", force: :cascade do |t|
+    t.string  "host",          limit: 128, null: false
+    t.integer "port",                      null: false
+    t.string  "domain",        limit: 128, null: false
+    t.string  "user_name",     limit: 128, null: false
+    t.string  "password",      limit: 128, null: false
+    t.string  "auth_kind"
+    t.boolean "auto_starttls",             null: false
+  end
+
   create_table "submissions", force: :cascade do |t|
     t.integer  "deliverable_id",            null: false
     t.integer  "db_file_id",                null: false

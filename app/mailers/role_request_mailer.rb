@@ -49,4 +49,6 @@ class RoleRequestMailer < ActionMailer::Base
   def notice_from(server_hostname, protocol)
     %Q|"#{@role_request.course.number} staff" <#{@role_request.course.email}>|
   end
+
+  include DynamicSmtpServer
 end

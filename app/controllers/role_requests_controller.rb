@@ -49,9 +49,7 @@ class RoleRequestsController < ApplicationController
 
     respond_to do |format|
       if @role_request.save
-        if @role_request.course.email_on_role_requests
-          RoleRequestMailer.notice_email(@role_request, root_url).deliver
-        end
+        RoleRequestMailer.notice_email(@role_request, root_url).deliver
         format.html do
           course = @role_request.course.number
           redirect_to role_request_url(@role_request,
