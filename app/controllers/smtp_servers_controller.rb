@@ -1,4 +1,5 @@
 class SmtpServersController < ApplicationController
+  before_action :authenticated_as_admin
   before_action :set_smtp_server
 
   # GET /_/smtp_server/edit
