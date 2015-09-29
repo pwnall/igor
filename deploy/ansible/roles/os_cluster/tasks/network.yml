@@ -16,4 +16,4 @@
     port_range_min: "{{ item }}"
     port_range_max: "{{ item }}"
     cloud: "{{ os_cloud }}"
-  with_items: [22, 80, 443]
+  with_items: ["22", "80", "443"]
