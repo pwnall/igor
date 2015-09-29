@@ -21,6 +21,7 @@ gem 'authpwn_rails', '>= 0.17.2',
     git: 'https://github.com/pwnall/authpwn_rails.git', branch: 'rails5'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'foreman', '>= 0.78.0', require: false
+gem 'jbuilder', '~> 2.2'
 gem 'markdpwn', '>= 0.2.0'
 gem 'mail', '>= 2.6.3'
 gem 'nokogiri', '>= 1.6.6.2'

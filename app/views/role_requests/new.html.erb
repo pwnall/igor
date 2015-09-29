@@ -14,7 +14,8 @@
 </p>
 
 <%= form_for @role_request, url: polymorphic_url(@role_request,
-      course_id: @role_request.course) do |f| %>
+      course_id: @role_request.course),
+      html: { class: 'staff-role-request-form' } do |f| %>
   <%= f.hidden_field :name, value: 'staff' %>
 
   <p class="actions">
@@ -32,7 +33,8 @@
 </p>
 
 <%= form_for @role_request, url: polymorphic_url(@role_request,
-      course_id: @role_request.course) do |f| %>
+      course_id: @role_request.course),
+      html: { class: 'grader-role-request-form' } do |f| %>
   <%= f.hidden_field :name, value: 'grader' %>
 
   <p class="actions">

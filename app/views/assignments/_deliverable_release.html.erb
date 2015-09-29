@@ -1,6 +1,7 @@
 <% if assignment.deliverables_ready? %>
   <%= form_for assignment, url: assignment_path(assignment,
-        course_id: assignment.course), method: :patch do |f| %>
+        course_id: assignment.course), method: :patch,
+        html: { class: 'assignment-pull-form' } do |f| %>
     <%= f.hidden_field :deliverables_ready, value: false %>
     <%= f.button type: :submit, data: { confirm:
           "Un-publish #{assignment.name}? Prepare for hate mail :(" } do %>
@@ -9,7 +10,8 @@
   <% end %>
 <% elsif assignment.deliverables.length > 0 %>
   <%= form_for assignment, url: assignment_path(assignment,
-        course_id: assignment.course), method: :patch do |f| %>
+        course_id: assignment.course), method: :patch,
+        html: { class: 'assignment-release-form' } do |f| %>
     <%= f.hidden_field :deliverables_ready, value: true %>
     <%= f.button type: :submit do %>
       <%= ship_icon_tag %> Release

@@ -6,16 +6,18 @@ class AssignmentsController < ApplicationController
   before_action :authenticated_as_user, only: [:index, :show]
   before_action :set_assignment, only: [:show, :edit, :update, :destroy]
 
-  # GET /assignments
+  # GET /6.006/assignments
+  # GET /6.006/assignments.json
   def index
     @assignments = current_course.assignments_for current_user
 
     respond_to do |format|
       format.html  # index.html.erb
+      format.json  # index.json.jbuilder
     end
   end
 
-  # GET /assignments/1
+  # GET /6.006/assignments/1
   def show
     return bounce_user unless @assignment.can_read? current_user
 
@@ -24,7 +26,7 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # GET /assignments/1/dashboard
+  # GET /6.006/assignments/1/dashboard
   def dashboard
     @assignment = current_course.assignments.where(id: params[:id]).
         includes(:deliverables, submissions: :subject).first
@@ -36,7 +38,7 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # GET /assignments/new
+  # GET /6.006/assignments/new
   def new
     @assignment = Assignment.new course: current_course, author: current_user
 
@@ -45,11 +47,11 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # GET /assignments/1/edit
+  # GET /6.006/assignments/1/edit
   def edit
   end
 
-  # POST /assignments
+  # POST /6.006/assignments
   def create
     @assignment = Assignment.new assignment_params
     @assignment.course = current_course
@@ -60,7 +62,8 @@ class AssignmentsController < ApplicationController
       if @assignment.save
         format.html do
           redirect_to edit_assignment_url(@assignment,
-                                          course_id: @assignment.course)
+                                          course_id: @assignment.course),
+              notice: 'Assignment created.'
         end
       else
         format.html { render :new }
@@ -68,14 +71,14 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # PUT /assignments/1
+  # PUT /6.006/assignments/1
   def update
     respond_to do |format|
       if @assignment.update_attributes assignment_params
         format.html do
           redirect_to dashboard_assignment_url(@assignment,
                                                course_id: @assignment.course),
-              notice: 'Assignment successfully updated.'
+              notice: 'Assignment updated.'
         end
       else
         format.html { render :edit }
@@ -84,7 +87,7 @@ class AssignmentsController < ApplicationController
   end
 
 
-  # DELETE /assignments/1
+  # DELETE /6.006/assignments/1
   def destroy
     @assignment.destroy
 
