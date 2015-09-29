@@ -1,0 +1,59 @@
+---
+- name: create .docker directory
+  become: true
+  become_user: seven_web
+  file: path=/home/seven_web/.docker state=directory mode=0755
+
+- name: copy cluster CA certificate
+  become: true
+  become_user: seven_web
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_ca.cert.pem
+    dest: /home/seven_web/.docker/ca.pem
+    mode: 0644
+  notify:
+  - restart frontend delayed_job service
+
+- name: copy docker client TLS certificate
+  become: true
+  become_user: seven_web
+  copy:
+    src:
+      ../keys/{{ os_prefix }}/cluster_docker_client.cert.pem
+    dest: /home/seven_web/.docker/cert.pem
+    mode: 0644
+  notify:
+  - restart frontend delayed_job service
+
+- name: copy docker client TLS key
+  become: true
+  become_user: seven_web
+  copy:
+    src:
+      ../keys/{{ os_prefix }}/cluster_docker_client.key.pem
+    dest: /home/seven_web/.docker/key.pem
+    mode: 0600
+    owner: seven_web
+    group: seven_web
+  notify:
+  - restart frontend delayed_job service
+
+- name: add DOCKER_TLS_VERIFY to .bashrc
+  become: true
+  become_user: seven_web
+  lineinfile:
+    dest: /home/seven_web/.bashrc
+    line: export DOCKER_TLS_VERIFY=
+    regexp: "^export DOCKER_TLS_VERIFY=.*"
+  notify:
+  - restart frontend delayed_job service
+
+- name: add DOCKER_HOST to .bashrc
+  become: true
+  become_user: seven_web
+  lineinfile:
+    dest: /home/seven_web/.bashrc
+    line: export DOCKER_HOST=unix:///var/run/docker.sock
+    regexp: "^export DOCKER_HOST=.*"
+  notify:
+  - restart frontend delayed_job service

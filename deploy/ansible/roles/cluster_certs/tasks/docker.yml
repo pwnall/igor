@@ -1,0 +1,91 @@
+---
+- name: create Docker client key
+  command: >
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+        -pkeyopt rsa_keygen_pubexp:3 -outform PEM
+        -out {{ keys_dir }}/cluster_docker_client.key.pem
+  args:
+    creates: "{{ keys_dir }}/cluster_docker_client.key.pem"
+
+- name: create Docker client certificate signing request
+  command: >
+    openssl req -new -batch -keyform PEM -outform PEM -sha256
+        -key {{ keys_dir }}/cluster_docker_client.key.pem
+        -out {{ keys_dir }}/cluster_docker_client.csr.pem
+        -subj "/C=US/O={{ os_prefix }} Cluster/CN=Docker Client"
+  args:
+    creates: "{{ keys_dir }}/cluster_docker_client.csr.pem"
+
+- name: create Docker client certificate
+  command: >
+    openssl x509 -req -inform PEM -keyform PEM -outform PEM -days 3650
+        -set_serial 10000 -extensions docker_client_extensions
+        -in {{ keys_dir }}/cluster_docker_client.csr.pem
+        -CA {{ keys_dir }}/cluster_ca.cert.pem
+        -CAkey {{ keys_dir }}/cluster_ca.key.pem
+        -extfile {{ role_path }}/files/openssl.cnf
+        -out {{ keys_dir }}/cluster_docker_client.cert.pem
+  args:
+    creates: "{{ keys_dir }}/cluster_docker_client.cert.pem"
+
+- name: create Docker swarm master key
+  command: >
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+        -pkeyopt rsa_keygen_pubexp:3 -outform PEM
+        -out {{ keys_dir }}/cluster_docker_swarm-master1.key.pem
+  args:
+    creates: "{{ keys_dir }}/cluster_docker_swarm-master1.key.pem"
+
+- name: create Docker swarm master certificate signing request
+  command: >
+    openssl req -new -batch -keyform PEM -outform PEM -sha256
+        -key {{ keys_dir }}/cluster_docker_swarm-master1.key.pem
+        -out {{ keys_dir }}/cluster_docker_swarm-master1.csr.pem
+        -subj "/C=US/O={{ os_prefix }} Cluster/CN=swarm-master1.skydns.local"
+  args:
+    creates: "{{ keys_dir }}/cluster_docker_swarm-master1.csr.pem"
+
+- name: create Docker swarm master certificate
+  command: >
+    openssl x509 -req -inform PEM -keyform PEM -outform PEM -days 3650
+        -set_serial 10000 -extensions docker_swarm_master_extensions
+        -in {{ keys_dir }}/cluster_docker_swarm-master1.csr.pem
+        -CA {{ keys_dir }}/cluster_ca.cert.pem
+        -CAkey {{ keys_dir }}/cluster_ca.key.pem
+        -extfile {{ role_path }}/files/openssl.cnf
+        -out {{ keys_dir }}/cluster_docker_swarm-master1.cert.pem
+  args:
+    creates: "{{ keys_dir }}/cluster_docker_swarm-master1.cert.pem"
+
+- name: create Docker worker keys
+  command: >
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+        -pkeyopt rsa_keygen_pubexp:3 -outform PEM
+        -out {{ keys_dir }}/cluster_docker_worker{{ item }}.key.pem
+  args:
+    creates: "{{ keys_dir }}/cluster_docker_worker{{ item }}.key.pem"
+  with_sequence: count={{ worker_count }}
+
+- name: create Docker worker certificate signing requests
+  command: >
+    openssl req -new -batch -keyform PEM -outform PEM -sha256
+        -key {{ keys_dir }}/cluster_docker_worker{{ item }}.key.pem
+        -out {{ keys_dir }}/cluster_docker_worker{{ item }}.csr.pem
+        -subj
+        "/C=US/O={{ os_prefix }} Cluster/CN=worker{{ item }}.skydns.local"
+  args:
+    creates: "{{ keys_dir }}/cluster_docker_worker{{ item }}.csr.pem"
+  with_sequence: count={{ worker_count }}
+
+- name: create Docker worker certificates
+  command: >
+    openssl x509 -req -inform PEM -keyform PEM -outform PEM -days 3650
+        -set_serial {{ item|int + 10000 }} -extensions docker_worker_extensions
+        -in {{ keys_dir }}/cluster_docker_worker{{ item }}.csr.pem
+        -CA {{ keys_dir }}/cluster_ca.cert.pem
+        -CAkey {{ keys_dir }}/cluster_ca.key.pem
+        -extfile {{ role_path }}/files/openssl.cnf
+        -out {{ keys_dir }}/cluster_docker_worker{{ item }}.cert.pem
+  args:
+    creates: "{{ keys_dir }}/cluster_docker_worker{{ item }}.cert.pem"
+  with_sequence: count={{ worker_count }}

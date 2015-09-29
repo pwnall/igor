@@ -1,5 +1,5 @@
 ---
-- hosts: "{{ prod_master_group_name }}:{{ prod_worker_group_name }}"
+- hosts: "{{ prod_master_group_name }}, {{ prod_worker_group_name }}"
   vars_files:
   - ../openstack_vars.yml
   vars:

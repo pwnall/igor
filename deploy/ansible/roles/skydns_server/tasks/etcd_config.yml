@@ -1,0 +1,26 @@
+---
+# Writes the skydns configuration into etcd.
+
+- name: compute the peers argument for etcdctl
+  set_fact:
+    etcdctl_peers: "{{ lookup('template', 'etcdctl_peers.j2') | trim }}"
+
+- name: write the skydns config into etcd
+  become: true
+  become_user: skydns
+  command: >
+    etcdctl --peers="{{ etcdctl_peers }}" --output=json
+        --ca-file=/etc/skydns/etcd_ca.pem
+        --cert-file=/etc/skydns/etcd_client_cert.pem
+        --key-file=/etc/skydns/etcd_client_key.pem
+        set /skydns/config
+        '{"ttl": 3600, "systemd": true, "domain": "skydns.local."}'
+  register: skydns_etcdctl_result
+  # NOTE: The etc2 API does not return a prevNode when a key is written for the
+  #       first time.
+  changed_when: >
+    (skydns_etcdctl_result.stdout|from_json).node.value !=
+    ((skydns_etcdctl_result.stdout|from_json).prevNode
+      |default({'value': ''})).value
+  notify:
+  - restart skydns server

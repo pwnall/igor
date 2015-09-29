@@ -1,0 +1,11 @@
+---
+- name: add skydns entries to /etc/hosts
+  become: true
+  become_user: root
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{
+        hostvars[item.1]['ansible_' + cluster_net_interface].ipv4.address }}
+        skydns-server{{ item.0 + 1 }}.clusterlocal"
+    regexp: ".* skydns-server{{ item.0 + 1 }}.clusterlocal"
+  with_indexed_items: "{{ groups[skydns_group_name] }}"

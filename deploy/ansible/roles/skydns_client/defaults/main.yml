@@ -1,0 +1,9 @@
+---
+# The Ansible group that contains the skydns servers.
+skydns_group_name: "{{ prod_master_group_name }}"
+
+# The interface used to connect to other computers in the cluster.
+#
+# This is generally eth0. Currently, only Vagrant VMs are special-cased.
+cluster_net_interface: "{{ 'eth1' if ansible_ssh_user == 'vagrant'
+                           else 'eth0' }}"

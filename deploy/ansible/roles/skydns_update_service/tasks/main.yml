@@ -1,0 +1,50 @@
+---
+# Sets up the system to write its IP address into etcd every time it boots.
+#
+# This is used by skydns to provide up-to-date DNS resolution for all the
+# workers in the cluster.
+
+- name: install moreutils using dnf
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  dnf: name=moreutils state=present
+
+- name: install moreutils using apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name=moreutils state=present
+
+- name: write skydns update service script
+  become: true
+  become_user: root
+  template:
+    src: skydns_update_sh.j2
+    dest: /usr/local/bin/skydns-update.sh
+    mode: 0755
+  notify:
+  - kick the skydns update service
+
+- name: write skydns update systemd unit
+  become: true
+  become_user: root
+  template:
+    src: skydns_update_service.j2
+    dest: /etc/systemd/system/skydns-update@.service
+  register: skydns_update_systemd_service_result
+  notify:
+  - kick the skydns update service
+
+- name: reload systemd configuration
+  command: systemctl daemon-reload
+  become: true
+  become_user: root
+  when: skydns_update_systemd_service_result | changed
+
+- name: enable skydns update service
+  become: true
+  become_user: root
+  service:
+    name: "skydns-update@{{ skydns_name }}"
+    enabled: yes

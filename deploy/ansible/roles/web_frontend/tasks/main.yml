@@ -1,5 +1,6 @@
 ---
 - include: packages.yml
+- include: docker.yml
 
 - name: check out repository
   become: true

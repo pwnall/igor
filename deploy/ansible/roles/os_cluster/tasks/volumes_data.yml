@@ -4,8 +4,8 @@
 - name: create worker data volumes
   os_volume:
     display_name: "{{ worker_volume_prefix }}{{ item }}"
-    display_description:
-      Stores Docker images and data for {{ worker_instance_prefix }}{{ item }}
+    display_description: "Stores Docker images and data for
+                          {{ worker_instance_prefix }}{{ item }}"
     size: "{{ os_worker_volume_gb }}"
     volume_type: "{{ os_volume_type }}"
     cloud: "{{ os_cloud }}"

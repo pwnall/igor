@@ -1,0 +1,28 @@
+---
+# Copies the TLS keys that secure the etcd connection into /etc/skydns.
+
+- name: copy etcd CA certificate to /etc/skydns
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_ca.cert.pem
+    dest: /etc/skydns/etcd_ca.pem
+    mode: 0644
+
+- name: copy etcd client TLS key to /etc/skydns
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_etcd_client.cert.pem
+    dest: /etc/skydns/etcd_client_cert.pem
+    mode: 0600
+    owner: skydns
+    group: skydns
+
+- name: copy etcd client TLS certificate to /etc/skydns
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_etcd_client.key.pem
+    dest: /etc/skydns/etcd_client_key.pem
+    mode: 0644

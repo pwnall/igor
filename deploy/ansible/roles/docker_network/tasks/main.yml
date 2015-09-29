@@ -1,0 +1,58 @@
+---
+# Sets up a worker's Docker dameon to accept network connections over TLS.
+
+- name: copy cluster CA certificate
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_ca.cert.pem
+    dest: /etc/docker/ca.pem
+    mode: 0644
+  notify:
+  - restart docker daemon
+
+- name: copy docker daemon TLS certificate
+  become: true
+  become_user: root
+  copy:
+    src:
+      ../keys/{{ os_prefix }}/cluster_docker_{{ skydns_name }}.cert.pem
+    dest: /etc/docker/server-cert.pem
+    mode: 0644
+  notify:
+  - restart docker daemon
+
+- name: copy docker daemon TLS key
+  become: true
+  become_user: root
+  copy:
+    src:
+      ../keys/{{ os_prefix }}/cluster_docker_{{ skydns_name }}.key.pem
+    dest: /etc/docker/server-key.pem
+    mode: 0600
+    owner: root
+    group: root
+  notify:
+  - restart docker daemon
+
+- name: write docker network config for fedora
+  when: ansible_os_family == 'RedHat'
+  become: true
+  become_user: root
+  template: src=sysconfig_docker_network.j2 dest=/etc/sysconfig/docker-network
+  notify:
+  - restart docker daemon
+
+- name: write docker network config for ubuntu
+  when: ansible_os_family == 'Debian'
+  become: true
+  become_user: root
+  template: src=sysconfig_docker_network.j2 dest=/etc/default/docker-network
+  notify:
+  - restart docker daemon
+
+- name: open secure docker in firewalld
+  when: has_firewalld != False
+  become: true
+  become_user: root
+  firewalld: service=docker-s state=enabled immediate=yes permanent=yes

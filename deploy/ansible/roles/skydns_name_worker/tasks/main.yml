@@ -1,0 +1,11 @@
+---
+# Computes the skydns name for a worker.
+
+# NOTE: The computation is currently based on the worker's OpenStack host name,
+#       with a fallback on the Ansible inventory name. At some point, we might
+#       add OpenStack metadata as a primary source.
+- name: computes the worker's index
+  set_fact:
+    skydns_name: 'worker{{
+         (openstack | default({})).name | default(inventory_hostname) |
+         regex_replace("^.*[^\d]([\d]*)$", "\1") }}'

@@ -1,0 +1,31 @@
+---
+# Generates OpenSSL keys and certificates for intra-cluster communications.
+#
+# Unlike most deployments, we cannot assume an internal, firewalled network.
+# Instead, all inter-machine communications are secured using TLS with custom
+# certificates.
+
+- name: create cluster keys directory
+  file: path={{ keys_dir }} state=directory mode=0755
+
+- name: create cluster CA key
+  command: >
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+        -pkeyopt rsa_keygen_pubexp:3 -outform PEM
+        -out {{ keys_dir }}/cluster_ca.key.pem 2048
+  args:
+    creates: "{{ keys_dir }}/cluster_ca.key.pem"
+
+- name: create cluster CA self-signed certificate
+  command: >
+    openssl req -new -x509 -batch -keyform PEM -outform PEM -sha256 -utf8
+        -days 3560 -set_serial 1 -extensions ca_extensions
+        -subj "/C=US/O={{ os_prefix }} Cluster/CN=Cluster CA"
+        -config {{ role_path }}/files/openssl.cnf
+        -key {{ keys_dir }}/cluster_ca.key.pem
+        -out {{ keys_dir }}/cluster_ca.cert.pem
+  args:
+    creates: "{{ keys_dir }}/cluster_ca.cert.pem"
+
+- include: etcd.yml
+- include: docker.yml

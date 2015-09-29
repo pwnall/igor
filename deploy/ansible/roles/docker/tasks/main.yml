@@ -20,7 +20,7 @@
   when: ansible_os_family == 'RedHat'
   become: true
   become_user: root
-  template: src=docker_config.j2 dest=/etc/sysconfig/docker
+  template: src=sysconfig_docker.j2 dest=/etc/sysconfig/docker
   notify:
   - restart docker daemon
 
@@ -28,7 +28,7 @@
   when: ansible_os_family == 'Debian'
   become: true
   become_user: root
-  template: src=docker_config.j2 dest=/etc/default/docker
+  template: src=sysconfig_docker.j2 dest=/etc/default/docker
   notify:
   - restart docker daemon
 

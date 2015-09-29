@@ -1,9 +1,5 @@
 ---
-# NOTE: This has the side-effect of kicking off fact gathering on the workers.
-#       The Kubernetes master configuration needs the internal IPs of all the
-#       workers. If we don't do this before the master configuration, we'll
-#       need something like http://stackoverflow.com/questions/30024664
-- hosts: "{{ prod_master_group_name }}:{{ prod_worker_group_name }}"
+- hosts: "{{ prod_master_group_name }}, {{ prod_worker_group_name }}"
   gather_facts: False
   vars_files:
   - ../openstack_vars.yml
@@ -12,6 +8,7 @@
   roles:
   - sys_python2
   - fix_f22_vagrant
+  - sys_network_manager
   - sys_package_update
   - sys_facts
     #- docker_storage
@@ -23,13 +20,19 @@
     ansible_ssh_user: "{{ os_image_user }}"
   roles:
   - sudo_nopasswd
+  - etcd_server
+  - etcd_client
+  - skydns_server
+  - skydns_client
+  - skydns_name_master
+  - skydns_update_service
   - docker
-  - nginx
-  - pgsql
-  - web_user
-  - web_db
-  - ruby_bundler
-  - web_frontend
+  # NOTE: docker_network is not included here by design. Swarm masters use
+  #       Docker to run the Swarm image. However, the Docker daemons on the
+  #       masters should not accept scheduling requests from Swarm.
+  #       Also, we can run a swarm master on the same node as a worker, as long
+  #       as the master's Docker daemon is not exposed.
+  - docker_client_keys  # NOTE: The keys come in handy for cluster debugging.
 
 - hosts: "{{ prod_worker_group_name }}"
   vars_files:
@@ -38,4 +41,22 @@
     ansible_ssh_user: "{{ os_image_user }}"
   roles:
   - sudo_nopasswd
+  - etcd_client
+  - skydns_name_worker
+  - skydns_update_service
+  - skydns_client
   - docker
+  - docker_network
+
+- hosts: "{{ prod_master_group_name }}"
+  vars_files:
+  - ../openstack_vars.yml
+  vars:
+    ansible_ssh_user: "{{ os_image_user }}"
+  roles:
+  - nginx
+  - pgsql
+  - web_user
+  - web_db
+  - ruby_bundler
+  - web_frontend

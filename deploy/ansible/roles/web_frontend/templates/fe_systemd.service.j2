@@ -1,4 +1,9 @@
+[Unit]
+Description=Rails application server for seven
+After=network.target remote-fs.target nss-lookup.target
+
 [Service]
+Type=simple
 User=seven_web
 WorkingDirectory=/home/seven_web/seven
 Environment=RAILS_ENV=production

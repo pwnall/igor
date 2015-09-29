@@ -1,0 +1,36 @@
+# [basic]
+# list of etcd machines, "http://localhost:4001,http://etcd.example.com:4001"
+ETCD_MACHINES="
+{%- set join_comma = joiner(",") -%}
+{%- for etcd_server in groups[etcd_group_name] -%}
+https://etcd-master{{ loop.index }}.clusterlocal:2379
+{{- join_comma() -}}
+{%- endfor -%}
+"
+# path of TLS client certificate - private key
+ETCD_TLSKEY="/etc/skydns/etcd_client_key.pem"
+# path of TLS client certificate - public key
+ETCD_TLSPEM="/etc/skydns/etcd_client_cert.pem"
+# path of TLS certificate authority public key
+ETCD_CACERT="/etc/skydns/etcd_ca.pem"
+# specify address to bind to
+#SKYDNS_ADDR=""
+# set a default domain if not specified by etcd config
+#SKYDNS_DOMAIN=""
+# set a list of nameservers to forward DNS requests to when not authoritative for a domain, "8.8.8.8:53,8.8.4.4:53"
+#SKYDNS_NAMESERVERS=""
+
+# [statistics]
+#GRAPHITE_SERVER=""
+#GRAPHITE_PREFIX=""
+#STATHAT_USER=""
+
+# [prometheus]
+# port where the HTTP server for prometheus will run
+#PROMETHEUS_PORT=""
+# path for the metrics, defaults to /metrics
+#PROMETHEUS_PATH=""
+# namespace used in the metrics, no default
+#PROMETHEUS_NAMESPACE=""
+# subsystem used in the metric, defaults to skydns
+#PROMETHEUS_SUBSYSTEM=""

@@ -1,0 +1,35 @@
+---
+# Copies the Docker client keys into a user's .docker directory.
+
+- name: create .docker directory
+  become: true
+  become_user: "{{ docker_client_user }}"
+  file: path={{ docker_client_user_homedir }}/.docker state=directory mode=0755
+
+- name: copy cluster CA certificate
+  become: true
+  become_user: "{{ docker_client_user }}"
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_ca.cert.pem
+    dest: "{{ docker_client_user_homedir }}/.docker/ca.pem"
+    mode: 0644
+
+- name: copy docker client TLS certificate
+  become: true
+  become_user: "{{ docker_client_user }}"
+  copy:
+    src:
+      ../keys/{{ os_prefix }}/cluster_docker_client.cert.pem
+    dest: "{{ docker_client_user_homedir }}/.docker/cert.pem"
+    mode: 0644
+
+- name: copy docker client TLS key
+  become: true
+  become_user: "{{ docker_client_user }}"
+  copy:
+    src:
+      ../keys/{{ os_prefix }}/cluster_docker_client.key.pem
+    dest: "{{ docker_client_user_homedir }}/.docker/key.pem"
+    mode: 0600
+    owner: "{{ docker_client_user }}"
+    group: "{{ docker_client_user }}"

@@ -7,7 +7,7 @@
     description: SSH + HTTP(S) from Internet
     cloud: "{{ os_cloud }}"
 
-- name: add public ports to security group
+- name: add public TCP ports to security group
   os_security_group_rule:
     security_group: "{{ security_group_name }}"
     direction: ingress
@@ -16,4 +16,23 @@
     port_range_min: "{{ item }}"
     port_range_max: "{{ item }}"
     cloud: "{{ os_cloud }}"
-  with_items: ["22", "80", "443"]
+  with_items:
+  - "22"     # SSH
+  - "53"     # DNS
+  - "80"     # HTTP
+  - "443"    # HTTPS
+  - "2376"   # Docker over TLS
+  - "2379"   # etcd
+  - "22376"  # Docker Swarm, non-standard.
+
+- name: add public UDP ports to security group
+  os_security_group_rule:
+    security_group: "{{ security_group_name }}"
+    direction: ingress
+    protocol: udp
+    remote_ip_prefix: 0.0.0.0/0
+    port_range_min: "{{ item }}"
+    port_range_max: "{{ item }}"
+    cloud: "{{ os_cloud }}"
+  with_items:
+  - "53"     # DNS

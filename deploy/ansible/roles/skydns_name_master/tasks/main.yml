@@ -1,0 +1,8 @@
+---
+# Computes the skydns name for a master.
+
+# NOTE: We currently only support only one master. This will change if we ever
+#       get around to doing high availability.
+- name: computes the master's index
+  set_fact:
+    skydns_name: swarm-master1

@@ -1,0 +1,5 @@
+{%- set join_comma = joiner(",") -%}
+{%- for etcd_server in groups[etcd_group_name] -%}
+https://etcd-master{{ loop.index }}.clusterlocal:2379
+{{- join_comma() -}}
+{%- endfor -%}

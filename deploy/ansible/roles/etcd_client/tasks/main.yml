@@ -1,0 +1,42 @@
+---
+# Infrastructure for connecting to the cluster set up by the etcd_server role.
+
+- include: etc_hosts.yml
+
+# NOTE: We're installing the etcd package for the etcdctl CLI tool. The etcd
+#       daemon should not be started by etcd clients.
+- name: install etcd with dnf
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  dnf: name=etcd state=present
+
+- name: install etcd with apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name=etcd state=present
+
+- name: copy etcd CA certificate
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_ca.cert.pem
+    dest: /etc/etcd/ca.pem
+    mode: 0644
+
+- name: copy etcd client TLS key
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_etcd_client.cert.pem
+    dest: /etc/etcd/client_cert.pem
+    mode: 0640
+
+- name: copy etcd client TLS certificate
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_etcd_client.key.pem
+    dest: /etc/etcd/client_key.pem
+    mode: 0644

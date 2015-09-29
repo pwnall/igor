@@ -1,0 +1,70 @@
+---
+# etcd 1-host cluster.
+# Heavily inspired from: http://www.projectatomic.io/docs/gettingstarted/
+- name: install etcd with dnf
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  dnf: name=etcd state=present
+
+- name: install etcd with apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name=etcd state=present
+
+- name: copy etcd CA certificate
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_ca.cert.pem
+    dest: /etc/etcd/ca.pem
+    mode: 0644
+  notify:
+  - restart etcd server
+
+- name: copy etcd server TLS certificate
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_etcd_server.cert.pem
+    dest: /etc/etcd/cert.pem
+    mode: 0644
+  notify:
+  - restart etcd server
+
+- name: copy etcd server TLS key
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_etcd_server.key.pem
+    dest: /etc/etcd/key.pem
+    mode: 0600
+    owner: etcd
+    group: etcd
+  notify:
+  - restart etcd server
+
+- name: write etcd config
+  become: true
+  become_user: root
+  template: src=etcd.conf.j2 dest=/etc/etcd/etcd.conf
+  notify:
+  - restart etcd server
+
+- name: enable and start etcd server
+  become: true
+  become_user: root
+  service: name=etcd enabled=yes state=started
+
+- name: open etcd in firewalld
+  when: has_firewalld != False
+  become: true
+  become_user: root
+  firewalld: service={{ item }} state=enabled immediate=yes permanent=yes
+  with_items:
+  - etcd-client
+  - etcd-service
+
+# NOTE: Other roles rely on etcd being up and configured correctly.
+- meta: flush_handlers

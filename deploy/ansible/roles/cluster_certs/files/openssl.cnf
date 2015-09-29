@@ -1,0 +1,46 @@
+[ca_extensions]
+basicConstraints = critical, CA:TRUE, pathlen:0
+keyUsage = critical, digitalSignature, keyCertSign, cRLSign
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always, issuer:always
+
+[etcd_server_extensions]
+basicConstraints = critical, CA:FALSE
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = critical, serverAuth
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always, issuer:always
+subjectAltName=IP:127.0.0.1
+
+[etcd_client_extensions]
+basicConstraints = critical, CA:FALSE
+keyUsage = critical, digitalSignature
+extendedKeyUsage = critical, clientAuth
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always, issuer:always
+
+[docker_swarm_master_extensions]
+basicConstraints = critical, CA:FALSE
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = critical, clientAuth, serverAuth
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always, issuer:always
+
+[docker_worker_extensions]
+basicConstraints = critical, CA:FALSE
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = critical, serverAuth
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always, issuer:always
+
+[docker_client_extensions]
+basicConstraints = critical, CA:FALSE
+keyUsage = critical, digitalSignature
+extendedKeyUsage = critical, clientAuth
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always, issuer:always
+
+# The openssl req util complains if these sections aren't present.
+[req]
+distinguished_name = req_distinguished_name
+[req_distinguished_name]

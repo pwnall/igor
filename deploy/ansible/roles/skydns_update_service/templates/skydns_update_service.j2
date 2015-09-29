@@ -1,0 +1,24 @@
+[Unit]
+Description=Updates this machine's IP address in etcd, for skydns
+After=network-online.target
+Requires=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/bin/sh /usr/local/bin/skydns-update.sh
+Environment="DNS_NAME=%i"
+Environment="ETCD_PEERS=
+{%- set join_comma = joiner(",") -%}
+{%- for etcd_server in groups[etcd_group_name] -%}
+https://etcd-master{{ loop.index }}.clusterlocal:2379
+{{- join_comma() -}}
+{%- endfor -%}
+"
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,3 @@
+---
+# The Ansible group that contains the etcd servers.
+etcd_group_name: "{{ prod_master_group_name }}"

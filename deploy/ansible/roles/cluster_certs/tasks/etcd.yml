@@ -1,0 +1,58 @@
+---
+- name: create etcd server key
+  command: >
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+        -pkeyopt rsa_keygen_pubexp:3 -outform PEM
+        -out {{ keys_dir }}/cluster_etcd_server.key.pem
+  args:
+    creates: "{{ keys_dir }}/cluster_etcd_server.key.pem"
+
+- name: create etcd server certificate signing request
+  command: >
+    openssl req -new -batch -keyform PEM -outform PEM -sha256
+        -key {{ keys_dir }}/cluster_etcd_server.key.pem
+        -out {{ keys_dir }}/cluster_etcd_server.csr.pem
+        -subj "/C=US/O={{ os_prefix }} Cluster/CN=etcd-master1.clusterlocal"
+  args:
+    creates: "{{ keys_dir }}/cluster_etcd_server.csr.pem"
+
+- name: create etcd server certificate
+  command: >
+    openssl x509 -req -inform PEM -keyform PEM -outform PEM -days 3650
+        -set_serial 100 -extensions etcd_server_extensions
+        -in {{ keys_dir }}/cluster_etcd_server.csr.pem
+        -CA {{ keys_dir }}/cluster_ca.cert.pem
+        -CAkey {{ keys_dir }}/cluster_ca.key.pem
+        -extfile {{ role_path }}/files/openssl.cnf
+        -out {{ keys_dir }}/cluster_etcd_server.cert.pem
+  args:
+    creates: "{{ keys_dir }}/cluster_etcd_server.cert.pem"
+
+- name: create etcd client key
+  command: >
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+        -pkeyopt rsa_keygen_pubexp:3 -outform PEM
+        -out {{ keys_dir }}/cluster_etcd_client.key.pem
+  args:
+    creates: "{{ keys_dir }}/cluster_etcd_client.key.pem"
+
+- name: create etcd client certificate signing request
+  command: >
+    openssl req -new -batch -keyform PEM -outform PEM -sha256
+        -key {{ keys_dir }}/cluster_etcd_client.key.pem
+        -out {{ keys_dir }}/cluster_etcd_client.csr.pem
+        -subj "/C=US/O={{ os_prefix }} Cluster/CN=etcd Client"
+  args:
+    creates: "{{ keys_dir }}/cluster_etcd_client.csr.pem"
+
+- name: create etcd client certificate
+  command: >
+    openssl x509 -req -inform PEM -keyform PEM -outform PEM -days 3650
+        -set_serial 101 -extensions etcd_client_extensions
+        -in {{ keys_dir }}/cluster_etcd_client.csr.pem
+        -CA {{ keys_dir }}/cluster_ca.cert.pem
+        -CAkey {{ keys_dir }}/cluster_ca.key.pem
+        -extfile {{ role_path }}/files/openssl.cnf
+        -out {{ keys_dir }}/cluster_etcd_client.cert.pem
+  args:
+    creates: "{{ keys_dir }}/cluster_etcd_client.cert.pem"

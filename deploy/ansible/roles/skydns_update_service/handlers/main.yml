@@ -1,0 +1,8 @@
+---
+- name: kick the skydns update service
+  become: true
+  become_user: root
+  service:
+    name: "skydns-update@{{ skydns_name }}"
+    state: restarted
+

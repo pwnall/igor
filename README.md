@@ -23,8 +23,8 @@ The recommended way to get the libraries is your system's package manager, or
 
 ### Mac OS
 
-The following [Homebrew](http://brew.sh) commands install the requirements on
-OSX.
+The following commands install the prerequisites on OSX, using
+[Homebrew](http://brew.sh).
 
 ```bash
 brew install docker docker-machine imagemagick libxml2 libxslt openssl \

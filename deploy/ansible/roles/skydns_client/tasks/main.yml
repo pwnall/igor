@@ -1,0 +1,40 @@
+---
+# Infrastructure for connecting to the server set up by the skydns_server role.
+
+- include: etc_hosts.yml
+
+# NOTE: We rely on the mostly undocumented fact that NetworkManager reads
+#       /etc/dhclient.conf and /etc/dhcp/dhclient.conf when generating its own
+#       dhclient configuration files in /var/run/.
+- name: add skydns entries to /etc/dhcp/dhclient.conf
+  become: true
+  become_user: root
+  lineinfile:
+    dest: /etc/dhcp/dhclient.conf
+    line: "prepend domain-name-servers {{
+        hostvars[item.1]['ansible_' + cluster_net_interface].ipv4.address }};
+        # skydns-server{{ item.0 + 1 }}.clusterlocal"
+    regexp: ".*; # skydns-server{{ item.0 + 1 }}.clusterlocal"
+    create: true
+    mode: 0755
+  with_indexed_items: "{{ groups[skydns_group_name] }}"
+  notify:
+  - reload NetworkManager configuration
+  - restart NetworkManager
+
+# NOTE: We're installing the package that provides the dig CLI tool, which
+#       comes in handy when debugging DNS problems.
+- name: install bind-utils with dnf
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  dnf: name=bind-utils state=present
+
+- name: install dnsutilss with apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name=dnsutils state=present
+
+# NOTE: Other roles rely on SkyDNS being plugged in.
+- meta: flush_handlers

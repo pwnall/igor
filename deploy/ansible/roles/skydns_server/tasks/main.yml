@@ -1,0 +1,60 @@
+---
+# Sets up a skydns server reading from the local etcd.
+
+- name: install skydns with dnf
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  # TODO(pwnall): stop using updates-testing when the package becomes stable
+  dnf: name=skydns state=present enablerepo=updates-testing
+
+- name: install skydns with apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name=skydns state=present
+
+- include: etcd_tls_keys.yml
+- include: etcd_config.yml
+
+- name: write skydns config
+  become: true
+  become_user: root
+  template: src=skydns.conf.j2 dest=/etc/skydns/skydns.conf
+  notify:
+  - restart skydns server
+
+- name: write skydns systemd socket configuration
+  become: true
+  become_user: root
+  template:
+    src: skydns_socket.j2
+    dest: /etc/systemd/system/skydns.socket
+  register: skydns_systemd_socket_result
+  notify:
+  - restart skydns daemon
+
+- name: reload systemd configuration
+  command: systemctl daemon-reload
+  become: true
+  become_user: root
+  when: skydns_systemd_socket_result | changed
+
+- name: enable and start skydns systemd socket
+  become: true
+  become_user: root
+  service: name=skydns.socket enabled=yes state=started
+
+- name: enable and start skydns systemd service
+  become: true
+  become_user: root
+  service: name=skydns.service enabled=yes state=started
+
+- name: open dns service in firewalld
+  when: has_firewalld != False
+  become: true
+  become_user: root
+  firewalld: service=domain state=enabled immediate=yes permanent=yes
+
+# NOTE: Other roles rely on skydns being up and configured correctly.
+- meta: flush_handlers

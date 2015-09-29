@@ -4,8 +4,7 @@
 - name: create master root volume
   os_volume:
     display_name: "{{ master_volume_name }}"
-    display_description:
-      Root filesystem for {{ master_instance_name }}
+    display_description: "Root filesystem for {{ master_instance_name }}"
     image: "{{ image_name }}"
     size: "{{ os_master_volume_gb }}"
     volume_type: "{{ os_volume_type }}"

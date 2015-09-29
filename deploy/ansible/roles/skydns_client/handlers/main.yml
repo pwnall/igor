@@ -1,0 +1,10 @@
+---
+- name: reload NetworkManager configuration
+  become: true
+  become_user: root
+  command: nmcli connection reload
+
+- name: restart NetworkManager
+  become: true
+  become_user: root
+  service: name=NetworkManager state=restarted

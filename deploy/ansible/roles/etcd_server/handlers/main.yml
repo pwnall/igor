@@ -1,0 +1,5 @@
+---
+- name: restart etcd server
+  become: true
+  become_user: root
+  service: name=etcd state=restarted

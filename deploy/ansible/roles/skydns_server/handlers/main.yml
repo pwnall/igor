@@ -1,0 +1,5 @@
+---
+- name: restart skydns server
+  become: true
+  become_user: root
+  service: name=skydns state=restarted

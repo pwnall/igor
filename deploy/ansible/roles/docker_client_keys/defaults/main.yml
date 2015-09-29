@@ -1,0 +1,8 @@
+---
+# The user who will receive the Docker client keys.
+docker_client_user: root
+
+# The home directory of the user receiving the Docker client keys.
+docker_client_user_homedir: '{{
+    "/root" if docker_client_user == "root" else "/home/" + docker_client_user
+    }}'

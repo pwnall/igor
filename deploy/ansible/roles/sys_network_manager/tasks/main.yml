@@ -1,0 +1,27 @@
+---
+# Makes sure that NetworkManager is installed and configured.
+#
+# The Fedora documentation states that NetworkManager is present in all
+# installations, including the minimal one. However, the Vagrant and Cloud Base
+# VM images do not have it installed, whereas the metal Server installer does
+# set up NetworkManager.
+#
+# We install NetworkManager to minimize the differences between bare-metal
+# servers and VM servers.
+
+- name: install NetworkManager using dnf
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  dnf: name=NetworkManager state=present
+
+- name: install NetworkManager using apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name=NetworkManager state=present
+
+- name: enable and start NetworkManager
+  become: true
+  become_user: root
+  service: name=NetworkManager enabled=yes state=started
