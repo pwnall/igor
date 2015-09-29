@@ -10,15 +10,6 @@ module UsersHelper
               style: "width: #{size_pixels}px; height: #{size_pixels}px;"
   end
 
-  def user_destroy_link(user, options = {}, &block)
-    confirmation = "Completely wipe #{user.email}'s data?"
-    options = { method: :delete }.merge! options
-    options[:data] ||= {}
-    options[:data][:confirm] ||= confirmation
-    link_to user, options, &block
-  end
-
-
   # TODO(costan): this should be outdated and replaced with the model method;
   #               yes, it's important enough that it should be a part of the
   #               model

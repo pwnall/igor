@@ -1,14 +1,18 @@
 <% if assignment.deliverables_ready? %>
-  <%= link_to assignment_path(assignment, course_id: assignment.course,
-        assignment: { deliverables_ready: false }), method: :put,
-        data: { confirm: "Un-publish #{assignment.name}? Prepare for hate mail :(" },
-        class: 'button' do %>
-    <%= pull_icon_tag %> Pull
+  <%= form_for assignment, url: assignment_path(assignment,
+        course_id: assignment.course), method: :patch do |f| %>
+    <%= f.hidden_field :deliverables_ready, value: false %>
+    <%= f.button type: :submit, data: { confirm:
+          "Un-publish #{assignment.name}? Prepare for hate mail :(" } do %>
+      <%= pull_icon_tag %> Pull
+    <% end %>
   <% end %>
 <% elsif assignment.deliverables.length > 0 %>
-  <%= link_to assignment_path(assignment, course_id: assignment.course,
-        assignment: { deliverables_ready: true }), method: :put,
-        class: 'button' do %>
-    <%= ship_icon_tag %> Release
+  <%= form_for assignment, url: assignment_path(assignment,
+        course_id: assignment.course), method: :patch do |f| %>
+    <%= f.hidden_field :deliverables_ready, value: true %>
+    <%= f.button type: :submit do %>
+      <%= ship_icon_tag %> Release
+    <% end %>
   <% end %>
 <% end %>

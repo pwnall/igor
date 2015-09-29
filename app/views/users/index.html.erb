@@ -22,32 +22,45 @@
         </td>
         <td>
         <% unless user.admin? %>
-          <%= link_to impersonate_user_path(user), method: :post,
-                class: 'button' do %>
-            <%= debug_icon_tag %> Impersonate
+          <%= form_for user, url: impersonate_user_path(user),
+                method: :post do |f| %>
+            <%= f.button type: :submit do %>
+              <%= debug_icon_tag %> Impersonate
+            <% end %>
           <% end %>
         <% end %>
         </td>
         <td>
-          <%= user_destroy_link user, class: 'button' do %>
-            <%= destroy_icon_tag %> Remove
+          <%= form_for user, method: :delete do |f| %>
+            <%= f.button type: :submit, data: { confirm:
+                  "Completely wipe #{user.email}'s data?" } do %>
+              <%= destroy_icon_tag %> Remove
+            <% end %>
           <% end %>
         </td>
         <td>
           <% if user.admin? %>
-            <%= link_to set_admin_user_path(user, :to => false),
-                        method: :put, class: 'button' do %>
-              <%= role_icon_tag :student %> User
+            <%= form_for user, url: set_admin_user_path(user, to: false),
+                  method: :patch do |f| %>
+              <%= f.button type: :submit, data: { confirm:
+                    "Revoke #{user.email}'s admin privileges?" } do %>
+                <%= role_icon_tag :student %> User
+              <% end %>
             <% end %>
           <% elsif user.email_credential && user.email_credential.verified? %>
-            <%= link_to set_admin_user_path(user, :to => true),
-                        method: :put, class: 'button' do %>
-              <%= role_icon_tag :admin %> Admin
+            <%= form_for user, url: set_admin_user_path(user, to: true),
+                  method: :patch do |f| %>
+              <%= f.button type: :submit, data: { confirm:
+                    "Grant #{user.email} admin privileges?" } do %>
+                <%= role_icon_tag :admin %> Admin
+              <% end %>
             <% end %>
           <% else %>
-            <%= link_to confirm_email_user_path(user), method: :put,
-                        class: 'button' do %>
-              <%= valid_icon_tag %> Confirm E-mail
+            <%= form_for user, url: confirm_email_user_path(user),
+                  method: :patch do |f| %>
+              <%= f.button type: :submit do %>
+                <%= valid_icon_tag %> Confirm E-mail
+              <% end %>
             <% end %>
           <% end %>
         </td>

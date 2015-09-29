@@ -1,14 +1,15 @@
 <h2 class="assignment-heading">
   <%= @assignment.name %>
   <span class="actions">
-    <%= link_to assignment_path(@assignment, course_id: @assignment.course),
-          class: 'button' do %>
+    <%= button_to assignment_path(@assignment, course_id: @assignment.course),
+          method: :get do %>
       <%= role_icon_tag :student %> Student View
     <% end %>
-    <%= link_to edit_assignment_path(@assignment,
-          course_id: @assignment.course), class: 'button' do %>
+    <%= button_to edit_assignment_path(@assignment,
+          course_id: @assignment.course), method: :get do %>
       <%= edit_icon_tag %> Edit
     <% end %>
+    </form>
     <%= render 'assignments/deliverable_release', assignment: @assignment %>
   </span>
 </h2>

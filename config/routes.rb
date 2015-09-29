@@ -17,8 +17,8 @@ Rails.application.routes.draw do
       end
       member do
         post :impersonate
-        put :set_admin
-        put :confirm_email
+        patch :set_admin
+        patch :confirm_email
       end
     end
     resources :profiles, only: [] do

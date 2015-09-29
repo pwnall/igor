@@ -21,17 +21,22 @@
       </td>
 
       <td>
-        <%= link_to role, method: :delete, class: 'button', data: { confirm:
-               "Are you sure you want to remove #{role.user.name} from the course staff?"
-               } do %>
-          <%= destroy_icon_tag %> Revoke
+        <%= form_for role, url: role_path(role, course_id: role.course),
+              method: :delete do |f| %>
+          <%= f.button type: :submit, data: { confirm:
+                "Are you sure you want to remove #{role.user.name} from the course staff?"
+                } do %>
+            <%= create_icon_tag %> Revoke
+          <% end %>
         <% end %>
       </td>
       <% if current_user.admin? %>
       <td>
-        <%= link_to impersonate_user_path(role.user), class: 'button',
-              method: :post do %>
-          <%= debug_icon_tag %> Impersonate
+        <%= form_for role.user, url: impersonate_user_path(role.user),
+              method: :post do |f| %>
+          <%= f.button type: :submit do %>
+            <%= debug_icon_tag %> Impersonate
+          <% end %>
         <% end %>
       </td>
       <% end %>
@@ -70,17 +75,19 @@
       </td>
 
       <td>
-        <%= link_to approve_role_request_path(role_request,
-              course_id: role_request.course), method: :post,
-              class: 'button' do %>
-          <%= create_icon_tag %> Approve
+        <%= form_for role_request, url: approve_role_request_path(role_request,
+              course_id: role_request.course), method: :post do |f| %>
+          <%= f.button type: :submit do %>
+            <%= create_icon_tag %> Approve
+          <% end %>
         <% end %>
       </td>
       <td>
-        <%= link_to deny_role_request_path(role_request,
-              course_id: role_request.course), method: :post,
-              class: 'button' do %>
-          <%= destroy_icon_tag %> Deny
+        <%= form_for role_request, url: deny_role_request_path(role_request,
+              course_id: role_request.course), method: :post do |f| %>
+          <%= f.button type: :submit do %>
+            <%= destroy_icon_tag %> Deny
+          <% end %>
         <% end %>
       </td>
     </tr>
