@@ -16,7 +16,7 @@ os_master_flavor: lg.4core
 os_worker_flavor: m1.2core
 # Number of Docker worker VMs that will be created.
 # This is only used in the cluster bringup receipe.
-worker_count: 0
+worker_count: 2
 # Size in GB for the volume storing the Web server's root filesystem.
 os_master_volume_gb: 32
 # Size in GB for each of the volumes attached to Docker workers.

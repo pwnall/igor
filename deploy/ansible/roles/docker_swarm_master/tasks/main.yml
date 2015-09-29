@@ -90,4 +90,3 @@
   become: true
   become_user: root
   firewalld: port=3376/tcp state=enabled immediate=yes permanent=yes
-

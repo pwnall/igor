@@ -7,8 +7,8 @@ Course homework submission website.
 
 ## Prerequisites
 
-The site requires access to a [Docker](https://github.com/docker/docker)
-daemon, a very recent Ruby and node.js, and a few libraries.
+The site requires access to a [Docker Swarm](https://github.com/docker/swarm)
+cluster, a very recent Ruby and node.js, and a few libraries.
 
 Docker can only be installed directly on Linux, and is now packaged natively by
 every major distribution. [docker-machine](https://github.com/docker/machine)
@@ -31,16 +31,25 @@ The following commands install the prerequisites on OSX, using
 
 ```bash
 xcode-select --install
-brew install docker docker-machine imagemagick libxml2 libxslt openssl \
-    pkg-config postgresql
+brew install docker docker-machine docker-swarm imagemagick libxml2 libxslt \
+    openssl pkg-config postgresql
 brew link --force openssl
 brew install ansible
 brew tap Caskroom/cask
 brew cask install kitematic osxfuse vagrant virtualbox
-docker-machine create --driver virtualbox --engine-storage-driver overlay dev
+TOKEN=$(docker-swarm create)
+docker-machine create --driver virtualbox --engine-storage-driver overlay \
+    --swarm --swarm-master --swarm-discovery "token://$TOKEN" swarm-master
+docker-machine create --driver virtualbox --engine-storage-driver overlay \
+    --swarm --swarm-discovery "token://$TOKEN" swarm-agent-1
+docker-machine create --driver virtualbox --engine-storage-driver overlay \
+    --swarm --swarm-discovery "token://$TOKEN" swarm-agent-2
+```
 
-# The command below shows up when you run docker-machine env dev.
-eval "$(docker-machine env dev)"
+The following command must be executed in every shell used for development.
+
+```bash
+eval "$(docker-machine env --swarm swarm-master)"
 ```
 
 ### Linux

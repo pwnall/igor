@@ -43,7 +43,7 @@
   become_user: "{{ app_user }}"
   lineinfile:
     dest: /home/{{ app_user }}/.bashrc
-    line: export DOCKER_TLS_VERIFY=
+    line: export DOCKER_TLS_VERIFY=1
     regexp: "^export DOCKER_TLS_VERIFY=.*"
   notify:
   - restart frontend job queue service
@@ -53,7 +53,7 @@
   become_user: "{{ app_user }}"
   lineinfile:
     dest: /home/{{ app_user }}/.bashrc
-    line: export DOCKER_HOST=unix:///var/run/docker.sock
+    line: export DOCKER_HOST=tcp://swarm-master1.skydns.local:3376
     regexp: "^export DOCKER_HOST=.*"
   notify:
   - restart frontend job queue service

@@ -8,9 +8,9 @@ User={{ app_user }}
 WorkingDirectory=/home/{{ app_user }}/{{ app_dir }}
 Environment=RAILS_ENV=production
 Environment=DATABASE_URL=postgres:///{{ app_db_name }}
-#Environment=DOCKER_TLS_VERIFY=1
-Environment=DOCKER_HOST=unix:///var/run/docker.sock
-#Environment=DOCKER_CERT_PATH=/home/{{ app_user }}/.docker
+Environment=DOCKER_TLS_VERIFY=1
+Environment=DOCKER_HOST=tcp://swarm-master1.skydns.local:3376
+Environment=DOCKER_CERT_PATH=/home/{{ app_user }}/.docker
 ExecStart=/home/{{ app_user }}/{{ app_dir }}/bin/rake jobs:work
 Restart=always
 StandardInput=null
