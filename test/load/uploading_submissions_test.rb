@@ -1,155 +1,371 @@
+#!/usr/bin/ruby
+#
+# This is a load test for the site's auto-grading feature.
+#
+# Run the test against an empty installation, using the command below.
+#
+# URL=http://localhost:3000 COURSE=6.006 STUDENTS=50 ruby
+#     test/load/uploading_submissions_test.rb
+
 require 'mechanize'
-require 'faker'
 
-class SubmissionUploadLoadTester
-  def initialize(admin_username, admin_password)
+class LoadTestSession
+  def initialize(root_url)
+    @root_url = root_url
     @agent = Mechanize.new
-    @admin_username = admin_username
-    @admin_password = admin_password
-    register_user nil, @admin_username, @admin_password
-  end
-
-  # Fill out and submit the registration form.
-  #
-  # @param [Integer] id a value appended to the user's username to ensure
-  #     uniqueness
-  # @param [String] username the new user's username
-  # @param [String] password the new user's password
-  # @return [Array<String>] the username and password of the new user
-  def register_user(id, username, password)
-    @agent.cookie_jar.clear!
-    @agent.get 'http://localhost:3000/'
-    @agent.page.form_with(action: '/_/users/new') { |f| f.submit }
-    @agent.page.form_with(id: 'new_user') do |f|
-      name = Faker::Name.name
-      username ||= Faker::Internet.user_name "#{name} #{id}".rstrip
-      password ||= Faker::Internet.password
-      f['user[email]'] = username + '@mit.edu'
-      f['user[password]'] = password
-      f['user[password_confirmation]'] = password
-      f['user[profile_attributes][athena_username]'] = username
-      f['user[profile_attributes][name]'] = name
-      f['user[profile_attributes][nickname]'] = name.split[0]
-      f['user[profile_attributes][university]'] = Faker::University.name
-      f['user[profile_attributes][department]'] = 'EECS'
-      f['user[profile_attributes][year]'] = 'G'
-      f.submit
-    end
-    [username, password]
-  end
-  private :register_user
-
-  # Register as a student in the course.
-  def register_student(id: nil, username: nil, password: nil)
-    username, password = register_user id, username, password
-    log_in username, password
-    @agent.page.link_with(href: '/6.006/registrations/new').click
-    @agent.page.form_with(id: 'new_registration') do |f|
-      f.checkbox_with(name: 'registration[for_credit]').check
-      f.submit
-    end
-    [username, password]
-  end
-
-  # Register and request to be the course instructor.
-  def register_staff(id: nil, username: nil, password: nil)
-    username, password = register_user id, username, password
-    log_in username, password
-    @agent.page.link_with(href: '/6.006/role_requests/new').click
-    @agent.page.forms_with(id: 'new_role_request').each do |f|
-      f.submit if f.has_value? 'staff'
-    end
-
-    log_in @admin_username, @admin_password
-    @agent.get 'http://localhost:3000/6.006/role_requests'
-    @agent.page.form_with(action: '/6.006/role_requests/1/approve') do |f|
-      f.submit
-    end
+    @agent.verify_mode= OpenSSL::SSL::VERIFY_NONE
   end
 
   # Log in to the site.
-  def log_in(username, password)
+  #
+  # @return {Boolean} true if the login succeeded, false otherwise
+  def log_in(email, password)
     @agent.cookie_jar.clear!
-    @agent.get 'http://localhost:3000/'
-    @agent.page.form_with(class: 'new_session') do |f|
-      f['session[email]'] = "#{username}@mit.edu"
-      f['session[password]'] = password
-      f.submit
-    end
+    @agent.get @root_url
+    form = @agent.page.form_with(class: 'new_session')
+
+    form['session[email]'] = email
+    form['session[password]'] = password
+
+    result_page = form.submit
+    result_page.link_with(text: 'Sign out') != nil
   end
 
-  def create_assignment_with_deliverable
-    log_in @admin_username, @admin_password
-    @agent.get '/6.006/assignments/new'
-    @agent.page.form_with(class: 'new_assignment') do |f|
-      f['assignment[name]'] = 'Lab 1'
-      f['assignment[due_at(2i)]'] = (Time.now.month + 1) % 12
-      f['assignment[weight]'] = 10
-      f.submit
+  # Fill out and submit the user sign up form.
+  #
+  # @return {Boolean} true if the sign up succeeded, false otherwise
+  def sign_up(email, password)
+    @agent.cookie_jar.clear!
+    @agent.get File.join(@root_url, '_/users/new')
+
+    form = @agent.page.form_with id: 'new_user'
+
+    form['user[email]'] = email
+    form['user[password]'] = password
+    form['user[password_confirmation]'] = password
+    form['user[profile_attributes][athena_username]'] = 'loadtest'
+    form['user[profile_attributes][name]'] = 'Load Test'
+    form['user[profile_attributes][nickname]'] = 'Load Test'
+    form['user[profile_attributes][university]'] = 'MIT'
+    form['user[profile_attributes][department]'] = 'EECS'
+    form['user[profile_attributes][year]'] = 'G'
+
+    result_page = form.submit
+    !!result_page.root.css('.status-bar.notice').text.index(/log in now/i)
+  end
+
+  # Register as a staff member for a class.
+  #
+  # This assumes that the session belongs to a user that has not registered for
+  # the class.
+  #
+  # @return {Boolean} true if the registration succeeded, false otherwise
+  def register_staff(course)
+    @agent.get File.join(@root_url, course, 'role_requests/new')
+    form = @agent.page.form_with class: 'staff-role-request-form'
+    return false if form.nil?
+    result_page = form.submit
+    !!result_page.root.css('.status-bar.notice').text.
+        index(/access requested/i)
+  end
+
+  # Approve all pending staff member requests for a class.
+  #
+  # This assumes that the session belongs to a site admin or course staff.
+  #
+  # @return {Number?} the number of approved registrations, or nil if approving
+  #   failed
+  def approve_staff_requests(course)
+    @agent.get File.join(@root_url, course, 'role_requests')
+
+    approved_requests = 0
+    loop do
+      form = @agent.page.form_with(action:
+          /^\/#{Regexp.quote course}\/role_requests\/\d+\/approve$/)
+      break if form.nil?
+      result_page = form.submit
+      unless result_page.root.css('.status-bar.notice').text.index(/is now a/i)
+        return nil
+      end
+      approved_requests += 1
+    end
+    approved_requests
+  end
+
+  # @return {Hash<String, Number>} maps each assignment's name to its ID
+  def list_assignments(course)
+    @agent.get File.join(@root_url, course, 'assignments.json')
+    assignments_json = JSON.parse @agent.page.body
+
+    assignments = {}
+    assignments_json.each do |assignment|
+      assignments[assignment['name']] = assignment['id']
+    end
+    assignments
+  end
+
+  # Creates an assignment for load testing.
+  #
+  # To facilitate load testing, the assignment has one deliverable set up with
+  # a Docker analyzer, and one metric called "Problem 1".
+  #
+  # This assumes that the session belongs to a site admin or course staff.
+  #
+  # @return {Number?} the ID of the created assignment, or nil if creation
+  #   failed
+  def create_load_test_assignment(course, name, analyzer_path)
+    @agent.get File.join(@root_url, course, 'assignments/new')
+
+    form = @agent.page.form_with class: 'new_assignment'
+    form['assignment[name]'] = name
+    form['assignment[due_at(2i)]'] = 1 + Time.now.month % 12
+    form['assignment[weight]'] = 1
+    result_page = form.submit
+    unless result_page.root.css('.status-bar.notice').text.
+        index(/assignment created/i)
+      return nil
+    end
+    unless match = /assignments\/(\d+)\/edit$/.match(result_page.uri.to_s)
+      return nil
+    end
+    assignment_id = match[1].to_i
+
+    form = result_page.form_with class: 'edit_assignment'
+
+    deliverable_param = 'assignment[deliverables_attributes][0]'
+    form["#{deliverable_param}[name]"] = 'Fib'
+    form["#{deliverable_param}[file_ext]"] = 'py'
+    form["#{deliverable_param}[description]"] = 'Upload'
+    form["#{deliverable_param}[analyzer_attributes][map_time_limit]"] = 5
+    form["#{deliverable_param}[analyzer_attributes][map_ram_limit]"] = 1024
+    form["#{deliverable_param}[analyzer_attributes][reduce_time_limit]"] = 5
+    form["#{deliverable_param}[analyzer_attributes][reduce_ram_limit]"] = 1024
+    form["#{deliverable_param}[analyzer_attributes][auto_grading]"] = 1
+    form["#{deliverable_param}[analyzer_attributes][type]"] = 'DockerAnalyzer'
+
+    file_field_name =
+        "#{deliverable_param}[analyzer_attributes][db_file_attributes][f]"
+    upload_field = Mechanize::Form::FileUpload.new({
+        'name' => file_field_name, 'type' => 'file' }, analyzer_path)
+    upload_field.file_data = File.read analyzer_path
+    upload_field.mime_type = 'application/zip'
+    form.file_uploads << upload_field
+
+    metric_param = 'assignment[metrics_attributes][0]'
+    form["#{metric_param}[name]"] = 'Problem 1'
+    form["#{metric_param}[max_score]"] = 10
+    form["#{metric_param}[weight]"] = 1
+
+    result_page = form.submit
+    unless result_page.root.css('.status-bar.notice').text.
+        index(/assignment updated/i)
+      return nil
     end
 
-    @agent.page.form_with(class: 'edit_assignment') do |f|
-      deliverable_param = 'assignment[deliverables_attributes][0]'
-      f["#{deliverable_param}[name]"] = 'Fib'
-      f["#{deliverable_param}[file_ext]"] = 'py'
-      f["#{deliverable_param}[description]"] = 'Upload'
-      f["#{deliverable_param}[analyzer_attributes][map_time_limit]"] = 5
-      f["#{deliverable_param}[analyzer_attributes][map_ram_limit]"] = 1024
-      f["#{deliverable_param}[analyzer_attributes][reduce_time_limit]"] = 5
-      f["#{deliverable_param}[analyzer_attributes][reduce_ram_limit]"] = 1024
-      f["#{deliverable_param}[analyzer_attributes][auto_grading]"] = 1
-      f["#{deliverable_param}[analyzer_attributes][type]"] = 'DockerAnalyzer'
+    assignment_id
+  end
 
-      file_name = File.expand_path(
+  # Releases an assignment to students.
+  #
+  # @return {Boolean} true if the assignment was released successfully
+  def release_assignment(course, assignment_id)
+    @agent.get File.join(@root_url, course, 'assignments', assignment_id.to_s,
+                         'dashboard')
+    form = @agent.page.form_with class: 'assignment-release-form'
+    return false unless form
+
+    result_page = form.submit
+    !!result_page.root.css('.status-bar.notice').text.
+        index(/assignment updated/i)
+  end
+
+  # Register for a class.
+  #
+  # This assumes that the session belongs to a user that has not registered for
+  # the class.
+  #
+  # @return {Boolean} true if the registration succeeded, false otherwise
+  def register_student(course)
+    @agent.get File.join(@root_url, course, 'registrations/new')
+
+    form = @agent.page.form_with id: 'new_registration'
+    form.checkbox_with(name: 'registration[for_credit]').check
+    result_page = form.submit
+    !!result_page.root.css('.status-bar.notice').text.
+        index(/you are now registered/i)
+  end
+
+
+  # Sets up a submission form.
+  #
+  # @return {Mechanize::Form} a submission form, primed and ready to be
+  #   sent to the server
+  def upload_submission_form(course, assignment_id, file_data)
+    @agent.get File.join(@root_url, course, 'assignments', assignment_id.to_s)
+
+    form = @agent.page.form_with class: 'new_submission'
+    upload_field = form.file_upload_with(
+        name: 'submission[db_file_attributes][f]')
+
+    upload_field.file_name = 'file.py'
+    upload_field.mime_type = 'text/x-python-script'
+    upload_field.file_data = file_data
+    form
+  end
+
+  # Sends a submission form to the server.
+  #
+  # @return {Boolean} true if the assignment was submitted
+  def upload_submission(form)
+    result_page = form.submit
+    !!result_page.root.css('.status-bar.notice').text.
+        index(/uploaded/i)
+  end
+
+  # Retrieves the assignment's page.
+  #
+  # @return {Boolean} true if the fetching succeeded, false otherwise
+  def view_assignment_page(course, assignment_id)
+    @agent.get File.join(@root_url, course, 'assignments', assignment_id.to_s)
+    !!@agent.page.form_with(class: 'new_submission')
+  end
+
+  # Retrives a course's page.
+  #
+  # @return {Boolean} true if the fetching succeeded, false otherwise
+  def view_course_home(course)
+    @agent.get File.join(@root_url, course)
+    !!@agent.page.root.css('h1 .course-number').text.index(course)
+  end
+end
+
+class SubmissionUploadLoadTester
+  attr_reader :students
+
+  def initialize(root_url, course, students)
+    @root_url = root_url
+    @course = course
+    @students = students
+    @assignment_id = nil
+
+    submission_path = File.expand_path(
+        '../../fixtures/files/submission/good_fib.py', __FILE__)
+    @submission_data = File.read submission_path
+
+    @admin_session = LoadTestSession.new @root_url
+    @staff_session = LoadTestSession.new @root_url
+    @student_sessions = (1..@students).map do |i|
+      LoadTestSession.new @root_url
+    end
+    @student_forms = Array.new @students
+  end
+
+  # Creates the infrastructure for the load test.
+  def setup
+    unless @admin_session.log_in('admin@mit.edu', 'mit')
+      unless @admin_session.sign_up('admin@mit.edu', 'mit')
+        raise 'Failed to sign up admin@mit.edu'
+      end
+      unless @admin_session.log_in('admin@mit.edu', 'mit')
+        raise 'Failed to log in after signing up admin@mit.edu'
+      end
+    end
+
+    @staff_session = LoadTestSession.new @root_url
+    unless @staff_session.log_in('staff@mit.edu', 'mit')
+      unless @staff_session.sign_up('staff@mit.edu', 'mit')
+        raise 'Failed to sign up staff@mit.edu'
+      end
+      unless @staff_session.log_in('staff@mit.edu', 'mit')
+        raise 'Failed to log in after signing up staff@mit.edu'
+      end
+      unless @staff_session.register_staff(@course)
+        raise 'Failed to register staff@mit.edu as course staff'
+      end
+      unless @admin_session.approve_staff_requests(@course) >= 1
+        raise 'Failed to approve staff@mit.edu as course staff'
+      end
+    end
+
+    assignment_id = nil
+    unless assignments = @staff_session.list_assignments(@course)
+      raise 'Failed to list course assignments'
+    end
+    unless assignment_id = assignments['Load Lab']
+      analyzer_path = File.expand_path(
           '../../fixtures/files/analyzer/fib_small.zip', __FILE__)
-      file_field_name =
-          "#{deliverable_param}[analyzer_attributes][db_file_attributes][f]"
-      upload_field = Mechanize::Form::FileUpload.new({
-          'name' => file_field_name, 'type' => 'file' }, file_name)
-      f.file_uploads << upload_field
-
-      metric_param = 'assignment[metrics_attributes][0]'
-      f["#{metric_param}[name]"] = 'Problem 1'
-      f["#{metric_param}[max_score]"] = 10
-      f["#{metric_param}[weight]"] = 1
-      f.submit
+      unless assignment_id = @staff_session.create_load_test_assignment(
+          @course, 'Load Lab', analyzer_path)
+        raise 'Failed to create load test assignment'
+      end
+      unless @staff_session.release_assignment(@course, assignment_id)
+        raise 'Failed to release load test assignment'
+      end
     end
 
-    @agent.get 'http://localhost:3000/6.006/assignments/1/dashboard'
-    form_attrs = { action: '/6.006/assignments/1', method: /\APOST\z/i }
-    @agent.page.form_with(form_attrs) { |f| f.submit }
+    @assignment_id = assignment_id
   end
 
-  def upload_submission
-    @agent.get 'http://localhost:3000/6.006/assignments/1'
-    form_attrs = { action: '/6.006/submissions', method: /\APOST\z/i }
-    @agent.page.form_with(form_attrs) do |f|
-      file_name = File.expand_path(
-          '../../fixtures/files/submission/good_fib.py', __FILE__)
-      file_field_name = 'submission[db_file_attributes][f]'
-      f.file_upload_with(name: file_field_name).file_name = file_name
-      f.submit
+  # Prepares a student for the submission test.
+  def arm_student(serial)
+    student_session = @student_sessions[serial - 1]
+    unless student_session.log_in("student#{serial}@mit.edu", 'mit')
+      unless student_session.sign_up("student#{serial}@mit.edu", 'mit')
+        raise "Failed to sign up student#{serial}@mit.edu"
+      end
+      unless student_session.log_in("student#{serial}@mit.edu", 'mit')
+        raise "Failed to log in after signing up student#{serial}@mit.edu"
+      end
+      unless student_session.register_student(@course)
+        raise "Failed to register student#{serial}@mit.edu in the class"
+      end
+    end
+
+    @student_forms[serial - 1] = student_session.upload_submission_form(
+        '6.006', @assignment_id, @submission_data)
+  end
+
+  # Uploads a student's submission to the server.
+  #
+  # This is the core of the load test.
+  def fire_student(serial)
+    student_session = @student_sessions[serial - 1]
+    submission_form = @student_forms[serial - 1]
+    unless student_session.upload_submission(submission_form)
+      raise "Failed to upload submission for student#{serial}@mit.edu"
+    end
+  end
+
+  # Simulates a student refreshing course pages.
+  def refresh_student(serial)
+    student_session = @student_sessions[serial - 1]
+    unless student_session.view_course_home(@course)
+      raise "Failed to refresh course home for student#{serial}@mit.edu"
+    end
+    unless student_session.view_assignment_page(@course, @assignment_id)
+      raise "Failed to refresh assignment page for student#{serial}@mit.edu"
     end
   end
 end
 
-tester = SubmissionUploadLoadTester.new 'spark008', 'asdf'
+base_url = ENV['URL'] || 'http://localhost:3000'
+course = ENV['COURSE'] || '6.006'
+students = (ENV['STUDENTS'] || '3').to_i
+tester = SubmissionUploadLoadTester.new base_url, course, students
+tester.setup
+Thread.abort_on_exception = true
 
-# Create a staff member (to be the assignment's author).
-tester.register_staff
-
-# Create an assignment.
-tester.create_assignment_with_deliverable
-
-# Create 10 students.
-student_credentials = []
-10.times do |i|
-  student_credentials << tester.register_student(id: i)
+threads = (1..(tester.students)).map do |i|
+  Thread.new(i) { |serial| tester.arm_student serial }
 end
-p student_credentials
+threads.each(&:join)
 
-# Upload 5 submissions per student.
-student_credentials.each do |username, password|
-  tester.log_in username, password
-  5.times { |i| tester.upload_submission }
+threads = (1..(tester.students)).map do |i|
+  Thread.new(i) { |serial| tester.fire_student serial }
 end
+threads.each(&:join)
+
+threads = (1..(tester.students)).map do |i|
+  Thread.new(i) { |serial| tester.refresh_student serial }
+end
+threads.each(&:join)
