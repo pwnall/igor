@@ -39,13 +39,6 @@ GIT
       paperclip (>= 2.3.0)
 
 GIT
-  remote: https://github.com/pwnall/rubyzip.git
-  revision: 77acc03ddb22be54cde86acac7ef8f85954bc316
-  branch: crash
-  specs:
-    rubyzip (1.1.7)
-
-GIT
   remote: https://github.com/rack/rack
   revision: 028438ffffd95ce1f6197d38c04fa5ea6a034a85
   branch: master
@@ -156,6 +149,13 @@ GIT
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+
+GIT
+  remote: https://github.com/rubyzip/rubyzip.git
+  revision: a3ca219bdb37b3e369263f121a4adc3da01b95ad
+  ref: a3ca219bdb37b3e369263f121a4adc3da01b95ad
+  specs:
+    rubyzip (1.1.7)
 
 GEM
   remote: https://rubygems.org/
