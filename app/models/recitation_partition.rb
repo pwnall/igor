@@ -19,7 +19,7 @@ class RecitationPartition < ActiveRecord::Base
   validates :section_size,
       numericality: { only_integer: true, greater_than: 0 }
 
-  # Number of sections in this assignment.
+  # Number of sections in this partition.
   validates :section_count,
       numericality: { only_integer: true, greater_than: 0 }
 

@@ -19,16 +19,13 @@ class RecitationConflict < ActiveRecord::Base
 
   # The student registration containing this recitation conflict.
   belongs_to :registration
-  validates :registration, presence: true
-
-  # Ensures that conflicts are being reported for the correct time slots.
-  def time_slot_and_registration_belong_to_same_course
-    return unless time_slot && registration
-    return if time_slot.course_id == registration.course_id
-    errors.add :time_slot, 'should have the same course as the registration.'
+  validates_each :registration do |record, attr, value|
+    if value.nil?
+      record.errors.add attr, 'is not present'
+    elsif record.time_slot && (record.time_slot.course_id != value.course_id)
+      record.errors.add attr, "should match the time slot's course"
+    end
   end
-  private :time_slot_and_registration_belong_to_same_course
-  validate :time_slot_and_registration_belong_to_same_course
 
   # TODO(costan): figure out a way to check that the registration is valid
 end

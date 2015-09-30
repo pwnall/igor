@@ -16,9 +16,16 @@ class RecitationAssignment < ActiveRecord::Base
 
   # The student that would be assigned to a section.
   belongs_to :user
-  validates :user, presence: true
+  validates :user, presence: true, uniqueness: { scope: :recitation_partition }
 
   # The section that the student would be assigned to.
   belongs_to :recitation_section
-  validates :recitation_section, presence: true
+  validates_each :recitation_section do |record, attr, value|
+    if value.nil?
+      record.errors.add attr, 'is not present'
+    elsif record.recitation_partition &&
+        (record.recitation_partition.course_id != value.course_id)
+      record.errors.add attr, "should match the partition's course"
+    end
+  end
 end

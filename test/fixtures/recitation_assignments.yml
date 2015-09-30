@@ -8,6 +8,8 @@
 #  recitation_section_id   :integer          not null
 #
 
+# NOTE: Do not create an assignment for recitation_partition: main,
+#     user: mandark, so that it can be built in model tests.
 r01_dexter:
   recitation_partition: main
   user: dexter

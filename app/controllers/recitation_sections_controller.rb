@@ -54,11 +54,9 @@ class RecitationSectionsController < ApplicationController
     end
   end
 
-
   # POST /6.006/recitation_sections/autoassign
   def autoassign
-    RecitationAssigner.delay.assign_and_email current_user, current_course,
-                                              root_url
+    RecitationAssignerJob.perform_later current_course, current_user, root_url
 
     respond_to do |format|
       format.html do

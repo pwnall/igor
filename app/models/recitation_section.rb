@@ -24,6 +24,9 @@ class RecitationSection < ActiveRecord::Base
   validates :serial, presence: true, numericality: { greater_than: 0 },
                      uniqueness: { scope: :course }
 
+  # Student-friendly description of the section location, e.g. "36-144" (room).
+  validates :location, presence: true, length: 1..64
+
   # Allotments of time slots for this recitation.
   has_many :time_slot_allotments, dependent: :destroy,
       inverse_of: :recitation_section
@@ -31,9 +34,6 @@ class RecitationSection < ActiveRecord::Base
   # Time slots scheduled for this recitation.
   has_many :time_slots, through: :time_slot_allotments
   accepts_nested_attributes_for :time_slots
-
-  # Student-friendly description of the section location, e.g. "36-144" (room).
-  validates :location, presence: true, length: 1..64
 
   # Course registrations for the students in this section.
   has_many :registrations

@@ -12,6 +12,8 @@ class DeliverablesControllerTest < ActionController::TestCase
   end
 
   describe 'authenticated as a registered student' do
+    before { set_session_current_user users(:dexter) }
+    
     describe 'all actions' do
       it 'forbids access to the page' do
         post :reanalyze, params: member_params

@@ -37,11 +37,15 @@ class RecitationConflictTest < ActiveSupport::TestCase
     assert @conflict.invalid?
   end
 
-  describe '#time_slot_and_registration_belong_to_same_course' do
-    it 'rejects time slots and registrations from different courses' do
-      assert_not_equal time_slots(:s10to12).course, registrations(:deedee).course
-      @conflict.time_slot = time_slots(:s10to12)
-      assert @conflict.invalid?
-    end
+  it 'rejects time slots and registrations from different courses' do
+    assert_not_equal time_slots(:s10to12).course, registrations(:deedee).course
+    @conflict.time_slot = time_slots(:s10to12)
+    assert @conflict.invalid?
+  end
+
+  it 'validates an associated registration' do
+    @conflict.registration = Registration.new
+    assert_equal false, @conflict.registration.valid?
+    assert_equal false, @conflict.valid?
   end
 end
