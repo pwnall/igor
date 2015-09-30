@@ -52,7 +52,8 @@ gem 'contained_mr', '>= 0.2.0'
 #gem 'contained_mr', '>= 0.1.2', path: '../contained_mr'
 gem 'exec_sandbox', '>= 0.3.0'
 gem 'pdf-reader', '>= 1.3.3'
-gem 'rubyzip', '>= 1.1.7', require: 'zip'
+gem 'rubyzip', '>= 1.1.7', require: 'zip',
+    git: 'https://github.com/pwnall/rubyzip.git', branch: 'crash'
 
 # Gravatar fall-back avatars.
 gem 'gravatar-ultimate', '>= 2.0.0'
