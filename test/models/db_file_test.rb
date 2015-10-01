@@ -33,7 +33,7 @@ class DbFileTest < ActiveSupport::TestCase
     assert @file.invalid?
   end
 
-  it 'rejects attachments 16 megabytes or larger' do
+  it 'rejects attachments 128 megabytes or larger' do
     @file.f = large_file
     assert @file.invalid?
   end

@@ -13,6 +13,6 @@
 # Stores all database-backed files.
 class DbFile < ActiveRecord::Base
   has_attached_file :f, storage: :database, database_table: :db_file_blobs
-  validates_attachment :f, presence: true, size: { less_than: 16.megabytes },
+  validates_attachment :f, presence: true, size: { less_than: 128.megabytes },
       content_type: { not: ['text/html', 'application/xhtml+xml'] }
 end

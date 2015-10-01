@@ -1,12 +1,12 @@
 module FileGenerator
   include ActionDispatch::TestProcess  # For fixture_file_upload.
 
-  # Create a 16MB text file, if it doesn't exist.
+  # Create a 128MB text file, if it doesn't exist.
   #
   # @return [Rack::Test::UploadedFile] a 16MB file in
   #   'test/fixtures/test_files/large_file.txt'
   def large_file
-    new_or_existing_file 'large_file.txt', 'text/plain', 16.megabytes
+    new_or_existing_file 'large_file.txt', 'text/plain', 128.megabytes
   end
 
   # Create a 1MB HTML file, if it doesn't exist.
