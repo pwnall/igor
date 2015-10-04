@@ -68,7 +68,7 @@ class TeamsStudentController < ApplicationController
     if !prof.nil?
       flash[:notice] = "An email has been sent to " + params[:athena] + "@mit.edu"
       Invitation.create(:inviter_id => current_user.id, :invitee_id => prof.user_id, :team_id => params[:team_id])
-      SessionMailer.team_invite_email(params[:athena], current_user.id, params[:team_id]).deliver
+      SessionMailer.team_invite_email(params[:athena], current_user.id, team).deliver
     else
       flash[:notice] = "Sorry, that user appears to not be in this class."
     end

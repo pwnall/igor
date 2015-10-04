@@ -26,16 +26,3 @@ public_ldap:
   dept_ldap_key: ou
   user_ldap_key: DN
   use_ldaps: false
-
-# NOTE: MIT's LDAP service hangs indefinitely when not used from campus IPs.
-mit_ldap:
-  domain: mit.edu
-  ldap_server: ldap.mit.edu
-  ldap_auth_dn: null
-  ldap_password: ""
-  ldap_search_base: ou=users,ou=moira,dc=mit,dc=edu
-  name_ldap_key: displayName
-  year_ldap_key: mitDirStudentYear
-  dept_ldap_key: ou
-  user_ldap_key: uid
-  use_ldaps: false

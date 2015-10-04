@@ -51,11 +51,6 @@ class Course < ActiveRecord::Base
   def to_param
     number
   end
-
-  # The main (and only) course on the website.
-  def self.main
-    first
-  end
 end
 
 # :nodoc: Students.
@@ -174,8 +169,12 @@ class Course
 
   # The course's time slots, indexed by start and end time.
   #
-  # @return [Hash<Array<Integer, Integer>, TimeSlot] the time slots, indexed by
-  #   their :starts_at and :ends_at attributes
+  # @example slots on Monday 1pm-2pm, Monday 2pm-3pm, and Friday 1pm-2pm
+  #   {[1300, 1400]=>{0=>#<TimeSlot id: 1>, 4=>#<TimeSlot id: 3>,
+  #    [1400, 1500]=>{0=>#<TimeSlot id: 2}}
+  #
+  # @return [Hash<Array<Integer, Integer>, Hash<Integer, TimeSlot>>] the time
+  #     slots, indexed first by :starts_at and :ends_at attributes, then by day
   def time_slots_by_period
     slots_by_period = time_slots.group_by { |ts| [ts.starts_at, ts.ends_at] }
     slots_by_period.each do |period, slots|

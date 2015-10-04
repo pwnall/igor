@@ -1,8 +1,4 @@
-<% if current_course %>
-  <%= render "menu/for_#{menu_type(current_user, current_course)}" %>
-<% else %>
-  <%= render "menu/for_#{menu_type(current_user, nil)}" %>
-<% end %>
+<%= render menu_type(current_user, current_course) %>
 
 <li>
   <%= link_to current_user do %>

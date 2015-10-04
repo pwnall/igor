@@ -2,20 +2,23 @@ module MenuHelper
   # The type of menu to be shown for a user.
   #
   # @param [User] user the user who will see the menu
-  # @param [
-  # @return [String] the menu type; can be "student", "admin", "staff",
-  #     "grader" or "guided" (for users who don't have a status yet)
+  # @param [Course] course the current course; nil, if no course selected
+  # @return [String] the name of the partial view that accommodates the given
+  #     user's most permissive role
   def menu_type(user, course)
-    if course.nil?
-      role = Role.where(user_id: current_user.id, course_id: nil).first
+    return 'menu/for_admin' if user.admin?
+    if course
+      if course.is_staff? user
+        'menu/for_staff'
+      elsif course.is_grader? user
+        'menu/for_grader'
+      elsif course.is_student? user
+        'menu/for_student'
+      else
+        'menu/for_guided'  # for users who haven't registered for the course yet
+      end
     else
-      return 'student' if user.registrations.where(course_id: course.id).first
-
-      role = Role.where(user_id: current_user.id, course_id: [nil, course.id]).
-                  first
+      'menu/for_guided'  # for pages that aren't tied to a specific course
     end
-
-    return role.name if role
-    'guided'
   end
 end

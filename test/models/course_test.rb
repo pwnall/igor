@@ -115,11 +115,29 @@ class CourseTest < ActiveSupport::TestCase
     assert_empty course.surveys.reload
   end
 
+  describe '#to_param' do
+    it 'returns the course number' do
+      assert_equal '6.006', course.to_param
+    end
+  end
+
   describe 'students' do
     describe '#students' do
       it 'returns only users currently enrolled in this course' do
         golden = users(:solo, :deedee, :dexter, :mandark)
         assert_equal golden, course.students.sort_by(&:name)
+      end
+    end
+
+    describe '#is_student?' do
+      it 'returns true for registered students only' do
+        assert_equal true, course.is_student?(users(:dexter))
+        assert_equal false, courses(:not_main).is_student?(users(:dexter))
+        assert_equal false, course.is_student?(users(:robot))
+        assert_equal false, course.is_student?(users(:main_grader))
+        assert_equal false, course.is_student?(users(:main_staff))
+        assert_equal false, course.is_student?(users(:admin))
+        assert_equal false, course.is_student?(nil)
       end
     end
   end
@@ -219,6 +237,33 @@ class CourseTest < ActiveSupport::TestCase
           actual = course.assignments_for users(:dexter)
           assert_equal golden, actual, actual.map(&:name)
         end
+      end
+    end
+  end
+
+  describe 'recitation sections' do
+    describe '#days_with_time_slots' do
+      it 'returns the days with recitations, without repeats and sorted' do
+        assert_equal [0, 2, 4], course.days_with_time_slots
+      end
+    end
+
+    describe '#time_slots_by_period' do
+      let(:result) { course.time_slots_by_period }
+
+      it 'returns a key for each unique time interval' do
+        assert_equal [[1300, 1400], [1400, 1500]].to_set, result.keys.to_set
+      end
+
+      it 'includes each time slot that occurs in the given time interval' do
+        assert_equal 3, result[[1300, 1400]].length
+        assert_equal 2, result[[1400, 1500]].length
+      end
+
+      it 'indexes the time slots by day' do
+        assert_equal time_slots(:m13to14), result[[1300, 1400]][0]
+        assert_equal time_slots(:w13to14), result[[1300, 1400]][2]
+        assert_equal time_slots(:f13to14), result[[1300, 1400]][4]
       end
     end
   end

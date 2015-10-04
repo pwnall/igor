@@ -26,10 +26,11 @@
         SMTP Server
       <% end %>
     </li>
+    <% if current_course %>
     <li>
-      <%= link_to 'Submissions', submissions_path(course_id: Course.main) %>
+      <%= link_to 'Submissions', submissions_path(course_id: current_course) %>
     </li>
-
+    <% end %>
     <li>
       <%= link_to users_path do %>
         <%= contacts_icon_tag %> Site Users

@@ -92,6 +92,25 @@ class LoadTestSession
     approved_requests
   end
 
+  # Create a course within which all other models will belong.
+  #
+  # @param {String} course the number of the course
+  # @return {Boolean} true if the course was created successfully
+  def create_course(course)
+    @agent.get File.join(@root_url, '_/courses/new')
+
+    form = @agent.page.form_with class: 'new_course'
+    return false unless form
+
+    form['course[number]'] = course
+    form['course[title]'] = 'Intro to Algorithms'
+    form['course[email]'] = "#{course}-tas@mit.edu"
+    form['course[ga_account]'] = 'UA-19600078-2'
+    result_page = form.submit
+    !!result_page.root.css('.status-bar.notice').text.
+        index(/course #{course} created/i)
+  end
+
   # @return {Hash<String, Number>} maps each assignment's name to its ID
   def list_assignments(course)
     @agent.get File.join(@root_url, course, 'assignments.json')
@@ -228,14 +247,18 @@ class LoadTestSession
   def view_assignment_page(course, assignment_id)
     @agent.get File.join(@root_url, course, 'assignments', assignment_id.to_s)
     !!@agent.page.form_with(class: 'new_submission')
+  rescue Mechanize::ResponseCodeError
+    false
   end
 
-  # Retrives a course's page.
+  # Retrieves a course's page.
   #
   # @return {Boolean} true if the fetching succeeded, false otherwise
   def view_course_home(course)
     @agent.get File.join(@root_url, course)
     !!@agent.page.root.css('h1 .course-number').text.index(course)
+  rescue Mechanize::ResponseCodeError
+    false
   end
 end
 
@@ -268,6 +291,11 @@ class SubmissionUploadLoadTester
       end
       unless @admin_session.log_in('admin@mit.edu', 'mit')
         raise 'Failed to log in after signing up admin@mit.edu'
+      end
+    end
+    unless @admin_session.view_course_home(@course)
+      unless @admin_session.create_course(@course)
+        raise 'Failed to create course'
       end
     end
 
