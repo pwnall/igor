@@ -8,7 +8,7 @@ class CoursesController < ApplicationController
     courses = Course.all
 
     @new_courses = courses - current_user.registered_courses -
-        current_user.staff_courses
+        current_user.employed_courses
   end
 
   # GET /_/courses

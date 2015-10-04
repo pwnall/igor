@@ -20,7 +20,7 @@ class SessionController < ApplicationController
 
     if current_course.nil? && !current_user.admin?
       course_count = current_user.registered_courses.count +
-          current_user.staff_courses.count
+          current_user.employed_courses.count
       if course_count == 0
         redirect_to connect_courses_url
         return
@@ -28,7 +28,7 @@ class SessionController < ApplicationController
       if course_count == 1
         redirect_to course_root_url(course_id:
             current_user.registered_courses.first ||
-            current_user.staff_courses.first)
+            current_user.employed_courses.first)
         return
       end
     end

@@ -34,8 +34,8 @@ class User
   # The user's requests for privileges.
   has_many :role_requests, dependent: :destroy, inverse_of: :user
 
-  # The courses that this user staffs or grades.
-  has_many :staff_courses, through: :roles, source: :course
+  # The courses for which this user has an admin, staff, or grader role.
+  has_many :employed_courses, through: :roles, source: :course
 
   # Checks if this user has a privilege.
   #
@@ -63,6 +63,12 @@ class User
     @robot ||= Role.find_by!(name: 'bot').user
   end
   @robot = nil
+
+  # Returns true if this user staffs courses the given user takes/grades/staffs.
+  def is_staff_in_course?(user)
+    !!(user &&
+        has_role?('staff', user.employed_courses + user.registered_courses))
+  end
 end
 
 # :nodoc: site identity and class membership
@@ -95,9 +101,8 @@ class User
 
   # Returns true if the given user is allowed to see this user's info.
   def can_read?(user)
-    # TODO(pwnall): figure out teams; teammates should see user
-    # TODO(pwnall): do admins and course staff get fully visible profiles?
-    admin? || user == self || (user && user.admin?)
+    user == self || teammate_of?(user) || admin? || (user && user.admin?) ||
+        is_staff_in_course?(user) || user.is_staff_in_course?(self)
   end
 
   # Returns true if the given user is allowed to edit this user's info.
@@ -223,6 +228,11 @@ class User
   def teams_for(course)
     Team.joins(:memberships).where team_memberships: { user_id: id,
                                                        course_id: course.id }
+  end
+
+  # Returns true if the given user is on any team with this user.
+  def teammate_of?(user)
+    !!(user && (user.team_memberships.where(team: teams).count > 0))
   end
 end
 

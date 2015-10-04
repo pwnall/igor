@@ -101,6 +101,27 @@ class UserTest < ActiveSupport::TestCase
         assert_equal robot, User.robot
       end
     end
+
+    describe '#is_staff_in_course?' do
+      it 'returns true if the given user staffs a course this user takes' do
+        assert_equal true, staff.is_staff_in_course?(dexter)
+        assert_equal false, users(:not_main_staff).is_staff_in_course?(dexter)
+      end
+
+      it 'returns true if the given user staffs a course this user grades' do
+        assert_equal true, staff.is_staff_in_course?(grader)
+        assert_equal false, users(:not_main_staff).is_staff_in_course?(grader)
+      end
+
+      it 'returns true if the given user staffs a course this user staffs' do
+        assert_equal true, another_staff.is_staff_in_course?(staff)
+        assert_equal false, users(:not_main_staff).is_staff_in_course?(staff)
+      end
+
+      it 'returns false if the given user is nil' do
+        assert_equal false, dexter.is_staff_in_course?(nil)
+      end
+    end
   end
 
   describe 'site identity and class membership' do
@@ -161,6 +182,20 @@ class UserTest < ActiveSupport::TestCase
         assert_equal true, dexter.can_read?(dexter)
       end
 
+      describe 'student permissions' do
+        it 'lets students view the user info of staff in their courses' do
+          assert_equal true, staff.can_read?(dexter)
+          assert_equal false, staff.can_read?(users(:not_main_dropout))
+          assert_equal false, users(:not_main_staff).can_read?(dexter)
+          assert_equal false, users(:not_main_grader).can_read?(dexter)
+        end
+
+        it 'lets students view the user info of their teammates' do
+          assert_equal true, users(:deedee).can_read?(dexter)
+          assert_equal false, users(:mandark).can_read?(dexter)
+        end
+      end
+
       it "lets anyone view a site admin's user information" do
         assert_equal true, admin.can_read?(dexter)
         assert_equal true, admin.can_read?(robot)
@@ -173,6 +208,24 @@ class UserTest < ActiveSupport::TestCase
         assert_equal true, robot.can_read?(admin)
         assert_equal true, grader.can_read?(admin)
         assert_equal true, staff.can_read?(admin)
+      end
+
+      it 'lets graders view the user info of staff in their courses' do
+        assert_equal true, staff.can_read?(grader)
+        assert_equal false, dexter.can_read?(grader)
+        assert_equal false, another_grader.can_read?(grader)
+        assert_equal false, users(:not_main_staff).can_read?(grader)
+        assert_equal false, users(:not_main_grader).can_read?(grader)
+      end
+
+      it 'lets staff view the user info of staff/students/graders in their
+          courses' do
+        assert_equal true, another_staff.can_read?(staff)
+        assert_equal true, dexter.can_read?(staff)
+        assert_equal true, grader.can_read?(staff)
+        assert_equal false, users(:not_main_staff).can_read?(staff)
+        assert_equal false, users(:not_main_dropout).can_read?(staff)
+        assert_equal false, users(:not_main_grader).can_read?(staff)
       end
     end
 
@@ -332,6 +385,14 @@ class UserTest < ActiveSupport::TestCase
       it 'returns the teams in the given course that include the user' do
         golden = teams(:awesome_pset, :awesome_project)
         assert_equal golden.to_set, dexter.teams_for(courses(:main)).to_set
+      end
+    end
+
+    describe '#teammate_of?' do
+      it 'returns true if the given user is on any team with this user' do
+        assert_equal true, dexter.teammate_of?(users(:deedee))
+        assert_equal false, dexter.teammate_of?(users(:mandark))
+        assert_equal false, dexter.teammate_of?(nil)
       end
     end
   end

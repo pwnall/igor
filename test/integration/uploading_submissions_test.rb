@@ -8,7 +8,7 @@ class UploadingSubmissionsTest < ActionDispatch::IntegrationTest
     @current_user = users(:mandark)
     assert_equal true, @deliverable.assignment.can_submit?(@current_user)
     assert_equal 1, (@current_user.registered_courses.count +
-        @current_user.staff_courses.count)
+        @current_user.employed_courses.count)
   end
 
   let(:submissions_selector) { "li#deliverable-#{@deliverable.to_param}" }

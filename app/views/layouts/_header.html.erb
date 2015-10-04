@@ -28,7 +28,7 @@
         <% end %>
         <% if current_user %>
         <ol>
-          <% current_user.staff_courses.each do |course| %>
+          <% current_user.employed_courses.each do |course| %>
           <li>
             <%= link_to course_root_path(course_id: course) do %>
               <%= role_icon_tag :staff %> <%= course.number %>
