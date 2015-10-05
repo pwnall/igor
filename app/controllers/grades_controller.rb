@@ -152,8 +152,6 @@ class GradesController < ApplicationController
       case params[:name_by]
       when 'name'
          @users.map { |u| [u.id, u.name] }
-      when 'athena_username'
-        @users.map { |u| [u.id, u.athena_id] }
       when 'username'
         @users.map { |u| [u.id, u.name] }
       when 'email'

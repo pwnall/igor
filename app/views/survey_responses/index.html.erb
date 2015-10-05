@@ -18,7 +18,7 @@
     <tbody>
       <% question.answers.each do |answer| %>
         <tr>
-          <td><%= display_name_for_user answer.user, :long %></td>
+          <td><%= answer.user.display_name_for current_user, :long %></td>
           <td><%= answer.number %></td>
           <td><%= answer.comment %></td>
         </tr>

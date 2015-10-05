@@ -189,13 +189,13 @@ class CourseTest < ActiveSupport::TestCase
 
     describe '#staff' do
       it 'returns all users with the staff role for only this course' do
-        assert_equal [users(:main_staff)], course.staff
+        assert_equal users(:main_staff, :main_staff_2), course.staff
       end
     end
 
     describe '#graders' do
       it 'returns all users with the grader role for only this course' do
-        assert_equal [users(:main_grader)], course.graders
+        assert_equal users(:main_grader, :main_grader_2), course.graders
       end
     end
   end

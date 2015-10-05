@@ -23,7 +23,7 @@
         (<%= distance_of_time_in_words(extension.due_at, @assignment.due_at) %>)
       </td>
       <td>
-        <%= display_name_for_user extension.grantor, :long %>
+        <%= extension.grantor.display_name_for current_user, :long %>
       </td>
       <td>
         <%= link_to deadline_extension_path(extension,

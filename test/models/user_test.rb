@@ -1,43 +1,44 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  fixtures :users, :credentials, :profiles, :grades, :submissions
-
-  let(:dvdjon) do
-    User.new email: 'dvdjon@mit.edu', password: 'awesome',
-      password_confirmation: 'awesome', profile_attributes: {
-          name: 'Jon Johansen', nickname: 'dvdjon', university: 'MIT',
-          department: 'EECS', year: 'G', athena_username: 'jon'
-      }
+  before do
+    @user = User.new email: 'dvdjon@mit.edu', password: 'awesome',
+        password_confirmation: 'awesome', profile_attributes: {
+        name: 'Jon Johansen', nickname: 'dvdjon', university: 'MIT',
+        department: 'EECS', year: 'G', athena_username: 'jon' }
   end
+
   let(:dexter) { users(:dexter) }
+  let(:grader) { users(:main_grader) }
+  let(:another_grader) { users(:main_grader_2) }
   let(:staff) { users(:main_staff) }
+  let(:another_staff) { users(:main_staff_2) }
   let(:admin) { users(:admin) }
+  let(:robot) { users(:robot) }
   let(:solo) { users(:solo) }
   let(:inactive) { users(:inactive) }
 
-  it 'should accept valid user construction' do
-    dvdjon.save!
-    assert dvdjon.valid?
+  it 'validates the setup user' do
+    assert @user.valid?
   end
 
   ['costan@gmail.com', 'cos tan@gmail.com', 'costan@x@mit.edu',
    'costan@mitZedu'].each do |email|
-    it "should reject invalid e-mail #{email}" do
-      dvdjon.email = email
-      assert !dvdjon.valid?
+    it "rejects invalid e-mail: #{email}" do
+      @user.email = email
+      assert @user.invalid?
     end
   end
   ['costan+alias@mit.edu', 'mba@harvard.edu'].each do |email|
-    it "should accept e-mail #{email}" do
-      dvdjon.email = email
-      dvdjon.save!
-      assert dvdjon.valid?
+    it "accepts valid e-mail: #{email}" do
+      @user.email = email
+      @user.save!
+      assert @user.valid?
     end
   end
-  it 'should reject non-.edu e-mail addresses' do
-    dvdjon.email = 'dvdjon@gmail.com'
-    assert !dvdjon.valid?
+  it 'rejects non-.edu e-mail addresses' do
+    @user.email = 'dvdjon@gmail.com'
+    assert @user.invalid?
   end
 
   describe 'roles' do
@@ -50,6 +51,55 @@ class UserTest < ActiveSupport::TestCase
 
       assert_empty staff.roles.reload
       assert_empty dexter.role_requests.reload
+    end
+
+    describe '#has_role?' do
+      describe 'site-level roles' do
+        it 'returns true if the user has the given role' do
+          assert_equal true, admin.has_role?('admin')
+        end
+
+        it 'returns false if a course is specified for a site-level role' do
+          assert_equal false, admin.has_role?('admin', courses(:main))
+        end
+      end
+
+      describe 'course-level roles' do
+        it 'returns true if the user has the role in the given course' do
+          assert_equal true, staff.has_role?('staff', courses(:main))
+          assert_equal false, staff.has_role?('staff', courses(:not_main))
+        end
+
+        it 'returns false if the course is omitted for a course-level role' do
+          assert_equal false, staff.has_role?('staff')
+        end
+      end
+    end
+
+    describe '#admin?' do
+      it 'returns true only for site admins' do
+        assert_equal false, dexter.admin?
+        assert_equal false, robot.admin?
+        assert_equal false, grader.admin?
+        assert_equal false, staff.admin?
+        assert_equal true, admin.admin?
+      end
+    end
+
+    describe '#robot?' do
+      it 'returns true only for automated site users' do
+        assert_equal false, dexter.robot?
+        assert_equal true, robot.robot?
+        assert_equal false, grader.robot?
+        assert_equal false, staff.robot?
+        assert_equal false, admin.robot?
+      end
+    end
+
+    describe '.robot' do
+      it 'returns the automated site user' do
+        assert_equal robot, User.robot
+      end
     end
   end
 
@@ -64,28 +114,103 @@ class UserTest < ActiveSupport::TestCase
       assert_empty dexter.registrations.reload
     end
 
+    it 'requires a profile' do
+      @user.profile = nil
+      assert @user.invalid?
+    end
+
+    it 'saves the associated profile through the parent user' do
+      new_name = @user.profile.name + ' Jr.'
+      params = { profile_attributes: { name: new_name } }
+      @user.update! params
+
+      assert_equal new_name, @user.profile.name
+      assert_equal 'MIT', @user.profile.university
+    end
+
     describe 'by_name scope' do
       it 'sorts the users by name in alphabetical order' do
-        golden = users(:solo, :deedee, :dexter, :mandark, :dropout)
+        golden = users(:solo, :deedee, :dexter, :mandark, :main_dropout)
         assert_equal golden, courses(:main).users.by_name
       end
     end
 
     describe '#name' do
-      it 'should report .edu e-mail if no profile is available' do
-        assert_equal 'Admin', admin.name
-      end
-      it 'should use name on profile if available' do
+      it 'returns the profile name' do
         assert_equal 'Dexter Boy Genius', dexter.name
       end
     end
 
-    describe '#athena_id' do
-      it 'should use e-mail prefix if no profile is available' do
-        assert_equal 'admin', admin.athena_id
+    describe '#display_name_for' do
+      it "returns 'You' if the user is also the viewer" do
+        assert_equal 'You', dexter.display_name_for(dexter)
       end
-      it 'should user profile info if available' do
-        assert_equal 'genius', dexter.athena_id
+
+      it "returns the user's name by default" do
+        assert_equal 'Dexter Boy Genius', dexter.display_name_for
+      end
+
+      it "returns the user's name and email if :short format is specified" do
+        assert_equal 'Dexter Boy Genius [genius+6006@mit.edu]',
+                     dexter.display_name_for(staff, :long)
+      end
+    end
+
+    describe '#can_read?' do
+      it 'lets one view their own user information' do
+        assert_equal true, dexter.can_read?(dexter)
+      end
+
+      it "lets anyone view a site admin's user information" do
+        assert_equal true, admin.can_read?(dexter)
+        assert_equal true, admin.can_read?(robot)
+        assert_equal true, admin.can_read?(grader)
+        assert_equal true, admin.can_read?(staff)
+      end
+
+      it "lets the admin view any user's information" do
+        assert_equal true, dexter.can_read?(admin)
+        assert_equal true, robot.can_read?(admin)
+        assert_equal true, grader.can_read?(admin)
+        assert_equal true, staff.can_read?(admin)
+      end
+    end
+
+    describe '#can_edit?' do
+      it 'lets only the owner and site admins edit user information' do
+        assert_equal true, dexter.can_edit?(dexter)
+        assert_equal false, dexter.can_edit?(robot)
+        assert_equal false, dexter.can_edit?(grader)
+        assert_equal false, dexter.can_edit?(staff)
+        assert_equal true, dexter.can_edit?(admin)
+        assert_equal false, dexter.can_edit?(solo)
+        assert_equal false, dexter.can_edit?(nil)
+      end
+    end
+
+    describe '#registration_for' do
+      it "returns the user's registration for the given course" do
+        assert_equal registrations(:dexter),
+            dexter.registration_for(courses(:main))
+        assert_nil dexter.registration_for(nil)
+      end
+
+      it 'returns nil if the user is not registered for the given course' do
+        assert_nil users(:not_main_dropout).registration_for(courses(:main))
+        assert_nil staff.registration_for(courses(:main))
+      end
+    end
+
+    describe '#recitation_section_for' do
+      it "returns the user's recitation section for the given course" do
+        assert_equal recitation_sections(:r01),
+            dexter.recitation_section_for(courses(:main))
+        assert_nil dexter.recitation_section_for(nil)
+      end
+
+      it 'returns nil if the user does not have a recitation in the given
+          course' do
+        assert_nil dexter.recitation_section_for(courses(:not_main))
       end
     end
 
@@ -200,6 +325,13 @@ class UserTest < ActiveSupport::TestCase
       dexter.destroy
 
       assert_empty dexter.team_memberships.reload
+    end
+
+    describe '#teams_for' do
+      it 'returns the teams in the given course that include the user' do
+        golden = teams(:awesome_pset, :awesome_project)
+        assert_equal golden.to_set, dexter.teams_for(courses(:main)).to_set
+      end
     end
   end
 

@@ -62,9 +62,9 @@ class Team < ActiveRecord::Base
   # The team's name, suitable to be displayed to the given user.
   #
   # This method should also be defined for User.
-  def display_name_for(other_user = nil, identity_value = 'Your team')
+  def display_name_for(other_user = nil)
     if has_user? other_user
-      "#{name} (#{identity_value})"
+      "#{name} (Your team)"
     else
       name
     end

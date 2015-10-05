@@ -23,6 +23,11 @@ main_staff_is_staff:
   name: staff
   course: main
 
+main_staff_2_is_staff:
+  user: main_staff_2
+  name: staff
+  course: main
+
 not_main_staff_is_staff:
   user: not_main_staff
   name: staff
@@ -30,6 +35,11 @@ not_main_staff_is_staff:
 
 main_grader_is_grader:
   user: main_grader
+  name: grader
+  course: main
+
+main_grader_2_is_grader:
+  user: main_grader_2
   name: grader
   course: main
 

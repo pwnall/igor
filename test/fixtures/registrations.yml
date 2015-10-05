@@ -45,6 +45,13 @@ mandark:
   allows_publishing: true
   recitation_section: r02
 
+main_dropout:
+  course: main
+  user: main_dropout
+  dropped: true
+  for_credit: false
+  allows_publishing: false
+
 deedee_not_main:
   course: not_main
   user: deedee
@@ -52,9 +59,9 @@ deedee_not_main:
   for_credit: true
   allows_publishing: true
 
-dropout:
-  course: main
-  user: dropout
+not_main_dropout:
+  course: not_main
+  user: not_main_dropout
   dropped: true
   for_credit: false
   allows_publishing: false

@@ -84,7 +84,7 @@ class RegistrationTest < ActiveSupport::TestCase
 
   describe 'by_user_name scope' do
     it "sorts the registrations by alphabetical order of the user's name" do
-      golden = registrations(:solo, :deedee, :dexter, :mandark, :dropout)
+      golden = registrations(:solo, :deedee, :dexter, :mandark, :main_dropout)
       assert_equal golden, courses(:main).registrations.by_user_name
     end
   end

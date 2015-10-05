@@ -27,7 +27,7 @@
       Due
       <%= extension.due_at.to_s(:deadline_long) %>
       - Extension granted by
-      <%= display_name_for_user extension.grantor, :long %>
+      <%= extension.grantor.display_name_for current_user, :long %>
     </p>
     <% end %>
   </section>

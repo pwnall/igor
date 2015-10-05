@@ -14,6 +14,15 @@
 #  updated_at      :datetime         not null
 #
 
+robot:
+  user: robot
+  name: Staff Robot
+  nickname: Robot
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: 'G'
+  athena_username: ---
+
 admin:
   user: admin
   name: Admin
@@ -59,11 +68,83 @@ mandark:
   year: 1
   athena_username: evil
 
-dropout:
-  user: dropout
+inactive:
+  user: inactive
+  name: Inactive User
+  nickname: Inactive
+  university: Massachusetts Intitute of Technology
+  department: Electrical Eng & Computer Sci
+  year: 1
+  athena_username: inactive
+
+main_dropout:
+  user: main_dropout
   name: Not Interested
   nickname: Nope
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: 4
   athena_username: nothanks
+
+main_staff:
+  user: main_staff
+  name: Main Staff
+  nickname: Staffy
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: G
+  athena_username: main_staff
+
+main_staff_2:
+  user: main_staff_2
+  name: Main Staff 2
+  nickname: Staffy2
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: G
+  athena_username: main_staff_2
+
+not_main_dropout:
+  user: not_main_dropout
+  name: Notmain Dropout
+  nickname: Dropout2
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: 4
+  athena_username: dropout_2
+
+not_main_staff:
+  user: not_main_staff
+  name: Not Main Staff
+  nickname: OtherStaffy
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: G
+  athena_username: not_main_staff
+
+main_grader:
+  user: main_grader
+  name: Main Grader
+  nickname: Gradery
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: G
+  athena_username: main_grader
+
+main_grader_2:
+  user: main_grader_2
+  name: Main Grader 2
+  nickname: Gradery2
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: G
+  athena_username: main_grader_2
+
+not_main_grader:
+  user: not_main_grader
+  name: Not Main Grader
+  nickname: OtherGradery
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: G
+  athena_username: not_main_grader

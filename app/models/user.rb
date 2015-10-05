@@ -34,10 +34,16 @@ class User
   # The user's requests for privileges.
   has_many :role_requests, dependent: :destroy, inverse_of: :user
 
-  # The courses that this user is a staff of.
+  # The courses that this user staffs or grades.
   has_many :staff_courses, through: :roles, source: :course
 
   # Checks if this user has a privilege.
+  #
+  # @param [String] role_name the role with the privilege in question
+  # @param [Course] course one or more courses in which the user might have the
+  #     privileges in question, if checking for course-level roles; nil,
+  #     if checking for site-level roles
+  # @return [Boolean] true if the user has the given privilege
   def has_role?(role_name, course = nil)
     Role.has_entry? self, role_name, course
   end
@@ -54,7 +60,7 @@ class User
 
   # The user profile that represents the actions of the site software.
   def self.robot
-    @robot ||= Role.where(name: 'bot').first!.user
+    @robot ||= Role.find_by!(name: 'bot').user
   end
   @robot = nil
 end
@@ -63,44 +69,27 @@ end
 class User
   # Personal information, e.g. full name and contact info.
   has_one :profile, dependent: :destroy, inverse_of: :user
-  validates_associated :profile, on: :create
-  validates :profile, presence: { on: :create }
-
+  validates :profile, presence: true
   accepts_nested_attributes_for :profile
 
   # Sort users by name in alphabetical order.
   scope :by_name, -> { includes(:profile).order('profiles.name') }
 
   # The user's real-life name.
-  #
-  # May return the user's e-mail if the user managed to register without
-  # creating a profile.
   def name
-    (profile && profile.name) || email
-  end
-
-  # The user's athena ID.
-  #
-  # Athena IDs are MIT-specific. New code should avoid them and use full e-mail
-  # addresses instead.
-  #
-  # Returns the email username if the user has not created a profile.
-  def athena_id
-    (profile && profile.athena_username) || email[0, email.index(?@)]
+    profile.name
   end
 
   # The user's name, suitable to be displayed to the given user.
   #
   # This method should also be defined for Team.
-  def display_name_for(other_user = nil, identity_value = 'You')
+  def display_name_for(other_user = nil, format = :short)
     if self == other_user
-      identity_value
-    elsif profile
-      # TODO(pwnall): look at the other user's network, and if we're the only
-      #               user with a given first name, return the first name
+      'You'
+    elsif format == :short
       name
-    else
-      name
+    elsif format == :long
+      "#{name} [#{email}]"
     end
   end
 
@@ -113,7 +102,7 @@ class User
 
   # Returns true if the given user is allowed to edit this user's info.
   def can_edit?(user)
-    user == self || (user && user.admin?)
+    user == self || !!(user && user.admin?)
   end
 
   # Course registration info, e.g. survey answers and credit / listener status.
@@ -125,10 +114,10 @@ class User
 
   # The user's registration for the given course.
   def registration_for(course)
-    registrations.where(course: course).first
+    registrations.find_by course: course
   end
 
-  # The user's recitation sections for the given course.
+  # The user's recitation section for the given course.
   def recitation_section_for(course)
     recitation_sections.where(course: course).first
   end
@@ -220,10 +209,6 @@ class User
   # is destroyed.
   has_many :led_recitation_sections, class_name: 'RecitationSection',
       foreign_key: :leader_id, dependent: :nullify, inverse_of: :leader
-
-  def recitation_section
-    registration && registration.recitation_section
-  end
 end
 
 # :nodoc: teams feature.
@@ -245,17 +230,4 @@ end
 class User
   # The user's responses to surveys.
   has_many :survey_responses, dependent: :destroy, inverse_of: :user
-end
-
-# :nodoc: TeamPartition / Teams searching.
-class User
-  def team_in_partition(id)
-    tms = TeamMembership.where(:user_id => self.id)
-    tms.each do |tm|
-      if tm.team.partition.id.to_i == id.to_i
-        return tm
-      end
-    end
-    return nil
-  end
 end
