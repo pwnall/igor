@@ -1,5 +1,7 @@
 # Methods for rendering generic UI icons.
 module IconsHelper
+  include AnalysesHelper  # For analysis_status_text.
+
   # Tells the user that his input is valid.
   def valid_icon_tag
     title = 'Valid input'

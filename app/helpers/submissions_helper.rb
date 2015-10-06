@@ -1,4 +1,7 @@
 module SubmissionsHelper
+  include UsersHelper  # For user_image_tag.
+  include IconsHelper  # For analysis_status_icon_tag.
+
   # The submission's promoted state in text, or a button to promote it.
   def submission_promotion_status(submission, user)
     if submission == submission.deliverable.submission_for_grading(user)
@@ -28,5 +31,17 @@ module SubmissionsHelper
   # Text that identifies the collaborator in the collaboration.
   def collaborator_display_name(collaborator)
     "#{collaborator.email} (#{collaborator.profile.name})"
+  end
+
+  # An icon that links to the given submission's analysis, if one exists.
+  def submission_figure(submission)
+    analysis = submission.analysis
+    if analysis
+      link_to analysis_path(analysis, course_id: submission.course) do
+        render 'deliverables/submission_figure', submission: submission
+      end
+    else
+      render 'deliverables/submission_figure', submission: submission
+    end
   end
 end

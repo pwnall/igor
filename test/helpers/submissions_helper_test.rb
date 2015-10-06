@@ -4,6 +4,7 @@ class SubmissionsHelperTest < ActionView::TestCase
   include SubmissionsHelper
 
   let(:submission) { submissions(:dexter_assessment) }
+  let(:analysis) { submission.analysis }
 
   describe '#new_collaboration' do
     let(:invalid_collaboration) do
@@ -37,6 +38,29 @@ class SubmissionsHelperTest < ActionView::TestCase
         result = new_collaboration(invalid_collaboration, submission)
         assert_instance_of Collaboration, result
         assert_equal 'nosuchuser@gmail.com', result.collaborator_email
+      end
+    end
+  end
+
+  describe '#submission_figure' do
+    describe 'the submission has an analysis' do
+      before { assert_not_nil analysis }
+      let(:url) { analysis_path(analysis, course_id: analysis.course) }
+
+      it 'renders the submission figure inside a link to the analysis' do
+        rendered_buffer = render text: submission_figure(submission)
+        assert_select 'a[href=?]', url, true, rendered_buffer do
+          assert_select 'figure'
+        end
+      end
+    end
+
+    describe 'the submission does not have an analysis' do
+      before { submission.analysis.destroy }
+
+      it 'renders the submission figure without crashing' do
+        rendered_buffer = render text: submission_figure(submission.reload)
+        assert_select 'figure', true, rendered_buffer
       end
     end
   end
