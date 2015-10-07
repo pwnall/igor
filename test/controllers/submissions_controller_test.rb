@@ -6,7 +6,7 @@ class SubmissionsControllerTest < ActionController::TestCase
 
   before do
     @deliverable = deliverables :assessment_writeup
-    @submission = submissions :dexter_assessment
+    @submission = submissions :dexter_code
   end
 
   let(:create_params) do
@@ -70,6 +70,28 @@ class SubmissionsControllerTest < ActionController::TestCase
         assert_redirected_to assignment_url(@deliverable.assignment,
             course_id: @deliverable.course)
       end
+    end
+  end
+
+  describe 'POST #promote' do
+    before { set_session_current_user users(:dexter) }
+
+    it 'queues the submission for analysis' do
+      assert_enqueued_jobs 1 do
+        post :promote, params: member_params
+      end
+    end
+
+    it 'selects the submission for grading' do
+      assert_equal false, @submission.selected_for_grading?
+      post :promote, params: member_params
+      assert_equal true, @submission.selected_for_grading?
+    end
+
+    it "redirects to the submission assignment's page" do
+      post :promote, params: member_params
+      assert_redirected_to assignment_url(@submission.assignment,
+          course_id: @submission.course)
     end
   end
 

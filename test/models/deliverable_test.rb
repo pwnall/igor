@@ -237,7 +237,7 @@ class DeliverableTest < ActiveSupport::TestCase
   describe '#reanalyze_submissions' do
     describe 'deliverable analyzer is a ProcAnalyzer' do
       it 'queues all submissions for reanalysis' do
-        assert_enqueued_jobs 2 do
+        assert_enqueued_jobs 3 do
           deliverable.reanalyze_submissions
         end
       end

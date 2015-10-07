@@ -13,7 +13,7 @@ class DeliverablesControllerTest < ActionController::TestCase
 
   describe 'authenticated as a registered student' do
     before { set_session_current_user users(:dexter) }
-    
+
     describe 'all actions' do
       it 'forbids access to the page' do
         post :reanalyze, params: member_params
@@ -29,7 +29,7 @@ class DeliverablesControllerTest < ActionController::TestCase
     before { set_session_current_user users(:main_staff) }
 
     it 'queues all submissions for the deliverable for analysis' do
-      assert_enqueued_jobs 2 do
+      assert_enqueued_jobs 3 do
         post :reanalyze, params: member_params
       end
     end

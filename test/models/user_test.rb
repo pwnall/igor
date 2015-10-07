@@ -242,7 +242,8 @@ class UserTest < ActiveSupport::TestCase
     describe 'connected_submissions' do
       it 'should include submissions from co-team members' do
         golden = submissions(:dexter_ps1, :dexter_project, :dexter_project_v2,
-            :dexter_assessment, :dexter_code, :dexter_code_v2)
+            :dexter_assessment, :dexter_assessment_v2, :dexter_code,
+            :dexter_code_v2)
         assert_equal golden.to_set, dexter.connected_submissions.to_set
       end
 

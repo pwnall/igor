@@ -135,4 +135,9 @@ class Submission < ActiveRecord::Base
     last_submission = deliverable.submission_for_grading subject
     self.collaborators = last_submission.collaborators if last_submission
   end
+
+  # True if this submission should be used to compute grades.
+  def selected_for_grading?
+    self == deliverable.submission_for_grading(subject)
+  end
 end

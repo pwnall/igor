@@ -148,7 +148,8 @@ class DockerAnalyzer < Analyzer
       end
       grades << grade
     end
-    grades.each(&:save!)
+
+    grades.each(&:save!) if submission.selected_for_grading?
     #run_state[:private_log] << "Grades committed to the database.\n"
     true
   end

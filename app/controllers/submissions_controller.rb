@@ -114,6 +114,7 @@ class SubmissionsController < ApplicationController
     submission = Submission.find params[:id]
     return bounce_user unless submission.can_edit? current_user
     submission.touch
+    SubmissionAnalysisJob.perform_later submission
 
     respond_to do |format|
       format.html do

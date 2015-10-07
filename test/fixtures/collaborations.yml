@@ -10,3 +10,7 @@
 deedee_on_dexter_assessment:
   submission: dexter_assessment
   collaborator: deedee
+
+deedee_on_dexter_assessment_v2:
+  submission: dexter_assessment_v2
+  collaborator: deedee

@@ -275,4 +275,16 @@ class SubmissionTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe '#selected_for_grading' do
+    it 'works for individual assignments' do
+      assert_equal false, submissions(:dexter_code).selected_for_grading?
+      assert_equal true, submissions(:dexter_code_v2).selected_for_grading?
+    end
+
+    it 'works for team assignments' do
+      assert_equal false, submissions(:dexter_project).selected_for_grading?
+      assert_equal true, submissions(:dexter_project_v2).selected_for_grading?
+    end
+  end
 end

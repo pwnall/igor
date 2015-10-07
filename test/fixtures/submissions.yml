@@ -61,6 +61,17 @@ dexter_assessment:
   uploader: dexter
   upload_ip: "18.240.1.5"
   db_file: dexter_assessment
+  created_at: <%= 6.days.ago.to_s(:db) %>
+  updated_at: <%= 5.days.ago.to_s(:db) %>
+
+dexter_assessment_v2:
+  deliverable: assessment_writeup
+  subject: dexter (User)
+  uploader: dexter
+  upload_ip: "18.240.1.5"
+  db_file: dexter_assessment_v2
+  created_at: <%= 3.days.ago.to_s(:db) %>
+  updated_at: <%= 2.days.ago.to_s(:db) %>
 
 deedee_assessment:
   deliverable: assessment_writeup
