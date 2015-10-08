@@ -89,7 +89,7 @@ class FeedItem
 
   # Generates feed items for the published grades.
   def self.add_grades(items, user, options)
-    Assignment.where(metrics_ready: true).includes(:metrics).
+    Assignment.where(grades_published: true).includes(:metrics).
                each do |assignment|
       next unless last_metric = assignment.metrics.sort_by(&:updated_at).last
       next unless last_grade = last_metric.grades.sort_by(&:updated_at).last

@@ -9,7 +9,7 @@
 #  weight             :decimal(16, 8)   not null
 #  name               :string(64)       not null
 #  deliverables_ready :boolean          not null
-#  metrics_ready      :boolean          not null
+#  grades_published   :boolean          not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
@@ -32,7 +32,7 @@ class Assignment < ActiveRecord::Base
 
   # True if components of the assignment have been released.
   def ready?
-    deliverables_ready? || metrics_ready?
+    deliverables_ready? || grades_published?
   end
 
   # True if the given user is allowed to see this assignment.
@@ -95,7 +95,8 @@ class Assignment
   validates :weight, numericality: { greater_than_or_equal_to: 0 }
 
   # If true, students can see their grades on the assignment.
-  validates :metrics_ready, inclusion: { in: [true, false], allow_nil: false }
+  validates :grades_published, inclusion: { in: [true, false],
+                                            allow_nil: false }
 
   # The metrics that the students are graded on for this assignment.
   has_many :metrics, class_name: 'AssignmentMetric', dependent: :destroy,
@@ -148,7 +149,7 @@ class Assignment
   # :grading -- the assignment doesn't accept submissions, grades are not ready
   # :graded -- grades have been released to students
   def ui_state_for(user)
-    if metrics_ready?
+    if grades_published?
       :graded
     elsif deliverables_ready?
       if deadline_passed_for? user

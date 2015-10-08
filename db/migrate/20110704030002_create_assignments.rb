@@ -11,11 +11,11 @@ class CreateAssignments < ActiveRecord::Migration
       t.string :name, limit: 64, null: false
 
       t.boolean :deliverables_ready, null: false
-      t.boolean :metrics_ready, null: false
+      t.boolean :grades_published, null: false
 
       t.timestamps
-    end
 
-    add_index :assignments, [:course_id, :name], unique: true
+      t.index [:course_id, :name], unique: true
+    end
   end
 end
