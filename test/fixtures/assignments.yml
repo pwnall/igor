@@ -2,16 +2,16 @@
 #
 # Table name: assignments
 #
-#  id                 :integer          not null, primary key
-#  course_id          :integer          not null
-#  author_id          :integer          not null
-#  team_partition_id  :integer
-#  weight             :decimal(16, 8)   not null
-#  name               :string(64)       not null
-#  deliverables_ready :boolean          not null
-#  metrics_ready      :boolean          not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  id                :integer          not null, primary key
+#  course_id         :integer          not null
+#  author_id         :integer          not null
+#  name              :string(64)       not null
+#  published_at      :datetime         not null
+#  grades_published  :boolean          not null
+#  weight            :decimal(16, 8)   not null
+#  team_partition_id :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 
 ps1:
@@ -20,8 +20,8 @@ ps1:
   name: PSet 1
   team_partition: psets
   weight: 1.0
-  deliverables_ready: true
-  metrics_ready: true
+  published_at: <%= 3.weeks.ago.to_s(:db) %>
+  grades_published: true
 
 ps2:
   author: admin
@@ -29,8 +29,8 @@ ps2:
   name: PSet 2
   team_partition: psets
   weight: 1.0
-  deliverables_ready: false
-  metrics_ready: false
+  published_at: <%= 2.weeks.ago.to_s(:db) %>
+  grades_published: false
 
 ps3:
   author: admin
@@ -38,8 +38,8 @@ ps3:
   name: PSet 3
   team_partition: psets
   weight: 1.0
-  deliverables_ready: false
-  metrics_ready: false
+  published_at: <%= 1.week.from_now.to_s(:db) %>
+  grades_published: false
 
 project:
   author: admin
@@ -47,8 +47,8 @@ project:
   name: Final Project
   team_partition: project
   weight: 5.0
-  deliverables_ready: true
-  metrics_ready: true
+  published_at: <%= 1.month.from_now.to_s(:db) %>
+  grades_published: false
 
 # Use the same deadline as ps1, to test ordering by deadline and name.
 assessment:
@@ -56,14 +56,14 @@ assessment:
   course: main
   name: Individual Assessment
   weight: 0.0
-  deliverables_ready: true
-  metrics_ready: false
+  published_at: <%= 2.weeks.ago.to_s(:db) %>
+  grades_published: false
 
-# Keep deliverables_ready and metrics_ready true to test read permissions.
+# Keep published_at and grades_published true to test read permissions.
 not_main_exam:
   author: admin
   course: not_main
   name: Quiz 1
   weight: 10.0
-  deliverables_ready: true
-  metrics_ready: true
+  published_at: <%= 1.week.ago.to_s(:db) %>
+  grades_published: false

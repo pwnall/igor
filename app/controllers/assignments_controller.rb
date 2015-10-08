@@ -55,8 +55,7 @@ class AssignmentsController < ApplicationController
   def create
     @assignment = Assignment.new assignment_params
     @assignment.course = current_course
-    @assignment.deliverables_ready = false
-    @assignment.metrics_ready = false
+    @assignment.grades_published = false
 
     respond_to do |format|
       if @assignment.save
@@ -74,7 +73,7 @@ class AssignmentsController < ApplicationController
   # PUT /6.006/assignments/1
   def update
     respond_to do |format|
-      if @assignment.update_attributes assignment_params
+      if @assignment.update assignment_params
         format.html do
           redirect_to dashboard_assignment_url(@assignment,
                                                course_id: @assignment.course),
@@ -99,6 +98,25 @@ class AssignmentsController < ApplicationController
     end
   end
 
+  # PATCH /6.006/assignments/1/release
+  def release
+    respond_to do |format|
+      if @assignment.update published_at: Time.current
+        format.html do
+          redirect_to dashboard_assignment_url(@assignment,
+                                               course_id: @assignment.course),
+              notice: 'Assignment released.'
+        end
+      else
+        format.html do
+          redirect_to dashboard_assignment_url(@assignment,
+                                               course_id: @assignment.course),
+              notice: 'Assignment could not be released.'
+        end
+      end
+    end
+  end
+
   def set_assignment
     @assignment = current_course.assignments.find params[:id]
   end
@@ -109,8 +127,8 @@ class AssignmentsController < ApplicationController
   #     actually belongs to the parent record.
   def assignment_params
     params.require(:assignment).permit :name, :due_at, :weight, :author_id,
-        :team_partition_id, :feedback_survey_id,
-        :deliverables_ready, :metrics_ready,
+        :team_partition_id, :feedback_survey_id, :published_at,
+        :grades_published,
         deliverables_attributes: [:name, :file_ext, :_destroy,
             :description, :id, { analyzer_attributes: [:id, :type,
                 :message_name, :auto_grading, :time_limit, :ram_limit,

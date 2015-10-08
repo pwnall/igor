@@ -70,7 +70,7 @@ class GradesControllerTest < ActionController::TestCase
             get :editor, params: { course_id: courses(:main).to_param }
 
             assert_response :success
-            assert_select selected_assignment_value, assignments(:ps3).to_param
+            assert_select selected_assignment_value, assignments(:ps2).to_param
           end
         end
 
@@ -83,7 +83,8 @@ class GradesControllerTest < ActionController::TestCase
             get :editor, params: { course_id: courses(:main).to_param }
 
             assert_response :success
-            assert_select selected_assignment_value, courses(:main).assignments.last.to_param
+            assert_select selected_assignment_value,
+                          courses(:main).assignments.last.to_param
           end
 
           it 'renders a blank editor if no assignments exist' do

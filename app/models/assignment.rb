@@ -2,16 +2,16 @@
 #
 # Table name: assignments
 #
-#  id                 :integer          not null, primary key
-#  course_id          :integer          not null
-#  author_id          :integer          not null
-#  team_partition_id  :integer
-#  weight             :decimal(16, 8)   not null
-#  name               :string(64)       not null
-#  deliverables_ready :boolean          not null
-#  metrics_ready      :boolean          not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  id                :integer          not null, primary key
+#  course_id         :integer          not null
+#  author_id         :integer          not null
+#  name              :string(64)       not null
+#  published_at      :datetime         not null
+#  grades_published  :boolean          not null
+#  weight            :decimal(16, 8)   not null
+#  team_partition_id :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 
 # A piece of work that students have to complete.
@@ -30,19 +30,14 @@ class Assignment < ActiveRecord::Base
   belongs_to :author, class_name: 'User'
   validates :author, presence: true
 
-  # True if components of the assignment have been released.
-  def ready?
-    deliverables_ready? || metrics_ready?
-  end
-
   # True if the given user is allowed to see this assignment.
   def can_read?(user)
-     ready? || can_edit?(user)
+     published? || can_edit?(user)
   end
 
   # True if the given user is allowed to submit solutions for this assignment.
   def can_submit?(user)
-    (deliverables_ready? && !deadline_passed_for?(user)) || can_edit?(user)
+    (published? && !deadline_passed_for?(user)) || can_edit?(user)
   end
 
   # True if the given user is allowed to change this assignment.
@@ -55,13 +50,6 @@ end
 class Assignment
   include HasDeadline
 
-  # If true, students can read deliverables and make submissions.
-  #
-  # For some assignments, such as exams, that do not have deliverables, this
-  # attribute will always remain false.
-  validates :deliverables_ready, inclusion: { in: [true, false],
-                                              allow_nil: false }
-
   # The deliverables that students need to submit to complete the assignment.
   has_many :deliverables, dependent: :destroy, inverse_of: :assignment
   validates_associated :deliverables
@@ -73,7 +61,7 @@ class Assignment
 
   # Deliverables that the given user can see (not necessarily submit files for).
   def deliverables_for(user)
-    (deliverables_ready? || can_edit?(user)) ? deliverables : deliverables.none
+    (published? || can_edit?(user)) ? deliverables : deliverables.none
   end
 
   # Number of submissions that will be received for this assignment.
@@ -94,8 +82,20 @@ class Assignment
   # assignment will account for 40% of the student's grade.
   validates :weight, numericality: { greater_than_or_equal_to: 0 }
 
+  # The default time when the deliverables will be released to students.
+  validates :published_at,
+      timeliness: { before: Proc.new { |assignment| assignment.due_at } }
+  validates_each :published_at do |record, attr, value|
+    if value.nil?
+      record.errors.add attr, 'is not present'
+    elsif !record.published? && !!record.grades_published
+      record.errors.add attr, 'should occur before grades are published'
+    end
+  end
+
   # If true, students can see their grades on the assignment.
-  validates :metrics_ready, inclusion: { in: [true, false], allow_nil: false }
+  validates :grades_published, inclusion: { in: [true, false],
+                                            allow_nil: false }
 
   # The metrics that the students are graded on for this assignment.
   has_many :metrics, class_name: 'AssignmentMetric', dependent: :destroy,
@@ -111,6 +111,11 @@ class Assignment
   has_many :files, inverse_of: :assignment, class_name: 'AssignmentFile',
       dependent: :destroy
   accepts_nested_attributes_for :files, allow_destroy: true
+
+  # True if the deliverables have been released to students.
+  def published?
+    published_at < Time.current
+  end
 
   # The resource files for this assignment that are visible to the given user.
   def files_for(user)
@@ -148,13 +153,13 @@ class Assignment
   # :grading -- the assignment doesn't accept submissions, grades are not ready
   # :graded -- grades have been released to students
   def ui_state_for(user)
-    if metrics_ready?
+    if grades_published?
       :graded
-    elsif deliverables_ready?
+    elsif published?
       if deadline_passed_for? user
         :grading
       else
-        (deliverables.length > 0) ? :open : :grading
+        :open
       end
     else
       :draft

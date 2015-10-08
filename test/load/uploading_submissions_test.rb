@@ -137,7 +137,14 @@ class LoadTestSession
 
     form = @agent.page.form_with class: 'new_assignment'
     form['assignment[name]'] = name
-    form['assignment[due_at(2i)]'] = 1 + Time.now.month % 12
+    tomorrow = Time.now + 24 * 60 * 60
+    form['assignment[published_at(1i)]'] = tomorrow.year
+    form['assignment[published_at(2i)]'] = tomorrow.month
+    form['assignment[published_at(3i)]'] = tomorrow.day
+    next_week = Time.now + 7 * 24 * 60 * 60
+    form['assignment[due_at(1i)]'] = next_week.year
+    form['assignment[due_at(2i)]'] = next_week.month
+    form['assignment[due_at(3i)]'] = next_week.day
     form['assignment[weight]'] = 1
     result_page = form.submit
     unless result_page.root.css('.status-bar.notice').text.
