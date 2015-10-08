@@ -56,7 +56,7 @@ class AssignmentMetric < ActiveRecord::Base
 
   # True if the given user should be allowed to see the metric.
   def can_read?(user)
-    assignment.metrics_ready? || (user && user.admin?)
+    assignment.grades_published? || (user && user.admin?)
   end
 
   # True if the given user should be allowed to post grades for the metric.
