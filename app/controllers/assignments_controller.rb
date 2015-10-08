@@ -56,7 +56,7 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.new assignment_params
     @assignment.course = current_course
     @assignment.deliverables_ready = false
-    @assignment.metrics_ready = false
+    @assignment.grades_published = false
 
     respond_to do |format|
       if @assignment.save
@@ -74,7 +74,7 @@ class AssignmentsController < ApplicationController
   # PUT /6.006/assignments/1
   def update
     respond_to do |format|
-      if @assignment.update_attributes assignment_params
+      if @assignment.update assignment_params
         format.html do
           redirect_to dashboard_assignment_url(@assignment,
                                                course_id: @assignment.course),
@@ -110,7 +110,7 @@ class AssignmentsController < ApplicationController
   def assignment_params
     params.require(:assignment).permit :name, :due_at, :weight, :author_id,
         :team_partition_id, :feedback_survey_id,
-        :deliverables_ready, :metrics_ready,
+        :deliverables_ready, :grades_published,
         deliverables_attributes: [:name, :file_ext, :_destroy,
             :description, :id, { analyzer_attributes: [:id, :type,
                 :message_name, :auto_grading, :time_limit, :ram_limit,

@@ -90,8 +90,8 @@ graders = []
 1.upto 14 do |i|
   name = Faker::Name.name
   first_name = name.split(' ').first
-  short_name = (first_name[0, 1] + name.split(' ').last).downcase
-  user = User.create! email: short_name + '@mit.edu',  password: 'mit',
+  short_name = (first_name[0] + name.split(' ').last + "_#{i}").downcase
+  user = User.create! email: short_name + '@mit.edu', password: 'mit',
       password_confirmation: 'mit', profile_attributes: {
         athena_username: short_name, name: name, nickname: first_name,
         university: 'MIT', year: (1 + (i % 4)).to_s,
@@ -158,9 +158,9 @@ puts 'Surveys created'
 # Exams.
 
 exam_data = [
-  { due_at: -6.weeks - 5.days, state: :graded },
-  { due_at: -5.days, state: :draft },
-  { due_at: 8.weeks - 5.days, state: :draft }
+  { due_at: -6.weeks - 5.days, grades_published: true, state: :graded },
+  { due_at: -5.days, grades_published: false, state: :grading },
+  { due_at: 8.weeks - 5.days, grades_published: false, state: :draft }
 ]
 
 exams = exam_data.map.with_index do |data, index|
@@ -170,7 +170,7 @@ exams = exam_data.map.with_index do |data, index|
   exam.course = course
   exam.build_deadline due_at: (Time.current + data[:due_at]), course: course
   exam.deliverables_ready = data[:state] != :draft
-  exam.metrics_ready = data[:state] == :graded
+  exam.grades_published = data[:grades_published]
   exam.save!
   (1..(5 + i)).map do |j|
     exam.metrics.build name: "Problem #{j}", weight: rand(20),
@@ -178,7 +178,9 @@ exams = exam_data.map.with_index do |data, index|
 
   end
 
-  raise "Exam #{i} seeding bug" unless exam.ui_state_for(admin) == data[:state]
+  unless exam.ui_state_for(admin) == data[:state]
+    raise "Exam #{i} seeding bug: #{data[:state]} / #{exam.ui_state_for(admin)}"
+  end
   exam
 end
 
@@ -200,14 +202,14 @@ puts 'Exams created'
 # Psets.
 
 pset_data = [
-  { due_at: -12.weeks - 1.day, state: :graded },
-  { due_at: -9.weeks - 1.day, state: :graded },
-  { due_at: -6.weeks - 1.day, state: :graded },
-  { due_at: -3.weeks - 1.day, state: :grading },
-  { due_at: -1.day, state: :grading },
-  { due_at: 3.weeks - 1.day, state: :open },
-  { due_at: 6.weeks - 1.day, state: :open },
-  { due_at: 9.weeks - 1.day, state: :draft }
+  { due_at: -12.weeks - 1.day, grades_published: true, state: :graded },
+  { due_at: -9.weeks - 1.day, grades_published: true, state: :graded },
+  { due_at: -6.weeks - 1.day, grades_published: true, state: :graded },
+  { due_at: -3.weeks - 1.day, grades_published: false, state: :grading },
+  { due_at: -1.day, grades_published: false, state: :grading },
+  { due_at: 1.week - 1.day, grades_published: false, state: :open },
+  { due_at: 6.weeks - 1.day, grades_published: false, state: :draft },
+  { due_at: 9.weeks - 1.day, grades_published: false, state: :draft }
 ]
 
 psets = pset_data.map.with_index do |data, index|
@@ -216,7 +218,7 @@ psets = pset_data.map.with_index do |data, index|
   pset.course = course
   pset.build_deadline due_at: (Time.current + data[:due_at]), course: course
   pset.deliverables_ready = data[:state] != :draft
-  pset.metrics_ready = data[:state] == :graded
+  pset.grades_published = data[:grades_published]
   pset.save!
   (1..(2 + i)).map do |j|
     pset.metrics.create! name: "Problem #{j}", weight: rand(20),
@@ -225,8 +227,7 @@ psets = pset_data.map.with_index do |data, index|
   end
 
   pdf_deliverable = pset.deliverables.create! name: 'PDF write-up',
-      file_ext: 'pdf',
-      description: 'Please upload your write-up, in PDF format.',
+      file_ext: 'pdf', description: 'Please upload your write-up as a PDF.',
       analyzer_attributes: { type: 'ProcAnalyzer', message_name: 'analyze_pdf',
       auto_grading: true }
 

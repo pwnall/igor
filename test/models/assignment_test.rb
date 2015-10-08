@@ -5,7 +5,7 @@ class AssignmentTest < ActiveSupport::TestCase
     @due_at = 1.week.from_now
     @assignment = Assignment.new course: courses(:main), name: 'Final Exam',
         author: users(:main_staff), due_at: @due_at, weight: 50,
-        deliverables_ready: true, metrics_ready: false
+        deliverables_ready: true, grades_published: false
   end
 
   let(:assignment) { assignments(:assessment) }
@@ -50,12 +50,12 @@ class AssignmentTest < ActiveSupport::TestCase
       end
 
       it 'returns true if grades have been released' do
-        assignment.update! metrics_ready: true
+        assignment.update! grades_published: true
         assert_equal true, assignment.ready?
       end
 
       it 'returns false if the assignment is under construction' do
-        assignment.update! deliverables_ready: false, metrics_ready: false
+        assignment.update! deliverables_ready: false, grades_published: false
         assert_equal false, assignment.ready?
       end
     end
@@ -68,13 +68,13 @@ class AssignmentTest < ActiveSupport::TestCase
       end
 
       it 'lets any user view assignment if grades have been released' do
-        assignment.update! metrics_ready: true
+        assignment.update! grades_published: true
         assert_equal true, assignment.can_read?(any_user)
         assert_equal true, assignment.can_read?(nil)
       end
 
       it 'lets only admin view assignments under construction' do
-        assignment.update! deliverables_ready: false, metrics_ready: false
+        assignment.update! deliverables_ready: false, grades_published: false
         assert_equal true, assignment.can_read?(admin)
         assert_equal false, assignment.can_read?(any_user)
         assert_equal false, assignment.can_read?(nil)
@@ -416,7 +416,7 @@ class AssignmentTest < ActiveSupport::TestCase
     end
 
     it 'must state whether or not students can view their grades' do
-      @assignment.metrics_ready = nil
+      @assignment.grades_published = nil
       assert @assignment.invalid?
     end
 
@@ -520,7 +520,7 @@ class AssignmentTest < ActiveSupport::TestCase
       end
 
       it 'returns :graded if grades have been released' do
-        @assignment.metrics_ready = true
+        @assignment.grades_published = true
         assert_equal :graded, @assignment.ui_state_for(any_user)
       end
     end

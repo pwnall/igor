@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.decimal  "weight",                        precision: 16, scale: 8, null: false
     t.string   "name",               limit: 64,                          null: false
     t.boolean  "deliverables_ready",                                     null: false
-    t.boolean  "metrics_ready",                                          null: false
+    t.boolean  "grades_published",                                       null: false
     t.datetime "created_at",                                             null: false
     t.datetime "updated_at",                                             null: false
     t.index ["course_id", "name"], name: "index_assignments_on_course_id_and_name", unique: true, using: :btree

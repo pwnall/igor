@@ -9,7 +9,7 @@
 #  weight             :decimal(16, 8)   not null
 #  name               :string(64)       not null
 #  deliverables_ready :boolean          not null
-#  metrics_ready      :boolean          not null
+#  grades_published   :boolean          not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
@@ -21,7 +21,7 @@ ps1:
   team_partition: psets
   weight: 1.0
   deliverables_ready: true
-  metrics_ready: true
+  grades_published: true
 
 ps2:
   author: admin
@@ -30,7 +30,7 @@ ps2:
   team_partition: psets
   weight: 1.0
   deliverables_ready: false
-  metrics_ready: false
+  grades_published: false
 
 ps3:
   author: admin
@@ -39,7 +39,7 @@ ps3:
   team_partition: psets
   weight: 1.0
   deliverables_ready: false
-  metrics_ready: false
+  grades_published: false
 
 project:
   author: admin
@@ -48,7 +48,7 @@ project:
   team_partition: project
   weight: 5.0
   deliverables_ready: true
-  metrics_ready: true
+  grades_published: true
 
 # Use the same deadline as ps1, to test ordering by deadline and name.
 assessment:
@@ -57,13 +57,13 @@ assessment:
   name: Individual Assessment
   weight: 0.0
   deliverables_ready: true
-  metrics_ready: false
+  grades_published: false
 
-# Keep deliverables_ready and metrics_ready true to test read permissions.
+# Keep deliverables_ready and grades_published true to test read permissions.
 not_main_exam:
   author: admin
   course: not_main
   name: Quiz 1
   weight: 10.0
   deliverables_ready: true
-  metrics_ready: true
+  grades_published: true
