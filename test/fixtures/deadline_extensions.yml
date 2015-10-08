@@ -16,10 +16,10 @@ assessment_dexter:
   subject: assessment (Assignment)
   user: dexter
   grantor: main_staff
-  due_at: <%= 1.day.from_now.to_s(:db) %>
+  due_at: <%= 2.weeks.from_now.to_s(:db) %>
 
 assessment_deedee:
   subject: assessment (Assignment)
   user: deedee
   grantor: main_staff
-  due_at: <%= 2.days.from_now.to_s(:db) %>
+  due_at: <%= 3.weeks.from_now.to_s(:db) %>

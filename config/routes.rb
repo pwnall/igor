@@ -92,6 +92,9 @@ Rails.application.routes.draw do
     resources :assignments do
       member do
         get :dashboard
+        patch :publish
+        patch :unpublish
+        patch :publish_grades
       end
       resources :extensions, controller: :deadline_extensions,
           only: [:index, :create]

@@ -169,17 +169,12 @@ exams = exam_data.map.with_index do |data, index|
   exam = Assignment.new name: "Exam #{i}", weight: 5.0, author: admin
   exam.course = course
   exam.build_deadline due_at: (Time.current + data[:due_at]), course: course
-  exam.deliverables_ready = data[:state] != :draft
+  exam.published_at = exam.due_at - 1.week
   exam.grades_published = data[:grades_published]
   exam.save!
   (1..(5 + i)).map do |j|
     exam.metrics.build name: "Problem #{j}", weight: rand(20),
                        max_score: 6 + (i + j) % 6
-
-  end
-
-  unless exam.ui_state_for(admin) == data[:state]
-    raise "Exam #{i} seeding bug: #{data[:state]} / #{exam.ui_state_for(admin)}"
   end
   exam
 end
@@ -201,6 +196,12 @@ puts 'Exams created'
 
 # Psets.
 
+docker_analyzer_file = 'test/fixtures/files/analyzer/fib_small.zip'
+docker_analyzer_params = { type: 'DockerAnalyzer', map_time_limit: '2',
+    map_ram_limit: '1024', reduce_time_limit: '2', reduce_ram_limit: '1024',
+    auto_grading: rand(2), db_file_attributes: {
+    f: fixture_file_upload(docker_analyzer_file, 'application/zip', :binary) } }
+
 pset_data = [
   { due_at: -12.weeks - 1.day, grades_published: true, state: :graded },
   { due_at: -9.weeks - 1.day, grades_published: true, state: :graded },
@@ -217,7 +218,7 @@ psets = pset_data.map.with_index do |data, index|
   pset = Assignment.new name: "Problem Set #{i}", weight: 1.0, author: admin
   pset.course = course
   pset.build_deadline due_at: (Time.current + data[:due_at]), course: course
-  pset.deliverables_ready = data[:state] != :draft
+  pset.published_at = pset.due_at - 1.week
   pset.grades_published = data[:grades_published]
   pset.save!
   (1..(2 + i)).map do |j|
@@ -231,19 +232,10 @@ psets = pset_data.map.with_index do |data, index|
       analyzer_attributes: { type: 'ProcAnalyzer', message_name: 'analyze_pdf',
       auto_grading: true }
 
-  analyzer_file = 'test/fixtures/files/analyzer/fib_small.zip'
-  analyzer_params = { type: 'DockerAnalyzer', map_time_limit: '2',
-      map_ram_limit: '1024', reduce_time_limit: '2', reduce_ram_limit: '1024',
-      auto_grading: i % 2 == 0, db_file_attributes: {
-      f: fixture_file_upload(analyzer_file, 'application/zip', :binary) } }
-  py_deliverable = pset.deliverables.create! assignment: pset,
-      name: 'Fibonacci', file_ext: 'py',
+  py_deliverable = pset.deliverables.create! name: 'Fibonacci', file_ext: 'py',
       description: 'Please upload your modified fib.py.',
-      analyzer_attributes: analyzer_params
+      analyzer_attributes: docker_analyzer_params
 
-  unless pset.ui_state_for(admin) == data[:state]
-    raise "Pset #{i} seeding bug: #{data[:state]} / #{pset.ui_state_for(admin)}"
-  end
   pset
 end
 

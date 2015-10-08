@@ -49,4 +49,20 @@ module AssignmentsHelper
     } + content_tag(:span, title)
 
   end
+
+  # The confirmation message when unpublishing an assignment.
+  def unpublish_confirmation(assignment)
+    if assignment.grades_published? && assignment.grades.count > 0
+      'Any grades for this assignment will also be pulled. Continue?'
+    end
+  end
+
+  # The confirmation message when publishing grades for the given assignment.
+  #
+  # A message is shown only if the assignment has unreleased deliverables.
+  def publish_grades_confirmation(assignment)
+    if !assignment.published? && assignment.deliverables.count > 0
+      'The deliverables for this assignment will also be released. Continue?'
+    end
+  end
 end

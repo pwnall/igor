@@ -33,10 +33,12 @@ class AssignmentFileTest < ActiveSupport::TestCase
   describe '#can_read?' do
     let(:any_user) { User.new }
 
-    describe 'passed the release time' do
+    describe 'the release time has passed' do
       before { resource.update! published_at: 1.week.ago }
 
       describe 'the assignment has been released' do
+        before { assert_equal true, resource.assignment.published? }
+
         it 'lets any user view the file' do
           assert_equal true, resource.assignment.can_read?(any_user)
           assert_equal true, resource.can_read?(any_user)
@@ -45,7 +47,7 @@ class AssignmentFileTest < ActiveSupport::TestCase
       end
 
       describe 'the assignment has not been released yet' do
-        before { resource.update! assignment: assignments(:ps2) }
+        before { resource.update! assignment: assignments(:project) }
 
         it 'lets only course/site admins view the file' do
           assert_equal false, resource.assignment.can_read?(any_user)
@@ -56,7 +58,7 @@ class AssignmentFileTest < ActiveSupport::TestCase
       end
     end
 
-    describe 'release time not yet passed' do
+    describe 'the release time not passed yet' do
       before { resource.update! published_at: 1.week.from_now }
 
       it 'lets only course/site admins view the file' do

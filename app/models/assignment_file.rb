@@ -33,7 +33,7 @@ class AssignmentFile < ActiveRecord::Base
   # TODO(spark008): Add checks to this and other model permission methods to
   #     ensure that the user is a student registered for the course.
   def can_read?(user)
-    ((published_at < Time.current) && assignment.ready?) ||
+    ((published_at < Time.current) && assignment.published?) ||
         assignment.can_edit?(user)
   end
 end

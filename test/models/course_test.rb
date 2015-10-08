@@ -204,7 +204,7 @@ class CourseTest < ActiveSupport::TestCase
     describe '.most_relevant_assignment_for_graders' do
       describe 'there are assignments whose deadlines have passed' do
         it 'retrieves the assignment that was due most recently' do
-          assert_equal assignments(:ps3),
+          assert_equal assignments(:ps2),
                        course.most_relevant_assignment_for_graders
         end
       end
@@ -224,7 +224,8 @@ class CourseTest < ActiveSupport::TestCase
     describe '#assignments_for' do
       describe 'the given user is a site or course admin' do
         it 'returns all assignments for the course, ordered by deadline' do
-          golden = assignments(:project, :ps3, :assessment, :ps2,  :ps1)
+          golden = assignments(:project, :main_exam_2, :ps3, :assessment,
+                               :main_exam, :ps2,  :ps1)
           actual = course.assignments_for users(:admin)
           assert_equal golden, actual, actual.map(&:name)
         end
@@ -233,7 +234,7 @@ class CourseTest < ActiveSupport::TestCase
       describe 'the given user is not a site or course admin' do
         it 'returns assignments with released deliverables/grades, ordered by
             deadline' do
-          golden = assignments(:project, :assessment, :ps1)
+          golden = assignments(:assessment, :ps2, :ps1)
           actual = course.assignments_for users(:dexter)
           assert_equal golden, actual, actual.map(&:name)
         end

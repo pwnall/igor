@@ -19,6 +19,12 @@ proc_ps1_writeup:
   auto_grading: true
   message_name: analyze_pdf
 
+proc_ps3_writeup:
+  deliverable: ps3_writeup
+  type: ProcAnalyzer
+  auto_grading: true
+  message_name: analyze_pdf
+
 proc_project_writeup:
   deliverable: project_writeup
   type: ProcAnalyzer

@@ -5,13 +5,14 @@ class AssignmentTest < ActiveSupport::TestCase
     @due_at = 1.week.from_now
     @assignment = Assignment.new course: courses(:main), name: 'Final Exam',
         author: users(:main_staff), due_at: @due_at, weight: 50,
-        deliverables_ready: true, grades_published: false
+        published_at: 1.week.ago, grades_published: false
   end
 
   let(:assignment) { assignments(:assessment) }
   let(:student) { users(:dexter) }
   let(:any_user) { User.new }
   let(:admin) { users(:admin) }
+  let(:extension) { assignment.extensions.find_by user: student }
 
   it 'validates the setup assignment' do
     assert @assignment.valid?, @assignment.errors.full_messages
@@ -43,26 +44,9 @@ class AssignmentTest < ActiveSupport::TestCase
       assert @assignment.invalid?
     end
 
-    describe '#ready?' do
-      it 'returns true if deliverables have been released' do
-        assignment.update! deliverables_ready: true
-        assert_equal true, assignment.ready?
-      end
-
-      it 'returns true if grades have been released' do
-        assignment.update! grades_published: true
-        assert_equal true, assignment.ready?
-      end
-
-      it 'returns false if the assignment is under construction' do
-        assignment.update! deliverables_ready: false, grades_published: false
-        assert_equal false, assignment.ready?
-      end
-    end
-
     describe '#can_read?' do
       it 'lets any user view assignment if deliverables have been released' do
-        assignment.update! deliverables_ready: true
+        assert_equal true, assignment.published?
         assert_equal true, assignment.can_read?(any_user)
         assert_equal true, assignment.can_read?(nil)
       end
@@ -74,7 +58,7 @@ class AssignmentTest < ActiveSupport::TestCase
       end
 
       it 'lets only admin view assignments under construction' do
-        assignment.update! deliverables_ready: false, grades_published: false
+        assignment.update! published_at: 1.day.from_now, grades_published: false
         assert_equal true, assignment.can_read?(admin)
         assert_equal false, assignment.can_read?(any_user)
         assert_equal false, assignment.can_read?(nil)
@@ -82,14 +66,13 @@ class AssignmentTest < ActiveSupport::TestCase
     end
 
     describe '#can_submit?' do
-      describe ':deliverables_ready is true' do
-        before { assignment.update! deliverables_ready: true }
+      describe 'assignment is published' do
+        before { assert_equal true, assignment.published? }
 
         describe 'neither original deadline nor extension, if any, passed' do
           before do
             assignment.update! due_at: 1.day.from_now
-            deadline_extensions(:assessment_dexter).
-                update! due_at: 1.week.from_now
+            extension.update! due_at: 1.week.from_now
           end
 
           it 'lets any user submit' do
@@ -102,8 +85,8 @@ class AssignmentTest < ActiveSupport::TestCase
 
         describe 'original deadline passed but user has active extension' do
           before do
-            assert_operator assignment.due_at, :<, Time.current
-            assert_not_nil student.extensions.find_by subject: assignment
+            assignment.update! due_at: 1.week.ago
+            extension.update! due_at: 1.day.from_now
           end
 
           it 'lets the student submit' do
@@ -124,8 +107,8 @@ class AssignmentTest < ActiveSupport::TestCase
 
         describe 'both original deadline and extension, if any, have passed' do
           before do
-            deadline_extensions(:assessment_dexter).update! due_at: 1.day.ago
-            assert_operator assignment.deadline_for(student), :<, Time.current
+            assignment.update! due_at: 2.days.ago
+            extension.update! due_at: 1.day.ago
           end
 
           it 'lets only course/site admins submit' do
@@ -137,42 +120,12 @@ class AssignmentTest < ActiveSupport::TestCase
         end
       end
 
-      describe ':deliverables_ready is false' do
-        before { assignment.update! deliverables_ready: false }
+      describe 'assignment has not been published' do
+        before { assignment.update! published_at: 1.day.from_now }
 
         describe 'neither original deadline nor extension, if any, passed' do
           before do
-            assignment.update! due_at: 1.day.from_now
-            deadline_extensions(:assessment_dexter).
-                update! due_at: 1.week.from_now
-          end
-
-          it 'lets only course/site admins submit' do
-            assert_equal false, assignment.can_submit?(student)
-            assert_equal false, assignment.can_submit?(nil)
-            assert_equal true, assignment.can_submit?(users(:main_staff))
-            assert_equal true, assignment.can_submit?(admin)
-          end
-        end
-
-        describe 'original deadline passed but user has active extension' do
-          before do
-            assert_operator assignment.due_at, :<, Time.current
-            assert_not_nil student.extensions.find_by subject: assignment
-          end
-
-          it 'lets only course/site admins submit' do
-            assert_equal false, assignment.can_submit?(student)
-            assert_equal false, assignment.can_submit?(nil)
-            assert_equal true, assignment.can_submit?(users(:main_staff))
-            assert_equal true, assignment.can_submit?(admin)
-          end
-        end
-
-        describe 'both original deadline and extension, if any, have passed' do
-          before do
-            deadline_extensions(:assessment_dexter).update! due_at: 1.day.ago
-            assert_operator assignment.deadline_for(student), :<, Time.current
+            assert_equal false, assignment.deadline_passed_for?(student)
           end
 
           it 'lets only course/site admins submit' do
@@ -211,7 +164,8 @@ class AssignmentTest < ActiveSupport::TestCase
 
       describe 'by_deadline scope' do
         it 'sorts assignments by ascending deadline, then by name' do
-          golden = assignments(:project, :ps3, :assessment, :ps2, :ps1)
+          golden = assignments(:project, :main_exam_2, :ps3, :assessment,
+                               :main_exam, :ps2, :ps1)
           actual = courses(:main).assignments.by_deadline
           assert_equal golden, actual, actual.map(&:name)
         end
@@ -273,8 +227,6 @@ class AssignmentTest < ActiveSupport::TestCase
       end
 
       describe 'student has an extension' do
-        let(:extension) { assignment.extensions.find_by user: student }
-
         describe '#deadline_for' do
           it 'returns the extended due date' do
             assert_equal extension.due_at, assignment.deadline_for(student)
@@ -287,9 +239,12 @@ class AssignmentTest < ActiveSupport::TestCase
 
         describe '#deadline_passed_for?' do
           describe 'only the original deadline has passed' do
+            before do
+              assignment.update! due_at: 2.days.ago
+              extension.update! due_at: 1.day.from_now
+            end
+
             it 'returns false' do
-              assert_operator assignment.due_at, :<, Time.current
-              assert_operator Time.current, :<, extension.due_at
               assert_equal false, assignment.deadline_passed_for?(student)
             end
 
@@ -299,11 +254,12 @@ class AssignmentTest < ActiveSupport::TestCase
           end
 
           describe 'both the original and extended deadlines have passed' do
-            before { extension.update! due_at: 1.day.ago }
+            before do
+              assignment.update! due_at: 2.days.ago
+              extension.update! due_at: 1.day.ago
+            end
 
             it 'returns true' do
-              assert_operator assignment.due_at, :<, Time.current
-              assert_operator extension.due_at, :<, Time.current
               assert_equal true, assignment.deadline_passed_for?(student)
             end
 
@@ -319,8 +275,6 @@ class AssignmentTest < ActiveSupport::TestCase
             end
 
             it 'returns false' do
-              assert_operator Time.current, :<, assignment.due_at
-              assert_operator Time.current, :<, extension.due_at
               assert_equal false, assignment.deadline_passed_for?(student)
             end
 
@@ -330,11 +284,6 @@ class AssignmentTest < ActiveSupport::TestCase
           end
         end
       end
-    end
-
-    it 'must state whether or not students can access deliverables' do
-      @assignment.deliverables_ready = nil
-      assert_equal false, @assignment.valid?
     end
 
     it 'destroys dependent records' do
@@ -377,16 +326,16 @@ class AssignmentTest < ActiveSupport::TestCase
     describe '#deliverables_for' do
       let(:golden) { deliverables(:assessment_writeup, :assessment_code) }
 
-      describe ':deliverables_ready is true' do
+      describe 'assignment is published' do
         it 'returns all deliverables' do
-          assignment.update! deliverables_ready: true
+          assert_equal true, assignment.published?
           actual = assignment.deliverables_for(any_user).sort_by(&:name)
           assert_equal golden, actual, actual.map(&:name)
         end
       end
 
-      describe ':deliverables_ready is false' do
-        before { assignment.update! deliverables_ready: false }
+      describe 'assignment has not been published' do
+        before { assignment.update! published_at: 1.day.from_now }
 
         it 'returns an empty collection for non-admin users' do
           assert_empty assignment.deliverables_for(any_user)
@@ -413,6 +362,79 @@ class AssignmentTest < ActiveSupport::TestCase
     it 'rejects negative weights' do
       @assignment.weight = -5
       assert @assignment.invalid?
+    end
+
+    describe 'grades have not been published yet' do
+      before { assert_equal false, @assignment.grades_published }
+
+      it 'does not require a release date' do
+        @assignment.published_at = nil
+        assert @assignment.valid?
+      end
+
+      it 'requires the release date to occur before the base deadline' do
+        @assignment.published_at = @assignment.due_at + 1.day
+        assert @assignment.invalid?
+      end
+    end
+
+    describe 'grades have been released' do
+      before { @assignment.grades_published = true }
+
+      it 'requires a release date' do
+        @assignment.published_at = nil
+        assert @assignment.invalid?
+      end
+
+      it 'requires the release date to occur before the base deadline' do
+        @assignment.published_at = @assignment.due_at + 1.day
+        assert @assignment.invalid?
+      end
+
+      it 'requires the release date to have passed' do
+        @assignment.published_at = 1.day.from_now
+        @assignment.grades_published = true
+        assert @assignment.invalid?
+      end
+    end
+
+    describe '#act_on_reset_published_at' do
+      describe 'publish date has not been set yet' do
+        before { assignment.update! published_at: nil }
+
+        it 'updates the publish date if :reset_publish_date is false' do
+          published_at = 1.day.from_now
+          assignment.update! published_at: published_at,
+                             reset_publish_date: '0'
+          assert_equal published_at, assignment.published_at
+        end
+
+        it 'overrides :published_at update if :reset_publish_date is true' do
+          assignment.update! published_at: 1.day.from_now,
+                             reset_publish_date: '1'
+          assert_nil assignment.published_at
+        end
+      end
+
+      describe 'publish date has been set' do
+        before { assert_not_nil assignment.published_at }
+
+        it 'nullifies the publish date if :reset_publish_date is true' do
+          assignment.update! reset_publish_date: '1'
+          assert_nil assignment.published_at
+        end
+
+        it 'overrides :published_at update if :reset_publish_date is true' do
+          assignment.update! published_at: 1.year.ago, reset_publish_date: '1'
+          assert_nil assignment.published_at
+        end
+
+        it 'does not change :published_at if :reset_publish_date is false' do
+          published_at = assignment.published_at
+          assignment.update! reset_publish_date: '0'
+          assert_equal published_at, assignment.published_at
+        end
+      end
     end
 
     it 'must state whether or not students can view their grades' do
@@ -460,6 +482,47 @@ class AssignmentTest < ActiveSupport::TestCase
       end
     end
 
+    describe '#reset_publish_date' do
+      it 'returns true if the author has not chosen a release date' do
+        assignment.update! published_at: nil
+        assert_equal true, assignment.reload.reset_publish_date
+      end
+
+      it 'returns false if the author has chosen a release date' do
+        assert_not_nil assignment.published_at
+        assert_equal false, assignment.reload.reset_publish_date
+      end
+    end
+
+    describe '#reset_publish_date=' do
+      it "sets :reset_publish_date to true if the argument is '1'" do
+        assert_equal false, assignment.reset_publish_date
+        assignment.update! reset_publish_date: '1'
+        assert_equal true, assignment.reload.reset_publish_date
+      end
+
+      it "sets :reset_publish_date to false if the argument is '0' and a
+          new publish date is provided" do
+        assignment.update! published_at: nil
+        assert_equal true, assignment.reset_publish_date
+        assignment.update! published_at: 1.day.from_now,
+                           reset_publish_date: '0'
+        assert_equal false, assignment.reload.reset_publish_date
+      end
+    end
+
+    describe '#published?' do
+      it 'returns true if the deliverables have been released' do
+        assert_operator assignment.published_at, :<, Time.current
+        assert_equal true, assignment.published?
+      end
+
+      it 'returns false if the deliverables have not been released' do
+        @assignment.published_at = 1.day.from_now
+        assert_equal false, @assignment.published?
+      end
+    end
+
     describe '#expected_grades' do
       it 'returns the number of metrics x number of enrolled students' do
         assert_equal 2, assignment.metrics.count
@@ -498,30 +561,54 @@ class AssignmentTest < ActiveSupport::TestCase
 
   describe 'lifecycle' do
     describe '#ui_state_for' do
-      it 'returns :draft for assignments under construction' do
-        @assignment.deliverables_ready = false
-        assert_equal :draft, @assignment.ui_state_for(any_user)
+      describe 'deliverables not published' do
+        before do
+          assignment.update! published_at: 1.week.from_now,
+              due_at: 2.weeks.from_now, grades_published: false
+        end
+
+        it 'returns :draft' do
+          assert_equal :draft, assignment.reload.ui_state_for(student)
+        end
       end
 
-      it 'returns :open if accepting submissions and deliverables exist' do
-        @assignment.deliverables.build
-        assert_equal true, @assignment.deliverables.any?
-        assert_equal :open, @assignment.ui_state_for(any_user)
-      end
+      describe 'deliverables have been published' do
+        before { assert_operator assignment.published_at, :<, Time.current }
 
-      it 'returns :grading if :open, but the deliverables are missing' do
-        assert_empty @assignment.deliverables
-        assert_equal :grading, @assignment.ui_state_for(any_user)
-      end
+        describe 'grades not ready yet' do
+          before { assert_equal false, assignment.grades_published? }
 
-      it 'returns :grading if the deadline passed and grades are not ready' do
-        @assignment.due_at = 1.week.ago
-        assert_equal :grading, @assignment.ui_state_for(any_user)
-      end
+          describe 'deadline has not passed yet for the user' do
+            before do
+              assert_equal false, assignment.deadline_passed_for?(student)
+            end
 
-      it 'returns :graded if grades have been released' do
-        @assignment.grades_published = true
-        assert_equal :graded, @assignment.ui_state_for(any_user)
+            it 'returns :open' do
+              assert_equal :open, assignment.ui_state_for(student)
+            end
+          end
+
+          describe 'deadline has passed for the user' do
+            before do
+              assignment.update! due_at: 2.days.ago
+              extension.update! due_at: 1.day.ago
+            end
+
+            it 'returns :grading' do
+              assert_equal :grading, assignment.reload.ui_state_for(student)
+            end
+          end
+        end
+
+        describe 'grades have been released' do
+          before do
+            assignment.update! due_at: 1.day.ago, grades_published: true
+          end
+
+          it 'returns :graded' do
+            assert_equal :graded, assignment.reload.ui_state_for(student)
+          end
+        end
       end
     end
   end

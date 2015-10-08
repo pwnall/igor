@@ -4,7 +4,8 @@ class AssignmentsController < ApplicationController
   before_action :set_current_course
   before_action :authenticated_as_course_editor, except: [:index, :show]
   before_action :authenticated_as_user, only: [:index, :show]
-  before_action :set_assignment, only: [:show, :edit, :update, :destroy]
+  before_action :set_assignment, only: [:show, :edit, :update, :destroy,
+      :publish, :unpublish, :publish_grades]
 
   # GET /6.006/assignments
   # GET /6.006/assignments.json
@@ -55,7 +56,6 @@ class AssignmentsController < ApplicationController
   def create
     @assignment = Assignment.new assignment_params
     @assignment.course = current_course
-    @assignment.deliverables_ready = false
     @assignment.grades_published = false
 
     respond_to do |format|
@@ -99,6 +99,69 @@ class AssignmentsController < ApplicationController
     end
   end
 
+  # PATCH /6.006/assignments/1/publish
+  def publish
+    respond_to do |format|
+      if @assignment.update published_at: Time.current
+        format.html do
+          redirect_to dashboard_assignment_url(@assignment,
+                                               course_id: @assignment.course),
+              notice: 'Assignment released.'
+        end
+      else
+        format.html do
+          redirect_to dashboard_assignment_url(@assignment,
+                                               course_id: @assignment.course),
+              notice: 'Assignment could not be released.'
+        end
+      end
+    end
+  end
+
+  # PATCH /6.006/assignments/1/unpublish
+  def unpublish
+    @assignment.published_at = nil
+    @assignment.grades_published = false
+
+    respond_to do |format|
+      if @assignment.save
+        format.html do
+          redirect_to dashboard_assignment_url(@assignment,
+                                               course_id: @assignment.course),
+              notice: 'Assignment pulled.'
+        end
+      else
+        format.html do
+          redirect_to dashboard_assignment_url(@assignment,
+                                               course_id: @assignment.course),
+              notice: 'Assignment could not be pulled.'
+        end
+      end
+    end
+  end
+
+  # PATCH /6.006/assignments/1/publish_grades
+  def publish_grades
+    @assignment.published_at = Time.current unless @assignment.published?
+    @assignment.grades_published = true
+
+    respond_to do |format|
+      if @assignment.save
+        format.html do
+          redirect_to dashboard_assignment_url(@assignment,
+                                               course_id: @assignment.course),
+              notice: 'Grades released.'
+        end
+      else
+        format.html do
+          redirect_to dashboard_assignment_url(@assignment,
+                                               course_id: @assignment.course),
+              notice: 'Grades could not be released.'
+        end
+      end
+    end
+  end
+
   def set_assignment
     @assignment = current_course.assignments.find params[:id]
   end
@@ -110,7 +173,7 @@ class AssignmentsController < ApplicationController
   def assignment_params
     params.require(:assignment).permit :name, :due_at, :weight, :author_id,
         :team_partition_id, :feedback_survey_id,
-        :deliverables_ready, :grades_published,
+        :published_at, :reset_publish_date, :grades_published,
         deliverables_attributes: [:name, :file_ext, :_destroy,
             :description, :id, { analyzer_attributes: [:id, :type,
                 :message_name, :auto_grading, :time_limit, :ram_limit,
