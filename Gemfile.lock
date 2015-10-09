@@ -195,7 +195,7 @@ GEM
       execjs
     coffee-script-source (1.9.1.1)
     concurrent-ruby (1.0.0.pre2)
-    contained_mr (0.2.0)
+    contained_mr (0.3.1)
       docker-api (>= 1.22.4)
       rubyzip (>= 1.1.7)
     creole (0.5.0)
@@ -365,7 +365,7 @@ DEPENDENCIES
   byebug
   capybara (>= 2.5.0)
   coffee-rails!
-  contained_mr (>= 0.2.0)
+  contained_mr (>= 0.3.1)
   delayed_job (>= 4.0.6)!
   delayed_job_active_record (>= 4.0.3)!
   dynamic_form (>= 1.1.4)

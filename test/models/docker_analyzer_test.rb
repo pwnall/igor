@@ -176,9 +176,13 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
       job = @analyzer.run_submission submissions(:dexter_code)
 
       assert_equal 2, job.mapper_runner(1)._ulimit('cpu')
-      assert_equal 128 * 256, job.mapper_runner(1)._ulimit('rss')
+      assert_equal 128, job.mapper_runner(1)._ram_limit
+      assert_equal 0, job.mapper_runner(1)._swap_limit
+      assert_equal 1, job.mapper_runner(1)._vcpus
       assert_equal 3, job.reducer_runner._ulimit('cpu')
-      assert_equal 1024 * 256, job.reducer_runner._ulimit('rss')
+      assert_equal 1024, job.reducer_runner._ram_limit
+      assert_equal 0, job.reducer_runner._swap_limit
+      assert_equal 1, job.reducer_runner._vcpus
     end
 
     it 'provides the correct job input' do

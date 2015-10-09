@@ -64,12 +64,16 @@ class DockerAnalyzer < Analyzer
     job_options = {
       'mapper' => {
         'wait_time' => map_time_limit.to_f,
-        'ulimits' => { 'cpu' => map_time_limit.to_f.ceil,
-                       'rss' => map_ram_limit.to_i * 256 } },
+        'ram' => map_ram_limit.to_f,
+        'swap' => 0,
+        'vcpus' => 1,
+        'ulimits' => { 'cpu' => map_time_limit.to_f.ceil } },
       'reducer' => {
         'wait_time' => reduce_time_limit.to_f,
-        'ulimits' => { 'cpu' => reduce_time_limit.to_f.ceil,
-                       'rss' => reduce_ram_limit.to_i * 256 } },
+        'ram' => reduce_ram_limit.to_f,
+        'swap' => 0,
+        'vcpus' => 1,
+        'ulimits' => { 'cpu' => reduce_time_limit.to_f.ceil } },
     }
 
     # NOTE: We release the ActiveRecord connection because we won't use it for

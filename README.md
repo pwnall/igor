@@ -39,6 +39,13 @@ docker-machine create --driver virtualbox dev
 eval "$(docker-machine env dev)"
 ```
 
+### OpenStack
+
+The deployment receipes include an OpenStack bring-up playbook.
+[TryStack](http://trystack.openstack.org/) is a public OpenStack cluster
+intended for testing, and therefore can be used to test out any playbook
+changes.
+
 
 ## Installation
 
