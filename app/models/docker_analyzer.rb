@@ -49,8 +49,8 @@ class DockerAnalyzer < Analyzer
     if auto_grading?
       update_grades submission, json_grades
     end
-    analysis.log = mr_job.reducer_runner.stdout || ''
-    analysis.private_log = mr_job.reducer_runner.stderr || ''
+    analysis.log = mr_job.reducer_runner.stdout
+    analysis.private_log = mr_job.reducer_runner.stderr
     analysis.save!
   end
 

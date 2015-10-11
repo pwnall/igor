@@ -35,23 +35,37 @@ class AnalysisTest < ActiveSupport::TestCase
   end
 
   it 'requires a log' do
-    @analysis.log = nil
+    @analysis.write_attribute :log, nil
     assert @analysis.invalid?
   end
 
   it 'rejects lengthy logs' do
-    @analysis.log = 'l' * (Analysis::LOG_LIMIT + 1)
+    @analysis.write_attribute :log, 'l' * (Analysis::LOG_LIMIT + 1)
     assert @analysis.invalid?
   end
 
   it 'requires a private log' do
-    @analysis.private_log = nil
+    @analysis.write_attribute :private_log, nil
     assert @analysis.invalid?
   end
 
   it 'rejects lengthy private logs' do
-    @analysis.private_log = 'l' * (Analysis::LOG_LIMIT + 1)
+    @analysis.write_attribute :private_log, 'l' * (Analysis::LOG_LIMIT + 1)
     assert @analysis.invalid?
+  end
+
+  describe '#log=' do
+    it 'uses truncate_log' do
+      @analysis.log = nil
+      assert_equal '(no output)', @analysis.log
+    end
+  end
+
+  describe '#private_log=' do
+    it 'uses truncate_log' do
+      @analysis.private_log = nil
+      assert_equal '(no output)', @analysis.private_log
+    end
   end
 
   describe '#can_read?' do
@@ -172,6 +186,25 @@ class AnalysisTest < ActiveSupport::TestCase
       assert_equal '', analysis.log
       assert_equal '', analysis.private_log
       assert_nil analysis.score
+    end
+  end
+
+  describe '.truncate_log' do
+    it 'handles nil' do
+      assert_equal '(no output)', Analysis.truncate_log(nil)
+    end
+
+    it 'lets normal output pass through' do
+      assert_equal "Hello world!\n", Analysis.truncate_log("Hello world!\n")
+    end
+
+    it 'truncates overly long output' do
+      long_log = "Hello world!\n" * 10000
+      truncated_log = Analysis.truncate_log long_log
+
+      assert_operator truncated_log.length, :<=, Analysis::LOG_LIMIT
+      assert_operator truncated_log, :end_with?, "\n---\n(truncated)"
+      assert_equal long_log[0...10000], truncated_log[0...10000]
     end
   end
 end

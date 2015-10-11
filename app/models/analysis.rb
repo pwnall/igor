@@ -24,12 +24,24 @@ class Analysis < ActiveRecord::Base
   validates :score, numericality: { integer_only: true,
       greater_than_or_equal_to: 0, allow_nil: true }
 
-  # The analyzer's public logging output. This is shown to students.
+  # Applies to both the private and the public log.
   LOG_LIMIT = 64.kilobytes
+
+  # The analyzer's public logging output. This is shown to students.
   validates :log, length: { in: 0..LOG_LIMIT, allow_nil: false }
 
   # The analyzer's private logging output. This is only shown to staff.
   validates :private_log, length: { in: 0..LOG_LIMIT, allow_nil: false }
+
+  # :nodoc: Papers over logging edge cases.
+  def log=(new_log)
+    super Analysis.truncate_log(new_log)
+  end
+
+  # :nodoc: Papers over logging edge cases.
+  def private_log=(new_private_log)
+    super Analysis.truncate_log(new_private_log)
+  end
 
   # The course whose submission was analyzed.
   has_one :course, through: :submission
@@ -45,6 +57,19 @@ class Analysis < ActiveRecord::Base
   # True if the given user is allowed to see the analyzer's private log.
   def can_read_private_log?(user)
     course.can_edit? user
+  end
+
+  # Handles edge cases in logging output.
+  #
+  # @param {String?} original_log raw logging output
+  # @return {String} a value suitable for being saved
+  def self.truncate_log(original_log)
+    log = original_log
+    log = '(no output)' if log.nil?
+    if log.length > LOG_LIMIT
+      log = log[0...(LOG_LIMIT - 16)] + "\n---\n(truncated)"
+    end
+    log
   end
 end
 
