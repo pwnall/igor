@@ -61,10 +61,7 @@
   when: has_firewalld != False
   become: true
   become_user: root
-  firewalld: service={{ item }} state=enabled immediate=yes permanent=yes
-  with_items:
-  - etcd-client
-  - etcd-service
+  firewalld: port=2379/tcp state=enabled immediate=yes permanent=yes
 
 # NOTE: Other roles rely on etcd being up and configured correctly.
 - meta: flush_handlers

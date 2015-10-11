@@ -54,7 +54,10 @@
   when: has_firewalld != False
   become: true
   become_user: root
-  firewalld: service=domain state=enabled immediate=yes permanent=yes
+  firewalld: port={{ item }} state=enabled immediate=yes permanent=yes
+  with_items:
+  - "53/tcp"
+  - "53/udp"
 
 # NOTE: Other roles rely on skydns being up and configured correctly.
 - meta: flush_handlers
