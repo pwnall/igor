@@ -48,7 +48,7 @@ gem 'prawn', '>= 2.0.2'
 gem 'prawn-table', '>= 0.2.2'
 
 # Instant feedback.
-gem 'contained_mr', '>= 0.3.1'
+gem 'contained_mr', '>= 0.3.3'
 #gem 'contained_mr', '>= 0.1.2', path: '../contained_mr'
 gem 'exec_sandbox', '>= 0.3.0'
 gem 'pdf-reader', '>= 1.3.3'
