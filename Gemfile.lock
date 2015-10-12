@@ -40,7 +40,7 @@ GIT
 
 GIT
   remote: https://github.com/rack/rack
-  revision: 028438ffffd95ce1f6197d38c04fa5ea6a034a85
+  revision: 6216a3f8a3560639ee1ddadc1e0d6bf9e5f31830
   branch: master
   specs:
     rack (2.0.0.alpha)
@@ -48,7 +48,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/arel
-  revision: 77ec13b46af2926bfcfc3073685711c874b0d272
+  revision: 3c429c5d86e9e2201c2a35d934ca6a8911c18e69
   branch: master
   specs:
     arel (7.0.0.alpha)
@@ -64,7 +64,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/rails
-  revision: 9b16b49977125e767b5cb0c1d533ff7c173a2b6e
+  revision: 97cdab0680dfa5856f8ec3dfa85e7fafc7f334ae
   branch: master
   specs:
     actionmailer (5.0.0.alpha)
@@ -97,7 +97,7 @@ GIT
       activesupport (= 5.0.0.alpha)
       arel (= 7.0.0.alpha)
     activesupport (5.0.0.alpha)
-      concurrent-ruby (~> 1.0.0.pre2, < 2.0.0)
+      concurrent-ruby (~> 1.0.0.pre3, < 2.0.0)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       method_source
@@ -134,18 +134,18 @@ GIT
 
 GIT
   remote: https://github.com/rails/sprockets
-  revision: d2bf0613d7bdc40225a663e65694332af59e53b0
+  revision: 2d30e546872f6f4c5361fe19c2d89b15c5db2dd4
   branch: master
   specs:
     sprockets (4.0.0)
-      rack (> 1, < 3)
+      rack (>= 1, < 3)
 
 GIT
   remote: https://github.com/rails/sprockets-rails
-  revision: 246228146a27a2b9592341e0de0293a78e42d554
+  revision: 93a45b1c463a063ec7cf4d160107b67aa3db7a1a
   branch: master
   specs:
-    sprockets-rails (3.0.0.beta2)
+    sprockets-rails (3.0.0.beta3)
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
@@ -194,7 +194,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
-    concurrent-ruby (1.0.0.pre2)
+    concurrent-ruby (1.0.0.pre4)
     contained_mr (0.3.3)
       docker-api (>= 1.22.4)
       rubyzip (>= 1.1.7)
@@ -227,7 +227,7 @@ GEM
     hashery (2.1.1)
     htmlentities (4.3.4)
     i18n (0.7.0)
-    jbuilder (2.3.1)
+    jbuilder (2.3.2)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     jc-validates_timeliness (3.1.1)
@@ -283,7 +283,7 @@ GEM
       ruby-rc4
       ttfunk
     pg (0.18.3)
-    poltergeist (1.6.0)
+    poltergeist (1.7.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
       multi_json (~> 1.0)
@@ -314,11 +314,11 @@ GEM
       loofah (~> 2.0)
     rake (10.4.2)
     rdoc (4.2.0)
-    redcarpet (3.3.2)
+    redcarpet (3.3.3)
     rmagick (2.15.4)
     ruby-rc4 (0.1.5)
     rubypants (0.2.0)
-    sass (3.4.18)
+    sass (3.4.19)
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
