@@ -34,7 +34,7 @@ gem 'rack-noie', '>= 1.0', require: 'noie',
 gem 'rmagick', '>= 2.15.4'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
-gem 'puma', '>= 2.13.4', require: false
+gem 'puma', '>= 2.14.0', require: false
 
 # Background processing.
 gem 'delayed_job', '>= 4.0.6',
@@ -48,7 +48,7 @@ gem 'prawn', '>= 2.0.2'
 gem 'prawn-table', '>= 0.2.2'
 
 # Instant feedback.
-gem 'contained_mr', '>= 0.3.3'
+gem 'contained_mr', '>= 0.3.4'
 #gem 'contained_mr', '>= 0.1.2', path: '../contained_mr'
 gem 'exec_sandbox', '>= 0.3.0'
 gem 'pdf-reader', '>= 1.3.3'

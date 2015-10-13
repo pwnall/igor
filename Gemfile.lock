@@ -64,7 +64,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/rails
-  revision: 97cdab0680dfa5856f8ec3dfa85e7fafc7f334ae
+  revision: 256097cb570fa31ca7b8140009ebd632a430b8cb
   branch: master
   specs:
     actionmailer (5.0.0.alpha)
@@ -195,7 +195,7 @@ GEM
       execjs
     coffee-script-source (1.9.1.1)
     concurrent-ruby (1.0.0.pre4)
-    contained_mr (0.3.3)
+    contained_mr (0.3.4)
       docker-api (>= 1.22.4)
       rubyzip (>= 1.1.7)
     creole (0.5.0)
@@ -365,7 +365,7 @@ DEPENDENCIES
   byebug
   capybara (>= 2.5.0)
   coffee-rails!
-  contained_mr (>= 0.3.3)
+  contained_mr (>= 0.3.4)
   delayed_job (>= 4.0.6)!
   delayed_job_active_record (>= 4.0.3)!
   dynamic_form (>= 1.1.4)
@@ -391,7 +391,7 @@ DEPENDENCIES
   poltergeist (>= 1.6.0)
   prawn (>= 2.0.2)
   prawn-table (>= 0.2.2)
-  puma (>= 2.13.4)
+  puma (>= 2.14.0)
   pwnstyles_rails (>= 0.2.4)
   rack!
   rack-noie (>= 1.0)!
