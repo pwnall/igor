@@ -32,6 +32,7 @@
   #       masters should not accept scheduling requests from Swarm.
   #       Also, we can run a swarm master on the same node as a worker, as long
   #       as the master's Docker daemon is not exposed.
+  - docker_swarm_master
   - docker_client_keys  # NOTE: The keys come in handy for cluster debugging.
 
 - hosts: "{{ prod_worker_group_name }}"

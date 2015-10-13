@@ -1,0 +1,28 @@
+[Unit]
+Description=Docker Swarm Master
+After=docker.service skydns-update@{{ skydns_name }}.service
+Requires=docker.service
+Wants=skydns-update@{{ skydns_name }}.service
+
+[Service]
+Type=simple
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill docker-swarm-master
+ExecStartPre=-/usr/bin/docker rm docker-swarm-master
+ExecStartPre=/usr/bin/docker pull swarm
+ExecStart=/usr/bin/docker run --name docker-swarm-master --publish=3376:2375 \
+    --volume=/etc/docker-swarm-master:/etc/docker-swarm swarm manage \
+    --advertise=swarm-master1.skydns.local:3376 \
+    --cluster-driver=swarm --strategy=spread --filter=health --filter=port \
+    --filter=affinity --filter=constraint --filter=dependency \
+    --tlsverify --tlscacert=/etc/docker-swarm/ca.pem \
+    --tlskey=/etc/docker-swarm/key.pem --tlscert=/etc/docker-swarm/cert.pem \
+    --host=tcp://0.0.0.0:2375 file:///etc/docker-swarm/cluster
+Restart=always
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

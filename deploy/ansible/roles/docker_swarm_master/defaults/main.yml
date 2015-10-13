@@ -1,0 +1,3 @@
+---
+# The Ansible group that contains the Docker workers.
+docker_worker_group_name: "{{ prod_worker_group_name }}"

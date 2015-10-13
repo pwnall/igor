@@ -23,7 +23,7 @@
   - "443"    # HTTPS
   - "2376"   # Docker over TLS
   - "2379"   # etcd
-  - "22376"  # Docker Swarm, non-standard.
+  - "3376"   # Docker Swarm, non-standard.
 
 - name: add public UDP ports to security group
   os_security_group_rule:

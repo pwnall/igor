@@ -32,7 +32,7 @@ brew install docker docker-machine imagemagick libxml2 libxslt openssl \
 brew link --force openssl
 brew install ansible --HEAD
 brew install caskroom/cask/brew-cask
-brew cask install vagrant virtualbox
+brew cask install osxfuse vagrant virtualbox
 docker-machine create --driver virtualbox dev
 
 # The command below shows up when you run docker-machine env dev.

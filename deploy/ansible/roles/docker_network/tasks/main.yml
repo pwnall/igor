@@ -51,8 +51,8 @@
   notify:
   - restart docker daemon
 
-- name: open secure docker in firewalld
+- name: open secure docker port in firewalld
   when: has_firewalld != False
   become: true
   become_user: root
-  firewalld: service=docker-s state=enabled immediate=yes permanent=yes
+  firewalld: port=2376/tcp state=enabled immediate=yes permanent=yes

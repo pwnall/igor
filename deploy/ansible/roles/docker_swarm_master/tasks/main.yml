@@ -1,0 +1,76 @@
+---
+# Sets up docker-swarm for the master node.
+
+- name: create /etc/docker-swarm-master directory
+  become: true
+  become_user: root
+  file: path=/etc/docker-swarm-master state=directory mode=0755
+
+- name: copy cluster CA certificate
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_ca.cert.pem
+    dest: /etc/docker-swarm-master/ca.pem
+    mode: 0644
+  notify:
+  - restart docker swarm master
+
+- name: copy docker swarm master TLS certificate
+  become: true
+  become_user: root
+  copy:
+    src:
+      ../keys/{{ os_prefix }}/cluster_docker_swarm-master1.cert.pem
+    dest: /etc/docker-swarm-master/cert.pem
+    mode: 0644
+  notify:
+  - restart docker swarm master
+
+- name: copy docker swarm master TLS key
+  become: true
+  become_user: root
+  copy:
+    src:
+      ../keys/{{ os_prefix }}/cluster_docker_swarm-master1.key.pem
+    dest: /etc/docker-swarm-master/key.pem
+    mode: 0600
+    owner: root
+    group: root
+  notify:
+  - restart docker swarm master
+
+- name: write swarm cluster description
+  become: true
+  become_user: root
+  template:
+    src: cluster.j2
+    dest: /etc/docker-swarm-master/cluster
+
+- name: write docker-swarm master systemd unit
+  become: true
+  become_user: root
+  template:
+    src: docker_swarm_master_service.j2
+    dest: /etc/systemd/system/docker-swarm-master.service
+  register: swarm_master_systemd_service_result
+  notify:
+  - restart docker swarm master
+
+- name: reload systemd configuration
+  command: systemctl daemon-reload
+  become: true
+  become_user: root
+  when: swarm_master_systemd_service_result | changed
+
+- name: enable and start docker-swarm master
+  become: true
+  become_user: root
+  service: name=docker-swarm-master enabled=yes state=started
+
+- name: open docker swarm port in firewalld
+  when: has_firewalld != False
+  become: true
+  become_user: root
+  firewalld: port=3376/tcp state=enabled immediate=yes permanent=yes
+

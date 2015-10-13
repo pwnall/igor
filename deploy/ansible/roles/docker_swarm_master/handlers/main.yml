@@ -1,0 +1,5 @@
+---
+- name: restart docker swarm master
+  become: true
+  become_user: root
+  service: name=docker-swarm-master state=restarted
