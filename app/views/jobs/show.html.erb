@@ -43,8 +43,10 @@
   </tbody>
 </table>
 
-<h3>Last Error</h3>
-<p><%= @job.last_error %></p>
-
 <h3>Handler Information</h3>
 <div class="markdpwn-parsed-code"><%= @job.handler %></div>
+
+<% if @job.last_error %>
+<h3>Last Error</h3>
+<div class="markdpwn-parsed-code"><%= @job.last_error %></div>
+<% end %>

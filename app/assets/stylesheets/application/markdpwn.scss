@@ -49,6 +49,7 @@ $pre-color: $base1 !default;
 // Code highlighting for solarized.
 
 div.markdpwn-parsed-code {
+  overflow-x: auto;
   font-family: "Source Code Pro", monospace;
   font-size: 0.8em;
   padding: 0.5em 0.5em;
