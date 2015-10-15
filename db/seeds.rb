@@ -10,8 +10,9 @@ puts 'Starting seeds'
 SmtpServer.destroy_all
 SmtpServer.create! host: 'smtp.gmail.com', port: 587, domain: 'gmail.com',
     user_name: 'seven.dev.mailer@gmail.com',
-    password: 'JC0VORvIGIMFwIkrF6dUJA', auth_kind: 'plain',
-    auto_starttls: true
+    password: 'JC0VORvIGIMFwIkrF6dUJA',
+    from: '"Seven Dev Mailer" <seven.dev.mailer@gmail.com>',
+    auth_kind: 'plain', auto_starttls: true
 
 puts 'Infrastructure created'
 

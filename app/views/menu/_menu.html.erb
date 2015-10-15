@@ -3,9 +3,10 @@
 <li>
   <%= link_to current_user do %>
     <%= user_image_tag current_user %>
-    <span>
-      <%= current_user.name %> &#x25bc;
+    <span class="current-user-name">
+      <%= current_user.name %>
     </span>
+    &#x25bc;
   <% end %>
   <ol>
     <li>

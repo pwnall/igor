@@ -8,6 +8,7 @@
 #  domain        :string(128)      not null
 #  user_name     :string(128)      not null
 #  password      :string(128)      not null
+#  from          :string(128)      not null
 #  auth_kind     :string
 #  auto_starttls :boolean          not null
 #
@@ -31,6 +32,9 @@ class SmtpServer < ActiveRecord::Base
 
   # The password required by the authentication process.
   validates :password, length: 0..128
+
+  # The name and e-mail on the From line.
+  validates :from, presence: true, length: 1..128
 
   # The authentication process used by the SMTP server.
   validates :auth_kind,

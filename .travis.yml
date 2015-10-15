@@ -4,6 +4,7 @@ addons:
   postgresql: 9.4
 before_script:
   - RAILS_ENV=test bin/bundle exec rake db:create db:migrate
-script: bin/rails test test/models/ test/controllers/ test/helpers
+script: bin/rails test test/models/ test/controllers/ test/helpers/
+                       test/mailers/
 rvm:
   - 2.2.3

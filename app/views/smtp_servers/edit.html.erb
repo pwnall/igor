@@ -42,6 +42,12 @@
       </span>
     </p>
     <p class="field">
+      <%= f.label :from, 'E-mail From line' %>
+      <span class="value">
+        <%= f.text_field :from, placeholder: '"Igor Staff" <costan@mit.edu>' %>
+      </span>
+    </p>
+    <p class="field">
       <%= f.label :auto_starttls, 'Use STARTTLS' %>
       <span class="value">
         <%= f.check_box :auto_starttls %>

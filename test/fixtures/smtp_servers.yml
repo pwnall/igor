@@ -8,6 +8,7 @@
 #  domain        :string(128)      not null
 #  user_name     :string(128)      not null
 #  password      :string(128)      not null
+#  from          :string(128)      not null
 #  auth_kind     :string
 #  auto_starttls :boolean          not null
 #
@@ -18,5 +19,6 @@ fake_gmail_server:
   domain: gmail.com
   user_name: seven_test@gmail.com
   password: pa55w0rd
+  from: 'Igor Dev Staff <seven_test@gmail.com>'
   auth_kind: plain
   auto_starttls: true

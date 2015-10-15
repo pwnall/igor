@@ -6,11 +6,7 @@ class SessionMailer < ApplicationMailer
   end
 
   def email_verification_from(token, server_hostname, protocol)
-    server = SmtpServer.first
-    user_name = server.user_name.split('@', 2).first
-    from_email = "#{user_name}@#{server.domain}"
-
-    %Q|"Igor staff" <#{from_email}>|
+    nil
   end
 
   def reset_password_subject(token, server_hostname, protocol)
@@ -18,11 +14,7 @@ class SessionMailer < ApplicationMailer
   end
 
   def reset_password_from(token, server_hostname, protocol)
-    server = SmtpServer.first
-    user_name = server.user_name.split('@', 2).first
-    from_email = "#{user_name}@#{server.domain}"
-
-    %Q|"Igor staff" <#{from_email}>|
+    nil
   end
 
 

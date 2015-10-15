@@ -6,6 +6,7 @@ class CreateSmtpServers < ActiveRecord::Migration
       t.string :domain, null: false, limit: 128
       t.string :user_name, null: false, limit: 128
       t.string :password, null: false, limit: 128
+      t.string :from, null: false, limit: 128
       t.string :auth_kind, null: true
       t.boolean :auto_starttls, null: false
     end

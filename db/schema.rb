@@ -347,6 +347,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.string  "domain",        limit: 128, null: false
     t.string  "user_name",     limit: 128, null: false
     t.string  "password",      limit: 128, null: false
+    t.string  "from",          limit: 128, null: false
     t.string  "auth_kind"
     t.boolean "auto_starttls",             null: false
   end

@@ -4,7 +4,8 @@ class SmtpServerTest < ActiveSupport::TestCase
   before do
     @server = SmtpServer.new host: 'smtp.gmail.com', port: 587,
         domain: 'gmail.com', user_name: 'seven_test@gmail.com',
-        password: 'pa55w0rd', auth_kind: 'plain', auto_starttls: true
+        password: 'pa55w0rd', from: '"Igor Dev Staff" <seven_test@gmail.com>',
+        auth_kind: 'plain', auto_starttls: true
   end
 
   it 'validates the setup server' do
@@ -49,6 +50,16 @@ class SmtpServerTest < ActiveSupport::TestCase
   it 'accepts an empty password' do
     @server.password = ''
     assert @server.valid?, @server.errors.full_messages
+  end
+
+  it 'requires a from e-mail' do
+    @server.from = nil
+    assert @server.invalid?
+  end
+
+  it 'rejects an empty from e-mail' do
+    @server.from = ''
+    assert @server.invalid?
   end
 
   it 'accepts a nil authentication mode' do

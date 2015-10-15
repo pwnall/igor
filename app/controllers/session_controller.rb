@@ -18,23 +18,28 @@ class SessionController < ApplicationController
   def home
     set_current_course if params[:course_id]
 
-    if current_course.nil? && !current_user.admin?
-      course_count = current_user.registered_courses.count +
-          current_user.employed_courses.count
-      if course_count == 0
-        redirect_to connect_courses_url
-        return
-      end
-      if course_count == 1
-        redirect_to course_root_url(course_id:
-            current_user.registered_courses.first ||
-            current_user.employed_courses.first)
-        return
-      end
-    end
+    respond_to do |format|
+      format.html do
+        if current_course.nil? && !current_user.admin?
+          course_count = current_user.registered_courses.count +
+              current_user.employed_courses.count
+          if course_count == 0
+            redirect_to connect_courses_url
+            return
+          end
+          if course_count == 1
+            redirect_to course_root_url(course_id:
+                current_user.registered_courses.first ||
+                current_user.employed_courses.first)
+            return
+          end
+        end
 
-    # Pull information about the current user.
-    @news_flavor = params[:flavor] ? params[:flavor].to_sym : nil
+        # Pull information about the current user.
+        @news_flavor = params[:flavor] ? params[:flavor].to_sym : nil
+      end
+      format.json { }
+    end
   end
   private :home
 
