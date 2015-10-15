@@ -55,8 +55,11 @@
       </td>
       <td>
         <% if submission.analysis %>
-        <%= link_to analysis_status_text(submission.analysis),
-              analysis_path(submission.analysis, course_id: submission.course) %>
+        <%= link_to analysis_path(submission.analysis,
+                                  course_id: submission.course) do %>
+          <%= analysis_status_icon_tag submission.analysis %>
+          <%=  analysis_status_text submission.analysis %>
+        <% end %>
         <% else %>
         no status
         <% end %>
@@ -78,9 +81,9 @@
   </tbody>
   <tfoot>
     <tr>
-      <td colspan="5">
+      <th colspan="5">
         <%= @submissions.length %> total submissions
-      </td>
+      </th>
     </tr>
   </tfoot>
 </table>

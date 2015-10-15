@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'jobs/index'
+
   root 'session#show'
 
   # Site-wide functionality.
@@ -35,6 +37,9 @@ Rails.application.routes.draw do
 
     # Staff registration.
     resources :roles, only: [:destroy]
+
+    # Background jobs.
+    resources :jobs, only: [:index, :show]
 
     # E-mail resolver configuration.
     resources :email_resolvers

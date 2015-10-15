@@ -1,0 +1,50 @@
+<h2>Background Job <%= @job.id %></h2>
+
+<table>
+  <tbody>
+    <tr>
+      <th>Created at</th>
+      <td><%= @job.created_at.to_s :submission_long %>
+    </tr>
+    <% if @job.run_at %>
+    <tr>
+      <th>Run at</th>
+      <td><%= @job.run_at.to_s :submission_long %>
+    </tr>
+    <% end %>
+    <% if @job.locked_at %>
+    <tr>
+      <th>Locked at</th>
+      <td><%= @job.locked_at.to_s :submission_long %>
+    </tr>
+    <% end %>
+    <% if @job.failed_at %>
+    <tr>
+      <th>Failed at</th>
+      <td><%= @job.failed_at.to_s :submission_long %>
+    </tr>
+    <% end %>
+    <tr>
+      <th>Locked by</th>
+      <td><%= @job.locked_by || '(not locked)' %></td>
+    </tr>
+    <tr>
+      <th>Attempts</th>
+      <td><%= @job.attempts %>
+    </tr>
+    <tr>
+      <th>Priority</th>
+      <td><%= @job.priority %>
+    </tr>
+    <tr>
+      <th>Queue</th>
+      <td><%= @job.queue %>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Last Error</h3>
+<p><%= @job.last_error %></p>
+
+<h3>Handler Information</h3>
+<div class="markdpwn-parsed-code"><%= @job.handler %></div>

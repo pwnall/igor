@@ -13,22 +13,27 @@
   <ol>
     <li>
       <%= link_to courses_path do %>
-        Courses
+        <%= course_list_icon_tag %> Courses
       <% end %>
     </li>
     <li>
       <%= link_to email_resolvers_path do %>
-        E-mail Resolvers
+        <%= email_resolvers_icon_tag %> E-mail Resolvers
       <% end %>
     </li>
     <li>
       <%= link_to edit_smtp_server_path do %>
-        SMTP Server
+        <%= send_email_icon_tag %> SMTP Server
       <% end %>
     </li>
     <li>
       <%= link_to users_path do %>
         <%= contacts_icon_tag %> Site Users
+      <% end %>
+    </li>
+    <li>
+      <%= link_to jobs_path do %>
+        <%= background_jobs_tag %> Background Jobs
       <% end %>
     </li>
   </ol>

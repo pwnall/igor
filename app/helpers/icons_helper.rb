@@ -267,4 +267,23 @@ module IconsHelper
   def debug_icon_tag
     image_tag 'icons/debug.png', alt: 'Debugging', class: 'ui_icon'
   end
+
+  # Show this icon next to e-mail sending funtionality.
+  def send_email_icon_tag
+    image_tag 'icons/email_send.png', alt: 'Send e-mail', class: 'ui-icon'
+  end
+
+  # The list of courses available on the site.
+  def course_list_icon_tag
+    image_tag 'icons/course_list.png', alt: 'Course list', class: 'ui-icon'
+  end
+
+  def email_resolvers_icon_tag
+    image_tag 'icons/email_resolvers.png', alt: 'E-mail resolvers',
+        class: 'ui-icon'
+  end
+
+  def background_jobs_tag
+    image_tag 'icons/job.png', alt: 'Background jobs', class: 'ui-icon'
+  end
 end
