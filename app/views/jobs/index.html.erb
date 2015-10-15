@@ -1,5 +1,11 @@
 <h2>Background Jobs</h2>
 
+<p>
+  <%= button_to failed_jobs_path, method: :delete do %>
+    <%= destroy_icon_tag %> Cleanup Failed Jobs
+  <% end %>
+</p>
+
 <table>
   <thead>
     <tr>

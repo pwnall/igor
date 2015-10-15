@@ -66,14 +66,16 @@
       </td>
       <td>
         <%= button_to reanalyze_submission_path(submission,
-              course_id: submission.course), method: :post do %>
-          <%= recompute_icon_tag %> Re-analyze
+              course_id: submission.course), method: :post,
+              title: 'Re-analyze' do %>
+          <%= recompute_icon_tag %>
         <% end %>
       </td>
       <td>
         <%= link_to file_submission_path(submission,
-              course_id: submission.course), class: 'button' do %>
-          <%= download_icon_tag %> Download
+              course_id: submission.course), class: 'button',
+              title: 'Download submission' do %>
+          <%= download_icon_tag %>
         <% end %>
       </td>
     </tr>

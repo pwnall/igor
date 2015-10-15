@@ -10,4 +10,12 @@ class JobsController < ApplicationController
   def show
     @job = Delayed::Job.find params[:id]
   end
+
+  # DELETE /_/jobs/failed
+  def destroy_failed
+    @jobs = Delayed::Job.all.select { |j| j.failed_at }
+    @jobs.each(&:destroy)
+
+    redirect_to jobs_url, notice: "#{@jobs.length} failed jobs removed"
+  end
 end

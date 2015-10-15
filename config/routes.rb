@@ -39,7 +39,11 @@ Rails.application.routes.draw do
     resources :roles, only: [:destroy]
 
     # Background jobs.
-    resources :jobs, only: [:index, :show]
+    resources :jobs, only: [:index, :show] do
+      collection do
+        delete :failed, action: :destroy_failed
+      end
+    end
 
     # E-mail resolver configuration.
     resources :email_resolvers
