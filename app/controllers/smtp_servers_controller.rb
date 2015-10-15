@@ -24,6 +24,6 @@ class SmtpServersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def smtp_server_params
       params.require(:smtp_server).permit :host, :port, :domain, :user_name,
-                                          :password, :auth_kind, :auto_starttls
+          :password, :from, :auth_kind, :auto_starttls
     end
 end
