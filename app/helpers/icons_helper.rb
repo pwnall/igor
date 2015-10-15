@@ -50,10 +50,16 @@ module IconsHelper
     image_tag 'icons/save.png', alt: title, title: title, class: 'ui_icon'
   end
 
-  # Shown on buttons that lead to an edit form.
+  # Shown on buttons that show information based on a query.
   def search_icon_tag
     title = 'Search'
     image_tag 'icons/search.png', alt: title, title: title, class: 'ui_icon'
+  end
+
+  # Shown on buttons that reduce the information shown based on a filter.
+  def filter_icon_tag
+    title = 'Filter'
+    image_tag 'icons/filter.png', alt: title, title: title, class: 'ui_icon'
   end
 
   # Shown on links that lead to printable material.
@@ -215,6 +221,11 @@ module IconsHelper
   # Show this icon next to submission-related functionality.
   def homework_icon_tag
     image_tag 'icons/homework.png', alt: 'Homework', class: 'ui_icon'
+  end
+
+  # Show this icon next to submission-listing functionality.
+  def submissions_icon_tag
+    image_tag 'icons/submissions.png', alt: 'Submissions', class: 'ui_icon'
   end
 
   # Show this icon next to grading-related functionality.

@@ -25,6 +25,11 @@
       <% end %>
     </li>
     <li>
+      <%= link_to submissions_path(course_id: current_course) do %>
+        <%= submissions_icon_tag %> Submissions
+      <% end %>
+    </li>
+    <li>
       <%= link_to registrations_path(course_id: current_course) do %>
         <%= role_icon_tag :student %> Students
       <% end %>

@@ -7,7 +7,9 @@
           options_for_select(current_course.assignments.by_deadline.
                              map { |a| [a.name, a.id] }, @assignment.id)
     %>
-    <%= submit_tag "Switch" %>
+    <%= button_tag type: :submit do %>
+      Switch
+    <% end %>
 	</p>
 <% end %>
 
