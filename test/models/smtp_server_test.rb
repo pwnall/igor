@@ -87,5 +87,16 @@ class SmtpServerTest < ActiveSupport::TestCase
       }
       assert_equal golden, server.action_mailer_options
     end
+
+    it 'works for the MIT insecure SMTP server' do
+      server = SmtpServer.new host: 'outgoing.mit.edu', port: 25,
+          domain: 'mit.edu', user_name: '', password: '', auth_kind: '',
+          auto_starttls: true
+      golden = {
+        address: 'outgoing.mit.edu', port: 25, domain: 'mit.edu',
+        enable_starttls_auto: true
+      }
+      assert_equal golden, server.action_mailer_options
+    end
   end
 end
