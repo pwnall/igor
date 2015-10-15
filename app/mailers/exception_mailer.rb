@@ -1,0 +1,2 @@
+class ExceptionMailer < ApplicationMailer
+end

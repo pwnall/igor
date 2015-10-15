@@ -1,4 +1,4 @@
-class RoleRequestMailer < ActionMailer::Base
+class RoleRequestMailer < ApplicationMailer
   def decision_email(role_request, was_approved, root_url)
     @role_request = role_request
     @was_approved = was_approved

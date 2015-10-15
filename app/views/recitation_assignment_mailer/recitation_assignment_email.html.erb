@@ -1,31 +1,26 @@
-<!DOCTYPE html>
-<html>
-  <body>
-    <p>
-      The recitation assignment proposal that you requested has been created.
-    </p>
+<p>
+  The recitation assignment proposal that you requested has been created.
+</p>
 
-    <p>
-      Please go
-      <%= link_to 'here', recitation_partition_url(@recitation_partition,
-            course_id: @recitation_partition.course, host: @host,
-            protocol: @protocol) %>
-      to inspect the assignment.
-    </p>
+<p>
+  Please go
+  <%= link_to 'here', recitation_partition_url(@recitation_partition,
+        course_id: @recitation_partition.course, host: @host,
+        protocol: @protocol) %>
+  to inspect the assignment.
+</p>
 
-    <script type="application/ld+json">
-    {
-      "@context": "http://schema.org",
-      "@type": "EmailMessage",
-      "description": "Inspect a recitation assignment proposal",
-      "action": {
-        "@type": "ViewAction",
-        "url": <%= recitation_partition_url(@recitation_partition,
-                     course_id: @recitation_partition.course, host: @host,
-                     protocol: @protocol).to_json.html_safe %>,
-        "name": "Inspect proposal"
-      }
-    }
-    </script>
-  </body>
-</html>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "EmailMessage",
+  "description": "Inspect a recitation assignment proposal",
+  "action": {
+    "@type": "ViewAction",
+    "url": <%= recitation_partition_url(@recitation_partition,
+                 course_id: @recitation_partition.course, host: @host,
+                 protocol: @protocol).to_json.html_safe %>,
+    "name": "Inspect proposal"
+  }
+}
+</script>

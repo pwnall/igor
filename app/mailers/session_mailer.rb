@@ -1,4 +1,4 @@
-class SessionMailer < ActionMailer::Base
+class SessionMailer < ApplicationMailer
   include Authpwn::SessionMailer
 
   def email_verification_subject(token, server_hostname, protocol)

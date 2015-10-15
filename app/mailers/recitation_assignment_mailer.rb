@@ -1,4 +1,4 @@
-class RecitationAssignmentMailer < ActionMailer::Base
+class RecitationAssignmentMailer < ApplicationMailer
   def recitation_assignment_email(email, recitation_partition, root_url)
     @recitation_partition = recitation_partition
     @email = email

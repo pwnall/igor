@@ -52,7 +52,7 @@ Rails.application.routes.draw do
     resource :smtp_server, only: [:edit, :update]
 
     # Exception handling test.
-    get '/crash' => 'crash#show'
+    get '/crash' => 'crash#crash'
   end
 
   # Course-specific URLs. Most functionality falls here.
