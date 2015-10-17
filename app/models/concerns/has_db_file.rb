@@ -2,7 +2,7 @@ require 'active_support'
 
 # Database-backed file support.
 #
-# AssignmentFile, ScriptAnalyzer, and Submission currently use database files.
+# AssignmentFile and Submission currently use database files.
 module HasDbFile
   extend ActiveSupport::Concern
 

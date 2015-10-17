@@ -89,17 +89,18 @@ class DeliverableTest < ActiveSupport::TestCase
     end
   end
 
-  it 'saves the associated ScriptAnalyzer through the parent deliverable' do
+  it 'saves the associated DockerAnalyzer through the parent deliverable' do
     @deliverable.analyzer = nil
     attachment = fixture_file_upload 'files/analyzer/fib.zip',
         'application/zip', :binary
     deliverable_params = { analyzer_attributes: {
-      type: 'ScriptAnalyzer', auto_grading: 1, time_limit: 2, ram_limit: 1024,
-      file_limit: 10, file_size_limit: 100, process_limit: 5,
+      type: 'DockerAnalyzer', auto_grading: 1,
+      map_time_limit: 2, map_ram_limit: 1024,
+      reduce_time_limit: 2, reduce_ram_limit: 1024,
       db_file_attributes: { f: attachment }
     } }
 
-    assert_difference 'ScriptAnalyzer.count' do
+    assert_difference 'DockerAnalyzer.count' do
       @deliverable.update! deliverable_params
     end
   end

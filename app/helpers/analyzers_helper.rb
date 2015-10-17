@@ -5,7 +5,7 @@ module AnalyzersHelper
     when ProcAnalyzer
       { name: 'PDF Write-up', ext: 'pdf',
         description: 'Please upload your write-up, in PDF format.' }
-    when DockerAnalyzer, ScriptAnalyzer
+    when DockerAnalyzer
       { name: 'Fibonacci Code', ext: 'py',
         description: 'Please upload your modified fib.py.' }
     else
@@ -21,8 +21,6 @@ module AnalyzersHelper
       'proc_analyzers/fields'
     when DockerAnalyzer
       'docker_analyzers/fields'
-    when ScriptAnalyzer
-      'script_analyzers/fields'
     else
       raise "Un-implemented analyzer type: #{deliverable.analyzer.inspect}"
     end
@@ -33,7 +31,6 @@ module AnalyzersHelper
     options_for_select({
       'Built-in Analyzer' => 'ProcAnalyzer',
       'Docker Analyzer' => 'DockerAnalyzer',
-      'Script Analyzer' => 'ScriptAnalyzer'
     })
   end
 
