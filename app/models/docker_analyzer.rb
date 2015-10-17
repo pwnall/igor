@@ -29,6 +29,11 @@ class DockerAnalyzer < Analyzer
       numericality: { only_integer: true, greater_than: 0, allow_nil: false }
   store_accessor :exec_limits, :map_ram_limit
 
+  # Maximum megabytes of container logging that the student's code can produce.
+  validates :map_logs_limit, presence: true,
+      numericality: { greater_than: 0, allow_nil: false }
+  store_accessor :exec_limits, :map_logs_limit
+
   # Maximum number of seconds of CPU time that the grading code can use.
   validates :reduce_time_limit, presence: true,
       numericality: { greater_than: 0, allow_nil: false }
@@ -38,6 +43,11 @@ class DockerAnalyzer < Analyzer
   validates :reduce_ram_limit, presence: true,
       numericality: { only_integer: true, greater_than: 0, allow_nil: false }
   store_accessor :exec_limits, :reduce_ram_limit
+
+  # Maximum megabytes of container logging that the grading code can produce.
+  validates :reduce_logs_limit, presence: true,
+      numericality: { greater_than: 0, allow_nil: false }
+  store_accessor :exec_limits, :reduce_logs_limit
 
   # :nodoc: overrides Analyzer#analyze
   def analyze(submission)
@@ -66,11 +76,13 @@ class DockerAnalyzer < Analyzer
         'wait_time' => map_time_limit.to_f,
         'ram' => map_ram_limit.to_f,
         'swap' => 0,
+        'logs' => map_logs_limit.to_f,
         'vcpus' => 1,
         'ulimits' => { 'cpu' => map_time_limit.to_f.ceil } },
       'reducer' => {
         'wait_time' => reduce_time_limit.to_f,
         'ram' => reduce_ram_limit.to_f,
+        'logs' => reduce_logs_limit.to_f,
         'swap' => 0,
         'vcpus' => 1,
         'ulimits' => { 'cpu' => reduce_time_limit.to_f.ceil } },

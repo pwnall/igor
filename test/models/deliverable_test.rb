@@ -95,8 +95,8 @@ class DeliverableTest < ActiveSupport::TestCase
         'application/zip', :binary
     deliverable_params = { analyzer_attributes: {
       type: 'DockerAnalyzer', auto_grading: 1,
-      map_time_limit: 2, map_ram_limit: 1024,
-      reduce_time_limit: 2, reduce_ram_limit: 1024,
+      map_time_limit: 2, map_ram_limit: 1024, map_logs_limit: 1,
+      reduce_time_limit: 2, reduce_ram_limit: 1024, reduce_logs_limit: 10,
       db_file_attributes: { f: attachment }
     } }
 

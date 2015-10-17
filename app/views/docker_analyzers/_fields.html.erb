@@ -41,6 +41,16 @@
   </p>
 
   <p class="field">
+    <%= f.label :map_logs_limit, 'Submission logging limit' %>
+    <span class="value">
+      <%= f.number_field :map_logs_limit, required: true, placeholder: 1 %>
+    </span>
+    <span class="comment">
+      Mb
+    </span>
+  </p>
+
+  <p class="field">
     <%= f.label :reduce_time_limit, 'Grader CPU time' %>
     <span class="value">
       <%= f.number_field :reduce_time_limit, required: true, placeholder: 5 %>
@@ -55,6 +65,16 @@
     <span class="value">
       <%= f.number_field :reduce_ram_limit, required: true,
                          placeholder: 1024 %>
+    </span>
+    <span class="comment">
+      Mb
+    </span>
+  </p>
+
+  <p class="field">
+    <%= f.label :reduce_logs_limit, 'Grader logging limit' %>
+    <span class="value">
+      <%= f.number_field :reduce_logs_limit, required: true, placeholder: 10 %>
     </span>
     <span class="comment">
       Mb

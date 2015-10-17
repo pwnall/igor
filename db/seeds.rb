@@ -199,7 +199,8 @@ puts 'Exams created'
 
 docker_analyzer_file = 'test/fixtures/files/analyzer/fib_small.zip'
 docker_analyzer_params = { type: 'DockerAnalyzer', map_time_limit: '2',
-    map_ram_limit: '1024', reduce_time_limit: '2', reduce_ram_limit: '1024',
+    map_ram_limit: '1024', map_logs_limit: '1', reduce_time_limit: '2',
+    reduce_ram_limit: '1024', reduce_logs_limit: '10',
     auto_grading: rand(2), db_file_attributes: {
     f: fixture_file_upload(docker_analyzer_file, 'application/zip', :binary) } }
 

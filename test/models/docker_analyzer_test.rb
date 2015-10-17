@@ -10,8 +10,9 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
         description: 'Waay more', file_ext: 'py'
     @analyzer = DockerAnalyzer.new deliverable: deliverable,
         auto_grading: false, db_file: db_files(:ps2_docker_analyzer),
-        map_time_limit: '1.5', map_ram_limit: '128', reduce_time_limit: '2.9',
-        reduce_ram_limit: '1024'
+        map_time_limit: '1.5', map_ram_limit: '128', map_logs_limit: '1.5',
+        reduce_time_limit: '2.9', reduce_ram_limit: '1024',
+        reduce_logs_limit: '10'
   end
 
   let(:analyzer) { analyzers(:docker_assessment_code) }
@@ -139,6 +140,16 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
       assert @analyzer.invalid?
     end
 
+    it 'requires a :map_logs_limit' do
+      @analyzer.map_logs_limit = nil
+      assert @analyzer.invalid?
+    end
+
+    it 'rejects non-positive values for :map_logs_limit' do
+      @analyzer.map_logs_limit = 0
+      assert @analyzer.invalid?
+    end
+
     it 'requires a :reduce_time_limit' do
       @analyzer.reduce_time_limit = nil
       assert @analyzer.invalid?
@@ -163,6 +174,16 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
       @analyzer.reduce_ram_limit = 0
       assert @analyzer.invalid?
     end
+
+    it 'requires a :reduce_logs_limit' do
+      @analyzer.reduce_logs_limit = nil
+      assert @analyzer.invalid?
+    end
+
+    it 'rejects non-positive values for :reduce_logs_limit' do
+      @analyzer.reduce_logs_limit = 0
+      assert @analyzer.invalid?
+    end
   end
 
   describe '#run_submission' do
@@ -179,10 +200,12 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
       assert_equal 128, job.mapper_runner(1)._ram_limit
       assert_equal 0, job.mapper_runner(1)._swap_limit
       assert_equal 1, job.mapper_runner(1)._vcpus
+      assert_equal 1.5, job.mapper_runner(1)._logs
       assert_equal 3, job.reducer_runner._ulimit('cpu')
       assert_equal 1024, job.reducer_runner._ram_limit
       assert_equal 0, job.reducer_runner._swap_limit
       assert_equal 1, job.reducer_runner._vcpus
+      assert_equal 10, job.reducer_runner._logs
     end
 
     it 'provides the correct job input' do
@@ -194,5 +217,4 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
       assert_equal good_fib, job._mapper_input
     end
   end
-
 end

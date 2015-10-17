@@ -45,8 +45,10 @@ docker_project_code:
   exec_limits: >
     { "map_time_limit": 2,
       "map_ram_limit": 1024,
+      "map_logs_limit": 1,
       "reduce_time_limit": 2,
-      "reduce_ram_limit": 1024 }
+      "reduce_ram_limit": 1024,
+      "reduce_logs_limit": 5 }
 
 docker_assessment_code:
   deliverable: assessment_code
@@ -56,8 +58,10 @@ docker_assessment_code:
   exec_limits: >
     { "map_time_limit": 2,
       "map_ram_limit": 1024,
+      "map_logs_limit": 1,
       "reduce_time_limit": 2,
-      "reduce_ram_limit": 1024 }
+      "reduce_ram_limit": 1024,
+      "reduce_logs_limit": 5 }
 
 proc_assessment_writeup:
   deliverable: assessment_writeup

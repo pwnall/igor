@@ -164,8 +164,10 @@ class LoadTestSession
     form["#{deliverable_param}[description]"] = 'Upload'
     form["#{deliverable_param}[analyzer_attributes][map_time_limit]"] = 5
     form["#{deliverable_param}[analyzer_attributes][map_ram_limit]"] = 1024
+    form["#{deliverable_param}[analyzer_attributes][map_logs_limit]"] = 1
     form["#{deliverable_param}[analyzer_attributes][reduce_time_limit]"] = 5
     form["#{deliverable_param}[analyzer_attributes][reduce_ram_limit]"] = 1024
+    form["#{deliverable_param}[analyzer_attributes][reduce_logs_limit]"] = 10
     form["#{deliverable_param}[analyzer_attributes][auto_grading]"] = 1
     form["#{deliverable_param}[analyzer_attributes][type]"] = 'DockerAnalyzer'
 
