@@ -9,6 +9,8 @@ class AssignmentTest < ActiveSupport::TestCase
   end
 
   let(:assignment) { assignments(:assessment) }
+  let(:unreleased_exam) { assignments(:main_exam) }
+  let(:gradeless_assignment) { assignments(:ps2) }
   let(:student) { users(:dexter) }
   let(:any_user) { User.new }
   let(:admin) { users(:admin) }
@@ -530,11 +532,52 @@ class AssignmentTest < ActiveSupport::TestCase
         assert_equal 8, assignment.expected_grades
       end
     end
+  end
 
+  describe 'score calculations' do
     describe '#max_score' do
-      it 'returns the maximum possible score achievable on this assignment' do
-        assert_equal [10, 100], assignment.metrics.map(&:max_score).sort
-        assert_equal 110, assignment.max_score
+      describe 'assignment has no metrics' do
+        before { assert_empty unreleased_exam.metrics }
+
+        it 'returns nil' do
+          assert_nil unreleased_exam.max_score
+        end
+      end
+
+      describe 'assignment has metrics' do
+        it 'returns the weighted maximum score' do
+          assert_equal 100, assignment.max_score
+        end
+      end
+    end
+
+    describe '#average_score' do
+      let(:unreleased_assignment) { assignments(:ps3) }
+      let(:unreleased_exam) { assignments(:main_exam) }
+
+      describe 'assignment has no metrics' do
+        before { assert_empty unreleased_exam.metrics }
+
+        it 'returns nil' do
+          assert_nil unreleased_exam.average_score
+        end
+      end
+
+      describe 'no grades have been issued yet' do
+        before { assert_empty gradeless_assignment.grades }
+
+        it 'returns 0' do
+          assert_equal 0, gradeless_assignment.average_score
+        end
+      end
+
+      describe 'grades have been issued' do
+        before { assert_not_empty assignment.grades }
+
+        it 'returns the average weighted score on the assignment' do
+          # (70*1 + (10*1 + 10*0) + 6*0) / 3.0 = 30
+          assert_equal 30, assignment.average_score
+        end
       end
     end
 
@@ -546,15 +589,43 @@ class AssignmentTest < ActiveSupport::TestCase
         assert_equal 2, assignment.metrics.count
         overall_metric, quality_metric = assignment.metrics.sort_by(&:name)
 
-        assert_equal [10.0, 70.0],
+        assert_equal [10.0, 80.0],
             overall_metric.grades.where(subject: students).map(&:score).sort
         assert_equal [10.0],
             quality_metric.grades.where(subject: students).map(&:score).sort
-        assert_equal 50.0, assignment.recitation_score(section)
+        # ((10 + 80) / 2)*1 + (10 / 1)*0 = 45
+        assert_equal 45, assignment.recitation_score(section)
       end
 
       # TODO(spark008): Write test for team assignments.
       it 'returns the average recitation score on team assignments' do
+      end
+    end
+
+    describe 'AverageScore concern' do
+      describe '#average_score_percentage' do
+        describe 'assignment has no metrics' do
+          before { assert_empty unreleased_exam.metrics }
+
+          it 'returns nil' do
+            assert_nil unreleased_exam.average_score_percentage
+          end
+        end
+
+        describe 'max score is 0' do
+          before { assignment.metrics.update_all max_score: 0 }
+
+          it 'returns 0' do
+            assert_equal 0, assignment.reload.average_score_percentage
+          end
+        end
+
+        describe 'assignment has metrics with non-zero max scores' do
+          it 'returns the average score as a percentage' do
+            # (((80 + 10 + 0) / 100)*1 + ((0 + 10 + 6) / 10)*0) / 3 = 30
+            assert_equal 30, assignment.average_score_percentage
+          end
+        end
       end
     end
   end

@@ -25,12 +25,12 @@
 <ul class="dashboard-list">
   <li>
     <span class="name"><strong>Overall</strong></span>
-    <%= grading_stats_tags @assignment %>
+    <%= render 'assignments/progress_meter', assessment: @assignment %>
   </li>
 <% @assignment.metrics.each do |metric| %>
   <li>
     <span class="name"><%= metric.name %></span>
-    <%= grading_stats_tags metric %>
+    <%= render 'assignments/progress_meter', assessment: metric %>
   </li>
 <% end %>
 </ul>

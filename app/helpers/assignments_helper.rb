@@ -20,21 +20,17 @@ module AssignmentsHelper
     } + content_tag(:span, title)
   end
 
-  def grading_stats_tags(assignment_or_metric)
-    if assignment_or_metric.respond_to? :metrics
-      totals = assignment_or_metric.grades.includes(:subject).
-          group_by(&:subject).map { |k, v| v.map(&:score).sum }
-      avg = totals.sum.to_f / totals.length
-    else
-      avg = assignment_or_metric.grades.average(:score) || 0
-    end
-    max = assignment_or_metric.max_score || 0.0001
-    percent = '%.2f' % ((avg * 100) / max.to_f)
-    title = "#{percent}% (#{'%.2f' % avg} / #{max})"
+  # The formatted average score for the given assignment/metric.
+  def average_score_stats(assignment_or_metric)
+    raw_average = assignment_or_metric.average_score
+    formatted_average = raw_average ? '%.2f' % raw_average : '-'
 
-    content_tag(:span, class: 'meter-container') {
-      content_tag(:meter, title, min: 0, value: avg, max: max, title: title)
-    } + content_tag(:span, title)
+    raw_percentage = assignment_or_metric.average_score_percentage
+    formatted_percent = raw_percentage ? '%.2f' % raw_percentage : '-'
+
+    raw_max = assignment_or_metric.max_score
+    formatted_max = raw_max ? '%.2f' % raw_max : '-'
+    "#{formatted_percent}% (#{formatted_average} / #{formatted_max})"
   end
 
   def grading_recitation_tags(assignment, recitation_section)

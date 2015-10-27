@@ -123,7 +123,7 @@ class Assignment
   def reset_publish_date
     published_at.nil?
   end
-  
+
   # Store the user's decision to set or omit (reset) the publish date.
   #
   # @param [String] state '0' if setting a date, '1' if omitting
@@ -147,19 +147,47 @@ class Assignment
   def expected_grades
     metrics.count * course.students.count
   end
+end
+
+# :nodoc: score calculations.
+class Assignment
+  include AverageScore
 
   # The maximum score that a student can obtain on this assignment.
   #
-  # This is the sum of all the metrics' maximum scores.
+  # This number is the sum of all the metrics' weighted maximum scores, or nil
+  # if this assignment has no metrics.
+  #
+  # This same method is defined for AssignmentMetric so that the method can be
+  # called on either an Assignment or AssignmentMetric instance.
   def max_score
-    metrics.sum :max_score
+    return nil if metrics.empty?
+    metrics.sum(&:weighted_max_score)
   end
 
-  # The average score for this assignment given a recitation.
+  # The average of all the students' scores for this assignment.
   #
-  # This is the sum of all the metrics' recitation averaged scores.
+  # The returned score is weighted, and should be divided by a weighted max
+  # score to calculate a percentage. Ungraded metrics are assigned a score of 0.
+  # Returns nil if this assignment has no metrics. Students who have not
+  # received a grade for any of this assignment's metrics are ignored.
+  #
+  # This same method is defined for AssignmentMetric so that the method can be
+  # called on either an Assignment or AssignmentMetric instance.
+  def average_score
+    return nil if metrics.empty?
+    totals = grades.includes(:subject).group_by(&:subject).map { |_, grades|
+      grades.sum(&:weighted_score) }
+    return 0 if totals.empty?
+    totals.sum.to_f / totals.length
+  end
+
+  # The weighted average score for this assignment given a recitation.
+  #
+  # This is the sum of all the weighted metrics' recitation averaged scores. It
+  # should be divided by a weighted max score to calculate a percentage.
   def recitation_score(recitation)
-    metrics.map { |metric| metric.grade_for_recitation recitation }.sum
+    metrics.sum { |m| m.grade_for_recitation(recitation) * m.weight }
   end
 end
 

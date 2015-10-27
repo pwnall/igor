@@ -102,3 +102,25 @@ class AssignmentMetric < ActiveRecord::Base
     assignment.course.students.count
   end
 end
+
+# :nodoc: score calculations.
+class AssignmentMetric
+  include AverageScore
+
+  # The weighted maximum score.
+  #
+  # This value should only be used when calculating an Assignment's total score.
+  def weighted_max_score
+    max_score * weight
+  end
+
+  # The unweighted average grade scored on this metric.
+  #
+  # Returns 0 if no grades have been assigned for this metric.
+  #
+  # This same method is defined for Assignment so that the method can be called
+  # on either an Assignment or AssignmentMetric instance.
+  def average_score
+    grades.average(:score) || 0
+  end
+end

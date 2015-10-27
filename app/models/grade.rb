@@ -20,6 +20,14 @@ class Grade < ActiveRecord::Base
   # The numeric grade.
   validates :score, numericality: { only_integer: false }
 
+  # The weighted numeric grade.
+  #
+  # This value should only be used when calculating the average score of an
+  # Assignment.
+  def weighted_score
+    score * metric.weight
+  end
+
   # The users impacted by a grade.
   def users
     subject.respond_to?(:users) ? subject.users : [subject]

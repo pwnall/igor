@@ -8,7 +8,7 @@ class GradesHelperTest < ActionView::TestCase
   describe '#grade_score_text' do
     it 'returns a numeric score if a grade can be found' do
       assert_not_nil metric.grades.find_by subject: users(:dexter)
-      assert_equal 70.0, grade_score_text(metric, users(:dexter))
+      assert_equal 80.0, grade_score_text(metric, users(:dexter))
     end
 
     it 'returns nil if no grade can be found' do

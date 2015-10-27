@@ -16,11 +16,6 @@ module GradesHelper
     grades.map { |grade| grade ? grade.score * grade.metric.weight : 0 }.sum
   end
 
-  # THe weighted sum of the maximum scores in an array of metrics.
-  def metrics_max_score(metrics)
-    metrics.map { |metric| metric.max_score * metric.weight }.sum
-  end
-
   # The text shown to a student looking at a grade.
   def grade_display_text(grade)
     (grade && grade.score) || 'N'

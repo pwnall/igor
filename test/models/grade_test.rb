@@ -85,6 +85,12 @@ class GradeTest < ActiveSupport::TestCase
     end
   end
 
+  describe '#weighted_score' do
+    it 'returns the weighted score' do
+      assert_equal 15, @grade.weighted_score
+    end
+  end
+
   describe '#users' do
     describe 'individual student grades' do
       it 'returns an array containing the student' do
@@ -156,7 +162,7 @@ class GradeTest < ActiveSupport::TestCase
 
       describe 'the score text is not blank' do
         it 'updates the grade score' do
-          assert_equal 70.0, grade.score
+          assert_equal 80.0, grade.score
           result = grade.act_on_user_input('4')
 
           assert_equal 4.0, grade.reload.score
@@ -164,10 +170,10 @@ class GradeTest < ActiveSupport::TestCase
         end
 
         it 'returns false if the update failed' do
-          assert_equal 70.0, grade.score
+          assert_equal 80.0, grade.score
           result = grade.act_on_user_input('invalid input')
 
-          assert_equal 70.0, grade.reload.score
+          assert_equal 80.0, grade.reload.score
           assert_equal false, result
         end
       end

@@ -69,12 +69,12 @@ class ProcAnalyzerTest < ActiveSupport::TestCase
         metric.grades.where subject: users(:dexter)
       }
 
-      assert_equal [70, nil],
+      assert_equal [80, nil],
           [set_grade.first.try(:score), unset_grade.first.try(:score)]
 
       ProcAnalyzer.new.zero_grades ok_pdf_submission
 
-      assert_equal [70, 0],
+      assert_equal [80, 0],
           [set_grade.first.try(:score), unset_grade.first.try(:score)]
     end
   end

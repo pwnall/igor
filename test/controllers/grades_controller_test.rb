@@ -127,7 +127,7 @@ class GradesControllerTest < ActionController::TestCase
       describe 'change an existing score' do
         it 'updates the score of the grade' do
           grade = Grade.find_by subject: student, metric: metric
-          assert_equal 70.0, grade.score
+          assert_equal 80.0, grade.score
           post :create, params: params, xhr: true
 
           assert_equal 4.0, grade.reload.score
@@ -145,12 +145,12 @@ class GradesControllerTest < ActionController::TestCase
 
         it 'does not change an existing grade' do
           grade = Grade.find_by subject: student, metric: metric
-          assert_equal 70.0, grade.score
+          assert_equal 80.0, grade.score
 
           assert_no_difference 'Grade.count' do
             post :create, params: params, xhr: true
           end
-          assert_equal 70.0, grade.reload.score
+          assert_equal 80.0, grade.reload.score
         end
 
         it 'responds with a :not_acceptable header' do

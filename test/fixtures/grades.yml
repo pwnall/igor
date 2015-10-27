@@ -46,7 +46,7 @@ dexter_assessment_overall:
   course: main
   subject: dexter (User)
   grader: admin
-  score: 70.0
+  score: 80.0
 
 solo_assessment_overall:
   metric: assessment_overall
