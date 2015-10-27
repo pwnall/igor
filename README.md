@@ -33,7 +33,7 @@ brew link --force openssl
 brew install ansible --HEAD
 brew install caskroom/cask/brew-cask
 brew cask install osxfuse vagrant virtualbox
-docker-machine create --driver virtualbox dev
+docker-machine create --driver virtualbox --engine-storage-driver overlay dev
 
 # The command below shows up when you run docker-machine env dev.
 eval "$(docker-machine env dev)"

@@ -4,9 +4,8 @@
 # Modify these options if you want to change the way the docker daemon runs
 {% if ansible_selinux != false %}
 OPTIONS='--selinux-enabled=false --group=docker --storage-driver=overlay'
-{% else %}
-DOCKER_CERT_PATH=/etc/docker
 {% endif %}
+DOCKER_CERT_PATH=/etc/docker
 
 # Enable insecure registry communication by appending the registry URL
 # to the INSECURE_REGISTRY variable below and uncommenting it
