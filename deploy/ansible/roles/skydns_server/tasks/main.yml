@@ -24,22 +24,6 @@
   notify:
   - restart skydns server
 
-- name: write skydns systemd socket configuration
-  become: true
-  become_user: root
-  template:
-    src: skydns_socket.j2
-    dest: /etc/systemd/system/skydns.socket
-  register: skydns_systemd_socket_result
-  notify:
-  - restart skydns daemon
-
-- name: reload systemd configuration
-  command: systemctl daemon-reload
-  become: true
-  become_user: root
-  when: skydns_systemd_socket_result | changed
-
 - name: enable and start skydns systemd socket
   become: true
   become_user: root

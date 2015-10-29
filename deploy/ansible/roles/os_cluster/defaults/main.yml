@@ -2,7 +2,7 @@
 public_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 #cloud_image_url: https://download.fedoraproject.org/pub/fedora/linux/releases/22/Cloud/x86_64/Images/Fedora-Cloud-Base-22-20150521.x86_64.qcow2
 #image_name: Fedora 22 Cloud
-cloud_image_url: https://dl.fedoraproject.org/pub/alt/stage/23_RC3/Cloud_Images/x86_64/Images/Fedora-Cloud-Base-23-20151022.x86_64.qcow2
+cloud_image_url: https://dl.fedoraproject.org/pub/alt/stage/23_RC6/Cloud_Images/x86_64/Images/Fedora-Cloud-Base-23-20151022.x86_64.qcow2
 image_name: Fedora 23 RC3 Cloud
 #cloud_image_url: https://cloud-images.ubuntu.com/releases/15.04/release/ubuntu-15.04-server-cloudimg-amd64-disk1.img
 #image_name: Ubuntu 15.04 Server
