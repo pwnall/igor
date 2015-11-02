@@ -14,8 +14,7 @@
         --cert-file=/etc/skydns/etcd_client_cert.pem
         --key-file=/etc/skydns/etcd_client_key.pem
         set /skydns/config
-        '{"ttl": 3600, "systemd": true, "domain": "skydns.local.",
-          "norec": true}'
+        {{ lookup('template', 'skydns.etcd.json.j2') | trim | quote }}
   register: skydns_etcdctl_result
   # NOTE: The etc2 API does not return a prevNode when a key is written for the
   #       first time.
