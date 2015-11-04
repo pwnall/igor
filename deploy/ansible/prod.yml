@@ -7,11 +7,10 @@
     ansible_ssh_user: "{{ os_image_user }}"
   roles:
   - sys_python2
-  - fix_f22_vagrant
   - sys_network_manager
   - sys_package_update
   - sys_facts
-    #- docker_storage
+  #- docker_storage
 
 - hosts: "{{ prod_master_group_name }}"
   vars_files:

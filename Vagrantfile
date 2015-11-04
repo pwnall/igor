@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 # Supported values:
-# ubuntu-vivid, fedora-22, fedora-23
+# ubuntu-vivid, fedora-23
 OS = 'fedora-23'
 
 # Number of worker VMs.
@@ -12,7 +12,6 @@ Vagrant.configure(2) do |config|
   config.vm.box = {
     'ubuntu-vivid' => 'ubuntu/vivid64',
     'ubuntu-wily' => 'ubuntu/wily64',
-    'fedora-22' => 'fedora-server-cloud-22',
     'fedora-23' => 'fedora-server-cloud-23',
   }[OS]
   config.vm.box_check_update = true
@@ -62,8 +61,7 @@ Vagrant.configure(2) do |config|
   config.vm.provider :virtualbox do |vb, override|
     vb.memory = 2048
     override.vm.box_url = {
-      'fedora-22' => "https://download.fedoraproject.org/pub/fedora/linux/releases/22/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-22-20150521.x86_64.vagrant-virtualbox.box",
-      'fedora-23' => "https://dl.fedoraproject.org/pub/alt/stage/23_RC6/Cloud_Images/x86_64/Images/Fedora-Cloud-Base-Vagrant-23-20151022.x86_64.vagrant-virtualbox.box",
+      'fedora-23' => "https://download.fedoraproject.org/pub/fedora/linux/releases/23/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-23-20151030.x86_64.vagrant-virtualbox.box",
     }[OS]
 
     # The NAT network adapter uses the Intel PRO/1000MT adapter by default.
@@ -73,8 +71,7 @@ Vagrant.configure(2) do |config|
   config.vm.provider :libvirt do |domain, override|
     domain.memory = 1024
     override.vm.box_url = {
-      'fedora-22' => "https://download.fedoraproject.org/pub/fedora/linux/releases/22/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-22-20150521.x86_64.vagrant-libvirt.box",
-      'fedora-23' => "https://dl.fedoraproject.org/pub/alt/stage/23_RC6/Cloud_Images/x86_64/Images/Fedora-Cloud-Base-Vagrant-23-20151022.x86_64.vagrant-libvirt.box",
+      'fedora-23' => "https://download.fedoraproject.org/pub/fedora/linux/releases/23/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-23-20151030.x86_64.vagrant-libvirt.box",
     }[OS]
   end
 end

@@ -239,24 +239,3 @@ for subsequent runs.
 ansible-playbook -i deploy/keys/inventory -e os_image_user=myuser \
     -e os_prefix=algtest --ask-become-pass deploy/ansible/prod.yml
 ```
-
-### Temporary Fix for Docker Bug
-
-Auto-grading is impacted by a
-[Docker bug](https://github.com/docker/docker/issues/14474).
-
-Deploy a Docker version that is known to work well.
-
-```bash
-ansible-playbook -e hax_docker=docker-1.7.1-8.gitb6416b7.fc22 \
-    deploy/ansible/hax.yml
-```
-
-Deploy the most recent Docker version in a Fedora branch, and the most recent
-kernel + firmware version in a different Fedora branch. This is a quick way
-to test new versions of Docker and linux kernel and see if the bug disappeared.
-
-```bash
-ansible-playbook -e hax_docker_tag=f22-updates-testing-pending \
-    -e hax_kernel_tag=f23 deploy/ansible/hax.yml
-```
