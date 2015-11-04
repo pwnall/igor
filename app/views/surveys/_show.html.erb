@@ -34,7 +34,7 @@
   </p>
 
   <section class="response">
-    <% if survey.can_respond? current_user %>
+    <% if survey.can_submit? current_user %>
       <%= render 'survey_responses/form',
             response: response_for(@response, current_user, survey) %>
     <% end %>

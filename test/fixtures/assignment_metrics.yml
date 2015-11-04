@@ -11,6 +11,8 @@
 #  updated_at    :datetime         not null
 #
 
+# NOTE: Do not create a metric for the following:
+#   { assignment: main_exam }
 ps1_p1:
   name: Problem 1
   assignment: ps1
@@ -20,6 +22,12 @@ ps1_p1:
 ps2_p1:
   name: Problem 1
   assignment: ps2
+  max_score: 10
+  weight: 10
+
+ps3_p1:
+  name: Problem 1
+  assignment: ps3
   max_score: 10
   weight: 10
 

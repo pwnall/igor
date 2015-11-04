@@ -11,7 +11,8 @@
 #  updated_at    :datetime         not null
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+# NOTE: Do not create deliverables for the following:
+#   { assignment: main_exam }
 
 ps1_writeup:
   assignment: ps1

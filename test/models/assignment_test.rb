@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AssignmentTest < ActiveSupport::TestCase
   before do
-    @due_at = 1.week.from_now
+    @due_at = 1.week.from_now.round 0  # Remove sub-second information.
     @assignment = Assignment.new course: courses(:main), name: 'Final Exam',
         author: users(:main_staff), due_at: @due_at, weight: 50,
         published_at: 1.week.ago, grades_published: false
@@ -10,7 +10,7 @@ class AssignmentTest < ActiveSupport::TestCase
 
   let(:assignment) { assignments(:assessment) }
   let(:unreleased_exam) { assignments(:main_exam) }
-  let(:gradeless_assignment) { assignments(:ps2) }
+  let(:gradeless_assignment) { assignments(:ps3) }
   let(:student) { users(:dexter) }
   let(:any_user) { User.new }
   let(:admin) { users(:admin) }
@@ -153,7 +153,7 @@ class AssignmentTest < ActiveSupport::TestCase
 
         assignment.destroy
 
-        assert_nil Deadline.find_by(subject_id: assignment.id)
+        assert_nil Deadline.find_by(subject: assignment)
       end
 
       it 'saves the associated deadline through the parent assignment' do
@@ -161,15 +161,49 @@ class AssignmentTest < ActiveSupport::TestCase
         params = { deadline_attributes: { due_at: new_time } }
         @assignment.update! params
 
-        assert_equal new_time, @assignment.due_at
+        assert_equal new_time, @assignment.reload.due_at
       end
 
       describe 'by_deadline scope' do
         it 'sorts assignments by ascending deadline, then by name' do
-          golden = assignments(:project, :main_exam_2, :ps3, :assessment,
+          golden = assignments(:project, :main_exam_2, :assessment, :ps3,
                                :main_exam, :ps2, :ps1)
           actual = courses(:main).assignments.by_deadline
           assert_equal golden, actual, actual.map(&:name)
+        end
+      end
+
+      describe 'with_upcoming_deadline scope' do
+        it 'returns assignments whose deadlines have not passed' do
+          golden = assignments(:ps3, :project, :assessment, :main_exam,
+                               :main_exam_2)
+          actual = courses(:main).assignments.with_upcoming_deadline
+          assert_equal golden.to_set, actual.to_set, actual.map(&:name)
+        end
+      end
+
+      describe '.with_upcoming_extension_for' do
+        it 'returns assignments for which the user has an upcoming extension' do
+          golden = assignments(:ps2, :assessment)
+          actual = courses(:main).assignments.
+              with_upcoming_extension_for users(:dexter)
+          assert_equal golden.to_set, actual.to_set, actual.map(&:name)
+        end
+      end
+
+      describe '.upcoming_for' do
+        it 'returns published assignments the student can complete' do
+          golden = assignments(:ps2, :ps3, :assessment)
+          actual = courses(:main).assignments.upcoming_for users(:dexter)
+          assert_equal golden.to_set, actual.to_set, actual.map(&:name)
+        end
+      end
+
+      describe 'past_due scope' do
+        it 'returns assignments whose deadlines have passed' do
+          golden = assignments(:ps1, :ps2)
+          actual = courses(:main).assignments.past_due
+          assert_equal golden.to_set, actual.to_set, actual.map(&:name)
         end
       end
 
@@ -208,10 +242,10 @@ class AssignmentTest < ActiveSupport::TestCase
           assert_nil @assignment.extensions.find_by user: student
         end
 
-        describe '#deadline_for' do
+        describe '#due_at_for' do
           it 'returns the original due date' do
-            assert_equal @assignment.due_at, @assignment.deadline_for(student)
-            assert_equal @assignment.due_at, @assignment.deadline_for(nil), 10
+            assert_equal @assignment.due_at, @assignment.due_at_for(student)
+            assert_equal @assignment.due_at, @assignment.due_at_for(nil), 10
           end
         end
 
@@ -229,13 +263,13 @@ class AssignmentTest < ActiveSupport::TestCase
       end
 
       describe 'student has an extension' do
-        describe '#deadline_for' do
+        describe '#due_at_for' do
           it 'returns the extended due date' do
-            assert_equal extension.due_at, assignment.deadline_for(student)
+            assert_equal extension.due_at, assignment.due_at_for(student)
           end
 
           it 'returns the original due date if subject is nil' do
-            assert_equal assignment.due_at, assignment.deadline_for(nil)
+            assert_equal assignment.due_at, assignment.due_at_for(nil)
           end
         end
 

@@ -13,8 +13,18 @@
 #  updated_at   :datetime         not null
 #
 
+# NOTE: Do not create grades for the following:
+#   { metric: ps3_p1 } (or any metric that belongs to assignments(:ps3))
+
 awesome_ps1_p1:
   metric: ps1_p1
+  course: main
+  subject: awesome_pset (Team)
+  grader: admin
+  score: 10.0
+
+awesome_ps2_p1:
+  metric: ps2_p1
   course: main
   subject: awesome_pset (Team)
   grader: admin

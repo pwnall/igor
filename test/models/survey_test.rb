@@ -2,8 +2,9 @@ require 'test_helper'
 
 class SurveyTest < ActiveSupport::TestCase
   before do
+    @due_at = Time.current.round 0  # Remove sub-second information.
     @survey = Survey.new name: 'Prerequisites', published: false,
-        course: courses(:main), due_at: Time.current
+        course: courses(:main), due_at: @due_at
   end
 
   let(:survey) { surveys(:project) }
@@ -63,18 +64,18 @@ class SurveyTest < ActiveSupport::TestCase
     end
   end
 
-  describe '#can_respond?' do
+  describe '#can_submit?' do
     describe 'survey has been published' do
       before { survey.update! published: true }
 
       it 'lets registered students and course/site admins view the survey' do
-        assert_equal true, survey.can_respond?(users(:dexter))
-        assert_equal false, survey.can_respond?(users(:inactive))
-        assert_equal false, survey.can_respond?(users(:robot))
-        assert_equal false, survey.can_respond?(users(:main_grader))
-        assert_equal true, survey.can_respond?(users(:main_staff))
-        assert_equal true, survey.can_respond?(users(:admin))
-        assert_equal false, survey.can_respond?(nil)
+        assert_equal true, survey.can_submit?(users(:dexter))
+        assert_equal false, survey.can_submit?(users(:inactive))
+        assert_equal false, survey.can_submit?(users(:robot))
+        assert_equal false, survey.can_submit?(users(:main_grader))
+        assert_equal true, survey.can_submit?(users(:main_staff))
+        assert_equal true, survey.can_submit?(users(:admin))
+        assert_equal false, survey.can_submit?(nil)
       end
     end
 
@@ -82,13 +83,13 @@ class SurveyTest < ActiveSupport::TestCase
       before { survey.update! published: false }
 
       it 'lets only course/site admins view the survey' do
-        assert_equal false, survey.can_respond?(users(:dexter))
-        assert_equal false, survey.can_respond?(users(:inactive))
-        assert_equal false, survey.can_respond?(users(:robot))
-        assert_equal false, survey.can_respond?(users(:main_grader))
-        assert_equal true, survey.can_respond?(users(:main_staff))
-        assert_equal true, survey.can_respond?(users(:admin))
-        assert_equal false, survey.can_respond?(nil)
+        assert_equal false, survey.can_submit?(users(:dexter))
+        assert_equal false, survey.can_submit?(users(:inactive))
+        assert_equal false, survey.can_submit?(users(:robot))
+        assert_equal false, survey.can_submit?(users(:main_grader))
+        assert_equal true, survey.can_submit?(users(:main_staff))
+        assert_equal true, survey.can_submit?(users(:admin))
+        assert_equal false, survey.can_submit?(nil)
       end
     end
   end
@@ -145,6 +146,70 @@ class SurveyTest < ActiveSupport::TestCase
         assert_equal true, survey.can_delete?(users(:main_staff))
         assert_equal true, survey.can_delete?(users(:admin))
         assert_equal false, survey.can_delete?(nil)
+      end
+    end
+  end
+
+  describe 'HasDeadline concern' do
+    it 'requires a deadline' do
+      @survey.deadline = nil
+      assert @survey.invalid?
+    end
+
+    it 'destroys dependent records' do
+      assert_not_nil survey.deadline
+
+      survey.destroy
+
+      assert_nil Deadline.find_by(subject: survey)
+    end
+
+    it 'saves the associated deadline through the parent' do
+      new_time = @due_at + 1.day
+      params = { deadline_attributes: { due_at: new_time } }
+      @survey.update! params
+
+      assert_equal new_time, @survey.reload.due_at
+    end
+
+    describe 'by_deadline scope' do
+      it 'sorts the surveys by ascending deadline, then by name' do
+        golden = surveys(:lab, :ps1, :project)
+        actual = courses(:main).surveys.by_deadline
+        assert_equal golden, actual, actual.map(&:name)
+      end
+    end
+
+    describe 'with_upcoming_deadline scope' do
+      it 'returns surveys whose deadlines have not passed' do
+        golden = [surveys(:lab)]
+        actual = courses(:main).surveys.with_upcoming_deadline
+        assert_equal golden.to_set, actual.to_set, actual.map(&:name)
+      end
+    end
+
+    describe '.with_upcoming_extension_for' do
+      it 'returns surveys for which the user has an upcoming extension' do
+        golden = surveys(:project, :lab)
+        actual = courses(:main).surveys.
+            with_upcoming_extension_for users(:dexter)
+        assert_equal golden.to_set, actual.to_set, actual.map(&:name)
+      end
+    end
+
+    describe '.upcoming_for' do
+      it 'returns published surveys the student can complete' do
+        golden = [surveys(:lab)]
+        actual = courses(:main).surveys.upcoming_for users(:dexter)
+        assert_equal golden.to_set, actual.to_set, actual.map(&:name)
+      end
+    end
+
+    describe 'past_due scope' do
+      it 'returns surveys whose deadlines have passed' do
+        golden = surveys(:ps1, :project)
+        actual = courses(:main).surveys.past_due
+        assert_equal golden.to_set, actual.to_set, actual.map(&:name)
       end
     end
   end

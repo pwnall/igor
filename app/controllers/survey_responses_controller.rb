@@ -53,7 +53,7 @@ class SurveyResponsesController < ApplicationController
 
   def set_survey
     @survey = current_course.surveys.find params[:survey_id]
-    return bounce_user unless @survey.can_respond? current_user
+    return bounce_user unless @survey.can_submit? current_user
   end
   private :set_survey
 

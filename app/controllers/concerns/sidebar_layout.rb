@@ -3,8 +3,8 @@ module SidebarLayout
   extend ActiveSupport::Concern
 
   included do
-    layout lambda { |controller|
-      if controller.current_course.is_staff? controller.current_user
+    layout lambda {
+      if current_course.is_staff?(current_user) || current_user.admin?
         'assignments'
       else
         'session'

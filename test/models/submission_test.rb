@@ -9,7 +9,7 @@ class SubmissionTest < ActiveSupport::TestCase
         db_file: db_files(:deedee_code)
   end
 
-  let(:submission) { submissions(:dexter_assessment) }
+  let(:submission) { submissions(:dexter_assessment_v2) }
   let(:analysis) { submission.analysis }
   let(:deliverable) { submission.deliverable }
   let(:student_author) { submission.subject }
@@ -73,7 +73,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
     describe '#file_name' do
       it 'returns the name of the uploaded file' do
-        assert_equal 'dexter_assessment.pdf', submission.file_name
+        assert_equal 'dexter_assessment_v2.pdf', submission.file_name
       end
 
       it 'returns nil if no file has been uploaded' do

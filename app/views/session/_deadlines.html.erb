@@ -1,31 +1,23 @@
-<h2 class="deadlines-heading">Deadlines</h2>
+<h2 class="deadlines-heading">Upcoming Deadlines</h2>
 
 <ol class="deadlines">
-<% ActionItem.for(current_user).each do |item| %>
+<% ActionItem.for(current_user, current_course).each do |item| %>
   <li class="deadline-<%= item.state %>">
     <div class="heading">
       <span class="icon">
         <%= deadline_state_icon_tag item.state %>
       </span>
       <span class="assignment">
-        <% if item.active? %>
-          <%= link_to item.subject.name,
-                polymorphic_path(item.subject, course_id: item.subject.course) %>
-        <% else %>
-          <%= item.subject.name %>
-        <% end %>
+        <%= link_to item.subject.name,
+              polymorphic_path(item.subject, course_id: item.subject.course) %>
+        <%= "(#{item.subject.course.number})" unless current_course %>
       </span>
       <span class="date" title="<%= item.due_at.to_s(:deadline_long) %>">
         <%= item.due_at.to_s(:deadline_short) %>
       </span>
     </div>
     <div class="description">
-      <% if item.active? %>
-        <%= link_to item.description, self.send(*item.link[0]),
-                item.link[1] || {} %>
-      <% else %>
-        <%= item.description %>
-      <% end %>
+      <%= link_to item.description, self.send(*item.link) %>
     </div>
   </li>
 <% end %>

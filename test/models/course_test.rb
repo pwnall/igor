@@ -121,6 +121,19 @@ class CourseTest < ActiveSupport::TestCase
     end
   end
 
+  describe '#upcoming_tasks_for' do
+    it 'returns published assignments and surveys the student can submit' do
+      golden = [assignments(:ps2), assignments(:ps3), assignments(:assessment),
+                surveys(:lab)]
+      actual = course.upcoming_tasks_for users(:dexter)
+      assert_equal golden.to_set, actual.to_set, actual.map(&:name)
+    end
+
+    it 'returns an empty array if the user is nil' do
+      assert_empty course.upcoming_tasks_for nil
+    end
+  end
+
   describe 'students' do
     describe '#students' do
       it 'returns only users currently enrolled in this course' do
@@ -223,8 +236,9 @@ class CourseTest < ActiveSupport::TestCase
 
     describe '#assignments_for' do
       describe 'the given user is a site or course admin' do
-        it 'returns all assignments for the course, ordered by deadline' do
-          golden = assignments(:project, :main_exam_2, :ps3, :assessment,
+        it 'returns all assignments for the course, ordered by deadline, then
+            by name' do
+          golden = assignments(:project, :main_exam_2, :assessment, :ps3,
                                :main_exam, :ps2,  :ps1)
           actual = course.assignments_for users(:admin)
           assert_equal golden, actual, actual.map(&:name)
@@ -232,9 +246,8 @@ class CourseTest < ActiveSupport::TestCase
       end
 
       describe 'the given user is not a site or course admin' do
-        it 'returns assignments with released deliverables/grades, ordered by
-            deadline' do
-          golden = assignments(:assessment, :ps2, :ps1)
+        it 'returns published assignments, ordered by deadline' do
+          golden = assignments(:assessment, :ps3, :ps2, :ps1)
           actual = course.assignments_for users(:dexter)
           assert_equal golden, actual, actual.map(&:name)
         end
@@ -273,7 +286,7 @@ class CourseTest < ActiveSupport::TestCase
     describe '#surveys_for' do
       describe 'the given user is a site or course admin' do
         it 'returns all surveys in the course, ordered by deadline' do
-          golden = surveys(:lab, :project, :ps1)
+          golden = surveys(:lab, :ps1, :project)
           actual = course.surveys_for users(:main_staff)
           assert_equal golden, actual
         end

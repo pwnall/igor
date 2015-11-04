@@ -9,19 +9,34 @@
 #  course_id    :integer          not null
 #
 
+# NOTE: Order of assignments and surveys in all courses by original due date,
+#       earliest to latest, then by alphabetical name:
+#   { ps1: 2.weeks.ago },
+#   { project_survey: 1.week.ago },
+#   { ps2: 1.week.ago },
+#   { ps1_survey: 5.days.ago },
+#   { not_main_exam: 1.day.from_now },
+#   { main_exam: (1.day + 2.hours).from_now },
+#   { assessment: 1.week.from_now },
+#   { not_main_survey: 1.week.from_now },
+#   { ps3: 1.week.from_now },
+#   { main_exam_2: 3.weeks.from_now },
+#   { project: 2.months.from_now },
+#   { lab_survey: 3.months.from_now }
+
 ps1:
   subject: ps1 (Assignment)
-  due_at: <%= 2.weeks.ago.to_s(:db) %>
+  due_at: <%= 2.weeks.ago.to_s(:db) %>  # should be in the past
   course: main
 
 ps2:
   subject: ps2 (Assignment)
-  due_at: <%= 1.week.ago.to_s(:db) %>
+  due_at: <%= 1.week.ago.to_s(:db) %>  # should be in the past
   course: main
 
 ps3:
   subject: ps3 (Assignment)
-  due_at: <%= 2.weeks.from_now.to_s(:db) %>
+  due_at: <%= 1.week.from_now.to_s(:db) %>  # should be in the future
   course: main
 
 project:
@@ -29,14 +44,15 @@ project:
   due_at: <%= 2.months.from_now.to_s(:db) %>
   course: main
 
+# Use the same deadline as ps3, to test ordering by deadline and name.
 assessment:
   subject: assessment (Assignment)
-  due_at: <%= 1.week.from_now.to_s(:db) %>
+  due_at: <%= 1.week.from_now.to_s(:db) %>  # should be in the future
   course: main
 
 main_exam:
   subject: main_exam (Assignment)
-  due_at: <%= (1.day.from_now + 2.hours).to_s(:db) %>
+  due_at: <%= (1.day + 2.hours).from_now.to_s(:db) %>
   course: main
 
 main_exam_2:
@@ -51,17 +67,17 @@ not_main_exam:
 
 ps1_survey:
   subject: ps1 (Survey)
-  due_at: <%= 5.days.ago.to_s(:db) %>
+  due_at: <%= 5.days.ago.to_s(:db) %>  # should be in the past
   course: main
 
 project_survey:
   subject: project (Survey)
-  due_at: <%= 2.months.from_now.to_s(:db) %>
+  due_at: <%= 1.week.ago.to_s(:db) %>  # should be in the past
   course: main
 
 lab_survey:
   subject: lab (Survey)
-  due_at: <%= 3.months.from_now.to_s(:db) %>
+  due_at: <%= 3.months.from_now.to_s(:db) %>  # should be in the future
   course: main
 
 not_main_survey:

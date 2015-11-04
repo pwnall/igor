@@ -123,7 +123,7 @@ class FeedItem
       items << item
 
       if assignment.deadline_passed_for? user
-        reply = FeedItem.new time: assignment.deadline_for(user),
+        reply = FeedItem.new time: assignment.due_at_for(user),
             author: User.robot, flavor: :announcement,
             contents: "The deadline has passed.",
             actions: [], replies: []

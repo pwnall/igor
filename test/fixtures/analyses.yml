@@ -12,53 +12,48 @@
 #  updated_at    :datetime         not null
 #
 
-# NOTE: Do not create an analysis for the submissions(:solo_ps1) fixture, so
-#     that it can be built in model tests.
+# NOTE: Do not create analyses for the following:
+#   { submission: solo_ps1 },
+#   { submission: dexter_project_v2 }
 
 dexter_ps1:
   submission: dexter_ps1
-  status_code: 7
-  log: ''
-  private_log: ''
-
-dexter_project:
-  submission: dexter_project
-  status_code: 7
-  log: ''
-  private_log: ''
-
-dexter_project_v2:
-  submission: dexter_project_v2
-  status_code: 7
+  status_code: <%= Analysis.status_codes[:queued] %>
   log: ''
   private_log: ''
 
 mandark_project:
   submission: mandark_project
-  status_code: 7
+  status_code: <%= Analysis.status_codes[:ok] %>
   log: ''
   private_log: ''
 
 dexter_assessment:
   submission: dexter_assessment
-  status_code: 2
+  status_code: <%= Analysis.status_codes[:queued] %>
+  log: ''
+  private_log: ''
+
+dexter_assessment_v2:
+  submission: dexter_assessment_v2
+  status_code: <%= Analysis.status_codes[:ok] %>
   log: ''
   private_log: ''
 
 deedee_assessment:
   submission: deedee_assessment
-  status_code: 2
+  status_code: <%= Analysis.status_codes[:queued] %>
   log: ''
   private_log: ''
 
 dexter_code:
   submission: dexter_code
-  status_code: 2
+  status_code: <%= Analysis.status_codes[:queued] %>
   log: ''
   private_log: ''
 
 dexter_code_v2:
   submission: dexter_code_v2
-  status_code: 2
+  status_code: <%= Analysis.status_codes[:wrong] %>
   log: ''
   private_log: ''

@@ -17,7 +17,7 @@ class SurveyResponse < ActiveRecord::Base
   validates_each :user do |record, attr, value|
     if value.nil?
       record.errors.add attr, 'is not present'
-    elsif record.survey && !record.survey.can_respond?(value)
+    elsif record.survey && !record.survey.can_submit?(value)
       record.errors.add attr, 'is not allowed to respond to this survey'
     end
   end

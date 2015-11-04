@@ -6,7 +6,7 @@ class AnalysisTest < ActiveSupport::TestCase
         status: :queued, log: '', private_log: ''
   end
 
-  let(:analysis) { analyses(:dexter_assessment) }
+  let(:analysis) { analyses(:dexter_assessment_v2) }
   let(:student_author) { analysis.submission.subject }
   let(:student_not_author) { users(:deedee) }
 

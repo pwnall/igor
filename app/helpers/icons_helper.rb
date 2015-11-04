@@ -179,25 +179,17 @@ module IconsHelper
     image_tag path, alt: title, title: title, class: 'ui_icon'
   end
 
-  def deadline_state_icon_tag(state = :pending)
+  # Icon representing an ActionItem's progress state.
+  def deadline_state_icon_tag(state)
     case state
-    when :pending
-      title = 'Pending deadline'
+    when :incomplete
+      title = 'Task incomplete'
       path = 'icons/deadline.png'
-    when :missed
-      title = 'Missed deadline'
-      path = 'icons/deadline_missed.png'
-    when :overdue
-      title = 'Overdue'
-      path = 'icons/deadline_overdue.png'
-    when :changing
-      title = 'Processing'
-      path = 'icons/waiting.png'
     when :rejected
       title = 'Rejected submission'
       path = 'icons/error.png'
-    when :done
-      title = 'Done'
+    when :ok
+      title = 'Task complete'
       path = 'icons/checkmark.png'
     end
     image_tag path, alt: title, title: title, class: 'ui_icon'

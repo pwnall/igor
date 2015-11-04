@@ -10,6 +10,9 @@
 #  updated_at :datetime         not null
 #
 
+# NOTE: Do not create a survey response for the following:
+#     { user: dexter, survey: lab }
+
 dexter_ps1:
   course: main
   user: dexter

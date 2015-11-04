@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AssignmentsControllerTest < ActionController::TestCase
   let(:released_assignment) { assignments(:ps1) }
-  let(:grades_unreleased_assignment) { assignments(:ps2) }
+  let(:grades_unreleased_assignment) { assignments(:ps3) }
   let(:unreleased_assignment) { assignments(:main_exam) }
   let(:undecided_assignment) { assignments(:main_exam_2) }
   let(:member_params) do

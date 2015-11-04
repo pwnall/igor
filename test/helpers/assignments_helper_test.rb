@@ -4,22 +4,22 @@ class AssignmentsHelperTest < ActionView::TestCase
   include AssignmentsHelper
 
   let(:unreleased_exam) { assignments(:main_exam) }
-  let(:unreleased_assignment) { assignments(:ps3) }
-  let(:released_assignment) { assignments(:ps1) }
-  let(:grades_unreleased_assignment) { assignments(:ps2) }
+  let(:unreleased_assignment) { assignments(:project) }
+  let(:released_assignment) { assignments(:ps2) }
+  let(:grades_unreleased_assignment) { assignments(:ps3) }
   let(:many_metrics_assignment) { assignments(:assessment) }
 
-  let(:gradeless_metric) { assignment_metrics(:ps2_p1) }
+  let(:gradeless_metric) { assignment_metrics(:ps3_p1) }
   let(:weighted_metric) { assignment_metrics(:assessment_overall) }
   let(:checkoff_metric) { assignment_metrics(:assessment_quality) }
 
   describe '#average_score_stats' do
     describe 'measuring an Assignment' do
       describe 'assignment has no metrics' do
-        before { assert_empty unreleased_assignment.metrics }
+        before { assert_empty unreleased_exam.metrics }
 
         it 'displays the percentage and fraction with dashes' do
-          assert_equal '-% (- / -)', average_score_stats(unreleased_assignment)
+          assert_equal '-% (- / -)', average_score_stats(unreleased_exam)
         end
       end
 
@@ -78,8 +78,8 @@ class AssignmentsHelperTest < ActionView::TestCase
     describe 'assignment released, grades unpublished' do
       before do
         @assignment = grades_unreleased_assignment
-        assert_equal true, grades_unreleased_assignment.published?
-        assert_equal false, grades_unreleased_assignment.grades_published?
+        assert_equal true, @assignment.published?
+        assert_equal false, @assignment.grades_published?
       end
 
       it 'returns nil' do
@@ -90,8 +90,9 @@ class AssignmentsHelperTest < ActionView::TestCase
     describe 'assignment released, grades published' do
       before do
         @assignment = released_assignment
-        assert_equal true, released_assignment.published?
-        assert_equal true, released_assignment.grades_published?
+        assert_equal true, @assignment.published?
+        assert_equal true, @assignment.grades_published?
+        assert_not_empty @assignment.grades
       end
 
       it 'returns a confirmation message' do
@@ -104,8 +105,8 @@ class AssignmentsHelperTest < ActionView::TestCase
     describe 'assignment released, grades unpublished' do
       before do
         @assignment = grades_unreleased_assignment
-        assert_equal true, grades_unreleased_assignment.published?
-        assert_equal false, grades_unreleased_assignment.grades_published?
+        assert_equal true, @assignment.published?
+        assert_equal false, @assignment.grades_published?
       end
 
       it 'returns nil' do
@@ -116,9 +117,9 @@ class AssignmentsHelperTest < ActionView::TestCase
     describe 'assignment unreleased, no deliverables' do
       before do
         @assignment = unreleased_exam
-        assert_equal false, unreleased_exam.published?
-        assert_equal false, unreleased_exam.grades_published?
-        assert_empty unreleased_exam.deliverables
+        assert_equal false, @assignment.published?
+        assert_equal false, @assignment.grades_published?
+        assert_empty @assignment.deliverables
       end
 
       it 'returns nil' do
@@ -129,9 +130,9 @@ class AssignmentsHelperTest < ActionView::TestCase
     describe 'assignment unreleased, deliverables exist' do
       before do
         @assignment = unreleased_assignment
-        assert_equal false, unreleased_assignment.published?
-        assert_equal false, unreleased_assignment.grades_published?
-        assert_not_empty unreleased_assignment.deliverables
+        assert_equal false, @assignment.published?
+        assert_equal false, @assignment.grades_published?
+        assert_not_empty @assignment.deliverables
       end
 
       it 'returns a confirmation message' do

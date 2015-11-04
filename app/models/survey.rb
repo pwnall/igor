@@ -41,7 +41,10 @@ class Survey < ActiveRecord::Base
   end
 
   # True if the given user is allowed to see or respond to this survey.
-  def can_respond?(user)
+  #
+  # An equivalent method with the same name must be defined for Assignment so
+  # the method can be called on either class.
+  def can_submit?(user)
     (published? && course.is_student?(user)) || course.can_edit?(user)
   end
 

@@ -6,7 +6,7 @@ class AssignmentMetricTest < ActiveSupport::TestCase
         name: 'Effort', max_score: 10, weight: 2
   end
 
-  let(:gradeless_metric) { assignment_metrics(:ps2_p1) }
+  let(:gradeless_metric) { assignment_metrics(:ps3_p1) }
   let(:overall_metric) { assignment_metrics(:assessment_overall) }
   let(:quality_metric) { assignment_metrics(:assessment_quality) }
 

@@ -51,6 +51,14 @@ class Course < ActiveRecord::Base
   def to_param
     number
   end
+
+  # Actionable tasks for the given user.
+  #
+  # This filter is intended to be the most useful to students.
+  def upcoming_tasks_for(user)
+    return [] unless user
+    assignments.upcoming_for(user) + surveys.upcoming_for(user)
+  end
 end
 
 # :nodoc: Students.
@@ -193,7 +201,7 @@ class Course
 
   # The surveys in this course that are visible to the given user.
   def surveys_for(user)
-    surveys.by_deadline.select { |s| s.can_respond? user }
+    surveys.by_deadline.select { |s| s.can_submit? user }
   end
 end
 

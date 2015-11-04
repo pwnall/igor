@@ -29,8 +29,8 @@ ps2:
   name: PSet 2
   team_partition: psets
   weight: 1.0
-  published_at: <%= 2.weeks.ago.to_s(:db) %>
-  grades_published: false
+  published_at: <%= 2.weeks.ago.to_s(:db) %>  # should be in the past
+  grades_published: true  # should be true
 
 ps3:
   author: admin
@@ -38,7 +38,7 @@ ps3:
   name: PSet 3
   team_partition: psets
   weight: 1.0
-  published_at: <%= 1.week.from_now.to_s(:db) %>
+  published_at: <%= 1.week.ago.to_s(:db) %>  # should be in the past
   grades_published: false
 
 project:
@@ -50,7 +50,6 @@ project:
   published_at: <%= 1.month.from_now.to_s(:db) %>
   grades_published: false
 
-# Use the same deadline as ps1, to test ordering by deadline and name.
 assessment:
   author: admin
   course: main
@@ -64,7 +63,7 @@ main_exam:
   course: main
   name: Exam 1
   weight: 1.0
-  published_at: <%= 1.day.from_now.to_s(:db) %>
+  published_at: <%= 1.day.from_now.to_s(:db) %>  # should be in the future
   grades_published: false
 
 main_exam_2:

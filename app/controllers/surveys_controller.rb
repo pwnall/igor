@@ -17,7 +17,7 @@ class SurveysController < ApplicationController
 
   # GET /surveys/1
   def show
-    return bounce_user unless @survey.can_respond? current_user
+    return bounce_user unless @survey.can_submit? current_user
 
     respond_to do |format|
       format.html # show.html.erb

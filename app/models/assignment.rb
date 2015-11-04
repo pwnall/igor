@@ -36,6 +36,9 @@ class Assignment < ActiveRecord::Base
   end
 
   # True if the given user is allowed to submit solutions for this assignment.
+  #
+  # An equivalent method with the same name must be defined for Survey so the
+  # method can be called on either class.
   def can_submit?(user)
     (published? && !deadline_passed_for?(user)) || can_edit?(user)
   end
@@ -60,6 +63,9 @@ class Assignment
   has_many :submissions, through: :deliverables, inverse_of: :assignment
 
   # Deliverables that the given user can see (not necessarily submit files for).
+  #
+  # NOTE: The user will not be able to submit files if the assignment's due date
+  #   has passed for them.
   def deliverables_for(user)
     (published? || can_edit?(user)) ? deliverables : deliverables.none
   end

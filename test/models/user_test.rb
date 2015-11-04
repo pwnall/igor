@@ -309,7 +309,7 @@ class UserTest < ActiveSupport::TestCase
       it 'filters for users without an extension for the given assignment' do
         assert_equal users(:solo, :mandark).to_set,
             students.without_extensions_for(assignments(:assessment)).to_set
-        assert_equal users(:deedee, :dexter, :solo, :mandark).to_set,
+        assert_equal users(:deedee, :solo, :mandark).to_set,
             students.without_extensions_for(assignments(:ps1)).to_set
       end
     end
@@ -321,8 +321,8 @@ class UserTest < ActiveSupport::TestCase
       end
 
       it 'returns nil if the user does not have an extension' do
-        assert_nil assignments(:ps1).extensions.find_by user: dexter
-        assert_nil dexter.extension_for(assignments(:ps1))
+        assert_nil assignments(:ps1).extensions.find_by(user: solo)
+        assert_nil solo.extension_for(assignments(:ps1))
       end
     end
   end
@@ -340,9 +340,10 @@ class UserTest < ActiveSupport::TestCase
 
     describe 'grades_for' do
       it 'should include grades on team assignments' do
-        golden = grades(:awesome_ps1_p1, :awesome_project,
+        golden = grades(:awesome_ps1_p1, :awesome_ps2_p1, :awesome_project,
                         :dexter_assessment_overall)
-        assert_equal golden.to_set, dexter.grades_for(courses(:main)).to_set
+        actual = dexter.grades_for courses(:main)
+        assert_equal golden.to_set, actual.to_set
       end
 
       it 'takes the course argument into account' do

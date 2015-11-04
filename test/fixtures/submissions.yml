@@ -13,8 +13,9 @@
 #  updated_at     :datetime         not null
 #
 
-# NOTE: Do not create a submission for deliverable: assessment_code, subject:
-#   deedee (User), so that it can be built in model tests.
+# NOTE: Do not create a submissions for the following:
+#   { deliverable: assessment_code, subject: deedee (User) },
+#   { deliverable: ps3_writeup, subject: dexter (User) }
 
 dexter_ps1:
   deliverable: ps1_writeup

@@ -12,14 +12,77 @@
 #  updated_at   :datetime         not null
 #
 
+# NOTE: Do not create an extension for the following:
+#   { subject: ps3 (Assignment), user: dexter }
+#
+# NOTE: Order of assignments and surveys for users(:dexter) in courses(:main) by
+#       due date (accounting for extensions), earliest to latest, then by
+#       alphabetical name:
+#   { ps1: 1.week.ago (extended from 2.weeks.ago) },
+#   { ps1_survey: 1.day.ago (extended from 5.days.ago) },
+#   { project_survey: 1.day.from_now (extended from 1.week.ago) },
+#   { main_exam: (1.day + 2.hours).from_now },
+#   { ps2: 1.week.from_now (extended from 1.week.ago) },
+#   { ps3: 1.week.from_now },
+#   { assessment: 2.weeks.from_now (extended from 1.week.from_now) },
+#   { main_exam_2: 3.weeks.from_now },
+#   { project: 2.months.from_now },
+#   { lab_survey: (3.months + 1.day).from_now (extended from 3.months.from_now) }
+#
+# NOTE: Order of assignments and surveys for users(:deedee) in all courses by
+#       due date (accounting for extensions), earliest to latest, then by
+#       alphabetical name:
+#   { ps1: 2.weeks.ago },
+#   { project_survey: 1.week.ago },
+#   { ps2: 1.week.ago },
+#   { ps1_survey: 5.days.ago },
+#   { not_main_exam: 1.day.from_now },
+#   { main_exam: (1.day + 2.hours).from_now },
+#   { not_main_survey: 1.week.from_now },
+#   { ps3: 1.week.from_now },
+#   { main_exam_2: 3.weeks.from_now },
+#   { assessment: 3.weeks.from_now (extended from 1.week.from_now) },
+#   { project: 2.months.from_now },
+#   { lab_survey: 3.months.from_now }
+
+ps1_dexter:
+  subject: ps1 (Assignment)
+  user: dexter
+  grantor: main_staff
+  due_at: <%= 1.week.ago.to_s(:db) %>  # should be in the past
+
+ps2_dexter:
+  subject: ps2 (Assignment)
+  user: dexter
+  grantor: main_staff
+  due_at: <%= 1.week.from_now.to_s(:db) %>  # should be in the future
+
 assessment_dexter:
   subject: assessment (Assignment)
   user: dexter
   grantor: main_staff
-  due_at: <%= 2.weeks.from_now.to_s(:db) %>
+  due_at: <%= 2.weeks.from_now.to_s(:db) %>  # should be in the future
 
 assessment_deedee:
   subject: assessment (Assignment)
   user: deedee
   grantor: main_staff
   due_at: <%= 3.weeks.from_now.to_s(:db) %>
+
+ps1_survey_dexter:
+  subject: ps1 (Survey)
+  user: dexter
+  grantor: main_staff
+  due_at: <%= 1.day.ago.to_s(:db) %>  # should be in the past
+
+project_survey_dexter:
+  subject: project (Survey)
+  user: dexter
+  grantor: main_staff
+  due_at: <%= 1.day.from_now.to_s(:db) %>  # should be in the future
+
+lab_survey_dexter:
+  subject: lab (Survey)
+  user: dexter
+  grantor: main_staff
+  due_at: <%= (3.months + 1.day).from_now.to_s(:db) %>  # should be in the future
