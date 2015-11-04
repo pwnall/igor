@@ -1,0 +1,16 @@
+---
+# Stops and disables the Cockpit admin service, if it is enabled.
+#
+# Fedora Server (but not Cloud) installs and enables Cockpit by default, with
+# very sketchy (insecure) defaults. This role eliminates Cockpit from the
+# security picture by stopping it and making sure that it doesn't start again
+# on a future boot.
+
+- name: disable and stop cockpit, if it exists
+  become: true
+  become_user: root
+  service: name=cockpit.socket enabled=no state=stopped
+  register: cockpit_disable_result
+  failed_when: "cockpit_disable_result | failed and
+      'systemd could not find the requested service' not in
+      cockpit_disable_result.msg"

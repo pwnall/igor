@@ -10,6 +10,7 @@
   - sys_network_manager
   - sys_package_update
   - sys_facts
+  - disable_cockpit
   #- docker_storage
 
 - hosts: "{{ prod_master_group_name }}"
