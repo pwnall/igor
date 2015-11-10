@@ -49,6 +49,52 @@ class DockerAnalyzer < Analyzer
       numericality: { greater_than: 0, allow_nil: false }
   store_accessor :exec_limits, :reduce_logs_limit
 
+  # Convert strings to numbers.
+  def map_time_limit=(new_value)
+    super new_value && new_value.to_f
+  end
+  def map_time_limit
+    # TODO(pwnall): All the getter overrides can go away if we can make sure
+    #               that the database only stores numbers.
+    value = super
+    value && value.to_f
+  end
+  def map_ram_limit=(new_value)
+    super new_value && new_value.to_i
+  end
+  def map_ram_limit
+    value = super
+    value && value.to_i
+  end
+  def map_logs_limit=(new_value)
+    super new_value && new_value.to_f
+  end
+  def map_logs_limit
+    value = super
+    value && value.to_f
+  end
+  def reduce_time_limit=(new_value)
+    super new_value && new_value.to_f
+  end
+  def reduce_time_limit
+    value = super
+    value && value.to_f
+  end
+  def reduce_ram_limit=(new_value)
+    super new_value && new_value.to_i
+  end
+  def reduce_ram_limit
+    value = super
+    value && value.to_i
+  end
+  def reduce_logs_limit=(new_value)
+    super new_value && new_value.to_f
+  end
+  def reduce_logs_limit
+    value = super
+    value && value.to_f
+  end
+
   # :nodoc: overrides Analyzer#analyze
   def analyze(submission)
     analysis = submission.analysis
@@ -73,19 +119,19 @@ class DockerAnalyzer < Analyzer
     submission_string = submission.db_file.f.file_contents
     job_options = {
       'mapper' => {
-        'wait_time' => map_time_limit.to_f,
-        'ram' => map_ram_limit.to_f,
+        'wait_time' => map_time_limit,
+        'ram' => map_ram_limit,
         'swap' => 0,
-        'logs' => map_logs_limit.to_f,
+        'logs' => map_logs_limit,
         'vcpus' => 1,
-        'ulimits' => { 'cpu' => map_time_limit.to_f.ceil } },
+        'ulimits' => { 'cpu' => map_time_limit.ceil } },
       'reducer' => {
-        'wait_time' => reduce_time_limit.to_f,
-        'ram' => reduce_ram_limit.to_f,
-        'logs' => reduce_logs_limit.to_f,
+        'wait_time' => reduce_time_limit,
+        'ram' => reduce_ram_limit,
+        'logs' => reduce_logs_limit,
         'swap' => 0,
         'vcpus' => 1,
-        'ulimits' => { 'cpu' => reduce_time_limit.to_f.ceil } },
+        'ulimits' => { 'cpu' => reduce_time_limit.ceil } },
     }
 
     # NOTE: We release the ActiveRecord connection because we won't use it for

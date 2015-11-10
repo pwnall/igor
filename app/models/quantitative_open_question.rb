@@ -18,4 +18,15 @@ class QuantitativeOpenQuestion < SurveyQuestion
   validates :step_size, numericality: { greater_than_or_equal_to: 0,
       less_than: 1000000, allow_nil: false }
   store_accessor :features, :step_size
+
+  # Convert strings to numbers.
+  def step_size=(new_value)
+    super new_value && new_value.to_f
+  end
+  def step_size
+    # TODO(pwnall): All the getter overrides can go away if we can make sure
+    #               that the database only stores numbers.
+    value = super
+    value && value.to_f
+  end
 end

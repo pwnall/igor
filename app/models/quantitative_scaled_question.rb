@@ -27,4 +27,22 @@ class QuantitativeScaledQuestion < SurveyQuestion
   # User-visible label for the maximum value on the scale.
   validates :scale_max_label, length: { in: 1..64, allow_nil: false }
   store_accessor :features, :scale_max_label
+
+  # Convert strings to numbers.
+  def scale_min=(new_value)
+    super new_value && new_value.to_i
+  end
+  def scale_min
+    # TODO(pwnall): All the getter overrides can go away if we can make sure
+    #               that the database only stores numbers.
+    value = super
+    value && value.to_i
+  end
+  def scale_max=(new_value)
+    super new_value && new_value.to_i
+  end
+  def scale_max
+    value = super
+    value && value.to_i
+  end
 end

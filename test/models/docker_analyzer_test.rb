@@ -132,7 +132,7 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
 
     it 'rejects non-integer values for :map_ram_limit' do
       @analyzer.map_ram_limit = 1.5
-      assert @analyzer.invalid?
+      assert_equal 1, @analyzer.map_ram_limit
     end
 
     it 'rejects non-positive values for :map_ram_limit' do
@@ -167,7 +167,7 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
 
     it 'rejects non-integer values for :reduce_ram_limit' do
       @analyzer.reduce_ram_limit = 1.5
-      assert @analyzer.invalid?
+      assert_equal 1, @analyzer.reduce_ram_limit
     end
 
     it 'rejects non-positive values for :reduce_ram_limit' do
