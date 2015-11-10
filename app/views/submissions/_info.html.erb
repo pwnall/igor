@@ -32,7 +32,9 @@
     <% end %>
   <% end %>
   </span>
-  <span class="promotion-status">
-    <%= submission_promotion_status submission, current_user %>
-  </span>
+  <% if submission.can_edit? current_user %>
+    <span class="promotion-status">
+      <%= submission_promotion_status submission, current_user %>
+    </span>
+  <% end %>
 </p>

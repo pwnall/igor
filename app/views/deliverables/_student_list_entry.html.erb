@@ -24,7 +24,9 @@
           <%= render partial: 'collaborations/collaborator',
                 collection: submission.collaborations, as: :collaboration %>
 
-          <%= render 'collaborations/form', submission: submission %>
+          <% if submission.can_edit? current_user %>
+            <%= render 'collaborations/form', submission: submission %>
+          <% end %>
         </div>
       <% end %>
     <% else %>

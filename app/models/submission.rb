@@ -91,7 +91,8 @@ class Submission < ActiveRecord::Base
   #     members can promote submissions if a student wants a different
   #     submission to count toward their grade after the deadline has passed.
   def can_edit?(user)
-    is_owner?(user) || course.can_edit?(user)
+    is_owner?(user) && assignment.can_student_submit?(user) ||
+        course.can_edit?(user)
   end
 
   # True if the given user is allowed to collaborate on the submission.

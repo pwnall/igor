@@ -146,14 +146,41 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   describe '#can_edit?' do
-    it 'lets only the author, staff, or admin edit submission metadata' do
-      assert_equal true, submission.can_edit?(student_author)
-      assert_equal false, submission.can_edit?(users(:robot))
-      assert_equal false, submission.can_edit?(users(:main_grader))
-      assert_equal true, submission.can_edit?(users(:main_staff))
-      assert_equal true, submission.can_edit?(users(:admin))
-      assert_equal false, submission.can_edit?(student_not_author)
-      assert_equal false, submission.can_edit?(nil)
+    describe 'the deadline for the author has not passed' do
+      before do
+        assert_equal false,
+            submission.assignment.deadline_passed_for?(student_author)
+      end
+
+      it 'lets only the author, staff, or admin edit submission metadata' do
+        assert_equal true, submission.can_edit?(student_author)
+        assert_equal false, submission.can_edit?(users(:robot))
+        assert_equal false, submission.can_edit?(users(:main_grader))
+        assert_equal true, submission.can_edit?(users(:main_staff))
+        assert_equal true, submission.can_edit?(users(:admin))
+        assert_equal false, submission.can_edit?(student_not_author)
+        assert_equal false, submission.can_edit?(nil)
+      end
+    end
+
+    describe 'the due date for the author has passed' do
+      before do
+        assignment = submission.assignment
+        assignment.update! published_at: nil, due_at: 10.years.ago
+        assignment.extensions.where(user: student_author).destroy_all
+        assert_equal true,
+            assignment.reload.deadline_passed_for?(student_author)
+      end
+
+      it 'lets only site/course admins edit submission data' do
+        assert_equal false, submission.can_edit?(student_author)
+        assert_equal false, submission.can_edit?(users(:robot))
+        assert_equal false, submission.can_edit?(users(:main_grader))
+        assert_equal true, submission.can_edit?(users(:main_staff))
+        assert_equal true, submission.can_edit?(users(:admin))
+        assert_equal false, submission.can_edit?(student_not_author)
+        assert_equal false, submission.can_edit?(nil)
+      end
     end
   end
 

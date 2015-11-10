@@ -7,6 +7,9 @@
 #  collaborator_id :integer          not null
 #
 
+# NOTE: Do not create a collaboration for the following:
+#   { submission: dexter_assessment, collaborator: solo }
+
 deedee_on_dexter_assessment:
   submission: dexter_assessment
   collaborator: deedee

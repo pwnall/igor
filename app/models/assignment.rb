@@ -35,12 +35,20 @@ class Assignment < ActiveRecord::Base
      published? || can_edit?(user)
   end
 
+  # True if the given student can submit solutions that affect their grade.
+  #
+  # NOTE: This method is only meant to check submission permissions for
+  #   students, and will not grant site/course admins extra privileges.
+  def can_student_submit?(student)
+    published? && !deadline_passed_for?(student)
+  end
+
   # True if the given user is allowed to submit solutions for this assignment.
   #
   # An equivalent method with the same name must be defined for Survey so the
   # method can be called on either class.
   def can_submit?(user)
-    (published? && !deadline_passed_for?(user)) || can_edit?(user)
+    can_student_submit?(user) || can_edit?(user)
   end
 
   # True if the given user is allowed to change this assignment.

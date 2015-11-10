@@ -67,6 +67,83 @@ class AssignmentTest < ActiveSupport::TestCase
       end
     end
 
+    describe '#can_student_submit?' do
+      describe 'assignment is published' do
+        before { assert_equal true, assignment.published? }
+
+        describe 'neither original deadline nor extension, if any, passed' do
+          before do
+            assignment.update! due_at: 1.day.from_now
+            extension.update! due_at: 1.week.from_now
+          end
+
+          it 'returns true for any user' do
+            assert_equal true,
+                assignment.can_student_submit?(any_user)
+            assert_equal true, assignment.can_student_submit?(student)
+            assert_equal true, assignment.can_student_submit?(admin)
+            assert_equal true, assignment.can_student_submit?(nil)
+          end
+        end
+
+        describe 'original deadline passed but user has active extension' do
+          before do
+            assignment.update! due_at: 1.week.ago
+            extension.update! due_at: 1.day.from_now
+          end
+
+          it 'returns true for the student with an extension' do
+            assert_equal true, assignment.can_student_submit?(student)
+          end
+
+          it 'returns false for all users without an extension' do
+            assert_nil users(:solo).extensions.find_by subject: assignment
+            assert_equal false,
+                assignment.can_student_submit?(users(:solo))
+            assert_equal false,
+                assignment.can_student_submit?(users(:main_staff))
+            assert_equal false, assignment.can_student_submit?(admin)
+            assert_equal false, assignment.can_student_submit?(nil)
+          end
+        end
+
+        describe 'both original deadline and extension, if any, have passed' do
+          before do
+            assignment.update! due_at: 2.days.ago
+            extension.update! due_at: 1.day.ago
+          end
+
+          it 'returns false for all users' do
+            assert_equal false,
+                assignment.can_student_submit?(student)
+            assert_equal false, assignment.can_student_submit?(nil)
+            assert_equal false,
+                assignment.can_student_submit?(users(:main_staff))
+            assert_equal false, assignment.can_student_submit?(admin)
+          end
+        end
+      end
+
+      describe 'assignment has not been published' do
+        before { assignment.update! published_at: 1.day.from_now }
+
+        describe 'neither original deadline nor extension, if any, passed' do
+          before do
+            assert_equal false, assignment.deadline_passed_for?(student)
+          end
+
+          it 'returns false for all users' do
+            assert_equal false,
+                assignment.can_student_submit?(student)
+            assert_equal false, assignment.can_student_submit?(nil)
+            assert_equal false,
+                assignment.can_student_submit?(users(:main_staff))
+            assert_equal false, assignment.can_student_submit?(admin)
+          end
+        end
+      end
+    end
+
     describe '#can_submit?' do
       describe 'assignment is published' do
         before { assert_equal true, assignment.published? }
