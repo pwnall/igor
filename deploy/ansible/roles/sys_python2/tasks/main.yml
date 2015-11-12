@@ -11,7 +11,7 @@
   when: ansible_pkg_mgr == 'dnf'
   become: true
   become_user: root
-  command: dnf install -y python-dnf
+  command: dnf install -y python2-dnf
   register: dnf_install_python_result
   changed_when: '"Nothing to do" not in dnf_install_python_result.stdout'
 
@@ -23,5 +23,4 @@
   with_items:
   - libsemanage-python
   - libselinux-python
-  - python-dnf
   - python-firewall
