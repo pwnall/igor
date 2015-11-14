@@ -72,6 +72,9 @@ gem 'pwnstyles_rails', '>= 0.2.6'
 gem 'jquery-rails', '>= 4.0.3'
 # gem 'coffee-rails', '>= 4.1.0'
 gem 'uglifier', '>= 2.7.0'
+# TODO(pwnall): Relax the restriction once Rails 5 support gets re-merged into
+#               autoprefixer. https://github.com/ai/autoprefixer-rails/pull/73
+gem 'autoprefixer-rails', '= 6.1.0'
 
 # TODO(pwnall): allow therubyracer 0.12+ after Ubuntu crash gets fixed
 #               https://github.com/cowboyd/therubyracer/issues/317
