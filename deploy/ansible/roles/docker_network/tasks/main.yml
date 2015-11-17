@@ -35,19 +35,10 @@
   notify:
   - restart docker daemon
 
-- name: write docker network config for fedora
-  when: ansible_os_family == 'RedHat'
+- name: write docker network config
   become: true
   become_user: root
   template: src=sysconfig_docker_network.j2 dest=/etc/sysconfig/docker-network
-  notify:
-  - restart docker daemon
-
-- name: write docker network config for ubuntu
-  when: ansible_os_family == 'Debian'
-  become: true
-  become_user: root
-  template: src=sysconfig_docker_network.j2 dest=/etc/default/docker-network
   notify:
   - restart docker daemon
 

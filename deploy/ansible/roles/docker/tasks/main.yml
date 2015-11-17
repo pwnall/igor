@@ -1,9 +1,20 @@
 ---
+- name: install docker dnf repository
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  # TODO(pwnall): replace "testing" with "main" in template repo path once
+  #               Docker 1.9.1 is released.
+  #               https://github.com/docker/docker/issues/17785
+  template: src=docker_com.repo.j2 dest=/etc/yum.repos.d/docker_com.repo
+
 - name: install docker with dnf
   when: ansible_pkg_mgr == 'dnf'
   become: true
   become_user: root
-  dnf: name=docker state=present
+  # NOTE: The RedHat repositories package Docker as the "docker" package. The
+  #       "docker-engine" package comes from the docker.com repositories.
+  dnf: name=docker-engine state=present
 
 - name: install docker with apt
   when: ansible_pkg_mgr == 'apt'
@@ -16,19 +27,38 @@
   become_user: root
   group: name=docker system=yes state=present
 
-- name: write docker config for fedora
-  when: ansible_os_family == 'RedHat'
+- name:  create docker systemd drop-in directory
   become: true
   become_user: root
-  template: src=sysconfig_docker.j2 dest=/etc/sysconfig/docker
+  file: path=/etc/systemd/system/docker.service.d state=directory mode=0755
+
+- name: write docker systemd drop-in for Fedora config compatibility
+  become: true
+  become_user: root
+  # NOTE: Template inspired by
+  #       http://docs.docker.com/engine/articles/systemd/#custom-docker-daemon-options
+  template:
+    src: systemd_fedora_config.conf.j2
+    dest: /etc/systemd/system/docker.service.d/10-fedora-config.conf
+  register: docker_systemd_fedora_config_dropin
   notify:
   - restart docker daemon
 
-- name: write docker config for ubuntu
-  when: ansible_os_family == 'Debian'
+- name: reload systemd configuration
+  command: systemctl daemon-reload
   become: true
   become_user: root
-  template: src=sysconfig_docker.j2 dest=/etc/default/docker
+  when: docker_systemd_fedora_config_dropin | changed
+
+- name:  create /etc/sysconfig directory
+  become: true
+  become_user: root
+  file: path=/etc/systemd/system/docker.service.d state=directory mode=0755
+
+- name: write docker config
+  become: true
+  become_user: root
+  template: src=sysconfig_docker.j2 dest=/etc/sysconfig/docker
   notify:
   - restart docker daemon
 
