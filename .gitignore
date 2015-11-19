@@ -15,6 +15,9 @@ tmp
 # Ignore generated assets.
 public/assets
 
+# Ignore bower assets.
+vendor/assets/bower_components/
+
 # Ignore files generated during testing.
 test/fixtures/test_files
 

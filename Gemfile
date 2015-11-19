@@ -65,6 +65,9 @@ gem 'net-ldap', '>= 0.11'
 # Report production exceptions.
 gem 'exception_notification', '>= 4.0.1'
 
+# Bower integration.
+gem 'bower-rails', '>= 0.10.0'
+
 # Assets.
 # gem 'sass-rails', '>= 5.0.3'
 gem 'pwnstyles_rails', '>= 0.2.6'
