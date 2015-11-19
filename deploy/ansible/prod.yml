@@ -60,4 +60,5 @@
   - web_user
   - web_db
   - ruby_bundler
+  - bower_js
   - web_frontend

@@ -1,0 +1,17 @@
+---
+- name: install node.js with dnf
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  dnf: name=nodejs state=present
+
+- name: install node.js with apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name=nodejs state=present
+
+- name: install bower globally
+  become: true
+  become_user: root
+  npm: name=bower global=yes
