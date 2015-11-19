@@ -8,6 +8,7 @@
 //= require jquery_ujs
 //= require motion-ui
 //= require pwn-fx
+//= require foundation
 //
 // Application assets.
 //= require_tree .

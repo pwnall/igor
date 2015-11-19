@@ -1,40 +1,61 @@
 <h2>Report grades</h2>
 <%= form_tag report_grades_path, method: :post do %>
   <section class="fields">
-    <p class="field">
-      <%= label_tag :filter_aid, 'Assignment' %>
-      <span class="value">
-        <%= select_tag :filter_aid, options_for_select([['(all)', nil]] + Assignment.all.map { |a| [a.name, a.id] }) %>
-      </span>
-    </p>
-    <p class="field">
-      <%= label_tag :sort_by, 'Sort by' %>
-      <span class="value">
-        <%= select_tag :sort_by, options_for_select([['Name', 'name'], ['Total score', 'total']]) %>
-      </span>
-    </p>
-    <p class="field">
-      <%= label_tag :name_by, 'Name students by' %>
-      <span class="value">
-        <%= select_tag :name_by, options_for_select([['Real name', 'name'], ['.edu e-mail', 'email']]) %>
-      </span>
-    </p>
-    <p class="field">
-      <%= label_tag :use_weights, 'Weight totals' %>
-      <span class="value">
-        <%= check_box_tag :use_weights, nil, :checked => true %>
-      </span>
-    </p>
-    <p class="field">
-      <%= label_tag :histogram_step, 'Histogram bucket size' %>
-      <span class="value">
-        <%= select_tag :histogram_step, options_for_select([500, 200, 100, 50, 20, 10, 5], 10) %>
-      </span>
-    </p>
+    <div class="row">
+      <div class="small-3 columns">
+        <%= label_tag :filter_aid, 'Assignment', class: 'text-right middle' %>
+      </div>
+      <div class="small-6 columns">
+        <%= select_tag :filter_aid,
+              options_for_select([['(all)', nil]] +
+                                 Assignment.all.map { |a| [a.name, a.id] }) %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-3 columns">
+        <%= label_tag :sort_by, 'Sort by', class: 'text-right middle' %>
+      </div>
+      <div class="small-6 columns">
+        <%= select_tag :sort_by,
+              options_for_select([['Name', 'name'],
+                                  ['Total score', 'total']]) %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-3 columns">
+        <%= label_tag :name_by, 'Name students by',
+              class: 'text-right middle' %>
+      </div>
+      <div class="small-6 columns">
+        <%= select_tag :name_by,
+              options_for_select([['Real name', 'name'],
+                                  ['.edu e-mail', 'email']]) %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-3 columns">
+        <%= label_tag :use_weights, 'Weight totals', class: 'text-right' %>
+      </div>
+      <div class="small-6 columns">
+        <%= label_tag :use_weights do %>
+          <%= check_box_tag :use_weights, nil, checked: true %> scale each
+              score by the assignment's weight
+        <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-3 columns">
+        <%= label_tag :histogram_step, 'Histogram bucket size',
+              class: 'text-right middle' %>
+      </div>
+      <div class="small-6 columns">
+        <%= select_tag :histogram_step,
+              options_for_select([500, 200, 100, 50, 20, 10, 5], 10) %>
+      </div>
+    </div>
   </section>
-  <p class="actions">
-    <%= button_tag class: 'emphasized' do %>
-      <%= report_icon_tag %> Generate Report
-    <% end %>
-  </p>
+
+  <%= submit_button_tag do %>
+    <%= report_icon_tag %> Generate Report
+  <% end %>
 <% end %>

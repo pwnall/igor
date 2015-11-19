@@ -1,0 +1,48 @@
+ul.dashboard-list {
+  > li {
+    @include flex-grid-row(null, null, null, true);
+    align-items: center;
+    padding: 0.25rem 0;
+
+    &.total {
+      font-weight: bold;
+    }
+    .name {
+      &.recitation {
+        @include flex-grid-column(4, 10);
+      }
+      @include flex-grid-column(2, 10);
+    }
+    .meter {
+      @include flex-grid-column(null, $grid-column-gutter);
+
+      .progress {
+        margin: 0;
+      }
+    }
+    .stats-summary {
+      @include flex-grid-column(shrink, 0);
+    }
+  }
+}
+.submission-list {
+  @include flex-grid-row(null, null, null, true);
+
+  .submission-list-entry {
+    padding: 0.3rem;
+
+    .submission-figure {
+      margin: 0.25rem;
+      position: relative;
+
+      .badge {
+        position: absolute;
+        right: -15%;
+        bottom: -15%;
+        min-width: 0;
+        font-size: 0.8em;
+        line-height: 1;
+      }
+    }
+  }
+}

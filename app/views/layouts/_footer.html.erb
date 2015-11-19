@@ -1,26 +1,19 @@
 <footer id="footer">
-  <nav>
-  	<ul>
-  		<li>
-        <% if current_course %>
-  			<a href="mailto:<%= current_course.email %>">
-  				<%= current_course.number %> TA Mailing List
-  			</a>
-        <% end %>
-        <a href="http://web.mit.edu/registrar/calendar/">MIT Academic Calendar</a>
-        <a href="http://www.eecs.mit.edu/">MIT EECS Department</a>
-  			<a href="http://student.mit.edu/catalog/index.cgi">MIT Course Catalog</a>
-  		</li>
-  	</ul>
-    <p class="copyright">
-      <%= link_to image_tag('cc_by_nd.png', :alt => 'Creative Commons License'),
-                  'http://creativecommons.org/licenses/by-nd/3.0/us/' %>
-      &copy; Copyright 2008-2011
-      <a href="http://web.mit.edu/">Massachusetts Institute of Technology</a>
-    </p>
-    <p class="design">
+  <div class="useful-links">
+    <ul class="menu">
+      <li class="source-link">
+        <a href="https://github.com/pwnall/seven">
+          <%= fa_icon :github %><span>Source Code</span>
+        </a>
+      <li class="feedback-link">
+        <a href="https://github.com/pwnall/seven/issues/new">Report an issue</a>
+      </li>
+    </ul>
+  </div>
+  <div class="credits">
+    <p class="designers text-center">
       Designed by <a href="https://github.com/spark008">Staphany Park</a> and
       <a href="http://www.costan.us">Victor Costan</a>
     </p>
-  </nav>
+  </div>
 </footer>

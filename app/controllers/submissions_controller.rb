@@ -64,17 +64,15 @@ class SubmissionsController < ApplicationController
         SubmissionAnalysisJob.perform_later @submission
 
         format.html do
-          redirect_to assignment_url(@submission.assignment,
-              course_id: @submission.course), notice: "Uploaded
-              #{@submission.file_name} for #{@submission.assignment.name}:
-              #{@submission.deliverable.name}."
+          redirect_to deliverable_panel_url(@submission.deliverable),
+              notice: "Uploaded #{@submission.file_name} for
+              #{@submission.assignment.name}: #{@submission.deliverable.name}."
         end
       else
         format.html do
-          redirect_to assignment_url(@submission.assignment,
-              course_id: @submission.course), notice: "Submission for
-              #{@submission.assignment.name}: #{@submission.deliverable.name}
-              failed."
+          redirect_to deliverable_panel_url(@submission.deliverable),
+              notice: "Submission for #{@submission.assignment.name}:
+              #{@submission.deliverable.name} failed."
         end
       end
     end
@@ -88,10 +86,9 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        redirect_to assignment_url(submission.assignment,
-            course_id: submission.course), notice: "Submission for
-            #{submission.assignment.name}: #{submission.deliverable.name}
-            removed."
+        redirect_to deliverable_panel_url(submission.deliverable),
+            notice: "Submission for #{submission.assignment.name}:
+            #{submission.deliverable.name} removed."
       end
     end
   end
@@ -118,10 +115,10 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        redirect_to assignment_url(submission.assignment,
-            course_id: submission.course), notice: "The submission that will
-            determine your grade for #{submission.assignment.name}:
-            #{submission.deliverable.name} has changed."
+        redirect_to deliverable_panel_url(submission.deliverable),
+            notice: "The submission that will determine your grade for
+            #{submission.assignment.name}: #{submission.deliverable.name} has
+            changed."
       end
     end
   end

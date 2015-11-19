@@ -1,10 +1,9 @@
-<h2><%= @registrations.length %> Students</h2>
+<h2><%= @registrations.length %> Student Registrations</h2>
 
-<table class="registrations-table">
+<table id="registrations-table">
 	<thead>
 	  <tr>
-	    <th>Name</th>
-      <th>E-mail</th>
+	    <th>Student</th>
       <th>Publish HW</th>
 	    <th>For Credit</th>
 			<% @prerequisites.sort_by(&:id).each do |prerequisite| %>
@@ -20,17 +19,21 @@
 	<tbody>
 	<% @registrations.each do |registration| %>
 	  <tr>
-	    <td><%= link_to registration.user.name, registration.user %></td>
-      <td><%= registration.user.email %></td>
-      <td><%= registration.allows_publishing? ? 'Yes' : 'No' %></td>
-	    <td><%= registration.for_credit? ? 'Yes' : 'No' %></td>
-
-			<% registration.prerequisite_answers.
-                      sort_by(&:prerequisite_id).each do |answer| %>
+	    <td class="user-identification">
+				<%= link_to h(registration.user.name), registration.user %>
+				<span class="email"><%=h registration.user.email %></span>
+			</td>
+	    <td>
+				<%= boolean_description_tag registration.for_credit?, only: :icon %>
+			</td>
       <td>
-      <% if answer.took_course? %>
-        <%= valid_icon_tag %>
-      <% end %>
+				<%= boolean_description_tag registration.allows_publishing?, only: :icon %>
+			</td>
+
+			<% answers = registration.build_prerequisite_answers.
+				 		 sort_by(&:prerequisite_id).each do |answer| %>
+      <td>
+				<%= boolean_description_tag answer.took_course?, only: :icon %>
       </td>
 			<% end %>
 
@@ -44,27 +47,27 @@
         <% end %>
       </td>
       <% end %>
-      <td>
-        <%= link_to registration_path(registration,
-                                      course_id: registration.course) do %>
-          Details
+      <td class="actions">
+				<%= button_to registration_path(registration,
+        			course_id: registration.course), method: :get,
+							class: 'small hollow button' do %>
+					<%= view_icon_tag %> Details
         <% end %>
-      </td>
-      <td>
         <% if registration.can_edit? current_user %>
-        <%= link_to edit_registration_path(registration,
-                                           course_id: registration.course) do %>
-          Edit
+					<%= button_to edit_registration_path(registration,
+	        			course_id: registration.course), method: :get,
+								class: 'small hollow button' do %>
+	          <%= edit_icon_tag %> Edit
+	        <% end %>
         <% end %>
-        <% end %>
+				<% if current_user.admin? %>
+					<%= button_to impersonate_user_path(registration.user), method: :post,
+								class: 'small hollow button' do %>
+						<%= debug_icon_tag %> Impersonate
+					<% end %>
+				<% end %>
       </td>
 	  </tr>
 	<% end %>
 	</tbody>
-
-  <tfoot>
-    <tr>
-      <td colspan="3"></td>
-    </tr>
-  </tfoot>
 </table>

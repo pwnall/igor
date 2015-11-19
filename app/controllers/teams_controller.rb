@@ -19,8 +19,9 @@ class TeamsController < ApplicationController
     respond_to do |format|
       if @team.save
         format.html do
-          redirect_to @team.partition,
-                      :notice => 'Team was successfully created.'
+          redirect_to team_partition_url(@team.partition,
+                course_id: @team.partition.course),
+                notice: 'Team was successfully created.'
         end
       else
         format.html { render :action => 'team_partitions/show' }

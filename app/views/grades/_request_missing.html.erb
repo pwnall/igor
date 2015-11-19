@@ -1,26 +1,28 @@
-<!-- grades/request_missing -->
-<% @assignments = assignments %>
-<div class="full_section">
-	<h3 class="full_section">Compute Missing Grades</h3>
+<h2>Compute Missing Grades</h2>
 
-  <%= form_tag missing_grades_path(course_id: current_course),
-        class: 'user_form' do %>
-		<div class="form_box">
-			<div class="form_entry">
-				<div class="form_label">Assignment</div>
-				<div class="form_field_box">
-					<%= select_tag :filter_aid, options_for_select([['(all)', nil]] + @assignments.map { |a| [a.name, a.id.to_s] }, params[:filter_aid]), :class => 'form_field', :id => 'filter_aid' %>
-				</div>
-			</div>
-			<div class="form_entry">
-				<div class="form_label">Only published metrics</div>
-				<div class="form_field_box">
-          <%= check_box_tag :filter_published, '1', params[:filter_published] == '1' %>
-				</div>
-			</div>
-			<div class="form_submit_box">
-				<%= submit_tag 'Compute missing grades' %>
-			</div>
-		</div>
-	<% end %>
-</div>
+<%= form_tag missing_grades_path(course_id: current_course),
+      class: 'user_form' do %>
+	<div class="top-level-query">
+		<span class="query-label">
+			<%= label_tag :filter_aid, 'Assignment: ', class: 'middle' %>
+		</span>
+		<span class="query-input-field">
+			<%= select_tag :filter_aid,
+						options_for_select([['(all)', nil]] + assignments.map { |a| [a.name, a.id.to_s] }, params[:filter_aid]) %>
+		</span>
+	</div>
+  <div class="top-level-query">
+    <span class="query-label">
+			<%= label_tag :filter_published, 'Filter', class: 'text-right middle' %>
+		</span>
+    <span class="query-input-field">
+			<%= label_tag :filter_published, class: 'middle' do %>
+				<%= check_box_tag :filter_published, '1' %> Only published metrics
+			<% end %>
+		</span>
+	</div>
+
+	<%= submit_button_tag do %>
+    <%= search_icon_tag %> Compute missing grades
+  <% end %>
+<% end %>

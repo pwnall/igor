@@ -3,6 +3,8 @@ class DeadlineExtensionsController < ApplicationController
   before_action :authenticated_as_course_editor
   before_action :set_assignment, except: [:destroy]
 
+  layout 'assignments'
+
   # GET /6.006/assignments/1/extensions
   def index
     @extension = DeadlineExtension.new subject: @assignment

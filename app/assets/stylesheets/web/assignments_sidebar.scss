@@ -1,0 +1,33 @@
+#assignments-sidebar {
+  .title-with-actions {
+    @include text-with-actions($title-action-spacing: 1rem);
+  }
+  ol.assignments-summary {
+    li {
+      @include flex-grid-row(null, null, null, true);
+      align-items: center;
+      line-height: 1.3;
+      margin-bottom: 0.5em;
+      padding-bottom: 0.5em;
+      border-bottom: 1px solid $light-gray;
+
+      .lifecycle-state {
+        @include flex-grid-column(shrink, 0);
+        font-size: 1.3em;
+
+        .draft, .graded {
+          color: desaturate($secondary-color, 20%);
+        }
+        .open {
+          color: desaturate($success-color, 20%);
+        }
+        .grading {
+          color: desaturate($warning-color, 20%);
+        }
+      }
+      .assignment-details {
+        @include flex-grid-column(null, $grid-column-gutter);
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+.status-bar {
+  @include callout-base;
+  margin: 0;
+}
+#flash-notice-box {
+  @include callout-style($primary-color);
+}
+#flash-warning-box {
+  @include callout-style($warning-color);
+}
+#flash-alert-box {
+  @include callout-style($alert-color);
+}

@@ -1,44 +1,46 @@
-<div class="full_section">
-  <div style="z-index: 10; float: right; width: 100px; text-align: right;">
-    <h1 class="full_section">
-      <%= link_to new_prerequisite_path(course_id: current_course) do %>
-        New
+<h2 class="title-with-actions">
+  <span class="title">Prerequisites</span>
+  <span class="actions">
+    <span class="link-button-wrapper">
+      <%= link_to new_prerequisite_path(course_id: current_course),
+            class: 'hollow button' do %>
+        <%= create_icon_tag %> New Prerequisite
       <% end %>
-    </h1>
-  </div>
-  <h1 class="full_section" style="margin-right: 100px; ">Prerequisites</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>
-          Course Number(s)
-        </th>
-        <th>
-          Question if Missing Prerequisite
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @prerequisites.each do |prerequisite| %>
-      <tr>
-        <td>
-          <%= prerequisite.prerequisite_number %>
-        </td>
-        <td>
-          <%= prerequisite.waiver_question %>
-        </td>
-        <td>
-          <%= link_to edit_prerequisite_path(prerequisite,
-                course_id: prerequisite.course) do %>
-            <%= edit_icon_tag %> Edit
-          <% end %>
-          <%= link_to prerequisite_path(prerequisite,
-                course_id: prerequisite.course), method: :delete do %>
-            <%= destroy_icon_tag %> Remove
-          <% end %>
-        </td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+    </span>
+  </span>
+</h2>
+
+<table id="prerequisites-table">
+  <thead>
+    <tr>
+      <th>Course Number(s)</th>
+      <th>Question if Missing Prerequisite</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @prerequisites.each do |prerequisite| %>
+    <tr>
+      <td>
+        <%= prerequisite.prerequisite_number %>
+      </td>
+      <td>
+        <%= prerequisite.waiver_question %>
+      </td>
+      <td class="actions">
+        <%= button_to edit_prerequisite_path(prerequisite,
+              course_id: prerequisite.course), method: :get,
+              class: 'hollow button' do %>
+          <%= edit_icon_tag %> Edit
+        <% end %>
+        <%= button_to prerequisite_path(prerequisite,
+              course_id: prerequisite.course), method: :delete,
+              class: 'hollow alert button', data: { confirm:
+              "Are you sure you want to delete the prerequisite for #{prerequisite.prerequisite_number}?"} do %>
+          <%= destroy_icon_tag %> Remove
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

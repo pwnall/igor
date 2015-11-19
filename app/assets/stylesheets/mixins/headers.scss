@@ -1,0 +1,36 @@
+// Aligns text followed by one or more buttons.
+//
+// @param {Number} $title-action-spacing [1.5rem] - Space between the title and
+//   actions.
+// @param {Number} $button-spacing [10] - Space between buttons in action list.
+// @param {Number} $row-wrap-spacing [0.5rem] - Space between title/action rows
+//   when stacked.
+@mixin text-with-actions(
+  $title-action-spacing: 1.5rem,
+  $button-spacing: 10,
+  $row-wrap-spacing: 0.5rem
+) {
+  @include flex-grid-row(null, null, null, true);
+  margin-left: 0;
+
+  > .title, .time {
+    @include flex-grid-column(shrink, 0);
+    margin: 0 $title-action-spacing 0.5rem 0;
+  }
+  > .actions {
+    @include flex-grid-column(shrink, 0);
+    @include flex-grid-row(null, $grid-row-width, null, true);
+    margin-left: 0;
+    margin-bottom: $row-wrap-spacing;
+
+    > form, > span.link-button-wrapper {
+      @include flex-grid-column(shrink, $button-spacing);
+    }
+    > form {
+      display: inline;
+    }
+    button, .link-button-wrapper > a {
+      margin: auto;
+    }
+  }
+}

@@ -3,7 +3,7 @@ class TimeSlotsController < ApplicationController
 
   # GET /6.006/time_slots
   def index
-    @time_slots = current_course.time_slots
+    @time_slots = current_course.time_slots.order(:day, :starts_at, :ends_at)
     @time_slot = TimeSlot.new course: current_course
   end
 

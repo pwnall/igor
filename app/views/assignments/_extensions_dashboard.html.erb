@@ -1,0 +1,8 @@
+<span class="link-button-wrapper">
+  <%= link_to assignment_extensions_path(assignment_id: assignment,
+        course_id: assignment.course) do %>
+    <%= edit_icon_tag %> Grant extensions
+  <% end %>
+</span>
+
+<p><%= assignment.extensions.length %> extension(s) granted.</p>

@@ -5,9 +5,7 @@
   <%= f.error_messages %>
   <%= render 'surveys/fields', f: f %>
 
-  <p class="actions">
-    <%= button_tag do %>
-      <%= next_step_icon_tag %> Build Survey
-    <% end %>
-  </p>
+  <%= submit_button_tag do %>
+    <%= build_icon_tag %> Build Survey
+  <% end %>
 <% end %>

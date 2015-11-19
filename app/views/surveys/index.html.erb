@@ -1,11 +1,13 @@
-<h2>
-  Surveys
+<h2 class="title-with-actions">
+  <span class="title">Surveys</span>
   <% if current_course.can_edit? current_user %>
   <span class="actions">
-    <%= link_to new_survey_path(course_id: current_course),
-          class: 'button' do %>
-      <%= create_icon_tag %> New
-    <% end %>
+    <span class="link-button-wrapper">
+      <%= link_to new_survey_path(course_id: current_course),
+            class: 'hollow button' do %>
+        <%= create_icon_tag %> New
+      <% end %>
+    </span>
   </span>
   <% end %>
 </h2>

@@ -1,0 +1,36 @@
+#deadlines-sidebar ol.deadline-list {
+  $line-height: 1.3;
+
+  li {
+    @include flex-grid-row(null, null, null, true);
+    align-items: center;
+    line-height: $line-height;
+    margin-bottom: 0.5em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid $light-gray;
+
+    .deadline-indicator {
+      @include flex-grid-column(shrink, 0);
+    }
+    .task {
+      @include flex-grid-column(null, $grid-column-gutter);
+
+      .task-link:only-child {
+        line-height: $line-height * 2;
+      }
+    }
+    .date {
+      width: 5em;
+      @include flex-grid-column(shrink, 0);
+    }
+  }
+  li.deadline-incomplete .deadline-indicator {
+    color: desaturate($warning-color, 20%);
+  }
+  li.deadline-rejected .deadline-indicator {
+    color: desaturate($alert-color, 20%);
+  }
+  li.deadline-ok .deadline-indicator {
+    color: desaturate($success-color, 20%);
+  }
+}

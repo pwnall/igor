@@ -1,0 +1,41 @@
+<table id="staff-table">
+  <thead>
+    <tr>
+      <th>Staff Member</th>
+      <th>Role</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @roles.each do |role| %>
+    <tr>
+      <td class="user-identification">
+        <%= link_to h(role.user.name), role.user %>
+        <span class="email"><%=h role.user.email %></span>
+      </td>
+      <td>
+      <% if role.name == 'staff' %>
+        <%= role_icon_tag :staff %> Instructor
+      <% elsif role.name == 'grader' %>
+        <%= role_icon_tag :staff %> Grader
+      <% else %>
+        ???
+      <% end %>
+      </td>
+      <td class="actions">
+        <% if current_user.admin? %>
+          <%= button_to impersonate_user_path(role.user), method: :post do %>
+            <%= debug_icon_tag %> Impersonate
+          <% end %>
+        <% end %>
+        <%= button_to role_path(role, course_id: role.course), method: :delete,
+              class: 'hollow alert button', data: { confirm:
+              "Are you sure you want to remove #{role.user.name} from the course staff?"
+              } do %>
+          <%= destroy_icon_tag %> Revoke Staff Privileges
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

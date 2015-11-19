@@ -1,6 +1,15 @@
-<h2>Email Resolvers</h2>
+<h2 class="title-with-actions">
+  <span class="title">Email Resolvers</span>
+  <span class="actions">
+    <span class="link-button-wrapper">
+      <%= link_to new_email_resolver_path, class: 'hollow button' do %>
+        <%= create_icon_tag %> New E-mail Resolver
+      <% end %>
+    </span>
+  </span>
+</h2>
 
-<table>
+<table id="email-resolvers-table">
   <tbody>
     <% @email_resolvers.each do |resolver| %>
     <tr>
@@ -12,13 +21,14 @@
       <td>
         <%= resolver.ldap_server %>
       </td>
-      <td>
-        <%= link_to edit_email_resolver_path resolver do %>
-          <%= edit_icon_tag %> Edit
-        <% end %>
-      </td>
-      <td>
-        <%= link_to resolver, method: :delete,
+      <td class="actions">
+        <span class="link-button-wrapper">
+          <%= link_to edit_email_resolver_path(resolver),
+                class: 'hollow button' do %>
+            <%= edit_icon_tag %> Edit
+          <% end %>
+        </span>
+        <%= button_to resolver, method: :delete, class: 'hollow alert button',
               data: { confirm: 'Are you sure?' } do %>
           <%= destroy_icon_tag %> Remove
         <% end %>
@@ -27,9 +37,3 @@
   <% end %>
   </tbody>
 </table>
-
-<p>
-  <%= link_to new_email_resolver_path, class: 'button emphasized' do %>
-    <%= create_icon_tag %> New E-mail Resolver
-  <% end %>
-</p>

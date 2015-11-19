@@ -9,10 +9,8 @@
   <%= render 'profiles/fields', f: pf %>
   <% end %>
 
-  <p class="actions">
-    <%= f.button class: 'emphasized', type: :submit do %>
-      Create my account
-    <% end %>
-  </p>
+  <%= submit_button_tag do %>
+    <%= create_icon_tag %> Create my account
+  <% end %>
 <% end %>
 </section>

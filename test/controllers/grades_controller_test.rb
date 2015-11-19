@@ -44,7 +44,7 @@ class GradesControllerTest < ActionController::TestCase
         get :index, params: { course_id: courses(:main).to_param }
 
         assert_response :success
-        assert_select '.grades-list-heading', 'Grades'
+        assert_select 'h2', '6.006 Grades'
       end
     end
 
@@ -183,7 +183,7 @@ class GradesControllerTest < ActionController::TestCase
         get :request_missing, params: { course_id: courses(:main).to_param }
 
         assert_response :success
-        assert_select 'h3', 'Compute Missing Grades'
+        assert_select 'h2', 'Compute Missing Grades'
       end
     end
 
@@ -235,7 +235,7 @@ class GradesControllerTest < ActionController::TestCase
         get :index, params: { course_id: courses(:main).to_param }
 
         assert_response :success
-        assert_select '.grades-list-heading', 'Grades'
+        assert_select 'h2', '6.006 Grades'
       end
     end
 

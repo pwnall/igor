@@ -1,79 +1,64 @@
-<h2>Site Users</h2>
+<h2>
+  <span class="title">Site Users</span>
+  <span class="labels">
+    <span class="label">
+      <%= user_icon_tag %> <%= pluralize @users.length, 'user' %>
+    </span>
+    <span class="success label">
+      <%= valid_icon_tag %> <%= pluralize @users.select { |u|
+            u.email_credential && u.email_credential.verified? }.length,
+            'verified e-mails' %>
+    </span>
+  </span>
+</h2>
 
-<table>
+<table id="site-users">
+  <thead>
+    <tr>
+      <th>User Identification</th>
+      <th>Admin Privileges</th>
+      <th></th>
+    </tr>
+  </thead>
   <tbody>
-    <% @users.sort_by { |u| [u.has_role?('admin') ? 0 : 1, u.name || ''] }.each do |user| %>
-      <tr>
-        <td><%= link_to user.name, user %></td>
-        <td>
-          <% if user.email_credential && user.email_credential.verified? %>
-            <%= valid_icon_tag %>
-          <% else %>
-            <%= invalid_icon_tag %>
+  <% @users.sort_by { |u| [u.has_role?('admin') ? 0 : 1, u.name || ''] }.each do |user| %>
+    <tr>
+      <td class="user-identification">
+        <%= link_to h(user.name), user %>
+        <span class="email"><%=h user.email %></span>
+      </td>
+      <td>
+        <% if user.admin? %>
+          <%= button_to set_admin_user_path(user, to: false), method: :patch,
+                class: 'hollow alert button', data: { confirm:
+                "Revoke #{user.email}'s admin privileges?" } do %>
+            <%= destroy_icon_tag %> Revoke
           <% end %>
-          <%= user.email %>
-        </td>
-        <td>
-          <% if user.admin? %>
-            <%= role_icon_tag :admin %> admin
-          <% else %>
-            <%= role_icon_tag :student %> user
+        <% elsif user.email_credential && user.email_credential.verified? %>
+          <%= button_to set_admin_user_path(user, to: true), method: :patch,
+                class: 'hollow success button', data: { confirm:
+                "Grant #{user.email} admin privileges?" } do %>
+            <%= create_icon_tag %> Grant
           <% end %>
-        </td>
-        <td>
-        <% unless user.admin? %>
-          <%= form_for user, url: impersonate_user_path(user),
-                method: :post do |f| %>
-            <%= f.button type: :submit do %>
-              <%= debug_icon_tag %> Impersonate
-            <% end %>
+        <% else %>
+          <%= button_to confirm_email_user_path(user), method: :patch,
+                class: 'hollow button' do %>
+            <%= valid_icon_tag %> Confirm E-mail
           <% end %>
         <% end %>
-        </td>
-        <td>
-          <%= form_for user, method: :delete do |f| %>
-            <%= f.button type: :submit, data: { confirm:
-                  "Completely wipe #{user.email}'s data?" } do %>
-              <%= destroy_icon_tag %> Remove
-            <% end %>
-          <% end %>
-        </td>
-        <td>
-          <% if user.admin? %>
-            <%= form_for user, url: set_admin_user_path(user, to: false),
-                  method: :patch do |f| %>
-              <%= f.button type: :submit, data: { confirm:
-                    "Revoke #{user.email}'s admin privileges?" } do %>
-                <%= role_icon_tag :student %> User
-              <% end %>
-            <% end %>
-          <% elsif user.email_credential && user.email_credential.verified? %>
-            <%= form_for user, url: set_admin_user_path(user, to: true),
-                  method: :patch do |f| %>
-              <%= f.button type: :submit, data: { confirm:
-                    "Grant #{user.email} admin privileges?" } do %>
-                <%= role_icon_tag :admin %> Admin
-              <% end %>
-            <% end %>
-          <% else %>
-            <%= form_for user, url: confirm_email_user_path(user),
-                  method: :patch do |f| %>
-              <%= f.button type: :submit do %>
-                <%= valid_icon_tag %> Confirm E-mail
-              <% end %>
-            <% end %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-  <tfoot>
-    <tr>
-      <th><%= pluralize @users.length, 'user' %></th>
-      <th>
-        <%= pluralize @users.select { |u| u.email_credential &&
-              u.email_credential.verified? }.length, 'verified e-mails' %>
-      </th>
+      </td>
+      <td class="actions">
+      <% unless user.admin? %>
+        <%= button_to impersonate_user_path(user), method: :post do %>
+          <%= debug_icon_tag %> Impersonate
+        <% end %>
+      <% end %>
+      <%= button_to user, method: :delete, 
+            data: { confirm: "Completely wipe #{user.email}'s data?" } do %>
+        <%= destroy_icon_tag %> Delete Account
+      <% end %>
+      </td>
     </tr>
-  </tfoot>
+  <% end %>
+  </tbody>
 </table>

@@ -1,69 +1,67 @@
-<table class="registration-info">
-  <tr>
-    <th>For credit</th>
-    <td>
-      <%= registration.for_credit? ? 'Yes' : 'No' %>
-    </td>
-  </tr>
-  <tr>
-    <th>Publish my work</th>
-    <td>
-      <%= registration.allows_publishing? ? 'Yes' : 'No' %>
-    </td>
-  </tr>
-  <tr>
-    <th>Dropped class</th>
-    <td>
-      <%= registration.dropped? ? 'Yes' : 'No' %>
-    </td>
-  </tr>
+<section class="registration-settings">
+  <div class="registration-setting">
+    <span class="setting-name">
+      For credit
+    </span>
+    <span class="setting-value">
+      <%= boolean_description_tag @registration.for_credit? %>
+    </span>
+  </div>
+  <div class="registration-setting">
+    <span class="setting-name">
+      Publish my work
+    </span>
+    <span class="setting-value">
+      <%= boolean_description_tag @registration.allows_publishing? %>
+    </span>
+  </div>
+</section>
 
-  <% registration.prerequisite_answers.sort_by(&:prerequisite_id).
-                  each do |answer| %>
-  <% next if answer.took_course? %>
-  <tr>
-    <th>
+<% if @registration.course.prerequisites.length > 0 %>
+<h4>Prerequisite Courses</h4>
+<section class="prerequisite-answers">
+  <% @prerequisite_answers.each do |answer| %>
+  <div class="prerequisite">
+    <span class="prerequisite-question">
       <%= answer.prerequisite.waiver_question %>
-    </th>
-    <td>
-      <%= answer.waiver_answer %>
-    </td>
-  </tr>
+    </span>
+    <span class="prerequisite-answer">
+      <% if answer.took_course? %>
+        <span class="true-setting">
+          <%= valid_icon_tag %>
+          Took <%=h answer.prerequisite.prerequisite_number %>
+        </span>
+      <% elsif answer.new_record? %>
+        <span class="nil-setting">
+          <%= invalid_icon_tag %> No response
+        </span>
+      <% else %>
+        <%=h answer.waiver_answer %>
+      <% end %>
+    </span>
+  </div>
   <% end %>
+</section>
+<% end %>
 
-  <% if registration.course.has_recitations? %>
-  <tr>
-    <th>Recitation Section</th>
-    <td>
-    <% if registration.recitation_section %>
-      <%= registration.recitation_section.serial %>
-    <% else %>
-      Unassigned
-    <% end %>
-    </td>
-  </tr>
-  <tr>
-    <th>Availability</th>
-    <td>
-      <table class="timetable" style="width:100%;">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <%= render 'registrations/time_slot_days_header' %>
-          </tr>
-        </thead>
-        <tbody>
-          <% @time_slot_periods.each do |period| %>
-          <tr>
-            <th><%= conflict_time_period_label period.first, period.last %></th>
-            <% @time_slot_days.each do |day| %>
-            <%= conflict_tag @time_slots[period][day], @recitation_conflicts %>
-            <% end %>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </td>
-  </tr>
-	<% end %>
-</table>
+<% if @registration.course.has_recitations? %>
+<h4>Availability</h4>
+<section class="recitation-conflicts">
+  <table id="conflicts-table">
+    <thead>
+      <th>Time</th>
+      <%= render 'registrations/time_slot_days_header' %>
+    </thead>
+    <tbody>
+      <% @time_slot_periods.each do |period| %>
+      <tr>
+        <th><%= conflict_time_period_label period.first, period.last %></th>
+        <% @time_slot_days.each do |day| %>
+        <%= conflict_tag @time_slots[period][day], @recitation_conflicts %>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>
+<% end %>

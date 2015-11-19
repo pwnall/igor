@@ -11,8 +11,9 @@
   <%= form_for assignment, url: publish_assignment_path(assignment,
         course_id: assignment.course), method: :patch,
         html: { class: 'assignment-release-form' } do |f| %>
-    <%= f.button type: :submit do %>
-      <%= ship_icon_tag %> Release
+    <%= f.button type: :submit, data: {
+          confirm: 'Students will be able to see this assignment. Continue?' } do %>
+      <%= release_icon_tag %> Release
     <% end %>
   <% end %>
 <% end %>

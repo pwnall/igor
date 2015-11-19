@@ -708,6 +708,11 @@ class AssignmentTest < ActiveSupport::TestCase
         assert_equal 45, assignment.recitation_score(section)
       end
 
+      it 'returns nil if the assignment has no metrics' do
+        assignment.metrics.destroy_all
+        assert_nil assignment.reload.recitation_score(section)
+      end
+
       # TODO(spark008): Write test for team assignments.
       it 'returns the average recitation score on team assignments' do
       end

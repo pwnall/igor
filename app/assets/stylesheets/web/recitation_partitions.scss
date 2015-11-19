@@ -1,0 +1,26 @@
+.proposal-details {
+  margin-bottom: 2rem;
+
+  .detail {
+    @include flex-grid-row(null, null, null, true);
+    font-size: 1.3rem;
+
+    .name {
+      @include flex-grid-column(shrink, 0);
+      width: 8.5rem;
+      padding-right: 0.5rem;
+      font-weight: bold;
+    }
+    .value {
+      @include flex-grid-column(null, 0);
+    }
+  }
+}
+.proposed-section-list {
+  @include flex-grid-row(null, null, null, true);
+
+  .proposed-section-roster {
+    @include flex-grid-column(shrink, $grid-column-gutter);
+    margin-bottom: 2rem;
+  }
+}

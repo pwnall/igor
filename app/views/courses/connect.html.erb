@@ -1,19 +1,35 @@
 <h2>Student Registration</h2>
 
-<% @new_courses.each do |course| %>
-<p>
-  <%= link_to new_registration_path(course_id: course), class: 'button' do %>
-    Register for <%= course.number %>
-  <% end %>
-</p>
-<% end %>
+<table id="student-registrations-table">
+  <tbody>
+    <% @new_courses.each do |course| %>
+    <tr>
+      <td>
+        <%= link_to new_registration_path(course_id: course),
+              class: 'hollow button' do %>
+          <%= register_icon_tag %> Register for <%= course.number %>
+        <% end %>
+      </td>
+      <td><%= course.title %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <h2>Staff Registration</h2>
 
-<% @new_courses.each do |course| %>
-<p>
-  <%= link_to new_role_request_path(course_id: course), class: 'button' do %>
-    <%= course.number %> Staff Access Request
-  <% end %>
-</p>
-<% end %>
+<table id="staff-registrations-table">
+  <tbody>
+    <% @new_courses.each do |course| %>
+    <tr>
+      <td>
+        <%= link_to new_role_request_path(course_id: course),
+              class: 'hollow button' do %>
+          <%= role_request_icon_tag %> <%= course.number %> Staff Access Request
+        <% end %>
+      </td>
+      <td><%= course.title %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

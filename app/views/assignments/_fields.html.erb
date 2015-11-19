@@ -1,56 +1,64 @@
-<section class="fields">
-  <p class="field">
-    <%= f.label :name %>
-    <span class="value">
-      <%= f.text_field :name, placeholder: 'PS 1', required: true,
-              autofocus: true %>
-    </span>
-  </p>
-  <p class="field">
-    <%= f.label :published_at, 'Release Date/Time' %>
-    <span class="value" data-pwnfx-scope="publish"
-          data-pwnfx-hide-positive="publish-p">
-      <%= f.datetime_select :published_at, use_short_month: true,
-            minute_step: 15, datetime_separator: ' at ',
-            time_separator: ':', required: true %>
-    </span>
-    <%= f.label :reset_publish_date do %>
-      <%= f.check_box :reset_publish_date, data: { pwnfx_hide: 'publish-p',
-            pwnfx_hide_scope: 'publish', pwnfx_hide_class: 'destroyed-blur',
-            pwnfx_hide_trigger: 'checked' } %>
-        Undecided
-    <% end %>
-  </p>
-  <p class="field">
-    <%= f.label :due_at, 'Submission Deadline' %>
-    <span class="value">
-      <%= f.datetime_select :due_at, use_short_month: true,
-             minute_step: 15, datetime_separator:' at ',
-             time_separator: ':', required: true %>
-    </span>
-  </p>
-  <p class="field">
-    <%= f.label :weight, 'Grade Weight' %>
-    <span class="value">
-      <%= f.number_field :weight, min: 0, step: 0.1, required: true,
-                                  placeholder: 1.0 %>
-    </span>
-  </p>
-  <p class="field">
-    <%= f.label :author, 'Author' %>
-    <span class="value">
-      <%= f.collection_select :author_id, f.object.course.staff, :id, :name %>
-    </span>
-  </p>
+<div class="row">
+  <div class="small-3 columns">
+    <%= f.label :name, class: 'text-right middle' %>
+  </div>
+  <div class="small-6 columns">
+    <%= f.text_field :name, placeholder: 'PS 1', required: true,
+          autofocus: true %>
+  </div>
+</div>
 
-  <% if f.object.course.has_teams? %>
-  <p class="field">
-    <%= f.label :team_partition_id, 'Teams' %>
-    <span class="value">
-      <%= f.select :team_partition_id,
-            ([['(none)', nil]] + TeamPartition.all.map { |p| [p.name, p.id] }),
-            class: 'form_field' %>
-    </span>
-  </p>
-  <% end %>
-</section>
+<div class="row">
+  <div class="small-3 columns">
+    <%= f.label :published_at, 'Release Date/Time', class: 'text-right middle' %>
+  </div>
+  <div class="small-6 columns">
+    <%= f.datetime_local_field :published_at, step: 900, data: {
+          pwnfx_scope: 'publish', pwnfx_disable_positive: 'publish-p' } %>
+  </div>
+  <div class="small-3 columns">
+    <%= f.check_box :reset_publish_date, data: { pwnfx_disable: 'publish-p',
+          pwnfx_disable_scope: 'publish', pwnfx_disable_trigger: 'checked' } %>
+    <%= f.label :reset_publish_date, 'Undecided', class: 'middle' %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="small-3 columns">
+    <%= f.label :due_at, 'Submission Deadline', class: 'text-right middle' %>
+  </div>
+  <div class="small-6 columns">
+    <%= f.datetime_local_field :due_at, required: true %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="small-3 columns">
+    <%= f.label :weight, 'Grade Weight', class: 'text-right middle' %>
+  </div>
+  <div class="small-6 columns">
+    <%= f.number_field :weight, min: 0, step: 0.1, required: true,
+          placeholder: 1.0 %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="small-3 columns">
+    <%= f.label :author_id, 'Author', class: 'text-right middle' %>
+  </div>
+  <div class="small-6 columns">
+    <%= f.collection_select :author_id, f.object.course.staff, :id, :name %>
+  </div>
+</div>
+
+<% if f.object.course.has_teams? %>
+<div class="row">
+  <div class="small-3 columns">
+    <%= f.label :team_partition_id, 'Teams', class: 'text-right middle' %>
+  </div>
+  <div class="small-6 columns">
+    <%= f.select :team_partition_id,
+          ([['(none)', nil]] + TeamPartition.all.map { |p| [p.name, p.id] }) %>
+  </div>
+</div>
+<% end %>

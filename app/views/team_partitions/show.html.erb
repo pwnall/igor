@@ -1,34 +1,32 @@
-<h2><%= @team_partition.name %></h2>
+<h2 class="title-with-actions">
+  <span class="title"><%= @team_partition.name %></span>
+  <span class="actions">
+    <% if !@team_partition.editable? %>
+      <%= button_to unlock_team_partition_path(@team_partition,
+            course_id: @team_partition.course), method: :patch,
+            class: 'hollow button', data: {
+            confirm: "Really unlock #{@team_partition.name}?" } do %>
+        <%= release_icon_tag %> Release Teams
+      <% end %>
+    <% else %>
+      <%= button_to lock_team_partition_path(@team_partition,
+            course_id: @team_partition.course), method: :patch,
+            class: 'hollow button', data: {
+            confirm: "Really lock #{@team_partition.name}?" } do %>
+        <%= pull_icon_tag %> Pull Teams
+      <% end %>
+    <% end %>
+  </span>
+</h2>
 
-<p>
-<% if !@team_partition.editable? %>
-  This partition is locked. Click
-  <%= link_to unlock_team_partition_path(@team_partition,
-        course_id: @team_partition.course), method: :patch, data: {
-        confirm: "Really unlock #{@team_partition.name}?" } do %>
-    here
-  <% end %>
-  to unlock it.
-<% else %>
-  This partition is unlocked. Click
-  <%= link_to lock_team_partition_path(@team_partition,
-        course_id: @team_partition.course), method: :patch, data: {
-        confirm: "Really lock #{@team_partition.name}?" } do %>
-    here
-  <% end %>
-  to lock it.
+<% if @team_partition.editable? %>
+<%= render 'teams/form' %>
 <% end %>
-</p>
 
 <br />
 
-<dl class="groups">
-	<% @team_partition.teams.each do |team| %>
-	<%= render team %>
-	<% end %>
-</dl>
-
-<% if @team_partition.editable? %>
-<h3>Add Team</h3>
-<%= render 'teams/form' %>
-<% end %>
+<section class="team-list">
+  <% @team_partition.teams.each do |team| %>
+  <%= render 'teams/team', team: team %>
+  <% end %>
+</section>

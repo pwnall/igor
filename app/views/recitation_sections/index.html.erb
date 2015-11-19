@@ -1,69 +1,55 @@
-<div class="full_section">
-
-  <div style="z-index: 10; float: right; width: 275; text-align: left;">
-    <h3>
-      <%= link_to 'New', new_recitation_section_path %>
-    </h3>
-    <h3>
-      <%= link_to 'Assignments', recitation_partitions_path %>
-    </h3>
-  </div>
-  <h2 class="full_section" style="margin-right: 100px;">
-    Recitation Sections
-  </h2>
-
-  <span class="validation-errors"></span>
-
-  <table class="recitations">
-    <colgroup>
-      <col span="1" class="serials">
-      <col span="1" class="leaders">
-      <col span="1" class="times">
-      <col span="1" class="location">
-      <col span="1" class="student-counts">
-      <col span="2" class="actions">
-    </colgroup>
-    <tr>
-      <th>Serial</th>
-      <th>Leader</th>
-      <th>Times</th>
-      <th>Location</th>
-      <th># Students</th>
-    </tr>
-
-    <% @recitation_sections.each do |recitation_section| %>
-    <tr>
-      <td><%= recitation_section.serial %></td>
-      <% if recitation_section.leader %>
-      <td>
-        <%= recitation_section.leader.name %>
-      </td>
-      <% else %>
-      <td class="no-leader">
-        (no leader assigned)
-      </td>
+<h2 class="title-with-actions">
+  <span class="title">Recitation Sections</span>
+  <span class="actions">
+    <span class="link-button-wrapper">
+      <%= link_to new_recitation_section_path, class: 'hollow button' do %>
+        <%= create_icon_tag %> New
       <% end %>
-      <td>
-        <%= render 'time_slots/list',
-              time_slots: recitation_section.time_slots %>
-      </td>
-      <td><%= recitation_section.location %></td>
-      <td><%= recitation_section.users.length %></td>
-      <td>
-        <%= link_to edit_recitation_section_path(recitation_section,
-              course_id: recitation_section.course) do %>
-          Edit
-        <% end %>
-      </td>
-      <td>
-        <%= link_to recitation_section_path(recitation_section,
-              course_id: recitation_section.course), method: :delete,
-              data: { confirm: 'Are you sure?' } do %>
-          <%= destroy_icon_tag %> Delete
-        <% end %>
-      </td>
-    </tr>
-    <% end %>
+    </span>
+    <span class="link-button-wrapper">
+      <%= link_to recitation_partitions_path, class: 'hollow button' do %>
+        <%= list_icon_tag %> All Section Assignments
+      <% end %>
+    </span>
+  </span>
+</h2>
 
-  </table>
-</div>
+<span class="validation-errors"></span>
+
+<table id="recitations">
+  <tr>
+    <th>Serial</th>
+    <th>Leader</th>
+    <th>Times</th>
+    <th>Location</th>
+    <th># Students</th>
+    <th></th>
+  </tr>
+
+  <% @recitation_sections.each do |section| %>
+  <tr>
+    <td><%= section.serial %></td>
+    <td>
+      <%= recitation_leader_label section %>
+    </td>
+    <td>
+      <%= render 'time_slots/list', time_slots: section.time_slots %>
+    </td>
+    <td><%= section.location %></td>
+    <td><%= section.users.length %></td>
+    <td class="actions">
+      <span class="link-button-wrapper">
+        <%= link_to edit_recitation_section_path(section,
+              course_id: section.course), class: 'hollow small button' do %>
+          <%= edit_icon_tag %> Edit
+        <% end %>
+      </span>
+      <%= button_to recitation_section_path(section, course_id: section.course),
+            method: :delete, class: 'hollow small alert button',
+            data: { confirm: 'Are you sure?' } do %>
+        <%= destroy_icon_tag %> Delete
+      <% end %>
+    </td>
+  </tr>
+  <% end %>
+</table>

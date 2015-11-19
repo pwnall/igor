@@ -1,0 +1,40 @@
+<table id="staff-role-request-table">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Requested Role</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @role_requests.each do |role_request| %>
+    <tr>
+      <td class="user-identification">
+        <%= link_to h(role_request.user.name), role_request.user %>
+        <span class="email"><%=h role_request.user.email %></span>
+      </td>
+      <td>
+      <% if role_request.name == 'staff' %>
+        <%= role_icon_tag :staff %> Instructor
+      <% elsif role_request.name == 'grader' %>
+        <%= role_icon_tag :staff %> Grader
+      <% else %>
+        ???
+      <% end %>
+      </td>
+      <td class="actions">
+        <%= button_to approve_role_request_path(role_request,
+              course_id: role_request.course), method: :post,
+              class: 'hollow success button' do |f| %>
+          <%= create_icon_tag %> Approve
+        <% end %>
+        <%= button_to deny_role_request_path(role_request,
+              course_id: role_request.course), method: :post,
+              class: 'hollow alert button' do |f| %>
+          <%= destroy_icon_tag %> Deny
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

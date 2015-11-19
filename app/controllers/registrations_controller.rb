@@ -9,7 +9,8 @@ class RegistrationsController < ApplicationController
   # GET /6.006/registrations
   def index
     @prerequisites = current_course.prerequisites
-    @registrations = current_course.registrations.by_user_name
+    @registrations = current_course.registrations.by_user_name.
+        includes(:prerequisite_answers)
     @staff = current_course.staff
 
     respond_to do |format|
@@ -20,7 +21,8 @@ class RegistrationsController < ApplicationController
   # GET /6.006/registrations/1
   def show
     return bounce_user unless @registration.can_view?(current_user)
-    @registration.build_prerequisite_answers
+    @prerequisite_answers = @registration.build_prerequisite_answers.
+        sort_by(&:prerequisite_id)
 
     if @registration.course.has_recitations?
       set_time_slots_for @registration

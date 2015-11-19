@@ -1,22 +1,20 @@
-<div class="feed-item feed-item-flavor-<%= feed_item.flavor %>">
-  <div class="headline">
-    <span class="author">
-      <%= user_image_tag feed_item.author %>
+<div class="feed-item feed-item-flavor-<%= feed_item.flavor %> media-object">
+  <div class="media-object-section">
+    <%= user_image_tag feed_item.author, size: :small_medium %>
+  </div>
+  <div class="media-object-section">
+    <p class="headline">
       <%= link_to feed_item.author.display_name_for(current_user),
                   feed_item.author %>
-    </span>
-    <%= feed_item.contents %>
-  </div>
-  <div class="footer">
-    <p class="time">
-      <%= time_delta feed_item.time %>
+      <span class="contents"><%= feed_item.contents %></span>
     </p>
-    <ul class="actions">
-      <% feed_item.actions.each do |action| %>
-      <li>
-        <%= link_to action[0], self.send(*action[1]), action[2] || {} %>
-      </li>
-      <% end %>
-    </ul>
+    <div class="time-with-actions">
+      <span class="time"><%= time_delta feed_item.time %></span>
+      <span class="actions">
+        <% feed_item.actions.each do |action| %>
+          <%= link_to action[0], self.send(*action[1]), action[2] || {} %>
+        <% end %>
+      </span>
+    </div>
   </div>
 </div>

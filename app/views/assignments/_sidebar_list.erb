@@ -3,20 +3,21 @@
   No assignments defined yet.
 </p>
 <% else %>
-<ol class="assignments-summary">
+<ol class="assignments-summary no-bullet">
   <% assignments.each do |assignment| %>
   <li>
-    <span class="weight">
-      <%= assignment.weight %>
+    <div class="lifecycle-state">
       <%= assignment_state_icon_tag assignment.ui_state_for(current_user) %>
-    </span>
-    <span class="name">
-      <%= link_to assignment.name, dashboard_assignment_path(assignment,
-            course_id: assignment.course) %>
-    </span>
-    <span class="deadline">
-      <%= time_tag assignment.due_at, assignment.due_at.to_s(:deadline_long) %>
-    </span>
+    </div>
+    <div class="assignment-details">
+      <div class="name">
+        <%= link_to assignment.name, dashboard_assignment_path(assignment,
+              course_id: assignment.course) %>
+      </div>
+      <div class="deadline">
+        <%= time_tag assignment.due_at, assignment.due_at.to_s(:deadline_long) %>
+      </div>
+    </div>
   </li>
   <% end %>
 </ol>

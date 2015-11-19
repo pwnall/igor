@@ -1,0 +1,42 @@
+span.progress-indicator {
+  display: inline-block;
+  vertical-align: middle;
+  width: 2rem;
+  text-align: center;
+  position: relative;
+  background: transparent;
+
+  &.upload-pending {
+    &:after {
+      content: '\f110';
+      font-family: FontAwesome;
+      color: $primary-color;
+    }
+  }
+  &.upload-win {
+    &:after {
+      content: '\f00c';
+      font-family: FontAwesome;
+      color: $success-color;
+    }
+    -webkit-animation-name: progress-indicator-flash;
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-animation-duration: 2s;
+    animation-name: progress-indicator-flash;
+    animation-timing-function: ease-in-out;
+    animation-duration: 2s;
+  }
+  &.upload-fail {
+    &:after {
+      content: '\f071';
+      font-family: FontAwesome;
+      color: $warning-color;
+    }
+    -webkit-animation-name: progress-indicator-flash;
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-animation-duration: 5s;
+    animation-name: progress-indicator-flash;
+    animation-timing-function: ease-in-out;
+    animation-duration: 5s;
+  }
+}

@@ -1,10 +1,14 @@
-<h2>Background Jobs</h2>
-
-<p>
-  <%= button_to failed_jobs_path, method: :delete do %>
-    <%= destroy_icon_tag %> Cleanup Failed Jobs
-  <% end %>
-</p>
+<h2 class="title-with-actions">
+  <span class="title">
+    <%= pluralize @jobs.length, 'Background Job' %>
+  </span>
+  <span class="actions">
+    <%= button_to failed_jobs_path, method: :delete,
+          class: 'hollow button' do %>
+      <%= destroy_icon_tag %> Cleanup Failed Jobs
+    <% end %>
+  </span>
+</h2>
 
 <table>
   <thead>
@@ -32,17 +36,14 @@
         Inactive
       <% end %>
       </td>
-      <td>
-        <%= link_to job_path(job), class: 'button' do %>
-          Details
-        <% end %>
+      <td class="actions">
+        <span class="link-button-wrapper">
+          <%= link_to job_path(job), class: 'hollow button' do %>
+            Details
+          <% end %>
+        </span>
       </td>
     </tr>
   <% end %>
   </tbody>
-  <tfoot>
-    <tr>
-      <th colspan="3"><%= @jobs.length %> total jobs</th>
-    </tr>
-  </tfoot>
 </table>

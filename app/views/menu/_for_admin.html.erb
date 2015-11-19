@@ -6,11 +6,11 @@
 <%= render 'menu/homework' %>
 <%= render 'menu/grades' %>
 <%= render 'menu/course' %>
-<li>
+<li class="has-submenu">
   <%= link_to root_path do %>
     <%= tools_icon_tag %> Admin
   <% end %>
-  <ol>
+  <ul class="menu vertical nested" data-submenu>
     <li>
       <%= link_to courses_path do %>
         <%= course_list_icon_tag %> Courses
@@ -36,5 +36,5 @@
         <%= background_jobs_tag %> Background Jobs
       <% end %>
     </li>
-  </ol>
+  </ul>
 </li>

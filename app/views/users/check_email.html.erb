@@ -1,9 +1,13 @@
 <% if @email.length < 5 %>
-	<span class="error-text"><%= invalid_icon_tag %> too short</span>	
+	<span class="error-text middle"><%= invalid_icon_tag %> too short</span>
 <% else %>
 	<% if @user %>
-		<span class="error-text"><%= invalid_icon_tag %> taken</span>
+		<span class="error-text middle"><%= invalid_icon_tag %> taken</span>
+	<% elsif !@email.chomp.end_with? '.edu' %>
+		<span class="error-text middle">
+			<%= invalid_icon_tag %> must be an .edu address
+		</span>
 	<% else %>
-	  <%= valid_icon_tag %>
+	  <span class="error-text middle"><%= valid_icon_tag %> available</span>
 	<% end %>
 <% end %>

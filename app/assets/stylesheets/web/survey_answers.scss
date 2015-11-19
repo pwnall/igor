@@ -1,0 +1,28 @@
+.survey-answer {
+  @include flex-grid-row(null, null, null, true);
+  margin-bottom: 0.5rem;
+
+  > .prompt {
+    @include flex-grid-column(6, $grid-column-gutter);
+    text-align: right;
+  }
+  > .answer {
+    @include flex-grid-column(6, $grid-column-gutter);
+
+    > .numerical-answer {
+      @include flex-grid-row(null, null, null, true);
+      justify-content: space-around;
+      align-items: baseline;
+
+      > .min-label, > .max-label {
+        @include flex-grid-column(shrink, 10);
+      }
+      > [type="radio"] {
+        margin: 0;
+      }
+    }
+    > .comment {
+      margin-top: 0.5rem;
+    }
+  }
+}

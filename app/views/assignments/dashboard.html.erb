@@ -1,120 +1,63 @@
-<h2 class="assignment-heading">
-  <%= @assignment.name %>
+<h2 class="assignment-heading title-with-actions">
+  <span class="title"><%= @assignment.name %></span>
   <span class="actions">
-    <%= button_to assignment_path(@assignment, course_id: @assignment.course),
-          method: :get do %>
-      <%= role_icon_tag :student %> Student View
-    <% end %>
-    <%= button_to edit_assignment_path(@assignment,
-          course_id: @assignment.course), method: :get do %>
-      <%= edit_icon_tag %> Edit
-    <% end %>
-    </form>
+    <span class="link-button-wrapper">
+      <%= link_to assignment_path(@assignment,
+            course_id: @assignment.course) do %>
+        <%= role_icon_tag :student %> Student View
+      <% end %>
+    </span>
+    <span class="link-button-wrapper">
+      <%= link_to edit_assignment_path(@assignment,
+            course_id: @assignment.course) do %>
+        <%= edit_icon_tag %> Edit
+      <% end %>
+    </span>
     <%= render 'assignments/deliverable_release', assignment: @assignment %>
   </span>
 </h2>
 
-<% if @assignment.grades.length > 0 %>
-<h3 class="dashboard-heading">
-  <%= grades_icon_tag %>
-  Grades
-  <span class="actions">
-    <%= render 'assignments/grade_release', assignment: @assignment %>
-  </span>
-</h3>
-<ul class="dashboard-list">
-  <li>
-    <span class="name"><strong>Overall</strong></span>
-    <%= render 'assignments/progress_meter', assessment: @assignment %>
+<ul class="tabs" data-tabs id="assignment-dashboard-tabs">
+  <li class="tabs-title is-active">
+    <a href="#overview-panel">Overview</a>
   </li>
-<% @assignment.metrics.each do |metric| %>
-  <li>
-    <span class="name"><%= metric.name %></span>
-    <%= render 'assignments/progress_meter', assessment: metric %>
-  </li>
-<% end %>
-</ul>
-<% end %>
 
-<% if @assignment.deadline_passed_for? nil %>
-<h3 class="dashboard-heading">
-  <%= waiting_icon_tag %>
-  Grading Process
-  <span class="actions">
-    <%= link_to editor_grades_path(course_id: @assignment.course,
-          assignment_id: @assignment), class: 'button' do %>
-      <%= edit_icon_tag %> Enter Grades
-    <% end %>
-  </span>
-</h3>
-<ul class="dashboard-list">
-  <li>
-    <span class="name"><strong>Overall</strong></span>
-    <%= grading_progress_tag @assignment %>
-  </li>
-<% @assignment.metrics.each do |metric| %>
-  <li>
-    <span class="name"><%= metric.name %></span>
-    <%= grading_progress_tag metric %>
-  </li>
-<% end %>
-</ul>
-<% end %>
-
-<% unless @recitation_sections.empty? or @assignment.grades.empty? %>
-<h3 class="dashboard-heading">
-  <%= grades_icon_tag %>
-  Recitation Grades
-</h3>
-
-<ul class="dashboard-list">
-  <% @recitation_sections.each do |recitation| %>
-    <li>
-      <span class="name">
-        <strong><%= recitation_name_label recitation %></strong>
-      </span>
-      <%= grading_recitation_tags(@assignment, recitation) %>
+  <% @assignment.deliverables.each do |deliverable| %>
+    <li class="tabs-title">
+      <%= link_to deliverable.name, '#' + deliverable_panel_id(deliverable) %>
     </li>
   <% end %>
-</ul>
-<% end %>
 
-<h3 class="dashboard-heading">
-  <%= homework_icon_tag %>
-  Submissions
-  <%= submissions_progress_tag @assignment %>
-</h3>
-<ul class="dashboard-list">
-<% @assignment.deliverables.each do |deliverable| %>
-  <li>
-    <h4 class="dashboard-heading">
-      <%= upload_icon_tag %>
-      <span class="name"><%= deliverable.name %></span>
-      <span class="actions">
-        <%= link_to reanalyze_deliverable_path(deliverable,
-              course_id: deliverable.course), method: :post,
-              class: 'button' do %>
-          <%= recompute_icon_tag %> Re-analyze All
-        <% end %>
-      </span>
-      <%= submissions_progress_tag deliverable %>
-    </h4>
-    <div data-pwnfx-scope="submissions-list"
-         data-pwnfx-delayed-target="submission-states">
-      <%= render 'deliverables/submission_list', deliverable: deliverable %>
-    </div>
+  <li class="tabs-title">
+    <a href="#extensions-panel">Extensions</a>
   </li>
-<% end %>
 </ul>
 
-<h3 class="dashboard-heading">
-  <%= deadline_state_icon_tag :incomplete %>
-  Extensions
-  <span class="actions">
-    <%= link_to assignment_extensions_path(assignment_id: @assignment,
-          course_id: @assignment.course), class: 'button' do %>
-      <%= edit_icon_tag %> Grant extensions
+<div class="tabs-content" data-tabs-content="assignment-dashboard-tabs">
+  <div class="tabs-panel is-active" id="overview-panel">
+    <% if @assignment.grades.length > 0 %>
+      <%= render 'assignments/grades_dashboard', assignment: @assignment %>
     <% end %>
-  </span>
-</h3>
-<p><%= @assignment.extensions.length %> extension(s) granted.</p>
+    <% if @assignment.deadline_passed_for?(nil) &&
+          current_course.students.length > 0 %>
+      <%= render 'assignments/grading_process_dashboard',
+            assignment: @assignment %>
+    <% end %>
+    <% unless @recitation_sections.empty? or @assignment.grades.empty? %>
+      <%= render 'assignments/recitations_dashboard', assignment: @assignment %>
+    <% end %>
+    <% if @assignment.submissions.length > 0 %>
+      <%= render 'assignments/submissions_dashboard', assignment: @assignment %>
+    <% end %>
+  </div>
+
+  <% @assignment.deliverables.each do |deliverable| %>
+    <div class="tabs-panel" id="<%= deliverable_panel_id(deliverable) %>">
+      <%= render 'assignments/deliverable_dashboard', deliverable: deliverable %>
+    </div>
+  <% end %>
+
+  <div class="tabs-panel" id="extensions-panel">
+    <%= render 'assignments/extensions_dashboard', assignment: @assignment %>
+  </div>
+</div>

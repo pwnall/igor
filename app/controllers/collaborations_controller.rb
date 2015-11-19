@@ -13,8 +13,7 @@ class CollaborationsController < ApplicationController
     respond_to do |format|
       if @collaboration.save
         format.html do
-          redirect_to assignment_url(@collaboration.assignment,
-              course_id: @collaboration.course),
+          redirect_to deliverable_panel_url(@collaboration.submission.deliverable),
               notice: "#{@collaboration.collaborator.email} was added as a
               collaborator to a submission for
               #{@collaboration.assignment.name}."
@@ -36,8 +35,7 @@ class CollaborationsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        redirect_to assignment_url(@collaboration.assignment,
-            course_id: @collaboration.course),
+        redirect_to deliverable_panel_url(@collaboration.submission.deliverable),
             notice: "Collaborator #{@collaboration.collaborator.email} was
             removed from a submission for #{@collaboration.assignment.name}."
       end

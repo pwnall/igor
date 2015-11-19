@@ -1,5 +1,5 @@
-<ul>
+<ol class="no-bullet time-slot-list">
   <% time_slots.each do |time_slot| %>
-  <li><%= time_slot_label time_slot %></li>
+  <li><%= time_slot_label time_slot, max_length: 3 %></li>
   <% end %>
-</ul>
+</ol>

@@ -4,32 +4,30 @@
   <%= @analysis.submission.deliverable.name %>
 </h2>
 
-<section class="assignment">
-  <ul class="deliverables">
-    <li>
-      <%= render 'deliverables/student_list_entry',
-            deliverable: @analysis.submission.deliverable,
-            submissions: [@analysis.submission] %>
-    </li>
-  </ul>
-<section>
+<div class="<%= analyzed_submission_class @analysis %>">
+  <%= render 'deliverables/student_submission_list_entry',
+        submission: @analysis.submission %>
+</div>
 
-<h3>
-  Log
-  <span class="actions">
-    <%= link_to reanalyze_submission_path(@analysis.submission,
-          course_id: @analysis.course), method: :post, class: 'button' do %>
-      <%= recompute_icon_tag %> Re-analyze
-    <% end %>
-  </span>
-</h3>
+<section class="analysis-logs">
+  <article class="log">
+    <h3 class="title-with-actions">
+      <span class="title">Log</span>
+      <span class="actions">
+        <%= button_to reanalyze_submission_path(@analysis.submission,
+              course_id: @analysis.course), method: :post do %>
+          <%= recompute_icon_tag %> Re-analyze
+        <% end %>
+      </span>
+    </h3>
+    <div class="markdpwn-parsed-code"><%= @analysis.log %></div>
+  </article>
 
-<div class="markdpwn-parsed-code"><%= @analysis.log %></div>
-
-<% if @analysis.can_read_private_log?(current_user) %>
-<h3>Private Log</h3>
-
-<p>This is only visible to course staff members.</p>
-
-<div class="markdpwn-parsed-code"><%= @analysis.private_log %></div>
-<% end %>
+  <% if @analysis.can_read_private_log?(current_user) %>
+    <article class="private-log">
+      <h3>Private Log</h3>
+      <p>This is only visible to course staff members.</p>
+      <div class="markdpwn-parsed-code"><%= @analysis.private_log %></div>
+    </article>
+  <% end %>
+</section>

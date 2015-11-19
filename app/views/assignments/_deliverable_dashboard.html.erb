@@ -1,0 +1,34 @@
+<% submissions = deliverable.submissions.includes(:analysis, :subject).
+                                         order(updated_at: :desc) %>
+
+<span class="actions">
+  <%= button_to reanalyze_deliverable_path(deliverable,
+        course_id: deliverable.course), method: :post do %>
+    <%= recompute_icon_tag %> Re-analyze All
+  <% end %>
+</span>
+
+<ul class="dashboard-list no-bullet">
+  <li>
+    <span class="meter"><%= submission_count_meter_tag deliverable %></span>
+    <span class="low-precision stats-summary">
+      <%= submission_count_fraction_tag deliverable %>
+    </span>
+  </li>
+</ul>
+
+<div data-pwnfx-scope="submissions-list"
+     data-pwnfx-delayed-target="submission-states">
+  <ol class="submission-list no-bullet">
+    <% submissions.each do |submission| %>
+      <li class="submission-list-entry"><%= submission_figure submission %></li>
+    <% end %>
+    <% if submissions.any? { |s| s.analysis && s.analysis.status_will_change? } %>
+      <%= content_tag :li, ajax_spinner_image_tag, data: {
+           pwnfx_delayed: 'submission-states', pwnfx_delayed_method: 'GET',
+           pwnfx_delayed_scope: 'submissions-list', pwnfx_delayed_ms: 5000,
+           pwnfx_delayed_url: submission_dashboard_deliverable_path(deliverable,
+           course_id: deliverable.course) } %>
+    <% end %>
+  </ol>
+</div>

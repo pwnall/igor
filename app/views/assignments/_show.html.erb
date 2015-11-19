@@ -1,50 +1,67 @@
-<section class="assignment">
-  <h2 class="heading">
-    <%= assignment.name %>
+<section class="submission-dashboard-container">
+  <h2 class="title-with-actions">
+    <span class="title"><%= assignment.name %></span>
 
     <% if assignment.can_edit?(current_user) %>
     <span class="actions">
-      <%= link_to dashboard_assignment_path(assignment,
-            course_id: assignment.course), class: 'button' do %>
-        <%= dashboard_icon_tag %> Dashboard
-      <% end %>
-      <%= link_to edit_assignment_path(assignment,
-            course_id: assignment.course), class: 'button' do %>
-        <%= edit_icon_tag %> Edit
-      <% end %>
+      <span class="link-button-wrapper">
+        <%= link_to dashboard_assignment_path(assignment,
+              course_id: assignment.course) do %>
+          <%= dashboard_icon_tag %> Dashboard
+        <% end %>
+      </span>
+      <span class="link-button-wrapper">
+        <%= link_to edit_assignment_path(assignment,
+              course_id: assignment.course) do %>
+          <%= edit_icon_tag %> Edit
+        <% end %>
+      </span>
     </span>
     <% end %>
   </h2>
 
-  <section class="deadline">
-    <p class="<%= deadline_class assignment, current_user %>">
-      Due
-      <%= assignment.due_at.to_s(:deadline_long) %>
-      <%= time_delta_in_words assignment.due_at %>
-    </p>
-    <% if extension = current_user.extension_for(assignment) %>
-    <p class="extension">
-      Due
-      <%= extension.due_at.to_s(:deadline_long) %>
-      - Extension granted by
-      <%= extension.grantor.display_name_for current_user, :long %>
-    </p>
-    <% end %>
-  </section>
 
-  <ul class="deliverables">
-  <% assignment.deliverables_for(current_user).each do |deliverable| %>
-    <li id="deliverable-<%= deliverable.to_param %>">
-      <%= render 'deliverables/student_list_entry', deliverable: deliverable,
-            submissions: deliverable.submissions_for(current_user).all %>
+  <ul class="tabs" data-tabs id="submission-dashboard-tabs">
+    <li class="tabs-title is-active">
+      <a href="#overview-panel">Overview</a>
     </li>
-  <% end %>
+    <li class="tabs-title">
+      <a href="#resource-files-panel">Resource Files</a>
+    </li>
+    <% assignment.deliverables.each do |deliverable| %>
+      <li class="tabs-title">
+        <%= link_to deliverable.name, '#' + deliverable_panel_id(deliverable) %>
+      </li>
+    <% end %>
   </ul>
 
-  <h3 class="sub-heading">Resource Files</h3>
-  <% unless assignment.files_for(current_user).empty? %>
-    <%= render 'assignment_files/list', assignment: assignment %>
-  <% else %>
-    <p>No files are available at this time.</p>
-  <% end %>
+  <div class="tabs-content" data-tabs-content="submission-dashboard-tabs">
+    <div class="tabs-panel is-active" id="overview-panel">
+      <%= render 'assignments/deadline', assignment: assignment %>
+
+      <ul class="deliverables no-bullet">
+      <% assignment.deliverables_for(current_user).each do |deliverable| %>
+        <li id="deliverable-<%= deliverable.to_param %>-submission">
+          <%= render 'submissions/main_submission', deliverable: deliverable %>
+        </li>
+      <% end %>
+      </ul>
+    </div>
+
+    <div class="tabs-panel" id="resource-files-panel">
+      <% unless assignment.files_for(current_user).empty? %>
+        <%= render 'assignment_files/list', assignment: assignment %>
+      <% else %>
+        <p>No files are available at this time.</p>
+      <% end %>
+    </div>
+
+    <% assignment.deliverables.each do |deliverable| %>
+      <div class="tabs-panel" id="<%= deliverable_panel_id(deliverable) %>">
+        <%= render 'deliverables/student_submission_list',
+              deliverable: deliverable,
+              submissions: deliverable.submissions_for(current_user).all %>
+      </div>
+    <% end %>
+  </div>
 </section>

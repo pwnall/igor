@@ -1,103 +1,23 @@
-<h2>Course Staff</h2>
+<h2>Staff Members</h2>
 
-<table>
-  <tbody>
-  <% @roles.each do |role| %>
-    <tr>
-      <td>
-        <%= role.user.name %>
-      </td>
-      <td>
-        <%= role.user.email %>
-      </td>
-      <td>
-      <% if role.name == 'staff' %>
-        <%= role_icon_tag :staff %> Instructor
-      <% elsif role.name == 'grader' %>
-        <%= role_icon_tag :staff %> Grader
-      <% else %>
-        ???
-      <% end %>
-      </td>
+<ul class="tabs" data-tabs id="staff-role-tabs">
+  <li class="tabs-title is-active">
+    <a href="#approved-staff">
+      Current Staff (<%= @roles.length %>)
+    </a>
+  </li>
+  <li class="tabs-title">
+    <a href="#pending-staff">
+      Pending Staff Registrations (<%= @role_requests.length %>)
+    </a>
+  </li>
+</ul>
 
-      <td>
-        <%= form_for role, url: role_path(role, course_id: role.course),
-              method: :delete do |f| %>
-          <%= f.button type: :submit, data: { confirm:
-                "Are you sure you want to remove #{role.user.name} from the course staff?"
-                } do %>
-            <%= create_icon_tag %> Revoke
-          <% end %>
-        <% end %>
-      </td>
-      <% if current_user.admin? %>
-      <td>
-        <%= form_for role.user, url: impersonate_user_path(role.user),
-              method: :post do |f| %>
-          <%= f.button type: :submit do %>
-            <%= debug_icon_tag %> Impersonate
-          <% end %>
-        <% end %>
-      </td>
-      <% end %>
-    </tr>
-  <% end %>
-  </tbody>
-  <tfoot>
-    <tr>
-      <th><%= pluralize @roles.length, 'staff member' %></th>
-    </tr>
-  </tfoot>
-
-</table>
-
-
-<h3>Pending Staff Registrations</h3>
-
-<table>
-  <tbody>
-  <% @role_requests.each do |role_request| %>
-    <tr>
-      <td>
-        <%= role_request.user.name %>
-      </td>
-      <td>
-        <%= role_request.user.email %>
-      </td>
-      <td>
-      <% if role_request.name == 'staff' %>
-        <%= role_icon_tag :staff %> Instructor
-      <% elsif role_request.name == 'grader' %>
-        <%= role_icon_tag :staff %> Grader
-      <% else %>
-        ???
-      <% end %>
-      </td>
-
-      <td>
-        <%= form_for role_request, url: approve_role_request_path(role_request,
-              course_id: role_request.course), method: :post do |f| %>
-          <%= f.button type: :submit do %>
-            <%= create_icon_tag %> Approve
-          <% end %>
-        <% end %>
-      </td>
-      <td>
-        <%= form_for role_request, url: deny_role_request_path(role_request,
-              course_id: role_request.course), method: :post do |f| %>
-          <%= f.button type: :submit do %>
-            <%= destroy_icon_tag %> Deny
-          <% end %>
-        <% end %>
-      </td>
-    </tr>
-  <% end %>
-  </tbody>
-  <tfoot>
-    <tr>
-      <th>
-        <%= pluralize @role_requests.length, 'pending staff registration' %>
-      </th>
-    </tr>
-  </tfoot>
-</table>
+<div class="tabs-content" data-tabs-content="staff-role-tabs">
+  <div class="tabs-panel is-active" id="approved-staff">
+    <%= render 'role_requests/approved_staff' %>
+  </div>
+  <div class="tabs-panel" id="pending-staff">
+    <%= render 'role_requests/pending_staff' %>
+  </div>
+</div>

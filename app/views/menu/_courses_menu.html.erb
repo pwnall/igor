@@ -1,0 +1,42 @@
+<li class="has-submenu">
+  <% if current_course %>
+    <%= link_to course_root_path(course_id: current_course) do %>
+      <span class="course-number">
+        <%= current_course.number %>
+        <%= current_course.title unless current_user %>
+      </span>
+    <% end %>
+  <% else %>
+    <%= link_to root_path do %>
+      <span class="course-number">
+        <%= current_user ? 'Courses' : 'Igor' %>
+      </span>
+    <% end %>
+  <% end %>
+
+  <% if current_user %>
+    <ul class="submenu menu vertical" data-submenu>
+      <% current_user.employed_courses.each do |course| %>
+      <li>
+        <%= link_to course_root_path(course_id: course) do %>
+          <%= role_icon_tag :staff %> <span><%= course.number %></span>
+        <% end %>
+      </li>
+      <% end %>
+
+      <% current_user.registered_courses.each do |course| %>
+      <li>
+        <%= link_to course_root_path(course_id: course) do %>
+          <%= role_icon_tag :student %> <span><%= course.number %></span>
+        <% end %>
+      </li>
+      <% end %>
+
+      <li>
+        <%= link_to connect_courses_path do %>
+          <%= create_icon_tag %> <span>Add Course</span>
+        <% end %>
+      </li>
+    </ul>
+  <% end %>
+</li>

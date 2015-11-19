@@ -1,0 +1,60 @@
+body {
+  height: auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  header#header {
+    @include foundation-top-bar;
+
+    > nav#main-menu {
+      padding-bottom: 0;
+
+      a {
+        color: $topbar-link-color;
+        outline: none;
+
+        &:hover {
+          color: lighten($anchor-color, 20%);
+          outline: none;
+        }
+      }
+      .course-number {
+        font-size: 2rem;
+      }
+    }
+  }
+  div#real-body {
+    flex: 1;
+    @include flex-grid-row(null, null, null, true);
+    margin: 0;
+
+    #menu-sidebar {
+      @include flex-grid-column(2, $grid-column-gutter);
+      padding-top: 2rem;
+      background: lighten($primary-color, 40%);
+    }
+    #main {
+      @include flex-grid-column(null, $grid-column-gutter * 2);
+      padding-top: 1rem;
+      margin-bottom: 3rem;
+    }
+    #timeline-sidebar {
+      @include flex-grid-column(3, $grid-column-gutter);
+      padding-top: 2rem;
+    }
+  }
+  footer#footer {
+    padding: 0.5rem;
+    border-top: 1px solid $medium-gray;
+
+    .useful-links, .credits {
+      @include flex-grid-row(null, null, null, true);
+      justify-content: center;
+
+      ul.menu, p.designers {
+        @include flex-grid-column(shrink, $grid-column-gutter);
+      }
+    }
+  }
+}

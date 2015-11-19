@@ -1,0 +1,19 @@
+section.staff-registration-forms {
+  @include flex-grid-row(null, null, null, true);
+  margin-top: 2rem;
+
+  article.staff-role-form {
+    @include flex-grid-column(null, $grid-column-gutter);
+    display: flex;
+    flex-flow: row wrap;
+
+    > h3, > p, > div {
+      flex: 1 1 100%;
+    }
+
+    .form-wrapper {
+      align-self: flex-end;
+      margin-top: 1rem
+    }
+  }
+}

@@ -1,5 +1,7 @@
 <h2>Extensions for <%= @assignment.name %></h2>
-<h3>Original deadline: <%= @assignment.due_at.to_s(:deadline_long) %></h3>
+<p class="lead">
+  Original deadline: <%= @assignment.due_at.to_s(:deadline_long) %>
+</p>
 
 <%= form_for @extension, url: assignment_extensions_path(@extension,
       assignment_id: @assignment, course_id: @assignment.course),
@@ -12,6 +14,7 @@
       <th>Student</th>
       <th>Extended deadline</th>
       <th>Granted by</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -19,18 +22,20 @@
     <tr class="extension">
       <td><%= link_to extension.user.name, extension.user %></td>
       <td>
-        <%= extension.due_at.to_s(:deadline_long) %>
+        <%= extension.due_at.to_s(:extension_long) %>
         (<%= distance_of_time_in_words(extension.due_at, @assignment.due_at) %>)
       </td>
       <td>
         <%= extension.grantor.display_name_for current_user, :long %>
       </td>
-      <td>
-        <%= link_to deadline_extension_path(extension,
-              course_id: @assignment.course), method: :delete,
-              data: { confirm: 'Revoke this extension?' } do %>
-          <%= destroy_icon_tag %> Revoke
-        <% end %>
+      <td class="actions">
+        <span class="link-button-wrapper">
+          <%= link_to deadline_extension_path(extension,
+                course_id: @assignment.course), method: :delete,
+                data: { confirm: 'Revoke this extension?' } do %>
+            <%= destroy_icon_tag %> Revoke
+          <% end %>
+        </span>
       </td>
     </tr>
     <% end %>

@@ -1,0 +1,10 @@
+<article class="main-submission">
+  <h3><%= deliverable.name %></h3>
+  <% submission = deliverable.submission_for_grading current_user %>
+  <% if submission %>
+    <%= render 'deliverables/student_submission_list_entry',
+          submission: submission %>
+  <% else %>
+    <%= render 'deliverables/no_submission' %>
+  <% end %>
+</article>

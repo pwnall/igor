@@ -1,3 +1,12 @@
 <h2>Add Prerequisite</h2>
 
-<%= render 'form' %>
+<%= form_for @prerequisite, url: prerequisites_url(@prerequisite,
+      course_id: @prerequisite.course) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render 'prerequisites/fields', f: f %>
+
+  <%= submit_button_tag do %>
+    <%= save_icon_tag %> Save Prerequisite
+  <% end %>
+<% end %>

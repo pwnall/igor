@@ -1,4 +1,6 @@
 module RegistrationsHelper
+  include IconsHelper
+
   # A selection of recitations you can assign to a registered student.
   def recitation_select_tag(registration)
     return unless registration

@@ -1,0 +1,15 @@
+.stats-summary {
+  &.high-precision {
+    min-width: 8rem;
+  }
+  &.low-precision {
+    min-width: 5rem;
+  }
+  min-width: 7rem;
+  @include flex-grid-row(null, null, null, true);
+
+  .score, .max-score, .current-count, .max-count {
+    @include flex-grid-column(null, 10);
+    text-align: right;
+  }
+}

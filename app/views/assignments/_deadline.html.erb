@@ -1,0 +1,25 @@
+<section class="deadline">
+  <p class="<%= deadline_class assignment, current_user %> original-due-date">
+    <span class="due-date">
+      Due
+      <span class="date">
+        <%= assignment.due_at.to_s(:deadline_long) %>
+      </span>
+      <%= time_delta_in_words assignment.due_at %>
+    </span>
+  </p>
+  <% if extension = current_user.extension_for(assignment) %>
+  <p class="extension">
+    <span class="due-date">
+      Due
+      <span class="date">
+        <%= extension.due_at.to_s(:deadline_long) %>
+      </span>
+    </span>
+    <span class="grantor">
+      Extension granted by
+      <%= extension.grantor.display_name_for current_user, :long %>
+    </span>
+  </p>
+  <% end %>
+</section>

@@ -1,72 +1,81 @@
 <h2>Team Partition</h2>
 
-
 <%= form_for @team_partition, url: polymorphic_url(@team_partition,
-      course_id: @team_partition.course) do |f| %>
+      course_id: @team_partition.course),
+      html: { id: 'team-partition-form' } do |f| %>
   <%= f.error_messages %>
 
-  <section class="fields">
-    <p class="field">
-      <%= f.label :name %>
-      <span class="value">
-        <%= f.text_field :name, placeholder: 'Project Teams', required: true %>
-      </span>
-    </p>
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :name, class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.text_field :name, placeholder: 'Project Teams', required: true %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :published, class: 'text-right' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.label :published do %>
+        <%= f.check_box :published %> allow students to view this partition
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :automated, 'Automated partitioning', class: 'text-right' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.label :automated do %>
+        <%= f.check_box :automated, data: { pwnfx_hide: 'auto-partition',
+              pwnfx_hide_trigger: 'checked' } %> use an automatically generated
+            set of teams
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :min_size, class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.text_field :min_size, class: 'min-size' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :max_size, class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.text_field :max_size, class: 'max-size' %>
+    </div>
+  </div>
+  <% if @team_partition.new_record? %>
+  <div class="row" data-pwnfx-hide-negative="auto-partition">
+    <div class="small-3 columns">
+      <%= f.label :optimal_size, 'Optimal team size',
+            class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= number_field_tag :optimal_size, nil, placeholder: 3, min: 1,
+            class: 'optimal-size' %>
+    </div>
+  </div>
+  <div class="row" data-pwnfx-hide-positive="auto-partition">
+    <div class="small-3 columns">
+      <%= f.label :clone_partition_id, 'Clone partition',
+            class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= select_tag :clone_partition_id,
+            options_for_select([['(none)', nil]] + TeamPartition.all.map { |p| [p.name, p.id] }) %>
+    </div>
+  </div>
+  <% end %>
 
-    <p class="field">
-      <%= f.label :automated, 'Automated partitioning' %>
-      <span class="value">
-      	<% if @team_partition.new_record? %>
-          <%= f.check_box :automated, data: { pwnfx_hide: 'auto-partition',
-                pwnfx_hide_trigger: 'checked' } %>
-				<% else %>
-          <%= @team_partition.automated? ? 'Yes' : 'No' %>
-				<% end %>
-      </span>
-    </p>
-
-    <p class="field">
-      <%= f.label :min_size %>
-      <span class="value">
-        <%= f.text_field :min_size %>
-      </span>
-    </p>
-
-    <p class="field">
-      <%= f.label :max_size %>
-      <span class="value">
-        <%= f.text_field :max_size %>
-      </span>
-    </p>
-
-    <p class="field">
-      <%= f.label :published %>
-      <span class="value">
-        <%= f.check_box :published %>
-      </span>
-    </p>
-
-		<% if @team_partition.new_record? %>
-    <p class="field" data-pwnfx-hide-negative="auto-partition">
-      <%= f.label :optimal_size, 'Optimal team size' %>
-      <span class="value">
-        <%= number_field_tag :optimal_size, nil, placeholder: 3, min: 1 %>
-      </span>
-    </p>
-
-    <p class="field" data-pwnfx-hide-positive="auto-partition">
-      <%= f.label :clone_partition_id, 'Clone partition' %>
-      <span class="value">
-        <%= select_tag :clone_partition_id, options_for_select([['(none)', nil]] + TeamPartition.all.map { |p| [p.name, p.id] }) %>
-      </span>
-    </p>
-		<% end %>
-  </section>
-
-  <p class="actions">
-    <%= button_tag class: 'emphasized', type: 'submit' do %>
-      <%= save_icon_tag %>
-      <%= @team_partition.new_record? ? "Create" : "Update" %>
-    <% end %>
-  </p>
+  <%= submit_button_tag do %>
+    <%= save_icon_tag %>
+    <%= @team_partition.new_record? ? "Create" : "Update" %> Partition
+  <% end %>
 <% end %>

@@ -1,0 +1,54 @@
+span.error-text {
+  @include form-label;
+
+  &.middle {
+    @include form-label-middle;
+  }
+  i.fa {
+    margin-right: 0.2rem;
+
+    &.fa-check {
+      color: $success-color;
+    }
+    &.fa-exclamation-triangle {
+      color: $warning-color;
+    }
+  }
+}
+form.compact {
+  $height-spacing: 0rem;
+
+  :not(.input-group) > {
+    input[type="text"], input[type="datetime-local"], input[type="number"],
+    input[type="checkbox"], input[type="file"], select {
+      margin-bottom: $height-spacing;
+    }
+  }
+  label {
+    margin-bottom: $height-spacing;
+  }
+  .input-group {
+    margin-bottom: $height-spacing;
+  }
+}
+form {
+  tr.form-row {
+    select {
+      padding-right: 2rem;
+    }
+  }
+}
+.forked-button-wrapper {
+  display: block;
+  position: relative;
+
+  > button {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+fieldset > legend label {
+  font-size: inherit;
+  line-height: normal;
+}

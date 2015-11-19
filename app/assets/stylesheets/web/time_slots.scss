@@ -1,0 +1,11 @@
+ol.time-slot-list {
+  margin-bottom: 0;
+
+  .time-slot-day {
+    display: inline-block;
+    padding-right: 0.5rem;
+    width: 3.5rem;
+    text-align: right;
+    font-weight: bold;
+  }
+}

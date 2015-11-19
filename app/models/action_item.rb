@@ -36,8 +36,7 @@ class ActionItem
         task.deliverables.sort_by(&:name).each do |deliverable|
           item = ActionItem.new user, task
           item.description = deliverable.name
-          item.link = [:assignment_path, deliverable.assignment,
-                       { course_id: deliverable.course }]
+          item.link = [:deliverable_panel_path, deliverable]
           item.state = analysis_state_for user, deliverable
           items << item
         end

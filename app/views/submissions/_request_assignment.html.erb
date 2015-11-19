@@ -2,9 +2,11 @@
 <div data-pwnfx-scope="grading-kit">
   <%= form_tag package_assignment_submissions_path do %>
     <section class="fields">
-      <p class="field">
-        <%= label_tag :assignment_id, 'Assignment' %>
-        <span class="value">
+      <div class="top-level-query">
+        <span class="query-label">
+          <%= label_tag :assignment_id, 'Assignment: ' %>
+        </span>
+        <span class="query-input-field">
           <%= select_tag :assignment_id,
                 options_for_select(@assignments.map { |a| [a.name, a.id] }),
                 data: { pwnfx_refresh: 'submission-deliverables',
@@ -12,25 +14,30 @@
                 pwnfx_refresh_method: 'POST',
                 pwnfx_refresh_scope: 'grading-kit', pwnfx_refresh_ms: 100 } %>
         </span>
-  		</p>
-  		<p class="field">
-  			<%= label_tag :use_cutoff, 'Late submissions' %>
-        <span class="value">
-          <%= check_box_tag :use_cutoff, '1', false, data: {
-                pwnfx_hide: 'submission-cutoff', pwnfx_hide_trigger: 'checked',
-                pwnfx_hide_scope: 'grading-kit' } %>
-          <%= label_tag :use_cutoff,
-                        'only get the submissions after the cutoff below' %>
+  		</div>
+      <div class="top-level-query">
+        <span class="query-label">
+    			<%= label_tag :use_cutoff, 'Late submissions' %>
         </span>
-      </p>
-      <p class="field" data-pwnfx-hide-negative="submission-cutoff">
-        <%= label_tag :submission_cutoff %>
-        <span class="value" data-pwnfx-move-target="submission-cutoff-deadline">
-          <%= select_datetime Time.current, prefix: 'cutoff',
-                use_short_month: true, minute_step: 15,
-                datetime_separator: ' at ', time_separator: ':' %>
+        <span class="query-input-field">
+          <%= label_tag :use_cutoff do %>
+            <%= check_box_tag :use_cutoff, '1', false, data: {
+                  pwnfx_hide: 'submission-cutoff', pwnfx_hide_trigger: 'checked',
+                  pwnfx_hide_scope: 'grading-kit' } %> only get the submissions
+              after the cutoff below
+          <% end %>
         </span>
-  		</p>
+      </div>
+      <div class="top-level-query" data-pwnfx-hide-negative="submission-cutoff">
+        <span class="query-label">
+          <%= label_tag :submission_cutoff, nil, class: 'text-right middle' %>
+        </span>
+        <span class="query-input-field"
+              data-pwnfx-move-target="submission-cutoff-deadline">
+          <%= datetime_local_field_tag :submission_cutoff,
+                Time.current.to_s(:datetime_local_field), step: 900 %>
+        </span>
+  		</div>
     </section>
 
     <div data-pwnfx-refresh-target="submission-deliverables">
@@ -39,10 +46,8 @@
     <% end %>
     </div>
 
-    <p class="actions">
-    	<%= button_tag do %>
-    	  <%= download_icon_tag %> Download Grading Kit
-    	<% end %>
-    </p>
+    <%= submit_button_tag do %>
+      <%= download_icon_tag %> Download Grading Kit
+    <% end %>
   <% end %>
 </div>

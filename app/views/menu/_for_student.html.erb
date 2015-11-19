@@ -11,18 +11,22 @@
 </li>
 <% if current_course.has_surveys %>
 <li>
-  <%= link_to 'Surveys', surveys_path(course_id: current_course) %>
+  <%= link_to surveys_path(course_id: current_course) do %>
+    <%= survey_icon_tag %> Surveys
+  <% end %>
 </li>
 <% end %>
 <% if current_course.has_teams %>
 <li>
-  <%= link_to 'Teams', teams_student_path %>
+  <%= link_to teams_student_path do %>
+    <%= team_icon_tag %> Teams
+  <% end %>
 </li>
 <% end %>
 <li>
   <%= link_to registration_path(
         current_user.registration_for(current_course),
         course_id: current_course) do %>
-    Registration
+    <%= register_icon_tag %> Registration
   <% end %>
 <li>

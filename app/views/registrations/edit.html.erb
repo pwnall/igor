@@ -1,14 +1,11 @@
-<h3>Student Registration</h2>
+<h2>Student Registration</h2>
 
 <%= form_for @registration, url: polymorphic_url(@registration,
-      course_id: @registration.course) do |f| %>
-<%= render 'registrations/fields', f: f %>
-<%= render 'registrations/conflicts', conflicts: @recitation_conflicts, f: f %>
+      course_id: @registration.course), html: { class: 'compact' } do |f| %>
+  <%= render 'registrations/fields', f: f %>
+  <%= render 'registrations/conflicts', conflicts: @recitation_conflicts, f: f %>
 
-<p class="actions">
-  <%= f.button class: 'emphasized', type: :submit do %>
-    <%= register_icon_tag %>
-    Update <%= @registration.course.number %> Registration
+  <%= submit_button_tag do %>
+    <%= save_icon_tag %> Update <%= @registration.course.number %> Registration
   <% end %>
-</p>
 <% end %>

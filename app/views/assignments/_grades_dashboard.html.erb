@@ -1,0 +1,27 @@
+<h3 class="dashboard-heading title-with-actions">
+  <span class="title">
+    <%= grades_icon_tag %> Grades
+  </span>
+  <span class="actions">
+    <%= render 'assignments/grade_release', assignment: assignment %>
+  </span>
+</h3>
+
+<ul class="dashboard-list no-bullet">
+  <li class="total">
+    <span class="name">Overall</span>
+    <span class="meter"><%= average_score_meter_tag assignment %></span>
+    <span class="high-precision stats-summary">
+      <%= average_score_fraction_tag assignment %>
+    </span>
+  </li>
+  <% assignment.metrics.each do |metric| %>
+    <li>
+      <span class="name"><%= metric.name %></span>
+      <span class="meter"><%= average_score_meter_tag metric %></span>
+      <span class="high-precision stats-summary">
+        <%= average_score_fraction_tag metric %>
+      </span>
+    </li>
+  <% end %>
+</ul>

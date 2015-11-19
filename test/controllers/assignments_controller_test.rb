@@ -17,7 +17,7 @@ class AssignmentsControllerTest < ActionController::TestCase
         get :index, params: { course_id: courses(:main).to_param }
         assert_response :success
         released_assignments = courses(:main).assignments.select(&:published?)
-        assert_select 'section.assignment', released_assignments.count
+        assert_select 'li.submission-dashboard', released_assignments.count
       end
     end
   end
@@ -29,7 +29,8 @@ class AssignmentsControllerTest < ActionController::TestCase
       it 'renders all assignments' do
         get :index, params: { course_id: courses(:main).to_param }
         assert_response :success
-        assert_select 'section.assignment', courses(:main).assignments.count
+        assert_select 'li.submission-dashboard',
+                      courses(:main).assignments.count
       end
     end
 

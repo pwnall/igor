@@ -7,12 +7,18 @@ class DeadlineExtensionsControllerTest < ActionController::TestCase
     { course_id: courses(:main).to_param, assignment_id: assignment.to_param }
   end
   before do
-    @due_at = { "due_at(1i)"=>"#{Time.current.year + 1}", "due_at(2i)"=>"4",
-      "due_at(3i)"=>"2", "due_at(4i)"=>"16", "due_at(5i)"=>"00" }
+    @year_due = Time.current.year + 1
+    @month_due = '04'
+    @day_due = '02'
+    @hour_due = '16'
+  end
+  let(:date_param) do
+    { due_at: "#{@year_due}-#{@month_due}-#{@day_due}T#{@hour_due}:00:00" }
   end
   let(:create_params) do
     { course_id: courses(:main).to_param, assignment_id: assignment.to_param,
-      deadline_extension: { user_exuid: users(:solo).to_param }.merge(@due_at) }
+      deadline_extension: { user_exuid: users(:solo).to_param }.
+      merge(date_param) }
   end
   let(:member_params) do
     { course_id: courses(:main).to_param, id: extension.to_param }
@@ -100,18 +106,14 @@ class DeadlineExtensionsControllerTest < ActionController::TestCase
             the previous values' do
           post :create, params: create_params
           assert_response :success
-          @due_at.each do |param, time|
-            assert_select "select[name='deadline_extension[#{param}]']"\
-                "> option[selected='selected'][value='#{time}']"
-          end
+          assert_select 'input[name="deadline_extension[due_at]"][value=?]',
+                        date_param[:due_at]
           assert_select "#{user_select} > option[selected='selected']", false
         end
       end
 
       describe 'submit an extension with a date before the original deadline' do
-        before do
-          @due_at['due_at(1i)'] = "#{Time.current.year - 1}"
-        end
+        before { @year_due = Time.current.year - 1 }
 
         it 'renders the extensions index page with an error message' do
           post :create, params: create_params
@@ -123,10 +125,8 @@ class DeadlineExtensionsControllerTest < ActionController::TestCase
             the previous values' do
           post :create, params: create_params
           assert_response :success
-          @due_at.each do |param, time|
-            assert_select "select[name='deadline_extension[#{param}]']"\
-                "> option[selected='selected'][value='#{time}']"
-          end
+          assert_select 'input[name="deadline_extension[due_at]"][value=?]',
+                        date_param[:due_at]
           assert_select "#{user_select} > option[selected='selected'][value=?]",
               users(:solo).to_param
         end

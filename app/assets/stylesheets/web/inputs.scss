@@ -1,0 +1,54 @@
+label.check-box-label {
+  @include flex-grid-row(null, null, null, true);
+  @include form-label-middle;
+
+  > span.check-box-wrapper {
+    @include flex-grid-column(shrink, 0);
+    margin-right: 0.5rem;
+  }
+  > .label-text {
+    @include flex-grid-column(null, 0);
+  }
+}
+span.prerequisite-course-number > label {
+  @include form-label-middle;
+  display: inline-block;
+  margin-right: 1rem;
+}
+.input-group-field {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.input-group-button {
+  &, > button, > .button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    white-space: nowrap;
+    margin: 0;
+  }
+}
+span.input-group-button > button {
+  border: none;
+}
+.top-level-query {
+  @include flex-grid-row(null, null, null, true);
+
+  > .query-label {
+    @include flex-grid-column(shrink, $grid-column-gutter);
+
+    label {
+      @include form-label-middle;
+    }
+  }
+  > .query-input-field {
+    @include flex-grid-column(shrink, $grid-column-gutter);
+    min-width: 20rem;
+
+    label {
+      @include form-label-middle;
+    }
+  }
+  > .query-submit-button {
+    @include flex-grid-column(shrink, $grid-column-gutter);
+  }
+}

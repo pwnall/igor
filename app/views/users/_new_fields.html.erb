@@ -1,38 +1,45 @@
-<section class="fields" data-pwnfx-scope="new-user">
-  <p class="field">
-    <%= f.label :email, 'School e-mail' %>
-    <span class="value">
+<section data-pwnfx-scope="new-user">
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :email, 'School e-mail', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
       <%= f.text_field :email, placeholder: 'you@mit.edu', required: true,
             autofocus: true, data: { pwnfx_refresh: 'email-check',
             pwnfx_refresh_url: check_email_users_url,
             pwnfx_refresh_method: 'POST', pwnfx_refresh_scope: 'new-user' } %>
-    </span>
-    <span class="comment" data-pwnfx-refresh-target="email-check">
-    </span>
-  </p>
-  <p class="field">
-    <%= f.label :password %>
-    <span class="value">
-    <%= f.password_field :password, required: true, placeholder: 'be clever',
-          data: { pwnfx_confirm: 'new-password' } %>
-    </span>
-    <span class="comment" id="user_form_password_secure">
-    </span>
-  </p>
-  <p class="field">
-    <%= f.label :password_confirmation, 'Re-enter password' %>
-    <span class="value">
-    <%= f.password_field :password_confirmation, required: true,
-          placeholder: 'can you type that again?', data: {
-          pwnfx_confirm: 'new-password' } %>
-    </span>
-    <span class="comment">
-      <span data-pwnfx-confirm-win="new-password">
-        <%= valid_icon_tag %>
+    </div>
+    <div class="small-3 columns" data-pwnfx-refresh-target="email-check">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :password, class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.password_field :password, required: true, placeholder: 'be clever',
+            data: { pwnfx_confirm: 'new-password' } %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :password_confirmation, 'Re-enter password',
+            class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.password_field :password_confirmation, required: true,
+            placeholder: 'can you type that again?', data: {
+            pwnfx_confirm: 'new-password' } %>
+    </div>
+    <div class="small-3 columns">
+      <span class="error-text middle" data-pwnfx-confirm-win="new-password">
+        <%= valid_icon_tag %> matches
       </span>
-      <span data-pwnfx-confirm-fail="new-password">
-        <span class="error-text"><%= invalid_icon_tag %> does not match</span>
+      <span class="error-text middle" data-pwnfx-confirm-fail="new-password">
+        <%= invalid_icon_tag %> does not match
       </span>
-    </span>
-  </p>
+    </div>
+  </div>
 </section>

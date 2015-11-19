@@ -1,6 +1,6 @@
 <h2>Staff Registration</h2>
 
-<p>
+<p class="lead">
   You have registered as a <%= @role_request.course.number %> staff member.
   Your registration must be approved before it becomes effective.
 </p>
@@ -11,10 +11,8 @@
 
 <%= form_for @role_request, url: polymorphic_url(@role_request,
       course_id: @role_request.course), method: :delete do |f| %>
-  <p class="actions">
-    <%= f.button type: :submit do %>
-      <%= destroy_icon_tag %>
-      Cancel <%= @role_request.course.number %> staff registration
-    <% end %>
-  </p>
+  <%= submit_button_tag do %>
+    <%= destroy_icon_tag %>
+    Cancel <%= @role_request.course.number %> staff registration
+  <% end %>
 <% end %>

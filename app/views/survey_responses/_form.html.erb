@@ -1,5 +1,6 @@
 <%= form_for response, url: polymorphic_path(response,
-      course_id: response.course, survey_id: response.survey) do |f| %>
+      course_id: response.course, survey_id: response.survey),
+      html: { class: 'compact' } do |f| %>
   <%= f.error_messages %>
 
   <% response.build_answers %>
@@ -8,10 +9,10 @@
   <% end %>
 
   <p class="privacy-policy">
-    Only you and <%= response.course.number %> Staff can see this.
+    Only you and <%= response.course.number %> Staff can see this response.
   </p>
 
-  <%= button_tag do %>
+  <%= submit_button_tag do %>
     <%= save_icon_tag %> Save Response
   <% end %>
 <% end %>

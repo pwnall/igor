@@ -5,14 +5,12 @@
         { required: true, form: 'extension-form' } %>
 </td>
 <td>
-  <%= f.datetime_select :due_at, { use_short_month: true, minute_step: 15,
-        datetime_separator:' at ', time_separator: ':',
-        default: @assignment.due_at },
-        { required: true, form: 'extension-form' } %>
+  <%= f.datetime_local_field :due_at, default: @assignment.due_at,
+        required: true, form: 'extension-form' %>
 </td>
 <td></td>
-<td>
-  <%= button_tag(form: 'extension-form') do %>
+<td class="actions">
+  <%= button_tag form: 'extension-form' do %>
     <%= create_icon_tag %> Grant Extension
   <% end %>
 </td>

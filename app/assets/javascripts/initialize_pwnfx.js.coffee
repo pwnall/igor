@@ -1,0 +1,1 @@
+PwnFx.hiddenClassName = 'hide'

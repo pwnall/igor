@@ -71,7 +71,7 @@ class RegistrationIndex
 
   # If the page has a recitations table, wires it up to a RegistrationIndex.
   @setup: ->
-    domRoot = $('table.registrations-table')[0]
+    domRoot = $('table#registrations-table')[0]
     window.registrationIndex = if domRoot
       new RegistrationIndex domRoot
     else

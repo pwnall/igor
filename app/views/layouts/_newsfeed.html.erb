@@ -2,5 +2,5 @@
 
 <% FeedItem.for(current_user).each do |item| %>
 <% next if @news_flavor and item.flavor != @news_flavor %>
-<%= render 'layouts/feed_item', :feed_item => item %>
+<%= render 'layouts/feed_item', feed_item: item %>
 <% end %>

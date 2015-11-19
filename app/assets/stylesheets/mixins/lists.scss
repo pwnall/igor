@@ -1,0 +1,8 @@
+@mixin submission-list-item {
+  @include flex-grid-row(null, null, null, true);
+  margin-bottom: 0.5rem;
+  padding: 0.2rem 0;
+  align-items: center;
+  border: 1px solid $medium-gray;
+  border-radius: $global-radius;
+}

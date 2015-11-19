@@ -1,3 +1,7 @@
-<% assignments.each do |assignment| %>
-  <%= render 'assignments/show', assignment: assignment %>
-<% end %>
+<ol id="assignments-list" class="no-bullet">
+  <% assignments.each do |assignment| %>
+    <li class="submission-dashboard">
+      <%= render 'assignments/show', assignment: assignment %>
+    </li>
+  <% end %>
+</ol>

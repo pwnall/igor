@@ -1,0 +1,10 @@
+section.survey {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid $secondary-color;
+}
+
+.privacy-policy {
+  @include flex-grid-row(null, null, null, true);
+  font-weight: bold;
+}

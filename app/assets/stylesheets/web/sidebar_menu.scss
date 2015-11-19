@@ -1,0 +1,6 @@
+section#menu-sidebar {
+  li > a > i.fa, li > a > span.stacked-icons {
+    vertical-align: baseline;
+    margin-right: $menu-icon-spacing;
+  }
+}

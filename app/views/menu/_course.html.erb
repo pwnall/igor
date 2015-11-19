@@ -1,9 +1,9 @@
 <% if current_course %>
-<li>
+<li class="has-submenu">
   <%= link_to course_root_path(course_id: current_course) do %>
     <%= role_icon_tag(:staff) %> Course
   <% end %>
-  <ol>
+  <ul class="menu vertical nested" data-submenu>
     <li>
       <%= link_to edit_course_path(current_course) do %>
         <%= config_icon_tag %> Course Info
@@ -60,6 +60,6 @@
       <% end %>
     </li>
     <% end %>
-  </ol>
+  </ul>
 </li>
 <% end %>

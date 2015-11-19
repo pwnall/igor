@@ -1,11 +1,36 @@
 <div class="profile-container">
-<% if profile.can_edit? current_user %>
-<p>
-  <%= link_to edit_user_path(profile.user), class: 'button' do %>
-    <%= edit_icon_tag %> Edit Profile
-  <% end %>
-</p>
-<% end %>
-
-<%= render profile %>
+  <table class="profile-info">
+    <tr>
+      <th>Athena username</th>
+      <td><%= profile.athena_username %></td>
+    </tr>
+    <tr>
+      <th>Full name</th>
+    	<td><%= profile.name %></td>
+    </tr>
+    <tr>
+      <th>Call me</th>
+      <td><%= profile.nickname %></td>
+    </tr>
+    <tr>
+      <th>School</th>
+      <td><%= profile.university %></td>
+    </tr>
+    <tr>
+      <th>Department</th>
+      <td><%= profile.department %></td>
+    </tr>
+    <tr>
+    	<th>Year</th>
+    	<td><%= profile.year %></td>
+    </tr>
+    <% if false %>
+    <tr>
+      <th>Recitation</th>
+    	<td>
+      	<%= display_name_for_recitation_section(profile.recitation_section) %>
+    	</td>
+    </tr>
+  	<% end %>
+  </table>
 </div>

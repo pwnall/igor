@@ -1,30 +1,36 @@
-<section class="deliverable" data-pwnfx-hide-positive="deliverable-div"
+<section class="deliverable callout" data-pwnfx-hide-positive="deliverable-div"
          data-pwnfx-scope="deliverable">
-  <p class="header">
-    <%= f.text_field :name, required: true, class: 'name',
-          placeholder: deliverable_field_placeholder(f.object, :name)%>
-    <%= f.text_field :file_ext, required: true, class: 'file-ext',
-          placeholder: deliverable_field_placeholder(f.object, :ext)%>
-    <span class="destroy">
-      <%= f.label :_destroy do %>
-        <%= f.check_box :_destroy, data: { pwnfx_hide: 'deliverable-div',
-              pwnfx_hide_scope: 'deliverable',
-              pwnfx_hide_class: 'destroyed-blur',
-              pwnfx_hide_trigger: 'checked' } %>
-        <%= destroy_icon_tag %> Remove
-      <% end %>
-    </span>
-  </p>
-  <p class="description">
-    <span class="description">
+  <div class="row">
+    <div class="small-8 columns">
+      <%= f.text_field :name, required: true, class: 'name',
+            placeholder: deliverable_field_placeholder(f.object, :name)%>
+    </div>
+    <div class="small-2 columns">
+      <%= f.text_field :file_ext, required: true, class: 'file-ext',
+            placeholder: deliverable_field_placeholder(f.object, :ext)%>
+    </div>
+    <div class="small-2 columns">
+      <span class="destroy">
+        <%= f.label :_destroy, class: 'middle' do %>
+          <%= f.check_box :_destroy, data: { pwnfx_hide: 'deliverable-div',
+                pwnfx_hide_scope: 'deliverable',
+                pwnfx_hide_class: 'destroyed-blur',
+                pwnfx_hide_trigger: 'checked' } %>
+          <%= destroy_icon_tag %> Remove
+        <% end %>
+      </span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="small-12 columns">
       <%= f.text_area :description, placeholder: deliverable_field_placeholder(
-            f.object, :description) %>
-    </span>
-  </p>
-  <p class="analyzer">
-    <%= f.fields_for :analyzer do |af| %>
-      <%= render analyzer_partial_for_deliverable(f.object), f: af  %>
-      <%= af.hidden_field :type %>
-    <% end %>
-  </p>
+            f.object, :description), rows: 2 %>
+    </div>
+  </div>
+
+  <%= f.fields_for :analyzer do |af| %>
+    <%= render analyzer_partial_for_deliverable(f.object), f: af  %>
+    <%= af.hidden_field :type %>
+  <% end %>
 </section>

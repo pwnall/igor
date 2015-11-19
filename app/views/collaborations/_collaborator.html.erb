@@ -1,5 +1,12 @@
-<span class="collaborator-display-name">
-  <%= collaborator_display_name(collaboration.collaborator) %>
-  <%= link_to destroy_icon_tag, collaboration_path(collaboration,
-        course_id: collaboration.course), method: :delete %>
+<span data-tooltip class="has-tip top collaborator-wrapper"
+    data-disable-hover="false"
+    title="<%= collaborator_display_name(collaboration.collaborator) %>">
+  <div class="collaborator-figure">
+    <%= user_image_tag collaboration.collaborator, size: :small_medium %>
+    <%= link_to collaboration_path(collaboration,
+          course_id: collaboration.course), class: 'remove-collaborator',
+          method: :delete do %>
+      <%= fa_icon :times %>
+    <% end %>
+  </div>
 </span>

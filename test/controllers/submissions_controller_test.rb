@@ -42,10 +42,9 @@ class SubmissionsControllerTest < ActionController::TestCase
           assert_empty Submission.last.collaborators
         end
 
-        it "redirects to the deliverable's assignment page" do
+        it "redirects to the submission's deliverable tab" do
           post :create, params: create_params
-          assert_redirected_to assignment_url(@deliverable.assignment,
-              course_id: @deliverable.course)
+          assert_redirected_to @controller.deliverable_panel_url(@deliverable)
         end
       end
 
@@ -67,10 +66,9 @@ class SubmissionsControllerTest < ActionController::TestCase
               @previous_submission.collaborators.to_set
         end
 
-        it "redirects to the deliverable's assignment page" do
+        it "redirects to the submission's deliverable tab" do
           post :create, params: create_params
-          assert_redirected_to assignment_url(@deliverable.assignment,
-              course_id: @deliverable.course)
+          assert_redirected_to @controller.deliverable_panel_url(@deliverable)
         end
       end
     end
@@ -93,10 +91,10 @@ class SubmissionsControllerTest < ActionController::TestCase
           assert_equal true, @submission.selected_for_grading?
         end
 
-        it "redirects to the submission assignment's page" do
+        it "redirects to the submission's deliverable tab" do
           post :promote, params: member_params
-          assert_redirected_to assignment_url(@submission.assignment,
-              course_id: @submission.course)
+          assert_redirected_to @controller.deliverable_panel_url(
+              @submission.deliverable)
         end
       end
 
@@ -138,10 +136,10 @@ class SubmissionsControllerTest < ActionController::TestCase
           assert_equal true, @submission.selected_for_grading?
         end
 
-        it "redirects to the submission assignment's page" do
+        it "redirects to the submission's deliverable tab" do
           post :promote, params: member_params
-          assert_redirected_to assignment_url(@submission.assignment,
-              course_id: @submission.course)
+          assert_redirected_to @controller.deliverable_panel_url(
+              @submission.deliverable)
         end
       end
     end

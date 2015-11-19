@@ -1,6 +1,7 @@
 <%# Show results in more informative format. E.g. graphs %>
 <h2>
-  <%= @survey.responses.length %> responses to survey: <%= @survey.name %>
+  <%= pluralize @survey.responses.length, 'response' %> to survey:
+  <%= @survey.name %>
 </h2>
 
 <% @survey.questions.each do |question| %>

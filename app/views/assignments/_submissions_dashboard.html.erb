@@ -1,0 +1,25 @@
+<h3 class="dashboard-heading">
+  <span class="title">
+    <%= submissions_icon_tag %> Submissions
+  </span>
+</h3>
+
+<ul class="dashboard-list no-bullet">
+  <li class="total">
+    <span class="name">Overall</span>
+    <span class="meter"><%= submission_count_meter_tag assignment %></span>
+    <span class="low-precision stats-summary">
+      <%= submission_count_fraction_tag assignment %>
+    </span>
+  </li>
+
+  <% assignment.deliverables.each do |deliverable| %>
+  <li>
+    <span class="name"><%= deliverable.name %></span>
+    <span class="meter"><%= submission_count_meter_tag deliverable %></span>
+    <span class="low-precision stats-summary">
+      <%= submission_count_fraction_tag deliverable %>
+    </span>
+  </li>
+  <% end %>
+</ul>

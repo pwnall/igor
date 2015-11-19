@@ -1,56 +1,61 @@
-<!-- team_partitions/index -->
-<div class="full_section">
-  <div style="z-index: 10; float: right; width: 100px; text-align: right;">
-    <h1 class="full_section">
-      <%= link_to 'New', new_team_partition_path(course_id: current_course) %>
-    </h1>
-  </div>
-  <h1 class="full_section" style="margin-right: 100px; ">
-    Team Partitions
-  </h1>
+<h2 class="title-with-actions">
+  <span class="title">Team Partitions</span>
+  <span class="actions">
+    <span class="link-button-wrapper">
+      <%= link_to new_team_partition_path(course_id: current_course) do %>
+        <%= create_icon_tag %> New
+      <% end %>
+    </span>
+  </span>
+</h2>
 
-  <table>
-    <thead>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Assignments</th>
+			<th>Teams</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @team_partitions.each do |partition| %>
       <tr>
-        <td>Name</td>
-        <td>Assignments</td>
-				<td>Teams</td>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @team_partitions.each do |partition| %>
-        <tr>
-          <td>
-            <%= link_to team_partition_path(partition,
-                                            course_id: partition.course) do %>
-              <%= partition.name %>
+        <td>
+          <%= link_to team_partition_path(partition,
+                                          course_id: partition.course) do %>
+            <%= partition.name %>
+          <% end %>
+        </td>
+        <td>
+          <%= partition.assignments.map(&:name).join(', ') %>
+        </td>
+        <td>
+          <%= partition.teams.map(&:name).join(', ') %>
+        </td>
+        <td class="actions">
+          <span class="link-button-wrapper">
+            <%= link_to issues_team_partition_path(partition,
+                  course_id: partition.course),
+                  class: 'small warning hollow button' do %>
+              <%= invalid_icon_tag %> Issues
             <% end %>
-          </td>
-          <td>
-            <%= partition.assignments.map(&:name).join(', ') %>
-          </td>
-          <td>
+          </span>
+          <span class="link-button-wrapper">
             <%= link_to edit_team_partition_path(partition,
-                  course_id: partition.course) do %>
+                  course_id: partition.course), class: 'small hollow button' do %>
               <%= edit_icon_tag %> Edit
             <% end %>
-          </td>
-          <td>
-            <%= link_to team_partition_path(partition,
-                  course_id: partition.course), method: :delete,
-                  data: { confirm: 'Are you sure?' } do %>
-              <%= destroy_icon_tag %> Delete
-            <% end %>
-          </td>
-          <td>
-            <%= link_to issues_team_partition_path(partition,
-                  course_id: partition.course) do %>
-              Issues
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+          </span>
+          <%= button_to team_partition_path(partition,
+                course_id: partition.course), method: :delete,
+                class: 'small alert hollow button',
+                data: { confirm: 'Are you sure?' } do %>
+            <%= destroy_icon_tag %> Delete
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

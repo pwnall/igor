@@ -1,10 +1,13 @@
 <div id="assignments-sidebar">
-  <p class="actions">
-    <%= link_to new_assignment_path(course_id: current_course),
-          class: 'button emphasized' do %>
-      <%= create_icon_tag %> New Assignment
-    <% end %>
-  </p>
+  <h3 class="title-with-actions">
+    <span class="title">Assignments</span>
+    <span class="actions">
+      <span class="link-button-wrapper">
+        <%= link_to create_icon_tag, new_assignment_path(
+              course_id: current_course), class: 'no-text' %>
+      </span>
+    </span>
+  </h3>
 
   <%= render 'assignments/sidebar_list',
              assignments: current_course.assignments_for(current_user) %>

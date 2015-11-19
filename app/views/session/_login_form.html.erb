@@ -6,28 +6,36 @@
 <% end %>
 
 <%= form_for @session, url: session_path do |f| %>
-  <section class="fields">
-    <p class="field">
-      <%= f.label :email, 'Email Address' %>
-      <span class="value">
-        <%= f.email_field :email %>
-      </span>
-    </p>
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :email, 'Email Address', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.email_field :email %>
+    </div>
+  </div>
 
-    <p class="field">
-      <%= f.label :password %>
-      <span class="value">
-        <%= f.password_field :password %>
-      </span>
-    </p>
-  </section>
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :password, 'Password', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.password_field :password %>
+    </div>
+  </div>
 
-  <p class="actions">
-    <%= f.button 'Log in', name: 'login', value: 'requested',
-            class: 'emphasized' %>
-    <%= f.button 'Reset Password', name: 'reset_password', value: 'requested',
-            formaction: reset_password_session_path %>
-  </p>
+  <div class="row align-center">
+    <div class="small-5 columns">
+      <%= f.button 'Log in', name: 'login', value: 'requested',
+            class: 'hollow expanded button' %>
+    </div>
+    <div class="small-5 columns">
+      <%= f.button 'Reset Password', name: 'reset_password', value: 'requested',
+            formaction: reset_password_session_path,
+            class: 'hollow expanded button' %>
+    </div>
+  </div>
+
   <% if @redirect_url %>
   <%= hidden_field_tag :redirect_url, @redirect_url %>
   <% end %>

@@ -5,11 +5,14 @@ module SubmissionsHelper
   # The submission's promoted state in text, or a button to promote it.
   def submission_promotion_status(submission, user)
     if submission == submission.deliverable.submission_for_grading(user)
-      'Selected for grading'
+      content_tag :div, class: 'promoted-status no-text' do
+        promote_icon_tag title: 'Selected for grading'
+      end
     else
-      link_to 'Select for grading',
-          promote_submission_path(submission, course_id: submission.course),
-          class: "button", method: :post
+      button_to promote_submission_path(submission,
+          course_id: submission.course), class: "no-text" do
+        promote_icon_tag
+      end
     end
   end
 

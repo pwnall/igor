@@ -11,20 +11,30 @@ module TimeSlotHelper
   # Convert the day of the week from an integer to the name of a day.
   #
   # E.g., day_label(0) #=> 'Monday'
-  def day_label(day)
-    DAYS[day]
+  #       day_label(0, max_length: 3) #=> 'Mon'
+  #
+  # @param [Integer] day the day of the week, where Monday is 0
+  # @param [Hash<Symbol, Integer>] max_length the number of characters to keep
+  #   from the beginning of the day's full name; if nil, don't truncate the name
+  def day_label(day, max_length: nil)
+    full_name = DAYS[day]
+    max_length ? full_name[0..(max_length - 1)] : full_name
   end
 
   # The day of the week that the given time slot starts.
-  def time_slot_day_label(time_slot)
-    day_label(time_slot.day)
+  #
+  # @param [TimeSlot] time_slot the time slot in question
+  # @param [Hash<Symbol, Integer>] max_length the number of characters to keep
+  #   from the beginning of the day's full name; if nil, don't truncate the name
+  def time_slot_day_label(time_slot, max_length: 0)
+    day_label time_slot.day, max_length: max_length
   end
 
   # The range of a time slot displayed when viewing time slots.
   #
-  # E.g., '10:00am (EDT) - 11:00am (EDT)'
+  # E.g., '10:00am - 11:00am (EDT)'
   def time_slot_range_label(time_slot)
-    start_time = time_slot.start_time.to_s(:time_slot_long)
+    start_time = time_slot.start_time.to_s(:time_slot_short)
     end_time = time_slot.end_time.to_s(:time_slot_long)
     "#{start_time} - #{end_time}"
   end
@@ -41,8 +51,18 @@ module TimeSlotHelper
   # A string representation of the time slot.
   #
   # E.g., 'Monday 10:00am (EDT) - 11:00am (EDT)'
-  def time_slot_label(time_slot)
-    "#{time_slot_day_label time_slot} #{time_slot_range_label time_slot}"
+  #
+  # @param [TimeSlot] time_slot the time slot in question
+  # @param [Hash<Symbol, Integer>] max_length the number of characters to keep
+  #   from the beginning of the slot's day; if nil, don't truncate the name
+  def time_slot_label(time_slot, max_length: 0)
+    day = content_tag :span, class: 'time-slot-day' do
+      time_slot_day_label time_slot, max_length: max_length
+    end
+    time = content_tag :span, class: 'time-slot-period' do
+      time_slot_range_label time_slot
+    end
+    safe_join [day, time]
   end
 
   # The number of hours and minutes in a time slot. E.g., "1hr 30min"
@@ -72,7 +92,8 @@ module TimeSlotHelper
         ])
       end
     end
-    content_tag :ul, id: 'recitation_section_time_slot_ids' do
+    content_tag :ul, id: 'recitation_section_time_slot_ids',
+        class: 'no-bullet' do
       safe_join [blank, check_box_list_items]
     end
   end

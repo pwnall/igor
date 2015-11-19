@@ -1,9 +1,9 @@
 <% if current_course %>
-<li>
+<li class="has-submenu">
   <%= link_to assignments_path(course_id: current_course) do %>
     <%= homework_icon_tag %> Homework
   <% end %>
-  <ol>
+  <ul class="menu vertical nested" data-submenu>
     <% if current_course.can_edit?(current_user) %>
     <li>
       <%= link_to new_assignment_path(course_id: current_course) do %>
@@ -30,6 +30,6 @@
       <% end %>
     </li>
     <% end %>
-  </ol>
+  </ul>
 </li>
 <% end %>

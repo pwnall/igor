@@ -1,0 +1,16 @@
+section.registration-settings, section.prerequisite-answers,
+section.recitation-conflicts {
+  margin: 1rem 0 2rem;
+}
+.registration-setting, .prerequisite {
+  @include flex-grid-row(null, null, null, true);
+  margin-bottom: 0.5rem;
+
+  .setting-name, .prerequisite-question {
+    @include flex-grid-column(2, $grid-column-gutter);
+    font-weight: bold;
+  }
+  .setting-value, .prerequisite-answer {
+    @include flex-grid-column(6, $grid-column-gutter);
+  }
+}

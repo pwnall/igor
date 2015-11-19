@@ -3,10 +3,12 @@
   <% if @athena_username.blank? %>
   $('#profile-athena-success').html('');
   <% else %>
-  $('#profile-athena-success').html('<span class="error-text"><%= invalid_icon_tag %> <%= @athena_username %> not found</span>');
+  $('#profile-athena-success').html('<span class="lookup-failure">' +
+      '<%= invalid_icon_tag %><%= @athena_username %> not found</span>');
   <% end %>
 <% else %>
-  $('#profile-athena-success').html('<%= valid_icon_tag %> <%= @athena_username %> found');
+  $('#profile-athena-success').html('<span class="lookup-success">' +
+      '<%= valid_icon_tag %><%= @athena_username %> found</span>');
   $('#profile_name').val('<%= (@ldap_info[:full_name] || '').html_safe %>');
   $('#profile_nickname').val('<%= (@ldap_info[:full_name] || ' ').split(' ').first.html_safe %>');
   $('#profile_department').val('<%= (@ldap_info[:department] || '').html_safe %>');

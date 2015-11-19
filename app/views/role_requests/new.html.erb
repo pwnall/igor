@@ -1,45 +1,51 @@
 <h2>Staff Registration</h2>
 
-
-<p>
+<p class="lead">
   Use this page to register as a <%= @role_request.course.number %> staff
   member. A course instructor or site administrator will have to approve your
   registration.
 </p>
 
-<h3>Instructors</h3>
-<p>
-  Course instructors have full access to a course's students, assignments, and
-  grades. Professors and teaching assistants are usually course instructors.
-</p>
+<section class="staff-registration-forms">
+  <article class="staff-role-form">
+    <h3>Instructors</h3>
+    <p>
+      Course instructors have full access to a course's students, assignments,
+      and grades. Professors and teaching assistants are usually course
+      instructors.
+    </p>
 
-<%= form_for @role_request, url: polymorphic_url(@role_request,
-      course_id: @role_request.course),
-      html: { class: 'staff-role-request-form' } do |f| %>
-  <%= f.hidden_field :name, value: 'staff' %>
+    <div class="form-wrapper">
+      <%= form_for @role_request, url: polymorphic_url(@role_request,
+            course_id: @role_request.course),
+            html: { class: 'staff-role-request-form' } do |f| %>
+        <%= f.hidden_field :name, value: 'staff' %>
+        <%= f.button type: :submit, class: 'large hollow expanded button' do %>
+          <%= register_icon_tag %>
+          Register as a <%= @role_request.course.number %> instructor
+        <% end %>
+      <% end %>
+    </div>
+  </article>
 
-  <p class="actions">
-    <%= f.button class: 'emphasized', type: :submit do %>
-      Register as a <%= @role_request.course.number %> instructor
-    <% end %>
-  </p>
-<% end %>
+  <article class="staff-role-form">
+    <h3>Graders</h3>
 
-<h3>Graders</h3>
+    <p>
+      Grades have access to a limited subset of the students' assignments and
+      grades. Graders are usually students with hourly jobs.
+    </p>
 
-<p>
-  Grades have access to a limited subset of the students' assignments and
-  grades. Graders are usually students with hourly jobs.
-</p>
-
-<%= form_for @role_request, url: polymorphic_url(@role_request,
-      course_id: @role_request.course),
-      html: { class: 'grader-role-request-form' } do |f| %>
-  <%= f.hidden_field :name, value: 'grader' %>
-
-  <p class="actions">
-    <%= f.button class: 'emphasized', type: :submit do %>
-      Register as a <%= @role_request.course.number %> grader
-    <% end %>
-  </p>
-<% end %>
+    <div class="form-wrapper">
+      <%= form_for @role_request, url: polymorphic_url(@role_request,
+            course_id: @role_request.course),
+            html: { class: 'grader-role-request-form' } do |f| %>
+        <%= f.hidden_field :name, value: 'grader' %>
+        <%= f.button type: :submit, class: 'large hollow expanded button' do %>
+          <%= register_icon_tag %>
+          Register as a <%= @role_request.course.number %> grader
+        <% end %>
+      <% end %>
+    </div>
+  </article>
+</section>

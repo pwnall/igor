@@ -1,24 +1,28 @@
-<h2 class="deadlines-heading">Upcoming Deadlines</h2>
+<div id="deadlines-sidebar">
+  <h3>Deadlines</h3>
 
-<ol class="deadlines">
-<% ActionItem.for(current_user, current_course).each do |item| %>
-  <li class="deadline-<%= item.state %>">
-    <div class="heading">
-      <span class="icon">
+  <ol class="deadline-list no-bullet">
+  <% ActionItem.for(current_user, current_course).each do |item| %>
+    <li class="deadline-<%= item.state %>">
+      <div class="deadline-indicator">
         <%= deadline_state_icon_tag item.state %>
-      </span>
-      <span class="assignment">
-        <%= link_to item.subject.name,
-              polymorphic_path(item.subject, course_id: item.subject.course) %>
-        <%= "(#{item.subject.course.number})" unless current_course %>
-      </span>
-      <span class="date" title="<%= item.due_at.to_s(:deadline_long) %>">
+      </div>
+      <div class="task">
+        <div class="main-task task-link">
+          <%= link_to item.subject.name,
+                polymorphic_path(item.subject, course_id: item.subject.course) %>
+          <%= "(#{item.subject.course.number})" unless current_course %>
+        </div>
+        <% if item.subject.instance_of? Assignment %>
+          <div class="sub-task task-link">
+            <%= link_to item.description, self.send(*item.link) %>
+          </div>
+        <% end %>
+      </div>
+      <div class="date" title="<%= item.due_at.to_s(:deadline_long) %>">
         <%= item.due_at.to_s(:deadline_short) %>
-      </span>
-    </div>
-    <div class="description">
-      <%= link_to item.description, self.send(*item.link) %>
-    </div>
-  </li>
-<% end %>
-</ol>
+      </div>
+    </li>
+  <% end %>
+  </ol>
+</div>

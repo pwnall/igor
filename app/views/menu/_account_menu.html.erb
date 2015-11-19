@@ -1,0 +1,19 @@
+<ul class="dropdown menu align-right" data-dropdown-menu>
+  <li class="has-submenu">
+    <%= link_to current_user do %>
+      <%= user_image_tag current_user %>
+      <span id="current-user-name"><%= current_user.name %></span>
+    <% end %>
+    <ul class="submenu menu vertical" data-submenu>
+      <li>
+        <%= link_to 'Profile', current_user %>
+      </li>
+      <li>
+        <%= link_to 'Change Password', change_password_session_path %>
+      </li>
+      <li>
+        <%= link_to 'Sign out', session_path, :method => :delete %>
+      </li>
+    </ul>
+  </li>
+</ul>

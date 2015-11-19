@@ -1,33 +1,41 @@
-<div class="field">
-  <%= f.label :scale_min, 'Low value' %>
-  <span class="value">
+<div class="row">
+  <div class="small-3 columns">
+    <%= f.label :scale_min, 'Low value', class: 'text-right middle' %>
+  </div>
+  <div class="small-6 columns">
     <%= f.number_field :scale_min, step: 1, placeholder: '1', required: true,
                                    class: 'scale-limit' %>
-  </span>
+  </div>
 </div>
 
-<div class="field">
-  <%= f.label :scale_max, 'High value' %>
-  <span class="value">
+<div class="row">
+  <div class="small-3 columns">
+    <%= f.label :scale_max, 'High value', class: 'text-right middle' %>
+  </div>
+  <div class="small-6 columns">
     <%= f.number_field :scale_max, step: 1, placeholder: '5', required: true,
                                    class: 'scale-limit' %>
-  </span>
+  </div>
 </div>
 
-<div class="field">
-  <%= f.label :scale_min_label, 'Low value text' %>
-  <span class="value">
+<div class="row">
+  <div class="small-3 columns">
+    <%= f.label :scale_min_label, 'Low value text', class: 'text-right middle' %>
+  </div>
+  <div class="small-6 columns">
     <%= f.text_field :scale_min_label, placeholder: 'Too easy', required: true,
                                        maxlength: 64, class: 'scale-label' %>
-  </span>
+  </div>
 </div>
 
-<div class="field">
-  <%= f.label :scale_max_label, 'High value text' %>
-  <span class="value">
+<div class="row">
+  <div class="small-3 columns">
+    <%= f.label :scale_max_label, 'High value text', class: 'text-right middle' %>
+  </div>
+  <div class="small-6 columns">
     <%= f.text_field :scale_max_label, placeholder: 'Too hard', required: true,
                                        maxlength: 64, class: 'scale-label' %>
-  </span>
+  </div>
 </div>
 
 <%= f.hidden_field :type %>

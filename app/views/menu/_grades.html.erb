@@ -1,9 +1,9 @@
 <% if current_course %>
-<li>
+<li class="has-submenu">
   <%= link_to editor_grades_path(course_id: current_course) do %>
     <%= grades_icon_tag %> Grades
   <% end %>
-  <ol>
+  <ul class="menu vertical nested" data-submenu>
     <li>
       <%= link_to editor_grades_path(course_id: current_course) do %>
         <%= edit_icon_tag %> Enter Grades
@@ -25,6 +25,6 @@
         <%= report_icon_tag %> Grade Spreadsheet
       <% end %>
     </li>
-  </ol>
+  </ul>
 </li>
 <% end %>

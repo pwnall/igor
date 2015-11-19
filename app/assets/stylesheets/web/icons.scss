@@ -1,0 +1,59 @@
+span.stacked-icons {
+  position: relative;
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  line-height: 1rem;
+
+  > i.fa:not(:first-child) {
+    position: absolute;
+  }
+  > i.fa-envelope + i.fa-long-arrow-right {
+    top: 25%;
+    left: 20%;
+    font-weight: bold;
+  }
+  > i.fa-envelope + i.fa-search {
+    font-size: 0.7rem;
+    font-weight: bold;
+    top: 33%;
+    left: 40%;
+  }
+  > i.fa-user + i.fa-search {
+    font-size: 0.7rem;
+    font-weight: bold;
+    top: 43%;
+    left: 43%;
+  }
+  > i.fa-bar-chart + i.fa-lock {
+    font-size: 0.85rem;
+    font-weight: bold;
+    right: -30%;
+    bottom: -25%;
+  }
+  > i.fa-inverse {
+    color: lighten($primary-color, 20%);
+  }
+}
+i.fa-university {
+  width: 1rem;
+}
+span.true-setting, span.lookup-success {
+  i.fa {
+    color: $success-color;
+    min-width: 1rem;
+  }
+}
+span.false-setting i.fa {
+  color: $alert-color;
+  min-width: 1rem;
+}
+span.nil-setting, span.lookup-failure {
+  i.fa {
+    color: $warning-color;
+    min-width: 1rem;
+  }
+}
+.button.no-text i.fa {
+  margin: 0;
+}

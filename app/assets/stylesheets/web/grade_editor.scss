@@ -1,0 +1,99 @@
+table#grades-table {
+  @include table-scroll;
+  overflow-y: auto;
+  height: 80vh;
+
+  thead {
+    background: none;
+    border: none;
+
+    span#search-wrapper {
+      display: inline-block;
+      padding-right: 1rem;
+    }
+    input[type="search"], p {
+      margin: 0;
+    }
+    .metric-weight, .max-total {
+      white-space: nowrap;
+      font-weight: lighter;
+    }
+  }
+
+  tbody {
+    border: none;
+
+    th, td {
+      white-space: nowrap;
+    }
+    th[scope="row"] {
+      font-weight: normal;
+      text-align: left;
+    }
+    td {
+      input[type=number] {
+        display: inline-block;
+        height: auto;
+        width: 4rem;
+        margin: 0;
+        padding: 0.3rem;
+        text-align: right;
+
+        &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+      }
+      .max-points {
+        font-weight: 300;
+      }
+      &.focused, &.focused-latch {
+        div.comment {
+          display: block;
+        }
+      }
+      div.comment {
+        display: none;
+        position: absolute;
+        margin: 3px 0px 0px -3px;
+        box-shadow: 2px 1px 3px #666;
+        border-radius: 3px;
+
+        &:after {
+          content: '';
+          position: absolute;
+          top: -8px;
+          left: 10%;
+          margin-left: -8px;
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent;
+          border-bottom: 8px solid lighten($primary-color, 10%);
+        }
+        textarea {
+          max-width: 300px;
+          margin: 0;
+        }
+      }
+      &.summary {
+        text-align: right;
+      }
+    }
+  }
+}
+
+@-webkit-keyframes progress-indicator-flash {
+  0%, 100% {
+    opacity: 0.0;
+  }
+  50% {
+    opacity: 1.0;
+  }
+}
+@keyframes progress-indicator-flash {
+  0%, 100% {
+    opacity: 0.0;
+  }
+  50% {
+    opacity: 1.0;
+  }
+}

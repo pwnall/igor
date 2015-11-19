@@ -1,37 +1,46 @@
 <%= form_for @recitation_section, url: polymorphic_url(@recitation_section,
-      course_id: @recitation_section.course) do |f| %>
+      course_id: @recitation_section.course),
+      html: { class: 'recitation-section-form' } do |f| %>
   <%= f.error_messages %>
 
   <section class="fields">
-    <p class="field">
-      <%= f.label :serial, 'Serial number' %>
-      <span class="value">
-        <%= f.text_field :serial, required: true, placeholder: '1' %>
-      </span>
-    </p>
-    <p class="field">
-      <%= f.label :leader_id, 'Recitation leader' %>
-      <span class="value">
+    <div class="row">
+      <div class="small-3 columns">
+        <%= f.label :serial, 'Serial number', class: 'text-right middle' %>
+      </div>
+      <div class="columns">
+        <%= f.text_field :serial, required: true, placeholder: '1',
+              class: 'serial-number' %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-3 columns">
+        <%= f.label :leader_id, 'Recitation leader', class: 'text-right middle' %>
+      </div>
+      <div class="small-6 columns">
         <%= f.collection_select :leader_id, @recitation_section.course.staff,
                 :id, :name, include_blank: '(no leader specified)' %>
-      </span>
-    </p>
-    <div class="field">
-      <%= f.label :time_slot_ids, 'Time slots' %>
-      <span class="value">
-        <%= time_slot_check_box_list_tag @recitation_section %>
-      </span>
+      </div>
     </div>
-    <p class="field">
-      <%= f.label :location, 'Scheduled location' %>
-      <span class="value">
-				<%= f.text_field :location, required: false, placeholder: '34-401' %>
-      </span>
-    </p>
+    <div class="row">
+      <div class="small-3 columns">
+        <%= f.label :time_slot_ids, 'Time slots', class: 'text-right middle' %>
+      </div>
+      <div class="small-6 columns">
+        <%= time_slot_check_box_list_tag @recitation_section %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-3 columns">
+        <%= f.label :location, 'Scheduled location', class: 'text-right middle' %>
+      </div>
+      <div class="columns">
+        <%= f.text_field :location, required: false, placeholder: '34-401',
+              class: 'location' %>
+      </div>
+    </div>
   </section>
-  <p class="actions">
-    <%= button_tag class: 'emphasized' do %>
-      <%= save_icon_tag %> Save Section
-    <% end %>
-  </p>
+  <%= submit_button_tag do %>
+    <%= save_icon_tag %> Save Section
+  <% end %>
 <% end %>

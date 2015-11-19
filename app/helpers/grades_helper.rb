@@ -1,4 +1,10 @@
 module GradesHelper
+  # Option tags for the assignments in the given course that will be graded.
+  def gradeable_assignment_options(course, selected)
+    assignments = course.assignments.by_deadline
+    options_from_collection_for_select assignments, :id, :name, selected.id
+  end
+
   # The score of the grade for the given metric and subject.
   def grade_score_text(metric, subject)
     grade = Grade.find_by metric: metric, subject: subject

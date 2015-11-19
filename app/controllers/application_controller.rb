@@ -7,4 +7,5 @@ class ApplicationController < ActionController::Base
 
   include CourseFilters
   include UserFilters
+  include RouteHelpers
 end

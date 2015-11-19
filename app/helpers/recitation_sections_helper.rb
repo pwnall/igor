@@ -1,8 +1,10 @@
 module RecitationSectionsHelper
+  def recitation_leader_label(recitation)
+    leader_name = recitation.leader ? recitation.leader.name : '(no leader)'
+  end
 
   def recitation_name_label(recitation)
-    leader_name = recitation.leader ? recitation.leader.name : '(no leader)'
-    "#{recitation.location} #{leader_name}"
+    "#{recitation.location} #{recitation_leader_label recitation}"
   end
 
   def display_name_for_recitation_section(recitation_section, format = :short)

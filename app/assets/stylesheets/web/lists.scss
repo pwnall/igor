@@ -1,0 +1,12 @@
+ol {
+  li .actions {
+    text-align: right;
+
+    > form {
+      display: inline;
+    }
+    .link-button-wrapper > a, .button {
+      margin: 0.25rem;
+    }
+  }
+}

@@ -1,49 +1,54 @@
-<section class="file" data-pwnfx-hide-positive="file-section"
+<section class="file callout" data-pwnfx-hide-positive="file-section"
          data-pwnfx-scope="file">
-  <section class="fields">
-    <p class="field">
-      <%= f.label :description, 'Description' %>
-      <span class="value">
-        <%= f.text_field :description, required: true,
-              placeholder: 'Lab 1: Code Samples' %>
-      </span>
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :description, 'Description', class: 'middle text-right' %>
+    </div>
+    <div class="small-7 columns">
+      <%= f.text_field :description, required: true,
+            placeholder: 'Lab 1: Code Samples' %>
+    </div>
+    <div class="small-2 columns">
       <span class="destroy">
-        <%= f.label :_destroy do %>
+        <%= f.label :_destroy, class: 'middle' do %>
           <%= f.check_box :_destroy, data: { pwnfx_hide: 'file-section',
-                pwnfx_hide_scope: 'file',
-                pwnfx_hide_class: 'destroyed-blur',
+                pwnfx_hide_scope: 'file', pwnfx_hide_class: 'destroyed-blur',
                 pwnfx_hide_trigger: 'checked' } %>
           <%= destroy_icon_tag %> Remove
         <% end %>
       </span>
-    </p>
+    </div>
+  </div>
 
-    <p class="field">
-      <%= f.fields_for :db_file, DbFile.new do |ff| %>
-        <%= ff.label :f, 'Resource file' %>
-        <span class="value">
-          <%= ff.file_field :f,
-                required: (!f.object.db_file || f.object.db_file.new_record?) %>
-        </span>
-        <span class="comment">
-          <% if f.object.db_file && !f.object.db_file.new_record? %>
-            <%= link_to download_assignment_file_path(f.object,
-                  course_id: f.object.course) do %>
-              <%= download_icon_tag %> <%= f.object.file_name %>
-            <% end %>
-            (<%= number_to_human_size f.object.db_file.f.size %>)
+  <div class="row">
+    <%= f.fields_for :db_file, DbFile.new do |ff| %>
+    <div class="small-3 columns text-right">
+      <%= ff.label :f, 'Resource file', class: 'text-right' %>
+    </div>
+    <div class="small-4 columns">
+      <%= ff.file_field :f,
+            required: (!f.object.db_file || f.object.db_file.new_record?) %>
+    </div>
+    <div class="small-5 columns">
+      <span class="comment">
+        <% if f.object.db_file && !f.object.db_file.new_record? %>
+          <%= link_to download_assignment_file_path(f.object,
+                course_id: f.object.course) do %>
+            <%= download_icon_tag %> <%= f.object.file_name %>
           <% end %>
-        </span>
-      <% end %>
-    </p>
-
-    <p class="field">
-      <%= f.label :published_at, 'Release date' %>
-      <span class="value">
-        <%= f.datetime_select :published_at, use_short_month: true,
-               minute_step: 15, datetime_separator: ' at ',
-               time_separator: ':' %>
+          (<%= number_to_human_size f.object.db_file.f.size %>)
+        <% end %>
       </span>
-    </p>
-  </section>
+    </div>
+    <% end %>
+  </div>
+
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :published_at, 'Release date', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.datetime_local_field :published_at, step: 900, required: true %>
+    </div>
+  </div>
 </section>

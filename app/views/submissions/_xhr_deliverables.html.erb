@@ -14,7 +14,6 @@
 
 <span data-pwnfx-move="submission-cutoff-deadline"
       data-pwnfx-move-method="replace" data-pwnfx-scope="grading-kit">
-  <%= select_datetime assignment.due_at, prefix: 'cutoff',
-         use_short_month: true, minute_step: 15, datetime_separator: ' at ',
-         time_separator: ':' %>
+  <%= datetime_local_field_tag :submission_cutoff,
+        assignment.due_at.to_s(:datetime_local_field), step: 900 %>
 </span>

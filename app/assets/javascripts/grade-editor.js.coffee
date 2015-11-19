@@ -170,7 +170,7 @@ class GradeEditor
     for row, index in @subjectRows
       name = @subjectNames[index]
       if name.indexOf(nameFilter) is -1
-        row.setAttribute 'class', 'hidden'
+        row.setAttribute 'class', 'hide'
       else
         row.removeAttribute 'class'
 
@@ -232,7 +232,7 @@ class GradeEditor
 
   # If the page has a grade editor, wires it up to a GradeEditor instance.
   @setup: ->
-    domRoot = $('table.grades-table')[0]
+    domRoot = $('table#grades-table')[0]
     window.gradeEditor = if domRoot
       new GradeEditor domRoot
     else

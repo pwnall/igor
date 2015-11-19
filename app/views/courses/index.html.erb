@@ -1,27 +1,37 @@
-<h2>Site Courses</h2>
+<h2 class="title-with-actions">
+  <span class="title">Site Courses</span>
+  <span class="actions">
+    <span class="link-button-wrapper">
+      <%= link_to new_course_path do %>
+        <%= create_icon_tag %> New Course
+      <% end %>
+    </span>
+  </span>
+</h2>
 
-<table>
+<table id="courses-table">
   <tbody>
     <% @courses.each do |course| %>
     <tr>
       <td>
-        <%= link_to course_root_path(course_id: course) do %>
-          <%= course.number %>
+        <%= button_to course_root_path(course_id: course), method: :get,
+              class: 'hollow button' do %>
+          <%= fa_icon :'sign-in' %> Enter <%= course.number %>
         <% end %>
       </td>
       <td><%= course.title %></td>
-      <td>
-        <%= link_to course do %>
-          Details
-        <% end %>
-      </td>
-      <td>
-        <%= link_to edit_course_path course do %>
-          <%= edit_icon_tag %> Edit
-        <% end %>
-      </td>
-      <td>
-        <%= link_to course, method: :delete,
+      <td class="actions">
+        <span class="link-button-wrapper">
+          <%= link_to course do %>
+            <%= view_icon_tag %> Details
+          <% end %>
+        </span>
+        <span class="link-button-wrapper">
+          <%= link_to edit_course_path(course) do %>
+            <%= edit_icon_tag %> Edit
+          <% end %>
+        </span>
+        <%= button_to course, method: :delete, 
               data: { confirm: 'Are you sure?' } do %>
           <%= destroy_icon_tag %> Remove
         <% end %>
@@ -30,9 +40,3 @@
     <% end %>
   </tbody>
 </table>
-
-<p>
-  <%= link_to new_course_path, class: 'button emphasized' do %>
-    <%= create_icon_tag %> New Course
-  <% end %>
-</p>

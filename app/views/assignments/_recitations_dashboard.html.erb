@@ -1,0 +1,17 @@
+<h3 class="dashboard-heading">
+  <%= grades_icon_tag %> Recitation Grades
+</h3>
+
+<ul class="dashboard-list no-bullet">
+  <% @recitation_sections.each do |section| %>
+    <li>
+      <span class="name recitation"><%= recitation_name_label section %></span>
+      <span class="meter">
+        <%= recitation_score_meter_tag assignment, section %>
+      </span>
+      <span class="high-precision stats-summary">
+        <%= average_score_fraction_tag(assignment, section) %>
+      </span>
+    </li>
+  <% end %>
+</ul>

@@ -5,9 +5,11 @@
 
 <section class="register-hint">
   <h2>No account?</h2>
-  <%= form_tag new_user_path, :method => :get do %>
-    <p class="actions">
-      <button>Register</button>
-    </p>
+  <%= form_tag new_user_path, method: :get do %>
+    <div class="row align-center">
+      <div class="small-6 columns">
+        <button class="hollow expanded button">Register</button>
+      </div>
+    </div>
   <% end %>
 </section>

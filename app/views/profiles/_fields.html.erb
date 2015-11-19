@@ -1,53 +1,65 @@
-<section class="fields" data-pwnfx-scope="profile">
-  <p class="field">
-    <%= f.label :athena_username, 'Athena username' %>
-    <span class="value">
-      <%= f.text_field :athena_username, :autocomplete => :off,
-            :autofocus => true, data: { pwnfx_refresh: 'athena-lookup-js',
+<section data-pwnfx-scope="profile">
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :athena_username, 'Athena username', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.text_field :athena_username, autocomplete: :off,
+            autofocus: true, data: { pwnfx_refresh: 'athena-lookup-js',
             pwnfx_refresh_url: websis_lookup_profiles_path,
             pwnfx_refresh_method: 'POST', pwnfx_refresh_scope: 'profile',
             pwnfx_refresh_ms: 1000 } %>
-    </span>
-    <span class="comment" id="profile-athena-success">
-    </span>
-    <span data-pwnfx-refresh-target="athena-lookup-js" />
-  </p>
+    </div>
+    <div class="small-3 columns">
+      <span class="error-text middle" id="profile-athena-success">
+      </span>
+      <span data-pwnfx-refresh-target="athena-lookup-js" />
+    </div>
+  </div>
 
-  <p class="field">
-    <%= f.label :name, 'Full name' %>
-    <span class="value">
-      <%= f.text_field :name, :id => 'profile_name' %>
-    </span>
-    <span class="comment">
-    </span>
-  </p>
-  <p class="field">
-    <%= f.label :nickname, 'Call me' %>
-    <span class="value">
-      <%= f.text_field :nickname, :id => 'profile_nickname' %>
-    </span>
-    <span class="comment" />
-  </p>
-  <p class="field">
-    <%= f.label :university, 'School' %>
-    <span class="value">
-      <%= f.text_field :university, :id => 'profile_university' %>
-    </span>
-    <span class="comment" />
-  </p>
-  <p class="field">
-    <%= f.label :department %>
-    <span class="value">
-      <%= f.text_field :department, :id => 'profile_department' %>
-    </span>
-    <span class="comment" />
-  </p>
-  <p class="field">
-    <%= f.label :year, 'Year' %>
-    <span class="value">
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :name, 'Full name', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.text_field :name, id: 'profile_name' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :nickname, 'Call me', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.text_field :nickname, id: 'profile_nickname' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :university, 'School', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.text_field :university, id: 'profile_university' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :department, 'Department', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.text_field :department, id: 'profile_department' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :year, 'Year', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
       <%= f.select :year, profile_year_options(f.object), {},
-                          :id => 'profile_year' %>
-    </span>
-    <span class="comment" />
-  </p>
+                          id: 'profile_year' %>
+    </div>
+  </div>
 </section>

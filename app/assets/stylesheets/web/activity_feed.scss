@@ -1,0 +1,26 @@
+.feed-item {
+  .media-object-section:first-child {
+    padding: 0.25rem 0.5rem 0 0;
+  }
+  p {
+    margin: 0;
+    line-height: 1.4;
+  }
+  .headline {
+    font-weight: 500;
+  }
+  .time-with-actions {
+    @include text-with-actions($title-action-spacing: 0.5rem,
+                               $row-wrap-spacing: 0);
+    line-height: 1.3;
+
+    > .time {
+      margin-bottom: 0;
+      font-style: italic;
+      color: $dark-gray;
+    }
+  }
+  .replies > .feed-item {
+    margin: 0.5rem 0 0 0;
+  }
+}

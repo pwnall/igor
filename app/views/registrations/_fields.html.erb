@@ -1,51 +1,67 @@
 <section class="fields">
-  <p class="field">
-    <%= f.label :for_credit, 'For credit' %>
-    <span class="value">
-      <%= f.label :for_credit do %>
-        <%= f.check_box :for_credit %>
-        intending to take <%= f.object.course.number %> for credit / grades
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :for_credit, 'For credit', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.label :for_credit, class: 'check-box-label' do %>
+        <span class="check-box-wrapper">
+          <%= f.check_box :for_credit %>
+        </span>
+        <span class="label-text">
+          intending to take <%= f.object.course.number %> for credit / grades
+        </span>
       <% end %>
-    </span>
-    <span class="comment" />
-  </p>
-  <p class="field">
-    <%= f.label :allows_publishing, 'Publish my work' %>
-    <span class="value">
-      <%= f.label :allows_publishing do %>
-        <%= f.check_box :allows_publishing %>
-        course staff may publish my homework, and I will be credited
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :allows_publishing, 'Publish my work',
+            class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.label :allows_publishing, class: 'check-box-label' do %>
+        <span class="check-box-wrapper">
+          <%= f.check_box :allows_publishing %>
+        </span>
+        <span class="label-text">
+          course staff may publish my homework, and I will be credited
+        </span>
       <% end %>
-    </span>
-    <span class="comment">
-    </span>
-  </p>
+    </div>
+  </div>
 
   <% unless f.object.prerequisite_answers.empty? %>
-  <p class="field">
-    <label>Have taken</label>
-    <span class="value" data-pwnfx-move-target="prerequisites"></span>
-    <span class="comment"></span>
-  </p>
+    <div class="row">
+      <div class="small-3 columns">
+        <label class="text-right middle">Have taken</label>
+      </div>
+      <div class="small-6 columns">
+        <fieldset id="prerequisite-course-numbers"
+              data-pwnfx-move-target="prerequisites">
+        </fieldset>
+      </div>
+    </div>
 
-  <%= f.fields_for :prerequisite_answers do |p| %>
-  <p class="field" data-pwnfx-hide-positive="<%= p.object_name %>">
-    <%= p.label :waiver_answer, p.object.prerequisite.waiver_question %>
-    <span class="value">
-      <%= p.text_area :waiver_answer, :rows => 3, :placeholder =>
-             "How did you learn the material in #{p.object.prerequisite.prerequisite_number}?" %>
-    </span>
-    <span class="comment">
-      <span data-pwnfx-move="prerequisites">
+    <%= f.fields_for :prerequisite_answers do |p| %>
+    <div class="row" data-pwnfx-hide-positive="<%= p.object_name %>">
+      <div class="small-3 columns">
+        <%= p.label :waiver_answer, p.object.prerequisite.waiver_question,
+              class: 'text-right middle' %>
+      </div>
+      <div class="small-6 columns">
+        <%= p.text_area :waiver_answer, rows: 3, placeholder:
+               "How did you learn the material in #{p.object.prerequisite.prerequisite_number}?" %>
+      </div>
+      <span class="prerequisite-course-number" data-pwnfx-move="prerequisites">
         <%= p.label :took_course do %>
-          <%= p.object.prerequisite.prerequisite_number %>
           <%= p.check_box :took_course, data: { pwnfx_hide: p.object_name,
-                pwnfx_hide_trigger: 'checked' } %>
+                pwnfx_hide_trigger: 'checked' } %><%= p.object.prerequisite.prerequisite_number %>
         <% end %>
         <%= p.hidden_field :prerequisite_id %>
       </span>
-    </span>
-  </p>
-  <% end %>
+    </div>
+    <% end %>
   <% end %>
 </section>

@@ -1,48 +1,66 @@
-<h2 class="grades-list-heading">Grades</h2>
-<h3>
-  Recitation:
-  <%= @recitation.nil? ? 'Unassigned' : recitation_name_label(@recitation) %>
-</h3>
+<h2><%= current_course.number %> Grades</h2>
 
-<% @assignments.each do |assignment| %>
-  <h3 class="grades">
-    <%= assignment.name %>
-    <% if @assignment_comments[assignment].any? %>
-    <button id="comments-toggle-button">Show Comments</button>
-    <% end %>
-  </h3>
-	<div class="grades">
-    <div class="total">
-      <span class="assignment-name">Total</span>
-      <span class="scores">
-        <span class="score">
-          <%= grades_sum @assignment_grades[assignment] %>
-        </span>
-        /
-        <span class="max-score">
-          <%= assignment.max_score %>
-        </span>
-      </span>
-    </div>
-    <% @assignment_metrics[assignment].each_with_index do |metric, i| %>
-    <div class="problem">
-      <span class="assignment-name">
-        <%= "#{metric.name} (weight: #{metric.weight})" %>
-      </span>
-      <span class="scores">
-       <span class="score"><%= grade_display_text @assignment_grades[assignment][i] %></span>
-       /
-       <span class="max-score"><%= metric.max_score %></span>
-      </span>
-    </div>
-    <div class="comments">
-      <span class="comment-head">Comments:</span>
-      <% if @assignment_comments[assignment][i] %>
-      <%= @assignment_comments[assignment][i].text %>
-      <% else %>
-      No comments
-      <% end %>
-    </div>
-  	<% end %>
-	</div>
-<% end %>
+<section class="all-grades">
+  <% @assignments.each do |assignment| %>
+    <article class="grades-for-assignment">
+      <h3 class="assignment-name title-with-actions">
+        <span class="title"><%= assignment.name %></span>
+        <% if @assignment_comments[assignment].any? %>
+          <span class="actions">
+            <button class="small hollow button comments-toggle-button">
+              Show Comments
+            </button>
+          </span>
+        <% end %>
+      </h3>
+
+    	<ol class="grades-list no-bullet">
+        <li class="total">
+          <div class="metric-info">
+            <span class="metric-name">Total</span>
+            <span class="stats-summary">
+              <span class="score">
+                <%= grades_sum @assignment_grades[assignment] %>
+              </span>
+              /
+              <span class="max-score">
+                <%= assignment.max_score %>
+              </span>
+            </span>
+          </div>
+        </li>
+        <% @assignment_metrics[assignment].each_with_index do |metric, i| %>
+        <li class="problem">
+          <div class="metric-info">
+            <span class="metric-name">
+              <%= metric.name %>
+            </span>
+            <span class="metric-weight">
+              ( <%= metric.weight %>x )
+            </span>
+            <span class="stats-summary">
+              <span class="score">
+                <%= grade_display_text @assignment_grades[assignment][i] %>
+              </span>
+              /
+              <span class="max-score"><%= metric.max_score.round 1 %></span>
+            </span>
+          </div>
+
+          <ul class="comments">
+            <li class="comment">
+              <p class="comment-text">
+                <% if @assignment_comments[assignment][i] %>
+                  <%= @assignment_comments[assignment][i].text %>
+                <% else %>
+                  No comments
+                <% end %>
+              </p>
+            </li>
+          </ul>
+        </li>
+      	<% end %>
+    	</ol>
+    </article>
+  <% end %>
+</section>

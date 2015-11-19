@@ -3,6 +3,7 @@ class FeedItem
   class <<self
     include ActionView::Helpers::NumberHelper
     include AnalysesHelper
+    include IconsHelper
   end
 
   # The time the item was posted. Usually items will be sorted by time.
@@ -51,7 +52,7 @@ class FeedItem
           author: response.user, flavor: :survey_answer,
           headline: "responded to a survey: #{response.survey.name}",
           contents: '',
-          actions: [['Edit', [:survey_path, response.survey,
+          actions: [[edit_icon_tag + ' Edit', [:survey_path, response.survey,
                               { course_id: response.course }]]],
           replies: []
       items << item
@@ -68,8 +69,8 @@ class FeedItem
           contents: number_to_human_size(submission.db_file.f.size) +
                     " #{submission.db_file.f_content_type} file",
           actions: [
-            ['Download', [:file_submission_path, submission,
-                          { course_id: submission.course }]]
+            [download_icon_tag + ' Download', [:file_submission_path,
+                submission, { course_id: submission.course }]]
           ],
           replies: []
       items << item
@@ -78,7 +79,7 @@ class FeedItem
             author: User.robot, flavor: :announcement,
             contents: analysis_status_text(submission.analysis),
             actions: [
-              ['Details', [:analysis_path, analysis,
+              [view_icon_tag + ' Details', [:analysis_path, analysis,
                            { course_id: analysis.course }]]
             ],
             replies: []
@@ -98,7 +99,7 @@ class FeedItem
           author: assignment.author, flavor: :grade,
           headline: "released the grades for #{assignment.name}",
           contents: '',
-          actions: [['View', [:grades_path,
+          actions: [[view_icon_tag + ' View', [:grades_path,
                               { course_id: assignment.course }]]],
           replies: []
       items << item
@@ -108,7 +109,7 @@ class FeedItem
   # Generates feed items for the published deliverables.
   def self.add_deliverables(items, user, options)
     Deliverable.includes(:assignment).each do |deliverable|
-      next unless deliverable.can_read?(user)
+      next unless deliverable.assignment.published?
 
       assignment = deliverable.assignment
       with_teammates = assignment.team_partition_id ? 'and your teammates ' : ''
@@ -117,7 +118,7 @@ class FeedItem
           headline: "opened up " + "#{assignment.name}'s #{deliverable.name} " +
               "for submissions",
           contents: deliverable.description,
-          actions: [['Submit', [:assignment_path, assignment,
+          actions: [[upload_icon_tag + ' Submit', [:assignment_path, assignment,
                                 { course_id: deliverable.course }]]],
           replies: []
       items << item
@@ -149,9 +150,9 @@ class FeedItem
 
       if announcement.can_edit? user
         item.actions = [
-          ['Edit', [:edit_announcement_path, announcement,
+          [edit_icon_tag + ' Edit', [:edit_announcement_path, announcement,
                     { course_id: announcement.course }]],
-          ['Delete', [:announcement_path, announcement,
+          [destroy_icon_tag + ' Delete', [:announcement_path, announcement,
                       { course_id: announcement.course }],
                      { confirm: 'Are you sure?', method: :delete }]
         ]

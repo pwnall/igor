@@ -12,25 +12,31 @@
         <%= render 'survey_questions/fields', f: qf %>
       <% end %>
     </div>
-    <p class="survey-builder-actions">
-      <%= select_tag :type, question_types_for_select,
-            data: { pwnfx_showif_source: 'question-type' },
-            class: 'question-type' %>
-      <%= button_tag data: { pwnfx_render_scope: 'survey',
-            pwnfx_render_randomize: 'IDID', pwnfx_render: 'qo-question',
-            pwnfx_showif: 'question-type',
-            pwnfx_showif_is: 'QuantitativeScaledQuestion',
-            pwnfx_showif_scope: 'survey', pwnfx_showif_replace: 'button' } do %>
-        <%= create_icon_tag %> Add a question
-      <% end %>
-      <%= button_tag data: { pwnfx_render_scope: 'survey',
-            pwnfx_render_randomize: 'IDID', pwnfx_render: 'qs-question',
-            pwnfx_showif: 'question-type',
-            pwnfx_showif_is: 'QuantitativeOpenQuestion',
-            pwnfx_showif_scope: 'survey', pwnfx_showif_replace: 'button' } do %>
-        <%= create_icon_tag %> Add a question
-      <% end %>
-    </p>
+    <div class="survey-builder-actions row align-center">
+      <div class="small-6 columns">
+        <%= select_tag :type, question_types_for_select,
+              data: { pwnfx_showif_source: 'question-type' },
+              class: 'question-type' %>
+      </div>
+      <div class="small-4 columns">
+        <span class="forked-button-wrapper">
+          <%= button_tag data: { pwnfx_render_scope: 'survey',
+                pwnfx_render_randomize: 'IDID', pwnfx_render: 'qo-question',
+                pwnfx_showif: 'question-type', pwnfx_showif_scope: 'survey',
+                pwnfx_showif_is: 'QuantitativeScaledQuestion',
+                pwnfx_showif_replace: 'button' }, class: 'hollow button' do %>
+            <%= create_icon_tag %> Add a question
+          <% end %>
+          <%= button_tag data: { pwnfx_render_scope: 'survey',
+                pwnfx_render_randomize: 'IDID', pwnfx_render: 'qs-question',
+                pwnfx_showif: 'question-type', pwnfx_showif_scope: 'survey',
+                pwnfx_showif_is: 'QuantitativeOpenQuestion',
+                pwnfx_showif_replace: 'button' }, class: 'hollow button' do %>
+            <%= create_icon_tag %> Add a question
+          <% end %>
+        </span>
+      </div>
+    </div>
     <script type="text/html" data-pwnfx-render-source="qo-question">
       <%= f.fields_for :questions, QuantitativeScaledQuestion.new,
                                    child_index: 'IDID' do |qf| %>
@@ -44,9 +50,8 @@
       <% end %>
     </script>
 
-    <p class="actions">
-      <%= button_tag class: 'emphasized' do %>
-        <%= save_icon_tag %> Update Survey
-      <% end %>
+    <%= submit_button_tag do %>
+      <%= save_icon_tag %> Update Survey
+    <% end %>
   <% end %>
 </div>

@@ -1,0 +1,11 @@
+#smtp-server-form {
+  input.port {
+    width: 5rem;
+  }
+  input.domain {
+    width: 10rem;
+  }
+  input.hostname, select.auth-kind, input.username, input.password {
+    width: 20rem;
+  }
+}

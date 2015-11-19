@@ -1,0 +1,50 @@
+.all-grades {
+  @include flex-grid-row(null, null, null, true);
+
+  .grades-for-assignment {
+    min-width: 25%;
+    max-width: 90%;
+    @include flex-grid-column(shrink, $grid-column-gutter);
+  }
+}
+h3.assignment-name {
+  margin-bottom: 0;
+}
+.grades-list {
+  .metric-info {
+    @include flex-grid-row(null, null, null, true);
+
+    .metric-name {
+      @include flex-grid-column(null, $grid-column-gutter);
+      margin-bottom: 0;
+    }
+    .metric-weight {
+      @include flex-grid-column(shrink, 0);
+    }
+    .stats-summary {
+      @include flex-grid-column(shrink, 0);
+    }
+  }
+  &:not(.show-comments) {
+    .comments {
+      display: none;
+    }
+  }
+  .comments {
+    color: $very-dark-gray;
+    font-style: italic;
+
+    > .comment {
+      @include flex-grid-row(null, null, null, true);
+
+      > .comment-text {
+        @include flex-grid-column(null, $grid-column-gutter);
+        margin-bottom: 0.2rem;
+        text-align: justify;
+      }
+    }
+  }
+  .total {
+    font-weight: bold;
+  }
+}

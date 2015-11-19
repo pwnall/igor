@@ -1,0 +1,246 @@
+$promoted-color: #ffe500;
+
+// General tabs and panels
+section.submission-dashboard-container {
+  .tabs-panel {
+    width: 100%;
+  }
+}
+ul#submission-dashboard-tabs {
+  @include flex-grid-row(null, null, null, true);
+}
+[data-tabs-content="submission-dashboard-tabs"] {
+  @include flex-grid-row(null, null, null, true);
+  margin-bottom: 1rem;
+}
+
+// Deadline and extension
+#overview-panel section.deadline {
+  margin-bottom: 1rem;
+
+  p {
+    margin-bottom: 0;
+    line-height: 1.4;
+  }
+  .due-date {
+    font-size: 1.5rem;
+
+    .date {
+      font-weight: bold;
+    }
+  }
+  .inapplicable {
+    text-decoration: line-through;
+    color: $dark-gray;
+  }
+  .extension {
+    margin-top: 0.5rem;
+
+    .grantor {
+      display: inline-block;
+    }
+  }
+  .original-deadline:not(.inapplicable), .extension {
+    .date {
+      color: darken($primary-color, 10%);
+    }
+  }
+}
+
+// Submission list item (overview panel only)
+.main-submission, .analyzed-submission {
+  h3 {
+    margin-bottom: 0;
+  }
+  .submission-info {
+    .promotion-status, a.remove-collaborator, .collaborator-form-toggle-button,
+    .delete-submission-button {
+      display: none;
+    }
+  }
+}
+
+// Placeholder for missing submission (overview/deliverable panels)
+.blank-submission {
+  @include submission-list-item;
+  justify-content: center;
+
+  .no-submission-message {
+    padding: 0.25rem;
+
+    i.fa {
+      margin-right: 0.2rem;
+      color: $warning-color;
+    }
+  }
+}
+
+// Submission list items in overview and deliverable panels
+.student-submissions-list, .main-submission, .blank-submission,
+.analyzed-submission {
+  .submission-info {
+    @include submission-list-item;
+    position: relative;
+
+    // Promotion status
+    .promotion-status {
+      @include flex-grid-column(shrink, 10);
+
+      button {
+        @include button;
+        @include button-hollow;
+        @include button-hollow-style;
+        margin: 0.25rem;
+      }
+    }
+    &:first-child > .promotion-status > .promoted-status,
+    .promotion-status button {
+      font-size: map-get($button-sizes, large);
+      padding: 0.3em 0.5em;
+    }
+
+    // Delete button
+    .delete-submission-button {
+      position: absolute;
+      top: calc(50% - 0.85em);
+      right: -0.85em;
+
+      > a {
+        @include button(false, $alert-color, auto, auto, solid);
+        padding: 0.425em 0.5em;
+        font-size: map-get($button-sizes, small);
+        margin: 0;
+        border-radius: 50%;
+      }
+    }
+
+    // Upload details and collaboration info
+    .submission-details {
+      @include flex-grid-column(null, 20);
+
+      .file-details, .collaborators-list, .new-collaborator-form {
+        margin: 0.5rem 0;
+      }
+      .file-details {
+        @include flex-grid-row(null, null, null, true);
+        align-items: center;
+        justify-content: space-between;
+
+        .field {
+          &.analysis-status {
+            width: 2em;
+            @include flex-grid-column(shrink, 0);
+          }
+          &.submission-time {
+            width: 10em;
+            @include flex-grid-column(shrink, 10);
+          }
+          &.file-name {
+            @include flex-grid-column(null, 10);
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            a.submission-download {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+          &.file-size {
+            @include flex-grid-column(shrink, 10);
+            text-align: right;
+            color: $dark-gray;
+          }
+        }
+      }
+      .collaborators-list {
+        @include flex-grid-row(null, null, null, true);
+        align-items: center;
+
+        .title {
+          margin-right: 0.5rem;
+        }
+        .collaborator-wrapper, .collaborator-form-toggle-button {
+          @include flex-grid-column(shrink, 5);
+        }
+        .collaborator-form-toggle-button > button {
+          @include button;
+          @include button-hollow;
+          @include button-hollow-style;
+          font-size: map-get($button-sizes, small);
+          margin: 0;
+          padding: calc(14px - 0.5em);
+        }
+      }
+      .new-collaborator-form .input-group {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Main (top) submission used for grading
+.student-submissions-list .submission-info:first-child,
+.main-submission .submission-info {
+  border: 2px solid $promoted-color;
+
+  > .promotion-status > .promoted-status {
+    @include button-base;
+    margin: 0.25rem;
+    cursor: default;
+    font-weight: bold;
+    background: $promoted-color;
+    color: white;
+  }
+}
+
+// Collaborator image with remove functionality
+.student-submissions-list div.collaborator-figure {
+  position: relative;
+  display: inline-block;
+
+  > img {
+    z-index: 1;
+  }
+  > a.remove-collaborator {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    z-index: 2;
+    visibility: hidden;
+    text-align: center;
+
+    > i.fa {
+      vertical-align: middle;
+    }
+  }
+
+  &:hover {
+    > img {
+      opacity: 0.2;
+    }
+    > a.remove-collaborator {
+      visibility: visible;
+    }
+  }
+}
+
+// Submission upload form
+.new-submission-form {
+  .input-group [type="file"] {
+    @include form-element;
+    margin: 0;
+    padding-left: 0.5rem;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+// Resource files
+div#resource-files-panel table.files {
+  width: 100%;
+}

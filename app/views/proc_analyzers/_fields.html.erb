@@ -1,17 +1,25 @@
-<section class="fields">
-  <p class="field">
-    <%= f.label :message_name, 'Built-in analyzer' %>
-    <span class="value">
-      <%= f.select :message_name, proc_analyzer_messages_for_select %>
-    </span>
-  </p>
-  <p class="field">
-    <%= f.label :auto_grading, 'Auto grading' %>
-    <span class="value">
-      <%= f.label :auto_grading do %>
+<div class="row">
+  <fieldset class="small-12 columns">
+    <legend><h4>Built-in Analyzer Parameters</h4></legend>
+    <div class="row">
+      <div class="small-3 columns">
+        <%= f.label :message_name, 'Built-in analyzer', class: 'middle text-right' %>
+      </div>
+      <div class="small-6 columns">
+        <%= f.select :message_name, proc_analyzer_messages_for_select %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="small-3 columns">
+        <%= f.label :auto_grading, 'Auto grading', class: 'text-right' %>
+      </div>
+      <div class="small-6 columns">
         <%= f.check_box :auto_grading %>
-        invalid submissions get 0 (zero) grades
-      <% end %>
-    </span>
-  </p>
-</section>
+        <%= f.label :auto_grading do %>
+          invalid submissions get 0 (zero) grades
+        <% end %>
+      </div>
+    </div>
+  </fieldset>
+</div>

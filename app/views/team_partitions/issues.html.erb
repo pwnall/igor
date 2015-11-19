@@ -3,34 +3,39 @@
 <h3>Teams Without Enough Members</h3>
 
 <% if @too_small.empty? %>
-<p>No teams have too few students.</p>
+  <p>No teams have too few students.</p>
+  <br />
 <% else %>
-<% @too_small.each do |team| %>
-<%= render team %>
-<br />
+  <section class="team-list">
+  <% @too_small.each do |team| %>
+    <%= render 'teams/team', team: team %>
+  <% end %>
+</section>
 <% end %>
-<% end %>
-
 
 <h3>Teams With Too Many Members</h3>
 
 <% if @too_large.empty? %>
-<p>No teams have too many students.</p>
+  <p>No teams have too many students.</p>
+  <br />
 <% else %>
-<% @too_large.each do |team| %>
-<%= render team %>
-<br />
+  <section class="team-list">
+  <% @too_large.each do |team| %>
+    <%= render 'teams/team', team: team %>
+  <% end %>
+  </section>
 <% end %>
-<% end %>
-
 
 <h3>Students Without Teams</h3>
 
 <% if @not_assigned.empty? %>
-<p>All students have teams.</p>
+  <p>All students have teams.</p>
 <% else %>
-<% @not_assigned.each do |user| %>
-<%= render user %>
-<br />
-<% end %>
+  <table>
+    <tbody>
+      <% @not_assigned.sort_by(&:name).each do |user| %>
+        <%= render 'users/user', user: user %>
+      <% end %>
+    </tbody>
+  </table>
 <% end %>

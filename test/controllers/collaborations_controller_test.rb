@@ -29,10 +29,10 @@ class CollaborationsControllerTest < ActionController::TestCase
           assert_includes @submission.reload.collaborators, non_collaborator
         end
 
-        it "redirects to the submission's assignment page" do
+        it "redirects to the submission's deliverable tab" do
           post :create, params: create_params
-          assert_redirected_to assignment_url(@submission.assignment,
-              course_id: @submission.course)
+          assert_redirected_to @controller.deliverable_panel_url(
+              @submission.deliverable)
         end
       end
 
@@ -70,10 +70,10 @@ class CollaborationsControllerTest < ActionController::TestCase
           assert_includes @submission.reload.collaborators, non_collaborator
         end
 
-        it "redirects to the submission's assignment page" do
+        it "redirects to the submission's deliverable tab" do
           post :create, params: create_params
-          assert_redirected_to assignment_url(@submission.assignment,
-              course_id: @submission.course)
+          assert_redirected_to @controller.deliverable_panel_url(
+              @submission.deliverable)
         end
       end
     end

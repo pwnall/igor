@@ -1,31 +1,23 @@
 <% if flash[:alert] %>
-<p class="status-bar error" data-pwnfx-hide-positive="status-bar">
-  <%= invalid_icon_tag %>
-  <%= flash[:alert] %>
-
-  <span class="actions">
-  <%= link_to 'Hide', '#', data: { pwnfx_hide: 'status-bar' } %>
-  </span>
-</p>
+  <div class="status-bar" id="flash-alert-box" data-closable>
+    <%= invalid_icon_tag %>
+    <%= flash[:alert] %>
+    <button class="close-button" data-close>&times;</button>
+  </div>
 <% elsif flash[:errors] && flash[:errors].any? %>
-<div class="status-bar error" data-pwnfx-hide-positive="status-bar">
-  <%= pluralize(flash[:errors].count, "error") %> occurred:
-  <span class="actions">
-  <%= link_to 'Hide', '#', data: { pwnfx_hide: 'status-bar' } %>
-  </span>
+  <div class="status-bar" id="flash-warning-box" data-closable>
+    <%= pluralize(flash[:errors].count, "error") %> occurred:
+    <button class="close-button" data-close>&times;</button>
 
-  <ul>
-  <% flash[:errors].full_messages.each do |msg| %>
-    <li><%= msg %></li>
-  <% end %>
-  </ul>
-</div>
+    <ul>
+    <% flash[:errors].full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
 <% elsif flash[:notice] %>
-<p class="status-bar notice" data-pwnfx-hide-positive="status-bar">
-  <%= flash[:notice] %>
-
-  <span class="actions">
-  <%= link_to 'Hide', '#', data: { pwnfx_hide: 'status-bar' } %>
-  </span>
-</p>
+  <div class="status-bar" id="flash-notice-box" data-closable>
+    <%= flash[:notice] %>
+    <button class="close-button" data-close>&times;</button>
+  </div>
 <% end %>

@@ -1,17 +1,14 @@
-<h3 class="user-info">
-  <%= user_image_tag user %>
-  <%= link_to user.display_name_for(current_user), user %>
-</h3>
-<dl class="user-info">
-  <dt>E-mail</dt>
-  <dd><%= user.email %></dd>
-</dl>
-<ul class="user-info-actions">
-	<% if current_user.admin? %>
-  <li>
-    <%= link_to impersonate_user_path(user), method: :post do %>
-      <%= debug_icon_tag %> Impersonate
-    <% end %>
-  </li>
-	<% end %>
-</ul>
+<tr class="user-info">
+  <td>
+    <%= user_image_tag user %>
+    <%= link_to user.display_name_for(current_user, :long), user %>
+  </td>
+  <td class="actions">
+  	<% if current_user.admin? %>
+      <%= button_to impersonate_user_path(user), method: :post,
+            class: 'small hollow button' do %>
+        <%= debug_icon_tag %> Impersonate
+      <% end %>
+  	<% end %>
+  </td>
+</tr>

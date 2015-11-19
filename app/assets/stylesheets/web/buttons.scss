@@ -1,0 +1,35 @@
+button[type="submit"], td.actions button, .link-button-wrapper > a {
+  @include button;
+  @include button-hollow;
+  @include button-hollow-style;
+
+  // Sizes
+  &.tiny     { font-size: map-get($button-sizes, tiny); }
+  &.small    { font-size: map-get($button-sizes, small); }
+  &.large    { font-size: map-get($button-sizes, large); }
+  &.expanded { @include button-expand; }
+
+  // Colors
+  @each $name, $color in $foundation-colors {
+    &.#{$name} {
+      @include button-hollow-style($color);
+    }
+  }
+}
+span.input-group-button.button > button {
+  padding: 0;
+}
+form > input[value="delete"] ~ button,
+.link-button-wrapper > a[data-method="delete"] {
+  @include button-hollow-style($alert-color);
+}
+.feed-item .actions {
+  .link-button-wrapper > a {
+    font-size: map-get($button-sizes, small);
+  }
+}
+a.button, button.button {
+  > i.fa {
+    margin-right: 0.2rem;
+  }
+}

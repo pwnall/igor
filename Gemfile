@@ -70,8 +70,6 @@ gem 'bower-rails', '>= 0.10.0'
 
 # Assets.
 # gem 'sass-rails', '>= 5.0.3'
-gem 'pwnstyles_rails', '>= 0.2.6'
-# gem 'pwnstyles_rails', '>= 0.2.6', path: '../pwnstyles_rails'
 gem 'jquery-rails', '>= 4.0.3'
 # gem 'coffee-rails', '>= 4.1.0'
 gem 'font-awesome-rails', '>= 4.5.0.0'
@@ -79,6 +77,8 @@ gem 'uglifier', '>= 2.7.0'
 # TODO(pwnall): Relax the restriction once Rails 5 support gets re-merged into
 #               autoprefixer. https://github.com/ai/autoprefixer-rails/pull/73
 gem 'autoprefixer-rails', '= 6.1.0'
+gem 'foundation-rails', '>= 5.5.3.2',
+    git: 'https://github.com/pwnall/foundation-rails.git', branch: 'f6'
 
 # TODO(pwnall): allow therubyracer 0.12+ after Ubuntu crash gets fixed
 #               https://github.com/cowboyd/therubyracer/issues/317

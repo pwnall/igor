@@ -1,0 +1,19 @@
+.analysis-status-icon {
+  padding: 0 0.4rem;
+
+  @each $name, $color in $foundation-colors {
+    &.#{$name} {
+      color: $color;
+    }
+  }
+}
+section.analysis-logs {
+  margin-bottom: 2rem;
+}
+article.log, article.private-log {
+  margin: 1rem 0;
+
+  p {
+    margin-bottom: 0;
+  }
+}

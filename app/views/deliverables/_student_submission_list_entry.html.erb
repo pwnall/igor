@@ -1,0 +1,50 @@
+<li class="submission-info">
+  <div class="promotion-status actions">
+    <%= submission_promotion_status submission, current_user %>
+  </div>
+  <div class="submission-details">
+    <div class="file-details">
+      <span class="analysis-status field">
+        <%= analysis_status_tag submission.analysis %>
+      </span>
+      <span class="submission-time field">
+        <%= submission.updated_at.to_s(:submission_short) %>
+      </span>
+      <span class="file-name field">
+        <%= link_to file_submission_path(submission,
+              course_id: submission.course),
+              class: 'submission-download' do %>
+          <%= download_icon_tag + " #{submission.file_name}" %>
+        <% end %>
+      </span>
+      <span class="file-size field">
+        <%= number_to_human_size submission.db_file.f.size %>
+      </span>
+    </div>
+    <div class="collaborators-list">
+      <span class="title">Collaborators:</span>
+      <%= render partial: 'collaborations/collaborator',
+            collection: submission.collaborations, as: :collaboration %>
+      <% if submission.can_edit? current_user %>
+      <span class="collaborator-form-toggle-button">
+        <button type="button" class="no-text open-form">
+          <%= create_icon_tag %>
+        </button>
+        <button type="button" class="no-text close-form hide">
+          <%= fa_icon :check %>
+        </button>
+      </span>
+      <% end %>
+    </div>
+    <div class="new-collaborator-form hide">
+      <%= render 'collaborations/form', submission: submission %>
+    </div>
+  </div>
+  <span class="delete-submission-button">
+    <%= link_to submission_path(submission, course_id: submission.course),
+          method: :delete, class: 'tiny alert no-text',
+          data: { confirm: 'Are you sure?' } do %>
+      <%= fa_icon :times %>
+    <% end %>
+  </span>
+</li>

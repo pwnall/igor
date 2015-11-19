@@ -1,3 +1,9 @@
 <h2>Course Information</h2>
 
-<%= render 'form' %>
+<%= form_for @course do |f| %>
+  <%= render 'courses/fields', f: f %>
+
+  <%= submit_button_tag do %>
+    <%= save_icon_tag %> Update Course
+  <% end %>
+<% end %>

@@ -1,4 +1,4 @@
-<figure title="<%= submission.subject.name %>">
-  <%= user_image_tag submission.subject, size: :large %>
-  <%= analysis_status_icon_tag submission.analysis %>
+<figure title="<%= submission.subject.name %>" class="submission-figure">
+  <%= user_image_tag submission.subject, size: :medium %>
+  <%= analysis_status_badge_tag submission.analysis %>
 </figure>

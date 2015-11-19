@@ -1,0 +1,18 @@
+#team-partition-form {
+  .min-size, .max-size, .optimal-size {
+    width: 4rem;
+  }
+}
+.team-list {
+  @include flex-grid-row(null, null, null, true);
+  justify-content: space-between;
+
+  .team-roster {
+    @include flex-grid-column(shrink, $grid-column-gutter);
+    margin-bottom: 2rem;
+
+    .button {
+      white-space: nowrap;
+    }
+  }
+}

@@ -1,18 +1,19 @@
-<%= form_for(@team, url: polymorphic_url(@team, course_id: @team.course),
-             html: { class: :student_form }) do |f| %>
+<%= form_for @team,
+      url: polymorphic_url(@team, course_id: @team.course) do |f| %>
   <%= f.error_messages %>
   <%= f.hidden_field :partition_id %>
 
-  <div class="form_box">
-    <div class="form_entry">
-      <div class="form_label">Name</div>
-      <div class="form_field_box">
-        <%= f.text_field :name, :class => 'form_field' %>
-      </div>
+  <div class="row">
+    <div class="small-2 columns">
+      <%= f.label :name, class: 'text-right middle' %>
     </div>
-
-    <div class="form_submit_box">
-      <%= f.submit @team.new_record? ? "Submit" : "Update", :class => 'form_submit' %>
+    <div class="small-6 columns">
+      <%= f.text_field :name, placeholder: 'Team A' %>
+    </div>
+    <div class="small-4 columns">
+      <%= button_tag class: 'hollow button' do %>
+        <%= create_icon_tag %> Add New Team
+      <% end %>
     </div>
   </div>
 <% end %>

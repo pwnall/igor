@@ -51,7 +51,7 @@ class LoadTestSession
     form['user[profile_attributes][year]'] = 'G'
 
     result_page = form.submit
-    !!result_page.root.css('.status-bar.notice').text.index(/log in now/i)
+    !!result_page.root.css('.status-bar').text.index(/log in now/i)
   end
 
   # Register as a staff member for a class.
@@ -65,7 +65,7 @@ class LoadTestSession
     form = @agent.page.form_with class: 'staff-role-request-form'
     return false if form.nil?
     result_page = form.submit
-    !!result_page.root.css('.status-bar.notice').text.
+    !!result_page.root.css('.status-bar').text.
         index(/access requested/i)
   end
 
@@ -84,7 +84,7 @@ class LoadTestSession
           /^\/#{Regexp.quote course}\/role_requests\/\d+\/approve$/)
       break if form.nil?
       result_page = form.submit
-      unless result_page.root.css('.status-bar.notice').text.index(/is now a/i)
+      unless result_page.root.css('.status-bar').text.index(/is now a/i)
         return nil
       end
       approved_requests += 1
@@ -107,7 +107,7 @@ class LoadTestSession
     form['course[email]'] = "#{course}-tas@mit.edu"
     form['course[ga_account]'] = 'UA-19600078-2'
     result_page = form.submit
-    !!result_page.root.css('.status-bar.notice').text.
+    !!result_page.root.css('.status-bar').text.
         index(/course #{course} created/i)
   end
 
@@ -135,19 +135,15 @@ class LoadTestSession
   def create_load_test_assignment(course, name, analyzer_path)
     @agent.get File.join(@root_url, course, 'assignments/new')
 
-    form = @agent.page.form_with class: 'new_assignment'
+    form = @agent.page.form_with class: 'new-assignment-form'
     form['assignment[name]'] = name
     tomorrow = Time.now + 24 * 60 * 60
-    form['assignment[published_at(1i)]'] = tomorrow.year
-    form['assignment[published_at(2i)]'] = tomorrow.month
-    form['assignment[published_at(3i)]'] = tomorrow.day
+    form['assignment[published_at]'] = tomorrow.strftime('%Y-%m-%dT%H:%M:%S')
     next_week = Time.now + 7 * 24 * 60 * 60
-    form['assignment[due_at(1i)]'] = next_week.year
-    form['assignment[due_at(2i)]'] = next_week.month
-    form['assignment[due_at(3i)]'] = next_week.day
+    form['assignment[due_at]'] = next_week.strftime('%Y-%m-%dT%H:%M:%S')
     form['assignment[weight]'] = 1
     result_page = form.submit
-    unless result_page.root.css('.status-bar.notice').text.
+    unless result_page.root.css('.status-bar').text.
         index(/assignment created/i)
       return nil
     end
@@ -156,7 +152,7 @@ class LoadTestSession
     end
     assignment_id = match[1].to_i
 
-    form = result_page.form_with class: 'edit_assignment'
+    form = result_page.form_with class: /edit-assignment-form/
 
     deliverable_param = 'assignment[deliverables_attributes][0]'
     form["#{deliverable_param}[name]"] = 'Fib'
@@ -185,7 +181,7 @@ class LoadTestSession
     form["#{metric_param}[weight]"] = 1
 
     result_page = form.submit
-    unless result_page.root.css('.status-bar.notice').text.
+    unless result_page.root.css('.status-bar').text.
         index(/assignment updated/i)
       return nil
     end
@@ -203,7 +199,7 @@ class LoadTestSession
     return false unless form
 
     result_page = form.submit
-    !!result_page.root.css('.status-bar.notice').text.
+    !!result_page.root.css('.status-bar').text.
         index(/assignment released/i)
   end
 
@@ -219,7 +215,7 @@ class LoadTestSession
     form = @agent.page.form_with id: 'new_registration'
     form.checkbox_with(name: 'registration[for_credit]').check
     result_page = form.submit
-    !!result_page.root.css('.status-bar.notice').text.
+    !!result_page.root.css('.status-bar').text.
         index(/you are now registered/i)
   end
 
@@ -231,7 +227,7 @@ class LoadTestSession
   def upload_submission_form(course, assignment_id, file_data)
     @agent.get File.join(@root_url, course, 'assignments', assignment_id.to_s)
 
-    form = @agent.page.form_with class: 'new_submission'
+    form = @agent.page.form_with class: 'new-submission-form'
     upload_field = form.file_upload_with(
         name: 'submission[db_file_attributes][f]')
 
@@ -246,7 +242,7 @@ class LoadTestSession
   # @return {Boolean} true if the assignment was submitted
   def upload_submission(form)
     result_page = form.submit
-    !!result_page.root.css('.status-bar.notice').text.
+    !!result_page.root.css('.status-bar').text.
         index(/uploaded/i)
   end
 
@@ -255,7 +251,7 @@ class LoadTestSession
   # @return {Boolean} true if the fetching succeeded, false otherwise
   def view_assignment_page(course, assignment_id)
     @agent.get File.join(@root_url, course, 'assignments', assignment_id.to_s)
-    !!@agent.page.form_with(class: 'new_submission')
+    !!@agent.page.form_with(class: 'new-submission-form')
   rescue Mechanize::ResponseCodeError
     false
   end
@@ -265,7 +261,7 @@ class LoadTestSession
   # @return {Boolean} true if the fetching succeeded, false otherwise
   def view_course_home(course)
     @agent.get File.join(@root_url, course)
-    !!@agent.page.root.css('h1 .course-number').text.index(course)
+    !!@agent.page.root.css('.course-number').text.index(course)
   rescue Mechanize::ResponseCodeError
     false
   end
