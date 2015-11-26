@@ -25,6 +25,14 @@
   - foreman
   - rake
 
+- name: install bower.js using npm
+  become: true
+  become_user: "{{ app_user }}"
+  npm:
+    name: bower
+    path: /home/{{ app_user }}/{{ app_dir }}
+    production: yes
+
 - name: install bundler packages
   become: true
   become_user: "{{ app_user }}"
@@ -49,6 +57,8 @@
   environment:
     RAILS_ENV: production
   changed_when: "'Writing' in precompile_assets_result.stdout"
+  notify:
+  - restart frontend main service
 
 - name: apply database migrations
   become: true
@@ -61,6 +71,9 @@
     DATABASE_URL: postgres:///{{ app_dir }}_production
   register: rake_db_migrate_result
   changed_when: "'migrating' in rake_db_migrate_result.stdout"
+  notify:
+  - restart frontend main service
+  - restart frontend job queue service
 
 - name: create keys directory
   become: true

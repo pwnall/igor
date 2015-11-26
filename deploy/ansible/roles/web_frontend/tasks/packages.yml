@@ -11,7 +11,7 @@
   - ImageMagick-devel  # rmagick
   - ImageMagick
   - nodejs  # asset pipeline
-  - npm
+  - npm  # used to install bower.js, needed by bower-rails
   - file  # paperclip
 
 
@@ -28,5 +28,5 @@
   - libmagickcore-dev
   - imagemagick
   - nodejs  # asset pipeline
-  - npm
+  - npm  # used to install bower.js, needed by bower-rails
   - file  # paperclip
