@@ -14,10 +14,10 @@
                 pwnfx_refresh_method: 'POST',
                 pwnfx_refresh_scope: 'grading-kit', pwnfx_refresh_ms: 100 } %>
         </span>
-  		</div>
+      </div>
       <div class="top-level-query">
         <span class="query-label">
-    			<%= label_tag :use_cutoff, 'Late submissions' %>
+          <%= label_tag :use_cutoff, 'Late submissions' %>
         </span>
         <span class="query-input-field">
           <%= label_tag :use_cutoff do %>
@@ -37,7 +37,7 @@
           <%= datetime_local_field_tag :submission_cutoff,
                 Time.current.to_s(:datetime_local_field), step: 900 %>
         </span>
-  		</div>
+      </div>
     </section>
 
     <div data-pwnfx-refresh-target="submission-deliverables">

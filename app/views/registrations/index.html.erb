@@ -1,41 +1,41 @@
 <h2><%= @registrations.length %> Student Registrations</h2>
 
 <table id="registrations-table">
-	<thead>
-	  <tr>
-	    <th>Student</th>
+  <thead>
+    <tr>
+      <th>Student</th>
       <th>Publish HW</th>
-	    <th>For Credit</th>
-			<% @prerequisites.sort_by(&:id).each do |prerequisite| %>
-			<th><%= prerequisite.prerequisite_number %></th>
-  		<% end %>
+      <th>For Credit</th>
+      <% @prerequisites.sort_by(&:id).each do |prerequisite| %>
+      <th><%= prerequisite.prerequisite_number %></th>
+      <% end %>
       <% if current_course.has_recitations? %>
       <th>Recitation</th>
       <% end %>
       <th></th>
-	  </tr>
-	</thead>
+    </tr>
+  </thead>
 
-	<tbody>
-	<% @registrations.each do |registration| %>
-	  <tr>
-	    <td class="user-identification">
-				<%= link_to h(registration.user.name), registration.user %>
-				<span class="email"><%=h registration.user.email %></span>
-			</td>
-	    <td>
-				<%= boolean_description_tag registration.for_credit?, only: :icon %>
-			</td>
-      <td>
-				<%= boolean_description_tag registration.allows_publishing?, only: :icon %>
-			</td>
-
-			<% answers = registration.build_prerequisite_answers.
-				 		 sort_by(&:prerequisite_id).each do |answer| %>
-      <td>
-				<%= boolean_description_tag answer.took_course?, only: :icon %>
+  <tbody>
+  <% @registrations.each do |registration| %>
+    <tr>
+      <td class="user-identification">
+        <%= link_to h(registration.user.name), registration.user %>
+        <span class="email"><%=h registration.user.email %></span>
       </td>
-			<% end %>
+      <td>
+        <%= boolean_description_tag registration.for_credit?, only: :icon %>
+      </td>
+      <td>
+        <%= boolean_description_tag registration.allows_publishing?, only: :icon %>
+      </td>
+
+      <% answers = registration.build_prerequisite_answers.
+              sort_by(&:prerequisite_id).each do |answer| %>
+      <td>
+        <%= boolean_description_tag answer.took_course?, only: :icon %>
+      </td>
+      <% end %>
 
       <% if registration.course.has_recitations? %>
       <td id="registration-<%= registration.id %>">
@@ -48,26 +48,26 @@
       </td>
       <% end %>
       <td class="actions">
-				<%= button_to registration_path(registration,
-        			course_id: registration.course), method: :get,
-							class: 'small hollow button' do %>
-					<%= view_icon_tag %> Details
+        <%= button_to registration_path(registration,
+              course_id: registration.course), method: :get,
+              class: 'small hollow button' do %>
+          <%= view_icon_tag %> Details
         <% end %>
         <% if registration.can_edit? current_user %>
-					<%= button_to edit_registration_path(registration,
-	        			course_id: registration.course), method: :get,
-								class: 'small hollow button' do %>
-	          <%= edit_icon_tag %> Edit
-	        <% end %>
+          <%= button_to edit_registration_path(registration,
+                course_id: registration.course), method: :get,
+                class: 'small hollow button' do %>
+            <%= edit_icon_tag %> Edit
+          <% end %>
         <% end %>
-				<% if current_user.admin? %>
-					<%= button_to impersonate_user_path(registration.user), method: :post,
-								class: 'small hollow button' do %>
-						<%= debug_icon_tag %> Impersonate
-					<% end %>
-				<% end %>
+        <% if current_user.admin? %>
+          <%= button_to impersonate_user_path(registration.user), method: :post,
+                class: 'small hollow button' do %>
+            <%= debug_icon_tag %> Impersonate
+          <% end %>
+        <% end %>
       </td>
-	  </tr>
-	<% end %>
-	</tbody>
+    </tr>
+  <% end %>
+  </tbody>
 </table>

@@ -1,18 +1,18 @@
 <div class="profile-photo-container">
 <%= form_for @profile_photo, :html => {:multipart => true} do |f| %>
   <%= f.error_messages %>
-	<%= f.hidden_field :profile_id %>
-	
-	<dl class="profile-photo">
-		<dt><%= f.label :pic, 'Photo file' %></dt>
-		<dd>
-			<%= f.file_field :pic %>
-			<span class="instructions">
-				Use a PNG or JPEG file. Maximum size 1Mb.
-			</span>
-		</dd>
+  <%= f.hidden_field :profile_id %>
+  
+  <dl class="profile-photo">
+    <dt><%= f.label :pic, 'Photo file' %></dt>
+    <dd>
+      <%= f.file_field :pic %>
+      <span class="instructions">
+        Use a PNG or JPEG file. Maximum size 1Mb.
+      </span>
+    </dd>
   </dl>
-	
+  
   <p class="privacy-policy">
     Every registered user can see this.
   </p>  

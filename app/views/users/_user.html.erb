@@ -4,11 +4,11 @@
     <%= link_to user.display_name_for(current_user, :long), user %>
   </td>
   <td class="actions">
-  	<% if current_user.admin? %>
+    <% if current_user.admin? %>
       <%= button_to impersonate_user_path(user), method: :post,
             class: 'small hollow button' do %>
         <%= debug_icon_tag %> Impersonate
       <% end %>
-  	<% end %>
+    <% end %>
   </td>
 </tr>

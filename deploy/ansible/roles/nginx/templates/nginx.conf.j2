@@ -16,7 +16,7 @@ http {
                     '"$http_user_agent" "$http_x_forwarded_for"';
 
   access_log  /var/log/nginx/access.log  main;
-	error_log /var/log/nginx/error.log;
+  error_log /var/log/nginx/error.log;
 
   sendfile            on;
   tcp_nopush          on;
@@ -27,11 +27,11 @@ http {
   include             /etc/nginx/mime.types;
   default_type        application/octet-stream;
 
-	gzip on;
-	gzip_proxied any;
+  gzip on;
+  gzip_proxied any;
 
   # Load modular configuration files from the /etc/nginx/conf.d directory.
   # See http://nginx.org/en/docs/ngx_core_module.html#include
   # for more information.
-	include /etc/nginx/conf.d/*.conf;
+  include /etc/nginx/conf.d/*.conf;
 }

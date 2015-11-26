@@ -17,10 +17,10 @@
         <% end %>
       </span>
     </div>
-  	<div class="replies">
+    <div class="replies">
       <% feed_item.replies.each do |reply| %>
-    	  <%= render 'layouts/feed_item_reply', feed_item: reply %>
-    	<% end %>
-  	</div>
+        <%= render 'layouts/feed_item_reply', feed_item: reply %>
+      <% end %>
+    </div>
   </div>
 </div>

@@ -1,65 +1,65 @@
 <article class="team-roster">
-	<h4 class="title-with-actions">
-		<span class="title">
-			<%= team.partition.name %>: <%= team.name %>
-		</span>
-		<span class="actions">
-		  <% if team.partition.editable %>
-			  <%= button_to team_path(team, course_id: team.course), method: :delete,
-							class: 'hollow alert button', data: {
-							confirm: "Remove #{team.name} from #{team.partition.name}?" } do %>
-			    <%= destroy_icon_tag %> Remove
-			  <% end %>
-		  <% end %>
-		</span>
-	</h4>
+  <h4 class="title-with-actions">
+    <span class="title">
+      <%= team.partition.name %>: <%= team.name %>
+    </span>
+    <span class="actions">
+      <% if team.partition.editable %>
+        <%= button_to team_path(team, course_id: team.course), method: :delete,
+              class: 'hollow alert button', data: {
+              confirm: "Remove #{team.name} from #{team.partition.name}?" } do %>
+          <%= destroy_icon_tag %> Remove
+        <% end %>
+      <% end %>
+    </span>
+  </h4>
 
-	<% if team.can_edit?(current_user) && team.partition.editable? %>
-		<%= form_for TeamMembership.new(team: team),
-					url: team_memberships_path(course_id: team.course) do |f| %>
-		  <%= f.hidden_field :team_id %>
+  <% if team.can_edit?(current_user) && team.partition.editable? %>
+    <%= form_for TeamMembership.new(team: team),
+          url: team_memberships_path(course_id: team.course) do |f| %>
+      <%= f.hidden_field :team_id %>
 
-			<div class="row">
-				<div class="small-2 columns">
-					<%= f.label :query, 'Email', class: 'text-right middle' %>
-				</div>
-				<div class="small-6 columns">
-				  <%= text_field_tag :query, '', id: "query_#{team.id}",
-					      autocomplete: false, placeholder: 'jdoe@mit.edu' %>
-				</div>
-				<div class="small-4 columns">
-					<%= f.button type: :submit, class: 'hollow button' do %>
-			      <%= create_icon_tag %> Add Member
-					<% end %>
-				</div>
-			</div>
-		<% end %>
-	<% end %>
+      <div class="row">
+        <div class="small-2 columns">
+          <%= f.label :query, 'Email', class: 'text-right middle' %>
+        </div>
+        <div class="small-6 columns">
+          <%= text_field_tag :query, '', id: "query_#{team.id}",
+                autocomplete: false, placeholder: 'jdoe@mit.edu' %>
+        </div>
+        <div class="small-4 columns">
+          <%= f.button type: :submit, class: 'hollow button' do %>
+            <%= create_icon_tag %> Add Member
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 
-	<ol class="no-bullet">
-	<% team.memberships.includes(:user).sort_by { |m|
-			m.user.display_name_for current_user }.each do |membership| %>
-	  <li>
-	    <%= user_image_tag membership.user %>
-	    <%= link_to membership.user.display_name_for(current_user),
-			      membership.user, class: 'name' %>
-	    <% if current_user.admin? %>
-	      <span class="status">
-	      <%= membership.registration.for_credit ? 'Credit' : 'Listener' %>
-	      </span>
-			<% end %>
-	    <% if team.can_edit?(current_user) && team.partition.editable? %>
-				<span class="actions">
-		      <%= button_to team_membership_path(membership,
-		            course_id: membership.course), method: :delete,
-								class: 'small hollow alert button', data: {
-		            confirm: "Remove #{membership.user.name} from #{team.name}"
-		            } do %>
-		        <%= destroy_icon_tag %> Remove
-		      <% end %>
-				</span>
-	    <% end %>
-	  </li>
-	<% end %>
-	</ol>
+  <ol class="no-bullet">
+  <% team.memberships.includes(:user).sort_by { |m|
+      m.user.display_name_for current_user }.each do |membership| %>
+    <li>
+      <%= user_image_tag membership.user %>
+      <%= link_to membership.user.display_name_for(current_user),
+            membership.user, class: 'name' %>
+      <% if current_user.admin? %>
+        <span class="status">
+        <%= membership.registration.for_credit ? 'Credit' : 'Listener' %>
+        </span>
+      <% end %>
+      <% if team.can_edit?(current_user) && team.partition.editable? %>
+        <span class="actions">
+          <%= button_to team_membership_path(membership,
+                course_id: membership.course), method: :delete,
+                class: 'small hollow alert button', data: {
+                confirm: "Remove #{membership.user.name} from #{team.name}"
+                } do %>
+            <%= destroy_icon_tag %> Remove
+          <% end %>
+        </span>
+      <% end %>
+    </li>
+  <% end %>
+  </ol>
 </article>

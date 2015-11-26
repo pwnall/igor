@@ -1,7 +1,7 @@
 <fieldset class="deliverable-spec">
   <legend>
     <h3>
-    	<%= label_tag "package_include[#{id}]", class: 'middle' do %>
+      <%= label_tag "package_include[#{id}]", class: 'middle' do %>
         <%= check_box_tag "package_include[#{id}]", "1", true, data: {
               pwnfx_hide: "submission_package_#{id}",
               pwnfx_hide_trigger: 'checked' } %> <%= title %>
@@ -28,7 +28,7 @@
       <div class="small-6 columns">
         <%= text_field_tag "filename_prefix[#{id}]", default_prefix,
                            id: "submission_package_fprefix_#{id}" %>
-    	</div>
+      </div>
     </div>
     <div class="row">
       <div class="small-3 columns">
