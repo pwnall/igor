@@ -1,7 +1,7 @@
 <h2><%= @team_partition.name %></h2>
 
 <p>
-<% if @team_partition.editable? %>
+<% if !@team_partition.editable? %>
   This partition is locked. Click
   <%= link_to unlock_team_partition_path(@team_partition,
         course_id: @team_partition.course), method: :patch, data: {
