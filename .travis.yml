@@ -1,9 +1,14 @@
 sudo: false
 language: ruby
+cache: bundler
 addons:
   postgresql: 9.4
+services:
+  - postgresql
 before_script:
+  - npm install bower
   - RAILS_ENV=test bin/bundle exec rake db:create db:migrate
+  - RAILS_ENV=production bin/rake assets:precompile
 script: bin/rails test test/models/ test/controllers/ test/helpers/
                        test/mailers/
 rvm:

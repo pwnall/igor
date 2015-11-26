@@ -74,6 +74,7 @@ gem 'pwnstyles_rails', '>= 0.2.6'
 # gem 'pwnstyles_rails', '>= 0.2.6', path: '../pwnstyles_rails'
 gem 'jquery-rails', '>= 4.0.3'
 # gem 'coffee-rails', '>= 4.1.0'
+gem 'font-awesome-rails', '>= 4.5.0.0'
 gem 'uglifier', '>= 2.7.0'
 # TODO(pwnall): Relax the restriction once Rails 5 support gets re-merged into
 #               autoprefixer. https://github.com/ai/autoprefixer-rails/pull/73
