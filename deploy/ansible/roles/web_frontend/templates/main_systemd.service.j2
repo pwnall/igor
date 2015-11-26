@@ -1,15 +1,16 @@
 [Unit]
-Description=Rails application server for seven
+Description=Application server for {{ app_name }}
 After=network.target remote-fs.target nss-lookup.target
 
 [Service]
 Type=simple
-User=seven_web
-WorkingDirectory=/home/seven_web/seven
+User={{ app_user }}
+WorkingDirectory=/home/{{ app_user }}/{{ app_dir }}
 Environment=RAILS_ENV=production
-Environment=DATABASE_URL=postgres:///seven_production
+Environment=DATABASE_URL=postgres:///{{ app_db_name }}
 Environment=PUMA_WORKERS={{ ansible_processor_vcpus }}
-ExecStart=/home/seven_web/seven/bin/puma -C config/puma.rb -b tcp://127.0.0.1:9000
+ExecStart=/home/{{ app_user }}/{{ app_dir }}/bin/puma --config config/puma.rb \
+    --bind tcp://127.0.0.1:9000
 Restart=always
 StandardInput=null
 StandardOutput=syslog

@@ -8,4 +8,4 @@
   - ../openstack_vars.yml
   roles:
     - cluster_certs
-    # - web_certs
+    - web_certs

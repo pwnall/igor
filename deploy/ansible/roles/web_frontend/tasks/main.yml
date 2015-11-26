@@ -4,20 +4,21 @@
 
 - name: check out repository
   become: true
-  become_user: seven_web
+  become_user: "{{ app_user }}"
   git:
     recursive: yes
-    repo: https://github.com/pwnall/seven.git
-    dest: /home/seven_web/seven
+    repo: "{{ app_git_repo }}"
+    version: "{{ app_git_branch }}"
+    dest: /home/{{ app_user }}/{{ app_dir }}
     update: yes
     force: yes
   notify:
-  - restart frontend service
-  - restart frontend delayed_job service
+  - restart frontend main service
+  - restart frontend job queue service
 
 - name: install or update core gems
   become: true
-  become_user: seven_web
+  become_user: "{{ app_user }}"
   gem: name={{ item }} state=latest
   with_items:
   - bundler
@@ -26,10 +27,10 @@
 
 - name: install bundler packages
   become: true
-  become_user: seven_web
+  become_user: "{{ app_user }}"
   bundler:
-    executable: /home/seven_web/seven/bin/bundle
-    chdir: /home/seven_web/seven
+    executable: /home/{{ app_user }}/{{ app_dir }}/bin/bundle
+    chdir: /home/{{ app_user }}/{{ app_dir }}
     clean: yes
     deployment_mode: yes
     state: present
@@ -40,10 +41,10 @@
 
 - name: precompile assets
   become: true
-  become_user: seven_web
-  command: /home/seven_web/seven/bin/rake assets:precompile
+  become_user: "{{ app_user }}"
+  command: /home/{{ app_user }}/{{ app_dir }}/bin/rake assets:precompile
   args:
-    chdir: /home/seven_web/seven
+    chdir: /home/{{ app_user }}/{{ app_dir }}
   register: precompile_assets_result
   environment:
     RAILS_ENV: production
@@ -51,20 +52,20 @@
 
 - name: apply database migrations
   become: true
-  become_user: seven_web
-  command: /home/seven_web/seven/bin/rake db:migrate
+  become_user: "{{ app_user }}"
+  command: /home/{{ app_user }}/{{ app_dir }}/bin/rake db:migrate
   args:
-    chdir: /home/seven_web/seven
+    chdir: /home/{{ app_user }}/{{ app_dir }}
   environment:
     RAILS_ENV: production
-    DATABASE_URL: postgres:///seven_production
+    DATABASE_URL: postgres:///{{ app_dir }}_production
   register: rake_db_migrate_result
   changed_when: "'migrating' in rake_db_migrate_result.stdout"
 
 - name: create keys directory
   become: true
-  become_user: seven_web
-  file: dest=/home/seven_web/keys state=directory mode=0750
+  become_user: "{{ app_user }}"
+  file: dest=/home/{{ app_user }}/keys state=directory mode=0750
 
 - include: systemd.yml
 - include: nginx.yml

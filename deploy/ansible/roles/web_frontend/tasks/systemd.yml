@@ -1,27 +1,27 @@
-- name: create systemd unit for frontend
+- name: create systemd unit for frontend main service
   become: true
   become_user: root
   template:
-    src: fe_systemd.service.j2
-    dest: /lib/systemd/system/seven_web.service
+    src: main_systemd.service.j2
+    dest: /lib/systemd/system/{{ app_main_service }}.service
   notify:
   - reload systemd configuration
-  - restart frontend service
+  - restart frontend main service
 
-- name: create systemd unit for frontend delayed_job
+- name: create systemd unit for frontend job queue service
   become: true
   become_user: root
   template:
-    src: dj_systemd.service.j2
-    dest: /lib/systemd/system/seven_dj.service
+    src: jobs_systemd.service.j2
+    dest: /lib/systemd/system/{{ app_queue_service }}.service
   notify:
   - reload systemd configuration
-  - restart frontend delayed_job service
+  - restart frontend job queue service
 
 - name: enable and start systemd units for frontend
   become: true
   become_user: root
   service: name={{ item }} enabled=yes state=started
   with_items:
-  - seven_web
-  - seven_dj
+  - "{{ app_main_service }}"
+  - "{{ app_queue_service }}"

@@ -3,9 +3,6 @@
   when: ansible_pkg_mgr == 'dnf'
   become: true
   become_user: root
-  # TODO(pwnall): replace "testing" with "main" in template repo path once
-  #               Docker 1.9.1 is released.
-  #               https://github.com/docker/docker/issues/17785
   template: src=docker_com.repo.j2 dest=/etc/yum.repos.d/docker_com.repo
 
 - name: install docker with dnf
@@ -62,7 +59,7 @@
   notify:
   - restart docker daemon
 
-- name: enable and start docker daemon
+- name: enable and start docker socket and daemon
   become: true
   become_user: root
   service: name=docker enabled=yes state=started

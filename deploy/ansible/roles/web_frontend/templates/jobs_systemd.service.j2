@@ -1,17 +1,17 @@
 [Unit]
-Description=DelayedJob background worker for seven
+Description=Background job queue processing for {{ app_name }}
 After=network.target remote-fs.target nss-lookup.target
 
 [Service]
 Type=simple
-User=seven_web
-WorkingDirectory=/home/seven_web/seven
+User={{ app_user }}
+WorkingDirectory=/home/{{ app_user }}/{{ app_dir }}
 Environment=RAILS_ENV=production
-Environment=DATABASE_URL=postgres:///seven_production
+Environment=DATABASE_URL=postgres:///{{ app_db_name }}
 #Environment=DOCKER_TLS_VERIFY=1
 Environment=DOCKER_HOST=unix:///var/run/docker.sock
-#Environment=DOCKER_CERT_PATH=/home/seven_web/.docker
-ExecStart=/home/seven_web/seven/bin/rake jobs:work
+#Environment=DOCKER_CERT_PATH=/home/{{ app_user }}/.docker
+ExecStart=/home/{{ app_user }}/{{ app_dir }}/bin/rake jobs:work
 Restart=always
 StandardInput=null
 StandardOutput=syslog

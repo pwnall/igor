@@ -1,0 +1,58 @@
+---
+# Sets up docker-swarm for the worker node.
+
+- name: create /etc/docker-swarm-worker directory
+  become: true
+  become_user: root
+  file: path=/etc/docker-swarm-worker state=directory mode=0755
+
+- name: copy etcd CA certificate into docker swarm config
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_ca.cert.pem
+    dest: /etc/docker-swarm-worker/etcd_ca.pem
+    mode: 0644
+
+- name: copy etcd client TLS certificate into docker swarm config
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_etcd_client.cert.pem
+    dest: /etc/docker-swarm-worker/etcd_cert.pem
+    mode: 0644
+
+- name: copy etcd client TLS key into docker swarm config
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_etcd_client.key.pem
+    dest: /etc/docker-swarm-worker/etcd_key.pem
+    mode: 0600
+
+- name: write docker-swarm worker systemd unit
+  become: true
+  become_user: root
+  template:
+    src: docker_swarm_worker_service.j2
+    dest: /etc/systemd/system/docker-swarm-worker.service
+  register: swarm_worker_systemd_service_result
+  notify:
+  - restart docker swarm worker agent
+
+- name: reload systemd configuration
+  command: systemctl daemon-reload
+  become: true
+  become_user: root
+  when: swarm_worker_systemd_service_result | changed
+
+- name: enable and start docker-swarm worker
+  become: true
+  become_user: root
+  service: name=docker-swarm-worker enabled=yes state=started
+
+- name: open docker swarm port in firewalld
+  when: has_firewalld != False
+  become: true
+  become_user: root
+  firewalld: port=3376/tcp state=enabled immediate=yes permanent=yes

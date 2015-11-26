@@ -1,55 +1,53 @@
 ---
-# Heavily inspired from:
-# https://jamielinux.com/docs/openssl-certificate-authority/
+# Generates OpenSSL keys and certificates for Web serving.
 
-- name: create keys directory
+- name: create web keys directory
   file: path={{ keys_dir }} state=directory mode=0755
 
-- name: create OpenSSL config
-  template: src=openssl.cnf.j2 dest={{ keys_dir }}/openssl.cnf
-
-- name: create CA database file
-  template: src=index.txt.j2 dest={{ keys_dir }}/web_ca.index.txt force=no
-
-- name: create CA serial file
-  template: src=serial.j2 dest={{ keys_dir }}/web_ca.serial force=no
-
-- name: create CA key
-  command: openssl genrsa -out {{ keys_dir }}/web_ca.key.pem 2048
+- name: create web CA key
+  command: >
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+        -pkeyopt rsa_keygen_pubexp:3 -outform PEM
+        -out {{ keys_dir }}/web_ca.key.pem 2048
   args:
     creates: "{{ keys_dir }}/web_ca.key.pem"
 
-- name: create CA certificate
+- name: create web CA self-signed certificate
   command: >
-    openssl req -config {{ keys_dir }}/openssl.cnf
+    openssl req -new -x509 -batch -keyform PEM -outform PEM -sha256 -utf8
+        -days 3560 -set_serial 1 -extensions ca_extensions
+        -subj "/C=US/O={{ os_prefix }} Cluster/CN=Web CA"
+        -config {{ role_path }}/files/openssl.cnf
         -key {{ keys_dir }}/web_ca.key.pem
-        -new -x509 -days 3650 -sha256 -extensions v3_ca -batch
-        -out {{ keys_dir }}/web_ca.cert.pem -set_serial 1
-        -subj "/C=US/O=Alg Dev Keys/CN=Dev CA"
+        -out {{ keys_dir }}/web_ca.cert.pem
   args:
     creates: "{{ keys_dir }}/web_ca.cert.pem"
 
-- name: create Web server key
-  command: openssl genrsa -out {{ keys_dir }}/web_server.key.pem 2048
+- name: create web server key
+  command: >
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+        -pkeyopt rsa_keygen_pubexp:3 -outform PEM
+        -out {{ keys_dir }}/web_server.key.pem
   args:
     creates: "{{ keys_dir }}/web_server.key.pem"
 
-- name: create Web server certificate request
+- name: create web server certificate signing request
   command: >
-    openssl req -config {{ keys_dir }}/openssl.cnf
+    openssl req -new -batch -keyform PEM -outform PEM -sha256
         -key {{ keys_dir }}/web_server.key.pem
-        -new -sha256 -batch -out {{ keys_dir }}/web_server.csr.pem
-        -subj "/C=US/O=Alg Dev Keys/CN={{ web_server_cn }}"
+        -out {{ keys_dir }}/web_server.csr.pem
+        -subj "/C=US/O={{ os_prefix }} Cluster/CN={{ web_server_cn }}"
   args:
     creates: "{{ keys_dir }}/web_server.csr.pem"
 
-- name: create Web server certificate
+- name: create web server certificate
   command: >
-    openssl ca -config {{ keys_dir }}/openssl.cnf -extensions server_cert
-        -days 365 -name CA_default -batch -notext -md sha256
-        -keyfile {{ keys_dir }}/web_ca.key.pem
-        -cert {{ keys_dir }}/web_ca.cert.pem
+    openssl x509 -req -inform PEM -keyform PEM -outform PEM -days 3650
+        -set_serial 100 -extensions web_server_extensions
         -in {{ keys_dir }}/web_server.csr.pem
-        -out {{ keys_dir }}/web_server.cert.pem -outdir {{ keys_dir }}
+        -CA {{ keys_dir }}/web_ca.cert.pem
+        -CAkey {{ keys_dir }}/web_ca.key.pem
+        -extfile {{ role_path }}/files/openssl.cnf
+        -out {{ keys_dir }}/web_server.cert.pem
   args:
     creates: "{{ keys_dir }}/web_server.cert.pem"

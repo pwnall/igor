@@ -1,0 +1,5 @@
+---
+- name: restart docker swarm worker agent
+  become: true
+  become_user: root
+  service: name=docker-swarm-worker state=restarted

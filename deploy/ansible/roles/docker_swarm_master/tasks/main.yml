@@ -40,12 +40,29 @@
   notify:
   - restart docker swarm master
 
-- name: write swarm cluster description
+- name: copy etcd CA certificate into docker swarm config
   become: true
   become_user: root
-  template:
-    src: cluster.j2
-    dest: /etc/docker-swarm-master/cluster
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_ca.cert.pem
+    dest: /etc/docker-swarm-master/etcd_ca.pem
+    mode: 0644
+
+- name: copy etcd client TLS certificate into docker swarm config
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_etcd_client.cert.pem
+    dest: /etc/docker-swarm-master/etcd_cert.pem
+    mode: 0644
+
+- name: copy etcd client TLS key into docker swarm config
+  become: true
+  become_user: root
+  copy:
+    src: ../keys/{{ os_prefix }}/cluster_etcd_client.key.pem
+    dest: /etc/docker-swarm-master/etcd_key.pem
+    mode: 0600
 
 - name: write docker-swarm master systemd unit
   become: true

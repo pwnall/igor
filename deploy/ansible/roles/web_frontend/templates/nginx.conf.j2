@@ -1,4 +1,4 @@
-upstream seven_web {
+upstream {{ app_main_service }} {
   server 127.0.0.1:9000;
 }
 
@@ -6,11 +6,11 @@ server {
   listen 443 ssl;
   listen 80;
 
-  ssl_certificate /home/seven_web/keys/web.cer;
-  ssl_certificate_key /home/seven_web/keys/web.pem;
+  ssl_certificate /home/{{ app_user }}/keys/web.cer;
+  ssl_certificate_key /home/{{ app_user }}/keys/web.pem;
 
   charset utf-8;
-  root /home/seven_web/seven/public;
+  root /home/{{ app_user }}/{{ app_dir }}/public;
   client_max_body_size 128M;
   error_page 404 /404.html;
   error_page 500 502 503 504 /500.html;
@@ -38,6 +38,6 @@ server {
     proxy_redirect off;
     proxy_connect_timeout 2;
     proxy_read_timeout 86400;
-    proxy_pass http://seven_web;
+    proxy_pass http://{{ app_main_service }};
   }
 }

@@ -9,12 +9,12 @@
   become: true
   become_user: root
 
-- name: restart frontend service
+- name: restart frontend main service
   become: true
   become_user: root
-  service: name=seven_web state=restarted
+  service: name={{ app_main_service }} state=restarted
 
-- name: restart frontend delayed_job service
+- name: restart frontend job queue service
   become: true
   become_user: root
-  service: name=seven_dj state=restarted
+  service: name={{ app_queue_service }} state=restarted

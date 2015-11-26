@@ -9,20 +9,20 @@
     dest: /etc/skydns/etcd_ca.pem
     mode: 0644
 
-- name: copy etcd client TLS key to /etc/skydns
+- name: copy etcd client TLS certificate to /etc/skydns
   become: true
   become_user: root
   copy:
     src: ../keys/{{ os_prefix }}/cluster_etcd_client.cert.pem
     dest: /etc/skydns/etcd_client_cert.pem
-    mode: 0600
-    owner: skydns
-    group: skydns
+    mode: 0644
 
-- name: copy etcd client TLS certificate to /etc/skydns
+- name: copy etcd client TLS key to /etc/skydns
   become: true
   become_user: root
   copy:
     src: ../keys/{{ os_prefix }}/cluster_etcd_client.key.pem
     dest: /etc/skydns/etcd_client_key.pem
-    mode: 0644
+    mode: 0600
+    owner: skydns
+    group: skydns

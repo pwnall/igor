@@ -48,6 +48,7 @@
   - skydns_client
   - docker
   - docker_network
+  - docker_swarm_worker
 
 - hosts: "{{ prod_master_group_name }}"
   vars_files:
@@ -60,5 +61,5 @@
   - web_user
   - web_db
   - ruby_bundler
-  - bower_js
+  - nodejs_bower
   - web_frontend

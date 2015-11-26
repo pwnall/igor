@@ -1,5 +1,5 @@
 [Unit]
-Description=Docker Swarm Master
+Description=Docker Swarm Worker Agent
 After=docker.service skydns-update@{{ skydns_name }}.service
 Requires=docker.service
 Wants=skydns-update@{{ skydns_name }}.service
@@ -14,21 +14,16 @@ etcd-master{{ loop.index }}.clusterlocal:2379
 {{- join_comma() -}}
 {%- endfor -%}
 /docker-swarm"
-ExecStartPre=-/usr/bin/docker kill docker-swarm-master
-ExecStartPre=-/usr/bin/docker rm docker-swarm-master
+ExecStartPre=-/usr/bin/docker kill docker-swarm-worker
+ExecStartPre=-/usr/bin/docker rm docker-swarm-worker
 ExecStartPre=/usr/bin/docker pull swarm
-ExecStart=/usr/bin/docker run --name docker-swarm-master --publish=3376:2375 \
-    --volume=/etc/docker-swarm-master:/etc/docker-swarm --net="host" \
-    swarm manage \
-    --advertise=swarm-master1.skydns.local:3376 \
-    --cluster-driver=swarm --strategy=spread --filter=health --filter=port \
-    --filter=affinity --filter=constraint --filter=dependency \
-    --tlsverify --tlscacert=/etc/docker-swarm/ca.pem \
-    --tlskey=/etc/docker-swarm/key.pem --tlscert=/etc/docker-swarm/cert.pem \
+ExecStart=/usr/bin/docker run --name docker-swarm-worker \
+    --volume=/etc/docker-swarm-worker:/etc/docker-swarm --net="host" \
+    swarm join --advertise={{ skydns_name }}.skydns.local:2376 \
     --discovery-opt="kv.cacertfile=/etc/docker-swarm/etcd_ca.pem" \
     --discovery-opt="kv.certfile=/etc/docker-swarm/etcd_cert.pem" \
     --discovery-opt="kv.keyfile=/etc/docker-swarm/etcd_key.pem" \
-    --host=tcp://0.0.0.0:2375 $SWARM_DISCOVERY
+    $SWARM_DISCOVERY
 Restart=always
 StandardInput=null
 StandardOutput=syslog

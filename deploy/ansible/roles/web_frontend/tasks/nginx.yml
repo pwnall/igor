@@ -1,32 +1,32 @@
-- name: copy server TLS key
+- name: copy web server TLS key
   become: true
-  become_user: seven_web
+  become_user: "{{ app_user }}"
   copy:
     src: ../keys/{{ os_prefix }}/web_server.key.pem
-    dest: /home/seven_web/keys/web.pem
+    dest: /home/{{ app_user }}/keys/web.pem
     mode: 0640
   notify:
   - restart nginx daemon
 
-- name: copy server TLS certificate
+- name: copy web server TLS certificate
   become: true
-  become_user: seven_web
+  become_user: "{{ app_user }}"
   copy:
     src: ../keys/{{ os_prefix }}/web_server.cert.pem
-    dest: /home/seven_web/keys/web.cer
+    dest: /home/{{ app_user }}/keys/web.cer
     mode: 0644
   notify:
   - restart nginx daemon
 
-- name: enable group access to seven_web home directory
+- name: enable group access to the frontend user's home directory
   become: true
   become_user: root
-  file: dest=/home/seven_web state=directory mode=750
+  file: dest=/home/{{ app_user }} state=directory mode=750
 
-- name: add nginx to seven_web group
+- name: add nginx to the frontend user's group
   become: true
   become_user: root
-  user: name=nginx groups=seven_web state=present append=true
+  user: name=nginx groups={{ app_user }} state=present append=true
   notify:
   - restart nginx daemon
 
@@ -35,19 +35,19 @@
   become: true
   become_user: root
   file:
-    dest: /home/seven_web/keys/{{ item }}
+    dest: /home/{{ app_user }}/keys/{{ item }}
     state: file
     setype: httpd_sys_content_t
   with_items:
   - web.cer
   - web.pem
 
-- name: add nginx SElinux label to seven_web assets
+- name: add nginx SElinux label to the frontend app's assets
   when: ansible_selinux != False
   become: true
   become_user: root
   file:
-    dest: /home/seven_web/seven/public
+    dest: /home/{{ app_user }}/{{ app_dir }}/public
     state: directory
     setype: httpd_sys_content_t
     recurse: yes
@@ -55,7 +55,9 @@
 - name: write nginx config
   become: true
   become_user: root
-  template: src=nginx.conf.j2 dest=/etc/nginx/conf.d/seven_web.conf
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/conf.d/{{ app_main_service }}.conf
   notify:
   - restart nginx daemon
 
@@ -63,7 +65,7 @@
   when: has_firewalld != False
   become: true
   become_user: root
-  firewalld: service={{item}} state=enabled immediate=yes permanent=yes
+  firewalld: service={{ item }} state=enabled immediate=yes permanent=yes
   with_items:
   - http
   - https

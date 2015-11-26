@@ -30,7 +30,7 @@
   become_user: root
   dnf: name=bind-utils state=present
 
-- name: install dnsutilss with apt
+- name: install dnsutils with apt
   when: ansible_pkg_mgr == 'apt'
   become: true
   become_user: root

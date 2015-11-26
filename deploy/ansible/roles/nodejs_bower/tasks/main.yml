@@ -1,15 +1,19 @@
 ---
+# Installs the Bower package manager and its dependencies, node.js and npm.
+
 - name: install node.js with dnf
   when: ansible_pkg_mgr == 'dnf'
   become: true
   become_user: root
-  dnf: name=nodejs state=present
+  dnf: name={{ item }} state=present
+  with_items: ['nodejs', 'npm']
 
 - name: install node.js with apt
   when: ansible_pkg_mgr == 'apt'
   become: true
   become_user: root
-  apt: name=nodejs state=present
+  apt: name={{ item }} state=present
+  with_items: ['nodejs', 'npm']
 
 - name: install bower globally
   become: true

@@ -1,3 +1,0 @@
-{%- for docker_worker in groups[docker_worker_group_name] | default({}) -%}
-worker{{ loop.index }}.skydns.local:2376
-{% endfor -%}

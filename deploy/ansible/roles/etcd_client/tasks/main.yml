@@ -25,18 +25,18 @@
     dest: /etc/etcd/ca.pem
     mode: 0644
 
-- name: copy etcd client TLS key
+- name: copy etcd client TLS certificate
   become: true
   become_user: root
   copy:
     src: ../keys/{{ os_prefix }}/cluster_etcd_client.cert.pem
     dest: /etc/etcd/client_cert.pem
-    mode: 0640
+    mode: 0644
 
-- name: copy etcd client TLS certificate
+- name: copy etcd client TLS key
   become: true
   become_user: root
   copy:
     src: ../keys/{{ os_prefix }}/cluster_etcd_client.key.pem
     dest: /etc/etcd/client_key.pem
-    mode: 0644
+    mode: 0600
