@@ -167,6 +167,19 @@ end
 class Assignment
   include AverageScore
 
+  # Grades given to students.
+  #
+  # Use to show grading progress and average score statistics, where only
+  # student grades are of interest. If the assignment uses a team partition,
+  # all grades are returned, regardless of whether teams have staff members.
+  #
+  # This same method is defined for AssignmentMetric so that the method can be
+  # called on either an Assignment or AssignmentMetric instance.
+  def student_grades
+    return grades unless team_partition.nil?
+    grades.where(subject: course.students)
+  end
+
   # The maximum score that a student can obtain on this assignment.
   #
   # This number is the sum of all the metrics' weighted maximum scores, or nil
@@ -190,8 +203,8 @@ class Assignment
   # called on either an Assignment or AssignmentMetric instance.
   def average_score
     return nil if metrics.empty?
-    totals = grades.includes(:subject).group_by(&:subject).map { |_, grades|
-      grades.sum(&:weighted_score) }
+    totals = student_grades.includes(:subject).group_by(&:subject).
+        map { |_, grades| grades.sum(&:weighted_score) }
     return 0 if totals.empty?
     totals.sum.to_f / totals.length
   end

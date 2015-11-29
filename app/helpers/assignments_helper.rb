@@ -27,12 +27,12 @@ module AssignmentsHelper
     safe_join [score_tag, '/', max_score_tag]
   end
 
-  # The fraction of final grades awarded for the given assignment/metric.
+  # The fraction of student grades awarded for the given assignment/metric.
   #
   # @example An assignment with 5 grades issued in a class of 10 students.
   #   <span class="current-count">5</span>/<span class="max-count">10</span>
   def grading_process_fraction_tag(gradeable)
-    total = gradeable.grades.count
+    total = gradeable.student_grades.count
     total_tag = content_tag :span, total, class: 'current-count'
 
     expected = gradeable.expected_grades
@@ -68,7 +68,7 @@ module AssignmentsHelper
   # A progress meter should not be shown for assignments that have no metrics
   # and/or for courses that have no students.
   def grading_progress_tag(gradeable)
-    total = gradeable.grades.count
+    total = gradeable.student_grades.count
     expected = gradeable.expected_grades
     return '' unless expected > 0
     percentage = '%.2f%' % ((total * 100) / expected.to_f)

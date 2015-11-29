@@ -11,6 +11,7 @@ class AssignmentTest < ActiveSupport::TestCase
   let(:assignment) { assignments(:assessment) }
   let(:unreleased_exam) { assignments(:main_exam) }
   let(:gradeless_assignment) { assignments(:ps3) }
+  let(:team_project) { assignments(:project) }
   let(:student) { users(:dexter) }
   let(:any_user) { User.new }
   let(:admin) { users(:admin) }
@@ -646,6 +647,23 @@ class AssignmentTest < ActiveSupport::TestCase
   end
 
   describe 'score calculations' do
+    describe '#student_grades' do
+      it 'omits grades assigned to non-student users' do
+        assert_not_empty assignment.grades.
+            where(subject: courses(:main).staff)
+        assert_not_empty assignment.grades.
+            where(subject: courses(:main).students)
+        assignment.student_grades.each do |grade|
+          assert_equal true, courses(:main).is_student?(grade.subject)
+        end
+      end
+
+      it 'returns all team grades if a team partition is used' do
+        assert_not_nil team_project.team_partition
+        assert_equal 2, team_project.student_grades.count
+      end
+    end
+
     describe '#max_score' do
       describe 'assignment has no metrics' do
         before { assert_empty unreleased_exam.metrics }
@@ -666,29 +684,20 @@ class AssignmentTest < ActiveSupport::TestCase
       let(:unreleased_assignment) { assignments(:ps3) }
       let(:unreleased_exam) { assignments(:main_exam) }
 
-      describe 'assignment has no metrics' do
-        before { assert_empty unreleased_exam.metrics }
-
-        it 'returns nil' do
-          assert_nil unreleased_exam.average_score
-        end
+      it 'returns nil if there are no metrics' do
+        assert_empty unreleased_exam.metrics
+        assert_nil unreleased_exam.average_score
       end
 
-      describe 'no grades have been issued yet' do
-        before { assert_empty gradeless_assignment.grades }
-
-        it 'returns 0' do
-          assert_equal 0, gradeless_assignment.average_score
-        end
+      it 'returns 0 if no grades have been issued yet' do
+        assert_empty gradeless_assignment.grades
+        assert_equal 0, gradeless_assignment.average_score
       end
 
-      describe 'grades have been issued' do
-        before { assert_not_empty assignment.grades }
-
-        it 'returns the average weighted score on the assignment' do
-          # (70*1 + (10*1 + 10*0) + 6*0) / 3.0 = 30
-          assert_equal 30, assignment.average_score
-        end
+      it 'returns the average weighted score, counting students only' do
+        assert_not_empty assignment.grades.where(subject: courses(:main).staff)
+        # (80*1 + (10*1 + 10*0) + 6*0) / 3.0 = 30
+        assert_equal 30, assignment.average_score
       end
     end
 
