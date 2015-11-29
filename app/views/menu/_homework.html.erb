@@ -1,13 +1,13 @@
 <% if current_course %>
 <li class="has-submenu">
   <%= link_to assignments_path(course_id: current_course) do %>
-    <%= homework_icon_tag %> Homework
+    <%= assignment_icon_tag %> Assignments
   <% end %>
   <ul class="menu vertical nested" data-submenu>
     <% if current_course.can_edit?(current_user) %>
     <li>
       <%= link_to new_assignment_path(course_id: current_course) do %>
-        <%= create_icon_tag %> Add Homework
+        <%= create_icon_tag class: 'fa-fw' %> Add Assignment
       <% end %>
     </li>
     <% end %>

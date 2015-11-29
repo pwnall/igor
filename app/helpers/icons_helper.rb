@@ -31,8 +31,8 @@ module IconsHelper
   end
 
   # Shown on buttons that lead to creating data.
-  def create_icon_tag
-    fa_icon :plus, title: 'Create item'
+  def create_icon_tag(options = {})
+    fa_icon :plus, { title: 'Create item' }.merge(options)
   end
 
   # Shown on buttons that delete some data (e.g. ActiveRecord.destroy).
@@ -227,7 +227,7 @@ module IconsHelper
   end
 
   # Show this icon next to submission-related functionality.
-  def homework_icon_tag
+  def assignment_icon_tag
     fa_icon :book
   end
 
