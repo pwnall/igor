@@ -1,0 +1,12 @@
+{
+  "name": "igor-node-deps",
+  "description": "node.js dependencies for Igor",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">= 4.0"
+  },
+  "dependencies": {
+    "bower": ">= 1.6.8"
+  }
+}

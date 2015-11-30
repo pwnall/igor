@@ -8,20 +8,23 @@ Course homework submission website.
 ## Prerequisites
 
 The site requires access to a [Docker](https://github.com/docker/docker)
-daemon, a very recent Ruby and a few libraries.
+daemon, a very recent Ruby and node.js, and a few libraries.
 
 Docker can only be installed directly on Linux, and is now packaged natively by
 every major distribution. [docker-machine](https://github.com/docker/machine)
-can be used to get access to a Docker daemon on other OSes.
+can be used to get access to a Docker daemon on Mac OS X.
 
-The recommended way
-to get Ruby set up is to get [rbenv](https://github.com/sstephenson/rbenv) and
+The recommended way to get Ruby set up is via
+[rbenv](https://github.com/sstephenson/rbenv) and
 [ruby-build](https://github.com/sstephenson/ruby-build).
 
-The recommended way to get the libraries is your system's package manager, or
-[Homebrew](http://brew.sh/) on Mac OS.
+The recommended way to get Node set up is via
+[nvm](https://github.com/creationix/nvm).
 
-### Mac OS
+The recommended way to get the libraries is your system's package manager, or
+[Homebrew](http://brew.sh/) on Mac OS X.
+
+### Mac OS X
 
 The following commands install the prerequisites on OSX, using
 [Homebrew](http://brew.sh).
@@ -39,6 +42,12 @@ docker-machine create --driver virtualbox --engine-storage-driver overlay dev
 eval "$(docker-machine env dev)"
 ```
 
+### Linux
+
+Use your package manager to install the prerequisites listed in the
+[web_frontend Ansible role](deploy/ansible/roles/web_frontend/tasks/packages).
+
+
 ### OpenStack
 
 The deployment receipes include an OpenStack bring-up playbook.
@@ -49,21 +58,16 @@ changes.
 
 ## Installation
 
-Follow the standard steps for setting up a Rails development environment.
+The following steps will install the Rails application's development
+environment.
 
 ```bash
-git clone
+git clone https://gihub.com/pwnall/seven.git
+cd seven
 bundle install
+npm install
 rake db:create db:migrate
-```
-
-Due to [a nasty crash](https://github.com/cowboyd/therubyracer/issues/317), the
-embedded CoffeeScript compilation method is disabled, and the project needs
-[node.js](https://nodejs.org/) installed.
-
-```bash
-sudo apt-get install -y nodejs
-sudo dnf install -y nodejs npm
+rake bower:install
 ```
 
 The command below runs the development server. Ctrl+C stops it.
@@ -109,14 +113,6 @@ them using the following command.
 
 ```bash
 bundle exec annotate
-```
-
-Updating the bundled gems requires bundler 1.9 for now. Bundler 1.10 breaks for
-some reason that we don't want to look into.
-
-```bash
-gem uninstall bundler --all
-gem install bundler --version '~> 1.9.9'
 ```
 
 To run integration tests that require Javascript/XHR, install PhantomJS 1.9.8.

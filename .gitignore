@@ -18,6 +18,9 @@ public/assets
 # Ignore bower assets.
 vendor/assets/bower_components/
 
+# Ignore npm packages, like bower.
+node_modules/
+
 # Ignore files generated during testing.
 test/fixtures/test_files
 
