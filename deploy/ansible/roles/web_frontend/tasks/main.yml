@@ -25,12 +25,12 @@
   - foreman
   - rake
 
-- name: install bower.js using npm
+- name: install npm packages
   become: true
   become_user: "{{ app_user }}"
   npm:
-    name: bower
     path: /home/{{ app_user }}/{{ app_dir }}
+    state: present
     production: yes
 
 - name: install bundler packages
