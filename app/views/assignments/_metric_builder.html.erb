@@ -1,0 +1,32 @@
+<div class="assignment-builder-metrics">
+  <table>
+    <thead>
+      <tr>
+        <th>Metric Name</th>
+        <th>Maximum Score</th>
+        <th>Weight</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody data-pwnfx-render-target="assignment-metrics">
+    <%= f.fields_for :metrics do |mf| %>
+      <%= render 'assignment_metrics/fields', f: mf %>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<p class="assignment-builder-actions">
+  <%= link_to new_assignment_metric_path(assignment_id: f.object),
+        class: 'button', data: { pwnfx_render_randomize: 'IDID',
+        pwnfx_render_scope: 'assignment',
+        pwnfx_render: 'assignment-metrics' }, class: 'hollow button' do %>
+    <%= create_icon_tag %> Add Item
+  <% end %>
+</p>
+
+
+<script type="text/html" data-pwnfx-render-source="assignment-metrics">
+  <%= f.fields_for :metrics, AssignmentMetric.new, child_index: 'IDID' do |mf| %>
+    <%= render 'assignment_metrics/fields', f: mf %>
+  <% end %>
+</script>
