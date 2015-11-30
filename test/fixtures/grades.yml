@@ -56,7 +56,14 @@ dexter_assessment_overall:
   course: main
   subject: dexter (User)
   grader: admin
-  score: 80.0
+  score: 70
+
+dexter_assessment_quality:
+  metric: assessment_quality
+  course: main
+  subject: dexter (User)
+  grader: admin
+  score: 8.6
 
 solo_assessment_overall:
   metric: assessment_overall
@@ -70,11 +77,18 @@ solo_assessment_quality:
   course: main
   subject: solo (User)
   grader: admin
-  score: 10.0
+  score: 3.0
+
+deedee_assessment_overall:
+  metric: assessment_overall
+  course: main
+  subject: deedee (User)
+  grader: admin
+  score: 100.0
 
 deedee_assessment_quality:
   metric: assessment_quality
   course: main
   subject: deedee (User)
   grader: admin
-  score: 6.0
+  score: 10.0

@@ -5,9 +5,9 @@
 #  id            :integer          not null, primary key
 #  submission_id :integer          not null
 #  status_code   :integer          not null
-#  score         :integer
 #  log           :text             not null
 #  private_log   :text             not null
+#  scores        :text
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
@@ -18,12 +18,6 @@ class Analysis < ActiveRecord::Base
   belongs_to :submission, inverse_of: :analysis
   validates :submission, presence: true, uniqueness: true
 
-  # Grading advice produced by the analyzer.
-  #
-  # This attribute does not currently serve a purpose.
-  validates :score, numericality: { integer_only: true,
-      greater_than_or_equal_to: 0, allow_nil: true }
-
   # Applies to both the private and the public log.
   LOG_LIMIT = 64.kilobytes
 
@@ -32,6 +26,11 @@ class Analysis < ActiveRecord::Base
 
   # The analyzer's private logging output. This is only shown to staff.
   validates :private_log, length: { in: 0..LOG_LIMIT, allow_nil: false }
+
+  # The scores produced by the analyzer.
+  #
+  # This is a Hash mapping metric names to normalized scores between 0 and 1.
+  serialize :scores, JSON
 
   # :nodoc: Papers over logging edge cases.
   def log=(new_log)
@@ -48,6 +47,12 @@ class Analysis < ActiveRecord::Base
 
   # The user or team who created the submission being analyzed.
   has_one :subject, through: :submission
+
+  # The analyzer that produced this analysis.
+  has_one :analyzer, through: :submission
+
+  # The assignment that this analysis' submission is for.
+  has_one :assignment, through: :submission
 
   # True if the given user is allowed to see the analysis.
   def can_read?(user)
@@ -133,7 +138,7 @@ class Analysis
     self.status = new_status
     self.log = ''
     self.private_log = ''
-    self.score = nil
+    self.scores = {}
     self.save!
   end
 
@@ -147,7 +152,43 @@ The analyzer code raised the exception below.
 #{exception.class.name}: #{exception.message}
 #{exception.backtrace.join("\n")}
 ENDS
-    self.score = nil
+    self.scores = {}
     self.save!
+  end
+
+  # Saves the grades produced by the analyzer, when appropriate.
+  #
+  # The grades are only saved if auto-grading is enabled and
+  def commit_grades
+    return unless analyzer.auto_grading?
+    grades = self.grades_for_scores scores
+    Analysis.transaction do
+      if submission.selected_for_grading?
+        grades.each(&:save)
+      end
+    end
+  end
+
+  # Converts a JSON dictionary of scores into an array of Grade models.
+  #
+  # @param [Hash<String, Number>] scores the scores produced by the analyzer
+  # @return [Array<Grade>] grades that can be saved to commit the scores
+  def grades_for_scores(scores)
+    metrics = assignment.metrics
+    subject = submission.subject
+
+    grades = []
+    scores.each do |metric_name, score_fraction|
+      metric = metrics.where(name: metric_name).first
+      next unless metric
+
+      grade = metric.grade_for subject
+      grade.score = score_fraction * metric.max_score
+      grade.grader = User.robot
+      next unless grade.valid?
+
+      grades << grade
+    end
+    grades
   end
 end

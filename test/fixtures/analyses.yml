@@ -5,9 +5,9 @@
 #  id            :integer          not null, primary key
 #  submission_id :integer          not null
 #  status_code   :integer          not null
-#  score         :integer
 #  log           :text             not null
 #  private_log   :text             not null
+#  scores        :text
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
@@ -31,18 +31,24 @@ mandark_project:
 dexter_assessment:
   submission: dexter_assessment
   status_code: <%= Analysis.status_codes[:queued] %>
+  scores: >
+    {"Quality": 0.5, "Overall": 0.2}
   log: ''
   private_log: ''
 
 dexter_assessment_v2:
   submission: dexter_assessment_v2
   status_code: <%= Analysis.status_codes[:ok] %>
+  scores: >
+    {"Quality": 0.86, "Overall": 0.7}
   log: ''
   private_log: ''
 
 deedee_assessment:
   submission: deedee_assessment
   status_code: <%= Analysis.status_codes[:queued] %>
+  scores: >
+    {"Quality": 1.0, "Overall": 1.0}
   log: ''
   private_log: ''
 

@@ -686,8 +686,8 @@ class AssignmentTest < ActiveSupport::TestCase
         before { assert_not_empty assignment.grades }
 
         it 'returns the average weighted score on the assignment' do
-          # (70*1 + (10*1 + 10*0) + 6*0) / 3.0 = 30
-          assert_equal 30, assignment.average_score
+          # ((100 + 80 + 10) / 3) * 1 + ((0 + 10 + 6) / 3) * 0 = 60
+          assert_equal 60, assignment.average_score
         end
       end
     end
@@ -700,12 +700,12 @@ class AssignmentTest < ActiveSupport::TestCase
         assert_equal 2, assignment.metrics.count
         overall_metric, quality_metric = assignment.metrics.sort_by(&:name)
 
-        assert_equal [10.0, 80.0],
+        assert_equal [10.0, 70.0],
             overall_metric.grades.where(subject: students).map(&:score).sort
-        assert_equal [10.0],
+        assert_equal [3.0, 8.6],
             quality_metric.grades.where(subject: students).map(&:score).sort
-        # ((10 + 80) / 2)*1 + (10 / 1)*0 = 45
-        assert_equal 45, assignment.recitation_score(section)
+        # ((10 + 70) / 2) * 1 + ((3 + 8.6) / 1) * 0 = 40
+        assert_equal 40, assignment.recitation_score(section)
       end
 
       it 'returns nil if the assignment has no metrics' do
@@ -738,8 +738,9 @@ class AssignmentTest < ActiveSupport::TestCase
 
         describe 'assignment has metrics with non-zero max scores' do
           it 'returns the average score as a percentage' do
-            # (((80 + 10 + 0) / 100)*1 + ((0 + 10 + 6) / 10)*0) / 3 = 30
-            assert_equal 30, assignment.average_score_percentage
+            # (((100 + 80 + 10) / 3 * 100 / 100) * 1 +
+            #     ((0 + 10 + 6) / 3 * 100 / 10) * 0 = 60
+            assert_equal 60, assignment.average_score_percentage
           end
         end
       end

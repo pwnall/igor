@@ -44,38 +44,27 @@ class ProcAnalyzerTest < ActiveSupport::TestCase
       assert_equal true, ok_pdf_submission.db_file.f.exists?
       assert_equal :queued, ok_pdf_submission.analysis.status
       ProcAnalyzer.new.analyze_pdf ok_pdf_submission
-      assert_equal :ok, ok_pdf_submission.analysis.status
+      analysis = ok_pdf_submission.analysis.reload
+      assert_equal :ok, analysis.status
+      assert_equal({}, analysis.scores)
     end
 
     it 'logs truncated PDFs as :wrong' do
       assert_equal true, truncated_pdf_submission.db_file.f.exists?
       assert_equal :queued, truncated_pdf_submission.analysis.status
       ProcAnalyzer.new.analyze_pdf truncated_pdf_submission
-      assert_equal :wrong, truncated_pdf_submission.analysis.status
+      analysis = truncated_pdf_submission.analysis.reload
+      assert_equal :wrong, analysis.status
+      assert_equal({'Quality' => 0, 'Overall' => 0}, analysis.scores)
     end
 
     it 'logs non-PDFs as :wrong' do
       assert_equal true, py_submission.db_file.f.exists?
       assert_equal :queued, py_submission.analysis.status
       ProcAnalyzer.new.analyze_pdf py_submission
-      assert_equal :wrong, py_submission.analysis.status
-    end
-  end
-
-  describe '#zero_grades' do
-    it 'assigns a grade of 0 to ungraded metrics for the given submission' do
-      metrics = ok_pdf_submission.assignment.metrics
-      set_grade, unset_grade = metrics.sort_by(&:name).map { |metric|
-        metric.grades.where subject: users(:dexter)
-      }
-
-      assert_equal [80, nil],
-          [set_grade.first.try(:score), unset_grade.first.try(:score)]
-
-      ProcAnalyzer.new.zero_grades ok_pdf_submission
-
-      assert_equal [80, 0],
-          [set_grade.first.try(:score), unset_grade.first.try(:score)]
+      analysis = py_submission.analysis.reload
+      assert_equal :wrong, analysis.status
+      assert_equal({'Quality' => 0, 'Overall' => 0}, analysis.scores)
     end
   end
 end

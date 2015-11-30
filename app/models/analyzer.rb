@@ -13,10 +13,10 @@
 #  updated_at     :datetime         not null
 #
 
-# Performs an automated sanity check on submissions and offers instant feedback.
+# Performs automated checks on submissions and offers instant feedback.
 #
-# The sanity check can range from a exhaustive test suite to a simple search for
-# the right magic number in the file header.
+# The sanity check can range from a exhaustive test suite to a simple search
+# for the right magic number in the file header.
 class Analyzer < ActiveRecord::Base
   # The deliverable whose submissions are sanity-checked.
   belongs_to :deliverable, inverse_of: :analyzer

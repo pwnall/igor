@@ -127,7 +127,7 @@ class GradesControllerTest < ActionController::TestCase
       describe 'change an existing score' do
         it 'updates the score of the grade' do
           grade = Grade.find_by subject: student, metric: metric
-          assert_equal 80.0, grade.score
+          assert_equal 70.0, grade.score
           post :create, params: params, xhr: true
 
           assert_equal 4.0, grade.reload.score
@@ -145,12 +145,12 @@ class GradesControllerTest < ActionController::TestCase
 
         it 'does not change an existing grade' do
           grade = Grade.find_by subject: student, metric: metric
-          assert_equal 80.0, grade.score
+          assert_equal 70.0, grade.score
 
           assert_no_difference 'Grade.count' do
             post :create, params: params, xhr: true
           end
-          assert_equal 80.0, grade.reload.score
+          assert_equal 70.0, grade.reload.score
         end
 
         it 'responds with a :not_acceptable header' do
@@ -203,12 +203,14 @@ class GradesControllerTest < ActionController::TestCase
 
       it 'renders the missing grades for the selected assignment' do
         query_assignment = assignments(:assessment)
+        grades(:dexter_assessment_overall).destroy
+        grades(:deedee_assessment_quality).destroy
         post :missing, params: { course_id: courses(:main).to_param,
             filter_aid: query_assignment.id }
 
         assert_response :success
         assert_select selected_assignment_value, query_assignment.id.to_s
-        assert_select '.full_section tr', 2  # (2 * 3 - 4)
+        assert_select '.full_section tr', 2
       end
     end
 

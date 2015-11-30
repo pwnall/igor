@@ -24,16 +24,6 @@ class AnalysisTest < ActiveSupport::TestCase
     assert @analysis.invalid?
   end
 
-  it 'truncates non-integer scores' do
-    @analysis.score = 1.9
-    assert_equal 1, @analysis.score
-  end
-
-  it 'rejects negative scores' do
-    @analysis.score = -1
-    assert @analysis.invalid?
-  end
-
   it 'requires a log' do
     @analysis.write_attribute :log, nil
     assert @analysis.invalid?
@@ -178,14 +168,14 @@ class AnalysisTest < ActiveSupport::TestCase
   describe '#reset_status!' do
     it 'resets all the analysis data' do
       analysis.update! status: :queued, log: 'log', private_log: 'private',
-                       score: 1
+          scores: { 'Derp' => 42 }
       analysis.reset_status! :running
       analysis.reload
 
       assert_equal :running, analysis.status
       assert_equal '', analysis.log
       assert_equal '', analysis.private_log
-      assert_nil analysis.score
+      assert_equal({}, analysis.scores)
     end
   end
 
@@ -205,6 +195,96 @@ class AnalysisTest < ActiveSupport::TestCase
       assert_operator truncated_log.length, :<=, Analysis::LOG_LIMIT
       assert_operator truncated_log, :end_with?, "\n---\n(truncated)"
       assert_equal long_log[0...10000], truncated_log[0...10000]
+    end
+  end
+
+  describe '#grades_for_scores' do
+    let(:analysis) { analyses(:dexter_assessment) }
+
+    it 'works on correct scores for existing grades' do
+      grades = analysis.grades_for_scores 'Quality' => 0.95, 'Overall' => 1.0
+      assert_equal [grades(:dexter_assessment_quality),
+                    grades(:dexter_assessment_overall)], grades
+      assert_equal [9.5, 100], grades.map(&:score)
+      assert_equal users(:robot, :robot), grades.map(&:grader)
+      assert_equal users(:dexter, :dexter), grades.map(&:subject)
+      assert_equal assignment_metrics(:assessment_quality,
+          :assessment_overall), grades.map(&:metric)
+      assert_equal courses(:main, :main), grades.map(&:course)
+    end
+
+    it 'creates new grades for correct scores' do
+      grades(:dexter_assessment_quality).destroy
+      grades(:dexter_assessment_overall).destroy
+
+      grades = analysis.grades_for_scores 'Quality' => 0.95, 'Overall' => 1.0
+      assert_equal [true, true], grades.map(&:new_record?)
+      assert_equal [9.5, 100], grades.map(&:score)
+      assert_equal users(:robot, :robot), grades.map(&:grader)
+      assert_equal users(:dexter, :dexter), grades.map(&:subject)
+      assert_equal assignment_metrics(:assessment_quality,
+          :assessment_overall), grades.map(&:metric)
+      assert_equal courses(:main, :main), grades.map(&:course)
+    end
+
+    it 'skips missing metrics' do
+      grades = analysis.grades_for_scores 'Missing' => 1.0, 'Quality' => 0.95,
+          'Missing again' => 1.0, 'Overall' => 1.0
+      assert_equal [grades(:dexter_assessment_quality),
+                    grades(:dexter_assessment_overall)], grades
+      assert_equal [9.5, 100], grades.map(&:score)
+    end
+
+    it 'skips invalid grades' do
+      grades = analysis.grades_for_scores 'Overall' => 'invalid',
+                                          'Quality' => 0.95
+      assert_equal [grades(:dexter_assessment_quality)], grades
+      assert_equal [9.5], grades.map(&:score)
+    end
+  end
+
+  describe '#commit_grades' do
+    before do
+      grades(:dexter_assessment_quality).destroy
+      grades(:dexter_assessment_overall).destroy
+    end
+
+    it 'saves the grades for the submission selected for grading' do
+      analyzers(:proc_assessment_writeup).update! auto_grading: true
+      analyses(:dexter_assessment_v2).commit_grades
+      grades = assignment_metrics(:assessment_quality,
+                                  :assessment_overall).map do |metric|
+        metric.grade_for users(:dexter)
+      end
+
+      assert_equal [8.6, 70], grades.map(&:score)
+      assert_equal users(:robot, :robot), grades.map(&:grader)
+      assert_equal users(:dexter, :dexter), grades.map(&:subject)
+      assert_equal assignment_metrics(:assessment_quality,
+          :assessment_overall), grades.map(&:metric)
+      assert_equal courses(:main, :main), grades.map(&:course)
+    end
+
+    it 'does not save grades for older submissions' do
+      analyzers(:proc_assessment_writeup).update! auto_grading: true
+      analyses(:dexter_assessment).commit_grades
+      grades = assignment_metrics(:assessment_quality,
+                                  :assessment_overall).map do |metric|
+        metric.grade_for users(:dexter)
+      end
+
+      assert_equal [nil, nil], grades.map(&:score)
+    end
+
+    it 'does not save grades when analyzer auto-grading is disabled' do
+      analyzers(:proc_assessment_writeup).update! auto_grading: false
+      analyses(:dexter_assessment_v2).commit_grades
+      grades = assignment_metrics(:assessment_quality,
+                                  :assessment_overall).map do |metric|
+        metric.grade_for users(:dexter)
+      end
+
+      assert_equal [nil, nil], grades.map(&:score)
     end
   end
 end

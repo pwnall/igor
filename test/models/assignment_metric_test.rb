@@ -62,16 +62,16 @@ class AssignmentMetricTest < ActiveSupport::TestCase
 
   describe '#grade_for' do
     it 'returns an existing grade' do
-      graded_metric = overall_metric
+      graded_metric = assignment_metrics(:assessment_overall)
       assert graded_metric.grades.find_by(subject: users(:dexter))
 
       grade = graded_metric.grade_for users(:dexter)
-      assert_equal 80, grade.score
+      assert_equal 70, grade.score
       assert_equal false, grade.new_record?
     end
 
     it 'returns a new grade if one does not exist' do
-      ungraded_metric = quality_metric
+      ungraded_metric = assignment_metrics(:ps3_p1)
       assert_nil ungraded_metric.grades.find_by(subject: users(:dexter))
 
       grade = ungraded_metric.grade_for users(:dexter)
@@ -85,18 +85,20 @@ class AssignmentMetricTest < ActiveSupport::TestCase
     let(:deedee_section) { recitation_sections(:r02) }
 
     it 'returns the average score for students in the given recitation only' do
-      assert_equal 6, quality_metric.grade_for_recitation(deedee_section)
+      assert_equal 10, quality_metric.grade_for_recitation(deedee_section)
     end
 
     it 'returns 0 if none of the students in the recitation has a grade' do
-      assert_empty Grade.where(subject: deedee_section, metric: overall_metric)
-      assert_equal 0, overall_metric.grade_for_recitation(deedee_section)
+      Grade.where(subject: deedee_section.users, metric: quality_metric).
+            destroy_all
+      assert_equal 0, quality_metric.grade_for_recitation(deedee_section)
     end
 
     it 'accounts only for students who have a grade' do
-      assert_not_equal Grade.where(subject: dexter_solo_section,
-          metric: overall_metric).count, dexter_solo_section.users.count
-      assert_equal 10, quality_metric.grade_for_recitation(dexter_solo_section)
+      grades(:dexter_assessment_quality).destroy
+      assert_not_equal Grade.where(subject: dexter_solo_section.users,
+          metric: quality_metric).count, dexter_solo_section.users.length
+      assert_equal 3, quality_metric.grade_for_recitation(dexter_solo_section)
     end
   end
 
@@ -104,28 +106,31 @@ class AssignmentMetricTest < ActiveSupport::TestCase
     describe 'AverageScore concern' do
       describe '#average_score_percentage' do
         describe 'no grades have been issued yet' do
-          before { assert_empty gradeless_metric.grades }
+          let(:metric) { assignment_metrics(:ps3_p1) }
+          before { assert_empty metric.grades }
 
           it 'returns 0' do
-            assert_equal 0, gradeless_metric.average_score_percentage
+            assert_equal 0, metric.average_score_percentage
           end
         end
 
         describe 'the metric has a non-zero weight' do
-          before { assert_not_equal 0, overall_metric.weight }
+          let(:metric) { assignment_metrics(:assessment_overall) }
+          before { assert_not_equal 0, metric.weight }
 
           it 'returns the average non-weighted score on the metric' do
-            # ((80 + 10) / 2.0)*100 / 100 = 45
-            assert_equal 45, overall_metric.average_score_percentage
+            # ((70 + 100 + 10) / 3.0) * 100 / 100 = 60
+            assert_equal 60, metric.average_score_percentage
           end
         end
 
         describe 'the metric has a weight of 0' do
-          before { assert_equal 0, quality_metric.weight }
+          let(:metric) { assignment_metrics(:assessment_quality) }
+          before { assert_equal 0, metric.weight }
 
           it 'returns the average non-weighted score on the metric' do
-            # ((10 + 6) / 2.0)*100 / 10 = 80
-            assert_equal 80, quality_metric.average_score_percentage
+            # ((8.6 + 10 + 3) / 3.0) * 100 / 10 = 72
+            assert_equal 72, metric.average_score_percentage
           end
         end
       end
@@ -139,28 +144,31 @@ class AssignmentMetricTest < ActiveSupport::TestCase
 
     describe '#average_score' do
       describe 'no grades have been issued yet' do
-        before { assert_empty gradeless_metric.grades }
+        let(:metric) { assignment_metrics(:ps3_p1) }
+        before { assert_empty metric.grades }
 
         it 'returns 0' do
-          assert_equal 0, gradeless_metric.average_score
+          assert_equal 0, metric.average_score
         end
       end
 
       describe 'the metric has a non-zero weight' do
-        before { assert_not_equal 0, overall_metric.weight }
+        let(:metric) { assignment_metrics(:assessment_overall) }
+        before { assert_not_equal 0, metric.weight }
 
         it 'returns the average unweighted score on the metric' do
-          # (80 + 10) / 2.0 = 45
-          assert_equal 45, overall_metric.average_score
+          # (70 + 100 + 10) / 3.0 = 60
+          assert_equal 60, metric.average_score
         end
       end
 
       describe 'the metric has a weight of 0' do
-        before { assert_equal 0, quality_metric.weight }
+        let(:metric) { assignment_metrics(:assessment_quality) }
+        before { assert_equal 0, metric.weight }
 
         it 'returns the average unweighted score on the metric' do
-          # (10 + 6) / 2.0 = 8
-          assert_equal 8, quality_metric.average_score
+          # (8.6 + 10 + 3) / 3.0 = 7.2
+          assert_equal 7.2, metric.average_score
         end
       end
     end

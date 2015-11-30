@@ -26,5 +26,6 @@ class SubmissionAnalysisJob < ApplicationJob
   # Analyze the given submission.
   def perform(submission)
     submission.analyzer.analyze submission
+    submission.analysis.commit_grades
   end
 end

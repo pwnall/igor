@@ -19,9 +19,9 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   create_table "analyses", force: :cascade do |t|
     t.integer  "submission_id", null: false
     t.integer  "status_code",   null: false
-    t.integer  "score"
     t.text     "log",           null: false
     t.text     "private_log",   null: false
+    t.text     "scores"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.index ["submission_id"], name: "index_analyses_on_submission_id", unique: true, using: :btree

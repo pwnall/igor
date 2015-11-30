@@ -101,10 +101,7 @@ class DockerAnalyzer < Analyzer
 
     mr_job = run_submission submission
     analysis.status = extract_status mr_job
-    json_grades = extract_grades mr_job
-    if auto_grading?
-      update_grades submission, json_grades
-    end
+    analysis.scores = extract_grades mr_job
     analysis.log = mr_job.reducer_runner.stdout
     analysis.private_log = mr_job.reducer_runner.stderr
     analysis.save!
@@ -184,35 +181,5 @@ class DockerAnalyzer < Analyzer
     else
       :ok
     end
-  end
-
-  # Updates the database with the grades issued by the script.
-  #
-  # @return {Boolean} true if the database is updated; false if validation
-  #   error occurred and grades were not changed
-  def update_grades(submission, json_grades)
-    assignment = submission.assignment
-    grades = []
-    json_grades.each do |metric_name, score_fraction|
-      metric = assignment.metrics.where(name: metric_name).first
-      unless metric
-        #run_state[:private_log] << "Metric not found: #{metric_name}\n"
-        next
-      end
-      grade = metric.grade_for submission.subject
-      grade.score = score_fraction * metric.max_score
-      grade.grader = User.robot
-      unless grade.valid?
-        #run_state[:private_log] <<
-        #    "Produced invalid grade for metric #{metric_name}\n"
-        #run_state[:private_log] << grade.errors.messages.inspect + "\n"
-        return false
-      end
-      grades << grade
-    end
-
-    grades.each(&:save!) if submission.selected_for_grading?
-    #run_state[:private_log] << "Grades committed to the database.\n"
-    true
   end
 end

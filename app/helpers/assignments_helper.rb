@@ -125,7 +125,7 @@ module AssignmentsHelper
   def progress_meter_tag(formatted_percentage)
     content_tag :div, class: 'progress' do
       content_tag :span, class: 'progress-meter',
-          style: "width:#{formatted_percentage}" do
+          style: "width: #{formatted_percentage};" do
         content_tag :p, formatted_percentage, class: 'progress-meter-text'
       end
     end

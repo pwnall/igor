@@ -29,5 +29,31 @@
       <p>This is only visible to course staff members.</p>
       <div class="markdpwn-parsed-code"><%= @analysis.private_log %></div>
     </article>
+
+    <article>
+      <h3>Scores</h3>
+      <p>This is only visible to course staff members.</p>
+      <table>
+        <tr>
+          <th class="text-left">Metric name</th>
+          <th class="text-right">Analyzer score</th>
+          <th class="text-right">Effective grade</th>
+        </tr>
+        <% (@analysis.scores || {}).each do |metric_name, normalized_score| %>
+        <tr>
+          <td class="text-left"><%= metric_name %></th>
+          <td class="text-right"><%= normalized_score %></th>
+          <td class="text-right">
+          <% if @analysis.assignment.metrics.find_by(name: metric_name) %>
+            <%= @analysis.assignment.metrics.find_by(name: metric_name).
+                          max_score * normalized_score %>
+          <% else %>
+            Invalid metric name
+          <% end %>
+          </th>
+        </tr>
+        <% end %>
+      </table>
+    </article>
   <% end %>
 </section>

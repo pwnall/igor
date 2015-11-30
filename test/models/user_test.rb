@@ -341,7 +341,7 @@ class UserTest < ActiveSupport::TestCase
     describe 'grades_for' do
       it 'should include grades on team assignments' do
         golden = grades(:awesome_ps1_p1, :awesome_ps2_p1, :awesome_project,
-                        :dexter_assessment_overall)
+                        :dexter_assessment_quality, :dexter_assessment_overall)
         actual = dexter.grades_for courses(:main)
         assert_equal golden.to_set, actual.to_set
       end

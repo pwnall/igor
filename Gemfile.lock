@@ -73,7 +73,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/rails
-  revision: 3fcc0ca99107fa57110421b392f5854555f17fe2
+  revision: 3f16a098452ee5d447142bd9a6f6045cb1fc83b4
   branch: master
   specs:
     actionmailer (5.0.0.alpha)
@@ -190,7 +190,7 @@ GEM
       debug_inspector (>= 0.0.1)
     bower-rails (0.10.0)
     builder (3.2.2)
-    byebug (8.2.0)
+    byebug (8.2.1)
     capybara (2.5.0)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
