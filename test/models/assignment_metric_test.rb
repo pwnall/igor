@@ -9,6 +9,7 @@ class AssignmentMetricTest < ActiveSupport::TestCase
   let(:gradeless_metric) { assignment_metrics(:ps3_p1) }
   let(:overall_metric) { assignment_metrics(:assessment_overall) }
   let(:quality_metric) { assignment_metrics(:assessment_quality) }
+  let(:team_metric) { assignment_metrics(:project_overall) }
 
   it 'validates the setup metric' do
     assert @metric.valid?, @metric.errors.full_messages
@@ -128,6 +129,21 @@ class AssignmentMetricTest < ActiveSupport::TestCase
             assert_equal 80, quality_metric.average_score_percentage
           end
         end
+      end
+    end
+
+    describe '#student_grades' do
+      it 'omits grades assigned to non-student users' do
+        assert_not_empty overall_metric.grades.
+            where(subject: courses(:main).staff)
+        overall_metric.student_grades.each do |grade|
+          assert_equal true, courses(:main).is_student?(grade.subject)
+        end
+      end
+
+      it 'returns all team grades if a team partition is used' do
+        assert_not_nil team_metric.assignment.team_partition
+        assert_equal 2, team_metric.student_grades.count
       end
     end
 

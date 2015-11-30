@@ -107,6 +107,19 @@ end
 class AssignmentMetric
   include AverageScore
 
+  # Grades given to students.
+  #
+  # Use to show grading progress and average score statistics, where only
+  # student grades are of interest. If the assignment uses a team partition,
+  # all grades are returned, regardless of whether teams have staff members.
+  #
+  # This same method is defined for Assignment so that the method can be called
+  # on either an Assignment or AssignmentMetric instance.
+  def student_grades
+    return grades unless assignment.team_partition.nil?
+    grades.where(subject: course.students)
+  end
+
   # The weighted maximum score.
   #
   # This value should only be used when calculating an Assignment's total score.
@@ -121,6 +134,6 @@ class AssignmentMetric
   # This same method is defined for Assignment so that the method can be called
   # on either an Assignment or AssignmentMetric instance.
   def average_score
-    grades.average(:score) || 0
+    student_grades.average(:score) || 0
   end
 end

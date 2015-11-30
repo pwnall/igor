@@ -65,6 +65,13 @@ solo_assessment_overall:
   grader: admin
   score: 10.0
 
+main_staff_assessment_overall:
+  metric: assessment_overall
+  course: main
+  subject: main_staff (User)
+  grader: admin
+  score: 100.0
+
 solo_assessment_quality:
   metric: assessment_quality
   course: main
