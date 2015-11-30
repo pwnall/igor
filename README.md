@@ -45,7 +45,7 @@ eval "$(docker-machine env dev)"
 ### Linux
 
 Use your package manager to install the prerequisites listed in the
-[web_frontend Ansible role](deploy/ansible/roles/web_frontend/tasks/packages).
+[web_frontend Ansible role](deploy/ansible/roles/web_frontend/tasks/packages.yml).
 
 
 ### OpenStack
