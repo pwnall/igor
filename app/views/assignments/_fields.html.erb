@@ -13,7 +13,7 @@
     <%= f.label :published_at, 'Release Date/Time', class: 'text-right middle' %>
   </div>
   <div class="small-6 columns">
-    <%= f.datetime_local_field :published_at, step: 900, data: {
+    <%= f.datetime_local_field :published_at, data: {
           pwnfx_scope: 'publish', pwnfx_disable_positive: 'publish-p' } %>
   </div>
   <div class="small-3 columns">

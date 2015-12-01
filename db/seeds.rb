@@ -158,6 +158,8 @@ puts 'Surveys created'
 
 # Exams.
 
+base_time = Time.current.beginning_of_minute
+
 exam_data = [
   { due_at: -6.weeks - 5.days, grades_published: true, state: :graded },
   { due_at: -5.days, grades_published: false, state: :grading },
@@ -169,7 +171,7 @@ exams = exam_data.map.with_index do |data, index|
 
   exam = Assignment.new name: "Exam #{i}", weight: 5.0, author: admin
   exam.course = course
-  exam.build_deadline due_at: (Time.current + data[:due_at]), course: course
+  exam.build_deadline due_at: (base_time + data[:due_at]), course: course
   exam.published_at = exam.due_at - 1.week
   exam.grades_published = data[:grades_published]
   exam.save!
@@ -182,7 +184,7 @@ end
 
 students.each_with_index do |user, i|
   exams.each_with_index do |exam, j|
-    next unless exam.due_at < Time.current
+    next unless exam.due_at < base_time
     exam.metrics.each.with_index do |metric, k|
       next if i + j == k
       grade = metric.grades.build subject: user,
@@ -219,7 +221,7 @@ psets = pset_data.map.with_index do |data, index|
   i = index + 1
   pset = Assignment.new name: "Problem Set #{i}", weight: 1.0, author: admin
   pset.course = course
-  pset.build_deadline due_at: (Time.current + data[:due_at]), course: course
+  pset.build_deadline due_at: (base_time + data[:due_at]), course: course
   pset.published_at = pset.due_at - 1.week
   pset.grades_published = data[:grades_published]
   pset.save!
@@ -243,7 +245,7 @@ end
 
 ([admin] + students).each_with_index do |user, i|
   psets.each_with_index do |pset, j|
-    next unless pset.due_at < Time.current
+    next unless pset.due_at < base_time
 
     unless (i + j) % 20 == 1
       # Submit PDF.
