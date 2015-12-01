@@ -4,116 +4,33 @@
         html: { class: 'compact edit-assignment-form' } do |f| %>
     <%= f.error_messages %>
 
-    <%= render 'assignments/fields', f: f %>
+    <section class="basic-fields">
+      <%= render 'assignments/fields', f: f %>
+    </section>
 
-    <h3>Files to be Submitted</h3>
-    <div class="assignment-builder-deliverables"
-         data-pwnfx-render-target="proc-deliverable docker-deliverable">
-      <%= f.fields_for :deliverables do |df| %>
-        <%= render 'deliverables/fields', f: df %>
-      <% end %>
-    </div>
-    <div class="assignment-builder-actions row">
-      <%= f.fields_for :analyzer do |af| %>
-        <div class="small-3 columns">
-          <%= af.label :type, 'Analyze submitted file via:',
-                class: 'text-right middle' %>
-        </div>
-        <div class="small-6 columns">
-          <%= select_tag :type, analyzer_types_for_select, data: {
-                pwnfx_showif_source: 'analyzer-type' } %>
-        </div>
-      <% end %>
-      <div class="small-3 columns">
-        <span class="forked-button-wrapper">
-          <%= button_tag data: { pwnfx_render_scope: 'assignment',
-                pwnfx_render_randomize: 'IDID',
-                pwnfx_render: 'proc-deliverable', pwnfx_showif: 'analyzer-type',
-                pwnfx_showif_is: 'ProcAnalyzer',
-                pwnfx_showif_scope: 'assignment',
-                pwnfx_showif_replace: 'button' }, class: 'hollow button' do %>
-            <%= create_icon_tag %> Add File
-          <% end %>
-          <%= button_tag data: { pwnfx_render_scope: 'assignment',
-                pwnfx_render_randomize: 'IDID',
-                pwnfx_render: 'docker-deliverable',
-                pwnfx_showif: 'analyzer-type',
-                pwnfx_showif_is: 'DockerAnalyzer',
-                pwnfx_showif_scope: 'assignment',
-                pwnfx_showif_replace: 'button' }, class: 'hollow button' do %>
-            <%= create_icon_tag %> Add File
-          <% end %>
-        </span>
+    <ul class="tabs" data-tabs id="assignment-builder-tabs">
+      <li class="tabs-title is-active">
+        <a href="#deliverables-panel">Deliverables</a>
+      </li>
+      <li class="tabs-title">
+        <a href="#resource-files-panel">Resource Files</a>
+      </li>
+      <li class="tabs-title">
+        <a href="#metrics-panel">Grading Breakdown</a>
+      </li>
+    </ul>
+
+    <div class="tabs-content" data-tabs-content="assignment-builder-tabs">
+      <div class="tabs-panel is-active" id="deliverables-panel">
+        <%= render 'assignments/deliverable_builder', f: f %>
+      </div>
+      <div class="tabs-panel" id="resource-files-panel">
+        <%= render 'assignments/resource_file_builder', f: f %>
+      </div>
+      <div class="tabs-panel" id="metrics-panel">
+        <%= render 'assignments/metric_builder', f: f %>
       </div>
     </div>
-
-<script type="text/html" data-pwnfx-render-source="proc-deliverable">
-<%= f.fields_for :deliverables, Deliverable.new(analyzer: ProcAnalyzer.new),
-      child_index: 'IDID' do |df| %>
-  <%= render 'deliverables/fields', f: df %>
-<% end %>
-</script>
-<script type="text/html" data-pwnfx-render-source="docker-deliverable">
-<%= f.fields_for :deliverables, Deliverable.new(analyzer: DockerAnalyzer.new),
-      child_index: 'IDID' do |df| %>
-  <%= render 'deliverables/fields', f: df %>
-<% end %>
-</script>
-
-    <h3>Resource Files</h3>
-    <div class="assignment-builder-files"
-         data-pwnfx-render-target="assignment-files">
-      <%= f.fields_for :files do |ff| %>
-        <%= render 'assignment_files/fields', f: ff %>
-      <% end %>
-    </div>
-    <p class="assignment-builder-actions">
-      <%= button_tag data: { pwnfx_render_randomize: 'IDID',
-            pwnfx_render_scope: 'assignment',
-            pwnfx_render: 'assignment-files' }, class: 'hollow button' do %>
-        <%= create_icon_tag %> Add File
-      <% end %>
-    </p>
-
-<script type="text/html" data-pwnfx-render-source="assignment-files">
-<%= f.fields_for :files, AssignmentFile.new, child_index: 'IDID' do |ff| %>
-  <%= render 'assignment_files/fields', f: ff %>
-<% end %>
-</script>
-
-    <h3>Grading Breakdown</h3>
-    <div class="assignment-builder-metrics">
-      <table>
-        <thead>
-          <tr>
-            <th>Metric Name</th>
-            <th>Maximum Score</th>
-            <th>Weight</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody data-pwnfx-render-target="assignment-metrics">
-        <%= f.fields_for :metrics do |mf| %>
-          <%= render 'assignment_metrics/fields', f: mf %>
-        <% end %>
-        </tbody>
-      </table>
-    </div>
-    <p class="assignment-builder-actions">
-      <%= link_to new_assignment_metric_path(assignment_id: f.object),
-            class: 'button', data: { pwnfx_render_randomize: 'IDID',
-            pwnfx_render_scope: 'assignment',
-            pwnfx_render: 'assignment-metrics' }, class: 'hollow button' do %>
-        <%= create_icon_tag %> Add Item
-      <% end %>
-    </p>
-
-
-<script type="text/html" data-pwnfx-render-source="assignment-metrics">
-<%= f.fields_for :metrics, AssignmentMetric.new, child_index: 'IDID' do |mf| %>
-  <%= render 'assignment_metrics/fields', f: mf %>
-<% end %>
-</script>
 
     <%= submit_button_tag do %>
       <%= save_icon_tag %> Update Assignment

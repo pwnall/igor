@@ -1,4 +1,10 @@
 .assignment-builder {
+  section.basic-fields {
+    margin-bottom: 2rem;
+  }
+  [data-tabs-content="assignment-builder-tabs"] {
+    margin-bottom: 2rem;
+  }
   #docker-analyzer-help.badge {
     line-height: 1;
     vertical-align: text-bottom;
