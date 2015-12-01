@@ -153,6 +153,23 @@ class CourseTest < ActiveSupport::TestCase
         assert_equal false, course.is_student?(nil)
       end
     end
+
+    describe '#is_graded_subject?' do
+      it 'returns true for registered students only' do
+        assert_equal true, course.is_graded_subject?(users(:dexter))
+        assert_equal false, courses(:not_main).is_graded_subject?(users(:dexter))
+        assert_equal false, course.is_graded_subject?(users(:robot))
+        assert_equal false, course.is_graded_subject?(users(:main_grader))
+        assert_equal false, course.is_graded_subject?(users(:main_staff))
+        assert_equal false, course.is_graded_subject?(users(:admin))
+
+        assert_equal true, course.is_graded_subject?(teams(:awesome_pset))
+        assert_equal true, course.is_graded_subject?(teams(:boo_pset))
+        assert_equal false, course.is_graded_subject?(teams(:not_main_lab))
+
+        assert_equal false, course.is_graded_subject?(nil)
+      end
+    end
   end
 
   describe 'staff permissions' do

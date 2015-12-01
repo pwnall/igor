@@ -45,9 +45,6 @@ class Analysis < ActiveRecord::Base
   # The course whose submission was analyzed.
   has_one :course, through: :submission
 
-  # The user or team who created the submission being analyzed.
-  has_one :subject, through: :submission
-
   # The analyzer that produced this analysis.
   has_one :analyzer, through: :submission
 
@@ -156,17 +153,27 @@ ENDS
     self.save!
   end
 
-  # Saves the grades produced by the analyzer, when appropriate.
+  # Updates the grades database to reflect the analyzer's output.
   #
-  # The grades are only saved if auto-grading is enabled and
+  # The grades are only saved if auto-grading is enabled and the submission is
+  # done by a course student. Staff submissions, used for testing auto-graders,
+  # do not modify the grade database.
   def commit_grades
-    return unless analyzer.auto_grading?
+    return unless will_commit_grades?
+
     grades = self.grades_for_scores scores
     Analysis.transaction do
       if submission.selected_for_grading?
         grades.each(&:save)
       end
     end
+  end
+
+  # True if the analyzer's output will be saved into the grades database.
+  #
+  # The analyzer's grades are not saved
+  def will_commit_grades?
+    analyzer.auto_grading? && course.is_graded_subject?(submission.subject)
   end
 
   # Converts a JSON dictionary of scores into an array of Grade models.

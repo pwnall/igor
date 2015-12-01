@@ -86,6 +86,20 @@ class Course
     #       below, so we're saving one SQL query.
     !!Registration.where(course: self, user: user).first
   end
+
+  # True if the given Submission subject can receive a grade in this course.
+  def is_graded_subject?(subject)
+    case subject
+    when User
+      is_student? subject
+    when Team
+      self == subject.course
+    when nil
+      false
+    else
+      raise ArgumentError, "Invalid subject #{subject.inspect}"
+    end
+  end
 end
 
 # :nodoc: Staff permissions.

@@ -243,6 +243,27 @@ class AnalysisTest < ActiveSupport::TestCase
     end
   end
 
+  describe '#will_commit_grades?' do
+    let(:analyzer) { analyzers(:proc_assessment_writeup) }
+    let(:analysis) { analyses(:dexter_assessment_v2) }
+
+    it 'is true for students' do
+      analyzer.update! auto_grading: true
+      assert_equal true, analysis.will_commit_grades?
+    end
+
+    it 'is false for site admins' do
+      analyzer.update! auto_grading: true
+      analysis.submission.update! uploader: users(:admin)
+      assert_equal false, analysis.will_commit_grades?
+    end
+
+    it 'is false for analyzers with auto-grading disabled' do
+      analyzer.update! auto_grading: false
+      assert_equal false, analysis.will_commit_grades?
+    end
+  end
+
   describe '#commit_grades' do
     before do
       grades(:dexter_assessment_quality).destroy

@@ -30,6 +30,7 @@ The following commands install the prerequisites on OSX, using
 [Homebrew](http://brew.sh).
 
 ```bash
+xcode-select --install
 brew install docker docker-machine imagemagick libxml2 libxslt openssl \
     pkg-config postgresql
 brew link --force openssl
