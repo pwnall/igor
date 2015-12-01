@@ -14,6 +14,8 @@ class DeliverablesController < ApplicationController
   # XHR GET /6.006/deliverables/1/submission_dashboard
   def submission_dashboard
     @deliverable = current_course.deliverables.find params[:id]
+    @submissions = @deliverable.submissions.includes(:analysis, :subject).
+                                            order(updated_at: :desc)
     render layout: false if request.xhr?
   end
 end
