@@ -138,7 +138,7 @@ class LoadTestSession
     form = @agent.page.form_with class: 'new-assignment-form'
     form['assignment[name]'] = name
     tomorrow = Time.now + 24 * 60 * 60
-    form['assignment[published_at]'] = tomorrow.strftime('%Y-%m-%dT%H:%M:%S')
+    form['assignment[released_at]'] = tomorrow.strftime('%Y-%m-%dT%H:%M:%S')
     next_week = Time.now + 7 * 24 * 60 * 60
     form['assignment[due_at]'] = next_week.strftime('%Y-%m-%dT%H:%M:%S')
     form['assignment[weight]'] = 1

@@ -101,7 +101,7 @@ class SubmissionsControllerTest < ActionController::TestCase
       describe 'the due date for the student has passed' do
         before do
           assignment = @submission.assignment
-          assignment.update! published_at: nil, due_at: 10.years.ago
+          assignment.update! released_at: nil, due_at: 10.years.ago
           assignment.extensions.where(user: user).destroy_all
           assert_equal true, assignment.reload.deadline_passed_for?(user)
         end
@@ -121,7 +121,7 @@ class SubmissionsControllerTest < ActionController::TestCase
     describe 'POST #promote' do
       describe 'the main submission deadline has passed' do
         before do
-          @submission.assignment.update! published_at: nil, due_at: 10.years.ago
+          @submission.assignment.update! released_at: nil, due_at: 10.years.ago
         end
 
         it 'queues the submission for analysis' do

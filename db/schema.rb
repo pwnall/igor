@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.string   "description",   limit: 64, null: false
     t.integer  "assignment_id",            null: false
     t.integer  "db_file_id",               null: false
-    t.datetime "published_at"
+    t.datetime "released_at"
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.index ["assignment_id"], name: "index_assignment_files_on_assignment_id", using: :btree
@@ -74,14 +74,14 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.integer  "course_id",                                             null: false
     t.integer  "author_id",                                             null: false
     t.string   "name",              limit: 64,                          null: false
-    t.datetime "published_at"
+    t.datetime "released_at"
     t.boolean  "grades_published",                                      null: false
     t.decimal  "weight",                       precision: 16, scale: 8, null: false
     t.integer  "team_partition_id"
     t.datetime "created_at",                                            null: false
     t.datetime "updated_at",                                            null: false
     t.index ["course_id", "name"], name: "index_assignments_on_course_id_and_name", unique: true, using: :btree
-    t.index ["course_id", "published_at", "name"], name: "index_assignments_on_course_id_and_published_at_and_name", unique: true, using: :btree
+    t.index ["course_id", "released_at", "name"], name: "index_assignments_on_course_id_and_released_at_and_name", unique: true, using: :btree
   end
 
   create_table "collaborations", force: :cascade do |t|

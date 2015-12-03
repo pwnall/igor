@@ -5,7 +5,7 @@ class AssignmentTest < ActiveSupport::TestCase
     @due_at = 1.week.from_now.round 0  # Remove sub-second information.
     @assignment = Assignment.new course: courses(:main), name: 'Final Exam',
         author: users(:main_staff), due_at: @due_at, weight: 50,
-        published_at: 1.week.ago, grades_published: false
+        released_at: 1.week.ago, grades_published: false
   end
 
   let(:assignment) { assignments(:assessment) }
@@ -60,7 +60,7 @@ class AssignmentTest < ActiveSupport::TestCase
       end
 
       it 'lets only admin view assignments under construction' do
-        assignment.update! published_at: 1.day.from_now, grades_published: false
+        assignment.update! released_at: 1.day.from_now, grades_published: false
         assert_equal true, assignment.can_read?(admin)
         assert_equal false, assignment.can_read?(any_user)
         assert_equal false, assignment.can_read?(nil)
@@ -125,7 +125,7 @@ class AssignmentTest < ActiveSupport::TestCase
       end
 
       describe 'assignment has not been published' do
-        before { assignment.update! published_at: 1.day.from_now }
+        before { assignment.update! released_at: 1.day.from_now }
 
         describe 'neither original deadline nor extension, if any, passed' do
           before do
@@ -200,7 +200,7 @@ class AssignmentTest < ActiveSupport::TestCase
       end
 
       describe 'assignment has not been published' do
-        before { assignment.update! published_at: 1.day.from_now }
+        before { assignment.update! released_at: 1.day.from_now }
 
         describe 'neither original deadline nor extension, if any, passed' do
           before do
@@ -448,7 +448,7 @@ class AssignmentTest < ActiveSupport::TestCase
       end
 
       describe 'assignment has not been published' do
-        before { assignment.update! published_at: 1.day.from_now }
+        before { assignment.update! released_at: 1.day.from_now }
 
         it 'returns an empty collection for non-admin users' do
           assert_empty assignment.deliverables_for(any_user)
@@ -481,12 +481,12 @@ class AssignmentTest < ActiveSupport::TestCase
       before { assert_equal false, @assignment.grades_published }
 
       it 'does not require a release date' do
-        @assignment.published_at = nil
+        @assignment.released_at = nil
         assert @assignment.valid?
       end
 
       it 'requires the release date to occur before the base deadline' do
-        @assignment.published_at = @assignment.due_at + 1.day
+        @assignment.released_at = @assignment.due_at + 1.day
         assert @assignment.invalid?
       end
     end
@@ -495,57 +495,57 @@ class AssignmentTest < ActiveSupport::TestCase
       before { @assignment.grades_published = true }
 
       it 'requires a release date' do
-        @assignment.published_at = nil
+        @assignment.released_at = nil
         assert @assignment.invalid?
       end
 
       it 'requires the release date to occur before the base deadline' do
-        @assignment.published_at = @assignment.due_at + 1.day
+        @assignment.released_at = @assignment.due_at + 1.day
         assert @assignment.invalid?
       end
 
       it 'requires the release date to have passed' do
-        @assignment.published_at = 1.day.from_now
+        @assignment.released_at = 1.day.from_now
         @assignment.grades_published = true
         assert @assignment.invalid?
       end
     end
 
-    describe '#act_on_reset_published_at' do
+    describe '#act_on_reset_released_at' do
       describe 'publish date has not been set yet' do
-        before { assignment.update! published_at: nil }
+        before { assignment.update! released_at: nil }
 
-        it 'updates the publish date if :reset_published_at is false' do
-          published_at = 1.day.from_now
-          assignment.update! published_at: published_at,
-                             reset_published_at: '0'
-          assert_equal published_at, assignment.published_at
+        it 'updates the publish date if :reset_released_at is false' do
+          released_at = 1.day.from_now
+          assignment.update! released_at: released_at,
+                             reset_released_at: '0'
+          assert_equal released_at, assignment.released_at
         end
 
-        it 'overrides :published_at update if :reset_published_at is true' do
-          assignment.update! published_at: 1.day.from_now,
-                             reset_published_at: '1'
-          assert_nil assignment.published_at
+        it 'overrides :released_at update if :reset_released_at is true' do
+          assignment.update! released_at: 1.day.from_now,
+                             reset_released_at: '1'
+          assert_nil assignment.released_at
         end
       end
 
       describe 'publish date has been set' do
-        before { assert_not_nil assignment.published_at }
+        before { assert_not_nil assignment.released_at }
 
-        it 'nullifies the publish date if :reset_published_at is true' do
-          assignment.update! reset_published_at: '1'
-          assert_nil assignment.published_at
+        it 'nullifies the publish date if :reset_released_at is true' do
+          assignment.update! reset_released_at: '1'
+          assert_nil assignment.released_at
         end
 
-        it 'overrides :published_at update if :reset_published_at is true' do
-          assignment.update! published_at: 1.year.ago, reset_published_at: '1'
-          assert_nil assignment.published_at
+        it 'overrides :released_at update if :reset_released_at is true' do
+          assignment.update! released_at: 1.year.ago, reset_released_at: '1'
+          assert_nil assignment.released_at
         end
 
-        it 'does not change :published_at if :reset_published_at is false' do
-          published_at = assignment.published_at
-          assignment.update! reset_published_at: '0'
-          assert_equal published_at, assignment.published_at
+        it 'does not change :released_at if :reset_released_at is false' do
+          released_at = assignment.released_at
+          assignment.update! reset_released_at: '0'
+          assert_equal released_at, assignment.released_at
         end
       end
     end
@@ -595,43 +595,43 @@ class AssignmentTest < ActiveSupport::TestCase
       end
     end
 
-    describe '#reset_published_at' do
+    describe '#reset_released_at' do
       it 'returns true if the author has not chosen a release date' do
-        assignment.update! published_at: nil
-        assert_equal true, assignment.reload.reset_published_at
+        assignment.update! released_at: nil
+        assert_equal true, assignment.reload.reset_released_at
       end
 
       it 'returns false if the author has chosen a release date' do
-        assert_not_nil assignment.published_at
-        assert_equal false, assignment.reload.reset_published_at
+        assert_not_nil assignment.released_at
+        assert_equal false, assignment.reload.reset_released_at
       end
     end
 
-    describe '#reset_published_at=' do
-      it "sets :reset_published_at to true if the argument is '1'" do
-        assert_equal false, assignment.reset_published_at
-        assignment.update! reset_published_at: '1'
-        assert_equal true, assignment.reload.reset_published_at
+    describe '#reset_released_at=' do
+      it "sets :reset_released_at to true if the argument is '1'" do
+        assert_equal false, assignment.reset_released_at
+        assignment.update! reset_released_at: '1'
+        assert_equal true, assignment.reload.reset_released_at
       end
 
-      it "sets :reset_published_at to false if the argument is '0' and a
+      it "sets :reset_released_at to false if the argument is '0' and a
           new publish date is provided" do
-        assignment.update! published_at: nil
-        assert_equal true, assignment.reset_published_at
-        assignment.update! published_at: 1.day.from_now,
-                           reset_published_at: '0'
-        assert_equal false, assignment.reload.reset_published_at
+        assignment.update! released_at: nil
+        assert_equal true, assignment.reset_released_at
+        assignment.update! released_at: 1.day.from_now,
+                           reset_released_at: '0'
+        assert_equal false, assignment.reload.reset_released_at
       end
     end
 
     describe '#published?' do
       it 'returns true if the deliverables have been released' do
-        assert_operator assignment.published_at, :<, Time.current
+        assert_operator assignment.released_at, :<, Time.current
         assert_equal true, assignment.published?
       end
 
       it 'returns false if the deliverables have not been released' do
-        @assignment.published_at = 1.day.from_now
+        @assignment.released_at = 1.day.from_now
         assert_equal false, @assignment.published?
       end
     end
@@ -751,7 +751,7 @@ class AssignmentTest < ActiveSupport::TestCase
     describe '#ui_state_for' do
       describe 'deliverables not published' do
         before do
-          assignment.update! published_at: 1.week.from_now,
+          assignment.update! released_at: 1.week.from_now,
               due_at: 2.weeks.from_now, grades_published: false
         end
 
@@ -761,7 +761,7 @@ class AssignmentTest < ActiveSupport::TestCase
       end
 
       describe 'deliverables have been published' do
-        before { assert_operator assignment.published_at, :<, Time.current }
+        before { assert_operator assignment.released_at, :<, Time.current }
 
         describe 'grades not ready yet' do
           before { assert_equal false, assignment.grades_published? }

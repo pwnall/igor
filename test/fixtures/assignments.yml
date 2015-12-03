@@ -6,7 +6,7 @@
 #  course_id         :integer          not null
 #  author_id         :integer          not null
 #  name              :string(64)       not null
-#  published_at      :datetime
+#  released_at       :datetime
 #  grades_published  :boolean          not null
 #  weight            :decimal(16, 8)   not null
 #  team_partition_id :integer
@@ -20,7 +20,7 @@ ps1:
   name: PSet 1
   team_partition: psets
   weight: 1.0
-  published_at: <%= 3.weeks.ago.to_s(:db) %>
+  released_at: <%= 3.weeks.ago.to_s(:db) %>
   grades_published: true
 
 ps2:
@@ -29,7 +29,7 @@ ps2:
   name: PSet 2
   team_partition: psets
   weight: 1.0
-  published_at: <%= 2.weeks.ago.to_s(:db) %>  # should be in the past
+  released_at: <%= 2.weeks.ago.to_s(:db) %>  # should be in the past
   grades_published: true  # should be true
 
 ps3:
@@ -38,7 +38,7 @@ ps3:
   name: PSet 3
   team_partition: psets
   weight: 1.0
-  published_at: <%= 1.week.ago.to_s(:db) %>  # should be in the past
+  released_at: <%= 1.week.ago.to_s(:db) %>  # should be in the past
   grades_published: false
 
 project:
@@ -47,7 +47,7 @@ project:
   name: Final Project
   team_partition: project
   weight: 5.0
-  published_at: <%= 1.month.from_now.to_s(:db) %>
+  released_at: <%= 1.month.from_now.to_s(:db) %>
   grades_published: false
 
 assessment:
@@ -55,7 +55,7 @@ assessment:
   course: main
   name: Individual Assessment
   weight: 0.0
-  published_at: <%= 2.weeks.ago.to_s(:db) %>
+  released_at: <%= 2.weeks.ago.to_s(:db) %>
   grades_published: false
 
 main_exam:
@@ -63,7 +63,7 @@ main_exam:
   course: main
   name: Exam 1
   weight: 1.0
-  published_at: <%= 1.day.from_now.to_s(:db) %>  # should be in the future
+  released_at: <%= 1.day.from_now.to_s(:db) %>  # should be in the future
   grades_published: false
 
 main_exam_2:
@@ -71,7 +71,7 @@ main_exam_2:
   course: main
   name: Exam 2
   weight: 1.0
-  published_at:
+  released_at:
   grades_published: false
 
 # Keep deliverables_ready and metrics_ready true to test read permissions.
@@ -80,5 +80,5 @@ not_main_exam:
   course: not_main
   name: Quiz 1
   weight: 10.0
-  published_at: <%= 1.week.ago.to_s(:db) %>
+  released_at: <%= 1.week.ago.to_s(:db) %>
   grades_published: false

@@ -102,7 +102,7 @@ class AssignmentsController < ApplicationController
   # PATCH /6.006/assignments/1/publish
   def publish
     respond_to do |format|
-      if @assignment.update published_at: Time.current
+      if @assignment.update released_at: Time.current
         format.html do
           redirect_to dashboard_assignment_url(@assignment,
                                                course_id: @assignment.course),
@@ -120,7 +120,7 @@ class AssignmentsController < ApplicationController
 
   # PATCH /6.006/assignments/1/unpublish
   def unpublish
-    @assignment.published_at = nil
+    @assignment.released_at = nil
     @assignment.grades_published = false
 
     respond_to do |format|
@@ -142,7 +142,7 @@ class AssignmentsController < ApplicationController
 
   # PATCH /6.006/assignments/1/publish_grades
   def publish_grades
-    @assignment.published_at = Time.current unless @assignment.published?
+    @assignment.released_at = Time.current unless @assignment.published?
     @assignment.grades_published = true
 
     respond_to do |format|
@@ -173,7 +173,7 @@ class AssignmentsController < ApplicationController
   def assignment_params
     params.require(:assignment).permit :name, :due_at, :weight, :author_id,
         :team_partition_id, :feedback_survey_id,
-        :published_at, :reset_published_at, :grades_published,
+        :released_at, :reset_released_at, :grades_published,
         deliverables_attributes: [:name, :file_ext, :_destroy,
             :description, :id, { analyzer_attributes: [:id, :type,
                 :message_name, :auto_grading, :time_limit, :ram_limit,
@@ -181,8 +181,8 @@ class AssignmentsController < ApplicationController
                 :map_time_limit, :map_ram_limit, :map_logs_limit,
                 :reduce_time_limit, :reduce_ram_limit, :reduce_logs_limit,
                 { db_file_attributes: :f }] } ],
-        files_attributes: [:id, :description, :published_at, :_destroy,
-            :reset_published_at, { db_file_attributes: :f }],
+        files_attributes: [:id, :description, :released_at, :_destroy,
+            :reset_released_at, { db_file_attributes: :f }],
         metrics_attributes: [:name, :max_score, :weight, :id, :_destroy]
     # Note: feedback_survey_id is protected in the model but is allowed here
   end

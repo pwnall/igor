@@ -10,16 +10,16 @@
 
 <div class="row">
   <div class="small-3 columns">
-    <%= f.label :published_at, 'Release Date/Time', class: 'text-right middle' %>
+    <%= f.label :released_at, 'Release Date/Time', class: 'text-right middle' %>
   </div>
   <div class="small-6 columns">
-    <%= f.datetime_local_field :published_at, data: {
+    <%= f.datetime_local_field :released_at, data: {
           pwnfx_scope: 'publish', pwnfx_disable_positive: 'publish-p' } %>
   </div>
   <div class="small-3 columns">
-    <%= f.check_box :reset_published_at, data: { pwnfx_disable: 'publish-p',
+    <%= f.check_box :reset_released_at, data: { pwnfx_disable: 'publish-p',
           pwnfx_disable_scope: 'publish', pwnfx_disable_trigger: 'checked' } %>
-    <%= f.label :reset_published_at, 'Undecided', class: 'middle' %>
+    <%= f.label :reset_released_at, 'Undecided', class: 'middle' %>
   </div>
 </div>
 

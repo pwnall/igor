@@ -172,7 +172,7 @@ exams = exam_data.map.with_index do |data, index|
   exam = Assignment.new name: "Exam #{i}", weight: 5.0, author: admin
   exam.course = course
   exam.build_deadline due_at: (base_time + data[:due_at]), course: course
-  exam.published_at = exam.due_at - 1.week
+  exam.released_at = exam.due_at - 1.week
   exam.grades_published = data[:grades_published]
   exam.save!
   (1..(5 + i)).map do |j|
@@ -222,7 +222,7 @@ psets = pset_data.map.with_index do |data, index|
   pset = Assignment.new name: "Problem Set #{i}", weight: 1.0, author: admin
   pset.course = course
   pset.build_deadline due_at: (base_time + data[:due_at]), course: course
-  pset.published_at = pset.due_at - 1.week
+  pset.released_at = pset.due_at - 1.week
   pset.grades_published = data[:grades_published]
   pset.save!
   (1..(2 + i)).map do |j|

@@ -39,9 +39,9 @@ class AssignmentsControllerTest < ActionController::TestCase
         before { @assignment = undecided_assignment }
 
         it 'sets the release date to the current time' do
-          assert_nil @assignment.published_at
+          assert_nil @assignment.released_at
           patch :publish, params: member_params
-          assert_in_delta Time.current, @assignment.reload.published_at, 1.hour
+          assert_in_delta Time.current, @assignment.reload.released_at, 1.hour
         end
       end
 
@@ -49,9 +49,9 @@ class AssignmentsControllerTest < ActionController::TestCase
         before { @assignment = unreleased_assignment }
 
         it 'sets the release date to the current time' do
-          assert_in_delta 1.day.from_now, @assignment.published_at, 1.hour
+          assert_in_delta 1.day.from_now, @assignment.released_at, 1.hour
           patch :publish, params: member_params
-          assert_in_delta Time.current, @assignment.reload.published_at, 1.hour
+          assert_in_delta Time.current, @assignment.reload.released_at, 1.hour
         end
       end
     end
@@ -61,9 +61,9 @@ class AssignmentsControllerTest < ActionController::TestCase
         before { @assignment = released_assignment }
 
         it 'sets the release date to be undecided' do
-          assert_in_delta 3.weeks.ago, @assignment.published_at, 1.hour
+          assert_in_delta 3.weeks.ago, @assignment.released_at, 1.hour
           patch :unpublish, params: member_params
-          assert_nil @assignment.reload.published_at
+          assert_nil @assignment.reload.released_at
         end
 
         it 'unpublishes the grades for this assignment' do
@@ -79,9 +79,9 @@ class AssignmentsControllerTest < ActionController::TestCase
         before { @assignment = undecided_assignment }
 
         it 'sets the release date to the current time' do
-          assert_nil @assignment.published_at
+          assert_nil @assignment.released_at
           patch :publish_grades, params: member_params
-          assert_in_delta Time.current, @assignment.reload.published_at, 1.hour
+          assert_in_delta Time.current, @assignment.reload.released_at, 1.hour
         end
 
         it 'publishes the grades' do
@@ -95,9 +95,9 @@ class AssignmentsControllerTest < ActionController::TestCase
         before { @assignment = unreleased_assignment }
 
         it 'sets the release date to the current time' do
-          assert_in_delta 1.day.from_now, @assignment.published_at, 1.hour
+          assert_in_delta 1.day.from_now, @assignment.released_at, 1.hour
           patch :publish_grades, params: member_params
-          assert_in_delta Time.current, @assignment.reload.published_at, 1.hour
+          assert_in_delta Time.current, @assignment.reload.released_at, 1.hour
         end
 
         it 'publishes the grades' do
@@ -111,7 +111,7 @@ class AssignmentsControllerTest < ActionController::TestCase
         before { @assignment = grades_unreleased_assignment }
 
         it 'does not change the release date' do
-          assert_no_difference '@assignment.reload.published_at' do
+          assert_no_difference '@assignment.reload.released_at' do
             patch :publish_grades, params: member_params
           end
         end

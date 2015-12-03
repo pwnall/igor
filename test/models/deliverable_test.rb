@@ -113,7 +113,7 @@ class DeliverableTest < ActiveSupport::TestCase
     end
 
     it 'lets only admins view deliverable if assignment not published' do
-      deliverable.assignment.update! published_at: 1.day.from_now
+      deliverable.assignment.update! released_at: 1.day.from_now
       assert_equal true, deliverable.can_read?(admin)
       assert_equal false, deliverable.can_read?(any_user)
       assert_equal false, deliverable.can_read?(nil)

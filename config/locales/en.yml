@@ -11,7 +11,7 @@ en:
       deadline_extension:
         due_at: "Extended deadline"
       assignment:
-        published_at: "Release date"
+        released_at: "Release date"
     errors:
       models:
         db_file:
@@ -24,6 +24,6 @@ en:
               after: "must occur after the original deadline."
         assignment:
           attributes:
-            published_at:
+            released_at:
               before: "must occur before the base deadline."
               invalid_datetime: "must be a valid date (not undecided)."

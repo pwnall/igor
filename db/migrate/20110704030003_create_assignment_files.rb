@@ -5,7 +5,7 @@ class CreateAssignmentFiles < ActiveRecord::Migration
       t.references :assignment, index: true, foreign_key: true, null: false
       t.references :db_file, index: { unique: true }, foreign_key: true,
                              null: false
-      t.datetime :published_at, null: true
+      t.datetime :released_at, null: true
 
       t.timestamps
     end

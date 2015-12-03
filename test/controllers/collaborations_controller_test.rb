@@ -39,7 +39,7 @@ class CollaborationsControllerTest < ActionController::TestCase
       describe 'the due date for the student has passed' do
         before do
           assignment = @submission.assignment
-          assignment.update! published_at: nil, due_at: 10.years.ago
+          assignment.update! released_at: nil, due_at: 10.years.ago
           assignment.extensions.where(user: user).destroy_all
           assert_equal true, assignment.reload.deadline_passed_for?(user)
         end
@@ -59,7 +59,7 @@ class CollaborationsControllerTest < ActionController::TestCase
     describe 'POST #create' do
       describe 'the main submission deadline has passed' do
         before do
-          @submission.assignment.update! published_at: nil, due_at: 10.years.ago
+          @submission.assignment.update! released_at: nil, due_at: 10.years.ago
         end
 
         it 'adds a new collaboration to the submission' do

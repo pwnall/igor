@@ -6,7 +6,7 @@
 #  course_id         :integer          not null
 #  author_id         :integer          not null
 #  name              :string(64)       not null
-#  published_at      :datetime
+#  released_at       :datetime
 #  grades_published  :boolean          not null
 #  weight            :decimal(16, 8)   not null
 #  team_partition_id :integer
@@ -97,17 +97,17 @@ class Assignment
   validates :weight, numericality: { greater_than_or_equal_to: 0 }
 
   # The default time when the deliverables will be released to students.
-  validates :published_at, timeliness: { before: :due_at, allow_nil: true }
+  validates :released_at, timeliness: { before: :due_at, allow_nil: true }
 
-  # Nullify :published_at if the author did not decide a release date.
-  def act_on_reset_published_at
-    if @reset_published_at
-      self.published_at = nil
-      @reset_published_at = nil
+  # Nullify :released_at if the author did not decide a release date.
+  def act_on_reset_released_at
+    if @reset_released_at
+      self.released_at = nil
+      @reset_released_at = nil
     end
   end
-  private :act_on_reset_published_at
-  before_validation :act_on_reset_published_at
+  private :act_on_reset_released_at
+  before_validation :act_on_reset_released_at
 
   # If true, students can see their grades on the assignment.
   validates :grades_published, inclusion: { in: [true, false],
@@ -134,20 +134,20 @@ class Assignment
   accepts_nested_attributes_for :files, allow_destroy: true
 
   # True if the publish date was omitted (reset to nil) (virtual attribute).
-  def reset_published_at
-    published_at.nil?
+  def reset_released_at
+    released_at.nil?
   end
 
   # Store the user's decision to set or omit (reset) the publish date.
   #
   # @param [String] state '0' if setting a date, '1' if omitting
-  def reset_published_at=(state)
-    @reset_published_at = ActiveRecord::Type::Boolean.new.cast(state)
+  def reset_released_at=(state)
+    @reset_released_at = ActiveRecord::Type::Boolean.new.cast(state)
   end
 
   # True if the deliverables have been released to students.
   def published?
-    !!published_at && (published_at < Time.current)
+    !!released_at && (released_at < Time.current)
   end
 
   # The resource files for this assignment that are visible to the given user.
