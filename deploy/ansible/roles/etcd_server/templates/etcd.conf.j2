@@ -29,13 +29,8 @@ ETCD_ADVERTISE_CLIENT_URLS="https://etcd-master1.clusterlocal:2379"
 ETCD_CERT_FILE="/etc/etcd/cert.pem"
 ETCD_KEY_FILE="/etc/etcd/key.pem"
 
-# TODO(pwnall): Use these options when we can switch to Fedora 23+, which ships
-#               etcd 2.1.0+
-# ETCD_CLIENT_CERT_AUTH="true"
-# ETCD_TRUSTED_CA_FILE="/etc/etcd/ca.pem"
-
-# TODO(pwnall): Remove this deprecated option when we switch to Fedora 23+.
-ETCD_CA_FILE="/etc/etcd/ca.pem"
+ETCD_CLIENT_CERT_AUTH="true"
+ETCD_TRUSTED_CA_FILE="/etc/etcd/ca.pem"
 
 #ETCD_PEER_CERT_FILE=""
 #ETCD_PEER_KEY_FILE=""
