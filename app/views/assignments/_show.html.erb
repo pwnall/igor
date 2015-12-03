@@ -29,9 +29,9 @@
       <a href="#resource-files-panel">Resource Files</a>
     </li>
     <% assignment.deliverables.each do |deliverable| %>
-      <li class="tabs-title">
-        <%= link_to deliverable.name, '#' + deliverable_panel_id(deliverable) %>
-      </li>
+    <li class="tabs-title">
+      <%= link_to deliverable.name, '#' + deliverable_panel_id(deliverable) %>
+    </li>
     <% end %>
   </ul>
 
@@ -49,19 +49,19 @@
     </div>
 
     <div class="tabs-panel" id="resource-files-panel">
-      <% unless assignment.files_for(current_user).empty? %>
-        <%= render 'assignment_files/list', assignment: assignment %>
-      <% else %>
-        <p>No files are available at this time.</p>
-      <% end %>
+    <% unless assignment.files_for(current_user).empty? %>
+      <%= render 'assignment_files/list', assignment: assignment %>
+    <% else %>
+      <p>No files are available at this time.</p>
+    <% end %>
     </div>
 
     <% assignment.deliverables.each do |deliverable| %>
-      <div class="tabs-panel" id="<%= deliverable_panel_id(deliverable) %>">
-        <%= render 'deliverables/student_submission_list',
-              deliverable: deliverable,
-              submissions: deliverable.submissions_for(current_user).all %>
-      </div>
+    <div class="tabs-panel" id="<%= deliverable_panel_id(deliverable) %>">
+      <%= render 'deliverables/student_submission_list',
+            deliverable: deliverable,
+            submissions: deliverable.submissions_for(current_user).all %>
+    </div>
     <% end %>
   </div>
 </section>

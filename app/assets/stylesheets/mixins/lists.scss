@@ -1,4 +1,4 @@
-@mixin submission-list-item {
+@mixin tab-panel-list-item {
   @include flex-grid-row(null, null, null, true);
   margin-bottom: 0.5rem;
   padding: 0.2rem 0;

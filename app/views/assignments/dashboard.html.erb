@@ -21,13 +21,11 @@
   <li class="tabs-title is-active">
     <a href="#overview-panel">Overview</a>
   </li>
-
   <% @assignment.deliverables.each do |deliverable| %>
-    <li class="tabs-title">
-      <%= link_to deliverable.name, '#' + deliverable_panel_id(deliverable) %>
-    </li>
+  <li class="tabs-title">
+    <%= link_to deliverable.name, '#' + deliverable_panel_id(deliverable) %>
+  </li>
   <% end %>
-
   <li class="tabs-title">
     <a href="#extensions-panel">Extensions</a>
   </li>
@@ -52,9 +50,9 @@
   </div>
 
   <% @assignment.deliverables.each do |deliverable| %>
-    <div class="tabs-panel" id="<%= deliverable_panel_id(deliverable) %>">
-      <%= render 'assignments/deliverable_dashboard', deliverable: deliverable %>
-    </div>
+  <div class="tabs-panel" id="<%= deliverable_panel_id(deliverable) %>">
+    <%= render 'assignments/deliverable_dashboard', deliverable: deliverable %>
+  </div>
   <% end %>
 
   <div class="tabs-panel" id="extensions-panel">

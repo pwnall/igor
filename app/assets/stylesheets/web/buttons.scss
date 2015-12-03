@@ -1,4 +1,4 @@
-button[type="submit"], td.actions button, .link-button-wrapper > a {
+button[type="submit"], button[type="button"], .link-button-wrapper > a {
   @include button;
   @include button-hollow;
   @include button-hollow-style;
@@ -15,6 +15,9 @@ button[type="submit"], td.actions button, .link-button-wrapper > a {
       @include button-hollow-style($color);
     }
   }
+}
+button[disabled="disabled"] {
+  @include button-disabled;
 }
 span.input-group-button.button > button {
   padding: 0;
