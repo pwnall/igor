@@ -173,7 +173,7 @@ class AssignmentsController < ApplicationController
   def assignment_params
     params.require(:assignment).permit :name, :due_at, :weight, :author_id,
         :team_partition_id, :feedback_survey_id,
-        :published_at, :reset_publish_date, :grades_published,
+        :published_at, :reset_published_at, :grades_published,
         deliverables_attributes: [:name, :file_ext, :_destroy,
             :description, :id, { analyzer_attributes: [:id, :type,
                 :message_name, :auto_grading, :time_limit, :ram_limit,
@@ -182,7 +182,7 @@ class AssignmentsController < ApplicationController
                 :reduce_time_limit, :reduce_ram_limit, :reduce_logs_limit,
                 { db_file_attributes: :f }] } ],
         files_attributes: [:id, :description, :published_at, :_destroy,
-            { db_file_attributes: :f }],
+            :reset_published_at, { db_file_attributes: :f }],
         metrics_attributes: [:name, :max_score, :weight, :id, :_destroy]
     # Note: feedback_survey_id is protected in the model but is allowed here
   end

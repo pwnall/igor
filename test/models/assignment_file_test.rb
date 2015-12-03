@@ -25,9 +25,9 @@ class AssignmentFileTest < ActiveSupport::TestCase
     assert @resource.invalid?
   end
 
-  it 'requires a release time' do
+  it 'does not require a release time' do
     @resource.published_at = nil
-    assert @resource.invalid?
+    assert @resource.valid?
   end
 
   describe '#can_read?' do
@@ -136,6 +136,109 @@ class AssignmentFileTest < ActiveSupport::TestCase
       it 'returns nil if no file has been uploaded' do
         resource.db_file = nil
         assert_nil resource.contents
+      end
+    end
+  end
+
+  describe '#act_on_reset_published_at' do
+    describe 'publish date has not been set yet' do
+      before { resource.update! published_at: nil }
+
+      it 'updates the publish date if :reset_published_at is false' do
+        published_at = 1.day.from_now
+        resource.update! published_at: published_at, reset_published_at: '0'
+        assert_equal published_at, resource.published_at
+      end
+
+      it 'overrides :published_at update if :reset_published_at is true' do
+        resource.update! published_at: 1.day.from_now, reset_published_at: '1'
+        assert_nil resource.published_at
+      end
+    end
+
+    describe 'publish date has been set' do
+      before { assert_not_nil resource.published_at }
+
+      it 'nullifies the publish date if :reset_published_at is true' do
+        resource.update! reset_published_at: '1'
+        assert_nil resource.published_at
+      end
+
+      it 'overrides :published_at update if :reset_published_at is true' do
+        resource.update! published_at: 1.year.ago, reset_published_at: '1'
+        assert_nil resource.published_at
+      end
+
+      it 'does not change :published_at if :reset_published_at is false' do
+        published_at = resource.published_at
+        resource.update! reset_published_at: '0'
+        assert_equal published_at, resource.published_at
+      end
+    end
+  end
+
+  describe '#can_read?' do
+    describe 'the assignment has been published' do
+      before do
+        resource.assignment.update! published_at: 1.week.ago,
+            due_at: 1.day.from_now, grades_published: false
+        assert_equal true, resource.assignment.published?
+      end
+
+      describe 'the file publish date is undecided (nil)' do
+        it 'allows only course editors to view the file' do
+          resource.update! published_at: nil
+          assert_equal false, resource.can_read?(users(:dexter))
+          assert_equal true, resource.can_read?(users(:main_staff))
+        end
+      end
+
+      describe 'the publish date is in the past' do
+        it 'allows anyone to view the file' do
+          resource.update! published_at: 1.day.ago
+          assert_equal true, resource.can_read?(users(:dexter))
+          assert_equal true, resource.can_read?(users(:main_staff))
+        end
+      end
+
+      describe 'the publish date is in the future' do
+        it 'allows only course editors to view the file' do
+          resource.update! published_at: 1.day.from_now
+          assert_equal false, resource.can_read?(users(:dexter))
+          assert_equal true, resource.can_read?(users(:main_staff))
+        end
+      end
+    end
+
+    describe 'the assignment has not been released' do
+      before do
+        resource.assignment.update! published_at: 1.day.from_now,
+            due_at: 1.week.from_now, grades_published: false
+        assert_equal false, resource.assignment.published?
+      end
+
+      describe 'the file publish date is undecided (nil)' do
+        it 'allows only course editors to view the file' do
+          resource.update! published_at: nil
+          assert_equal false, resource.can_read?(users(:dexter))
+          assert_equal true, resource.can_read?(users(:main_staff))
+        end
+      end
+
+      describe 'the publish date is in the past' do
+        it 'allows only course editors to view the file' do
+          resource.update! published_at: 1.day.ago
+          assert_equal false, resource.can_read?(users(:dexter))
+          assert_equal true, resource.can_read?(users(:main_staff))
+        end
+      end
+
+      describe 'the publish date is in the future' do
+        it 'allows only course editors to view the file' do
+          resource.update! published_at: 1.day.from_now
+          assert_equal false, resource.can_read?(users(:dexter))
+          assert_equal true, resource.can_read?(users(:main_staff))
+        end
       end
     end
   end

@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.string   "description",   limit: 64, null: false
     t.integer  "assignment_id",            null: false
     t.integer  "db_file_id",               null: false
-    t.datetime "published_at",             null: false
+    t.datetime "published_at"
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.index ["assignment_id"], name: "index_assignment_files_on_assignment_id", using: :btree

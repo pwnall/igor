@@ -6,7 +6,7 @@
 #  description   :string(64)       not null
 #  assignment_id :integer          not null
 #  db_file_id    :integer          not null
-#  published_at  :datetime         not null
+#  published_at  :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

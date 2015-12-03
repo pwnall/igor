@@ -515,16 +515,16 @@ class AssignmentTest < ActiveSupport::TestCase
       describe 'publish date has not been set yet' do
         before { assignment.update! published_at: nil }
 
-        it 'updates the publish date if :reset_publish_date is false' do
+        it 'updates the publish date if :reset_published_at is false' do
           published_at = 1.day.from_now
           assignment.update! published_at: published_at,
-                             reset_publish_date: '0'
+                             reset_published_at: '0'
           assert_equal published_at, assignment.published_at
         end
 
-        it 'overrides :published_at update if :reset_publish_date is true' do
+        it 'overrides :published_at update if :reset_published_at is true' do
           assignment.update! published_at: 1.day.from_now,
-                             reset_publish_date: '1'
+                             reset_published_at: '1'
           assert_nil assignment.published_at
         end
       end
@@ -532,19 +532,19 @@ class AssignmentTest < ActiveSupport::TestCase
       describe 'publish date has been set' do
         before { assert_not_nil assignment.published_at }
 
-        it 'nullifies the publish date if :reset_publish_date is true' do
-          assignment.update! reset_publish_date: '1'
+        it 'nullifies the publish date if :reset_published_at is true' do
+          assignment.update! reset_published_at: '1'
           assert_nil assignment.published_at
         end
 
-        it 'overrides :published_at update if :reset_publish_date is true' do
-          assignment.update! published_at: 1.year.ago, reset_publish_date: '1'
+        it 'overrides :published_at update if :reset_published_at is true' do
+          assignment.update! published_at: 1.year.ago, reset_published_at: '1'
           assert_nil assignment.published_at
         end
 
-        it 'does not change :published_at if :reset_publish_date is false' do
+        it 'does not change :published_at if :reset_published_at is false' do
           published_at = assignment.published_at
-          assignment.update! reset_publish_date: '0'
+          assignment.update! reset_published_at: '0'
           assert_equal published_at, assignment.published_at
         end
       end
@@ -595,32 +595,32 @@ class AssignmentTest < ActiveSupport::TestCase
       end
     end
 
-    describe '#reset_publish_date' do
+    describe '#reset_published_at' do
       it 'returns true if the author has not chosen a release date' do
         assignment.update! published_at: nil
-        assert_equal true, assignment.reload.reset_publish_date
+        assert_equal true, assignment.reload.reset_published_at
       end
 
       it 'returns false if the author has chosen a release date' do
         assert_not_nil assignment.published_at
-        assert_equal false, assignment.reload.reset_publish_date
+        assert_equal false, assignment.reload.reset_published_at
       end
     end
 
-    describe '#reset_publish_date=' do
-      it "sets :reset_publish_date to true if the argument is '1'" do
-        assert_equal false, assignment.reset_publish_date
-        assignment.update! reset_publish_date: '1'
-        assert_equal true, assignment.reload.reset_publish_date
+    describe '#reset_published_at=' do
+      it "sets :reset_published_at to true if the argument is '1'" do
+        assert_equal false, assignment.reset_published_at
+        assignment.update! reset_published_at: '1'
+        assert_equal true, assignment.reload.reset_published_at
       end
 
-      it "sets :reset_publish_date to false if the argument is '0' and a
+      it "sets :reset_published_at to false if the argument is '0' and a
           new publish date is provided" do
         assignment.update! published_at: nil
-        assert_equal true, assignment.reset_publish_date
+        assert_equal true, assignment.reset_published_at
         assignment.update! published_at: 1.day.from_now,
-                           reset_publish_date: '0'
-        assert_equal false, assignment.reload.reset_publish_date
+                           reset_published_at: '0'
+        assert_equal false, assignment.reload.reset_published_at
       end
     end
 

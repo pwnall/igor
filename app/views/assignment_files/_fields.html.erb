@@ -48,7 +48,15 @@
       <%= f.label :published_at, 'Release date', class: 'text-right middle' %>
     </div>
     <div class="small-6 columns">
-      <%= f.datetime_local_field :published_at, required: true %>
+      <%= f.datetime_local_field :published_at, required: true, data: {
+            pwnfx_disable_positive: 'file-publish-date' } %>
+    </div>
+    <div class="small-3 columns">
+      <%= f.check_box :reset_published_at, data: {
+            pwnfx_disable: 'file-publish-date',
+            pwnfx_disable_scope: 'file',
+            pwnfx_disable_trigger: 'checked' } %>
+      <%= f.label :reset_published_at, 'Undecided', class: 'middle' %>
     </div>
   </div>
 </section>

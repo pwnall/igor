@@ -101,9 +101,9 @@ class Assignment
 
   # Nullify :published_at if the author did not decide a release date.
   def act_on_reset_published_at
-    if @reset_publish_date
+    if @reset_published_at
       self.published_at = nil
-      @reset_publish_date = nil
+      @reset_published_at = nil
     end
   end
   private :act_on_reset_published_at
@@ -134,15 +134,15 @@ class Assignment
   accepts_nested_attributes_for :files, allow_destroy: true
 
   # True if the publish date was omitted (reset to nil) (virtual attribute).
-  def reset_publish_date
+  def reset_published_at
     published_at.nil?
   end
 
   # Store the user's decision to set or omit (reset) the publish date.
   #
   # @param [String] state '0' if setting a date, '1' if omitting
-  def reset_publish_date=(state)
-    @reset_publish_date = state.to_i != 0
+  def reset_published_at=(state)
+    @reset_published_at = ActiveRecord::Type::Boolean.new.cast(state)
   end
 
   # True if the deliverables have been released to students.
