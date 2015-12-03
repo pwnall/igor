@@ -91,17 +91,18 @@ end
 
 group :development, :test do
   gem 'binary_fixtures', '>= 0.1.3'
-  #gem 'turn', '>= 0.9.7'
+  gem 'byebug'
 end
 
 group :development do
+  gem 'web-console', github: 'rails/web-console'
+  gem 'binding_of_caller', '>= 0.7.3.pre1'
+
   gem 'annotate', '>= 2.6.5'
-  gem 'better_errors'
-  gem 'binding_of_caller'
-  gem 'byebug'
   gem 'faker', '>= 1.4.3'
   gem 'railroady', '>= 1.3.0'
   gem 'spring'
+  gem 'listen', '~> 3.0.5'
 end
 
 group :test do
