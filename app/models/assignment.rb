@@ -86,16 +86,8 @@ class Assignment
   end
 end
 
-# :nodoc: grade collection and releasing feature.
+# :nodoc: release cycle.
 class Assignment
-  # The assignment's weight when computing total class scores.
-  #
-  # The weight is relative to the weights of all the other assignments in this
-  # course. So an assignment of weight 3 is weighed 1.5x as heavily as an
-  # assignment of weight 2. If no other assignments are added, the latter
-  # assignment will account for 40% of the student's grade.
-  validates :weight, numericality: { greater_than_or_equal_to: 0 }
-
   # The default time when the deliverables will be released to students.
   validates :released_at, timeliness: { before: :due_at, allow_nil: true }
 
@@ -108,6 +100,34 @@ class Assignment
   end
   private :act_on_reset_released_at
   before_validation :act_on_reset_released_at
+
+  # True if the release date was omitted (reset to nil) (virtual attribute).
+  def reset_released_at
+    released_at.nil?
+  end
+
+  # Store the user's decision to set or omit (reset) the release date.
+  #
+  # @param [String] state '0' if setting a date, '1' if omitting
+  def reset_released_at=(state)
+    @reset_released_at = ActiveRecord::Type::Boolean.new.cast(state)
+  end
+
+  # True if the deliverables have been released to students.
+  def released?
+    !!released_at && (released_at < Time.current)
+  end
+end
+
+# :nodoc: grade collection and releasing.
+class Assignment
+  # The assignment's weight when computing total class scores.
+  #
+  # The weight is relative to the weights of all the other assignments in this
+  # course. So an assignment of weight 3 is weighed 1.5x as heavily as an
+  # assignment of weight 2. If no other assignments are added, the latter
+  # assignment will account for 40% of the student's grade.
+  validates :weight, numericality: { greater_than_or_equal_to: 0 }
 
   # If true, students can see their grades on the assignment.
   validates :grades_released, inclusion: { in: [true, false],
@@ -132,23 +152,6 @@ class Assignment
   has_many :files, inverse_of: :assignment, class_name: 'AssignmentFile',
       dependent: :destroy
   accepts_nested_attributes_for :files, allow_destroy: true
-
-  # True if the release date was omitted (reset to nil) (virtual attribute).
-  def reset_released_at
-    released_at.nil?
-  end
-
-  # Store the user's decision to set or omit (reset) the release date.
-  #
-  # @param [String] state '0' if setting a date, '1' if omitting
-  def reset_released_at=(state)
-    @reset_released_at = ActiveRecord::Type::Boolean.new.cast(state)
-  end
-
-  # True if the deliverables have been released to students.
-  def released?
-    !!released_at && (released_at < Time.current)
-  end
 
   # The resource files for this assignment that are visible to the given user.
   def files_for(user)
