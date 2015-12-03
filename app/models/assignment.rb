@@ -6,6 +6,7 @@
 #  course_id         :integer          not null
 #  author_id         :integer          not null
 #  name              :string(64)       not null
+#  scheduled         :boolean          not null
 #  released_at       :datetime
 #  grades_released   :boolean          not null
 #  weight            :decimal(16, 8)   not null
@@ -30,9 +31,18 @@ class Assignment < ActiveRecord::Base
   belongs_to :author, class_name: 'User'
   validates :author, presence: true
 
-  # True if the given user is allowed to see this assignment.
-  def can_read?(user)
-     released? || can_edit?(user)
+  # True if the given user is allowed to see this assignment's metadata.
+  #
+  # The assignment metadata covers all the scheduling-related information, like
+  # the assignment name, release / due dates, and exam sessions. It does not
+  # cover resources or deliverables.
+  def can_read_schedule?(user)
+    scheduled? || can_edit?(user)
+  end
+
+  # True if the given user is allowed to see all of this assignment's data.
+  def can_read_content?(user)
+    released? || can_edit?(user)
   end
 
   # True if the given student can submit solutions that affect their grade.
@@ -88,6 +98,9 @@ end
 
 # :nodoc: release cycle.
 class Assignment
+  # True if the assignment shows up in the students' calendar.
+  validates :scheduled, inclusion: { in: [true, false], allow_nil: false }
+
   # The default time when the deliverables will be released to students.
   validates :released_at, timeliness: { before: :due_at, allow_nil: true }
 
@@ -114,8 +127,13 @@ class Assignment
   end
 
   # True if the deliverables have been released to students.
+  #
+  # When this is false and scheduled? is true, the students can only see
+  # scheduling-related data, like the assignment name, the release / due dates,
+  # and any exam sessions associated withe assignment. Students cannot see any
+  # deliverables or resources.
   def released?
-    !!released_at && (released_at < Time.current)
+    scheduled? && !!released_at && (released_at < Time.current)
   end
 end
 
@@ -224,8 +242,10 @@ class Assignment
       if deadline_passed_for? user
         :grading
       else
-        :open
+        :unlocked
       end
+    elsif scheduled?
+      :locked
     else
       :draft
     end

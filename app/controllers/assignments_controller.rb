@@ -5,7 +5,7 @@ class AssignmentsController < ApplicationController
   before_action :authenticated_as_course_editor, except: [:index, :show]
   before_action :authenticated_as_user, only: [:index, :show]
   before_action :set_assignment, only: [:show, :edit, :update, :destroy,
-      :release, :unrelease, :release_grades]
+      :schedule, :deschedule, :release, :unrelease, :release_grades]
 
   # GET /6.006/assignments
   # GET /6.006/assignments.json
@@ -20,7 +20,7 @@ class AssignmentsController < ApplicationController
 
   # GET /6.006/assignments/1
   def show
-    return bounce_user unless @assignment.can_read? current_user
+    return bounce_user unless @assignment.can_read_schedule? current_user
 
     respond_to do |format|
       format.html  # show.html.erb
@@ -56,6 +56,7 @@ class AssignmentsController < ApplicationController
   def create
     @assignment = Assignment.new assignment_params
     @assignment.course = current_course
+    @assignment.scheduled = false
     @assignment.grades_released = false
 
     respond_to do |format|
@@ -99,20 +100,60 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # PATCH /6.006/assignments/1/release
-  def release
+  # PATCH /6.006/assignments/1/schedule
+  def schedule
     respond_to do |format|
-      if @assignment.update released_at: Time.current
+      if @assignment.update scheduled: true
         format.html do
           redirect_to dashboard_assignment_url(@assignment,
                                                course_id: @assignment.course),
-              notice: 'Assignment released.'
+              notice: 'Assignment is now visible to students.'
         end
       else
         format.html do
           redirect_to dashboard_assignment_url(@assignment,
                                                course_id: @assignment.course),
-              notice: 'Assignment could not be released.'
+              notice: 'Assignment could not be made visible to students.'
+        end
+      end
+    end
+  end
+
+  # PATCH /6.006/assignments/1/deschedule
+  def deschedule
+    respond_to do |format|
+      if @assignment.update scheduled: false, grades_released: false
+        format.html do
+          redirect_to dashboard_assignment_url(@assignment,
+                                               course_id: @assignment.course),
+              notice: 'Assignment hidden from students.'
+        end
+      else
+        format.html do
+          redirect_to dashboard_assignment_url(@assignment,
+                                               course_id: @assignment.course),
+              notice: 'Assignment could not be hidden from students.'
+        end
+      end
+    end
+  end
+
+  # PATCH /6.006/assignments/1/release
+  def release
+    respond_to do |format|
+      @assignment.scheduled = true
+      @assignment.released_at = Time.current unless @assignment.released?
+      if @assignment.save
+        format.html do
+          redirect_to dashboard_assignment_url(@assignment,
+                                               course_id: @assignment.course),
+              notice: 'Assignment unlocked.'
+        end
+      else
+        format.html do
+          redirect_to dashboard_assignment_url(@assignment,
+                                               course_id: @assignment.course),
+              notice: 'Assignment could not be unlocked.'
         end
       end
     end
@@ -120,21 +161,18 @@ class AssignmentsController < ApplicationController
 
   # PATCH /6.006/assignments/1/unrelease
   def unrelease
-    @assignment.released_at = nil
-    @assignment.grades_released = false
-
     respond_to do |format|
-      if @assignment.save
+      if @assignment.update released_at: nil, grades_released: false
         format.html do
           redirect_to dashboard_assignment_url(@assignment,
                                                course_id: @assignment.course),
-              notice: 'Assignment pulled.'
+              notice: 'Assignment locked.'
         end
       else
         format.html do
           redirect_to dashboard_assignment_url(@assignment,
                                                course_id: @assignment.course),
-              notice: 'Assignment could not be pulled.'
+              notice: 'Assignment could not be locked.'
         end
       end
     end
@@ -142,6 +180,7 @@ class AssignmentsController < ApplicationController
 
   # PATCH /6.006/assignments/1/release_grades
   def release_grades
+    @assignment.scheduled = true
     @assignment.released_at = Time.current unless @assignment.released?
     @assignment.grades_released = true
 
@@ -150,13 +189,13 @@ class AssignmentsController < ApplicationController
         format.html do
           redirect_to dashboard_assignment_url(@assignment,
                                                course_id: @assignment.course),
-              notice: 'Grades released.'
+              notice: 'Grades are now visible to students.'
         end
       else
         format.html do
           redirect_to dashboard_assignment_url(@assignment,
                                                course_id: @assignment.course),
-              notice: 'Grades could not be released.'
+              notice: 'Grades could not be made visible to students.'
         end
       end
     end
@@ -173,7 +212,7 @@ class AssignmentsController < ApplicationController
   def assignment_params
     params.require(:assignment).permit :name, :due_at, :weight, :author_id,
         :team_partition_id, :feedback_survey_id,
-        :released_at, :reset_released_at, :grades_released,
+        :scheduled, :released_at, :reset_released_at, :grades_released,
         deliverables_attributes: [:name, :file_ext, :_destroy,
             :description, :id, { analyzer_attributes: [:id, :type,
                 :message_name, :auto_grading, :time_limit, :ram_limit,

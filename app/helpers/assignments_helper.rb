@@ -143,10 +143,16 @@ module AssignmentsHelper
     } + content_tag(:span, title)
   end
 
+  # The confirmation message when de-scheduling an assignment.
+  def deschedule_confirmation(assignment)
+    'This assignment will completely disappear from student views. ' +
+      'Expect confusion. Continue?'
+  end
+
   # The confirmation message when unreleasing an assignment.
   def unrelease_confirmation(assignment)
     if assignment.grades_released? && assignment.grades.count > 0
-      'Any grades for this assignment will also be pulled. Continue?'
+      'Any grades for this assignment will also be hidden. Continue?'
     end
   end
 
@@ -155,7 +161,7 @@ module AssignmentsHelper
   # A message is shown only if the assignment has unreleased deliverables.
   def release_grades_confirmation(assignment)
     if !assignment.released? && assignment.deliverables.count > 0
-      'The deliverables for this assignment will also be released. Continue?'
+      'The deliverables for this assignment will also be opened for submission. Continue?'
     end
   end
 end

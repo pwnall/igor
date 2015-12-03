@@ -1,19 +1,43 @@
+<% unless assignment.scheduled? %>
+  <%= form_for assignment, url: schedule_assignment_path(assignment,
+        course_id: assignment.course), method: :patch,
+        html: { class: 'assignment-schedule-form' } do |f| %>
+    <%= f.button type: :submit do %>
+      <%= show_icon_tag %> Publish schedule
+    <% end %>
+  <% end %>
+<% end %>
+
+<% unless assignment.released? %>
+  <%= form_for assignment, url: release_assignment_path(assignment,
+        course_id: assignment.course), method: :patch,
+        html: { class: 'assignment-release-form' } do |f| %>
+      <%= f.button type: :submit, data: { confirm:
+            "Students will be able to see this assignment's resources and deliverables. Continue?" } do %>
+      <%= release_icon_tag %> Open for submissions
+    <% end %>
+  <% end %>
+<% end %>
+
 <% if assignment.released? %>
   <%= form_for assignment, url: unrelease_assignment_path(assignment,
         course_id: assignment.course), method: :patch,
         html: { class: 'assignment-pull-form' } do |f| %>
     <%= f.button type: :submit,
           data: { confirm: unrelease_confirmation(assignment) } do %>
-      <%= pull_icon_tag %> Pull
-    <% end %>
-  <% end %>
-<% else %>
-  <%= form_for assignment, url: release_assignment_path(assignment,
-        course_id: assignment.course), method: :patch,
-        html: { class: 'assignment-release-form' } do |f| %>
-    <%= f.button type: :submit, data: {
-          confirm: 'Students will be able to see this assignment. Continue?' } do %>
-      <%= release_icon_tag %> Release
+      <%= pull_icon_tag %> Lock submissions
     <% end %>
   <% end %>
 <% end %>
+
+<% if assignment.scheduled? %>
+  <%= form_for assignment, url: deschedule_assignment_path(assignment,
+        course_id: assignment.course), method: :patch,
+        html: { class: 'assignment-schedule-form' } do |f| %>
+    <%= f.button type: :submit,
+          data: { confirm: deschedule_confirmation(assignment) } do %>
+      <%= hide_icon_tag %> Hide everything
+    <% end %>
+  <% end %>
+<% end %>
+

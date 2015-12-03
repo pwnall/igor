@@ -157,7 +157,7 @@ class Course
 
   # The assignments in this course that are visible to the given user.
   def assignments_for(user)
-    assignments.by_deadline.select { |a| a.can_read? user }
+    assignments.by_deadline.select { |a| a.can_read_schedule? user }
   end
 
   # The deadlines for all assignments and surveys in this course.

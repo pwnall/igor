@@ -87,7 +87,15 @@ module IconsHelper
 
   # Shown on buttons that release some data to the public.
   def release_icon_tag
-    fa_icon :unlock, title: 'Ship it!'
+    fa_icon :'unlock-alt', title: 'Ship it!'
+  end
+
+  def show_icon_tag
+    fa_icon :eye, title: 'Make visible'
+  end
+
+  def hide_icon_tag
+    fa_icon :'eye-slash', title: 'Hide previously visible data'
   end
 
   # Shown on buttons that pull back previously released data.
@@ -138,10 +146,13 @@ module IconsHelper
   def assignment_state_icon_tag(state = :open)
     case state
     when :draft
-      title = 'Under construction'
+      title = 'Hidden from students'
+      icon_name = :'eye-slash'
+    when :locked
+      title = 'Not open for submissions'
       icon_name = :lock
-    when :open
-      title = 'Accepting submissions'
+    when :unlocked
+      title = 'Open for submissions'
       icon_name = :inbox
     when :grading
       title = 'Grading in progress'
@@ -150,7 +161,7 @@ module IconsHelper
       title = 'Grades released'
       icon_name = :'check-square-o'
     else
-      raise "Unknown state ${state}"
+      raise "Unknown state #{state}"
     end
     fa_icon icon_name, title: title, class: "#{state} fa-fw"
   end

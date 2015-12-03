@@ -71,6 +71,53 @@ class SubmissionsControllerTest < ActionController::TestCase
           assert_redirected_to @controller.deliverable_panel_url(@deliverable)
         end
       end
+
+      describe 'the assignment is locked' do
+        before do
+          @submission.assignment.update! released_at: 1.year.from_now,
+              due_at: 2.years.from_now
+        end
+
+        it 'does not queue anything for analysis' do
+          assert_enqueued_jobs 0 do
+            post :create, params: create_params
+          end
+        end
+
+        it 'does not create any submission' do
+          assert_no_difference 'Submission.count' do
+            post :create, params: create_params
+          end
+        end
+
+        it 'bounces the user' do
+          post :create, params: create_params
+          assert_response :forbidden
+        end
+      end
+
+      describe 'the assignment is not scheduled' do
+        before do
+          @submission.assignment.update! scheduled: false
+        end
+
+        it 'does not queue anything for analysis' do
+          assert_enqueued_jobs 0 do
+            post :create, params: create_params
+          end
+        end
+
+        it 'does not create any submission' do
+          assert_no_difference 'Submission.count' do
+            post :create, params: create_params
+          end
+        end
+
+        it 'bounces the user' do
+          post :create, params: create_params
+          assert_response :forbidden
+        end
+      end
     end
 
     describe 'POST #promote' do
@@ -104,6 +151,29 @@ class SubmissionsControllerTest < ActionController::TestCase
           assignment.update! released_at: nil, due_at: 10.years.ago
           assignment.extensions.where(user: user).destroy_all
           assert_equal true, assignment.reload.deadline_passed_for?(user)
+        end
+
+        it 'forbids the student from changing their submission' do
+          post :promote, params: member_params
+          assert_response :forbidden
+        end
+      end
+
+      describe 'the assignment is locked' do
+        before do
+          @submission.assignment.update! released_at: 1.year.from_now,
+              due_at: 2.years.from_now
+        end
+
+        it 'forbids the student from changing their submission' do
+          post :promote, params: member_params
+          assert_response :forbidden
+        end
+      end
+
+      describe 'the assignment is not scheduled' do
+        before do
+          @submission.assignment.update! scheduled: false
         end
 
         it 'forbids the student from changing their submission' do

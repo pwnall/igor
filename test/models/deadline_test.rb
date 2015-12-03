@@ -4,7 +4,7 @@ class DeadlineTest < ActiveSupport::TestCase
   before do
     @course = courses(:main)
     assignment_params = { name: 'PS1', author: users(:main_staff), weight: 1,
-        released_at: 1.week.ago, grades_released: false }
+        scheduled: true, released_at: 1.week.ago, grades_released: false }
     @assignment = @course.assignments.build assignment_params
     @deadline = @assignment.build_deadline due_at: Time.current
   end

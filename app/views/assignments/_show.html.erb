@@ -25,6 +25,7 @@
     <li class="tabs-title is-active">
       <a href="#overview-panel">Overview</a>
     </li>
+    <% if assignment.can_read_content? current_user %>
     <li class="tabs-title">
       <a href="#resource-files-panel">Resource Files</a>
     </li>
@@ -33,12 +34,14 @@
       <%= link_to deliverable.name, '#' + deliverable_panel_id(deliverable) %>
     </li>
     <% end %>
+    <% end %>
   </ul>
 
   <div class="tabs-content" data-tabs-content="submission-dashboard-tabs">
     <div class="tabs-panel is-active" id="overview-panel">
       <%= render 'assignments/deadline', assignment: assignment %>
 
+      <% if assignment.can_read_content? current_user %>
       <ul class="deliverables no-bullet">
       <% assignment.deliverables_for(current_user).each do |deliverable| %>
         <li id="deliverable-<%= deliverable.to_param %>-submission">
@@ -46,8 +49,10 @@
         </li>
       <% end %>
       </ul>
+      <% end %>
     </div>
 
+    <% if assignment.can_read_content? current_user %>
     <div class="tabs-panel" id="resource-files-panel">
     <% unless assignment.files_for(current_user).empty? %>
       <%= render 'assignment_files/list', assignment: assignment %>
@@ -62,6 +67,7 @@
             deliverable: deliverable,
             submissions: deliverable.submissions_for(current_user).all %>
     </div>
+    <% end %>
     <% end %>
   </div>
 </section>

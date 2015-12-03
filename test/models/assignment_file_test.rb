@@ -40,17 +40,30 @@ class AssignmentFileTest < ActiveSupport::TestCase
         before { assert_equal true, resource.assignment.released? }
 
         it 'lets any user view the file' do
-          assert_equal true, resource.assignment.can_read?(any_user)
+          assert_equal true, resource.assignment.can_read_content?(any_user)
           assert_equal true, resource.can_read?(any_user)
           assert_equal true, resource.can_read?(nil)
         end
       end
 
-      describe 'the assignment has not been released yet' do
+      describe 'the assignment is locked' do
         before { resource.update! assignment: assignments(:project) }
 
         it 'lets only course/site admins view the file' do
-          assert_equal false, resource.assignment.can_read?(any_user)
+          assert_equal true, resource.assignment.can_read_schedule?(any_user)
+          assert_equal false, resource.assignment.can_read_content?(any_user)
+          assert_equal false, resource.can_read?(any_user)
+          assert_equal true, resource.can_read?(users(:main_staff))
+          assert_equal true, resource.can_read?(users(:admin))
+        end
+      end
+
+      describe 'the assignment has not been scheduled' do
+        before { resource.update! assignment: assignments(:main_exam_2) }
+
+        it 'lets only course/site admins view the file' do
+          assert_equal false, resource.assignment.can_read_schedule?(any_user)
+          assert_equal false, resource.assignment.can_read_content?(any_user)
           assert_equal false, resource.can_read?(any_user)
           assert_equal true, resource.can_read?(users(:main_staff))
           assert_equal true, resource.can_read?(users(:admin))

@@ -6,6 +6,7 @@
 #  course_id         :integer          not null
 #  author_id         :integer          not null
 #  name              :string(64)       not null
+#  scheduled         :boolean          not null
 #  released_at       :datetime
 #  grades_released   :boolean          not null
 #  weight            :decimal(16, 8)   not null
@@ -20,6 +21,7 @@ ps1:
   name: PSet 1
   team_partition: psets
   weight: 1.0
+  scheduled: true
   released_at: <%= 3.weeks.ago.to_s(:db) %>
   grades_released: true
 
@@ -29,6 +31,7 @@ ps2:
   name: PSet 2
   team_partition: psets
   weight: 1.0
+  scheduled: true
   released_at: <%= 2.weeks.ago.to_s(:db) %>  # should be in the past
   grades_released: true  # should be true
 
@@ -38,6 +41,7 @@ ps3:
   name: PSet 3
   team_partition: psets
   weight: 1.0
+  scheduled: true
   released_at: <%= 1.week.ago.to_s(:db) %>  # should be in the past
   grades_released: false
 
@@ -47,6 +51,7 @@ project:
   name: Final Project
   team_partition: project
   weight: 5.0
+  scheduled: true
   released_at: <%= 1.month.from_now.to_s(:db) %>
   grades_released: false
 
@@ -55,6 +60,7 @@ assessment:
   course: main
   name: Individual Assessment
   weight: 0.0
+  scheduled: true
   released_at: <%= 2.weeks.ago.to_s(:db) %>
   grades_released: false
 
@@ -63,6 +69,7 @@ main_exam:
   course: main
   name: Exam 1
   weight: 1.0
+  scheduled: true
   released_at: <%= 1.day.from_now.to_s(:db) %>  # should be in the future
   grades_released: false
 
@@ -71,6 +78,7 @@ main_exam_2:
   course: main
   name: Exam 2
   weight: 1.0
+  scheduled: false
   released_at:
   grades_released: false
 
@@ -80,5 +88,6 @@ not_main_exam:
   course: not_main
   name: Quiz 1
   weight: 10.0
+  scheduled: true
   released_at: <%= 1.week.ago.to_s(:db) %>
   grades_released: false

@@ -15,10 +15,10 @@
         @include flex-grid-column(shrink, 0);
         font-size: 1.3em;
 
-        .draft, .graded {
+        .draft, .locked, .graded {
           color: desaturate($secondary-color, 20%);
         }
-        .open {
+        .unlocked {
           color: desaturate($success-color, 20%);
         }
         .grading {

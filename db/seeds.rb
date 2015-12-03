@@ -207,14 +207,14 @@ docker_analyzer_params = { type: 'DockerAnalyzer', map_time_limit: '2',
     f: fixture_file_upload(docker_analyzer_file, 'application/zip', :binary) } }
 
 pset_data = [
-  { due_at: -12.weeks - 1.day, grades_released: true, state: :graded },
-  { due_at: -9.weeks - 1.day, grades_released: true, state: :graded },
-  { due_at: -6.weeks - 1.day, grades_released: true, state: :graded },
-  { due_at: -3.weeks - 1.day, grades_released: false, state: :grading },
-  { due_at: -1.day, grades_released: false, state: :grading },
-  { due_at: 1.week - 1.day, grades_released: false, state: :open },
-  { due_at: 6.weeks - 1.day, grades_released: false, state: :draft },
-  { due_at: 9.weeks - 1.day, grades_released: false, state: :draft }
+  { due_at: -12.weeks - 1.day, grades_released: true, scheduled: true },
+  { due_at: -9.weeks - 1.day, grades_released: true, scheduled: true },
+  { due_at: -6.weeks - 1.day, grades_released: true, scheduled: true },
+  { due_at: -3.weeks - 1.day, grades_released: false, scheduled: true },
+  { due_at: -1.day, grades_released: false, scheduled: true },
+  { due_at: 1.week - 1.day, grades_released: false, scheduled: true },
+  { due_at: 6.weeks - 1.day, grades_released: false, scheduled: true },
+  { due_at: 9.weeks - 1.day, grades_released: false, scheduled: false },
 ]
 
 psets = pset_data.map.with_index do |data, index|
@@ -224,6 +224,7 @@ psets = pset_data.map.with_index do |data, index|
   pset.build_deadline due_at: (base_time + data[:due_at]), course: course
   pset.released_at = pset.due_at - 1.week
   pset.grades_released = data[:grades_released]
+  pset.scheduled = data[:scheduled]
   pset.save!
   (1..(2 + i)).map do |j|
     pset.metrics.create! name: "Problem #{j}", weight: rand(20),

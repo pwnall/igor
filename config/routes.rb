@@ -101,6 +101,8 @@ Rails.application.routes.draw do
     resources :assignments do
       member do
         get :dashboard
+        patch :schedule
+        patch :deschedule
         patch :release
         patch :unrelease
         patch :release_grades

@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.integer  "course_id",                                             null: false
     t.integer  "author_id",                                             null: false
     t.string   "name",              limit: 64,                          null: false
+    t.boolean  "scheduled",                                             null: false
     t.datetime "released_at"
     t.boolean  "grades_released",                                       null: false
     t.decimal  "weight",                       precision: 16, scale: 8, null: false

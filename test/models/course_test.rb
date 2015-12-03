@@ -263,8 +263,9 @@ class CourseTest < ActiveSupport::TestCase
       end
 
       describe 'the given user is not a site or course admin' do
-        it 'returns released assignments, ordered by deadline' do
-          golden = assignments(:assessment, :ps3, :ps2, :ps1)
+        it 'returns scheduled assignments, ordered by deadline' do
+          golden = assignments(:project, :assessment, :ps3, :main_exam, :ps2,
+                               :ps1)
           actual = course.assignments_for users(:dexter)
           assert_equal golden, actual, actual.map(&:name)
         end

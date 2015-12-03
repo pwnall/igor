@@ -5,7 +5,7 @@ class AssignmentTest < ActiveSupport::TestCase
     @due_at = 1.week.from_now.round 0  # Remove sub-second information.
     @assignment = Assignment.new course: courses(:main), name: 'Final Exam',
         author: users(:main_staff), due_at: @due_at, weight: 50,
-        released_at: 1.week.ago, grades_released: false
+        scheduled: true, released_at: 1.week.ago, grades_released: false
   end
 
   let(:assignment) { assignments(:assessment) }
@@ -46,24 +46,73 @@ class AssignmentTest < ActiveSupport::TestCase
       assert @assignment.invalid?
     end
 
-    describe '#can_read?' do
-      it 'lets any user view assignment if deliverables have been released' do
+    it 'requires a scheduled flag' do
+      @assignment.scheduled = nil
+      assert @assignment.invalid?
+    end
+
+    it 'accepts having scheduled set to false' do
+      @assignment.scheduled = false
+      assert @assignment.valid?, @assignment.errors.full_messages
+    end
+
+    describe '#can_read_schedule?' do
+      it 'lets any user see assignment if deliverables have been released' do
         assert_equal true, assignment.released?
-        assert_equal true, assignment.can_read?(any_user)
-        assert_equal true, assignment.can_read?(nil)
+        assert_equal true, assignment.can_read_schedule?(any_user)
+        assert_equal true, assignment.can_read_schedule?(nil)
       end
 
-      it 'lets any user view assignment if grades have been released' do
+      it 'lets any user see assignment if grades have been released' do
         assignment.update! grades_released: true
-        assert_equal true, assignment.can_read?(any_user)
-        assert_equal true, assignment.can_read?(nil)
+        assert_equal true, assignment.can_read_schedule?(any_user)
+        assert_equal true, assignment.can_read_schedule?(nil)
       end
 
-      it 'lets only admin view assignments under construction' do
+      it 'lets any user see locked assignments' do
         assignment.update! released_at: 1.day.from_now, grades_released: false
-        assert_equal true, assignment.can_read?(admin)
-        assert_equal false, assignment.can_read?(any_user)
-        assert_equal false, assignment.can_read?(nil)
+        assert_equal true, assignment.can_read_schedule?(any_user)
+        assert_equal true, assignment.can_read_schedule?(nil)
+      end
+
+      it 'only lets course staff see un-scheduled assignments' do
+        assert_equal true, assignment.released?
+        assignment.update! scheduled: false, grades_released: false
+        assert_equal true, assignment.can_read_schedule?(admin)
+        assert_equal true, assignment.can_read_schedule?(users(:main_staff))
+        assert_equal false, assignment.can_read_schedule?(any_user)
+        assert_equal false, assignment.can_read_schedule?(nil)
+      end
+    end
+
+    describe '#can_read_content?' do
+      it 'lets any user read assignment if deliverables have been released' do
+        assert_equal true, assignment.released?
+        assert_equal true, assignment.can_read_content?(any_user)
+        assert_equal true, assignment.can_read_content?(nil)
+      end
+
+      it 'lets any user read assignment if grades have been released' do
+        assignment.update! grades_released: true
+        assert_equal true, assignment.can_read_content?(any_user)
+        assert_equal true, assignment.can_read_content?(nil)
+      end
+
+      it 'only lets course staff read locked assignments' do
+        assignment.update! released_at: 1.day.from_now, grades_released: false
+        assert_equal true, assignment.can_read_content?(admin)
+        assert_equal true, assignment.can_read_content?(users(:main_staff))
+        assert_equal false, assignment.can_read_content?(any_user)
+        assert_equal false, assignment.can_read_content?(nil)
+      end
+
+      it 'only lets course staff read un-scheduled assignments' do
+        assert_equal true, assignment.released?
+        assignment.update! scheduled: false, grades_released: false
+        assert_equal true, assignment.can_read_content?(admin)
+        assert_equal true, assignment.can_read_content?(users(:main_staff))
+        assert_equal false, assignment.can_read_content?(any_user)
+        assert_equal false, assignment.can_read_content?(nil)
       end
     end
 
@@ -124,8 +173,31 @@ class AssignmentTest < ActiveSupport::TestCase
         end
       end
 
-      describe 'assignment has not been released' do
-        before { assignment.update! released_at: 1.day.from_now }
+      describe 'assignment is locked' do
+        before do
+          assignment.update! scheduled: true, released_at: 1.day.from_now
+        end
+
+        describe 'neither original deadline nor extension, if any, passed' do
+          before do
+            assert_equal false, assignment.deadline_passed_for?(student)
+          end
+
+          it 'returns false for all users' do
+            assert_equal false,
+                assignment.can_student_submit?(student)
+            assert_equal false, assignment.can_student_submit?(nil)
+            assert_equal false,
+                assignment.can_student_submit?(users(:main_staff))
+            assert_equal false, assignment.can_student_submit?(admin)
+          end
+        end
+      end
+
+      describe 'assignment is not scheduled' do
+        before do
+          assignment.update! scheduled: false, released_at: 1.day.ago
+        end
 
         describe 'neither original deadline nor extension, if any, passed' do
           before do
@@ -199,8 +271,29 @@ class AssignmentTest < ActiveSupport::TestCase
         end
       end
 
-      describe 'assignment has not been released' do
-        before { assignment.update! released_at: 1.day.from_now }
+      describe 'assignment is locked' do
+        before do
+          assignment.update! scheduled: true, released_at: 1.day.from_now
+        end
+
+        describe 'neither original deadline nor extension, if any, passed' do
+          before do
+            assert_equal false, assignment.deadline_passed_for?(student)
+          end
+
+          it 'lets only course/site admins submit' do
+            assert_equal false, assignment.can_submit?(student)
+            assert_equal false, assignment.can_submit?(nil)
+            assert_equal true, assignment.can_submit?(users(:main_staff))
+            assert_equal true, assignment.can_submit?(admin)
+          end
+        end
+      end
+
+      describe 'assignment is not scheduled' do
+        before do
+          assignment.update! scheduled: false, released_at: 1.day.ago
+        end
 
         describe 'neither original deadline nor extension, if any, passed' do
           before do
@@ -749,14 +842,25 @@ class AssignmentTest < ActiveSupport::TestCase
 
   describe 'lifecycle' do
     describe '#ui_state_for' do
-      describe 'deliverables not released' do
+      describe 'not scheduled' do
         before do
-          assignment.update! released_at: 1.week.from_now,
+          assignment.update! scheduled: false, released_at: 1.week.ago,
               due_at: 2.weeks.from_now, grades_released: false
         end
 
         it 'returns :draft' do
           assert_equal :draft, assignment.reload.ui_state_for(student)
+        end
+      end
+
+      describe 'locked' do
+        before do
+          assignment.update! scheduled: true, released_at: 1.week.from_now,
+              due_at: 2.weeks.from_now, grades_released: false
+        end
+
+        it 'returns :locked' do
+          assert_equal :locked, assignment.reload.ui_state_for(student)
         end
       end
 
@@ -771,8 +875,8 @@ class AssignmentTest < ActiveSupport::TestCase
               assert_equal false, assignment.deadline_passed_for?(student)
             end
 
-            it 'returns :open' do
-              assert_equal :open, assignment.ui_state_for(student)
+            it 'returns :unlocked' do
+              assert_equal :unlocked, assignment.ui_state_for(student)
             end
           end
 

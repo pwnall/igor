@@ -4,6 +4,7 @@ class CreateAssignments < ActiveRecord::Migration
       t.references :course, null: false
       t.references :author, null: false
       t.string :name, limit: 64, null: false
+      t.boolean :scheduled, null: false
       t.datetime :released_at, null: true
       t.boolean :grades_released, null: false
       t.decimal :weight, precision: 16, scale: 8, null: false
