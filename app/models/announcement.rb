@@ -12,7 +12,7 @@
 #  updated_at       :datetime         not null
 #
 
-# An announcement published to the entire class.
+# An announcement released to the entire class.
 class Announcement < ActiveRecord::Base
   # The post's author.
   belongs_to :author, class_name: 'User'

@@ -41,7 +41,7 @@ class SurveysController < ApplicationController
   def create
     @survey = Survey.new survey_params
     @survey.course = current_course
-    @survey.published = false
+    @survey.released = false
 
     respond_to do |format|
       if @survey.save
@@ -95,7 +95,7 @@ class SurveysController < ApplicationController
   #     hash since accepts_nested_attributes_for checks that each nested record
   #     actually belongs to the parent record.
   def survey_params
-    params.require(:survey).permit :name, :published, :due_at,
+    params.require(:survey).permit :name, :released, :due_at,
         questions_attributes: [:id, :prompt, :_destroy, :type, :step_size,
         :allows_comments, :scaled, :scale_min, :scale_max, :scale_min_label,
         :scale_max_label ]

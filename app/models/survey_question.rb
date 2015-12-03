@@ -33,6 +33,6 @@ class SurveyQuestion < ActiveRecord::Base
 
   # True if the given user should be able to submit responses to this question.
   def can_answer?(user)
-    (!!user && survey.published?) || survey.can_edit?(user)
+    (!!user && survey.released?) || survey.can_edit?(user)
   end
 end

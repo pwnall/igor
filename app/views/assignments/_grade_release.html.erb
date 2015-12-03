@@ -1,14 +1,14 @@
 <span class="link-button-wrapper">
-  <% if assignment.grades_published? %>
+  <% if assignment.grades_released? %>
     <%= link_to assignment_path(assignment, course_id: assignment.course,
-          assignment: { grades_published: false }), method: :put,
+          assignment: { grades_released: false }), method: :put,
           data: { confirm: "Pull #{assignment.name} grades?" } do %>
       <%= pull_icon_tag %> Pull Grades
     <% end %>
   <% elsif assignment.grades.length > 0 %>
-    <%= link_to publish_grades_assignment_path(assignment,
+    <%= link_to release_grades_assignment_path(assignment,
           course_id: assignment.course), method: :patch,
-          data: { confirm: publish_grades_confirmation(assignment) } do %>
+          data: { confirm: release_grades_confirmation(assignment) } do %>
       <%= release_icon_tag %> Release Grades
     <% end %>
   <% end %>

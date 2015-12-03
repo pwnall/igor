@@ -7,7 +7,7 @@
 #  author_id         :integer          not null
 #  name              :string(64)       not null
 #  released_at       :datetime
-#  grades_published  :boolean          not null
+#  grades_released   :boolean          not null
 #  weight            :decimal(16, 8)   not null
 #  team_partition_id :integer
 #  created_at        :datetime         not null
@@ -32,7 +32,7 @@ class Assignment < ActiveRecord::Base
 
   # True if the given user is allowed to see this assignment.
   def can_read?(user)
-     published? || can_edit?(user)
+     released? || can_edit?(user)
   end
 
   # True if the given student can submit solutions that affect their grade.
@@ -40,7 +40,7 @@ class Assignment < ActiveRecord::Base
   # NOTE: This method is only meant to check submission permissions for
   #   students, and will not grant site/course admins extra privileges.
   def can_student_submit?(student)
-    published? && !deadline_passed_for?(student)
+    released? && !deadline_passed_for?(student)
   end
 
   # True if the given user is allowed to submit solutions for this assignment.
@@ -75,7 +75,7 @@ class Assignment
   # NOTE: The user will not be able to submit files if the assignment's due date
   #   has passed for them.
   def deliverables_for(user)
-    (published? || can_edit?(user)) ? deliverables : deliverables.none
+    (released? || can_edit?(user)) ? deliverables : deliverables.none
   end
 
   # Number of submissions that will be received for this assignment.
@@ -86,7 +86,7 @@ class Assignment
   end
 end
 
-# :nodoc: grade collection and publishing feature.
+# :nodoc: grade collection and releasing feature.
 class Assignment
   # The assignment's weight when computing total class scores.
   #
@@ -110,10 +110,10 @@ class Assignment
   before_validation :act_on_reset_released_at
 
   # If true, students can see their grades on the assignment.
-  validates :grades_published, inclusion: { in: [true, false],
+  validates :grades_released, inclusion: { in: [true, false],
                                             allow_nil: false }
-  validates_each :grades_published do |record, attr, value|
-    if value && !record.published?
+  validates_each :grades_released do |record, attr, value|
+    if value && !record.released?
       record.errors.add attr, "must be false if the release date hasn't passed"
     end
   end
@@ -133,12 +133,12 @@ class Assignment
       dependent: :destroy
   accepts_nested_attributes_for :files, allow_destroy: true
 
-  # True if the publish date was omitted (reset to nil) (virtual attribute).
+  # True if the release date was omitted (reset to nil) (virtual attribute).
   def reset_released_at
     released_at.nil?
   end
 
-  # Store the user's decision to set or omit (reset) the publish date.
+  # Store the user's decision to set or omit (reset) the release date.
   #
   # @param [String] state '0' if setting a date, '1' if omitting
   def reset_released_at=(state)
@@ -146,7 +146,7 @@ class Assignment
   end
 
   # True if the deliverables have been released to students.
-  def published?
+  def released?
     !!released_at && (released_at < Time.current)
   end
 
@@ -215,9 +215,9 @@ class Assignment
   # :grading -- the assignment doesn't accept submissions, grades are not ready
   # :graded -- grades have been released to students
   def ui_state_for(user)
-    if grades_published?
+    if grades_released?
       :graded
-    elsif published?
+    elsif released?
       if deadline_passed_for? user
         :grading
       else

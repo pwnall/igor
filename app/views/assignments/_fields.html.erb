@@ -14,11 +14,11 @@
   </div>
   <div class="small-6 columns">
     <%= f.datetime_local_field :released_at, data: {
-          pwnfx_scope: 'publish', pwnfx_disable_positive: 'publish-p' } %>
+          pwnfx_scope: 'release', pwnfx_disable_positive: 'release-p' } %>
   </div>
   <div class="small-3 columns">
-    <%= f.check_box :reset_released_at, data: { pwnfx_disable: 'publish-p',
-          pwnfx_disable_scope: 'publish', pwnfx_disable_trigger: 'checked' } %>
+    <%= f.check_box :reset_released_at, data: { pwnfx_disable: 'release-p',
+          pwnfx_disable_scope: 'release', pwnfx_disable_trigger: 'checked' } %>
     <%= f.label :reset_released_at, 'Undecided', class: 'middle' %>
   </div>
 </div>

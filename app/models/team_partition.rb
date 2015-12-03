@@ -9,7 +9,7 @@
 #  max_size   :integer          not null
 #  automated  :boolean          default(TRUE), not null
 #  editable   :boolean          default(TRUE), not null
-#  published  :boolean          default(FALSE), not null
+#  released   :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -24,7 +24,7 @@ class TeamPartition < ActiveRecord::Base
   validates :name, length: 1..64, presence: true, uniqueness: [scope: :course]
 
   # True if this partitioning is visible to the students.
-  validates :published, inclusion: { in: [true, false], allow_nil: false }
+  validates :released, inclusion: { in: [true, false], allow_nil: false }
 
   # True if this partitioning was automatically generated. If false, the
   # students are allowed to pair up via a Web UI.

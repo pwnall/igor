@@ -16,7 +16,7 @@ class AssignmentsControllerTest < ActionController::TestCase
       it 'renders all assignments with released grades/deliverables' do
         get :index, params: { course_id: courses(:main).to_param }
         assert_response :success
-        released_assignments = courses(:main).assignments.select(&:published?)
+        released_assignments = courses(:main).assignments.select(&:released?)
         assert_select 'li.submission-dashboard', released_assignments.count
       end
     end
@@ -34,13 +34,13 @@ class AssignmentsControllerTest < ActionController::TestCase
       end
     end
 
-    describe 'PATCH #publish' do
+    describe 'PATCH #release' do
       describe 'the release date is undecided' do
         before { @assignment = undecided_assignment }
 
         it 'sets the release date to the current time' do
           assert_nil @assignment.released_at
-          patch :publish, params: member_params
+          patch :release, params: member_params
           assert_in_delta Time.current, @assignment.reload.released_at, 1.hour
         end
       end
@@ -50,44 +50,44 @@ class AssignmentsControllerTest < ActionController::TestCase
 
         it 'sets the release date to the current time' do
           assert_in_delta 1.day.from_now, @assignment.released_at, 1.hour
-          patch :publish, params: member_params
+          patch :release, params: member_params
           assert_in_delta Time.current, @assignment.reload.released_at, 1.hour
         end
       end
     end
 
-    describe 'PATCH #unpublish' do
-      describe 'grades have already been published' do
+    describe 'PATCH #unrelease' do
+      describe 'grades have already been released' do
         before { @assignment = released_assignment }
 
         it 'sets the release date to be undecided' do
           assert_in_delta 3.weeks.ago, @assignment.released_at, 1.hour
-          patch :unpublish, params: member_params
+          patch :unrelease, params: member_params
           assert_nil @assignment.reload.released_at
         end
 
-        it 'unpublishes the grades for this assignment' do
-          assert_equal true, @assignment.grades_published
-          patch :unpublish, params: member_params
-          assert_equal false, @assignment.reload.grades_published
+        it 'unreleasees the grades for this assignment' do
+          assert_equal true, @assignment.grades_released
+          patch :unrelease, params: member_params
+          assert_equal false, @assignment.reload.grades_released
         end
       end
     end
 
-    describe 'PATCH #publish_grades' do
+    describe 'PATCH #release_grades' do
       describe 'the release date is undecided' do
         before { @assignment = undecided_assignment }
 
         it 'sets the release date to the current time' do
           assert_nil @assignment.released_at
-          patch :publish_grades, params: member_params
+          patch :release_grades, params: member_params
           assert_in_delta Time.current, @assignment.reload.released_at, 1.hour
         end
 
-        it 'publishes the grades' do
-          assert_equal false, @assignment.grades_published?
-          patch :publish_grades, params: member_params
-          assert_equal true, @assignment.reload.grades_published?
+        it 'releasees the grades' do
+          assert_equal false, @assignment.grades_released?
+          patch :release_grades, params: member_params
+          assert_equal true, @assignment.reload.grades_released?
         end
       end
 
@@ -96,14 +96,14 @@ class AssignmentsControllerTest < ActionController::TestCase
 
         it 'sets the release date to the current time' do
           assert_in_delta 1.day.from_now, @assignment.released_at, 1.hour
-          patch :publish_grades, params: member_params
+          patch :release_grades, params: member_params
           assert_in_delta Time.current, @assignment.reload.released_at, 1.hour
         end
 
-        it 'publishes the grades' do
-          assert_equal false, @assignment.grades_published?
-          patch :publish_grades, params: member_params
-          assert_equal true, @assignment.reload.grades_published?
+        it 'releasees the grades' do
+          assert_equal false, @assignment.grades_released?
+          patch :release_grades, params: member_params
+          assert_equal true, @assignment.reload.grades_released?
         end
       end
 
@@ -112,14 +112,14 @@ class AssignmentsControllerTest < ActionController::TestCase
 
         it 'does not change the release date' do
           assert_no_difference '@assignment.reload.released_at' do
-            patch :publish_grades, params: member_params
+            patch :release_grades, params: member_params
           end
         end
 
-        it 'publishes the grades' do
-          assert_equal false, @assignment.grades_published?
-          patch :publish_grades, params: member_params
-          assert_equal true, @assignment.reload.grades_published?
+        it 'releasees the grades' do
+          assert_equal false, @assignment.grades_released?
+          patch :release_grades, params: member_params
+          assert_equal true, @assignment.reload.grades_released?
         end
       end
     end

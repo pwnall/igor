@@ -41,10 +41,10 @@ module HasDeadline
           references(:deadline_extensions)
     end
 
-    # Published tasks whose due date has not passed for the given user.
+    # Released tasks whose due date has not passed for the given user.
     def upcoming_for(user)
       tasks_due = with_upcoming_deadline + with_upcoming_extension_for(user)
-      tasks_due.select(&:published?).uniq
+      tasks_due.select(&:released?).uniq
     end
   end
 

@@ -4,7 +4,7 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string(128)      not null
-#  published  :boolean          not null
+#  released   :boolean          not null
 #  course_id  :integer          not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -19,7 +19,7 @@ class Survey < ActiveRecord::Base
       uniqueness: { scope: :course }
 
   # Whether the survey has been released and users can submit responses.
-  validates :published, inclusion: { in: [true, false], allow_nil: false }
+  validates :released, inclusion: { in: [true, false], allow_nil: false }
 
   # The course in which this survey is administered.
   belongs_to :course, inverse_of: :surveys
@@ -45,7 +45,7 @@ class Survey < ActiveRecord::Base
   # An equivalent method with the same name must be defined for Assignment so
   # the method can be called on either class.
   def can_submit?(user)
-    (published? && course.is_student?(user)) || course.can_edit?(user)
+    (released? && course.is_student?(user)) || course.can_edit?(user)
   end
 
   # True if the given user is allowed to change or delete this survey.
@@ -55,6 +55,6 @@ class Survey < ActiveRecord::Base
 
   def can_delete?(user)
     return true if user && user.admin?
-    (!published? || responses.empty?) && can_edit?(user)
+    (!released? || responses.empty?) && can_edit?(user)
   end
 end

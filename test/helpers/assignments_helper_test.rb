@@ -250,69 +250,69 @@ class AssignmentsHelperTest < ActionView::TestCase
     end
   end
 
-  describe '#unpublish_confirmation' do
-    describe 'assignment released, grades unpublished' do
+  describe '#unrelease_confirmation' do
+    describe 'assignment released, grades unreleased' do
       before do
         @assignment = grades_unreleased_assignment
-        assert_equal true, @assignment.published?
-        assert_equal false, @assignment.grades_published?
+        assert_equal true, @assignment.released?
+        assert_equal false, @assignment.grades_released?
       end
 
       it 'returns nil' do
-        assert_nil unpublish_confirmation(@assignment)
+        assert_nil unrelease_confirmation(@assignment)
       end
     end
 
-    describe 'assignment released, grades published' do
+    describe 'assignment released, grades released' do
       before do
         @assignment = released_assignment
-        assert_equal true, @assignment.published?
-        assert_equal true, @assignment.grades_published?
+        assert_equal true, @assignment.released?
+        assert_equal true, @assignment.grades_released?
         assert_not_empty @assignment.grades
       end
 
       it 'returns a confirmation message' do
-        assert_match /Continue\?/, unpublish_confirmation(@assignment)
+        assert_match /Continue\?/, unrelease_confirmation(@assignment)
       end
     end
   end
 
-  describe '#publish_grades_confirmation' do
-    describe 'assignment released, grades unpublished' do
+  describe '#release_grades_confirmation' do
+    describe 'assignment released, grades unreleased' do
       before do
         @assignment = grades_unreleased_assignment
-        assert_equal true, @assignment.published?
-        assert_equal false, @assignment.grades_published?
+        assert_equal true, @assignment.released?
+        assert_equal false, @assignment.grades_released?
       end
 
       it 'returns nil' do
-        assert_nil unpublish_confirmation(@assignment)
+        assert_nil unrelease_confirmation(@assignment)
       end
     end
 
     describe 'assignment unreleased, no deliverables' do
       before do
         @assignment = unreleased_exam
-        assert_equal false, @assignment.published?
-        assert_equal false, @assignment.grades_published?
+        assert_equal false, @assignment.released?
+        assert_equal false, @assignment.grades_released?
         assert_empty @assignment.deliverables
       end
 
       it 'returns nil' do
-        assert_nil publish_grades_confirmation(@assignment)
+        assert_nil release_grades_confirmation(@assignment)
       end
     end
 
     describe 'assignment unreleased, deliverables exist' do
       before do
         @assignment = unreleased_assignment
-        assert_equal false, @assignment.published?
-        assert_equal false, @assignment.grades_published?
+        assert_equal false, @assignment.released?
+        assert_equal false, @assignment.grades_released?
         assert_not_empty @assignment.deliverables
       end
 
       it 'returns a confirmation message' do
-        assert_match /Continue\?/, publish_grades_confirmation(@assignment)
+        assert_match /Continue\?/, release_grades_confirmation(@assignment)
       end
     end
   end

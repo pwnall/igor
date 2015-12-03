@@ -5,7 +5,7 @@ class AssignmentsController < ApplicationController
   before_action :authenticated_as_course_editor, except: [:index, :show]
   before_action :authenticated_as_user, only: [:index, :show]
   before_action :set_assignment, only: [:show, :edit, :update, :destroy,
-      :publish, :unpublish, :publish_grades]
+      :release, :unrelease, :release_grades]
 
   # GET /6.006/assignments
   # GET /6.006/assignments.json
@@ -56,7 +56,7 @@ class AssignmentsController < ApplicationController
   def create
     @assignment = Assignment.new assignment_params
     @assignment.course = current_course
-    @assignment.grades_published = false
+    @assignment.grades_released = false
 
     respond_to do |format|
       if @assignment.save
@@ -99,8 +99,8 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # PATCH /6.006/assignments/1/publish
-  def publish
+  # PATCH /6.006/assignments/1/release
+  def release
     respond_to do |format|
       if @assignment.update released_at: Time.current
         format.html do
@@ -118,10 +118,10 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # PATCH /6.006/assignments/1/unpublish
-  def unpublish
+  # PATCH /6.006/assignments/1/unrelease
+  def unrelease
     @assignment.released_at = nil
-    @assignment.grades_published = false
+    @assignment.grades_released = false
 
     respond_to do |format|
       if @assignment.save
@@ -140,10 +140,10 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # PATCH /6.006/assignments/1/publish_grades
-  def publish_grades
-    @assignment.released_at = Time.current unless @assignment.published?
-    @assignment.grades_published = true
+  # PATCH /6.006/assignments/1/release_grades
+  def release_grades
+    @assignment.released_at = Time.current unless @assignment.released?
+    @assignment.grades_released = true
 
     respond_to do |format|
       if @assignment.save
@@ -173,7 +173,7 @@ class AssignmentsController < ApplicationController
   def assignment_params
     params.require(:assignment).permit :name, :due_at, :weight, :author_id,
         :team_partition_id, :feedback_survey_id,
-        :released_at, :reset_released_at, :grades_published,
+        :released_at, :reset_released_at, :grades_released,
         deliverables_attributes: [:name, :file_ext, :_destroy,
             :description, :id, { analyzer_attributes: [:id, :type,
                 :message_name, :auto_grading, :time_limit, :ram_limit,

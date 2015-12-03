@@ -1,14 +1,14 @@
-<% if assignment.published? %>
-  <%= form_for assignment, url: unpublish_assignment_path(assignment,
+<% if assignment.released? %>
+  <%= form_for assignment, url: unrelease_assignment_path(assignment,
         course_id: assignment.course), method: :patch,
         html: { class: 'assignment-pull-form' } do |f| %>
     <%= f.button type: :submit,
-          data: { confirm: unpublish_confirmation(assignment) } do %>
+          data: { confirm: unrelease_confirmation(assignment) } do %>
       <%= pull_icon_tag %> Pull
     <% end %>
   <% end %>
 <% else %>
-  <%= form_for assignment, url: publish_assignment_path(assignment,
+  <%= form_for assignment, url: release_assignment_path(assignment,
         course_id: assignment.course), method: :patch,
         html: { class: 'assignment-release-form' } do |f| %>
     <%= f.button type: :submit, data: {

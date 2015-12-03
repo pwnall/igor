@@ -8,7 +8,7 @@ class CreateTeamPartitions < ActiveRecord::Migration
 
       t.boolean :automated, null: false, default: true
       t.boolean :editable, null: false, default: true
-      t.boolean :published, null: false, default: false
+      t.boolean :released, null: false, default: false
 
       t.timestamps
 

@@ -3,7 +3,7 @@ require 'test_helper'
 class SurveyResponseTest < ActiveSupport::TestCase
   before do
     @course = courses(:main)
-    @survey = @course.surveys.build name: 'new survey', published: true,
+    @survey = @course.surveys.build name: 'new survey', released: true,
                                     due_at: Time.current
     @response = @survey.responses.build user: users(:dexter)
   end

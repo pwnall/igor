@@ -30,7 +30,7 @@ class Registration < ActiveRecord::Base
   # True if the student dropped the class.
   validates :dropped, inclusion: { in: [true, false] }
 
-  # True if the user consents to having their work published.
+  # True if the user consents to having their work released.
   validates :allows_publishing, inclusion: { in: [true, false] }
 
   # The user's recitation section.

@@ -35,17 +35,17 @@ class QuantitativeOpenQuestionTest < ActiveSupport::TestCase
   end
 
   describe '#can_answer?' do
-    describe 'the survey is published' do
+    describe 'the survey is released' do
       it 'lets any user answer this question' do
-        question.survey.update! published: true
+        question.survey.update! released: true
         assert_equal true, question.can_answer?(any_user)
         assert_equal false, question.can_answer?(nil)
       end
     end
 
-    describe 'the survey is not published' do
+    describe 'the survey is not released' do
       it 'lets only staff and course/site admins answer this question' do
-        question.survey.update! published: false
+        question.survey.update! released: false
         assert_equal false, question.can_answer?(any_user)
         assert_equal true, question.can_answer?(users(:main_staff))
         assert_equal true, question.can_answer?(users(:admin))

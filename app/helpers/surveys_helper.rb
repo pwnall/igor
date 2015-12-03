@@ -1,6 +1,6 @@
 module SurveysHelper
-  # The text to show on the button that (un)publishes a survey.
-  def survey_publish_text(survey)
-    survey.published? ? 'Unpublish' : 'Publish'
+  # The text to show on the button that (un)releasees a survey.
+  def survey_release_text(survey)
+    survey.released? ? 'Pull release' : 'Release'
   end
 end

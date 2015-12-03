@@ -37,7 +37,7 @@ class RegistrationTest < ActiveSupport::TestCase
     assert @registration.invalid?
   end
 
-  it 'must state whether or not consent to publish has been given' do
+  it 'must state whether or not consent to release has been given' do
     @registration.allows_publishing = nil
     assert @registration.invalid?
   end

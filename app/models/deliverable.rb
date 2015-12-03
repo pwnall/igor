@@ -41,7 +41,7 @@ class Deliverable < ActiveRecord::Base
 
   # True if "user" should be allowed to see this deliverable.
   def can_read?(user)
-    assignment.published? || course.can_edit?(user)
+    assignment.released? || course.can_edit?(user)
   end
 
   # The submission that determines the submitter's grade for this deliverable.

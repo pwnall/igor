@@ -24,9 +24,9 @@
         <% end %>
       <% end %>
       <%= button_to survey_path(survey, course_id: survey.course,
-            survey: { published: !survey.published? }), class: 'hollow button',
+            survey: { released: !survey.released? }), class: 'hollow button',
             method: :patch do %>
-        <%= release_icon_tag %> <%= survey_publish_text survey %>
+        <%= release_icon_tag %> <%= survey_release_text survey %>
       <% end %>
     </span>
     <% end %>

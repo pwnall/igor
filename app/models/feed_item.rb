@@ -88,9 +88,9 @@ class FeedItem
     end
   end
 
-  # Generates feed items for the published grades.
+  # Generates feed items for the released grades.
   def self.add_grades(items, user, options)
-    Assignment.where(grades_published: true).includes(:metrics).
+    Assignment.where(grades_released: true).includes(:metrics).
                each do |assignment|
       next unless last_metric = assignment.metrics.sort_by(&:updated_at).last
       next unless last_grade = last_metric.grades.sort_by(&:updated_at).last
@@ -106,10 +106,10 @@ class FeedItem
     end
   end
 
-  # Generates feed items for the published deliverables.
+  # Generates feed items for the released deliverables.
   def self.add_deliverables(items, user, options)
     Deliverable.includes(:assignment).each do |deliverable|
-      next unless deliverable.assignment.published?
+      next unless deliverable.assignment.released?
 
       assignment = deliverable.assignment
       with_teammates = assignment.team_partition_id ? 'and your teammates ' : ''
@@ -133,7 +133,7 @@ class FeedItem
     end
   end
 
-  # Generates feed items for the published announcements.
+  # Generates feed items for the released announcements.
   def self.add_announcements(items, user, options)
     Announcement.all.each do |announcement|
       # TODO(costan): distinguish between open announcements,

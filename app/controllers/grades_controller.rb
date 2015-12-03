@@ -100,7 +100,7 @@ class GradesController < ApplicationController
     gradeless_subjects = {}
     assignments.each do |assignment|
       metrics = assignment.metrics
-      metrics.select!(&:published) if params[:filter_published]
+      metrics.select!(&:released) if params[:filter_released]
       metric_ids = metrics.map(&:id)
 
       if assignment.deliverables.empty?
@@ -241,9 +241,9 @@ class GradesController < ApplicationController
     send_data csv_text, :filename => 'grades.csv', :type => 'text/csv', :disposition => 'inline'
   end
 
-  def pull_metrics(only_published = true)
+  def pull_metrics(only_released = true)
     @metrics = current_course.assignment_metrics.includes :assignment
-    @metrics = @metrics.where(:published => true) if only_published
+    @metrics = @metrics.where(:released => true) if only_released
     if params[:filter_aid] && !params[:filter_aid].empty?
       @metrics = @metrics.where(:assignment_id => params[:filter_aid].to_i)
     end

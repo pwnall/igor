@@ -3,7 +3,7 @@ require 'test_helper'
 class SurveyTest < ActiveSupport::TestCase
   before do
     @due_at = Time.current.round 0  # Remove sub-second information.
-    @survey = Survey.new name: 'Prerequisites', published: false,
+    @survey = Survey.new name: 'Prerequisites', released: false,
         course: courses(:main), due_at: @due_at
   end
 
@@ -28,8 +28,8 @@ class SurveyTest < ActiveSupport::TestCase
     assert @survey.invalid?
   end
 
-  it 'requires a published status' do
-    @survey.published = nil
+  it 'requires a released status' do
+    @survey.released = nil
     assert @survey.invalid?
   end
 
@@ -65,8 +65,8 @@ class SurveyTest < ActiveSupport::TestCase
   end
 
   describe '#can_submit?' do
-    describe 'survey has been published' do
-      before { survey.update! published: true }
+    describe 'survey has been released' do
+      before { survey.update! released: true }
 
       it 'lets registered students and course/site admins view the survey' do
         assert_equal true, survey.can_submit?(users(:dexter))
@@ -79,8 +79,8 @@ class SurveyTest < ActiveSupport::TestCase
       end
     end
 
-    describe 'survey has not been published' do
-      before { survey.update! published: false }
+    describe 'survey has not been released' do
+      before { survey.update! released: false }
 
       it 'lets only course/site admins view the survey' do
         assert_equal false, survey.can_submit?(users(:dexter))
@@ -106,8 +106,8 @@ class SurveyTest < ActiveSupport::TestCase
   end
 
   describe '#can_delete?' do
-    describe 'survey has been published' do
-      before { survey.update! published: true }
+    describe 'survey has been released' do
+      before { survey.update! released: true }
 
       describe 'students have already responded' do
         it 'lets only a site admin delete the survey' do
@@ -136,8 +136,8 @@ class SurveyTest < ActiveSupport::TestCase
       end
     end
 
-    describe 'survey has not been published' do
-      before { survey.update! published: false }
+    describe 'survey has not been released' do
+      before { survey.update! released: false }
 
       it 'lets only course/site admins delete the survey' do
         assert_equal false, survey.can_delete?(users(:dexter))
@@ -198,7 +198,7 @@ class SurveyTest < ActiveSupport::TestCase
     end
 
     describe '.upcoming_for' do
-      it 'returns published surveys the student can complete' do
+      it 'returns released surveys the student can complete' do
         golden = [surveys(:lab)]
         actual = courses(:main).surveys.upcoming_for users(:dexter)
         assert_equal golden.to_set, actual.to_set, actual.map(&:name)

@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.integer  "author_id",                                             null: false
     t.string   "name",              limit: 64,                          null: false
     t.datetime "released_at"
-    t.boolean  "grades_published",                                      null: false
+    t.boolean  "grades_released",                                       null: false
     t.decimal  "weight",                       precision: 16, scale: 8, null: false
     t.integer  "team_partition_id"
     t.datetime "created_at",                                            null: false
@@ -399,7 +399,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
 
   create_table "surveys", force: :cascade do |t|
     t.string   "name",       limit: 128, null: false
-    t.boolean  "published",              null: false
+    t.boolean  "released",               null: false
     t.integer  "course_id",              null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
@@ -423,7 +423,7 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.integer  "max_size",                              null: false
     t.boolean  "automated",             default: true,  null: false
     t.boolean  "editable",              default: true,  null: false
-    t.boolean  "published",             default: false, null: false
+    t.boolean  "released",              default: false, null: false
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.index ["course_id", "name"], name: "index_team_partitions_on_course_id_and_name", unique: true, using: :btree

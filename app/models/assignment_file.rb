@@ -38,12 +38,12 @@ class AssignmentFile < ActiveRecord::Base
   private :act_on_reset_released_at
   before_validation :act_on_reset_released_at
 
-  # True if the publish date was omitted (reset to nil) (virtual attribute).
+  # True if the release date was omitted (reset to nil) (virtual attribute).
   def reset_released_at
     released_at.nil?
   end
 
-  # Store the user's decision to set or omit (reset) the publish date.
+  # Store the user's decision to set or omit (reset) the release date.
   #
   # @param [String] state '0' if setting a date, '1' if omitting
   def reset_released_at=(state)
@@ -55,7 +55,7 @@ class AssignmentFile < ActiveRecord::Base
   # TODO(spark008): Add checks to this and other model permission methods to
   #     ensure that the user is a student registered for the course.
   def can_read?(user)
-    (released_at && (released_at < Time.current) && assignment.published?) ||
+    (released_at && (released_at < Time.current) && assignment.released?) ||
         assignment.can_edit?(user)
   end
 end

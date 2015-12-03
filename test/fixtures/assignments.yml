@@ -7,7 +7,7 @@
 #  author_id         :integer          not null
 #  name              :string(64)       not null
 #  released_at       :datetime
-#  grades_published  :boolean          not null
+#  grades_released   :boolean          not null
 #  weight            :decimal(16, 8)   not null
 #  team_partition_id :integer
 #  created_at        :datetime         not null
@@ -21,7 +21,7 @@ ps1:
   team_partition: psets
   weight: 1.0
   released_at: <%= 3.weeks.ago.to_s(:db) %>
-  grades_published: true
+  grades_released: true
 
 ps2:
   author: admin
@@ -30,7 +30,7 @@ ps2:
   team_partition: psets
   weight: 1.0
   released_at: <%= 2.weeks.ago.to_s(:db) %>  # should be in the past
-  grades_published: true  # should be true
+  grades_released: true  # should be true
 
 ps3:
   author: admin
@@ -39,7 +39,7 @@ ps3:
   team_partition: psets
   weight: 1.0
   released_at: <%= 1.week.ago.to_s(:db) %>  # should be in the past
-  grades_published: false
+  grades_released: false
 
 project:
   author: admin
@@ -48,7 +48,7 @@ project:
   team_partition: project
   weight: 5.0
   released_at: <%= 1.month.from_now.to_s(:db) %>
-  grades_published: false
+  grades_released: false
 
 assessment:
   author: admin
@@ -56,7 +56,7 @@ assessment:
   name: Individual Assessment
   weight: 0.0
   released_at: <%= 2.weeks.ago.to_s(:db) %>
-  grades_published: false
+  grades_released: false
 
 main_exam:
   author: main_staff
@@ -64,7 +64,7 @@ main_exam:
   name: Exam 1
   weight: 1.0
   released_at: <%= 1.day.from_now.to_s(:db) %>  # should be in the future
-  grades_published: false
+  grades_released: false
 
 main_exam_2:
   author: main_staff
@@ -72,7 +72,7 @@ main_exam_2:
   name: Exam 2
   weight: 1.0
   released_at:
-  grades_published: false
+  grades_released: false
 
 # Keep deliverables_ready and metrics_ready true to test read permissions.
 not_main_exam:
@@ -81,4 +81,4 @@ not_main_exam:
   name: Quiz 1
   weight: 10.0
   released_at: <%= 1.week.ago.to_s(:db) %>
-  grades_published: false
+  grades_released: false

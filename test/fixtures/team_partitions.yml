@@ -9,7 +9,7 @@
 #  max_size   :integer          not null
 #  automated  :boolean          default(TRUE), not null
 #  editable   :boolean          default(TRUE), not null
-#  published  :boolean          default(FALSE), not null
+#  released   :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -19,7 +19,7 @@ psets:
   name: "Pset Team Assignment"
   automated: true
   editable: true
-  published: true
+  released: true
   min_size: 1
   max_size: 3
 
@@ -28,7 +28,7 @@ project:
   name: "Final Project Team Assignment"
   automated: false
   editable: true
-  published: true
+  released: true
   min_size: 1
   max_size: 3
 
@@ -37,6 +37,6 @@ labs:
   name: "Lab Team Assignment"
   automated: false
   editable: true
-  published: true
+  released: true
   min_size: 1
   max_size: 3

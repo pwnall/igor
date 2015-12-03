@@ -37,7 +37,7 @@ class AssignmentFileTest < ActiveSupport::TestCase
       before { resource.update! released_at: 1.week.ago }
 
       describe 'the assignment has been released' do
-        before { assert_equal true, resource.assignment.published? }
+        before { assert_equal true, resource.assignment.released? }
 
         it 'lets any user view the file' do
           assert_equal true, resource.assignment.can_read?(any_user)
@@ -141,10 +141,10 @@ class AssignmentFileTest < ActiveSupport::TestCase
   end
 
   describe '#act_on_reset_released_at' do
-    describe 'publish date has not been set yet' do
+    describe 'release date has not been set yet' do
       before { resource.update! released_at: nil }
 
-      it 'updates the publish date if :reset_released_at is false' do
+      it 'updates the release date if :reset_released_at is false' do
         released_at = 1.day.from_now
         resource.update! released_at: released_at, reset_released_at: '0'
         assert_equal released_at, resource.released_at
@@ -156,10 +156,10 @@ class AssignmentFileTest < ActiveSupport::TestCase
       end
     end
 
-    describe 'publish date has been set' do
+    describe 'release date has been set' do
       before { assert_not_nil resource.released_at }
 
-      it 'nullifies the publish date if :reset_released_at is true' do
+      it 'nullifies the release date if :reset_released_at is true' do
         resource.update! reset_released_at: '1'
         assert_nil resource.released_at
       end
@@ -178,14 +178,14 @@ class AssignmentFileTest < ActiveSupport::TestCase
   end
 
   describe '#can_read?' do
-    describe 'the assignment has been published' do
+    describe 'the assignment has been released' do
       before do
         resource.assignment.update! released_at: 1.week.ago,
-            due_at: 1.day.from_now, grades_published: false
-        assert_equal true, resource.assignment.published?
+            due_at: 1.day.from_now, grades_released: false
+        assert_equal true, resource.assignment.released?
       end
 
-      describe 'the file publish date is undecided (nil)' do
+      describe 'the file release date is undecided (nil)' do
         it 'allows only course editors to view the file' do
           resource.update! released_at: nil
           assert_equal false, resource.can_read?(users(:dexter))
@@ -193,7 +193,7 @@ class AssignmentFileTest < ActiveSupport::TestCase
         end
       end
 
-      describe 'the publish date is in the past' do
+      describe 'the release date is in the past' do
         it 'allows anyone to view the file' do
           resource.update! released_at: 1.day.ago
           assert_equal true, resource.can_read?(users(:dexter))
@@ -201,7 +201,7 @@ class AssignmentFileTest < ActiveSupport::TestCase
         end
       end
 
-      describe 'the publish date is in the future' do
+      describe 'the release date is in the future' do
         it 'allows only course editors to view the file' do
           resource.update! released_at: 1.day.from_now
           assert_equal false, resource.can_read?(users(:dexter))
@@ -213,11 +213,11 @@ class AssignmentFileTest < ActiveSupport::TestCase
     describe 'the assignment has not been released' do
       before do
         resource.assignment.update! released_at: 1.day.from_now,
-            due_at: 1.week.from_now, grades_published: false
-        assert_equal false, resource.assignment.published?
+            due_at: 1.week.from_now, grades_released: false
+        assert_equal false, resource.assignment.released?
       end
 
-      describe 'the file publish date is undecided (nil)' do
+      describe 'the file release date is undecided (nil)' do
         it 'allows only course editors to view the file' do
           resource.update! released_at: nil
           assert_equal false, resource.can_read?(users(:dexter))
@@ -225,7 +225,7 @@ class AssignmentFileTest < ActiveSupport::TestCase
         end
       end
 
-      describe 'the publish date is in the past' do
+      describe 'the release date is in the past' do
         it 'allows only course editors to view the file' do
           resource.update! released_at: 1.day.ago
           assert_equal false, resource.can_read?(users(:dexter))
@@ -233,7 +233,7 @@ class AssignmentFileTest < ActiveSupport::TestCase
         end
       end
 
-      describe 'the publish date is in the future' do
+      describe 'the release date is in the future' do
         it 'allows only course editors to view the file' do
           resource.update! released_at: 1.day.from_now
           assert_equal false, resource.can_read?(users(:dexter))

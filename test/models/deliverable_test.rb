@@ -106,13 +106,13 @@ class DeliverableTest < ActiveSupport::TestCase
   end
 
   describe '#can_read?' do
-    it 'lets any user view deliverable if assignment is published' do
-      assert_equal true, deliverable.assignment.published?
+    it 'lets any user view deliverable if assignment is released' do
+      assert_equal true, deliverable.assignment.released?
       assert_equal true, deliverable.can_read?(any_user)
       assert_equal true, deliverable.can_read?(nil)
     end
 
-    it 'lets only admins view deliverable if assignment not published' do
+    it 'lets only admins view deliverable if assignment not released' do
       deliverable.assignment.update! released_at: 1.day.from_now
       assert_equal true, deliverable.can_read?(admin)
       assert_equal false, deliverable.can_read?(any_user)

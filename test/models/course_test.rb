@@ -122,7 +122,7 @@ class CourseTest < ActiveSupport::TestCase
   end
 
   describe '#upcoming_tasks_for' do
-    it 'returns published assignments and surveys the student can submit' do
+    it 'returns released assignments and surveys the student can submit' do
       golden = [assignments(:ps2), assignments(:ps3), assignments(:assessment),
                 surveys(:lab)]
       actual = course.upcoming_tasks_for users(:dexter)
@@ -263,7 +263,7 @@ class CourseTest < ActiveSupport::TestCase
       end
 
       describe 'the given user is not a site or course admin' do
-        it 'returns published assignments, ordered by deadline' do
+        it 'returns released assignments, ordered by deadline' do
           golden = assignments(:assessment, :ps3, :ps2, :ps1)
           actual = course.assignments_for users(:dexter)
           assert_equal golden, actual, actual.map(&:name)
@@ -310,7 +310,7 @@ class CourseTest < ActiveSupport::TestCase
       end
 
       describe 'the given user is a student registered for the course' do
-        it 'returns all published surveys in the course, ordered by deadline' do
+        it 'returns all released surveys in the course, ordered by deadline' do
           assert_includes users(:dexter).registered_courses, course
           golden = surveys(:lab, :ps1)
           actual = course.surveys_for users(:dexter)

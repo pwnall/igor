@@ -4,7 +4,7 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string(128)      not null
-#  published  :boolean          not null
+#  released   :boolean          not null
 #  course_id  :integer          not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -12,20 +12,20 @@
 
 ps1:
   name: PSet 1 Survey
-  published: true
+  released: true
   course: main
 
 project:
   name: Project Survey
-  published: false
+  released: false
   course: main
 
 lab:
   name: Lab 1 Survey
-  published: true
+  released: true
   course: main
 
 not_main:
   name: Not Main Survey
-  published: false
+  released: false
   course: not_main
