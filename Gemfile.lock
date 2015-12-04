@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/pwnall/foundation-rails.git
-  revision: 78c3929453efd0dec241274a96c33d807bc54251
+  revision: 82bbb974249204eb7bc9cb1d1caa7e0be01fbe88
   branch: f6
   specs:
     foundation-rails (5.5.3.2)
@@ -153,7 +153,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/sprockets
-  revision: 98d0ccc42949815d959cf95fbffd52a3df650358
+  revision: 6612068027a843421e797dca9c1310c53f7ea303
   branch: master
   specs:
     sprockets (4.0.0)
