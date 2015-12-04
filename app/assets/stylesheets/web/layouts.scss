@@ -39,8 +39,9 @@ body {
       padding-top: 1rem;
       margin-bottom: 3rem;
     }
-    #timeline-sidebar {
+    #memo-sidebar {
       @include flex-grid-column(3, $grid-column-gutter);
+      @include show-for(large);
       padding-top: 2rem;
     }
   }
