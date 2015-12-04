@@ -535,7 +535,8 @@ $topbar-input-width: 200px;
 @import 'foundation/foundation';
 
 @include foundation-global-styles;
-// @include foundation-grid;
+// NOTE: We are not including foundation-grid on purpose. We are using the
+//       experimental flexbox-based grid instead.
 @include foundation-flex-grid;
 @include foundation-typography;
 @include foundation-button;
@@ -564,9 +565,9 @@ $topbar-input-width: 200px;
 @include foundation-sticky;
 @include foundation-reveal;
 @include foundation-switch;
-// @include foundation-table;
+@include foundation-table;
 @include foundation-tabs;
 @include foundation-thumbnail;
 @include foundation-title-bar;
 @include foundation-tooltip;
-// @include foundation-top-bar;
+@include foundation-top-bar;
