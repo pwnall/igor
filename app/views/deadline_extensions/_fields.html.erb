@@ -1,16 +1,17 @@
+<%= fields_for extension do |ef| %>
 <td>
-  <%= f.collection_select :user_exuid,
+  <%= ef.collection_select :user_exuid,
         current_course.students.without_extensions_for(@assignment).by_name,
         :to_param, :name, { prompt: 'Select a student' },
         { required: true, form: 'extension-form' } %>
 </td>
-<td>
-  <%= f.datetime_local_field :due_at, default: @assignment.due_at,
+<td colspan="2">
+  <%= ef.datetime_local_field :due_at, default: @assignment.due_at,
         required: true, form: 'extension-form' %>
 </td>
-<td></td>
 <td class="actions">
-  <%= button_tag form: 'extension-form' do %>
+  <%= button_tag type: :submit, form: 'extension-form' do %>
     <%= create_icon_tag %> Grant Extension
   <% end %>
 </td>
+<% end %>

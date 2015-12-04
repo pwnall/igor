@@ -1,6 +1,5 @@
 table {
-  @include table($table-stripe);
-  // @include table-hover;
+  @include table;
 
   td:not(.actions) .button {
     margin: 0;

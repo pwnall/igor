@@ -7,6 +7,7 @@
       assignment_id: @assignment, course_id: @assignment.course),
       html: { id: 'extension-form' } do |f| %>
   <%= f.error_messages %>
+<% end %>
 
 <table class="extensions">
   <thead>
@@ -21,9 +22,16 @@
     <% @assignment.extensions.each do |extension| %>
     <tr class="extension">
       <td><%= link_to extension.user.name, extension.user %></td>
-      <td>
-        <%= extension.due_at.to_s(:extension_long) %>
-        (<%= distance_of_time_in_words(extension.due_at, @assignment.due_at) %>)
+      <td class="extended-deadline">
+        <span class="date">
+          <%= extension.due_at.to_s(:extension_date) %>,
+        </span>
+        <span class="time">
+          <%= extension.due_at.to_s(:extension_time) %>
+        </span>
+        <span class="in-words">
+          (<%= distance_of_time_in_words extension.due_at, @assignment.due_at %>)
+        </span>
       </td>
       <td>
         <%= extension.grantor.display_name_for current_user, :long %>
@@ -41,9 +49,8 @@
     <% end %>
 
     <tr class="form-row">
-      <%= render 'deadline_extensions/fields', f: f %>
+      <%= render 'deadline_extensions/fields', extension: @extension,
+            assignment: @assignment %>
     </tr>
   </tbody>
 </table>
-
-<% end %>

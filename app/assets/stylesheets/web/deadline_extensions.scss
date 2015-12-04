@@ -1,0 +1,11 @@
+table.extensions {
+  width: 100%;
+
+  tr.extension {
+    td.extended-deadline {
+      .date, .time, .in-words {
+        display: inline-block;
+      }
+    }
+  }
+}

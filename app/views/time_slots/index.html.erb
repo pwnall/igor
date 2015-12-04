@@ -22,12 +22,14 @@
       <td><%= time_slot.end_time.to_s :time_slot_long %></td>
       <td><%= time_slot_duration time_slot %></td>
       <td class="actions">
-        <%= link_to time_slot_path(time_slot, course_id: time_slot.course),
-              method: :delete, class: 'hollow alert button', data: { confirm:
-              'Deleting this time slot will also delete any scheduling '\
-              'conflicts reported by students for this time. Continue?' } do %>
-          <%= destroy_icon_tag %> Remove
-        <% end %>
+        <span class="link-button-wrapper">
+          <%= link_to time_slot_path(time_slot, course_id: time_slot.course),
+                method: :delete, data: { confirm: 'Deleting this time slot '\
+                'will also delete any scheduling conflicts reported by '\
+                'students for this time. Continue?' } do %>
+            <%= destroy_icon_tag %> Remove
+          <% end %>
+        </span>
       </td>
     </tr>
     <% end %>
