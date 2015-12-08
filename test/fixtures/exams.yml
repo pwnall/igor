@@ -1,0 +1,23 @@
+# == Schema Information
+#
+# Table name: exams
+#
+#  id                    :integer          not null, primary key
+#  assignment_id         :integer          not null
+#  requires_confirmation :boolean          not null
+#
+
+# NOTE: Do not create exams for the following:
+#   { assignment: main_exam_2 }
+
+main_exam:
+  assignment: main_exam
+  requires_confirmation: true
+
+main_exam_3:
+  assignment: main_exam_3
+  requires_confirmation: false
+
+not_main_exam:
+  assignment: not_main_exam
+  requires_confirmation: false

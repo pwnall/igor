@@ -5,6 +5,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   let(:grades_unreleased_assignment) { assignments(:ps3) }
   let(:unreleased_assignment) { assignments(:main_exam) }
   let(:undecided_assignment) { assignments(:main_exam_2) }
+  let(:scheduled_unreleased_exam) { assignments(:main_exam_3) }
   let(:member_params) do
     { course_id: courses(:main).to_param, id: assignment.to_param }
   end
@@ -20,6 +21,128 @@ class AssignmentsControllerTest < ActionController::TestCase
         assert_select 'li.submission-dashboard', released_assignments.count
       end
     end
+
+    describe 'GET #show' do
+      describe 'assignment not scheduled' do
+        describe 'assignment has not been released' do
+          let(:assignment) { undecided_assignment }
+
+          it 'bounces students' do
+            get :show, params: member_params
+            assert_response :forbidden
+          end
+        end
+
+        describe 'assignment has been released' do
+          let(:assignment) { grades_unreleased_assignment }
+
+          it 'bounces students' do
+            get :show, params: member_params
+            assert_response :forbidden
+          end
+        end
+      end
+
+      describe 'assignment has been scheduled' do
+        describe 'assignment has not been released' do
+          let(:assignment) { scheduled_unreleased_exam }
+          let(:deliverable) { assignment.deliverables.first }
+
+          it 'renders the student submission view' do
+            get :show, params: member_params
+            assert_response :success
+            assert_select 'section.submission-dashboard-container'
+          end
+
+          it 'omits the exam sessions tab' do
+            assert_not_nil assignment.exam
+            html_panel_id = 'exam-sessions-panel'
+            get :show, params: member_params
+            assert_response :success
+            assert_select ".tabs-title > a[href='##{html_panel_id}']", false
+            assert_select ".tabs-panel##{html_panel_id}", false
+          end
+
+          it 'omits the deliverables tabs' do
+            assert_not_nil deliverable
+            html_panel_id = @controller.deliverable_panel_id deliverable
+            get :show, params: member_params
+            assert_response :success
+            assert_select ".tabs-title > a[href='##{html_panel_id}']", false
+            assert_select ".tabs-panel##{html_panel_id}", false
+          end
+        end
+
+        describe 'assignment has been released' do
+          let(:assignment) { scheduled_unreleased_exam }
+          let(:deliverable) { assignment.deliverables.first }
+          before { assignment.update! released_at: 1.day.ago }
+
+          it 'renders the student submission view' do
+            get :show, params: member_params
+            assert_response :success
+            assert_select 'section.submission-dashboard-container'
+          end
+
+          it 'omits the exam sessions tab' do
+            assert_not_nil assignment.exam
+            html_panel_id = 'exam-sessions-panel'
+            get :show, params: member_params
+            assert_response :success
+            assert_select ".tabs-title > a[href='##{html_panel_id}']"
+            assert_select ".tabs-panel##{html_panel_id}"
+          end
+
+          it 'omits the deliverables tabs' do
+            assert_not_nil deliverable
+            html_panel_id = @controller.deliverable_panel_id deliverable
+            get :show, params: member_params
+            assert_response :success
+            assert_select ".tabs-title > a[href='##{html_panel_id}']"
+            assert_select ".tabs-panel##{html_panel_id}"
+          end
+        end
+      end
+    end
+
+    describe 'all actions except #index and #show' do
+      let(:assignment) { unreleased_assignment }
+
+      it 'forbids access to the page' do
+        get :dashboard, params: member_params
+        assert_response :forbidden
+
+        get :new, params: { course_id: courses(:main).to_param }
+        assert_response :forbidden
+
+        get :edit, params: member_params
+        assert_response :forbidden
+
+        post :create, params: { course_id: courses(:main).to_param }
+        assert_response :forbidden
+
+        patch :update, params: member_params
+        assert_response :forbidden
+
+        delete :destroy, params: member_params
+        assert_response :forbidden
+
+        patch :schedule, params: member_params
+        assert_response :forbidden
+
+        patch :deschedule, params: member_params
+        assert_response :forbidden
+
+        patch :release, params: member_params
+        assert_response :forbidden
+
+        patch :unrelease, params: member_params
+        assert_response :forbidden
+
+        patch :release_grades, params: member_params
+        assert_response :forbidden
+      end
+    end
   end
 
   describe 'authenticated as a course editor' do
@@ -31,6 +154,24 @@ class AssignmentsControllerTest < ActionController::TestCase
         assert_response :success
         assert_select 'li.submission-dashboard',
                       courses(:main).assignments.count
+      end
+    end
+
+    describe 'GET #new' do
+      it 'renders the new assignment form' do
+        get :new, params: { course_id: courses(:main).to_param }
+        assert_response :success
+        assert_select 'form.new-assignment-form'
+      end
+    end
+
+    describe 'GET #edit' do
+      let(:assignment) { unreleased_assignment }
+
+      it 'renders the assignment builder page' do
+        get :edit, params: member_params
+        assert_response :success
+        assert_select 'form.edit-assignment-form'
       end
     end
 
@@ -175,7 +316,7 @@ class AssignmentsControllerTest < ActionController::TestCase
           assert_nil assignment.reload.released_at
         end
 
-        it 'unreleasees the grades for this assignment' do
+        it 'unreleases the grades for this assignment' do
           assert_equal true, assignment.grades_released?
           patch :unrelease, params: member_params
           assert_equal false, assignment.reload.grades_released?
@@ -199,7 +340,7 @@ class AssignmentsControllerTest < ActionController::TestCase
           assert_in_delta Time.current, assignment.reload.released_at, 1.hour
         end
 
-        it 'releasees the grades' do
+        it 'releases the grades' do
           assert_equal false, assignment.grades_released?
           patch :release_grades, params: member_params
           assert_equal true, assignment.reload.grades_released?
@@ -215,7 +356,7 @@ class AssignmentsControllerTest < ActionController::TestCase
           assert_in_delta Time.current, assignment.reload.released_at, 1.hour
         end
 
-        it 'releasees the grades' do
+        it 'releases the grades' do
           assert_equal false, assignment.grades_released?
           patch :release_grades, params: member_params
           assert_equal true, assignment.reload.grades_released?
@@ -231,7 +372,7 @@ class AssignmentsControllerTest < ActionController::TestCase
           end
         end
 
-        it 'releasees the grades' do
+        it 'releases the grades' do
           assert_equal false, assignment.grades_released?
           patch :release_grades, params: member_params
           assert_equal true, assignment.reload.grades_released?

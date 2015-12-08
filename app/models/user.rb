@@ -288,3 +288,9 @@ class User
   # The user's responses to surveys.
   has_many :survey_responses, dependent: :destroy, inverse_of: :user
 end
+
+# :nodoc: exam attendance.
+class User
+  # The user's attendances to exam sessions.
+  has_many :exam_attendances, dependent: :destroy, inverse_of: :user
+end

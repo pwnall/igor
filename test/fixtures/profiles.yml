@@ -104,6 +104,15 @@ main_staff_2:
   year: G
   athena_username: main_staff_2
 
+not_main_student:
+  user: not_main_student
+  name: NotMain Student
+  nickname: OtherStudent
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: 4
+  athena_username: not_main_student
+
 not_main_dropout:
   user: not_main_dropout
   name: Notmain Dropout

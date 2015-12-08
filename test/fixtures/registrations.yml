@@ -59,6 +59,13 @@ deedee_not_main:
   for_credit: true
   allows_publishing: true
 
+not_main_student:
+  course: not_main
+  user: not_main_student
+  dropped: false
+  for_credit: true
+  allows_publishing: true
+
 not_main_dropout:
   course: not_main
   user: not_main_dropout

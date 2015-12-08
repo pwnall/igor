@@ -26,6 +26,11 @@
     <%= link_to deliverable.name, '#' + deliverable_panel_id(deliverable) %>
   </li>
   <% end %>
+  <% if @assignment.enable_exam? %>
+  <li class="tabs-title">
+    <a href="#exam-sessions-panel">Exam Sessions</a>
+  </li>
+  <% end %>
   <li class="tabs-title">
     <a href="#extensions-panel">Extensions</a>
   </li>
@@ -48,6 +53,12 @@
       <%= render 'assignments/submissions_dashboard', assignment: @assignment %>
     <% end %>
   </div>
+
+  <% if @assignment.enable_exam? %>
+  <div class="tabs-panel" id="exam-sessions-panel">
+    <%= render 'assignments/exam_sessions_dashboard', exam: @assignment.exam %>
+  </div>
+  <% end %>
 
   <% @assignment.deliverables.each do |deliverable| %>
   <div class="tabs-panel" id="<%= deliverable_panel_id(deliverable) %>">

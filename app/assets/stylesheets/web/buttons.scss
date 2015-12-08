@@ -1,4 +1,5 @@
-button[type="submit"], button[type="button"], .link-button-wrapper > a {
+button[type="submit"], button[type="button"], .link-button-wrapper > a,
+form.button_to > input[type="submit"] {
   @include button;
   @include button-hollow;
   @include button-hollow-style;

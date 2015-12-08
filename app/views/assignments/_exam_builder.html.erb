@@ -1,0 +1,6 @@
+<section data-pwnfx-hide-negative="enable-exam"
+         data-pwnfx-scope="exam-features">
+  <%= f.fields_for :exam do |ef| %>
+    <%= render 'assignments/exam_sessions_builder', f: ef %>
+  <% end %>
+</section>

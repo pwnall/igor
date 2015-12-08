@@ -62,3 +62,16 @@ docker_assessment_code:
       "reduce_time_limit": 2,
       "reduce_ram_limit": 1024,
       "reduce_logs_limit": 5 }
+
+docker_main_exam_3_part_a:
+  deliverable: main_exam_3_part_a
+  type: DockerAnalyzer
+  auto_grading: true
+  db_file: main_exam_3_part_a_docker_analyzer
+  exec_limits: >
+    { "map_time_limit": 2,
+      "map_ram_limit": 1024,
+      "map_logs_limit": 1,
+      "reduce_time_limit": 2,
+      "reduce_ram_limit": 1024,
+      "reduce_logs_limit": 5 }

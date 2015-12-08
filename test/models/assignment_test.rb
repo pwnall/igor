@@ -338,8 +338,8 @@ class AssignmentTest < ActiveSupport::TestCase
 
       describe 'by_deadline scope' do
         it 'sorts assignments by ascending deadline, then by name' do
-          golden = assignments(:project, :main_exam_2, :assessment, :ps3,
-                               :main_exam, :ps2, :ps1)
+          golden = assignments(:project, :main_exam_3, :main_exam_2,
+                               :assessment, :ps3, :main_exam, :ps2, :ps1)
           actual = courses(:main).assignments.by_deadline
           assert_equal golden, actual, actual.map(&:name)
         end
@@ -348,7 +348,7 @@ class AssignmentTest < ActiveSupport::TestCase
       describe 'with_upcoming_deadline scope' do
         it 'returns assignments whose deadlines have not passed' do
           golden = assignments(:ps3, :project, :assessment, :main_exam,
-                               :main_exam_2)
+                               :main_exam_2, :main_exam_3)
           actual = courses(:main).assignments.with_upcoming_deadline
           assert_equal golden.to_set, actual.to_set, actual.map(&:name)
         end
@@ -373,7 +373,7 @@ class AssignmentTest < ActiveSupport::TestCase
 
       describe '.upcoming_for' do
         it 'returns released assignments the student can complete' do
-          golden = assignments(:ps2, :ps3, :assessment)
+          golden = assignments(:ps2, :assessment)
           actual = courses(:main).assignments.upcoming_for users(:dexter)
           assert_equal golden.to_set, actual.to_set, actual.map(&:name)
         end
@@ -948,6 +948,103 @@ class AssignmentTest < ActiveSupport::TestCase
         @assignment.team_partition = team_partitions(:psets)
         assert_equal teams(:awesome_pset),
             @assignment.grade_subject_for(users(:dexter))
+      end
+    end
+  end
+
+  describe 'exams' do
+    describe '#enable_exam?' do
+      it 'returns false for a new assignment record' do
+        assert_equal false, @assignment.enable_exam?
+      end
+
+      it 'returns true if the assignment has an associated exam' do
+        assert_not_nil unreleased_exam.exam
+        assert_equal true, unreleased_exam.enable_exam?
+      end
+    end
+
+    describe '#enable_exam=' do
+      describe 'the assignment does not have an associated exam' do
+        before { assert_nil @assignment.exam }
+
+        it 'does not save :enable_exam to true if the user input is "1" but no
+            exam attributes are also saved' do
+          assert_equal false, @assignment.enable_exam
+          @assignment.update! enable_exam: '1'
+          assert_equal false, assignment.enable_exam
+        end
+
+        it 'saves :enable_exam to true if the user input is "1" and exam
+            attributes are also saved' do
+          assert_equal false, @assignment.enable_exam
+          @assignment.update! enable_exam: '1',
+              exam_attributes: { requires_confirmation: false }
+          assert_equal true, @assignment.enable_exam
+        end
+
+        it 'does not change :enable_exam if the user input is "0"' do
+          assert_equal false, @assignment.enable_exam
+          @assignment.update! enable_exam: '0',
+              exam_attributes: { requires_confirmation: false }
+          assert_equal false, @assignment.enable_exam
+        end
+      end
+
+      describe 'the assignment has an associated exam' do
+        before { assert_not_nil unreleased_exam.exam }
+
+      end
+    end
+
+    it 'destroys dependent records' do
+      assert_not_nil unreleased_exam.exam
+
+      unreleased_exam.destroy
+
+      assert_nil Exam.find_by(assignment: unreleased_exam)
+    end
+
+    describe '#nullify_exam_if_not_enabled' do
+      describe 'saving new assignments' do
+        it 'saves a nested exam if :enable_exam is true' do
+          params = { assignment: { enable_exam: '1', exam_attributes: {
+            requires_confirmation: false } } }
+          assert_nil @assignment.exam
+          @assignment.update! params[:assignment]
+          assert_not_nil @assignment.reload.exam
+        end
+
+        it 'rejects nested exams if :enable_exam is false' do
+          params = { assignment: { enable_exam: '0', exam_attributes: {
+            requires_confirmation: false } } }
+          assert_nil @assignment.exam
+          @assignment.update! params[:assignment]
+          assert_nil @assignment.reload.exam
+        end
+      end
+
+      describe 'updating existing assignments' do
+        it 'saves nested exam and exam sessions if :enable_exam is true' do
+          start_time = 1.week.from_now.round 0  # Remove sub-second information.
+          params = { assignment: { enable_exam: '1', exam_attributes: {
+            requires_confirmation: false, exam_sessions_attributes: [{
+            name: 'Rm 1, 2x time', starts_at: start_time,
+            ends_at: start_time + 2.hours, capacity: 2 }]
+          } } }
+          assert_nil assignment.exam
+          assignment.update! params[:assignment]
+          assert_not_nil assignment.reload.exam
+          assert_equal start_time, assignment.exam.exam_sessions.last.starts_at
+        end
+
+        it 'rejects nested exams if :enable_exam is false' do
+          params = { assignment: { enable_exam: '0', exam_attributes: {
+            requires_confirmation: false } } }
+          assert_nil assignment.exam
+          assignment.update! params[:assignment]
+          assert_nil assignment.reload.exam
+        end
       end
     end
   end

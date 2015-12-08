@@ -1,0 +1,39 @@
+# == Schema Information
+#
+# Table name: exam_attendances
+#
+#  id              :integer          not null, primary key
+#  user_id         :integer          not null
+#  exam_id         :integer          not null
+#  exam_session_id :integer          not null
+#  confirmed       :boolean          not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
+# NOTE: Do not create attendances for the following:
+#   { user: deedee, exam: main_exam }
+
+dexter_under_capacity:
+  user: dexter
+  exam: main_exam
+  exam_session: main_exam_under_capacity
+  confirmed: true
+
+solo_full_capacity:
+  user: solo
+  exam: main_exam
+  exam_session: main_exam_full_capacity
+  confirmed: false
+
+deedee_not_main:
+  user: deedee
+  exam: not_main_exam
+  exam_session: not_main_exam
+  confirmed: true
+
+not_main_student_not_main:
+  user: not_main_student
+  exam: not_main_exam
+  exam_session: not_main_exam
+  confirmed: true

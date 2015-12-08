@@ -111,6 +111,7 @@ group :test do
   gem 'launchy', '>= 2.4.3'
   gem 'poltergeist', '>= 1.6.0'
   gem 'mocha', '>= 1.1.0'
+  gem 'mechanize', require: false
 end
 
 group :doc do

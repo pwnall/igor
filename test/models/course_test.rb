@@ -123,8 +123,7 @@ class CourseTest < ActiveSupport::TestCase
 
   describe '#upcoming_tasks_for' do
     it 'returns released assignments and surveys the student can submit' do
-      golden = [assignments(:ps2), assignments(:ps3), assignments(:assessment),
-                surveys(:lab)]
+      golden = [assignments(:ps2), assignments(:assessment), surveys(:lab)]
       actual = course.upcoming_tasks_for users(:dexter)
       assert_equal golden.to_set, actual.to_set, actual.map(&:name)
     end
@@ -255,8 +254,8 @@ class CourseTest < ActiveSupport::TestCase
       describe 'the given user is a site or course admin' do
         it 'returns all assignments for the course, ordered by deadline, then
             by name' do
-          golden = assignments(:project, :main_exam_2, :assessment, :ps3,
-                               :main_exam, :ps2,  :ps1)
+          golden = assignments(:project, :main_exam_3, :main_exam_2,
+                               :assessment, :ps3, :main_exam, :ps2,  :ps1)
           actual = course.assignments_for users(:admin)
           assert_equal golden, actual, actual.map(&:name)
         end
@@ -264,8 +263,8 @@ class CourseTest < ActiveSupport::TestCase
 
       describe 'the given user is not a site or course admin' do
         it 'returns scheduled assignments, ordered by deadline' do
-          golden = assignments(:project, :assessment, :ps3, :main_exam, :ps2,
-                               :ps1)
+          golden = assignments(:project, :main_exam_3, :assessment, :main_exam,
+                               :ps2, :ps1)
           actual = course.assignments_for users(:dexter)
           assert_equal golden, actual, actual.map(&:name)
         end
@@ -325,6 +324,16 @@ class CourseTest < ActiveSupport::TestCase
           assert_empty course.surveys_for users(:inactive)
         end
       end
+    end
+  end
+
+  describe 'exams' do
+    it 'destroys dependent records' do
+      assert_not_empty course.exam_sessions
+
+      course.destroy
+
+      assert_empty course.exam_sessions.reload
     end
   end
 end

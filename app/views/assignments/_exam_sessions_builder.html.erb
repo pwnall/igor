@@ -1,0 +1,19 @@
+<h3>Exam Sessions</h3>
+<div class="assignment-builder-sessions"
+     data-pwnfx-render-target="exam-sessions">
+<%= f.fields_for :exam_sessions do |ef| %>
+  <%= render 'exam_sessions/fields', f: ef %>
+<% end %>
+</div>
+<p class="assignment-builder-actions">
+  <%= button_tag data: { pwnfx_render_randomize: 'IDID',
+        pwnfx_render_scope: 'assignment', pwnfx_render: 'exam-sessions' } do %>
+    <%= create_icon_tag %> Add Exam Session
+  <% end %>
+</p>
+
+<script type="text/html" data-pwnfx-render-source="exam-sessions">
+<%= f.fields_for :exam_sessions, ExamSession.new, child_index: 'IDID' do |sf| %>
+  <%= render 'exam_sessions/fields', f: sf %>
+<% end %>
+</script>

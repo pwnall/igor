@@ -26,6 +26,7 @@
 #   { ps3: 1.week.from_now },
 #   { assessment: 2.weeks.from_now (extended from 1.week.from_now) },
 #   { main_exam_2: 3.weeks.from_now },
+#   { main_exam_3: 5.weeks.from_now },
 #   { project: 2.months.from_now },
 #   { lab_survey: (3.months + 1.day).from_now (extended from 3.months.from_now) }
 #
@@ -42,6 +43,7 @@
 #   { ps3: 1.week.from_now },
 #   { main_exam_2: 3.weeks.from_now },
 #   { assessment: 3.weeks.from_now (extended from 1.week.from_now) },
+#   { main_exam_3: 5.weeks.from_now },
 #   { project: 2.months.from_now },
 #   { lab_survey: 3.months.from_now }
 

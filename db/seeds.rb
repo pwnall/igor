@@ -160,32 +160,35 @@ puts 'Surveys created'
 
 base_time = Time.current.beginning_of_minute
 
+# TODO(spark008): Add more exams in different states.
 exam_data = [
-  { due_at: -6.weeks - 5.days, grades_released: true, state: :graded },
+  { due_at: -7.weeks, grades_released: true, state: :graded },
   { due_at: -5.days, grades_released: false, state: :grading },
-  { due_at: 8.weeks - 5.days, grades_released: false, state: :draft }
+  { due_at: 7.weeks, grades_released: false, state: :draft }
 ]
 
-exams = exam_data.map.with_index do |data, index|
+exam_assignments = exam_data.map.with_index do |data, index|
   i = index + 1
 
-  exam = Assignment.new name: "Exam #{i}", weight: 5.0, author: admin
-  exam.course = course
-  exam.build_deadline due_at: (base_time + data[:due_at]), course: course
-  exam.released_at = exam.due_at - 1.week
-  exam.grades_released = data[:grades_released]
-  exam.save!
+  assignment = Assignment.new name: "Exam #{i}", weight: 5.0, author: admin,
+      scheduled: true, enable_exam: '1'
+  assignment.course = course
+  assignment.build_exam requires_confirmation: false
+  assignment.build_deadline due_at: (base_time + data[:due_at]), course: course
+  assignment.released_at = assignment.due_at - 1.week
+  assignment.grades_released = data[:grades_released]
+  assignment.save!
   (1..(5 + i)).map do |j|
-    exam.metrics.build name: "Problem #{j}", weight: rand(20),
-                       max_score: 6 + (i + j) % 6
+    assignment.metrics.create! name: "Problem #{j}", weight: rand(20),
+                               max_score: 6 + (i + j) % 6
   end
-  exam
+  assignment
 end
 
 students.each_with_index do |user, i|
-  exams.each_with_index do |exam, j|
-    next unless exam.due_at < base_time
-    exam.metrics.each.with_index do |metric, k|
+  exam_assignments.each_with_index do |assignment, j|
+    next unless assignment.due_at < base_time
+    assignment.metrics.each.with_index do |metric, k|
       next if i + j == k
       grade = metric.grades.build subject: user,
           score: metric.max_score * (0.1 * ((i + j + k) % 10)),

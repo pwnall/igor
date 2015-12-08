@@ -407,4 +407,14 @@ class UserTest < ActiveSupport::TestCase
       assert_empty dexter.survey_responses.reload
     end
   end
+
+  describe 'exam attendance' do
+    it 'destroys dependent records' do
+      assert_not_empty dexter.exam_attendances
+
+      dexter.destroy
+
+      assert_empty dexter.exam_attendances.reload
+    end
+  end
 end

@@ -1,0 +1,53 @@
+<section class="exam-session callout"
+         data-pwnfx-hide-positive="exam-session-section"
+         data-pwnfx-scope="exam-session">
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :name, 'Name', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.text_field :name, required: true,
+            placeholder: 'Room 32-123, 2x time'%>
+    </div>
+    <div class="small-3 columns">
+      <span class="destroy">
+        <%= f.label :_destroy, class: 'middle' do %>
+          <%= f.check_box :_destroy, data: {
+                pwnfx_hide: 'exam-session-section',
+                pwnfx_hide_scope: 'exam-session',
+                pwnfx_hide_class: 'destroyed-blur',
+                pwnfx_hide_trigger: 'checked' } %>
+          <%= destroy_icon_tag %> Remove
+        <% end %>
+      </span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :starts_at, 'Start Time', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.datetime_local_field :starts_at, required: true %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :ends_at, 'End Time', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.datetime_local_field :ends_at, required: true %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :capacity, 'Capacity', class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <div class="input-group">
+        <%= f.number_field :capacity, required: true, min: 1, step: 1,
+              placeholder: 50, class: 'input-group-field'%>
+        <span class="input-group-label">Students</span>
+      </div>
+    </div>
+  </div>
+</section>

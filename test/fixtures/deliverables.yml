@@ -49,3 +49,9 @@ assessment_code:
   name: Python Source Code
   description: "A code sample you are proud of, in one python file."
   file_ext: py
+
+main_exam_3_part_a:
+  assignment: main_exam_3
+  name: Part A
+  description: "Your code submission for Part A."
+  file_ext: py

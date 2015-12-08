@@ -52,6 +52,45 @@
   </div>
 </div>
 
+<% if f.object.exam.new_record? %>
+<div class="row">
+  <div class="small-3 columns">
+    <%= f.label :enable_exam, 'Enable Exam Features',
+          class: 'text-right middle' %>
+  </div>
+  <div class="small-6 columns">
+    <%= f.check_box :enable_exam, class: 'switch-input',
+          data: { pwnfx_hide: 'enable-exam', pwnfx_hide_scope: 'exam-features',
+                  pwnfx_hide_trigger: 'checked' } %>
+    <%= f.label :enable_exam, nil, class: 'middle switch-paddle' do %>
+      <span class="switch-active">Yes</span>
+      <span class="switch-inactive">No</span>
+    <% end %>
+    <p class="help-text">(Cannot be disabled after saving the assignment)</p>
+  </div>
+</div>
+<% end %>
+
+<%= f.fields_for :exam do |ef| %>
+<div class="row" data-pwnfx-hide-negative="enable-exam"
+     data-pwnfx-scope="exam-features">
+  <div class="small-3 columns">
+    <%= ef.label :requires_confirmation, 'Session Attendance',
+          class: 'text-right middle' %>
+  </div>
+  <div class="small-6 columns">
+    <%= ef.label :requires_confirmation, class: 'check-box-label' do %>
+      <span class="check-box-wrapper">
+        <%= ef.check_box :requires_confirmation %>
+      </span>
+      <span class="label-text">
+        Student attendance must be confirmed by a staff member
+      </span>
+    <% end %>
+  </div>
+</div>
+<% end %>
+
 <% if f.object.course.has_teams? %>
 <div class="row">
   <div class="small-3 columns">

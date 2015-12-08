@@ -1,0 +1,15 @@
+<% if exam.requires_confirmation? %>
+<p>A staff member must confirm a student's attendance before the student can
+  view and start the exam.</p>
+<% else %>
+<p>Students do not require their attendance to be confirmed, and can begin the
+  exam as soon as the session they have selected begins.</p>
+<% end %>
+
+<section>
+<% if exam.exam_sessions.length > 0 %>
+  <%= render 'exam_sessions/list', exam_sessions: exam.exam_sessions %>
+<% else %>
+  <p>No exam sessions have been set up yet.</p>
+<% end %>
+</section>

@@ -21,6 +21,7 @@
 #   { not_main_survey: 1.week.from_now },
 #   { ps3: 1.week.from_now },
 #   { main_exam_2: 3.weeks.from_now },
+#   { main_exam_3: 5.weeks.from_now },
 #   { project: 2.months.from_now },
 #   { lab_survey: 3.months.from_now }
 
@@ -58,6 +59,11 @@ main_exam:
 main_exam_2:
   subject: main_exam_2 (Assignment)
   due_at: <%= 3.weeks.from_now.to_s(:db) %>
+  course: main
+
+main_exam_3:
+  subject: main_exam_3 (Assignment)
+  due_at: <%= 5.weeks.from_now.to_s(:db) %>
   course: main
 
 not_main_exam:

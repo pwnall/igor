@@ -43,6 +43,7 @@ class AssignmentsController < ApplicationController
   def new
     @assignment = Assignment.new course: current_course, author: current_user
     @assignment.due_at = @assignment.default_due_at
+    @assignment.build_exam
 
     respond_to do |format|
       format.html  # new.html.erb
@@ -51,6 +52,7 @@ class AssignmentsController < ApplicationController
 
   # GET /6.006/assignments/1/edit
   def edit
+    @assignment.build_exam unless @assignment.exam
   end
 
   # POST /6.006/assignments
@@ -73,7 +75,7 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # PUT /6.006/assignments/1
+  # PATCH /6.006/assignments/1
   def update
     respond_to do |format|
       if @assignment.update assignment_params
@@ -211,19 +213,25 @@ class AssignmentsController < ApplicationController
   #     hash since accepts_nested_attributes_for checks that each nested record
   #     actually belongs to the parent record.
   def assignment_params
+    exam_session_params = [:id, :name, :starts_at, :ends_at, :capacity,
+        :_destroy]
+    exam_params = [:id, :requires_confirmation,
+        { exam_sessions_attributes: exam_session_params }]
+    analyzer_params = [:id, :type, :message_name, :auto_grading, :time_limit,
+        :ram_limit, :file_limit, :file_size_limit, :process_limit,
+        :map_time_limit, :map_ram_limit, :map_logs_limit, :reduce_time_limit,
+        :reduce_ram_limit, :reduce_logs_limit, { db_file_attributes: :f }]
+    deliverable_params = [:name, :file_ext, :_destroy, :description, :id,
+        { analyzer_attributes: analyzer_params } ]
+    file_params = [:id, :description, :released_at, :_destroy,
+        :reset_released_at, { db_file_attributes: :f }]
+    metric_params = [:name, :max_score, :weight, :id, :_destroy]
     params.require(:assignment).permit :name, :due_at, :weight, :author_id,
-        :team_partition_id, :feedback_survey_id,
-        :scheduled, :released_at, :reset_released_at, :grades_released,
-        deliverables_attributes: [:name, :file_ext, :_destroy,
-            :description, :id, { analyzer_attributes: [:id, :type,
-                :message_name, :auto_grading, :time_limit, :ram_limit,
-                :file_limit, :file_size_limit, :process_limit,
-                :map_time_limit, :map_ram_limit, :map_logs_limit,
-                :reduce_time_limit, :reduce_ram_limit, :reduce_logs_limit,
-                { db_file_attributes: :f }] } ],
-        files_attributes: [:id, :description, :released_at, :_destroy,
-            :reset_released_at, { db_file_attributes: :f }],
-        metrics_attributes: [:name, :max_score, :weight, :id, :_destroy]
+        :team_partition_id, :feedback_survey_id, :scheduled, :released_at,
+        :reset_released_at, :grades_released, :enable_exam,
+        exam_attributes: exam_params,
+        deliverables_attributes: deliverable_params,
+        files_attributes: file_params, metrics_attributes: metric_params
     # Note: feedback_survey_id is protected in the model but is allowed here
   end
   private :assignment_params

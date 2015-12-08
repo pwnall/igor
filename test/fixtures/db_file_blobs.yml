@@ -73,6 +73,11 @@ assessment_code_docker_analyzer:
   style: original
   file_contents: <%= binary_file('files/analyzer/fib_small.zip') %>
 
+main_exam_3_part_a_docker_analyzer:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:main_exam_3_part_a_docker_analyzer) %>
+  style: original
+  file_contents: <%= binary_file('files/analyzer/fib_small.zip') %>
+
 ps1_solutions:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:ps1_solutions) %>
   style: original

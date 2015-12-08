@@ -1,0 +1,21 @@
+<ol class="no-bullet exam-sessions-list">
+  <% exam_sessions.each do |exam_session| %>
+  <li>
+    <div class="session-details">
+      <span class="name"><%= exam_session.name %></span>
+      <span class="time-range"><%= exam_session_time_tag exam_session %></span>
+      <% if current_course.can_edit? current_user %>
+      <span class="capacity">
+        <%= exam_session.available_seats %> / <%= exam_session.capacity %>
+        seats left
+      </span>
+      <% end %>
+    </div>
+    <% if current_course.is_student? current_user %>
+    <div class="attendance-status actions">
+      <%= attendance_status_display exam_session, current_user %>
+    </div>
+    <% end %>
+  </li>
+  <% end %>
+</ol>

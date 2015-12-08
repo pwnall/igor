@@ -26,6 +26,11 @@
       <a href="#overview-panel">Overview</a>
     </li>
     <% if assignment.can_read_content? current_user %>
+    <% if assignment.exam %>
+    <li class="tabs-title">
+      <a href="#exam-sessions-panel">Exam Sessions</a>
+    </li>
+    <% end %>
     <li class="tabs-title">
       <a href="#resource-files-panel">Resource Files</a>
     </li>
@@ -53,6 +58,12 @@
     </div>
 
     <% if assignment.can_read_content? current_user %>
+    <% if exam = assignment.exam %>
+    <div class="tabs-panel" id="exam-sessions-panel">
+      <%= render 'exam_sessions/list', exam_sessions: exam.exam_sessions %>
+    </div>
+    <% end %>
+
     <div class="tabs-panel" id="resource-files-panel">
     <% unless assignment.files_for(current_user).empty? %>
       <%= render 'assignment_files/list', assignment: assignment %>

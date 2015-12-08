@@ -200,7 +200,7 @@ class LoadTestSession
 
     result_page = form.submit
     !!result_page.root.css('.status-bar').text.
-        index(/assignment released/i)
+        index(/assignment unlocked/i)
   end
 
   # Register for a class.

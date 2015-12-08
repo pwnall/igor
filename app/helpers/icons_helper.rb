@@ -75,9 +75,24 @@ module IconsHelper
     fa_icon :'angle-double-up', title: title
   end
 
+  # Show on buttons that check-in a student to an exam session.
+  def check_in_icon_tag
+    fa_icon :'check-circle-o', title: 'Check In'
+  end
+
+  # Show on buttons that check-out a student from an exam session.
+  def check_out_icon_tag
+    fa_icon :'minus-circle', title: 'Check Out'
+  end
+
+  # Show on buttons that confirm a student's attendance to an exam session.
+  def confirm_check_in_icon_tag
+    fa_icon :'check-square-o', title: 'Confirm Check-in'
+  end
+
   # Shown on buttons that generate a table out of existing data.
   def report_icon_tag
-    fa_icon :'th-list', title: 'Generate report'
+    fa_icon :table, title: 'Generate report'
   end
 
   # Shown on links that lead to a help screen.
@@ -255,6 +270,11 @@ module IconsHelper
   # Show this icon next to grading-related functionality.
   def grades_icon_tag
     fa_icon :'bar-chart'
+  end
+
+  # Show this icon next to exam session attendance-related functionality.
+  def attendance_icon_tag
+    fa_icon :clipboard
   end
 
   # Show this icon to represent an ongoing process.

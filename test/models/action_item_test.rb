@@ -22,9 +22,8 @@ class ActionItemTest < ActiveSupport::TestCase
         it 'returns an ActionItem for each actionable (sub)task in the course,
             sorted soonest to latest due date (accounting for extensions),
             alphabetical name' do
-          golden = [deliverables(:ps3_writeup),
-              deliverables(:assessment_writeup), deliverables(:assessment_code),
-              surveys(:lab)].map(&:name)
+          golden = [deliverables(:assessment_writeup),
+                    deliverables(:assessment_code), surveys(:lab)].map(&:name)
           actual = ActionItem.for(@student, @course).map(&:description)
           assert_equal golden, actual
         end
@@ -34,24 +33,22 @@ class ActionItemTest < ActiveSupport::TestCase
         it 'returns an ActionItem for each actionable (sub)task in taken
             courses, sorted latest to earliest due date (accounting for
             extensions), reverse alphabetical name' do
-          golden = [deliverables(:ps3_writeup),
-              deliverables(:assessment_writeup), deliverables(:assessment_code),
-              surveys(:lab)].map(&:name)
+          golden = [deliverables(:assessment_writeup),
+                    deliverables(:assessment_code), surveys(:lab)].map(&:name)
           actual = ActionItem.for(@student, nil).map(&:description)
           assert_equal golden, actual
         end
       end
 
       it 'records the correct due date for each action item' do
-        golden = [assignments(:ps3), assignments(:assessment),
-            assignments(:assessment), surveys(:lab)].
-            map { |a| a.due_at_for @student }
+        golden = [assignments(:assessment), assignments(:assessment),
+                  surveys(:lab)].map { |a| a.due_at_for @student }
         actual = ActionItem.for(@student, @course).map(&:due_at)
         assert_equal golden, actual
       end
 
       it 'records the correct submission state for each action item' do
-        golden = [:incomplete, :ok, :rejected, :incomplete]
+        golden = [:ok, :rejected, :incomplete]
         actual = ActionItem.for(@student, @course).map(&:state)
         assert_equal golden, actual
       end
@@ -107,7 +104,7 @@ class ActionItemTest < ActiveSupport::TestCase
       it 'returns actionable assignments/surveys for all courses, sorted soonest
           to latest deadline, alphabetical name' do
         golden = [assignments(:not_main_exam), assignments(:assessment),
-                  assignments(:ps3), surveys(:lab)]
+                  surveys(:lab)]
         actual = ActionItem.tasks_for users(:admin), nil
         assert_equal golden, actual, actual.map(&:name)
       end
@@ -116,7 +113,7 @@ class ActionItemTest < ActiveSupport::TestCase
     describe 'course is nil, user is staff member' do
       it 'returns actionable assignments/surveys for taught courses, sorted
           soonest to latest deadline, alphabetical name' do
-        golden = [assignments(:assessment), assignments(:ps3), surveys(:lab)]
+        golden = [assignments(:assessment),surveys(:lab)]
         actual = ActionItem.tasks_for users(:main_staff), nil
         assert_equal golden, actual, actual.map(&:name)
       end
@@ -126,8 +123,7 @@ class ActionItemTest < ActiveSupport::TestCase
       it 'returns actionable assignments/surveys for taken courses, sorted
           soonest to latest due date (accounting for extensions), alphabetical
           name' do
-        golden = [assignments(:ps2), assignments(:ps3),
-                  assignments(:assessment), surveys(:lab)]
+        golden = [assignments(:ps2), assignments(:assessment), surveys(:lab)]
         actual = ActionItem.tasks_for users(:dexter), nil
         assert_equal golden, actual, actual.map(&:name)
       end
@@ -137,8 +133,7 @@ class ActionItemTest < ActiveSupport::TestCase
       it 'returns actionable assignments/surveys for taken courses, sorted
           soonest to latest due date (accounting for extensions), alphabetical
           name' do
-        golden = [assignments(:ps2), assignments(:ps3),
-                  assignments(:assessment), surveys(:lab)]
+        golden = [assignments(:ps2), assignments(:assessment), surveys(:lab)]
         actual = ActionItem.tasks_for users(:dexter), courses(:main)
         assert_equal golden, actual, actual.map(&:name)
       end

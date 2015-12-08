@@ -254,7 +254,7 @@ class AssignmentsHelperTest < ActionView::TestCase
   describe '#unrelease_confirmation' do
     describe 'assignment released, grades unreleased' do
       before do
-        @assignment = grades_unreleased_assignment
+        @assignment = many_metrics_assignment
         assert_equal true, @assignment.released?
         assert_equal false, @assignment.grades_released?
       end
@@ -281,7 +281,7 @@ class AssignmentsHelperTest < ActionView::TestCase
   describe '#release_grades_confirmation' do
     describe 'assignment released, grades unreleased' do
       before do
-        @assignment = grades_unreleased_assignment
+        @assignment = many_metrics_assignment
         assert_equal true, @assignment.released?
         assert_equal false, @assignment.grades_released?
       end

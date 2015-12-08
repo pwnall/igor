@@ -5,7 +5,7 @@ ol {
     > form {
       display: inline;
     }
-    .link-button-wrapper > a, .button {
+    .link-button-wrapper > a, .button, form.button_to > input[type="submit"] {
       margin: 0.25rem;
     }
   }

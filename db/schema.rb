@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20110704070001) do
+ActiveRecord::Schema.define(version: 20110704080003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -190,6 +190,35 @@ ActiveRecord::Schema.define(version: 20110704070001) do
     t.text    "user_ldap_key",                null: false
     t.boolean "use_ldaps",                    null: false
     t.index ["domain"], name: "index_email_resolvers_on_domain", unique: true, using: :btree
+  end
+
+  create_table "exam_attendances", force: :cascade do |t|
+    t.integer  "user_id",         null: false
+    t.integer  "exam_id",         null: false
+    t.integer  "exam_session_id", null: false
+    t.boolean  "confirmed",       null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["exam_id", "user_id"], name: "index_exam_attendances_on_exam_id_and_user_id", unique: true, using: :btree
+    t.index ["exam_session_id", "user_id"], name: "index_exam_attendances_on_exam_session_id_and_user_id", unique: true, using: :btree
+    t.index ["user_id"], name: "index_exam_attendances_on_user_id", using: :btree
+  end
+
+  create_table "exam_sessions", force: :cascade do |t|
+    t.integer  "course_id",            null: false
+    t.integer  "exam_id",              null: false
+    t.string   "name",      limit: 64, null: false
+    t.datetime "starts_at",            null: false
+    t.datetime "ends_at",              null: false
+    t.integer  "capacity",             null: false
+    t.index ["course_id", "starts_at"], name: "index_exam_sessions_on_course_id_and_starts_at", using: :btree
+    t.index ["exam_id", "name"], name: "index_exam_sessions_on_exam_id_and_name", unique: true, using: :btree
+  end
+
+  create_table "exams", force: :cascade do |t|
+    t.integer "assignment_id",         null: false
+    t.boolean "requires_confirmation", null: false
+    t.index ["assignment_id"], name: "index_exams_on_assignment_id", unique: true, using: :btree
   end
 
   create_table "grade_comments", force: :cascade do |t|
@@ -467,6 +496,12 @@ ActiveRecord::Schema.define(version: 20110704070001) do
   add_foreign_key "collaborations", "submissions"
   add_foreign_key "deadline_extensions", "users"
   add_foreign_key "deadline_extensions", "users", column: "grantor_id", on_delete: :nullify
+  add_foreign_key "exam_attendances", "exam_sessions"
+  add_foreign_key "exam_attendances", "exams"
+  add_foreign_key "exam_attendances", "users"
+  add_foreign_key "exam_sessions", "courses"
+  add_foreign_key "exam_sessions", "exams"
+  add_foreign_key "exams", "assignments"
   add_foreign_key "time_slot_allotments", "recitation_sections"
   add_foreign_key "time_slot_allotments", "time_slots"
 end

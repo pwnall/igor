@@ -110,8 +110,8 @@ class Assignment
   #
   # When this is false and scheduled? is true, the students can only see
   # scheduling-related data, like the assignment name, the release / due dates,
-  # and any exam sessions associated withe assignment. Students cannot see any
-  # deliverables or resources.
+  # and any exam sessions associated with the assignment. Students cannot see
+  # any deliverables or resources.
   def released?
     scheduled? && !!released_at && (released_at < Time.current)
   end
@@ -219,7 +219,8 @@ class Assignment
   # This assignment's position in the assignment lifecycle.
   #
   # :draft -- under construction, not available to students
-  # :open -- the assignment accepts submissions from students
+  # :locked -- deliverables under construction, dates available to students
+  # :unlocked -- the assignment accepts submissions from students
   # :grading -- the assignment doesn't accept submissions, grades are not ready
   # :graded -- grades have been released to students
   def ui_state_for(user)
@@ -248,4 +249,31 @@ class Assignment
   def grade_subject_for(user)
     team_partition.nil? ? user : team_partition.team_for_user(user)
   end
+end
+
+# :nodoc: exams.
+class Assignment
+  # True if there is an associated exam (virtual attribute).
+  def enable_exam
+    @enable_exam ||= !!(exam && exam.persisted?)
+  end
+  alias_method :enable_exam?, :enable_exam
+
+  # Store the user's decision to enable exam features for this assignment.
+  #
+  # @param [String] state '0' if not enabling, '1' if enabling
+  def enable_exam=(state)
+    @enable_exam = ActiveRecord::Type::Boolean.new.cast(state)
+  end
+
+  # An exam that can administer this content during multiple exam sessions.
+  has_one :exam, dependent: :destroy, inverse_of: :assignment
+  accepts_nested_attributes_for :exam
+
+  # An associated exam should only be saved if the user enabled exams.
+  def nullify_exam_if_not_enabled
+    self.exam = nil unless enable_exam?
+  end
+  before_validation :nullify_exam_if_not_enabled
+  private :nullify_exam_if_not_enabled
 end

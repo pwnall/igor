@@ -44,6 +44,9 @@ main_grader:
 main_grader_2:
   exuid: 80086
 
+not_main_student:
+  exuid: 23456
+
 not_main_dropout:
   exuid: 01234
 

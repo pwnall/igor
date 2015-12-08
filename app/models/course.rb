@@ -228,6 +228,12 @@ class Course
   has_many :team_memberships, inverse_of: :course
 end
 
+# :nodoc: Exams.
+class Course
+  # Sessions for the exams held by this course.
+  has_many :exam_sessions, inverse_of: :course
+end
+
 # :nodoc: Announcements.
 class Course
   # The announcements made in this course.
