@@ -30,9 +30,11 @@
       <section id="main">
         <%= yield %>
       </section>
+      <% if content_for? :sidebar %>
       <section id="memo-sidebar">
         <%= yield :sidebar %>
       </section>
+      <% end %>
     </div>
     <%= render 'layouts/footer' %>
 
