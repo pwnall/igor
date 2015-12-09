@@ -41,6 +41,11 @@ class DeadlineExtension < ActiveRecord::Base
   validates :due_at, presence: true,
       timeliness: { after: Proc.new { |extension| extension.subject.due_at } }
 
+  # The default due date for a particular extension.
+  def default_due_at
+    subject.due_at
+  end
+
   # The recipient's external id (virtual attribute).
   def user_exuid
     user && user.to_param

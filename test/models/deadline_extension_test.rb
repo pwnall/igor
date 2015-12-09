@@ -51,6 +51,12 @@ class DeadlineExtensionTest < ActiveSupport::TestCase
     assert @extension.invalid?
   end
 
+  describe '#default_due_at' do
+    it "returns the subject's original due date" do
+      assert_equal extension.subject.due_at, extension.default_due_at
+    end
+  end
+
   describe '#user_exuid' do
     it 'returns the exuid of the user' do
       assert_equal users(:solo).to_param, @extension.user_exuid

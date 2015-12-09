@@ -14,7 +14,7 @@
 </p>
 
 <script type="text/html" data-pwnfx-render-source="assignment-files">
-<%= f.fields_for :files, AssignmentFile.new, child_index: 'IDID' do |ff| %>
+<%= f.fields_for :files, f.object.files.build, child_index: 'IDID' do |ff| %>
   <%= render 'assignment_files/fields', f: ff %>
 <% end %>
 </script>

@@ -98,33 +98,13 @@ end
 
 # :nodoc: release cycle.
 class Assignment
+  include IsReleased
+
   # True if the assignment shows up in the students' calendar.
   validates :scheduled, inclusion: { in: [true, false], allow_nil: false }
 
   # The default time when the deliverables will be released to students.
   validates :released_at, timeliness: { before: :due_at, allow_nil: true }
-
-  # Nullify :released_at if the author did not decide a release date.
-  def act_on_reset_released_at
-    if @reset_released_at
-      self.released_at = nil
-      @reset_released_at = nil
-    end
-  end
-  private :act_on_reset_released_at
-  before_validation :act_on_reset_released_at
-
-  # True if the release date was omitted (reset to nil) (virtual attribute).
-  def reset_released_at
-    released_at.nil?
-  end
-
-  # Store the user's decision to set or omit (reset) the release date.
-  #
-  # @param [String] state '0' if setting a date, '1' if omitting
-  def reset_released_at=(state)
-    @reset_released_at = ActiveRecord::Type::Boolean.new.cast(state)
-  end
 
   # True if the deliverables have been released to students.
   #
@@ -134,6 +114,13 @@ class Assignment
   # deliverables or resources.
   def released?
     scheduled? && !!released_at && (released_at < Time.current)
+  end
+
+  # The default release date for a particular assignment.
+  #
+  # This same method should also be defined for AssignmentFile.
+  def default_released_at
+    self.class.default_released_at
   end
 end
 

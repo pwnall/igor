@@ -46,6 +46,16 @@ module HasDeadline
       tasks_due = with_upcoming_deadline + with_upcoming_extension_for(user)
       tasks_due.select(&:released?).uniq
     end
+
+    # The generic default value of :due_at.
+    def default_due_at
+      Time.current.beginning_of_hour
+    end
+  end
+
+  # The default due date for a particular task.
+  def default_due_at
+    self.class.default_due_at
   end
 
   # The date of the deadline (virtual attribute).

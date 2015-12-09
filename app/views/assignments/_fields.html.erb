@@ -13,8 +13,9 @@
     <%= f.label :released_at, 'Release Date/Time', class: 'text-right middle' %>
   </div>
   <div class="small-6 columns">
-    <%= f.datetime_local_field :released_at, data: {
-          pwnfx_scope: 'release', pwnfx_disable_positive: 'release-p' } %>
+    <%= f.datetime_local_field :released_at,
+          value: released_at_with_default(f.object), data: { pwnfx_scope: 'release',
+          pwnfx_disable_positive: 'release-p' }, step: 1 %>
   </div>
   <div class="small-3 columns">
     <%= f.check_box :reset_released_at, data: { pwnfx_disable: 'release-p',
@@ -28,7 +29,7 @@
     <%= f.label :due_at, 'Submission Deadline', class: 'text-right middle' %>
   </div>
   <div class="small-6 columns">
-    <%= f.datetime_local_field :due_at, required: true %>
+    <%= f.datetime_local_field :due_at, step: 1, required: true %>
   </div>
 </div>
 

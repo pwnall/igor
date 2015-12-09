@@ -42,6 +42,7 @@ class AssignmentsController < ApplicationController
   # GET /6.006/assignments/new
   def new
     @assignment = Assignment.new course: current_course, author: current_user
+    @assignment.due_at = @assignment.default_due_at
 
     respond_to do |format|
       format.html  # new.html.erb

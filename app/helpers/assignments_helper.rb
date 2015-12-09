@@ -164,4 +164,12 @@ module AssignmentsHelper
       'The deliverables for this assignment will also be opened for submission. Continue?'
     end
   end
+
+  # The release date, or appropriate default, of the given releaseable object.
+  #
+  # @params [Assignment|AssignmentFile] releaseable the assignment or resource
+  #   file that will be released to students
+  def released_at_with_default(releaseable)
+    releaseable.released_at_with_default.to_s(:datetime_local_field)
+  end
 end

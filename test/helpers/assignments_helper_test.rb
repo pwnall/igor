@@ -6,6 +6,7 @@ class AssignmentsHelperTest < ActionView::TestCase
   let(:unreleased_exam) { assignments(:main_exam) }
   let(:unreleased_assignment) { assignments(:project) }
   let(:released_assignment) { assignments(:ps2) }
+  let(:undecided_exam) { assignments(:main_exam_2) }
   let(:grades_unreleased_assignment) { assignments(:ps3) }
   let(:many_metrics_assignment) { assignments(:assessment) }
 
@@ -314,6 +315,45 @@ class AssignmentsHelperTest < ActionView::TestCase
       it 'returns a confirmation message' do
         assert_match /Continue\?/, release_grades_confirmation(@assignment)
       end
+    end
+  end
+
+  describe '#released_at_with_default' do
+    let(:file) { assignment_files(:ps1_solutions) }
+    let(:current_hour) do
+      Time.current.beginning_of_hour.to_s(:datetime_local_field)
+    end
+
+    it 'formats the release date of an Assignment' do
+      assert_not_nil released_assignment.released_at
+      golden = released_assignment.released_at.to_s(:datetime_local_field)
+      assert_equal golden, released_at_with_default(released_assignment)
+    end
+
+    it 'formats the current hour, if the assignment has a nil release date' do
+      assert_nil undecided_exam.released_at
+      assert_equal current_hour, released_at_with_default(undecided_exam)
+    end
+
+    it 'formats the release date of an AssignmentFile' do
+      assert_not_nil file.released_at
+      golden = file.released_at.to_s(:datetime_local_field)
+      assert_equal golden, released_at_with_default(file)
+    end
+
+    it "formats the release date of the file's assignment if only the file's
+        release date is nil" do
+      assert_not_nil released_assignment.released_at
+      new_file = released_assignment.files.new
+      golden = released_assignment.released_at.to_s(:datetime_local_field)
+      assert_equal golden, released_at_with_default(released_assignment)
+    end
+
+    it 'formats the current hour, if both the file and its assignment have nil
+        release dates' do
+      assert_nil undecided_exam.released_at
+      new_file = undecided_exam.files.new
+      assert_equal current_hour, released_at_with_default(new_file)
     end
   end
 end

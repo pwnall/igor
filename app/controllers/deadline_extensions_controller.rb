@@ -8,6 +8,7 @@ class DeadlineExtensionsController < ApplicationController
   # GET /6.006/assignments/1/extensions
   def index
     @extension = DeadlineExtension.new subject: @assignment
+    @extension.due_at = @extension.default_due_at
   end
 
   # POST /6.006/assignments/1/extensions

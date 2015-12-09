@@ -8,6 +8,7 @@ class SurveyTest < ActiveSupport::TestCase
   end
 
   let(:survey) { surveys(:project) }
+  let(:current_hour) { Time.current.beginning_of_hour }
 
   it 'validates the setup survey' do
     assert @survey.valid?, @survey.errors.full_messages
@@ -197,6 +198,14 @@ class SurveyTest < ActiveSupport::TestCase
       end
     end
 
+    describe 'past_due scope' do
+      it 'returns surveys whose deadlines have passed' do
+        golden = surveys(:ps1, :project)
+        actual = courses(:main).surveys.past_due
+        assert_equal golden.to_set, actual.to_set, actual.map(&:name)
+      end
+    end
+
     describe '.upcoming_for' do
       it 'returns released surveys the student can complete' do
         golden = [surveys(:lab)]
@@ -205,11 +214,15 @@ class SurveyTest < ActiveSupport::TestCase
       end
     end
 
-    describe 'past_due scope' do
-      it 'returns surveys whose deadlines have passed' do
-        golden = surveys(:ps1, :project)
-        actual = courses(:main).surveys.past_due
-        assert_equal golden.to_set, actual.to_set, actual.map(&:name)
+    describe '.default_due_at' do
+      it 'returns the current hour' do
+        assert_equal current_hour, Survey.default_due_at
+      end
+    end
+
+    describe '#default_due_at' do
+      it 'returns the current hour' do
+        assert_equal current_hour, survey.default_due_at
       end
     end
   end

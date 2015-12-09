@@ -27,6 +27,7 @@ class SurveysController < ApplicationController
   # GET /surveys/new
   def new
     @survey = Survey.new course: current_course
+    @survey.due_at = @survey.default_due_at
 
     respond_to do |format|
       format.html # new.html.erb

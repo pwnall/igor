@@ -1,5 +1,5 @@
 Time::DATE_FORMATS.merge!(
-  datetime_local_field: '%Y-%m-%dT%I:%M',
+  datetime_local_field: '%Y-%m-%dT%T',
   deadline_short: '%b %e',
   deadline_long: '%a %b %e, %l:%M%p',
   extension_date: '%m/%d/%y',

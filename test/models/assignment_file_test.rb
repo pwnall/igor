@@ -10,6 +10,8 @@ class AssignmentFileTest < ActiveSupport::TestCase
   end
 
   let(:resource) { assignment_files(:ps1_solutions) }
+  let(:assignment) { assignments(:assessment) }
+  let(:undecided_exam) { assignments(:main_exam_2) }
 
   it 'validates the setup resource' do
     assert @resource.valid?
@@ -153,39 +155,112 @@ class AssignmentFileTest < ActiveSupport::TestCase
     end
   end
 
-  describe '#act_on_reset_released_at' do
-    describe 'release date has not been set yet' do
-      before { resource.update! released_at: nil }
+  describe 'IsReleased concern' do
+    let(:current_hour) { Time.current.beginning_of_hour }
 
-      it 'updates the release date if :reset_released_at is false' do
-        released_at = 1.day.from_now
-        resource.update! released_at: released_at, reset_released_at: '0'
-        assert_equal released_at, resource.released_at
+    describe '#act_on_reset_released_at' do
+      describe 'release date has not been set yet' do
+        before { resource.update! released_at: nil }
+
+        it 'updates the release date if :reset_released_at is false' do
+          released_at = 1.day.from_now
+          resource.update! released_at: released_at, reset_released_at: '0'
+          assert_equal released_at, resource.released_at
+        end
+
+        it 'overrides :released_at update if :reset_released_at is true' do
+          resource.update! released_at: 1.day.from_now, reset_released_at: '1'
+          assert_nil resource.released_at
+        end
       end
 
-      it 'overrides :released_at update if :reset_released_at is true' do
-        resource.update! released_at: 1.day.from_now, reset_released_at: '1'
-        assert_nil resource.released_at
+      describe 'release date has been set' do
+        before { assert_not_nil resource.released_at }
+
+        it 'nullifies the release date if :reset_released_at is true' do
+          resource.update! reset_released_at: '1'
+          assert_nil resource.released_at
+        end
+
+        it 'overrides :released_at update if :reset_released_at is true' do
+          resource.update! released_at: 1.year.ago, reset_released_at: '1'
+          assert_nil resource.released_at
+        end
+
+        it 'does not change :released_at if :reset_released_at is false' do
+          released_at = resource.released_at
+          resource.update! reset_released_at: '0'
+          assert_equal released_at, resource.released_at
+        end
       end
     end
 
-    describe 'release date has been set' do
-      before { assert_not_nil resource.released_at }
+    describe '.default_released_at' do
+      it 'returns the current hour' do
+        assert_equal current_hour, AssignmentFile.default_released_at
+      end
+    end
 
-      it 'nullifies the release date if :reset_released_at is true' do
+    describe '#reset_released_at' do
+      it 'returns true if the author has not chosen a release date' do
+        resource.update! released_at: nil
+        assert_equal true, resource.reload.reset_released_at
+      end
+
+      it 'returns false if the author has chosen a release date' do
+        assert_not_nil resource.released_at
+        assert_equal false, resource.reload.reset_released_at
+      end
+    end
+
+    describe '#reset_released_at=' do
+      it "sets :reset_released_at to true if the argument is '1'" do
+        assert_equal false, resource.reset_released_at
         resource.update! reset_released_at: '1'
-        assert_nil resource.released_at
+        assert_equal true, resource.reload.reset_released_at
       end
 
-      it 'overrides :released_at update if :reset_released_at is true' do
-        resource.update! released_at: 1.year.ago, reset_released_at: '1'
-        assert_nil resource.released_at
+      it "sets :reset_released_at to false if the argument is '0' and a
+          new release date is provided" do
+        resource.update! released_at: nil
+        assert_equal true, resource.reset_released_at
+        resource.update! released_at: 1.day.from_now, reset_released_at: '0'
+        assert_equal false, resource.reload.reset_released_at
+      end
+    end
+
+    describe '#released_at_with_default' do
+      it 'returns the release date, if it is not nil' do
+        assert_not_nil resource.released_at
+        assert_equal resource.released_at, resource.released_at_with_default
       end
 
-      it 'does not change :released_at if :reset_released_at is false' do
-        released_at = resource.released_at
-        resource.update! reset_released_at: '0'
-        assert_equal released_at, resource.released_at
+      it "returns the assignment's release date, if only the file's release date
+          is nil" do
+        assert_not_nil assignment.released_at
+        new_file = assignment.files.new
+        assert_equal assignment.released_at, new_file.released_at_with_default
+      end
+
+      it 'returns the current hour, if both the file and its assignment have nil
+          release dates' do
+        assert_nil undecided_exam.released_at
+        new_file = undecided_exam.files.new
+        assert_equal current_hour, new_file.released_at_with_default
+      end
+    end
+
+    describe '#default_released_at' do
+      it 'returns the assignment release date, if it is not nil' do
+        assert_not_nil resource.assignment.released_at
+        assert_equal resource.assignment.released_at,
+                     resource.default_released_at
+      end
+
+      it 'returns the current hour, if the assignment release date is nil' do
+        assert_nil undecided_exam.released_at
+        new_file = undecided_exam.files.new
+        assert_equal current_hour, new_file.default_released_at
       end
     end
   end

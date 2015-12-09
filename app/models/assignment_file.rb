@@ -14,6 +14,7 @@
 # Files relevant to an assignment. E.g., test cases, solutions, instructions.
 class AssignmentFile < ActiveRecord::Base
   include HasDbFile
+  include IsReleased
 
   # A brief description of the resource. E.g., "PS1 Solutions".
   validates :description, length: 1..64, presence: true
@@ -25,31 +26,6 @@ class AssignmentFile < ActiveRecord::Base
   # The course for which this file has been uploaded.
   has_one :course, through: :assignment
 
-  # The time when this file will be visible to students.
-  validates :released_at, timeliness: { type: :datetime, allow_nil: true }
-
-  # Nullify :released_at if the author did not decide a release date.
-  def act_on_reset_released_at
-    if @reset_released_at
-      self.released_at = nil
-      @reset_released_at = nil
-    end
-  end
-  private :act_on_reset_released_at
-  before_validation :act_on_reset_released_at
-
-  # True if the release date was omitted (reset to nil) (virtual attribute).
-  def reset_released_at
-    released_at.nil?
-  end
-
-  # Store the user's decision to set or omit (reset) the release date.
-  #
-  # @param [String] state '0' if setting a date, '1' if omitting
-  def reset_released_at=(state)
-    @reset_released_at = ActiveRecord::Type::Boolean.new.cast(state)
-  end
-
   # True if the given user is allowed to see this file.
   #
   # TODO(spark008): Add checks to this and other model permission methods to
@@ -57,5 +33,12 @@ class AssignmentFile < ActiveRecord::Base
   def can_read?(user)
     (released_at && (released_at < Time.current) && assignment.released?) ||
         assignment.can_edit?(user)
+  end
+
+  # The default release date for a particular resource file.
+  #
+  # This same method should also be defined for Assignment.
+  def default_released_at
+    assignment.released_at || self.class.default_released_at
   end
 end

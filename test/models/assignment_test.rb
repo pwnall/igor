@@ -10,11 +10,13 @@ class AssignmentTest < ActiveSupport::TestCase
 
   let(:assignment) { assignments(:assessment) }
   let(:unreleased_exam) { assignments(:main_exam) }
+  let(:undecided_exam) { assignments(:main_exam_2) }
   let(:gradeless_assignment) { assignments(:ps3) }
   let(:student) { users(:dexter) }
   let(:any_user) { User.new }
   let(:admin) { users(:admin) }
   let(:extension) { assignment.extensions.find_by user: student }
+  let(:current_hour) { Time.current.beginning_of_hour }
 
   it 'validates the setup assignment' do
     assert @assignment.valid?, @assignment.errors.full_messages
@@ -361,6 +363,14 @@ class AssignmentTest < ActiveSupport::TestCase
         end
       end
 
+      describe 'past_due scope' do
+        it 'returns assignments whose deadlines have passed' do
+          golden = assignments(:ps1, :ps2)
+          actual = courses(:main).assignments.past_due
+          assert_equal golden.to_set, actual.to_set, actual.map(&:name)
+        end
+      end
+
       describe '.upcoming_for' do
         it 'returns released assignments the student can complete' do
           golden = assignments(:ps2, :ps3, :assessment)
@@ -369,11 +379,15 @@ class AssignmentTest < ActiveSupport::TestCase
         end
       end
 
-      describe 'past_due scope' do
-        it 'returns assignments whose deadlines have passed' do
-          golden = assignments(:ps1, :ps2)
-          actual = courses(:main).assignments.past_due
-          assert_equal golden.to_set, actual.to_set, actual.map(&:name)
+      describe '.default_due_at' do
+        it 'returns the current hour' do
+          assert_equal current_hour, Assignment.default_due_at
+        end
+      end
+
+      describe '#default_due_at' do
+        it 'returns the current hour' do
+          assert_equal current_hour, assignment.default_due_at
         end
       end
 
@@ -564,9 +578,122 @@ class AssignmentTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'release cycle' do
+    describe 'IsReleased concern' do
+      describe '#act_on_reset_released_at' do
+        describe 'release date has not been set yet' do
+          before { assignment.update! released_at: nil }
+
+          it 'updates the release date if :reset_released_at is false' do
+            released_at = 1.day.from_now
+            assignment.update! released_at: released_at,
+                               reset_released_at: '0'
+            assert_equal released_at, assignment.released_at
+          end
+
+          it 'overrides :released_at update if :reset_released_at is true' do
+            assignment.update! released_at: 1.day.from_now,
+                               reset_released_at: '1'
+            assert_nil assignment.released_at
+          end
+        end
+
+        describe 'release date has been set' do
+          before { assert_not_nil assignment.released_at }
+
+          it 'nullifies the release date if :reset_released_at is true' do
+            assignment.update! reset_released_at: '1'
+            assert_nil assignment.released_at
+          end
+
+          it 'overrides :released_at update if :reset_released_at is true' do
+            assignment.update! released_at: 1.year.ago, reset_released_at: '1'
+            assert_nil assignment.released_at
+          end
+
+          it 'does not change :released_at if :reset_released_at is false' do
+            released_at = assignment.released_at
+            assignment.update! reset_released_at: '0'
+            assert_equal released_at, assignment.released_at
+          end
+        end
+      end
+
+      describe '.default_released_at' do
+        it 'returns the current hour' do
+          assert_equal current_hour, Assignment.default_released_at
+        end
+      end
+
+      describe '#reset_released_at' do
+        it 'returns true if the author has not chosen a release date' do
+          assignment.update! released_at: nil
+          assert_equal true, assignment.reload.reset_released_at
+        end
+
+        it 'returns false if the author has chosen a release date' do
+          assert_not_nil assignment.released_at
+          assert_equal false, assignment.reload.reset_released_at
+        end
+      end
+
+      describe '#reset_released_at=' do
+        it "sets :reset_released_at to true if the argument is '1'" do
+          assert_equal false, assignment.reset_released_at
+          assignment.update! reset_released_at: '1'
+          assert_equal true, assignment.reload.reset_released_at
+        end
+
+        it "sets :reset_released_at to false if the argument is '0' and a
+            new release date is provided" do
+          assignment.update! released_at: nil
+          assert_equal true, assignment.reset_released_at
+          assignment.update! released_at: 1.day.from_now,
+                             reset_released_at: '0'
+          assert_equal false, assignment.reload.reset_released_at
+        end
+      end
+
+      describe '#released_at_with_default' do
+        it 'returns the release date, if it is not nil' do
+          assert_not_nil assignment.released_at
+          assert_equal assignment.released_at,
+                       assignment.released_at_with_default
+        end
+
+        it 'returns the current hour, if the release date is nil' do
+          assert_nil undecided_exam.released_at
+          assert_equal current_hour, undecided_exam.released_at_with_default
+        end
+      end
+    end
+
+    it 'requires the release date to occur before the base deadline' do
+      @assignment.released_at = @assignment.due_at + 1.day
+      assert @assignment.invalid?
+    end
+
+    describe '#released?' do
+      it 'returns true if the deliverables have been released' do
+        assert_operator assignment.released_at, :<, Time.current
+        assert_equal true, assignment.released?
+      end
+
+      it 'returns false if the deliverables have not been released' do
+        @assignment.released_at = 1.day.from_now
+        assert_equal false, @assignment.released?
+      end
+    end
+  end
+
   describe 'grade collection and releasing feature' do
     it 'rejects negative weights' do
       @assignment.weight = -5
+      assert @assignment.invalid?
+    end
+
+    it 'must state whether or not students can view their grades' do
+      @assignment.grades_released = nil
       assert @assignment.invalid?
     end
 
@@ -576,11 +703,6 @@ class AssignmentTest < ActiveSupport::TestCase
       it 'does not require a release date' do
         @assignment.released_at = nil
         assert @assignment.valid?
-      end
-
-      it 'requires the release date to occur before the base deadline' do
-        @assignment.released_at = @assignment.due_at + 1.day
-        assert @assignment.invalid?
       end
     end
 
@@ -592,60 +714,11 @@ class AssignmentTest < ActiveSupport::TestCase
         assert @assignment.invalid?
       end
 
-      it 'requires the release date to occur before the base deadline' do
-        @assignment.released_at = @assignment.due_at + 1.day
-        assert @assignment.invalid?
-      end
-
       it 'requires the release date to have passed' do
         @assignment.released_at = 1.day.from_now
         @assignment.grades_released = true
         assert @assignment.invalid?
       end
-    end
-
-    describe '#act_on_reset_released_at' do
-      describe 'release date has not been set yet' do
-        before { assignment.update! released_at: nil }
-
-        it 'updates the release date if :reset_released_at is false' do
-          released_at = 1.day.from_now
-          assignment.update! released_at: released_at,
-                             reset_released_at: '0'
-          assert_equal released_at, assignment.released_at
-        end
-
-        it 'overrides :released_at update if :reset_released_at is true' do
-          assignment.update! released_at: 1.day.from_now,
-                             reset_released_at: '1'
-          assert_nil assignment.released_at
-        end
-      end
-
-      describe 'release date has been set' do
-        before { assert_not_nil assignment.released_at }
-
-        it 'nullifies the release date if :reset_released_at is true' do
-          assignment.update! reset_released_at: '1'
-          assert_nil assignment.released_at
-        end
-
-        it 'overrides :released_at update if :reset_released_at is true' do
-          assignment.update! released_at: 1.year.ago, reset_released_at: '1'
-          assert_nil assignment.released_at
-        end
-
-        it 'does not change :released_at if :reset_released_at is false' do
-          released_at = assignment.released_at
-          assignment.update! reset_released_at: '0'
-          assert_equal released_at, assignment.released_at
-        end
-      end
-    end
-
-    it 'must state whether or not students can view their grades' do
-      @assignment.grades_released = nil
-      assert @assignment.invalid?
     end
 
     it 'destroys dependent records' do
@@ -685,47 +758,6 @@ class AssignmentTest < ActiveSupport::TestCase
 
       assert_difference 'assignment.metrics.count', -1 do
         assignment.update! params
-      end
-    end
-
-    describe '#reset_released_at' do
-      it 'returns true if the author has not chosen a release date' do
-        assignment.update! released_at: nil
-        assert_equal true, assignment.reload.reset_released_at
-      end
-
-      it 'returns false if the author has chosen a release date' do
-        assert_not_nil assignment.released_at
-        assert_equal false, assignment.reload.reset_released_at
-      end
-    end
-
-    describe '#reset_released_at=' do
-      it "sets :reset_released_at to true if the argument is '1'" do
-        assert_equal false, assignment.reset_released_at
-        assignment.update! reset_released_at: '1'
-        assert_equal true, assignment.reload.reset_released_at
-      end
-
-      it "sets :reset_released_at to false if the argument is '0' and a
-          new release date is provided" do
-        assignment.update! released_at: nil
-        assert_equal true, assignment.reset_released_at
-        assignment.update! released_at: 1.day.from_now,
-                           reset_released_at: '0'
-        assert_equal false, assignment.reload.reset_released_at
-      end
-    end
-
-    describe '#released?' do
-      it 'returns true if the deliverables have been released' do
-        assert_operator assignment.released_at, :<, Time.current
-        assert_equal true, assignment.released?
-      end
-
-      it 'returns false if the deliverables have not been released' do
-        @assignment.released_at = 1.day.from_now
-        assert_equal false, @assignment.released?
       end
     end
 
