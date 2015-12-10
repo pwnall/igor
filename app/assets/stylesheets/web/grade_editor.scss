@@ -31,6 +31,8 @@ table#grades-table {
       text-align: left;
     }
     td {
+      position: relative;
+
       input[type=number] {
         display: inline-block;
         height: auto;
@@ -55,6 +57,7 @@ table#grades-table {
       div.comment {
         display: none;
         position: absolute;
+        z-index: 1;
         margin: 3px 0px 0px -3px;
         box-shadow: 2px 1px 3px #666;
         border-radius: 3px;
