@@ -57,9 +57,9 @@ depts = File.read('db/seeds/depts.txt').split("\n").
     map { |line| line.split('(', 2).first.strip }
 
 students = []
-names.each_with_index do |name, i|
+names[0..90].each_with_index do |name, i|
   first_name = name.split(' ').first
-  short_name = (first_name[0, 1] + name.split(' ').last).downcase
+  short_name = (first_name[0] + name.split(' ').last + "_#{i}").downcase
   user = User.create! email: short_name + '@mit.edu',  password: 'mit',
       password_confirmation: 'mit', profile_attributes: {
         athena_username: short_name, name: name, nickname: first_name,
@@ -88,8 +88,7 @@ puts 'Students created'
 
 staff = []
 graders = []
-1.upto 14 do |i|
-  name = Faker::Name.name
+names[91..-1].each_with_index do |name, i|
   first_name = name.split(' ').first
   short_name = (first_name[0] + name.split(' ').last + "_#{i}").downcase
   user = User.create! email: short_name + '@mit.edu', password: 'mit',
