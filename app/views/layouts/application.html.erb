@@ -23,9 +23,9 @@
     <%= render 'layouts/status_bar' %>
     <div id="real-body">
       <section id="menu-sidebar">
-        <div class="vertical menu" data-accordion-menu>
+        <ul class="vertical menu" data-accordion-menu>
           <%= render menu_type(current_user, current_course) if current_user %>
-        </div>
+        </ul>
       </section>
       <section id="main">
         <%= yield %>

@@ -20,6 +20,11 @@
       <% end %>
     </li>
     <li>
+      <%= link_to registrations_path(course_id: current_course) do %>
+        <%= role_icon_tag :student %> Students
+      <% end %>
+    </li>
+    <li>
       <%= link_to assignments_path(course_id: current_course) do %>
         <%= assignment_icon_tag %> Assignments
       <% end %>
@@ -27,11 +32,6 @@
     <li>
       <%= link_to submissions_path(course_id: current_course) do %>
         <%= submissions_icon_tag %> Submissions
-      <% end %>
-    </li>
-    <li>
-      <%= link_to registrations_path(course_id: current_course) do %>
-        <%= role_icon_tag :student %> Students
       <% end %>
     </li>
     <% if current_course.has_teams? %>
@@ -43,13 +43,13 @@
     <% end %>
     <% if current_course.has_recitations? %>
     <li>
-      <%= link_to recitation_sections_path(course_id: current_course) do %>
-        <%= recitation_icon_tag %> Recitations
+      <%= link_to time_slots_path(course_id: current_course) do %>
+        <%= time_slot_icon_tag %> Time Slots
       <% end %>
     </li>
     <li>
-      <%= link_to time_slots_path(course_id: current_course) do %>
-        <%= time_slot_icon_tag %> Time Slots
+      <%= link_to recitation_sections_path(course_id: current_course) do %>
+        <%= recitation_icon_tag %> Recitations
       <% end %>
     </li>
     <% end %>
