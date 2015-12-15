@@ -12,7 +12,7 @@
 
 main_exam:
   assignment: main_exam
-  requires_confirmation: true
+  requires_confirmation: true  # do not change
 
 main_exam_3:
   assignment: main_exam_3

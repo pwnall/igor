@@ -128,11 +128,13 @@ Rails.application.routes.draw do
       end
     end
     resources :grade_comments, only: [:create]
-    resources :exam_sessions, only: [] do
-      member do
-        post :check_in
-      end
+    resources :exams, only: [] do
+      resources :attendances, controller: :exam_attendances, only: [:index]
     end
+    resources :exam_sessions, only: [] do
+      resources :attendances, controller: :exam_attendances, only: [:create]
+    end
+    resources :attendances, controller: :exam_attendances, only: [:update]
 
     # Homework submission.
     resources :analyzers, only: [] do

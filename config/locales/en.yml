@@ -8,12 +8,19 @@
 en:
   activerecord:
     attributes:
-      deadline_extension:
-        due_at: "Extended deadline"
       assignment:
         released_at: "Release date"
+      deadline_extension:
+        due_at: "Extended deadline"
+      exam_session:
+        ends_at: "End time"
     errors:
       models:
+        assignment:
+          attributes:
+            released_at:
+              before: "must occur before the base deadline."
+              invalid_datetime: "must be a valid date (not undecided)."
         db_file:
           attributes:
             f:
@@ -22,8 +29,7 @@ en:
           attributes:
             due_at:
               after: "must occur after the original deadline."
-        assignment:
+        exam_session:
           attributes:
-            released_at:
-              before: "must occur before the base deadline."
-              invalid_datetime: "must be a valid date (not undecided)."
+            ends_at:
+              after: "must occur after the session's start time."

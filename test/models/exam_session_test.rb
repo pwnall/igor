@@ -93,6 +93,22 @@ class ExamSessionTest < ActiveSupport::TestCase
     assert_empty open_session.attendances.reload
   end
 
+  describe 'by_start_time scope' do
+    it 'sorts from earliest to latest start time' do
+      golden = exam_sessions(:main_exam_under_capacity,
+                             :main_exam_full_capacity, :not_main_exam)
+      assert_equal golden, ExamSession.by_start_time
+    end
+  end
+
+  describe 'by_name scope' do
+    it 'alphabetically sorts by name' do
+      golden = exam_sessions(:not_main_exam, :main_exam_under_capacity, 
+                             :main_exam_full_capacity)
+      assert_equal golden, ExamSession.by_name
+    end
+  end
+
   describe '#available_seats' do
     it 'returns the number of available seats' do
       assert_equal 1, open_session.available_seats

@@ -40,3 +40,19 @@ span.progress-indicator {
     animation-duration: 5s;
   }
 }
+@-webkit-keyframes progress-indicator-flash {
+  0%, 100% {
+    opacity: 0.0;
+  }
+  50% {
+    opacity: 1.0;
+  }
+}
+@keyframes progress-indicator-flash {
+  0%, 100% {
+    opacity: 0.0;
+  }
+  50% {
+    opacity: 1.0;
+  }
+}

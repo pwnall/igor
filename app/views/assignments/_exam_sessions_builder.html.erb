@@ -13,7 +13,7 @@
 </p>
 
 <script type="text/html" data-pwnfx-render-source="exam-sessions">
-<%= f.fields_for :exam_sessions, ExamSession.new, child_index: 'IDID' do |sf| %>
+<%= f.fields_for :exam_sessions, f.object.exam_sessions.build, child_index: 'IDID' do |sf| %>
   <%= render 'exam_sessions/fields', f: sf %>
 <% end %>
 </script>

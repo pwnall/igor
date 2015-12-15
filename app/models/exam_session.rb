@@ -52,6 +52,12 @@ class ExamSession < ActiveRecord::Base
   # The assignment to be solved by the students taking this session's exam.
   has_one :assignment, through: :exam
 
+  # Order sessions by start time, earliest to latest.
+  scope :by_start_time, -> { order(:starts_at) }
+
+  # Alphabetically order sessions by name.
+  scope :by_name, -> { order(:name) }
+
   # The number of students who can still attend the given exam session.
   def available_seats
     capacity - attendances.count

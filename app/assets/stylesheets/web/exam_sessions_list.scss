@@ -13,6 +13,11 @@ ol.exam-sessions-list {
       .time-range {
         width: 13em;
         @include flex-grid-column(shrink, 10);
+
+        .time {
+          display: inline-block;
+          white-space: pre;
+        }
       }
       .capacity {
         width: 10em;

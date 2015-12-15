@@ -1,0 +1,25 @@
+// Tables for quickly looking up students by name and submitting data.
+@mixin quick-fill-table {
+  $indicator-width: 2em;
+
+  thead {
+    background: none;
+    border: none;
+
+    span#search-wrapper {
+      display: inline-block;
+      padding-right: 1rem;
+    }
+    input[type="search"], p {
+      margin: 0;
+    }
+  }
+  tbody {
+    border: none;
+
+    th[scope="row"] {
+      font-weight: normal;
+      text-align: left;
+    }
+  }
+}

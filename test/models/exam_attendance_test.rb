@@ -60,4 +60,11 @@ class ExamAttendanceTest < ActiveSupport::TestCase
     @attendance.confirmed = nil
     assert @attendance.invalid?
   end
+
+  describe 'by_student_name scope' do
+    it 'alphabetically sorts by student name' do
+      golden = users(:solo, :deedee, :dexter, :not_main_student)
+      assert_equal golden, ExamAttendance.by_student_name.map(&:user)
+    end
+  end
 end

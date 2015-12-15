@@ -27,7 +27,8 @@
       <%= f.label :starts_at, 'Start Time', class: 'text-right middle' %>
     </div>
     <div class="small-6 columns">
-      <%= f.datetime_local_field :starts_at, required: true %>
+      <%= f.datetime_local_field :starts_at,
+            value: exam_session_start_time(f.object), step: 1, required: true %>
     </div>
   </div>
   <div class="row">
@@ -35,7 +36,8 @@
       <%= f.label :ends_at, 'End Time', class: 'text-right middle' %>
     </div>
     <div class="small-6 columns">
-      <%= f.datetime_local_field :ends_at, required: true %>
+      <%= f.datetime_local_field :ends_at,
+            value: exam_session_end_time(f.object), step: 1, required: true %>
     </div>
   </div>
   <div class="row">

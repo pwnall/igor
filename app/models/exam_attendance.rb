@@ -54,4 +54,11 @@ class ExamAttendance < ActiveRecord::Base
   # be completed by a staff member. Otherwise, attendance should be
   # auto-confirmed.
   validates :confirmed, inclusion: { in: [true, false], allow_nil: false }
+
+  # The course facilitating the exam session.
+  has_one :course, through: :exam_session
+
+  # Alphabetically order attendances by the student's name.
+  scope :by_student_name, lambda { includes(user: :profile).
+      sort_by { |attendance| attendance.user.name } }
 end

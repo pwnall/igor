@@ -1,0 +1,56 @@
+<h2>Student Check-in Roster for <%= @exam.assignment.name %></h2>
+
+<%= form_tag exam_attendances_path(course_id: current_course, exam_id: @exam),
+      method: :get do %>
+  <div class="top-level-query">
+    <span class="query-label">
+      <%= label_tag :exam_session_id, 'Exam session: ', class: 'middle' %>
+    </span>
+    <span class="query-input-field">
+      <%= select_tag :exam_session_id,
+            exam_session_checkin_options(@exam, @exam_session),
+            include_blank: 'All' %>
+    </span>
+    <span class="query-submit-button">
+      <%= button_tag type: :submit, class: 'hollow expanded button' do %>
+        <%= filter_icon_tag %> Select
+      <% end %>
+    </span>
+  </div>
+<% end %>
+
+<table id="attendances-table"
+    data-course-number="<%= current_course.to_param %>">
+  <thead>
+    <tr>
+      <th scope="col">
+        <span id="search-wrapper">
+          <%= search_field_tag :name, '', placeholder: 'name filter' %>
+        </span>
+      </th>
+      <% unless @exam_session %>
+      <th>Session</th>
+      <% end %>
+      <th>Confirmed?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @attendances.each do |attendance| %>
+    <% student = attendance.user %>
+    <tr data-student-name="<%= student.name %>"
+        data-student-id="<%= student.id %>"
+        data-attendance-id="<%= attendance.id %>">
+      <th class="student-name" scope="row">
+        <%= link_to student.name, registration_path(
+              student.registration_for(@exam.course), course_id: @exam.course),
+              tabindex: '-1' %>
+      </th>
+      <% unless @exam_session %>
+      <td><%= attendance.exam_session.name %></td>
+      <% end %>
+      <td class="attendance">
+        <%= render 'exam_attendances/form', attendance: attendance %>
+      </td>
+    <% end %>
+  </tbody>
+</table>

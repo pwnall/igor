@@ -1,5 +1,5 @@
 <ol class="no-bullet exam-sessions-list">
-  <% exam_sessions.each do |exam_session| %>
+  <% exam_sessions.by_start_time.by_name.each do |exam_session| %>
   <li>
     <div class="session-details">
       <span class="name"><%= exam_session.name %></span>
@@ -14,6 +14,15 @@
     <% if current_course.is_student? current_user %>
     <div class="attendance-status actions">
       <%= attendance_status_display exam_session, current_user %>
+    </div>
+    <% elsif current_course.can_edit? current_user %>
+    <div class="actions">
+      <span class="link-button-wrapper">
+        <%= link_to exam_attendances_path(course_id: exam_session.course,
+              exam_id: exam_session.exam, exam_session_id: exam_session) do %>
+          <%= list_icon_tag %> View Roster
+        <% end %>
+      </span>
     </div>
     <% end %>
   </li>

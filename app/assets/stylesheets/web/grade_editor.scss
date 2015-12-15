@@ -1,34 +1,18 @@
 table#grades-table {
   @include table-scroll;
+  @include quick-fill-table;
   overflow-y: auto;
   height: 80vh;
 
   thead {
-    background: none;
-    border: none;
-
-    span#search-wrapper {
-      display: inline-block;
-      padding-right: 1rem;
-    }
-    input[type="search"], p {
-      margin: 0;
-    }
     .metric-weight, .max-total {
       white-space: nowrap;
       font-weight: lighter;
     }
   }
-
   tbody {
-    border: none;
-
     th, td {
       white-space: nowrap;
-    }
-    th[scope="row"] {
-      font-weight: normal;
-      text-align: left;
     }
     td {
       position: relative;
@@ -81,22 +65,5 @@ table#grades-table {
         text-align: right;
       }
     }
-  }
-}
-
-@-webkit-keyframes progress-indicator-flash {
-  0%, 100% {
-    opacity: 0.0;
-  }
-  50% {
-    opacity: 1.0;
-  }
-}
-@keyframes progress-indicator-flash {
-  0%, 100% {
-    opacity: 0.0;
-  }
-  50% {
-    opacity: 1.0;
   }
 }

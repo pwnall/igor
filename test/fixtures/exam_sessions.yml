@@ -15,8 +15,8 @@ main_exam_under_capacity:
   course: main
   exam: main_exam
   name: Room 1, 2 hours
-  starts_at: <%= 1.hour.ago.to_s(:db) %>
-  ends_at: <%= 1.hour.from_now.to_s(:db) %>
+  starts_at: <%= Time.current.beginning_of_day.to_s(:db) %>
+  ends_at: <%= (Time.current.beginning_of_day + 1.hour).to_s(:db) %>
   capacity: 2
 
 main_exam_full_capacity:
@@ -31,6 +31,6 @@ not_main_exam:
   course: not_main
   exam: not_main_exam
   name: Room 1, 2 days
-  starts_at: <%= 1.day.from_now.to_s(:db) %>
-  ends_at: <%= 3.days.from_now.to_s(:db) %>
+  starts_at: <%= 2.days.from_now.to_s(:db) %>
+  ends_at: <%= 5.days.from_now.to_s(:db) %>
   capacity: 2
