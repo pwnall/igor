@@ -141,13 +141,6 @@ class SubmissionsController < ApplicationController
               :disposition => params[:inline] ? 'inline' : 'attachment'
   end
 
-  # XHR GET /6.006/submissions/1/info
-  def info
-    @submission = Submission.find params[:id]
-    return bounce_user unless @submission.can_read? current_user
-    render :layout => false if request.xhr?
-  end
-
   # GET /submissions/package_assignment
   def package_assignment
     @assignment = Assignment.find(params[:assignment_id])

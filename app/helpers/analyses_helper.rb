@@ -31,10 +31,23 @@ module AnalysesHelper
     end
   end
 
+  # The PwnFx identifier for refreshing the status of an analysis.
+  def analysis_refresh_pwnfx_id(analysis)
+    "analysis-status-#{analysis.to_param}"
+  end
+
   # A link to the given analysis.
   def analysis_status_tag(analysis)
     status = analysis ? analysis.status : :analyzer_bug
-    icon_tag = content_tag :span, data: { tooltip: true, disable_hover: false },
+    data_options = { tooltip: true, disable_hover: false }
+    pwnfx_id = analysis_refresh_pwnfx_id analysis
+    if analysis.status_will_change?
+      data_options.merge! pwnfx_delayed: pwnfx_id, pwnfx_delayed_method: 'GET',
+          pwnfx_delayed_url: refresh_analysis_path(analysis,
+          course_id: analysis.course), pwnfx_delayed_ms: 5000,
+          pwnfx_delayed_scope: pwnfx_id
+    end
+    icon_tag = content_tag :span, data: data_options,
         class: "has-tip top #{STATUS_COLOR_CLASS[status]} analysis-status-icon",
         title: analysis_status_text(analysis) do
       analysis_status_icon_tag analysis

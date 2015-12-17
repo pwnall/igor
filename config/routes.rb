@@ -149,7 +149,6 @@ Rails.application.routes.draw do
     resources :submissions, only: [:index, :create, :destroy] do
       member do
         get :file
-        get :info
         post :reanalyze
         post :promote
       end
@@ -160,7 +159,11 @@ Rails.application.routes.draw do
       end
       resources :collaborations, only: [:create, :destroy], shallow: true
     end
-    resources :analyses, only: [:show]
+    resources :analyses, only: [:show] do
+      member do
+        get :refresh
+      end
+    end
 
     # Surveys.
     scope shallow_prefix: :survey do

@@ -4,8 +4,10 @@
   </div>
   <div class="submission-details">
     <div class="file-details">
-      <span class="analysis-status field">
-        <%= analysis_status_tag submission.analysis %>
+      <span class="analysis-status field"
+          data-pwnfx-scope="<%= analysis_refresh_pwnfx_id submission.analysis %>"
+          data-pwnfx-delayed-target="<%= analysis_refresh_pwnfx_id submission.analysis %>">
+        <%= render 'analyses/status_icon', analysis: submission.analysis %>
       </span>
       <span class="submission-time field">
         <%= submission.updated_at.to_s(:submission_short) %>

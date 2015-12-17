@@ -11,4 +11,11 @@ class AnalysesController < ApplicationController
       format.html  # show.html.erb
     end
   end
+
+  # XHR GET /6.006/analyses/1/refresh
+  def refresh
+    @analysis = Analysis.find params[:id]
+    return bounce_user unless @analysis.can_read? current_user
+    render layout: false
+  end
 end
