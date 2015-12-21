@@ -16,7 +16,7 @@ class SessionControllerTest < ActionController::TestCase
 
   test "user home page with course info" do
     set_session_current_user @user
-    get :show, params: { course_id: '6.006' }
+    get :show, params: { course_id: '6.006', format: 'html' }
 
     assert_select 'span#current-user-name', @user.profile.name
     assert_select 'a[href="/_/session"][data-method="delete"]', 'Sign out'

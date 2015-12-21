@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
   get 'jobs/index'
 
   root 'session#show'
 
   # Site-wide functionality.
-  scope '_' do
+  scope '/_' do
     authpwn_session
     resources :courses, only: [:index, :new, :create] do
       collection do
@@ -56,15 +58,15 @@ Rails.application.routes.draw do
   end
 
   # Course-specific URLs. Most functionality falls here.
-  scope ':id', constraints: { id: /[^\/]+/ } do
+  scope '/:id', constraints: { id: /[^\/]+/ } do
     get 'course(.:format)', to: 'courses#show', as: :course
     patch 'course(.:format)', to: 'courses#update'
     delete 'course(.:format)', to: 'courses#destroy'
     get 'course/edit(.:format)', to: 'courses#edit', as: :edit_course
   end
 
-  scope ':course_id', constraints: { course_id: /[^\/]+/ } do
-    get '/', to: 'session#show', as: :course_root
+  scope '/:course_id', constraints: { course_id: /[^\/]+/ } do
+    root 'session#show', as: :course_root, format: 'html'
 
     resources :prerequisites, except: [:show]
     resources :time_slots, only: [:index, :create, :destroy]
@@ -196,4 +198,7 @@ Rails.application.routes.draw do
     # Deprecated.
     resources :announcements
   end
+
+  # Serve websocket cable requests in-process
+  # mount ActionCable.server => '/cable'
 end

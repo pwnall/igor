@@ -1,18 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails',
-    git: 'https://github.com/rails/rails', branch: 'master'
-
-# TODO(pwnall): Remove these when Rails 5 comes out.
-gem 'sprockets-rails',
-    git: 'https://github.com/rails/sprockets-rails', branch: 'master'
-gem 'sprockets', git: 'https://github.com/rails/sprockets', branch: 'master'
-gem 'sass-rails', git: 'https://github.com/rails/sass-rails', branch: 'master'
-gem 'arel',
-    git: 'https://github.com/rails/arel', branch: 'master'
-gem 'rack', git: 'https://github.com/rack/rack', branch: 'master'
-gem 'coffee-rails', git: 'https://github.com/rails/coffee-rails',
-    branch: 'master'
+gem 'rails', '>= 5.0.0.beta1'
 
 gem 'pg', '>= 0.18.2'
 
@@ -24,7 +12,7 @@ gem 'foreman', '>= 0.78.0', require: false
 gem 'jbuilder', '~> 2.2'
 gem 'markdpwn', '>= 0.2.0'
 gem 'mail', '>= 2.6.3'
-gem 'nokogiri', '>= 1.6.6.2'
+gem 'nokogiri', '>= 1.6.7.1'
 gem 'paperclip', '>= 4.2.1'
 gem 'paperclip_database', '>= 2.3.1',
     git: 'https://github.com/pwnall/paperclip_database.git', branch: 'rails5'
@@ -34,7 +22,8 @@ gem 'rack-noie', '>= 1.0', require: 'noie',
 gem 'rmagick', '>= 2.15.4'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
-gem 'puma', '>= 2.14.0', require: false
+# Use Puma as the app server.
+gem 'puma', '>= 2.14.0'
 
 # Background processing.
 gem 'delayed_job', '>= 4.0.6',
@@ -69,9 +58,9 @@ gem 'exception_notification', '>= 4.0.1'
 gem 'bower-rails', '>= 0.10.0'
 
 # Assets.
-# gem 'sass-rails', '>= 5.0.3'
+gem 'sass-rails', '>= 5.0.3'
 gem 'jquery-rails', '>= 4.0.3'
-# gem 'coffee-rails', '>= 4.1.0'
+gem 'coffee-rails', '>= 4.1.1'
 gem 'font-awesome-rails', '>= 4.5.0.0'
 gem 'uglifier', '>= 2.7.0'
 # TODO(pwnall): Relax the restriction once Rails 5 support gets re-merged into
@@ -95,7 +84,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'web-console', github: 'rails/web-console'
+  gem 'web-console', '>= 3.0.0'
   gem 'binding_of_caller', '>= 0.7.3.pre1'
 
   gem 'annotate', '>= 2.6.5'
@@ -118,3 +107,6 @@ group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
