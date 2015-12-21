@@ -35,7 +35,7 @@ brew install docker docker-machine imagemagick libxml2 libxslt openssl \
     pkg-config postgresql
 brew link --force openssl
 brew install ansible --HEAD
-brew install caskroom/cask/brew-cask
+brew tap Caskroom/cask
 brew cask install osxfuse vagrant virtualbox
 docker-machine create --driver virtualbox --engine-storage-driver overlay dev
 

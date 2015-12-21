@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/pwnall/foundation-rails.git
-  revision: 82bbb974249204eb7bc9cb1d1caa7e0be01fbe88
+  revision: 11871e5887dd9e476e860eb373137f22f7b97ca0
   branch: f6
   specs:
     foundation-rails (5.5.3.2)
@@ -59,7 +59,7 @@ GIT
 
 GIT
   remote: https://github.com/rack/rack
-  revision: c393176b0edf3e5d06cabbb6eb9d9c7a07b2afa7
+  revision: f4562619c3c669404e39d9b09924bed5a6b71c14
   branch: master
   specs:
     rack (2.0.0.alpha)
@@ -303,7 +303,7 @@ GEM
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
     net-ldap (0.12.1)
-    nokogiri (1.6.7)
+    nokogiri (1.6.7.1)
       mini_portile2 (~> 2.0.0.rc2)
     ntlm-http (0.1.1)
     org-ruby (0.9.12)
@@ -357,7 +357,7 @@ GEM
     rmagick (2.15.4)
     ruby-rc4 (0.1.5)
     rubypants (0.2.0)
-    sass (3.4.19)
+    sass (3.4.20)
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
@@ -453,4 +453,4 @@ DEPENDENCIES
   web-console!
 
 BUNDLED WITH
-   1.10.6
+   1.11.2
