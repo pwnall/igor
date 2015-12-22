@@ -16,6 +16,8 @@ class SessionControllerTest < ActionController::TestCase
 
   test "user home page with course info" do
     set_session_current_user @user
+    # TODO(pwnall): remove the format option when the following Rails bug
+    #               gets fixed - https://github.com/rails/rails/issues/22747
     get :show, params: { course_id: '6.006', format: 'html' }
 
     assert_select 'span#current-user-name', @user.profile.name

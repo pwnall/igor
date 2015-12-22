@@ -66,6 +66,8 @@ Rails.application.routes.draw do
   end
 
   scope '/:course_id', constraints: { course_id: /[^\/]+/ } do
+    # TODO(pwnall): remove the format specifier when the following bug gets
+    #               fixed - https://github.com/rails/rails/issues/22747
     root 'session#show', as: :course_root, format: 'html'
 
     resources :prerequisites, except: [:show]
