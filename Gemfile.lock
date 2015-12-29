@@ -1,4 +1,21 @@
 GIT
+  remote: https://github.com/collectiveidea/delayed_job.git
+  revision: 0f7665794621f11d036b6ebea52930ce614da2b6
+  branch: master
+  specs:
+    delayed_job (4.1.1)
+      activesupport (>= 3.0, < 5.1)
+
+GIT
+  remote: https://github.com/collectiveidea/delayed_job_active_record.git
+  revision: 7eb403ec81968f247a7684c63d7105dd8be13dd4
+  branch: master
+  specs:
+    delayed_job_active_record (4.1.0)
+      activerecord (>= 3.0, < 5.1)
+      delayed_job (>= 3.0, < 5)
+
+GIT
   remote: https://github.com/juliocesar/rack-noie.git
   revision: ce8313c6f327e5c524e3e903a05044ec31c98fd8
   ref: ce8313c6f327e5c524e3e903a05044ec31c98fd8
@@ -12,23 +29,6 @@ GIT
   specs:
     authpwn_rails (0.19.0)
       rails (>= 4.0.13)
-
-GIT
-  remote: https://github.com/pwnall/delayed_job.git
-  revision: 41cc30ff57e3a8bbf44f3587131befbb6f23daac
-  branch: rails5
-  specs:
-    delayed_job (4.1.0)
-      activesupport (>= 3.0)
-
-GIT
-  remote: https://github.com/pwnall/delayed_job_active_record.git
-  revision: ebfb15404bacbd940e63214ac7327ca811075e1b
-  branch: rails5
-  specs:
-    delayed_job_active_record (4.0.3)
-      activerecord (>= 3.0)
-      delayed_job (>= 3.0, < 4.2)
 
 GIT
   remote: https://github.com/pwnall/foundation-rails.git
@@ -203,8 +203,8 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
-    jbuilder (2.3.2)
-      activesupport (>= 3.0.0, < 5)
+    jbuilder (2.4.0)
+      activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
     jc-validates_timeliness (3.1.1)
       timeliness (~> 0.3.7)
@@ -321,11 +321,12 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.4.2)
-    rb-fsevent (0.9.6)
+    rb-fsevent (0.9.7)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    rdoc (4.2.0)
-    redcarpet (3.3.3)
+    rdoc (4.2.1)
+      json (~> 1.4)
+    redcarpet (3.3.4)
     redis (3.2.2)
     rmagick (2.15.4)
     ruby-rc4 (0.1.5)
@@ -340,7 +341,7 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    spring (1.6.0)
+    spring (1.6.1)
     sprockets (3.5.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -400,7 +401,7 @@ DEPENDENCIES
   coffee-rails (>= 4.1.1)
   contained_mr (>= 0.4.1)
   delayed_job (>= 4.0.6)!
-  delayed_job_active_record (>= 4.0.3)!
+  delayed_job_active_record (>= 4.1.0)!
   dynamic_form (>= 1.1.4)
   exception_notification (>= 4.0.1)
   exec_sandbox (>= 0.3.0)

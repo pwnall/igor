@@ -27,10 +27,10 @@ gem 'puma', '>= 2.14.0'
 
 # Background processing.
 gem 'delayed_job', '>= 4.0.6',
-    git: 'https://github.com/pwnall/delayed_job.git', branch: 'rails5'
-gem 'delayed_job_active_record', '>= 4.0.3',  # Required by delayed_job.
-    git: 'https://github.com/pwnall/delayed_job_active_record.git',
-    branch: 'rails5'
+    git: 'https://github.com/collectiveidea/delayed_job.git', branch: 'master'
+gem 'delayed_job_active_record', '>= 4.1.0',  # Required by delayed_job.
+    git: 'https://github.com/collectiveidea/delayed_job_active_record.git',
+    branch: 'master'
 
 # PDF cover sheets.
 gem 'prawn', '>= 2.0.2'
