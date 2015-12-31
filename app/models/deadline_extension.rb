@@ -20,7 +20,6 @@ class DeadlineExtension < ActiveRecord::Base
 
   # The student who was granted the extension.
   belongs_to :user
-  validates :user, uniqueness: { scope: [:subject_id, :subject_type] }
   validates_each :user do |record, attr, value|
     if value.nil?
       record.errors.add attr, 'is not present'
@@ -50,6 +49,16 @@ class DeadlineExtension < ActiveRecord::Base
   def user_exuid
     user && user.to_param
   end
+
+  # Attribute this validation error to the :user_exuid field in forms in the UI.
+  def limit_one_extension_per_user_and_assignment
+    if DeadlineExtension.where(user: user, subject: subject).where.not(id: id).
+        count > 0
+      errors.add :user_exuid, 'was already granted an extension for this assignment'
+    end
+  end
+  validate :limit_one_extension_per_user_and_assignment
+  private :limit_one_extension_per_user_and_assignment
 
   # Set the extension's recipient (virtual attribute).
   def user_exuid=(exuid)

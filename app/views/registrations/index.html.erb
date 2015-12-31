@@ -39,7 +39,7 @@
 
       <% if registration.course.has_recitations? %>
       <td id="registration-<%= registration.id %>">
-        <%= form_for registration, method: :patch,
+        <%= foundation_form_for registration, method: :patch,
               url: restricted_registration_path(registration,
                                                 course_id: registration.course) do |f| %>
           <%= recitation_select_tag registration %>

@@ -63,4 +63,10 @@ module ApplicationHelper
   def main_section_width_class
     content_for?(:sidebar) ? 'small-7' : 'small-10'
   end
+
+  # Create a form that is formatted in Foundation syntax.
+  def foundation_form_for(record, options = {}, &block)
+    options[:builder] = FoundationFormBuilder
+    form_for record, options, &block
+  end
 end

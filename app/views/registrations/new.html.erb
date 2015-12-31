@@ -1,6 +1,6 @@
 <h2><%= @registration.course.number %> Student Registration</h2>
 
-<%= form_for @registration, url: polymorphic_url(@registration,
+<%= foundation_form_for @registration, url: polymorphic_url(@registration,
       course_id: @registration.course), html: { class: 'compact' } do |f| %>
   <%= render 'registrations/fields', f: f %>
   <%= render 'registrations/conflicts', conflicts: @recitation_conflicts, f: f %>

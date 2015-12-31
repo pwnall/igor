@@ -31,10 +31,10 @@ class Collaboration < ActiveRecord::Base
   def email_belongs_to_valid_user
     return unless collaborator
     if collaborator.new_record?
-      errors.add :collaborator_email, 'is not a registered e-mail.'
+      errors.add :collaborator_email, 'is not a registered e-mail'
     elsif submission && !submission.can_collaborate?(collaborator)
       errors.add :collaborator_email,
-          'does not belong to a student in this course.'
+          'does not belong to a student in this course'
     end
   end
   private :email_belongs_to_valid_user

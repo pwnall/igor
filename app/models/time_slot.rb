@@ -63,12 +63,8 @@ class TimeSlot < ActiveRecord::Base
   #
   # NOTE: We don't validate that the end time occurs after the start time in
   #   order to support time periods that span across midnight.
-  #
-  # TODO(spark008): Change the message (no caret) when we switch the frontend
-  #     to use Foundation and a custom form helper. 
-  validates :ends_at, uniqueness: { scope: [:course, :day, :starts_at],
-      message: '^A time slot with these bounds already exists.' },
-      numericality: { only_integer: true }, inclusion: { in: 0...2400 }
+  validates :ends_at, numericality: { only_integer: true },
+      inclusion: { in: 0...2400 }
 
   # The end time as a Time-like object (virtual attribute).
   #
@@ -78,6 +74,16 @@ class TimeSlot < ActiveRecord::Base
   def end_time
     TimeSlot.time_at ends_at
   end
+
+  # Attribute this validation error to the :end_time field in forms in the UI.
+  def invalidate_duplicate_slots
+    if TimeSlot.where(course: course, day: day, starts_at: starts_at,
+        ends_at: ends_at).where.not(id: id).count > 0
+      errors.add :end_time, 'A time slot with these bounds already exists'
+    end
+  end
+  validate :invalidate_duplicate_slots
+  private :invalidate_duplicate_slots
 
   # Set the end time (virtual attribute).
   #

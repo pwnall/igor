@@ -1,14 +1,5 @@
-<div class="row">
-  <div class="small-3 columns">
-    <%= f.label :step_size, 'Step Size', class: 'text-right middle' %>
-  </div>
-  <div class="small-6 columns">
-    <%= f.number_field :step_size, min: 0, step: 0.01, placeholder: '0.1',
-          class: 'step-size' %>
-    <p class="help-text">
-      the granularity for acceptable numerical answers
-    </p>
-  </div>
-</div>
+<%= f.number_field :step_size, min: 0, step: 0.01, placeholder: '0.1',
+      class: 'step-size', label: 'Step Size',
+      help_text: 'the granularity for acceptable numerical answers' %>
 
 <%= f.hidden_field :type %>

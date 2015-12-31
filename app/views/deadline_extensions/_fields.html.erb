@@ -1,9 +1,9 @@
-<%= fields_for extension do |ef| %>
+<%= fields_for extension, nil, builder: FoundationFormBuilder do |ef| %>
 <td>
   <%= ef.collection_select :user_exuid,
         current_course.students.without_extensions_for(@assignment).by_name,
-        :to_param, :name, { prompt: 'Select a student' },
-        { required: true, form: 'extension-form' } %>
+        :to_param, :name, { prompt: 'Select a student' }, { required: true,
+        form: 'extension-form' } %>
 </td>
 <td colspan="2">
   <%= ef.datetime_local_field :due_at, required: true, step: 1,

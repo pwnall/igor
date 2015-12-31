@@ -1,47 +1,8 @@
 <section data-pwnfx-scope="profile">
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :name, 'Full name', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :name, id: 'profile_name' %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :nickname, 'Call me', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :nickname, id: 'profile_nickname' %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :university, 'School', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :university, id: 'profile_university' %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :department, 'Department', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :department, id: 'profile_department' %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :year, 'Year', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.select :year, profile_year_options(f.object), {},
-                          id: 'profile_year' %>
-    </div>
-  </div>
+  <%= f.text_field :name, id: 'profile_name', label: 'Full name' %>
+  <%= f.text_field :nickname, id: 'profile_nickname', label: 'Call me' %>
+  <%= f.text_field :university, id: 'profile_university', label: 'School' %>
+  <%= f.text_field :department, id: 'profile_department', label: 'Department' %>
+  <%= f.select :year, profile_year_options(f.object), { label: 'Year' },
+        id: 'profile_year' %>
 </section>

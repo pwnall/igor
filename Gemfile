@@ -7,7 +7,6 @@ gem 'pg', '>= 0.18.4'
 # Core.
 gem 'authpwn_rails', '>= 0.20.0',
     git: 'https://github.com/pwnall/authpwn_rails.git', branch: 'rails5'
-gem 'dynamic_form', '>= 1.1.4'
 gem 'foreman', '>= 0.78.0', require: false
 gem 'jbuilder', '~> 2.4'
 gem 'markdpwn', '>= 0.2.0'

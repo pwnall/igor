@@ -23,3 +23,14 @@ td.actions {
     margin: 0.25rem;
   }
 }
+tr.form-row td {
+  input, select, button {
+    margin-bottom: 1em;
+  }
+  input.is-invalid-input, select.is-invalid-input {
+    margin-bottom: 0.5em;
+  }
+  .form-error {
+    margin-bottom: 0;
+  }
+}

@@ -9,7 +9,7 @@
   If your registration is incorrect, you may cancel it here.
 </p>
 
-<%= form_for @role_request, url: polymorphic_url(@role_request,
+<%= foundation_form_for @role_request, url: polymorphic_url(@role_request,
       course_id: @role_request.course), method: :delete do |f| %>
   <%= submit_button_tag do %>
     <%= destroy_icon_tag %>

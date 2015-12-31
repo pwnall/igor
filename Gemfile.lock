@@ -133,7 +133,6 @@ GEM
       json
     domain_name (0.5.20160216)
       unf (>= 0.0.5, < 1.0.0)
-    dynamic_form (1.1.4)
     erubis (2.7.0)
     exception_notification (4.1.1)
       actionmailer (>= 3.0.4)
@@ -369,7 +368,6 @@ DEPENDENCIES
   contained_mr (>= 0.4.1)
   delayed_job (>= 4.0.6)!
   delayed_job_active_record (>= 4.1.0)!
-  dynamic_form (>= 1.1.4)
   exception_notification (>= 4.0.1)
   exec_sandbox (>= 0.3.0)
   faker (>= 1.4.3)

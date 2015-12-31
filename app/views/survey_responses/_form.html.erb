@@ -1,7 +1,6 @@
-<%= form_for response, url: polymorphic_path(response,
+<%= foundation_form_for response, url: polymorphic_path(response,
       course_id: response.course, survey_id: response.survey),
       html: { class: 'compact' } do |f| %>
-  <%= f.error_messages %>
 
   <% response.build_answers %>
   <%= f.fields_for :answers do |af| %>

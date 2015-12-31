@@ -16,11 +16,11 @@
   }
 }
 form.compact {
-  $height-spacing: 0rem;
+  $height-spacing: 0.4rem;
 
   :not(.input-group) > {
     input[type="text"], input[type="datetime-local"], input[type="number"],
-    input[type="checkbox"], input[type="file"], select {
+    input[type="checkbox"], select {
       margin-bottom: $height-spacing;
     }
   }
@@ -51,4 +51,10 @@ form {
 fieldset > legend label {
   font-size: inherit;
   line-height: normal;
+}
+.input-group + .form-error {
+  margin-top: 0;
+}
+form.compact .form-error {
+  margin-top: 0;
 }

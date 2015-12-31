@@ -11,12 +11,10 @@
     <%= f.number_field :weight, min: 0, required: true, placeholder: 1 %>
   </td>
   <td class="destroy">
-    <%= f.label :_destroy do %>
-      <%= f.check_box :_destroy, data: { pwnfx_hide: 'assignment-metric-tr',
-            pwnfx_hide_scope: 'assignment-metric',
-            pwnfx_hide_class: 'destroyed-blur',
-            pwnfx_hide_trigger: 'checked' } %>
-      <%= destroy_icon_tag %> Remove
-    <% end %>
+    <%= f.destroy_record_field :_destroy, data: {
+          pwnfx_hide: 'assignment-metric-tr',
+          pwnfx_hide_scope: 'assignment-metric',
+          pwnfx_hide_class: 'destroyed-blur',
+          pwnfx_hide_trigger: 'checked' } %>
   </td>
 </tr>

@@ -1,40 +1,21 @@
 <section data-pwnfx-scope="new-user">
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :email, 'School e-mail', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :email, placeholder: 'you@mit.edu', required: true,
-            autofocus: true, data: { pwnfx_refresh: 'email-check',
-            pwnfx_refresh_url: check_email_users_url, pwnfx_refresh_ms: 1000,
-            pwnfx_refresh_method: 'POST', pwnfx_refresh_scope: 'new-user' } %>
-    </div>
-    <div class="small-3 columns">
+  <%= f.row do %>
+    <%= f.text_field :email, placeholder: 'you@mit.edu', required: true,
+          autofocus: true, data: { pwnfx_refresh: 'email-check',
+          pwnfx_refresh_url: check_email_users_url, pwnfx_refresh_ms: 1000,
+          pwnfx_refresh_method: 'POST', pwnfx_refresh_scope: 'new-user' },
+          label: 'School e-mail' %>
+    <div class="columns">
       <div data-pwnfx-refresh-target="email-check"></div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :password, class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.password_field :password, required: true, placeholder: 'be clever',
-            data: { pwnfx_confirm: 'new-password' } %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :password_confirmation, 'Re-enter password',
-            class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.password_field :password_confirmation, required: true,
-            placeholder: 'can you type that again?', data: {
-            pwnfx_confirm: 'new-password' } %>
-    </div>
-    <div class="small-3 columns">
+  <% end %>
+  <%= f.password_field :password, required: true, placeholder: 'be clever',
+        data: { pwnfx_confirm: 'new-password' }, label: 'Password' %>
+  <%= f.row do %>
+    <%= f.password_field :password_confirmation, required: true,
+          placeholder: 'can you type that again?', data: {
+          pwnfx_confirm: 'new-password' }, label: 'Re-enter password' %>
+    <div class="columns">
       <span class="error-text middle" data-pwnfx-confirm-win="new-password">
         <%= valid_icon_tag %> matches
       </span>
@@ -42,5 +23,5 @@
         <%= invalid_icon_tag %> does not match
       </span>
     </div>
-  </div>
+  <% end %>
 </section>

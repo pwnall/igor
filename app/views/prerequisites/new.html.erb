@@ -1,8 +1,7 @@
 <h2>Add Prerequisite</h2>
 
-<%= form_for @prerequisite, url: prerequisites_url(@prerequisite,
+<%= foundation_form_for @prerequisite, url: prerequisites_url(@prerequisite,
       course_id: @prerequisite.course) do |f| %>
-  <%= f.error_messages %>
 
   <%= render 'prerequisites/fields', f: f %>
 

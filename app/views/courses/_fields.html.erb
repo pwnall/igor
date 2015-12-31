@@ -1,132 +1,33 @@
 <section class="fields">
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :number, 'Course number', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :number %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :title, 'Course name', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :title %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :email, 'Staff e-mail', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :email %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :email_on_role_requests, 'Staff request e-mails',
-            class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.label :email_on_role_requests, class: 'check-box-label' do %>
-        <span class="check-box-wrapper">
-          <%= f.check_box :email_on_role_requests %>
-        </span>
-        <span class="label-text">
-          new staff requests send e-mail notices to the course staff e-mail
-        </span>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :ga_account, 'Google Analytics account',
-            class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :ga_account %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :ga_account, 'Heap Analytics app ID',
-            class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :heap_appid %>
-    </div>
-  </div>
+  <%= f.text_field :number, label: 'Course number' %>
+  <%= f.text_field :title, label: 'Course name' %>
+  <%= f.text_field :email, label: 'Staff e-mail' %>
+  <%= f.input_field_set label: 'Staff request e-mails' do %>
+    <%= f.check_box :email_on_role_requests, label: 'new staff requests '\
+          'send e-mail notices to the course staff e-mail' %>
+  <% end %>
+  <%= f.text_field :ga_account, label: 'Google Analytics account' %>
+  <%= f.text_field :heap_appid, label: 'Heap Analytics app ID' %>
 </section>
 
 <h3>Advanced (Unstable) Features</h3>
 <section class="fields">
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :has_recitations, 'Recitation sections',
-            class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.label :has_recitations, class: 'check-box-label' do %>
-        <span class="check-box-wrapper">
-          <%= f.check_box :has_recitations, data: {
-                pwnfx_hide: 'section_size_field',
-                pwnfx_hide_trigger: 'checked' } %>
-        </span>
-        <span class="label-text">
-          students are assigned to recitation sections which show up on their
-          cover sheets
-        </span>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="row" data-pwnfx-hide-negative='section_size_field'>
-    <div class="small-3 columns">
-      <%= f.label :section_size, 'Recitation Size Limit',
-            class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.number_field :section_size, min: 1, step: 1, style: 'width: 4rem' %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :has_surveys, 'Surveys', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.label :has_surveys, class: 'check-box-label' do %>
-        <span class="check-box-wrapper">
-          <%= f.check_box :has_surveys %>
-        </span>
-        <span class="label-text">
-          course staff can create surveys to get student feedback on
-          assignments or the class in general
-        </span>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :has_teams, 'Homework teams', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.label :has_teams, class: 'check-box-label' do %>
-        <span class="check-box-wrapper">
-          <%= f.check_box :has_teams %>
-        </span>
-        <span class="label-text">
-          course staff can assign students to teams; any student in a team can
-          submit an assignment for the entire team
-        </span>
-      <% end %>
-    </div>
-  </div>
+  <%= f.input_field_set label: 'Recitation Sections' do %>
+    <%= f.check_box :has_recitations, label: 'students are assigned to '\
+          'recitation sections which show up on their cover sheets', data: {
+          pwnfx_hide: 'section_size_field', pwnfx_hide_trigger: 'checked' } %>
+  <% end %>
+  <span data-pwnfx-hide-negative="section_size_field">
+    <%= f.number_field :section_size, min: 1, step: 1, style: 'width: 4rem',
+          label: 'Recitation Size Limit' %>
+  </span>
+  <%= f.input_field_set label: 'Surveys' do %>
+    <%= f.check_box :has_surveys, label: 'course staff can create surveys '\
+          'to get student feedback on assignments or the class in general' %>
+  <% end %>
+  <%= f.input_field_set label: 'Homework teams' do %>
+    <%= f.check_box :has_teams, label: 'course staff can assign students to '\
+          'teams; any student in a team can submit an assignment for the '\
+          'entire team' %>
+  <% end %>
 </section>

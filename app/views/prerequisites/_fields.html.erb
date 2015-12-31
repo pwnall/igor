@@ -1,22 +1,6 @@
 <section class="fields">
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :prerequisite_number, 'Course number(s)',
-            class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :prerequisite_number, placeholder: '6.01' %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :waiver_question, 'Question if Missing Prerequisite',
-            class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :waiver_question,
-            placeholder: 'Programming experience' %>
-    </div>
-  </div>
+  <%= f.text_field :prerequisite_number, placeholder: '6.01',
+        label: 'Course number(s)' %>
+  <%= f.text_field :waiver_question, placeholder: 'Programming experience',
+        label: 'Question if Missing Prerequisite' %>
 </section>

@@ -1,8 +1,7 @@
 <div class="assignment-builder" data-pwnfx-scope="assignment">
-  <%= form_for assignment, url: polymorphic_path(assignment,
+  <%= foundation_form_for assignment, url: polymorphic_path(assignment,
         course_id: assignment.course), multipart: true,
         html: { class: 'compact edit-assignment-form' } do |f| %>
-    <%= f.error_messages %>
 
     <%= render 'assignments/fields', f: f %>
     <%= render 'assignments/exam_builder', f: f %>

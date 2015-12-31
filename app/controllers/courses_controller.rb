@@ -48,7 +48,6 @@ class CoursesController < ApplicationController
       else
         target_url = course_root_url course_id: @course
       end
-
       redirect_to target_url,
                   notice: "Course #{@course.number} settings updated."
     else

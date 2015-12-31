@@ -53,10 +53,10 @@ class SurveyResponsesControllerTest < ActionController::TestCase
           end
         end
 
-        it 're-renders the survey form with an error messageß' do
+        it 're-renders the survey form with an error message' do
           post :create, params: create_params
           assert_response :success
-          assert_select 'div.errorExplanation li', 1
+          assert_select 'input.is-invalid-input'
         end
       end
     end
@@ -108,7 +108,7 @@ class SurveyResponsesControllerTest < ActionController::TestCase
         it 're-renders the survey form with an error message' do
           patch :update, params: member_params
           assert_response :success
-          assert_select 'div.errorExplanation li', 1
+          assert_select 'input.is-invalid-input'
         end
       end
     end

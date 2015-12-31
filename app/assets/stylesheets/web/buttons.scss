@@ -20,7 +20,7 @@ form.button_to > input[type="submit"] {
 button[disabled="disabled"] {
   @include button-disabled;
 }
-span.input-group-button.button > button {
+span.input-group-button > button {
   padding: 0;
 }
 form > input[value="delete"] ~ button,

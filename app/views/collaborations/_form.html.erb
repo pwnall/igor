@@ -1,13 +1,11 @@
-<%= form_for new_collaboration(@collaboration, submission),
+<%= foundation_form_for new_collaboration(@collaboration, submission),
       url: submission_collaborations_path(course_id: submission.course,
       submission_id: submission) do |f| %>
-  <div class="input-group">
-    <%= f.text_field :collaborator_email, placeholder: 'jdoe@mit.edu', size: 25,
-          class: 'input-group-field' %>
-    <span class="input-group-button hollow button">
-      <%= button_tag do %>
-        <%= create_icon_tag %> Add Collaborator
-      <% end %>
-    </span>
-  </div>
+  <%= f.input_group do %>
+    <%= f.text_field :collaborator_email, placeholder: 'jdoe@mit.edu',
+          size: 25 %>
+    <%= f.button type: :submit do %>
+      <%= create_icon_tag %> Add Collaborator
+    <% end %>
+  <% end %>
 <% end %>

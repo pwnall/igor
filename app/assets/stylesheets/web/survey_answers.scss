@@ -11,14 +11,17 @@
 
     > .numerical-answer {
       @include flex-grid-row(null, null, null, true);
-      justify-content: space-around;
-      align-items: baseline;
 
-      > .min-label, > .max-label {
-        @include flex-grid-column(shrink, 10);
-      }
-      > [type="radio"] {
-        margin: 0;
+      &.quantitative-scaled {
+        justify-content: space-around;
+        align-items: baseline;
+
+        > .min-label, > .max-label {
+          @include flex-grid-column(shrink, 10);
+        }
+        > [type="radio"] {
+          margin: 0;
+        }
       }
     }
     > .comment {

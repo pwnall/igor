@@ -1,4 +1,4 @@
-<%= form_for profile.user do |fu| %>
+<%= foundation_form_for profile.user do |fu| %>
   <%= fu.fields_for :profile do |f| %>
     <%= render 'profiles/fields', f: f %>
   <% end %>

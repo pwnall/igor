@@ -5,24 +5,9 @@
 </p>
 <% end %>
 
-<%= form_for @session, url: session_path do |f| %>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :email, 'Email Address', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.email_field :email %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :password, 'Password', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.password_field :password %>
-    </div>
-  </div>
+<%= foundation_form_for @session, url: session_path do |f| %>
+  <%= f.email_field :email, label: 'Email Address' %>
+  <%= f.password_field :password, label: 'Password' %>
 
   <div class="row align-center">
     <div class="small-5 columns">

@@ -62,7 +62,7 @@ module TimeSlotHelper
     time = content_tag :span, class: 'time-slot-period' do
       time_slot_range_label time_slot
     end
-    safe_join [day, time]
+    safe_join [day, time], ' '
   end
 
   # The number of hours and minutes in a time slot. E.g., "1hr 30min"

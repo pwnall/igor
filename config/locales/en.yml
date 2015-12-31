@@ -24,12 +24,17 @@ en:
         db_file:
           attributes:
             f:
-              spoofed_media_type: "Detected MIME type does not match browser-set type."
+              spoofed_media_type: "Detected MIME type does not match browser-set type"
         deadline_extension:
           attributes:
             due_at:
-              after: "must occur after the original deadline."
+              after: "must occur after the original deadline"
         exam_session:
           attributes:
             ends_at:
-              after: "must occur after the session's start time."
+              after: "must occur after the session's start time"
+        assignment:
+          attributes:
+            released_at:
+              before: "must occur before the base deadline"
+              invalid_datetime: "must be a valid date (not undecided)"

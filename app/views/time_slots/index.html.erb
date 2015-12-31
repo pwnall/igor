@@ -1,8 +1,7 @@
 <h2>Recitation Time Slots</h2>
 
-<%= form_for @time_slot, url: polymorphic_path(@time_slot,
+<%= foundation_form_for @time_slot, url: polymorphic_path(@time_slot,
       course_id: @time_slot.course), html: { id: 'time-slot-form' } do |f| %>
-  <%= f.error_messages %>
 
 <table class="time-slots">
   <thead>

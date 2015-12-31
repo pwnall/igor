@@ -1,98 +1,26 @@
-<%= form_for email_resolver do |f| %>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :domain, 'Domain', class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :domain, required: true, placeholder: 'mit.edu' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :ldap_server, 'LDAP Server', class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :ldap_server, required: true,
-            placeholder: 'ldap.mit.edu' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :use_ldaps, 'Use LDAPS', class: 'text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.check_box :use_ldaps %>
-      <%= f.label :use_ldaps do %>
-        establish a TLS connection before communicating with the server
-      <% end %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :ldap_auth_dn, 'LDAP Auth DN', class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :ldap_auth_dn,
-            placeholder: 'leave blank for anonymous authentication' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :ldap_password, 'LDAP Password', class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.password_field :ldap_password %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :ldap_search_base, 'LDAP Search Base DN',
-            class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :ldap_search_base, required: true,
-            placeholder: 'ou=users,ou=moira,dc=mit,dc=edu' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :name_ldap_key, 'Full Name LDAP Attribute',
-            class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :name_ldap_key, required: true,
-            placeholder: 'displayName' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :dept_ldap_key, 'Department LDAP Attribute',
-            class: 'middle text-right'%>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :dept_ldap_key, required: true, placeholder: 'ou' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :year_ldap_key, 'Year LDAP Attribute',
-            class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :year_ldap_key, required: true,
-            placeholder: 'mitDirStudentYear' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :user_ldap_key, 'Username LDAP Attribute',
-            class: 'middle text-right'%>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :user_ldap_key, required: true,
-            placeholder: 'uid' %>
-    </div>
-  </div>
+<%= foundation_form_for email_resolver do |f| %>
+  <%= f.text_field :domain, required: true, placeholder: 'mit.edu',
+        label: 'Domain' %>
+  <%= f.text_field :ldap_server, required: true, placeholder: 'ldap.mit.edu',
+        label: 'LDAP Server' %>
+  <%= f.input_field_set label: 'Use LDAPS' do %>
+    <% f.check_box :use_ldaps, label: 'establish a TLS connection before '\
+          'communicating with the server' %>
+  <% end %>
+  <%= f.text_field :ldap_auth_dn, label: 'LDAP Auth DN',
+        placeholder: 'leave blank for anonymous authentication' %>
+  <%= f.password_field :ldap_password, label: 'LDAP Password' %>
+  <%= f.text_field :ldap_search_base, required: true,
+        placeholder: 'ou=users,ou=moira,dc=mit,dc=edu',
+        label: 'LDAP Search Base DN' %>
+  <%= f.text_field :name_ldap_key, required: true, placeholder: 'displayName',
+        label: 'Full Name LDAP Attribute' %>
+  <%= f.text_field :dept_ldap_key, required: true, placeholder: 'ou',
+        label: 'Department LDAP Attribute' %>
+  <%= f.text_field :year_ldap_key, required: true,
+        placeholder: 'mitDirStudentYear', label: 'Year LDAP Attribute' %>
+  <%= f.text_field :user_ldap_key, required: true, placeholder: 'uid',
+        label: 'Username LDAP Attribute' %>
 
   <%= submit_button_tag do %>
     <%= save_icon_tag %> Save Email Resolver

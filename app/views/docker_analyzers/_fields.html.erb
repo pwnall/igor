@@ -1,8 +1,8 @@
 <div class="row">
   <fieldset class="small-12 columns">
     <legend><h4>Docker Analyzer Parameters</h4></legend>
-    <div class="row">
-      <%= f.fields_for :db_file, DbFile.new do |ff| %>
+    <%= f.fields_for :db_file, DbFile.new do |ff| %>
+    <%= ff.row do %>
       <div class="small-3 columns text-right">
         <%= ff.label :f, class: 'text-right' do %>
           <%= link_to help_analyzers_path, target: '_blank' do %>
@@ -17,7 +17,7 @@
         <%= ff.file_field :f, accept: 'application/zip',
               required: (!f.object.db_file || f.object.db_file.new_record?) %>
       </div>
-      <div class="small-5 columns">
+      <div class="columns">
         <span class="comment">
           <% if f.object.db_file && !f.object.db_file.new_record? %>
             <%= link_to source_analyzer_path(f.object,
@@ -28,99 +28,40 @@
           <% end %>
         </span>
       </div>
-      <% end %>
-    </div>
-
-    <div class="row">
-      <div class="small-3 columns">
-        <%= f.label :time_limit, 'Submission CPU time', class: 'text-right middle' %>
-      </div>
-      <div class="small-6 columns">
-        <div class="input-group">
-          <%= f.number_field :map_time_limit, required: true, placeholder: 5,
-                class: 'input-group-field' %>
-          <span class="input-group-label">seconds</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="small-3 columns">
-        <%= f.label :ram_limit, 'Submission RAM usage', class: 'text-right middle' %>
-      </div>
-      <div class="small-6 columns">
-        <div class="input-group">
-          <%= f.number_field :map_ram_limit, required: true, placeholder: 1024,
-                class: 'input-group-field'%>
-          <span class="input-group-label">Mb</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="small-3 columns">
-        <%= f.label :map_logs_limit, 'Submission logging limit',
-              class: 'text-right middle' %>
-      </div>
-      <div class="small-6 columns">
-        <div class="input-group">
-          <%= f.number_field :map_logs_limit, required: true, placeholder: 1,
-                class: 'input-group-field'%>
-          <span class="input-group-label">Mb</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="small-3 columns">
-        <%= f.label :reduce_time_limit, 'Grader CPU time', class: 'text-right middle' %>
-      </div>
-      <div class="small-6 columns">
-        <div class="input-group">
-          <%= f.number_field :reduce_time_limit, required: true, placeholder: 5,
-                class: 'input-group-field'%>
-          <span class="input-group-label">seconds</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="small-3 columns">
-        <%= f.label :reduce_ram_limit, 'Grader RAM usage', class: 'text-right middle' %>
-      </div>
-      <div class="small-6 columns">
-        <div class="input-group">
-          <%= f.number_field :reduce_ram_limit, required: true, placeholder: 1024,
-                class: 'input-group-field'%>
-          <span class="input-group-label">Mb</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="small-3 columns">
-        <%= f.label :reduce_logs_limit, 'Grader logging limit',
-              class: 'text-right middle' %>
-      </div>
-      <div class="small-6 columns">
-        <div class="input-group">
-          <%= f.number_field :reduce_logs_limit, required: true, placeholder: 10,
-                class: 'input-group-field'%>
-          <span class="input-group-label">Mb</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="small-3 columns">
-        <%= f.label :auto_grading, 'Auto grading', class: 'text-right' %>
-      </div>
-      <div class="small-6 columns">
-        <%= f.check_box :auto_grading %>
-        <%= f.label :auto_grading do %>
-          use the analyzer's grade output
-        <% end %>
-      </div>
-    </div>
+    <% end %>
+    <% end %>
+    <%= f.input_group do %>
+      <%= f.number_field :map_time_limit, required: true, placeholder: 5,
+            label: 'Submission CPU time' %>
+      <%= f.inline_label 'seconds' %>
+    <% end %>
+    <%= f.input_group do %>
+      <%= f.number_field :map_ram_limit, required: true, placeholder: 1024,
+            label: 'Submission RAM usage'%>
+      <%= f.inline_label 'Mb' %>
+    <% end %>
+    <%= f.input_group do %>
+      <%= f.number_field :map_logs_limit, required: true, placeholder: 1,
+            label: 'Submission logging limit' %>
+      <%= f.inline_label 'Mb' %>
+    <% end %>
+    <%= f.input_group do %>
+      <%= f.number_field :reduce_time_limit, required: true, placeholder: 5,
+            label: 'Grader CPU time' %>
+      <%= f.inline_label 'seconds' %>
+    <% end %>
+    <%= f.input_group do %>
+      <%= f.number_field :reduce_ram_limit, required: true, placeholder: 1024,
+            label: 'Grader RAM usage' %>
+      <%= f.inline_label 'Mb' %>
+    <% end %>
+    <%= f.input_group do %>
+      <%= f.number_field :reduce_logs_limit, required: true, placeholder: 10,
+            label: 'Grader logging limit' %>
+      <%= f.inline_label 'Mb' %>
+    <% end %>
+    <%= f.input_field_set label: 'Auto grading' do %>
+      <%= f.check_box :auto_grading, label: "use the analyzer's grade output" %>
+    <% end %>
   </fieldset>
 </div>

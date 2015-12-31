@@ -1,35 +1,25 @@
 <section class="file callout" data-pwnfx-hide-positive="file-section"
          data-pwnfx-scope="file">
-  <div class="row">
+  <%= f.row do %>
+    <%= f.text_field :description, required: true,
+          placeholder: 'Lab 1: Code Samples', label: 'Description' %>
     <div class="small-3 columns">
-      <%= f.label :description, 'Description', class: 'middle text-right' %>
+      <%= f.destroy_record_field :_destroy, data: { pwnfx_hide: 'file-section',
+            pwnfx_hide_scope: 'file', pwnfx_hide_class: 'destroyed-blur',
+            pwnfx_hide_trigger: 'checked' } %>
     </div>
-    <div class="small-7 columns">
-      <%= f.text_field :description, required: true,
-            placeholder: 'Lab 1: Code Samples' %>
-    </div>
-    <div class="small-2 columns">
-      <span class="destroy">
-        <%= f.label :_destroy, class: 'middle' do %>
-          <%= f.check_box :_destroy, data: { pwnfx_hide: 'file-section',
-                pwnfx_hide_scope: 'file', pwnfx_hide_class: 'destroyed-blur',
-                pwnfx_hide_trigger: 'checked' } %>
-          <%= destroy_icon_tag %> Remove
-        <% end %>
-      </span>
-    </div>
-  </div>
+  <% end %>
 
-  <div class="row">
-    <%= f.fields_for :db_file, DbFile.new do |ff| %>
-    <div class="small-3 columns text-right">
-      <%= ff.label :f, 'Resource file', class: 'text-right' %>
-    </div>
-    <div class="small-4 columns">
-      <%= ff.file_field :f,
-            required: (!f.object.db_file || f.object.db_file.new_record?) %>
-    </div>
-    <div class="small-5 columns">
+  <%= f.fields_for :db_file, f.object.build_db_file do |ff| %>
+  <%= ff.row do %>
+  <%# The form does not save an uploaded file if there are any validation errors
+      throughout the form. So the least confusing way to handle invalid files is
+      to bounce attempts to submit the form until a valid file is uploaded.
+
+      TODO(spark008): Add some JS to bounce files with invalid MIME types. %>
+    <%= ff.file_field :f, label: 'Resource file',
+          required: (!f.object.db_file || f.object.db_file.new_record?) %>
+    <div class="small-3 columns">
       <span class="comment">
         <% if f.object.db_file && !f.object.db_file.new_record? %>
           <%= link_to download_assignment_file_path(f.object,
@@ -40,24 +30,16 @@
         <% end %>
       </span>
     </div>
-    <% end %>
-  </div>
+  <% end %>
+  <% end %>
 
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :released_at, 'Release date', class: 'text-right middle' %>
+  <%= f.row do %>
+    <%= f.datetime_local_field :released_at,
+          value: released_at_with_default(f.object), step: 1, required: true,
+          data: f.optional_input_data('file'), label: 'Release date' %>
+    <div class="columns">
+      <%= f.check_box :reset_released_at,
+            data: f.disable_switch_data('file'), label: 'Undecided' %>
     </div>
-    <div class="small-6 columns">
-      <%= f.datetime_local_field :released_at,
-            value: released_at_with_default(f.object), step: 1, required: true,
-            data: { pwnfx_disable_positive: 'file-release-date' } %>
-    </div>
-    <div class="small-3 columns">
-      <%= f.check_box :reset_released_at, data: {
-            pwnfx_disable: 'file-release-date',
-            pwnfx_disable_scope: 'file',
-            pwnfx_disable_trigger: 'checked' } %>
-      <%= f.label :reset_released_at, 'Undecided', class: 'middle' %>
-    </div>
-  </div>
+  <% end %>
 </section>

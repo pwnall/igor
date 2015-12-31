@@ -1,15 +1,14 @@
-<%= form_for submission, url: submissions_path(course_id: submission.course),
+<%= foundation_form_for submission,
+      url: submissions_path(course_id: submission.course),
       html: { multipart: true, class: 'new-submission-form' } do |f| %>
   <% f.object.build_db_file unless f.object.db_file %>
-  <div class="input-group">
-    <%= f.fields_for :db_file do |fu| %>
-      <%= fu.file_field :f, class: 'input-group-field' %>
+  <%= f.fields_for :db_file do |df| %>
+  <%= df.input_group do %>
+    <%= df.file_field :f %>
+    <%= df.button type: :submit do %>
+      <%= upload_icon_tag %> Submit
     <% end %>
-    <span class="input-group-button hollow button">
-      <%= button_tag do %>
-        <%= upload_icon_tag %> Submit
-      <% end %>
-    </span>
-  </div>
+  <% end %>
+  <% end %>
   <%= f.hidden_field :deliverable_id %>
 <% end %>

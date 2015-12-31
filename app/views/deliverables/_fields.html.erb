@@ -1,29 +1,23 @@
 <section class="deliverable callout" data-pwnfx-hide-positive="deliverable-div"
          data-pwnfx-scope="deliverable">
-  <div class="row">
+  <%= f.row do %>
     <div class="columns">
       <%= f.text_field :name, required: true, class: 'name',
-            placeholder: deliverable_field_placeholder(f.object, :name)%>
+            placeholder: deliverable_field_placeholder(f.object, :name) %>
     </div>
     <div class="shrink columns">
-      <span class="destroy">
-        <%= f.label :_destroy, class: 'middle' do %>
-          <%= f.check_box :_destroy, data: { pwnfx_hide: 'deliverable-div',
-                pwnfx_hide_scope: 'deliverable',
-                pwnfx_hide_class: 'destroyed-blur',
-                pwnfx_hide_trigger: 'checked' } %>
-          <%= destroy_icon_tag %> Remove
-        <% end %>
-      </span>
+      <%= f.destroy_record_field :_destroy, data: { pwnfx_hide: 'deliverable-div',
+            pwnfx_hide_scope: 'deliverable', pwnfx_hide_class: 'destroyed-blur',
+            pwnfx_hide_trigger: 'checked' } %>
     </div>
-  </div>
+  <% end %>
 
-  <div class="row">
+  <%= f.row do %>
     <div class="small-12 columns">
       <%= f.text_area :description, placeholder: deliverable_field_placeholder(
             f.object, :description), rows: 2 %>
     </div>
-  </div>
+  <% end %>
 
   <%= f.fields_for :analyzer do |af| %>
     <%= render analyzer_partial_for_deliverable(f.object), f: af  %>

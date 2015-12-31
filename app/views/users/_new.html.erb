@@ -1,6 +1,5 @@
 <section class="register">
-<%= form_for user do |f| %>
-  <%= f.error_messages %>
+<%= foundation_form_for user do |f| %>
 
   <%= render 'users/new_fields', f: f %>
 

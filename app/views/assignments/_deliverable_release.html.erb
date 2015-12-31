@@ -1,5 +1,5 @@
 <% unless assignment.scheduled? %>
-  <%= form_for assignment, url: schedule_assignment_path(assignment,
+  <%= foundation_form_for assignment, url: schedule_assignment_path(assignment,
         course_id: assignment.course), method: :patch,
         html: { class: 'assignment-schedule-form' } do |f| %>
     <%= f.button type: :submit do %>
@@ -9,7 +9,7 @@
 <% end %>
 
 <% unless assignment.released? %>
-  <%= form_for assignment, url: release_assignment_path(assignment,
+  <%= foundation_form_for assignment, url: release_assignment_path(assignment,
         course_id: assignment.course), method: :patch,
         html: { class: 'assignment-release-form' } do |f| %>
       <%= f.button type: :submit, data: { confirm:
@@ -20,7 +20,7 @@
 <% end %>
 
 <% if assignment.released? %>
-  <%= form_for assignment, url: unrelease_assignment_path(assignment,
+  <%= foundation_form_for assignment, url: unrelease_assignment_path(assignment,
         course_id: assignment.course), method: :patch,
         html: { class: 'assignment-pull-form' } do |f| %>
     <%= f.button type: :submit,
@@ -31,7 +31,7 @@
 <% end %>
 
 <% if assignment.scheduled? %>
-  <%= form_for assignment, url: deschedule_assignment_path(assignment,
+  <%= foundation_form_for assignment, url: deschedule_assignment_path(assignment,
         course_id: assignment.course), method: :patch,
         html: { class: 'assignment-schedule-form' } do |f| %>
     <%= f.button type: :submit,
@@ -40,4 +40,3 @@
     <% end %>
   <% end %>
 <% end %>
-

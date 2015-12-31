@@ -8,6 +8,8 @@ ol.exam-sessions-list {
 
       .name {
         @include flex-grid-column(null, 10);
+        margin-top: auto;
+        margin-bottom: auto;
         font-weight: bold;
       }
       .time-range {
@@ -22,6 +24,8 @@ ol.exam-sessions-list {
       .capacity {
         width: 10em;
         @include flex-grid-column(shrink, 10);
+        margin-top: auto;
+        margin-bottom: auto;
         font-style: italic;
         text-align: right;
       }

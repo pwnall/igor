@@ -1,79 +1,26 @@
 <h2>SMTP Server Credentials</h2>
 
-<%= form_for @smtp_server, url: smtp_server_url, method: :patch,
+<%= foundation_form_for @smtp_server, url: smtp_server_url, method: :patch,
       html: { id: 'smtp-server-form' } do |f| %>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :host, 'Hostname', class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :host, required: true, placeholder: 'outgoing.mit.edu',
-            class: 'hostname' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :port, 'Port', class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.number_field :port, required: true, placeholder: '25',
-            class: 'port' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :domain, 'HELO Domain', class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :domain, required: true, placeholder: 'mit.edu',
-            class: 'domain' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :auth_kind, 'Authentication', class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.select :auth_kind,
-            [['None', ''], ['Plain', 'plain'], ['Login (base64)', 'login'],
-             ['Challenge/Respose + MD5', 'cram_md5']], {}, class: 'auth-kind' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :user_name, 'Username', class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :user_name, placeholder: 'admin', class: 'username' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :password, 'Password', class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.password_field :password, class: 'password' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :from, 'E-mail From line', class: 'middle text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :from, placeholder: '"Igor Staff" <costan@mit.edu>' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-3 columns">
-      <%= f.label :auto_starttls, 'Use STARTTLS', class: 'text-right' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.check_box :auto_starttls %>
-      <%= f.label :auto_starttls do %>
-        use STARTTLS when the server supports it
-      <% end %>
-    </div>
-  </div>
+  <%= f.text_field :host, required: true, placeholder: 'outgoing.mit.edu',
+        class: 'hostname', label: 'Hostname' %>
+  <%= f.number_field :port, required: true, placeholder: '25', class: 'port',
+        label: 'Port' %>
+  <%= f.text_field :domain, required: true, placeholder: 'mit.edu',
+        class: 'domain', label: 'HELO Domain' %>
+  <%= f.select :auth_kind,
+        [['None', ''], ['Plain', 'plain'], ['Login (base64)', 'login'],
+         ['Challenge/Respose + MD5', 'cram_md5']], { label: 'Authentication' },
+         class: 'auth-kind' %>
+  <%= f.text_field :user_name, placeholder: 'admin', class: 'username',
+        label: 'Username' %>
+  <%= f.password_field :password, class: 'password', label: 'Password' %>
+  <%= f.text_field :from, placeholder: '"Igor Staff" <costan@mit.edu>',
+        label: 'E-mail "From" line' %>
+  <%= f.input_field_set label: 'Use STARTTLS' do %>
+    <%= f.check_box :auto_starttls, label: 'use STARTTLS when the server '\
+          'supports it' %>
+  <% end %>
 
   <%= submit_button_tag do %>
     <%= save_icon_tag %> Save

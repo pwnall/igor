@@ -1,21 +1,16 @@
 <section class="question callout" data-pwnfx-hide-positive="question-section"
          data-pwnfx-scope="question">
-  <div class="row">
+  <%= f.row do %>
     <div class="small-10 columns">
       <%= f.text_field :prompt, required: true, class: 'prompt',
             placeholder: survey_question_prompt_placeholder(f.object) %>
     </div>
-    <div class="small-2 columns">
-      <span class="destroy">
-        <%= f.label :_destroy, class: 'middle' do %>
-          <%= f.check_box :_destroy, data: { pwnfx_hide: 'question-section',
-                pwnfx_hide_scope: 'question', pwnfx_hide_trigger: 'checked',
-                pwnfx_hide_class: 'destroyed-blur' } %>
-          <%= destroy_icon_tag %> Remove
-        <% end %>
-      </span>
+    <div class="columns">
+      <%= f.destroy_record_field :_destroy, data: {
+            pwnfx_hide: 'question-section', pwnfx_hide_scope: 'question',
+            pwnfx_hide_trigger: 'checked', pwnfx_hide_class: 'destroyed-blur' } %>
     </div>
-  </div>
+  <% end %>
 
   <section class="fields">
     <div class="row">
@@ -30,17 +25,10 @@
           <%= render 'quantitative_scaled_questions/fields', f: f %>
         <% end %>
 
-        <div class="row">
-          <div class="small-3 columns">
-            <%= f.label :allows_comments, 'Comments', class: 'text-right' %>
-          </div>
-          <div class="small-6 columns">
-            <%= f.check_box :allows_comments %>
-            <%= f.label :allows_comments do %>
-              allow additional comments
-            <% end %>
-          </div>
-        </div>
+        <%= f.input_field_set label: 'Comments' do %>
+          <%= f.check_box :allows_comments,
+                label: 'allow additional comments' %>
+        <% end %>
       </fieldset>
     </div>
   </section>

@@ -1,8 +1,7 @@
 <h2>New Survey</h2>
 
-<%= form_for @survey, url: polymorphic_path(@survey,
+<%= foundation_form_for @survey, url: polymorphic_path(@survey,
       course_id: @survey.course) do |f| %>
-  <%= f.error_messages %>
   <%= render 'surveys/fields', f: f %>
 
   <%= submit_button_tag do %>

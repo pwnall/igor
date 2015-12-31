@@ -113,10 +113,11 @@ class DeadlineExtensionsControllerTest < ActionController::TestCase
           assert_equal due_at, extension.reload.due_at
         end
 
-        it 'renders the extensions index page with an error message' do
+        it 'renders the student selection field with an error message' do
           post :create, params: create_params
           assert_response :success
-          assert_select 'div.errorExplanation li', 1
+          assert_select 'select#deadline_extension_user_exuid.is-invalid-input'
+          assert_select '.form-error.is-visible'
         end
 
         it 'renders the extensions index page with form fields preselected to
@@ -132,10 +133,11 @@ class DeadlineExtensionsControllerTest < ActionController::TestCase
       describe 'submit an extension with a date before the original deadline' do
         before { @year_due = Time.current.year - 1 }
 
-        it 'renders the extensions index page with an error message' do
+        it 'renders the deadline field with a validation error' do
           post :create, params: create_params
           assert_response :success
-          assert_select 'div.errorExplanation li', 1
+          assert_select 'input#deadline_extension_due_at.is-invalid-input'
+          assert_select '.form-error.is-visible'
         end
 
         it 'renders the extensions index page with form fields preselected to

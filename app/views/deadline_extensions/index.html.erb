@@ -3,10 +3,9 @@
   Original deadline: <%= @assignment.due_at.to_s(:deadline_long) %>
 </p>
 
-<%= form_for @extension, url: assignment_extensions_path(@extension,
+<%= foundation_form_for @extension, url: assignment_extensions_path(@extension,
       assignment_id: @assignment, course_id: @assignment.course),
       html: { id: 'extension-form' } do |f| %>
-  <%= f.error_messages %>
 <% end %>
 
 <table class="extensions">
