@@ -39,16 +39,6 @@ ActiveRecord::Schema.define(version: 20110704080003) do
     t.index ["db_file_id"], name: "index_analyzers_on_db_file_id", unique: true, using: :btree
   end
 
-  create_table "announcements", force: :cascade do |t|
-    t.integer  "author_id",                                     null: false
-    t.integer  "course_id",                                     null: false
-    t.string   "headline",         limit: 128,                  null: false
-    t.string   "contents",         limit: 8192,                 null: false
-    t.boolean  "open_to_visitors",              default: false, null: false
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
-  end
-
   create_table "assignment_files", force: :cascade do |t|
     t.string   "description",   limit: 64, null: false
     t.integer  "assignment_id",            null: false

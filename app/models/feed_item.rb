@@ -40,7 +40,6 @@ class FeedItem
     end
     add_grades items, user, options
     add_deliverables items, user, options
-    add_announcements items, user, options
 
     items.sort_by(&:time).reverse
   end
@@ -130,34 +129,6 @@ class FeedItem
             actions: [], replies: []
         item.replies << reply
       end
-    end
-  end
-
-  # Generates feed items for the released announcements.
-  def self.add_announcements(items, user, options)
-    Announcement.all.each do |announcement|
-      # TODO(costan): distinguish between open announcements,
-      #               semi-open (login required), and admin-only; right now,
-      #               the default is semi-open, so we can post sensitive info
-      next unless user or announcement.open_to_visitors?
-
-      item = FeedItem.new time: announcement.created_at,
-          author: announcement.author, flavor: :announcement,
-          headline: announcement.headline.html_safe,
-          contents: announcement.contents.html_safe,
-          actions: [],
-          replies: []
-
-      if announcement.can_edit? user
-        item.actions = [
-          [edit_icon_tag + ' Edit', [:edit_announcement_path, announcement,
-                    { course_id: announcement.course }]],
-          [destroy_icon_tag + ' Delete', [:announcement_path, announcement,
-                      { course_id: announcement.course }],
-                     { confirm: 'Are you sure?', method: :delete }]
-        ]
-      end
-      items << item
     end
   end
 

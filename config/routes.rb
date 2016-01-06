@@ -198,9 +198,6 @@ Rails.application.routes.draw do
     post '/teams_student/accept_invitation', to: 'teams_student#accept_invitation'
     post '/teams_student/ignore_invitation', to: 'teams_student#ignore_invitation'
     resources :teams_student
-
-    # Deprecated.
-    resources :announcements
   end
 
   # Serve websocket cable requests in-process
