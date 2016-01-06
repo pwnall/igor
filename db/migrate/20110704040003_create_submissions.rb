@@ -7,7 +7,7 @@ class CreateSubmissions < ActiveRecord::Migration
       t.references :uploader, null: false
       t.string :upload_ip, limit: 48, null: false
 
-      t.timestamps
+      t.timestamps null: false
 
       t.index [:subject_id, :subject_type, :deliverable_id], unique: false,
           name: 'index_submissions_on_subject_id_and_type_and_deliverable_id'

@@ -10,7 +10,7 @@ class CreateRegistrations < ActiveRecord::Migration
       # TODO: move this to some partition class.
       t.references :recitation_section, null: true
 
-      t.timestamps
+      t.timestamps null: false
     end
 
     add_index :registrations, [:user_id, :course_id], unique: true

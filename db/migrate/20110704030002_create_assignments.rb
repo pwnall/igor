@@ -10,7 +10,7 @@ class CreateAssignments < ActiveRecord::Migration
       t.decimal :weight, precision: 16, scale: 8, null: false
       t.references :team_partition, null: true
 
-      t.timestamps
+      t.timestamps null: false
 
       t.index [:course_id, :released_at, :name], unique: true
       t.index [:course_id, :name], unique: true

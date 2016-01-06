@@ -10,7 +10,7 @@ class CreateTeamPartitions < ActiveRecord::Migration
       t.boolean :editable, null: false, default: true
       t.boolean :released, null: false, default: false
 
-      t.timestamps
+      t.timestamps null: false
 
       t.index [:course_id, :name], unique: true
     end

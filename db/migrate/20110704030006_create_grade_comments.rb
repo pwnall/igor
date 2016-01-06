@@ -7,7 +7,7 @@ class CreateGradeComments < ActiveRecord::Migration
       t.references :subject, polymorphic: { limit: 16 }, null: false
       t.text :text, limit: 4.kilobytes, null: false
 
-      t.timestamps
+      t.timestamps null: false
 
       # Get comments for a user/team.
       t.index [:subject_id, :subject_type, :metric_id], unique: true,

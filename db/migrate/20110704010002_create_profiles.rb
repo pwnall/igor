@@ -9,7 +9,7 @@ class CreateProfiles < ActiveRecord::Migration
       t.string :year, null: false, limit: 4
       t.string :athena_username, null: false, limit: 32
 
-      t.timestamps
+      t.timestamps null: false
     end
 
     add_index :profiles, :user_id, unique: true

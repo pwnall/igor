@@ -7,7 +7,7 @@ class CreateAssignmentFiles < ActiveRecord::Migration
                              null: false
       t.datetime :released_at, null: true
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

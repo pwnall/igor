@@ -6,7 +6,7 @@ class CreatePrerequisiteAnswers < ActiveRecord::Migration
       t.boolean :took_course, null: false
       t.text :waiver_answer, limit: 4.kilobytes
 
-      t.timestamps
+      t.timestamps null: false
     end
 
     # Optimize getting prerequisite answers for a registration.

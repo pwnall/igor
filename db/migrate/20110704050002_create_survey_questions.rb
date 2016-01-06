@@ -7,7 +7,7 @@ class CreateSurveyQuestions < ActiveRecord::Migration
       t.string :type, limit: 32, null: false
       t.text :features, null: false
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

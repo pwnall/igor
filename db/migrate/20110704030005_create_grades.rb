@@ -8,7 +8,7 @@ class CreateGrades < ActiveRecord::Migration
       t.references :subject, polymorphic: { limit: 64 }, null: false
       t.decimal :score, precision: 8, scale: 2, null: false
 
-      t.timestamps
+      t.timestamps null: false
 
       # Get grades for a user/team.
       t.index [:subject_id, :subject_type, :metric_id], unique: true

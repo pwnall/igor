@@ -11,7 +11,7 @@ class CreateCourses < ActiveRecord::Migration
       t.boolean :has_teams, null: false
       t.integer :section_size, null: true
 
-      t.timestamps
+      t.timestamps null: false
     end
 
     # Enforce course number uniqueness.

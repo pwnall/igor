@@ -2,7 +2,7 @@ class CreateProfilePhotos < ActiveRecord::Migration
   def change
     create_table :profile_photos do |t|
       t.references :profile, null: false
-      t.timestamps
+      t.timestamps null: false
     end
 
     add_attachment :profile_photos, :pic

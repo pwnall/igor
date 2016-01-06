@@ -6,7 +6,7 @@ class CreateExamAttendances < ActiveRecord::Migration
       t.references :exam_session, foreign_key: true, null: false
       t.boolean :confirmed, null: false
 
-      t.timestamps
+      t.timestamps null: false
 
       t.index [:exam_id, :user_id], unique: true
       t.index [:exam_session_id, :user_id], unique: true

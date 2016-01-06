@@ -6,7 +6,7 @@ class CreateDeliverables < ActiveRecord::Migration
       t.string :name, limit: 80, null: false
       t.string :description, limit: 2.kilobytes, null: false
 
-      t.timestamps
+      t.timestamps null: false
     end
 
     add_index :deliverables, [:assignment_id, :name], unique: true

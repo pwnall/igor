@@ -5,7 +5,7 @@ class CreateSurveyResponses < ActiveRecord::Migration
       t.references :user, null: false
       t.references :survey, null: false
 
-      t.timestamps
+      t.timestamps null: false
 
       # Get a user's response to a survey.
       t.index [:user_id, :survey_id], unique: true

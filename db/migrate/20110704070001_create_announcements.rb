@@ -7,7 +7,7 @@ class CreateAnnouncements < ActiveRecord::Migration
       t.string :contents, limit: 8.kilobytes, null: false
       t.boolean :open_to_visitors, null: false, default: false
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

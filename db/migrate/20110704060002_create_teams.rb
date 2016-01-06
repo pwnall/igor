@@ -4,7 +4,7 @@ class CreateTeams < ActiveRecord::Migration
       t.references :partition, null: false
       t.string :name, limit: 64, null: false
 
-      t.timestamps
+      t.timestamps null: false
     end
 
     # Prevent duplicate names in a partition.

@@ -5,7 +5,7 @@ class CreateRoleRequests < ActiveRecord::Migration
       t.string :name, limit: 8, null: false
       t.references :course
 
-      t.timestamps
+      t.timestamps null: false
     end
 
     # List all requests in a course. Prevent duplicate requests.

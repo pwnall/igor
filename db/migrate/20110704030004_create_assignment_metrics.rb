@@ -6,7 +6,7 @@ class CreateAssignmentMetrics < ActiveRecord::Migration
       t.integer :max_score, null: false
       t.decimal :weight, precision: 16, scale: 8, null: false
 
-      t.timestamps
+      t.timestamps null: false
 
       t.index [:assignment_id, :name], unique: true
     end

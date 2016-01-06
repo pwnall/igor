@@ -11,7 +11,7 @@ class CreateAnalyzers < ActiveRecord::Migration
 
       t.string :message_name, limit: 64, null: true
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end
