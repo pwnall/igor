@@ -15,7 +15,7 @@
 - name: wait for machine to come back up
   local_action: >
     wait_for host={{ ansible_ssh_host }} port={{ ansible_ssh_port }}
-    search_regex=OpenSSH delay=5
+    search_regex=OpenSSH delay=10 timeout=600
   become: false
 
 - name: reload facts after OS upgrade

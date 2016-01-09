@@ -50,8 +50,10 @@ Vagrant.configure(2) do |config|
             os_image_user: "vagrant",
           }
 
+          # Uncomment for Ansible role debugging.
+          # ansible.verbose = "vvv"
+
           # Uncomment for Ansible connection debugging.
-          # ansible.verbose = "vvvv"
           # ansible.verbose = "vvv"
         end
       end

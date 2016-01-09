@@ -5,8 +5,7 @@
   when: ansible_pkg_mgr == 'dnf'
   become: true
   become_user: root
-  # TODO(pwnall): stop using updates-testing when the package becomes stable
-  dnf: name=skydns state=present enablerepo=updates-testing
+  dnf: name=skydns state=present
 
 - name: install skydns with apt
   when: ansible_pkg_mgr == 'apt'

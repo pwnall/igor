@@ -16,11 +16,13 @@
         set /skydns/config
         {{ lookup('template', 'skydns.etcd.json.j2') | trim | quote }}
   register: skydns_etcdctl_result
-  # NOTE: The etc2 API does not return a prevNode when a key is written for the
-  #       first time.
+  # NOTE: The etc2 documentation states that the API does not return a
+  #       prevNode when a key is written for the first time. In practice, the
+  #       API was observed to return a prevNode set to null in some cases. The
+  #       default filter below handles both cases.
   changed_when: >
     (skydns_etcdctl_result.stdout|from_json).node.value !=
     ((skydns_etcdctl_result.stdout|from_json).prevNode
-      |default({'value': ''})).value
+      |default({'value': ''}, true)).value
   notify:
   - restart skydns server
