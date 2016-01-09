@@ -36,7 +36,7 @@ brew install docker docker-machine imagemagick libxml2 libxslt openssl \
 brew link --force openssl
 brew install ansible --HEAD
 brew tap Caskroom/cask
-brew cask install osxfuse vagrant virtualbox
+brew cask install kitematic osxfuse vagrant virtualbox
 docker-machine create --driver virtualbox --engine-storage-driver overlay dev
 
 # The command below shows up when you run docker-machine env dev.
