@@ -62,7 +62,8 @@ module ExamSessionsHelper
 
   # The start time, or appropriate default, for the given exam session.
   def exam_session_start_time(exam_session)
-    assignment = exam_session.assignment
+    # Cannot access assignment directly if the exam is not a persisted record
+    assignment = exam_session.exam.assignment
     time = if exam_session.new_record?
       assignment.released_at || assignment.due_at
     else
@@ -74,7 +75,7 @@ module ExamSessionsHelper
   # The end time, or appropriate default, for the given exam session.
   def exam_session_end_time(exam_session)
     time = if exam_session.new_record?
-      exam_session.assignment.due_at
+      exam_session.exam.assignment.due_at
     else
       exam_session.ends_at
     end

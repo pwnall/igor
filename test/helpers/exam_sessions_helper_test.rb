@@ -109,19 +109,24 @@ class ExamSessionsHelperTest < ActionView::TestCase
   end
 
   describe '#exam_session_start_time' do
-    describe 'for new ExamSession records' do
+    describe 'for new ExamSession records of a new Exam record' do
       it 'formats the assignment release date, if it is not nil' do
-        assert_not_nil unreleased_exam.released_at
-        golden = unreleased_exam.released_at.to_s(:datetime_local_field)
-        actual = exam_session_start_time unreleased_exam.exam.exam_sessions.new
+        undecided_assignment.update! released_at: Time.now
+        new_exam = undecided_assignment.build_exam
+        new_session = new_exam.exam_sessions.build
+
+        golden = undecided_assignment.released_at.to_s :datetime_local_field
+        actual = exam_session_start_time new_session
         assert_equal golden, actual
       end
 
       it 'formats the assignment due date, if the release date is nil' do
         assert_nil undecided_assignment.released_at
-        exam = undecided_assignment.create_exam! requires_confirmation: false
-        golden = undecided_assignment.due_at.to_s(:datetime_local_field)
-        actual = exam_session_start_time exam.exam_sessions.new
+        new_exam = undecided_assignment.build_exam
+        new_session = new_exam.exam_sessions.build
+
+        golden = undecided_assignment.due_at.to_s :datetime_local_field
+        actual = exam_session_start_time new_session
         assert_equal golden, actual
       end
     end
@@ -137,12 +142,13 @@ class ExamSessionsHelperTest < ActionView::TestCase
   end
 
   describe '#exam_session_end_time' do
-    describe 'for new ExamSession records' do
-      it 'formats the assignment due date, if the release date is nil' do
-        assert_nil undecided_assignment.released_at
-        exam = undecided_assignment.create_exam! requires_confirmation: false
-        golden = undecided_assignment.due_at.to_s(:datetime_local_field)
-        actual = exam_session_end_time exam.exam_sessions.new
+    describe 'for new ExamSession records of a new Exam record' do
+      it 'formats the assignment due date' do
+        new_exam = undecided_assignment.build_exam
+        new_session = new_exam.exam_sessions.build
+
+        golden = undecided_assignment.due_at.to_s :datetime_local_field
+        actual = exam_session_end_time new_session
         assert_equal golden, actual
       end
     end

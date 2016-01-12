@@ -168,10 +168,24 @@ class AssignmentsControllerTest < ActionController::TestCase
     describe 'GET #edit' do
       let(:assignment) { unreleased_assignment }
 
-      it 'renders the assignment builder page' do
-        get :edit, params: member_params
-        assert_response :success
-        assert_select 'form.edit-assignment-form'
+      describe 'the assignment does not have an associated exam record' do
+        before { assignment.exam.destroy! }
+
+        it 'renders the assignment builder page' do
+          get :edit, params: member_params
+          assert_response :success
+          assert_select 'form.edit-assignment-form'
+        end
+      end
+
+      describe 'the assignment has an associated exam record' do
+        before { assert_not_nil assignment.exam }
+        
+        it 'renders the assignment builder page' do
+          get :edit, params: member_params
+          assert_response :success
+          assert_select 'form.edit-assignment-form'
+        end
       end
     end
 
