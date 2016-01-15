@@ -1,4 +1,4 @@
-# seven
+# Igor
 
 Course homework submission website.
 
@@ -34,7 +34,7 @@ xcode-select --install
 brew install docker docker-machine imagemagick libxml2 libxslt openssl \
     pkg-config postgresql
 brew link --force openssl
-brew install ansible --HEAD
+brew install ansible
 brew tap Caskroom/cask
 brew cask install kitematic osxfuse vagrant virtualbox
 docker-machine create --driver virtualbox --engine-storage-driver overlay dev
@@ -49,9 +49,21 @@ Use your package manager to install the prerequisites listed in the
 [web_frontend Ansible role](deploy/ansible/roles/web_frontend/tasks/packages.yml).
 
 
+### Vagrant
+
+The [deployment guide](doc/deployment.md) can be used to bring up a
+production-like environment in a [Vagrant](https://www.vagrantup.com/)
+environment. This environment can be used to test Docker-related features and
+playbook changes.
+
+
 ### OpenStack
 
-The deployment receipes include an OpenStack bring-up playbook.
+The [deployment guide](doc/deployment.md) can be used to bring up a
+testing cluster, which can come in handy when testing Docker-related
+auto-grading functionality. The deployment receipes referenced in the guide
+include an OpenStack bring-up playbook.
+
 [TryStack](http://trystack.openstack.org/) is a public OpenStack cluster
 intended for testing, and therefore can be used to test out any playbook
 changes.
@@ -108,117 +120,4 @@ version 2.0. For Mac users, use the following Homebrew command.
 
 ```bash
 brew install homebrew/versions/phantomjs198
-```
-
-## Production Deployment with Ansible
-
-The playbooks require an Ansible 2.0 from
-[master](https://github.com/ansible/ansible).
-
-### Inventory Errors
-
-The dynamic inventory code was sourced from
-[Ansible's repository](https://github.com/ansible/ansible/blob/devel/contrib/inventory/openstack.py).
-
-### Running the Playbooks
-
-Generate TLS certificates for the Web server.
-
-```bash
-ansible-playbook -i "localhost," deploy/ansible/keys.yml
-```
-
-Copy `clouds.example.yaml` into `clouds.yaml` and insert valid OpenStack
-credentials in it.
-
-Run the VM bringup playbook.
-
-```bash
-ansible-playbook -i "localhost," -e os_cloud=test deploy/ansible/openstack_up.yml
-```
-
-Run the deployment playbook.
-
-```bash
-ansible-playbook deploy/ansible/prod.yml
-```
-
-Last, save the contents of the `deploy/keys/` directory somewhere safe.
-
-Re-running the deployment playbook will update the application.
-
-### Deploying in Vagrant
-
-The easiest way to run the deployment playbook against a Vagrant VM is the
-`vagrant provision` command. The command below is a good baseline for tweaking
-variables.
-
-```bash
-ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
-    -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory \
-    -e os_image_user=vagrant deploy/ansible/prod.yml
-```
-
-### Real TLS Certificates
-
-Most CAs can generate TLS certificates, given a
-[Certificate Signing Request (CSR)](https://en.wikipedia.org/wiki/Certificate_signing_request)
-with the server's DNS name in the DN. The TLS-generating playbook can be used
-to obtain the CSR.
-
-```bash
-ansible-playbook  -i "localhost," -e os_prefix=algtest \
-    -e web_server_cn=algtest.csail.mit.edu deploy/ansible/keys.yml
-```
-
-The CSR will be placed in `deploy/ansible/algtest/web_server_csr.pem` and can
-be submitted to a certificate authority. The certificate issued by the CA
-should be saved in `deploy/ansible/algtest/web_server.cert.pem`.
-
-Should you need to obtain TLS certificates via a different process, place the
-PEM-encoded server private key in `deploy/ansible/algtest/web_server.key.pem`,
-and place the PEM-encoded server certificate in
-`deploy/ansible/algtest/web_server.cert.pem` (same as in the previous
-paragraph).
-
-### Managing Multiple Deployments
-
-Defining the `os_prefix` variable on the command line is a convenient way to
-quickly switch between multiple deployments of the application.
-
-```bash
-ansible-playbook -i "localhost," -e os_prefix=algtest deploy/ansible/keys.yml
-ansible-playbook -i "localhost," -e os_cloud=test -e os_prefix=algtest deploy/ansible/openstack_up.yml
-ansible-playbook -e os_prefix=algtest deploy/ansible/prod.yml
-```
-
-### Bare-Metal Servers
-
-The Ansible inventory at `deploy/ansible/inventory/openstack.py` assumes an
-OpenStack deployment. Bare-metal servers can be managed by writing an inventory
-file in `deploy/keys/inventory` and referencing it when invoking the deployment
-playlist.
-
-```ini
-[meta-system_role_algtest_master]
-alg.csail.mit.edu
-
-[meta-system_role_algtest_worker]
-```
-
-The `os_image_user` variable defines the username used to SSH into the servers.
-
-```bash
-ansible-playbook -i deploy/keys/inventory -e os_image_user=myuser \
-    -e os_prefix=algtest deploy/ansible/prod.yml
-```
-
-When running the deployment playbook the first time around, the
-`--ask-become-pass` flag might be necessary to set the `sudo` password. The
-deployment playbook sets up password-less sudo, so this flag is not necessary
-for subsequent runs.
-
-```bash
-ansible-playbook -i deploy/keys/inventory -e os_image_user=myuser \
-    -e os_prefix=algtest --ask-become-pass deploy/ansible/prod.yml
 ```
