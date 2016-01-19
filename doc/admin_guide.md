@@ -81,7 +81,7 @@ The setup options for MIT are below:
 | ------------------------- | ------------------------------- |
 | Domain                    | mit.edu                         |
 | LDAP Server               | ldap.mit.edu                    |
-| Use LDAPS                 | _(checked)_                     |
+| Use LDAPS                 | _(unchecked)_                   |
 | LDAP Auth DN              | _(leave blank)_                 |
 | LDAP Password             | _(leave blank)_                 |
 | LDAP Search Base DN       | ou=users,ou=moira,dc=mit,dc=edu |
