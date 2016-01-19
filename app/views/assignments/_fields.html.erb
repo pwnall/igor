@@ -52,7 +52,7 @@
   </div>
 </div>
 
-<% if f.object.exam.new_record? %>
+<% if f.object.exam && f.object.exam.new_record? %>
 <div class="row">
   <div class="small-3 columns">
     <%= f.label :enable_exam, 'Enable Exam Features',
