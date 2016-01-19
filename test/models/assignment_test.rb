@@ -48,6 +48,31 @@ class AssignmentTest < ActiveSupport::TestCase
       assert @assignment.invalid?
     end
 
+    describe '#author_exuid' do
+      it 'returns the exuid of the author' do
+        assert_equal users(:main_staff).to_param, @assignment.author_exuid
+      end
+
+      it 'returns nil if the user has not been set' do
+        @assignment.author = nil
+        assert_nil @assignment.author_exuid
+      end
+    end
+
+    describe '#author_exuid=' do
+      it 'sets the author to the user with the given exuid' do
+        @assignment.author_exuid = users(:main_staff_2).to_param
+        assert_equal users(:main_staff_2), @assignment.author
+      end
+
+      it 'sets the author to nil if no user with the given exuid exists' do
+        nonexistent_exuid = users(:main_staff_2).to_param
+        users(:main_staff_2).destroy
+        @assignment.author_exuid = nonexistent_exuid
+        assert_nil @assignment.author
+      end
+    end
+
     it 'requires a scheduled flag' do
       @assignment.scheduled = nil
       assert @assignment.invalid?

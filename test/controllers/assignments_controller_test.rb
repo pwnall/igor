@@ -9,6 +9,20 @@ class AssignmentsControllerTest < ActionController::TestCase
   let(:member_params) do
     { course_id: courses(:main).to_param, id: assignment.to_param }
   end
+  before do
+    @year_due = Time.current.year + 1
+    @month_due = '04'
+    @day_due = '02'
+    @hour_due = '16'
+  end
+  let(:date_param) do
+    { due_at: "#{@year_due}-#{@month_due}-#{@day_due}T#{@hour_due}:00:00" }
+  end
+  let(:create_params) do
+    { course_id: courses(:main).to_param, assignment: { name: 'New Pset',
+      reset_released_at: 1, weight: 1, enable_exam: 0,
+      author_exuid: users(:main_staff).to_param }.merge(date_param) }
+  end
 
   describe 'authenticated as a registered student' do
     before { set_session_current_user users(:dexter) }
@@ -180,11 +194,49 @@ class AssignmentsControllerTest < ActionController::TestCase
 
       describe 'the assignment has an associated exam record' do
         before { assert_not_nil assignment.exam }
-        
+
         it 'renders the assignment builder page' do
           get :edit, params: member_params
           assert_response :success
           assert_select 'form.edit-assignment-form'
+        end
+      end
+    end
+
+    describe 'POST #create' do
+      describe 'the user entered valid form fields' do
+        it 'creates a new assignment' do
+          assert_difference 'Assignment.count' do
+            post :create, params: create_params
+          end
+          new_assignment = Assignment.last
+          assert_equal courses(:main), new_assignment.course
+          assert_equal false, new_assignment.scheduled
+          assert_equal false, new_assignment.grades_released
+        end
+
+        it 'redirects to the full assignment builder form' do
+          post :create, params: create_params
+          new_assignment = Assignment.last
+          assert_redirected_to edit_assignment_url(new_assignment,
+              course_id: new_assignment.course)
+        end
+      end
+
+      describe 'the user entered an invalid form field' do
+        before { create_params[:assignment][:author_exuid] = nil }
+
+        it 'does not create a new assignment' do
+          assert_no_difference 'Assignment.count' do
+            post :create, params: create_params
+          end
+          assert_response :success
+        end
+
+        it 're-renders the basic assignment form' do
+          post :create, params: create_params
+          assert_response :success
+          assert_select 'form.new-assignment-form'
         end
       end
     end

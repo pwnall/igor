@@ -45,10 +45,11 @@
 
 <div class="row">
   <div class="small-3 columns">
-    <%= f.label :author_id, 'Author', class: 'text-right middle' %>
+    <%= f.label :author_exuid, 'Author', class: 'text-right middle' %>
   </div>
   <div class="small-6 columns">
-    <%= f.collection_select :author_id, f.object.course.staff, :id, :name %>
+    <%= f.collection_select :author_exuid, f.object.course.staff, :to_param,
+          :name %>
   </div>
 </div>
 

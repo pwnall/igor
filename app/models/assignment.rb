@@ -31,6 +31,16 @@ class Assignment < ActiveRecord::Base
   belongs_to :author, class_name: 'User'
   validates :author, presence: true
 
+  # The author's external id (virtual attribute).
+  def author_exuid
+    author && author.to_param
+  end
+
+  # Set the assignment's author (virtual attribute).
+  def author_exuid=(exuid)
+    self.author = User.with_param(exuid).first
+  end
+
   # True if the given user is allowed to see this assignment's metadata.
   #
   # The assignment metadata covers all the scheduling-related information, like

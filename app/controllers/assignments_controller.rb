@@ -70,7 +70,10 @@ class AssignmentsController < ApplicationController
               notice: 'Assignment created.'
         end
       else
-        format.html { render :new }
+        format.html do
+          @assignment.build_exam
+          render :new
+        end
       end
     end
   end
@@ -226,7 +229,7 @@ class AssignmentsController < ApplicationController
     file_params = [:id, :description, :released_at, :_destroy,
         :reset_released_at, { db_file_attributes: :f }]
     metric_params = [:name, :max_score, :weight, :id, :_destroy]
-    params.require(:assignment).permit :name, :due_at, :weight, :author_id,
+    params.require(:assignment).permit :name, :due_at, :weight, :author_exuid,
         :team_partition_id, :feedback_survey_id, :scheduled, :released_at,
         :reset_released_at, :grades_released, :enable_exam,
         exam_attributes: exam_params,
