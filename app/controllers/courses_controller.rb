@@ -40,7 +40,7 @@ class CoursesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /6.006/course
+  # PATCH /6.006/course
   def update
     if @course.update(course_params)
       if current_user.admin?

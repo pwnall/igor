@@ -241,6 +241,43 @@ class AssignmentsControllerTest < ActionController::TestCase
       end
     end
 
+    describe 'PATCH #update' do
+      let(:member_params) do
+        { id: released_assignment.to_param, course_id: courses(:main).to_param,
+          assignment: { name: 'New name' } }
+      end
+
+      describe 'the user entered valid form fields' do
+        it 'updates the assignment attribute values' do
+          assert_equal 'PSet 1', released_assignment.name
+          patch :update, params: member_params
+          assert_equal 'New name', released_assignment.reload.name
+        end
+
+        it 'redirects to the assignment dashboard' do
+          patch :update, params: member_params
+          assert_redirected_to dashboard_assignment_url(released_assignment,
+              course_id: released_assignment.course)
+        end
+      end
+
+      describe 'the user entered an invalid form field' do
+        before { member_params[:assignment][:name] = '' }
+
+        it 'does not change assignment attribute values' do
+          original_name = released_assignment.name
+          patch :update, params: member_params
+          assert_equal original_name, released_assignment.reload.name
+        end
+
+        it 're-renders the extended assignment builder form' do
+          patch :update, params: member_params
+          assert_response :success
+          assert_select 'form.edit-assignment-form'
+        end
+      end
+    end
+
     describe 'PATCH #schedule' do
       describe 'the release date is undecided' do
         let(:assignment) { undecided_assignment }

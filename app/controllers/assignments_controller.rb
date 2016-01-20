@@ -88,7 +88,10 @@ class AssignmentsController < ApplicationController
               notice: 'Assignment updated.'
         end
       else
-        format.html { render :edit }
+        format.html do
+          @assignment.build_exam
+          render :edit
+        end
       end
     end
   end
