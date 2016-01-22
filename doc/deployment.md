@@ -30,6 +30,12 @@ Run the VM bringup playbook.
 ansible-playbook -i "localhost," -e os_cloud=test deploy/ansible/openstack_up.yml
 ```
 
+After bringing up OpenStack VMs, always refresh the ansible host cache.
+
+```bash
+deploy/inventory/openstack.py --list --refresh
+```
+
 Run the deployment playbook.
 
 ```bash
@@ -85,6 +91,7 @@ quickly switch between multiple deployments of the application.
 ```bash
 ansible-playbook -i "localhost," -e os_prefix=algtest deploy/ansible/keys.yml
 ansible-playbook -i "localhost," -e os_cloud=test -e os_prefix=algtest deploy/ansible/openstack_up.yml
+deploy/inventory/openstack.py --list --refresh
 ansible-playbook -e os_prefix=algtest deploy/ansible/prod.yml
 ```
 

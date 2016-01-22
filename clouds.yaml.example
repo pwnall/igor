@@ -1,4 +1,8 @@
 ---
+ansible:
+  use_hostnames: False
+  expand_hostvars: False
+
 clouds:
   test:
     auth:
