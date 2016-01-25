@@ -81,9 +81,11 @@ namespace :docker do
       raise 'Missing database records. Run `rake benchmark_docker:build_db.`'
     end
 
-    # Download the Docker image in a 'dummy' analysis whose runtime is not
-    # included in the final benchmark.
-    DockerBenchmark.create_submission deliverable, user
+    # Download whichever Docker image is required in the analyzer's Dockerfile
+    # during a 'dummy' analysis whose runtime is not included in the final
+    # benchmark.
+    submission = DockerBenchmark.create_submission deliverable, user
+    SubmissionAnalysisJob.perform_now submission
 
     submissions = []
     job_count = ENV['JOBS'].to_i
