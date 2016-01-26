@@ -1,0 +1,8 @@
+---
+# The Docker package repository branch used to install the engine.
+#
+# The valid options are "main", "testing" and "experimental".
+#   * main is the current release
+#   * testing is the next bugfix release
+#   * experimental is the next release (most likley cut off the GitHub master)
+docker_engine_branch: main
