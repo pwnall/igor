@@ -16,6 +16,11 @@
   become: true
   become_user: root
   command: dnf install -y python2-dnf
+  # NOTE: By default, the command module will issue a warning suggesting the
+  #       use of the dnf module. That's exactly what we want to do. However, we
+  #       first need to install dnf-python for Ansible's dnf module.
+  args:
+    warn: no
   register: dnf_install_python_result
   changed_when: '"Nothing to do" not in dnf_install_python_result.stdout'
 

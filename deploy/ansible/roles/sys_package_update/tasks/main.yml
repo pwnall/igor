@@ -2,9 +2,14 @@
 - block:
   - name: update dnf packages
     when: ansible_pkg_mgr == 'dnf'
-    command: dnf upgrade -y
-    register: dnf_update_result
-    changed_when: "'Nothing to do.' not in dnf_update_result.stdout"
+    # NOTE: The documentation for the Ansible dnf module states that the
+    #       arguments used below result in a "dnf -y update" command. The DNF
+    #       docs recommend using "dnf upgrade", and list "update" as a
+    #       deprecated alias for "upgrade". As long as both commands have the
+    #       same result, we're better off using the change detection built into
+    #       the dnf result, rather than passing the correct DNF command to
+    #       Ansible's command module.
+    dnf: name=* state=latest
     notify:
     - cast systemd reexec black magic
     - reboot machine
