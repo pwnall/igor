@@ -9,3 +9,13 @@
 - name: set has_firewalld fact
   set_fact:
     has_firewalld: "{{ firewall_cmd_stat.stat.exists }}"
+
+
+- name: set root_fs_type fact
+  set_fact:
+    root_fs_type: "{{
+        (ansible_mounts | selectattr('mount', 'equalto', '/') | first).fstype
+        }}"
+
+- name: print root_fs_type
+  debug: var=root_fs_type

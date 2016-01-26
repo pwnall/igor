@@ -5,7 +5,8 @@
 # fedora-23
 #
 # NOTE: ubuntu-xenial may be supported when it is released; wily does not have
-#       the packages required to be a master (etcd server, skydns)
+#       the packages required to be a master (etcd server, skydns) or a worker
+#       (etcd client)
 OS = 'fedora-23'
 
 # Number of worker VMs.

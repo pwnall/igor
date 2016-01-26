@@ -3,7 +3,8 @@
 
 # Modify these options if you want to change the way the docker daemon runs
 {% if ansible_selinux != false %}
-OPTIONS='--selinux-enabled=false --group=docker --storage-driver=overlay'
+OPTIONS='--selinux-enabled=false --group=docker --storage-driver={{
+    'btrfs' if root_fs_type == 'btrfs' else 'overlay' }}'
 {% endif %}
 DOCKER_CERT_PATH=/etc/docker
 
