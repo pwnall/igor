@@ -2,7 +2,9 @@
 # Installs Python 2 and the libraries needed by Ansible modules.
 
 - name: install python 2.7
-  raw: sudo dnf install -y python2
+  become: true
+  become_user: root
+  raw: dnf install -y python2 python-simplejson
 
 - name: collect facts
   setup:
