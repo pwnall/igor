@@ -1,10 +1,12 @@
 ---
 # Installs Python 2 and the libraries needed by Ansible modules.
 
-- name: install python 2.7
+# NOTE: apt-based distributions ship Python 2 by default. When that stops
+#       being the case, we'll add the right command for installing it here.
+- name: install python 2.7 using dnf
   become: true
   become_user: root
-  raw: dnf install -y python2 python-simplejson
+  raw: "if which dnf; then dnf install -y python2 python-simplejson; fi"
 
 - name: collect facts
   setup:

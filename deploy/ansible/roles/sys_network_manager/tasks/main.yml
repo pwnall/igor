@@ -19,7 +19,7 @@
   when: ansible_pkg_mgr == 'apt'
   become: true
   become_user: root
-  apt: name=NetworkManager state=present
+  apt: name=network-manager state=present
 
 - name: enable and start NetworkManager
   become: true

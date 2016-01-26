@@ -1,0 +1,43 @@
+---
+- name: install docker dnf repository
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  template: src=docker_com.repo.j2 dest=/etc/yum.repos.d/docker_com.repo
+
+- name: install docker apt key
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt_key:
+    keyserver: hkp://p80.pool.sks-keyservers.net:80
+    id: 58118E89F3A912897C070ADBF76221572C52609D
+
+- name: install docker apt repository
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt_repository:
+    repo: "deb https://apt.dockerproject.org/repo
+           {{ ansible_distribution|lower }}-{{ ansible_distribution_release }}
+           {{ docker_engine_branch }}"
+    state: present
+    filename: docker
+    update_cache: yes
+    validate_certs: yes
+
+- name: install docker with dnf
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  # NOTE: The RedHat repositories package Docker as the "docker" package. The
+  #       "docker-engine" package comes from the docker.com repositories.
+  # dnf: name=docker state=present
+  # TODO(pwnall): phase out docker-engine for Fedora's packaged version
+  dnf: name=docker-engine state=present
+
+- name: install docker with apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name=docker-engine state=present

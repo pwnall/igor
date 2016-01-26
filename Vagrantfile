@@ -2,7 +2,10 @@
 # vi: set ft=ruby :
 
 # Supported values:
-# ubuntu-vivid, fedora-23
+# fedora-23
+#
+# NOTE: ubuntu-xenial may be supported when it is released; wily does not have
+#       the packages required to be a master (etcd server, skydns)
 OS = 'fedora-23'
 
 # Number of worker VMs.
@@ -10,11 +13,14 @@ WORKERS = 1
 
 Vagrant.configure(2) do |config|
   config.vm.box = {
-    'ubuntu-vivid' => 'ubuntu/vivid64',
     'ubuntu-wily' => 'ubuntu/wily64',
+    'ubuntu-xenial' => 'ubuntu/xenial64',
     'fedora-23' => 'fedora/23-cloud-base',
   }[OS]
   config.vm.box_check_update = true
+  config.vm.box_url = {
+    'ubuntu-xenial' => 'https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box',
+  }[OS]
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -36,7 +42,7 @@ Vagrant.configure(2) do |config|
       # NOTE: The ansible provisioning block is only defined in the last
       #       worker, so it runs after all the VMs have been created.
       if worker_id == WORKERS
-        config.vm.provision :ansible do |ansible|
+        worker.vm.provision :ansible do |ansible|
           ansible.playbook = "deploy/ansible/prod.yml"
           ansible.limit = "all"
 

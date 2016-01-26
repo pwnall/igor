@@ -11,11 +11,13 @@
   become_user: root
   dnf: name=etcd state=present
 
+# NOTE: This package is actually the etcd client. The etcd server package is
+#       golang-etcd-server-dev
 - name: install etcd with apt
   when: ansible_pkg_mgr == 'apt'
   become: true
   become_user: root
-  apt: name=etcd state=present
+  apt: name=golang-etcd-dev state=present
 
 - name: copy etcd CA certificate
   become: true
