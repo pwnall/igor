@@ -16,6 +16,3 @@
     root_fs_type: "{{
         (ansible_mounts | selectattr('mount', 'equalto', '/') | first).fstype
         }}"
-
-- name: print root_fs_type
-  debug: var=root_fs_type
