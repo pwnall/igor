@@ -302,6 +302,7 @@ $dropdown-sizes: (
 // -----------------
 
 $dropdownmenu-arrows: true;
+$dropdownmenu-arrow-color: $anchor-color;
 $dropdownmenu-min-width: 200px;
 $dropdownmenu-background: $white;
 $dropdownmenu-border: 1px solid $medium-gray;
@@ -543,5 +544,5 @@ $tooltip-radius: $global-radius;
 
 $topbar-padding: 0.5rem;
 $topbar-background: darken($primary-color, 50%);  // $light-gray;
-$topbar-link-color: #fff;  // $primary-color;
+$topbar-title-spacing: 1rem;
 $topbar-input-width: 200px;
