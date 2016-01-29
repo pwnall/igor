@@ -18,7 +18,7 @@ ExecStartPre=-/usr/bin/docker kill docker-swarm-worker
 ExecStartPre=-/usr/bin/docker rm docker-swarm-worker
 ExecStartPre=/usr/bin/docker pull swarm
 ExecStart=/usr/bin/docker run --name docker-swarm-worker \
-    --volume=/etc/docker-swarm-worker:/etc/docker-swarm --net="host" \
+    --volume=/etc/docker-swarm-worker:/etc/docker-swarm --net=host \
     swarm join --advertise={{ skydns_name }}.skydns.local:2376 \
     --discovery-opt="kv.cacertfile=/etc/docker-swarm/etcd_ca.pem" \
     --discovery-opt="kv.certfile=/etc/docker-swarm/etcd_cert.pem" \

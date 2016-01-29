@@ -17,8 +17,8 @@ etcd-master{{ loop.index }}.clusterlocal:2379
 ExecStartPre=-/usr/bin/docker kill docker-swarm-master
 ExecStartPre=-/usr/bin/docker rm docker-swarm-master
 ExecStartPre=/usr/bin/docker pull swarm
-ExecStart=/usr/bin/docker run --name docker-swarm-master --release=3376:2375 \
-    --volume=/etc/docker-swarm-master:/etc/docker-swarm --net="host" \
+ExecStart=/usr/bin/docker run --name docker-swarm-master --publish=3376:3376 \
+    --volume=/etc/docker-swarm-master:/etc/docker-swarm --net=host \
     swarm manage \
     --advertise=swarm-master1.skydns.local:3376 \
     --cluster-driver=swarm --strategy=spread --filter=health --filter=port \
@@ -28,7 +28,7 @@ ExecStart=/usr/bin/docker run --name docker-swarm-master --release=3376:2375 \
     --discovery-opt="kv.cacertfile=/etc/docker-swarm/etcd_ca.pem" \
     --discovery-opt="kv.certfile=/etc/docker-swarm/etcd_cert.pem" \
     --discovery-opt="kv.keyfile=/etc/docker-swarm/etcd_key.pem" \
-    --host=tcp://0.0.0.0:2375 $SWARM_DISCOVERY
+    --host=tcp://0.0.0.0:3376 $SWARM_DISCOVERY
 Restart=always
 StandardInput=null
 StandardOutput=syslog
