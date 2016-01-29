@@ -4,7 +4,7 @@
   .grades-for-assignment {
     min-width: 25%;
     max-width: 90%;
-    @include flex-grid-column(shrink, $grid-column-gutter);
+    @include flex-grid-column(shrink, null);
   }
 }
 h3.assignment-name {
@@ -15,7 +15,7 @@ h3.assignment-name {
     @include flex-grid-row(null, null, null, true);
 
     .metric-name {
-      @include flex-grid-column(null, $grid-column-gutter);
+      @include flex-grid-column(null, null);
       margin-bottom: 0;
     }
     .metric-weight {
@@ -38,7 +38,7 @@ h3.assignment-name {
       @include flex-grid-row(null, null, null, true);
 
       > .comment-text {
-        @include flex-grid-column(null, $grid-column-gutter);
+        @include flex-grid-column(null, null);
         margin-bottom: 0.2rem;
         text-align: justify;
       }

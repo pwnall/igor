@@ -3,11 +3,11 @@
   margin-bottom: 0.5rem;
 
   > .prompt {
-    @include flex-grid-column(6, $grid-column-gutter);
+    @include flex-grid-column(6, null);
     text-align: right;
   }
   > .answer {
-    @include flex-grid-column(6, $grid-column-gutter);
+    @include flex-grid-column(6, null);
 
     > .numerical-answer {
       @include flex-grid-row(null, null, null, true);

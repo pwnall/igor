@@ -26,7 +26,7 @@
         }
       }
       .assignment-details {
-        @include flex-grid-column(null, $grid-column-gutter);
+        @include flex-grid-column(null, null);
       }
     }
   }

@@ -13,7 +13,7 @@
       @include flex-grid-column(shrink, 0);
     }
     .task {
-      @include flex-grid-column(null, $grid-column-gutter);
+      @include flex-grid-column(null, null);
 
       .task-link:only-child {
         line-height: $line-height * 2;

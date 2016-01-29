@@ -34,14 +34,14 @@ span.input-group-button > button {
   @include flex-grid-row(null, null, null, true);
 
   > .query-label {
-    @include flex-grid-column(shrink, $grid-column-gutter);
+    @include flex-grid-column(shrink, null);
 
     label {
       @include form-label-middle;
     }
   }
   > .query-input-field {
-    @include flex-grid-column(shrink, $grid-column-gutter);
+    @include flex-grid-column(shrink, null);
     min-width: 20rem;
 
     label {
@@ -49,6 +49,6 @@ span.input-group-button > button {
     }
   }
   > .query-submit-button {
-    @include flex-grid-column(shrink, $grid-column-gutter);
+    @include flex-grid-column(shrink, null);
   }
 }

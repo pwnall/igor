@@ -7,10 +7,10 @@ section.recitation-conflicts {
   margin-bottom: 0.5rem;
 
   .setting-name, .prerequisite-question {
-    @include flex-grid-column(2, $grid-column-gutter);
+    @include flex-grid-column(2, null);
     font-weight: bold;
   }
   .setting-value, .prerequisite-answer {
-    @include flex-grid-column(6, $grid-column-gutter);
+    @include flex-grid-column(6, null);
   }
 }

@@ -14,7 +14,7 @@ ul.dashboard-list {
       @include flex-grid-column(2, 10);
     }
     .meter {
-      @include flex-grid-column(null, $grid-column-gutter);
+      @include flex-grid-column(null, null);
 
       .progress {
         margin: 0;
