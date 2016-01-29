@@ -55,6 +55,11 @@ Vagrant.configure(2) do |config|
           }
           ansible.extra_vars = {
             os_image_user: "vagrant",
+
+            # This can be "main" for the current Docker release, "testing" for
+            # the next point release, or "experimental" for the next major
+            # release.
+            docker_engine_branch: "main",
           }
 
           # Uncomment for Ansible role debugging.
