@@ -51,7 +51,6 @@ class UsersControllerTest < ActionController::TestCase
           email: 'dexter2@mit.edu', password: 'sekret',
           password_confirmation: 'sekret',
           profile_attributes: {
-            athena_username: 'dexter2',
             name: 'Dexter the Great',
             nickname: 'Dexter',
             university: 'Massachusetts Institute of Technology',

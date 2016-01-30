@@ -22,13 +22,14 @@ if Rails.env.development?
       'require'                 => '',
       'exclude_tests'           => 'true',
       'exclude_fixtures'        => 'false',
-      'exclude_factories'       => 'true',
-      'exclude_serializers'     => 'true',
+      'exclude_factories'       => 'false',
+      'exclude_serializers'     => 'false',
       'exclude_scaffolds'       => 'true',
       'exclude_controllers'     => 'true',
       'exclude_helpers'         => 'true',
       'ignore_model_sub_dir'    => 'false',
       'ignore_columns'          => nil,
+      'ignore_routes'           => nil,
       'ignore_unknown_models'   => 'false',
       'hide_limit_column_types' => 'integer,boolean',
       'skip_on_db_migrate'      => 'false',
@@ -40,7 +41,7 @@ if Rails.env.development?
       'force'                   => 'false',
       'trace'                   => 'false',
       'wrapper_open'            => nil,
-      'wrapper_close'           => nil,
+      'wrapper_close'           => nil
     )
   end
 

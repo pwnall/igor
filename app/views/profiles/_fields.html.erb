@@ -1,24 +1,6 @@
 <section data-pwnfx-scope="profile">
   <div class="row">
     <div class="small-3 columns">
-      <%= f.label :athena_username, 'Athena username', class: 'text-right middle' %>
-    </div>
-    <div class="small-6 columns">
-      <%= f.text_field :athena_username, autocomplete: :off,
-            autofocus: true, data: { pwnfx_refresh: 'athena-lookup-js',
-            pwnfx_refresh_url: websis_lookup_profiles_path,
-            pwnfx_refresh_method: 'POST', pwnfx_refresh_scope: 'profile',
-            pwnfx_refresh_ms: 1000 } %>
-    </div>
-    <div class="small-3 columns">
-      <span class="error-text middle" id="profile-athena-success">
-      </span>
-      <span data-pwnfx-refresh-target="athena-lookup-js" />
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
       <%= f.label :name, 'Full name', class: 'text-right middle' %>
     </div>
     <div class="small-6 columns">

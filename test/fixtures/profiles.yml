@@ -2,16 +2,15 @@
 #
 # Table name: profiles
 #
-#  id              :integer          not null, primary key
-#  user_id         :integer          not null
-#  name            :string(128)      not null
-#  nickname        :string(64)       not null
-#  university      :string(64)       not null
-#  department      :string(64)       not null
-#  year            :string(4)        not null
-#  athena_username :string(32)       not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id         :integer          not null, primary key
+#  user_id    :integer          not null
+#  name       :string(128)      not null
+#  nickname   :string(64)       not null
+#  university :string(64)       not null
+#  department :string(64)       not null
+#  year       :string(4)        not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 robot:
@@ -21,7 +20,6 @@ robot:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: 'G'
-  athena_username: ---
 
 admin:
   user: admin
@@ -30,7 +28,6 @@ admin:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: G
-  athena_username: admin
 
 dexter:
   user: dexter
@@ -39,7 +36,6 @@ dexter:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: 1
-  athena_username: genius
 
 solo:
   user: solo
@@ -48,7 +44,6 @@ solo:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: 4
-  athena_username: solo
 
 deedee:
   user: deedee
@@ -57,7 +52,6 @@ deedee:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: 1
-  athena_username: dd
 
 mandark:
   user: mandark
@@ -66,7 +60,6 @@ mandark:
   university: Massachusetts Intitute of Technology
   department: Electrical Eng & Computer Sci
   year: 1
-  athena_username: evil
 
 inactive:
   user: inactive
@@ -75,7 +68,6 @@ inactive:
   university: Massachusetts Intitute of Technology
   department: Electrical Eng & Computer Sci
   year: 1
-  athena_username: inactive
 
 main_dropout:
   user: main_dropout
@@ -84,7 +76,6 @@ main_dropout:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: 4
-  athena_username: nothanks
 
 main_staff:
   user: main_staff
@@ -93,7 +84,6 @@ main_staff:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: G
-  athena_username: main_staff
 
 main_staff_2:
   user: main_staff_2
@@ -102,7 +92,6 @@ main_staff_2:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: G
-  athena_username: main_staff_2
 
 not_main_student:
   user: not_main_student
@@ -111,7 +100,6 @@ not_main_student:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: 4
-  athena_username: not_main_student
 
 not_main_dropout:
   user: not_main_dropout
@@ -120,7 +108,6 @@ not_main_dropout:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: 4
-  athena_username: dropout_2
 
 not_main_staff:
   user: not_main_staff
@@ -129,7 +116,6 @@ not_main_staff:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: G
-  athena_username: not_main_staff
 
 main_grader:
   user: main_grader
@@ -138,7 +124,6 @@ main_grader:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: G
-  athena_username: main_grader
 
 main_grader_2:
   user: main_grader_2
@@ -147,7 +132,6 @@ main_grader_2:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: G
-  athena_username: main_grader_2
 
 not_main_grader:
   user: not_main_grader
@@ -156,4 +140,3 @@ not_main_grader:
   university: Massachusetts Institute of Technology
   department: Electrical Eng & Computer Sci
   year: G
-  athena_username: not_main_grader

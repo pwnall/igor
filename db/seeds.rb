@@ -38,10 +38,9 @@ prereq2.save!
 puts 'Course created'
 
 # Site admin.
-admin = User.create! email: 'costan@mit.edu', password: 'mit',
-    password_confirmation: 'mit', profile_attributes: {
-      athena_username: 'costan', name: 'Victor Costan', nickname: 'Victor',
-      university: 'MIT', department: 'EECS', year: 'G'
+admin = User.create! email: 'admin@mit.edu', password: 'mit',
+    password_confirmation: 'mit', profile_attributes: { name: 'Site Admin',
+      nickname: 'admin', university: 'MIT', department: 'EECS', year: 'G'
     }
 admin.email_credential.verified = true
 admin.save!
@@ -61,9 +60,8 @@ names[0..90].each_with_index do |name, i|
   first_name = name.split(' ').first
   short_name = (first_name[0] + name.split(' ').last + "_#{i}").downcase
   user = User.create! email: short_name + '@mit.edu',  password: 'mit',
-      password_confirmation: 'mit', profile_attributes: {
-        athena_username: short_name, name: name, nickname: first_name,
-        university: 'MIT', year: (1 + (i % 4)).to_s,
+      password_confirmation: 'mit', profile_attributes: { name: name,
+        nickname: first_name, university: 'MIT', year: (1 + (i % 4)).to_s,
         department: depts[i % depts.length]
       }
   user.email_credential.verified = true
@@ -92,9 +90,8 @@ names[91..-1].each_with_index do |name, i|
   first_name = name.split(' ').first
   short_name = (first_name[0] + name.split(' ').last + "_#{i}").downcase
   user = User.create! email: short_name + '@mit.edu', password: 'mit',
-      password_confirmation: 'mit', profile_attributes: {
-        athena_username: short_name, name: name, nickname: first_name,
-        university: 'MIT', year: (1 + (i % 4)).to_s,
+      password_confirmation: 'mit', profile_attributes: { name: name,
+        nickname: first_name, university: 'MIT', year: (1 + (i % 4)).to_s,
         department: depts[i % depts.length]
       }
   user.email_credential.verified = true

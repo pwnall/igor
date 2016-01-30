@@ -30,9 +30,8 @@ namespace :docker do
 
     # Site admin.
     admin = User.create! email: 'admin@mit.edu', password: 'mit',
-        password_confirmation: 'mit', profile_attributes: {
-          athena_username: 'admin', name: 'Admin', nickname: 'admin',
-          university: 'MIT', department: 'EECS', year: 'G'
+        password_confirmation: 'mit', profile_attributes: { name: 'Admin',
+          nickname: 'admin', university: 'MIT', department: 'EECS', year: 'G'
         }
     admin.email_credential.verified = true
     admin.save!
@@ -41,9 +40,8 @@ namespace :docker do
 
     # Staff.
     staff = User.create! email: 'staff@mit.edu',  password: 'mit',
-        password_confirmation: 'mit', profile_attributes: {
-          athena_username: 'staff', name: 'Staff', nickname: 'staff',
-          university: 'MIT', department: 'EECS', year: 'G'
+        password_confirmation: 'mit', profile_attributes: { name: 'Staff',
+          nickname: 'staff', university: 'MIT', department: 'EECS', year: 'G'
         }
     staff.email_credential.verified = true
     staff.email_credential.save!

@@ -2,23 +2,19 @@
 #
 # Table name: profiles
 #
-#  id              :integer          not null, primary key
-#  user_id         :integer          not null
-#  name            :string(128)      not null
-#  nickname        :string(64)       not null
-#  university      :string(64)       not null
-#  department      :string(64)       not null
-#  year            :string(4)        not null
-#  athena_username :string(32)       not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id         :integer          not null, primary key
+#  user_id    :integer          not null
+#  name       :string(128)      not null
+#  nickname   :string(64)       not null
+#  university :string(64)       not null
+#  department :string(64)       not null
+#  year       :string(4)        not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 # User data, asides from credentials which are stored in the User model.
 class Profile < ActiveRecord::Base
-  # The user's Kerberos account on MIT's Athena system.
-  validates :athena_username, length: 1..32, presence: true
-
   # The user's full legal name.
   validates :name, length: 1..128, presence: true
 

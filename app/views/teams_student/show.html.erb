@@ -8,7 +8,7 @@
     <th>Team Name</th>
     <th>Min / Max size</th>
     <th>Leave Team?</th>
-    <th>Invite (athena)</th>
+    <th>Invite (e-mail)</th>
     <th></th>
     <th>Members</th>
   </tr>
@@ -49,7 +49,7 @@
       <% else %>
         <td>
           <%= form_tag("/teams_student/invite_member") do -%>
-          <%= text_field_tag 'athena', nil, :placeholder => 'bbitdiddle', :size => 10 %>
+          <%= text_field_tag 'e-mail', nil, :placeholder => 'bbitdiddle@mit.edu', :size => 10 %>
           <%= hidden_field_tag 'team_id', @team.id %>
         </td>
         <td>

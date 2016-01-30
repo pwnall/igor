@@ -2,23 +2,12 @@ require 'test_helper'
 
 class ProfileTest < ActiveSupport::TestCase
   before do
-    @profile = Profile.new athena_username: 'mitstudent', name: 'Tim Beaver',
-        nickname: 'timster', year: 'G', university: 'MIT', department: 'EECS',
-        user: User.new
+    @profile = Profile.new name: 'Tim Beaver', nickname: 'timster', year: 'G',
+        university: 'MIT', department: 'EECS', user: User.new
   end
 
   it 'validates the setup profile' do
     assert @profile.valid?
-  end
-
-  it 'requires an athena username' do
-    @profile.athena_username = nil
-    assert @profile.invalid?
-  end
-
-  it 'rejects lengthy athena usernames' do
-    @profile.athena_username = 'tim' * 11
-    assert @profile.invalid?
   end
 
   it 'requires a name' do

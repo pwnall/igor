@@ -43,7 +43,6 @@ class LoadTestSession
     form['user[email]'] = email
     form['user[password]'] = password
     form['user[password_confirmation]'] = password
-    form['user[profile_attributes][athena_username]'] = 'loadtest'
     form['user[profile_attributes][name]'] = 'Load Test'
     form['user[profile_attributes][nickname]'] = 'Load Test'
     form['user[profile_attributes][university]'] = 'MIT'

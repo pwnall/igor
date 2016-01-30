@@ -4,8 +4,7 @@ class CreateRobotUser < ActiveRecord::Migration
         password: '_', password_confirmation: '_',
         profile_attributes: {
           name: 'Staff Robot', nickname: 'Robot',
-          university: 'MIT', department: 'EECS', year: 'G',
-          athena_username: '---'
+          university: 'MIT', department: 'EECS', year: 'G'
         }
     robot.email_credential.verified = true
     robot.save!

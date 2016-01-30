@@ -283,15 +283,14 @@ ActiveRecord::Schema.define(version: 20110704080003) do
   end
 
   create_table "profiles", force: :cascade do |t|
-    t.integer  "user_id",                     null: false
-    t.string   "name",            limit: 128, null: false
-    t.string   "nickname",        limit: 64,  null: false
-    t.string   "university",      limit: 64,  null: false
-    t.string   "department",      limit: 64,  null: false
-    t.string   "year",            limit: 4,   null: false
-    t.string   "athena_username", limit: 32,  null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.integer  "user_id",                null: false
+    t.string   "name",       limit: 128, null: false
+    t.string   "nickname",   limit: 64,  null: false
+    t.string   "university", limit: 64,  null: false
+    t.string   "department", limit: 64,  null: false
+    t.string   "year",       limit: 4,   null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true, using: :btree
   end
 

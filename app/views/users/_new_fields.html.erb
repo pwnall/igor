@@ -6,10 +6,11 @@
     <div class="small-6 columns">
       <%= f.text_field :email, placeholder: 'you@mit.edu', required: true,
             autofocus: true, data: { pwnfx_refresh: 'email-check',
-            pwnfx_refresh_url: check_email_users_url,
+            pwnfx_refresh_url: check_email_users_url, pwnfx_refresh_ms: 1000,
             pwnfx_refresh_method: 'POST', pwnfx_refresh_scope: 'new-user' } %>
     </div>
-    <div class="small-3 columns" data-pwnfx-refresh-target="email-check">
+    <div class="small-3 columns">
+      <div data-pwnfx-refresh-target="email-check"></div>
     </div>
   </div>
 

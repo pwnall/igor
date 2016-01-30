@@ -98,10 +98,11 @@ class UsersController < ApplicationController
     end
   end
 
-  # XHR /users/check_email?email=...
+  # XHR POST /_/users/check_email
   def check_email
     @email = params[:user][:email]
     @user = User.with_email @email
+    @ldap_info = EmailResolver.resolve @email unless @email.blank?
 
     render layout: false
   end
@@ -157,7 +158,7 @@ class UsersController < ApplicationController
     end
 
     params.require(:user).permit :email, :password, :password_confirmation,
-        profile_attributes: [:athena_username, :name, :nickname, :university,
+        profile_attributes: [:name, :nickname, :university,
                              :department, :year, :id]
   end
   private :user_params

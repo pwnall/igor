@@ -25,12 +25,6 @@ Rails.application.routes.draw do
         patch :confirm_email
       end
     end
-    resources :profiles, only: [] do
-      collection do
-        post :websis_lookup
-        patch :websis_lookup
-      end
-    end
     resources :profile_photos do
       member do
         get :profile, :thumb

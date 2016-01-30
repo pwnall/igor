@@ -56,8 +56,8 @@ class TeamsStudentController < ApplicationController
   end
 
   def invite_member
-    ## Validate the athena is one that is in our system.
-    prof = Profile.find_by_athena_username params[:athena]
+    ## Validate the email is one that is in our system.
+    prof = User.with_email params[:email]
     ## Check that the partition is editable!
     team = Team.find_by_id params[:team_id]
     partition = TeamPartition.find_by_id team.partition_id
@@ -66,9 +66,9 @@ class TeamsStudentController < ApplicationController
       redirect_to teams_student_path and return
     end
     if !prof.nil?
-      flash[:notice] = "An email has been sent to " + params[:athena] + "@mit.edu"
+      flash[:notice] = "An email has been sent to " + params[:email]
       Invitation.create(:inviter_id => current_user.id, :invitee_id => prof.user_id, :team_id => params[:team_id])
-      SessionMailer.team_invite_email(params[:athena], current_user.id, team).deliver
+      SessionMailer.team_invite_email(params[:email], current_user.id, team).deliver
     else
       flash[:notice] = "Sorry, that user appears to not be in this class."
     end

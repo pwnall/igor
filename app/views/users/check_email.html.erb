@@ -1,13 +1,19 @@
-<% if @email.length < 5 %>
-  <span class="error-text middle"><%= invalid_icon_tag %> too short</span>
-<% else %>
-  <% if @user %>
-    <span class="error-text middle"><%= invalid_icon_tag %> taken</span>
-  <% elsif !@email.chomp.end_with? '.edu' %>
-    <span class="error-text middle">
-      <%= invalid_icon_tag %> must be an .edu address
-    </span>
-  <% else %>
-    <span class="error-text middle"><%= valid_icon_tag %> available</span>
-  <% end %>
+<div class="error-text row medium-unstack">
+  <div class="columns" id="email-format-check">
+    <%= email_format_check @email %>
+  </div>
+
+  <div class="columns" id="email-resolver-check">
+  <%= email_resolver_check @ldap_info, @email %>
+  </div>
+</div>
+
+<script type="text/javascript">
+<% unless @ldap_info.nil? %>
+  $('#profile_name').val('<%= (@ldap_info[:full_name] || '').html_safe %>');
+  $('#profile_nickname').val('<%= (@ldap_info[:full_name] || ' ').split(' ').first.html_safe %>');
+  $('#profile_department').val('<%= (@ldap_info[:department] || '').html_safe %>');
+  $('#profile_university').val('<%= guess_university_from_email(@email).html_safe %>');
+  $('#profile_year').val('<%= (@ldap_info[:year] || '').html_safe %>');
 <% end %>
+</script>
