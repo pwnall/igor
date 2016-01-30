@@ -6,7 +6,7 @@
 <% assignment.deliverables.each.with_index do |d, i| %>
 
 <%= render 'submissions/filename_spec', default_prefix: nil,
-       default_suffix: "_part#{i + 1}", extension: d.file_ext,
+       default_suffix: "_part#{i + 1}", extension: 'ext',
        basename: (assignment.team_partition ? 'teamname' : 'username'),
        id: d.id, name: d.name, title: d.name %>
 

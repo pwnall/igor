@@ -7,7 +7,7 @@ class DockerAnalyzerTest < ActiveSupport::TestCase
     ContainedMr.stubs(:template_class).returns ContainedMr::Mock::Template
 
     deliverable = assignments(:ps1).deliverables.build name: 'Moar code',
-        description: 'Waay more', file_ext: 'py'
+        description: 'Waay more'
     @analyzer = DockerAnalyzer.new deliverable: deliverable,
         auto_grading: false, db_file: db_files(:ps2_docker_analyzer),
         map_time_limit: '1.5', map_ram_limit: '128', map_logs_limit: '1.5',

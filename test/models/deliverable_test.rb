@@ -6,7 +6,7 @@ class DeliverableTest < ActiveSupport::TestCase
 
   before do
     @deliverable = Deliverable.new assignment: assignments(:ps1),
-        file_ext: 'pdf', name: 'Extra Credit', description: 'Bonus for PS1',
+        name: 'Extra Credit', description: 'Bonus for PS1',
         analyzer_attributes: { type: 'ProcAnalyzer', auto_grading: 0,
         message_name: 'analyze_pdf' }
   end
@@ -43,16 +43,6 @@ class DeliverableTest < ActiveSupport::TestCase
 
   it 'rejects lengthy descriptions' do
     @deliverable.description = 'd' * (2.kilobytes + 1)
-    assert @deliverable.invalid?
-  end
-
-  it 'requires a file extension' do
-    @deliverable.file_ext = nil
-    assert @deliverable.invalid?
-  end
-
-  it 'rejects lengthy file extensions' do
-    @deliverable.file_ext = 'f' * 17
     assert @deliverable.invalid?
   end
 

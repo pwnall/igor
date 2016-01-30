@@ -227,7 +227,7 @@ class AssignmentsController < ApplicationController
         :ram_limit, :file_limit, :file_size_limit, :process_limit,
         :map_time_limit, :map_ram_limit, :map_logs_limit, :reduce_time_limit,
         :reduce_ram_limit, :reduce_logs_limit, { db_file_attributes: :f }]
-    deliverable_params = [:name, :file_ext, :_destroy, :description, :id,
+    deliverable_params = [:name, :_destroy, :description, :id,
         { analyzer_attributes: analyzer_params } ]
     file_params = [:id, :description, :released_at, :_destroy,
         :reset_released_at, { db_file_attributes: :f }]

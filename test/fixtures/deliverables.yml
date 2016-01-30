@@ -4,7 +4,6 @@
 #
 #  id            :integer          not null, primary key
 #  assignment_id :integer          not null
-#  file_ext      :string(16)       not null
 #  name          :string(80)       not null
 #  description   :string(2048)     not null
 #  created_at    :datetime         not null
@@ -18,40 +17,33 @@ ps1_writeup:
   assignment: ps1
   name: PDF Write-Up
   description: "Your team's write-up for PS1, in PDF format."
-  file_ext: pdf
 
 ps3_writeup:
   assignment: ps3
   name: PDF Write-Up
   description: "Your team's write-up for PS3, in PDF format."
-  file_ext: pdf
 
 project_writeup:
   assignment: project
   name: PDF Write-Up
   description: "Your team's write-up for the final project, in PDF format."
-  file_ext: pdf
 
 project_code:
   assignment: project
   name: Python Source Code
   description: "Your team's code submission, in one python file."
-  file_ext: py
 
 assessment_writeup:
   assignment: assessment
   name: PDF Write-Up
   description: "Your self-assessment, in PDF format."
-  file_ext: pdf
 
 assessment_code:
   assignment: assessment
   name: Python Source Code
   description: "A code sample you are proud of, in one python file."
-  file_ext: py
 
 main_exam_3_part_a:
   assignment: main_exam_3
   name: Part A
   description: "Your code submission for Part A."
-  file_ext: py

@@ -16,14 +16,6 @@ class AnalyzersHelperTest < ActionView::TestCase
       end
     end
 
-    it 'returns the appropriate extension placeholder for the analyzer type' do
-      assert_match /pdf/, deliverable_field_placeholder(proc_deliverable, :ext)
-      assert_match /py/, deliverable_field_placeholder(docker_deliverable, :ext)
-      assert_raises(RuntimeError) do
-        deliverable_field_placeholder Deliverable.new, :ext
-      end
-    end
-
     it 'returns the appropriate name placeholder for the analyzer type' do
       assert_match /write-up/, deliverable_field_placeholder(proc_deliverable,
                                                              :description)

@@ -3,10 +3,10 @@ module AnalyzersHelper
   def deliverable_field_placeholder(deliverable, field)
     fields = case deliverable.analyzer
     when ProcAnalyzer
-      { name: 'PDF Write-up', ext: 'pdf',
+      { name: 'PDF Write-up',
         description: 'Please upload your write-up, in PDF format.' }
     when DockerAnalyzer
-      { name: 'Fibonacci Code', ext: 'py',
+      { name: 'Fibonacci Code',
         description: 'Please upload your modified fib.py.' }
     else
       raise "Un-implemented analyzer type: #{deliverable.analyzer.inspect}"

@@ -235,11 +235,11 @@ psets = pset_data.map.with_index do |data, index|
   end
 
   pdf_deliverable = pset.deliverables.create! name: 'PDF write-up',
-      file_ext: 'pdf', description: 'Please upload your write-up as a PDF.',
+      description: 'Please upload your write-up as a PDF.',
       analyzer_attributes: { type: 'ProcAnalyzer', message_name: 'analyze_pdf',
       auto_grading: true }
 
-  py_deliverable = pset.deliverables.create! name: 'Fibonacci', file_ext: 'py',
+  py_deliverable = pset.deliverables.create! name: 'Fibonacci',
       description: 'Please upload your modified fib.py.',
       analyzer_attributes: docker_analyzer_params
 
@@ -252,7 +252,7 @@ end
 
     unless (i + j) % 20 == 1
       # Submit PDF.
-      writeup = pset.deliverables.where(file_ext: 'pdf').first
+      writeup = pset.deliverables.find_by name: 'PDF write-up'
       time = pset.due_at - 1.day + i * 1.minute
       submission = Submission.create! deliverable: writeup, uploader: user,
           upload_ip: '127.0.0.1',
@@ -268,7 +268,7 @@ end
 
     if (i + j) % 3 == 0
       # Submit code.
-      code = pset.deliverables.where(file_ext: 'py').first
+      code = pset.deliverables.find_by name: 'Fibonacci'
       time = pset.due_at - 1.day + i * 1.minute + 30.seconds
       submission = Submission.create! deliverable: code, uploader: user,
           upload_ip: '127.0.0.1',

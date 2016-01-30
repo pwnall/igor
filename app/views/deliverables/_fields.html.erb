@@ -1,15 +1,11 @@
 <section class="deliverable callout" data-pwnfx-hide-positive="deliverable-div"
          data-pwnfx-scope="deliverable">
   <div class="row">
-    <div class="small-8 columns">
+    <div class="columns">
       <%= f.text_field :name, required: true, class: 'name',
             placeholder: deliverable_field_placeholder(f.object, :name)%>
     </div>
-    <div class="small-2 columns">
-      <%= f.text_field :file_ext, required: true, class: 'file-ext',
-            placeholder: deliverable_field_placeholder(f.object, :ext)%>
-    </div>
-    <div class="small-2 columns">
+    <div class="shrink columns">
       <span class="destroy">
         <%= f.label :_destroy, class: 'middle' do %>
           <%= f.check_box :_destroy, data: { pwnfx_hide: 'deliverable-div',

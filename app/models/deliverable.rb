@@ -4,7 +4,6 @@
 #
 #  id            :integer          not null, primary key
 #  assignment_id :integer          not null
-#  file_ext      :string(16)       not null
 #  name          :string(80)       not null
 #  description   :string(2048)     not null
 #  created_at    :datetime         not null
@@ -19,9 +18,6 @@ class Deliverable < ActiveRecord::Base
 
   # Instructions on preparing submissions for this deliverable.
   validates :description, length: 1..(2.kilobytes), presence: true
-
-  # The extension of files to be submitted for this deliverable. (e.g., "pdf")
-  validates :file_ext, length: 1..16, presence: true
 
   # The assignment that the deliverable is a part of.
   belongs_to :assignment, inverse_of: :deliverables

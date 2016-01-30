@@ -156,7 +156,6 @@ class LoadTestSession
 
     deliverable_param = 'assignment[deliverables_attributes][0]'
     form["#{deliverable_param}[name]"] = 'Fib'
-    form["#{deliverable_param}[file_ext]"] = 'py'
     form["#{deliverable_param}[description]"] = 'Upload'
     form["#{deliverable_param}[analyzer_attributes][map_time_limit]"] = 5
     form["#{deliverable_param}[analyzer_attributes][map_ram_limit]"] = 1024

@@ -16,7 +16,12 @@
       </div>
       <div class="small-6 columns">
         <p>
-          <span id="submission_package_fexample_<%= id %>"><%= basename %></span>.<%= extension %>
+          <span id="submission_package_fexample_<%= id %>">
+            <span class="optional-text">[prefix]</span>
+            <%= basename %>
+            <span class="optional-text">[suffix]</span>
+            .<%= extension %>
+          </span>
         </p>
       </div>
     </div>

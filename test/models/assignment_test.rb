@@ -549,9 +549,8 @@ class AssignmentTest < ActiveSupport::TestCase
 
     it 'saves associated deliverables through the parent assignment' do
       params = { assignment: { deliverables_attributes: [
-        { name: 'PS Write-Up', description: 'Report', file_ext: 'pdf',
-        analyzer_attributes: { type: 'ProcAnalyzer',
-        message_name: 'analyze_pdf', auto_grading: 0 } }
+        { name: 'PS Write-Up', description: 'Report', analyzer_attributes: {
+          type: 'ProcAnalyzer', message_name: 'analyze_pdf', auto_grading: 0 } }
       ] } }
       @assignment.update! params[:assignment]
 

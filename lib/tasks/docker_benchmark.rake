@@ -67,7 +67,7 @@ namespace :docker do
       auto_grading: false, db_file_attributes: {
         f: fixture_file_upload(docker_analyzer_file, 'application/zip', :binary)
         } }
-    deliverable = pset.deliverables.create! name: 'Fibonacci', file_ext: 'py',
+    deliverable = pset.deliverables.create! name: 'Fibonacci',
         description: 'Please upload your modified fib.py.',
         analyzer_attributes: docker_analyzer_params
     puts 'Deliverable created.'

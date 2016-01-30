@@ -3,7 +3,7 @@ require 'test_helper'
 class ProcAnalyzerTest < ActiveSupport::TestCase
   before do
     deliverable = assignments(:ps1).deliverables.build name: 'Moar answers',
-        description: 'No no moar', file_ext: 'pdf'
+        description: 'No no moar'
     @analyzer = ProcAnalyzer.new deliverable: deliverable, auto_grading: false,
         message_name: 'analyze_pdf'
   end

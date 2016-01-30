@@ -160,7 +160,6 @@ ActiveRecord::Schema.define(version: 20110704080003) do
 
   create_table "deliverables", force: :cascade do |t|
     t.integer  "assignment_id",              null: false
-    t.string   "file_ext",      limit: 16,   null: false
     t.string   "name",          limit: 80,   null: false
     t.string   "description",   limit: 2048, null: false
     t.datetime "created_at",                 null: false

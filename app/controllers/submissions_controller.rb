@@ -201,11 +201,10 @@ class SubmissionsController < ApplicationController
           basename = subject.respond_to?(:email) ?
               subject.email.split('@').first :
               subject.name.underscore.gsub(' ', '_')
-          extension = 'pdf'
 
           pdf_contents = cover_sheet_for_assignment subject, @assignment
 
-          zip.put_next_entry "#{prefix}#{basename}#{suffix}.#{extension}"
+          zip.put_next_entry "#{prefix}#{basename}#{suffix}.pdf"
           zip.write pdf_contents
         end
       end
