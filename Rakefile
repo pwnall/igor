@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Seven::Application.load_tasks
+Igor::Application.load_tasks

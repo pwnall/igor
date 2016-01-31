@@ -49,11 +49,12 @@ Vagrant.configure(2) do |config|
 
           # Simulate the groups produced by the OpenStack setup.
           ansible.groups = {
-            "meta-system_role_algprod_master" => ["master"],
-            "meta-system_role_algprod_worker" =>
+            "meta-system_role_vagrant_master" => ["master"],
+            "meta-system_role_vagrant_worker" =>
                 (1..WORKERS).map { |i| "worker#{i}" },
           }
           ansible.extra_vars = {
+            os_prefix: "vagrant",
             os_image_user: "vagrant",
 
             # This can be "main" for the current Docker release, "testing" for

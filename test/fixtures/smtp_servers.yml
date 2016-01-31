@@ -17,8 +17,8 @@ fake_gmail_server:
   host: smtp.gmail.com
   port: 587
   domain: gmail.com
-  user_name: seven_test@gmail.com
+  user_name: igor_test@gmail.com
   password: pa55w0rd
-  from: 'Igor Dev Staff <seven_test@gmail.com>'
+  from: 'Igor Dev Staff <igor_test@gmail.com>'
   auth_kind: plain
   auto_starttls: true

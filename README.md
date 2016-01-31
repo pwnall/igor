@@ -57,14 +57,20 @@ eval "$(docker-machine env --swarm swarm-master)"
 Use your package manager to install the prerequisites listed in the
 [web_frontend Ansible role](deploy/ansible/roles/web_frontend/tasks/packages.yml).
 
-
 ### Vagrant
 
-The [deployment guide](doc/deployment.md) can be used to bring up a
-production-like environment in a [Vagrant](https://www.vagrantup.com/)
-environment. This environment can be used to test Docker-related features and
-playbook changes.
+The following commands quickly set up a [Vagrant](https://www.vagrantup.com/)
+environment that matches the production setup.
 
+```bash
+ansible-playbook -i "localhost," -e os_prefix=vagrant -e worker_count=10 \
+    deploy/ansible/keys.yml
+vagrant up
+```
+
+The details behind these commands are explained in the
+[deployment guide](doc/deployment.md). The Vagrant environment can be used to
+test Docker-related features and playbook changes.
 
 ### OpenStack
 

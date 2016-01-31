@@ -4,7 +4,7 @@
 # Other playbooks assume that this matches the os_prefix variable defined in
 # openstack_vars.yml, which is used to distinguish a deployment's hosts from
 # other OpenStack resources in the same project.
-os_prefix: algprod
+os_prefix: igorprod
 
 # The number of Docker workers.
 #

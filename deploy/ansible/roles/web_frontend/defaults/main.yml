@@ -2,7 +2,7 @@
 # The name of the frontend application.
 #
 # This is used to derive several of the properties below.
-app_name: seven
+app_name: igor
 
 # The git repository that contains the frontend application.
 app_git_repo: https://github.com/pwnall/seven.git

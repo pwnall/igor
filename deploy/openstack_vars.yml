@@ -4,7 +4,7 @@ os_public_net: inet
 # Added to the beginning of various OpenStack names.
 # This is used to distinguish this deployment's hosts from other OpenStack
 # resources in the same project.
-os_prefix: algprod
+os_prefix: igorprod
 
 # The OpenStack configuration name in clouds.yml.
 os_cloud: test

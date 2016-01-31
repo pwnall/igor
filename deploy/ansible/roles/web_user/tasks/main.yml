@@ -1,8 +1,8 @@
 ---
-- name: create the seven_web user
+- name: create the igor_web user
   become: true
   become_user: root
   user:
-    name: seven_web
+    name: igor_web
     createhome: yes
     state: present

@@ -1,23 +1,23 @@
 ---
-- name: create the seven_web postgresql role
+- name: create the igor_web postgresql role
   become: true
   become_user: postgres
   postgresql_user:
-    name: seven_web
+    name: igor_web
     role_attr_flags: CREATEDB,NOSUPERUSER
     state: present
 
-- name: create the seven_web user database
+- name: create the igor_web user database
   become: true
-  become_user: seven_web
-  postgresql_db: name=seven_web login_user=seven_web state=present
+  become_user: igor_web
+  postgresql_db: name=igor_web login_user=igor_web state=present
 
-- name: create the seven database
+- name: create the igor database
   become: true
-  become_user: seven_web
+  become_user: igor_web
   postgresql_db:
-    name: seven_production
-    login_user: seven_web
+    name: igor_production
+    login_user: igor_web
     state: present
     lc_collate: en_US.UTF-8
     lc_ctype: en_US.UTF-8

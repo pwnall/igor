@@ -1,12 +1,12 @@
 dev_pgsql: &dev_pgsql
   adapter: postgresql
-  database: seven_dev
+  database: igor_dev
   encoding: unicode
   pool: 5
 
 dev_mysql: &dev_mysql
   adapter: mysql2
-  database: seven_dev
+  database: igor_dev
   username: root
   password:
 
@@ -19,13 +19,13 @@ dev_sqlite3: &dev_sqlite3
 
 test_pgsql: &test_pgsql
   adapter: postgresql
-  database: seven_test
+  database: igor_test
   encoding: unicode
   pool: 5
 
 test_mysql: &test_mysql
   adapter: mysql2
-  database: seven_test
+  database: igor_test
   username: root
   password:
 

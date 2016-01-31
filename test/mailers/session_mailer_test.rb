@@ -18,8 +18,8 @@ class SessionMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal 'Igor e-mail verification', email.subject
-    assert_equal ['seven_test@gmail.com'], email.from
-    assert_equal 'Igor Dev Staff <seven_test@gmail.com>', email['from'].to_s
+    assert_equal ['igor_test@gmail.com'], email.from
+    assert_equal 'Igor Dev Staff <igor_test@gmail.com>', email['from'].to_s
     assert_equal [@verification_email], email.to
     assert_match @verification_token.code, email.encoded
     assert_match @root_url, email.encoded
@@ -34,8 +34,8 @@ class SessionMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal 'Igor password reset', email.subject
-    assert_equal ['seven_test@gmail.com'], email.from
-    assert_equal 'Igor Dev Staff <seven_test@gmail.com>', email['from'].to_s
+    assert_equal ['igor_test@gmail.com'], email.from
+    assert_equal 'Igor Dev Staff <igor_test@gmail.com>', email['from'].to_s
     assert_equal [@reset_email], email.to
     assert_match @reset_token.code, email.encoded
     assert_match @root_url, email.encoded

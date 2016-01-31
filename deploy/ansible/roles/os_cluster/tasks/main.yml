@@ -1,5 +1,5 @@
 ---
-# Brings up a set of VMs on OpenStack to be set up as a Seven cluster.
+# Brings up a set of VMs on OpenStack to be set up as a Igor cluster.
 
 - include: ssh_keys.yml
 - include: image.yml
