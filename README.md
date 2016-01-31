@@ -2,7 +2,7 @@
 
 Course homework submission website.
 
-[![Build Status](https://travis-ci.org/pwnall/seven.svg?branch=master)](https://travis-ci.org/pwnall/seven)
+[![Build Status](https://travis-ci.org/pwnall/igor.svg?branch=master)](https://travis-ci.org/pwnall/igor)
 
 
 ## Prerequisites
@@ -90,8 +90,8 @@ The following steps will install the Rails application's development
 environment.
 
 ```bash
-git clone https://gihub.com/pwnall/seven.git
-cd seven
+git clone https://gihub.com/pwnall/igor.git
+cd igor
 bundle install
 npm install
 rake db:create db:migrate

@@ -52,7 +52,7 @@ class GradeEditor
 
     # NOTE: This makes sure that the <textarea> never gets display: none while
     #       the focus shifts from a <td> to the <textarea>.
-    #       Details in https://github.com/pwnall/seven/issues/84
+    #       Details in https://github.com/pwnall/igor/issues/84
     $td.removeClass 'focused-latch'
 
     @lastFocusedElement = $target[0]
@@ -84,7 +84,7 @@ class GradeEditor
 
     # NOTE: This makes sure that the <textarea> never gets display: none while
     #       the focus shifts from a <td> to the <textarea>.
-    #       Details in https://github.com/pwnall/seven/issues/84
+    #       Details in https://github.com/pwnall/igor/issues/84
     $td = $(nextField).parents('td').first()
     $td.addClass 'focused-latch'
 

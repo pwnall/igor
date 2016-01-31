@@ -159,7 +159,7 @@ Courses come with a few optional features, detailed below:
     feature will activate the _Course_ > _Surveys_ staff-only menu item.
     **Note**: In the future, this feature will be enabled by default.
 - **Homework teams**: This feature is currently under construction, has
-    [known issues](https://github.com/pwnall/seven/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+team),
+    [known issues](https://github.com/pwnall/igor/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+team),
     and should not be used in production.
 
 ## <a name="prerequisites"></a>Prerequisites

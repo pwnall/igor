@@ -5,7 +5,7 @@
 app_name: igor
 
 # The git repository that contains the frontend application.
-app_git_repo: https://github.com/pwnall/seven.git
+app_git_repo: https://github.com/pwnall/igor.git
 
 # The branch to be deployed from the application's git repository.
 app_git_branch: master
