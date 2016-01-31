@@ -60,6 +60,10 @@ Vagrant.configure(2) do |config|
             # the next point release, or "experimental" for the next major
             # release.
             docker_engine_branch: "main",
+
+            # This can be "latest" for the current Docker Swarm release, or a
+            # specific tag from https://hub.docker.com/r/library/swarm/
+            docker_swarm_tag: "latest",
           }
 
           # Uncomment for Ansible role debugging.
