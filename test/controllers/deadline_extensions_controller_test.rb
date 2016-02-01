@@ -24,8 +24,25 @@ class DeadlineExtensionsControllerTest < ActionController::TestCase
     { course_id: courses(:main).to_param, id: extension.to_param }
   end
 
-  describe 'authenticated as a non-admin' do
+  describe 'authenticated as a student' do
     before { set_session_current_user users(:dexter) }
+
+    describe 'all actions' do
+      it 'forbids access to the page' do
+        get :index, params: collection_params
+        assert_response :forbidden
+
+        post :create, params: create_params
+        assert_response :forbidden
+
+        delete :destroy, params: member_params
+        assert_response :forbidden
+      end
+    end
+  end
+
+  describe 'authenticated as a grader' do
+    before { set_session_current_user users(:main_grader) }
 
     describe 'all actions' do
       it 'forbids access to the page' do

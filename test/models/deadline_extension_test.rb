@@ -37,6 +37,12 @@ class DeadlineExtensionTest < ActiveSupport::TestCase
     @extension.grantor = users(:admin)
     assert @extension.valid?
 
+    @extension.grantor = users(:main_staff)
+    assert @extension.valid?
+
+    @extension.grantor = users(:main_grader)
+    assert @extension.invalid?
+
     @extension.grantor = users(:deedee)
     assert @extension.invalid?
   end
