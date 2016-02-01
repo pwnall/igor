@@ -16,3 +16,7 @@
     root_fs_type: "{{
         (ansible_mounts | selectattr('mount', 'equalto', '/') | first).fstype
         }}"
+
+- name: set docker_swarm_net_interface fact
+  set_fact:
+    docker_swarm_net_interface: "{{ cluster_net_interface }}"

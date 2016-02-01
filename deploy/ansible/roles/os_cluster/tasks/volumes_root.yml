@@ -8,4 +8,6 @@
     image: "{{ image_name }}"
     size: "{{ os_master_volume_gb }}"
     volume_type: "{{ os_volume_type }}"
+    # NOTE: Copying the image into the volume tends to take a while.
+    timeout: 3600
     cloud: "{{ os_cloud }}"

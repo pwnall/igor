@@ -10,7 +10,7 @@ os_prefix: igorprod
 os_cloud: test
 # The OpenStack flavor (VM type) for the Web server.
 # This is only used in the cluster bringup receipe.
-os_master_flavor: lg.4core
+os_master_flavor: m1.4core
 # The OpenStack flavor (VM type) for the Docker workers.
 # This is only used in the cluster bringup receipe.
 os_worker_flavor: m1.2core
@@ -18,7 +18,7 @@ os_worker_flavor: m1.2core
 # This is only used in the cluster bringup receipe.
 worker_count: 2
 # Size in GB for the volume storing the Web server's root filesystem.
-os_master_volume_gb: 32
+os_master_volume_gb: 64
 # Size in GB for each of the volumes attached to Docker workers.
 # These volumes store containers and data.
 os_worker_volume_gb: 32

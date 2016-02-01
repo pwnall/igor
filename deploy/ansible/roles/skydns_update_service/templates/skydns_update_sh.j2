@@ -6,7 +6,7 @@ set -o errexit     # Stop the script on the first error.
 set -o nounset     # Catch un-initialized variables.
 set +o histexpand  # No history expansion, because of arcane ! treatment.
 
-IP_ADDRESS="$(ifdata -pa {{ cluster_net_interface }})"
+IP_ADDRESS="$(ifdata -pa {{ docker_swarm_net_interface }})"
 
 etcdctl --peers="$ETCD_PEERS" --output=extended --ca-file=/etc/etcd/ca.pem \
     --cert-file=/etc/etcd/client_cert.pem --key-file=/etc/etcd/client_key.pem \

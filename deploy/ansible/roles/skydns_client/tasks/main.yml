@@ -12,7 +12,9 @@
   lineinfile:
     dest: /etc/dhcp/dhclient.conf
     line: "prepend domain-name-servers {{
-        hostvars[item.1]['ansible_' + cluster_net_interface].ipv4.address }};
+        hostvars[item.1][
+            'ansible_' + hostvars[item.1]['docker_swarm_net_interface']
+            ].ipv4.address }};
         # skydns-server{{ item.0 + 1 }}.clusterlocal"
     regexp: ".*; # skydns-server{{ item.0 + 1 }}.clusterlocal"
     create: true
