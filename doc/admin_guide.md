@@ -29,7 +29,7 @@ a freshly deployed app. If you can, follow along with the site open.
 Instructions for setting up your own test instance are [here](deployment.md).
 The first step is to create a site admin account.
 
-## <a name="admin-section"></a>Site Initialization
+## <a name="admin-duties"></a>Site Initialization
 
 On fresh deployments, the first user to register will automatically be granted
 site administrator permissions. When logged in, site admins will have access to
@@ -120,7 +120,7 @@ _Impersonate_ button sometimes appears beside a username. This feature allows
 the site admin to see exactly what another user sees, and thus debug site issues
 with ease. It is an extremely powerful feature, and should be used with care.
 
-## <a name="course-settings"></a>Staff Registration
+## <a name="registration"></a>Staff Registration
 
 As an existing staff member, you can approve staff role requests as more staff
 members register for the course. To do so, go to _Course_ > _Staff_ and click on
