@@ -32,6 +32,7 @@ module RoleBase
     validates :name, presence: true, length: 1..8,
         inclusion: { in: RoleBase::ROLES },
         uniqueness: { scope: [:user, :course] }
+    validates :name, uniqueness: true, if: -> { name == 'bot' }
 
     validate :course_matches_role
   end

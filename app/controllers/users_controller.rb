@@ -71,7 +71,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # PUT /users/1
+  # PATCH /users/1
   def update
     @user = User.with_param(params[:id]).first!
     return bounce_user unless @user.can_edit?(current_user)
@@ -90,11 +90,18 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
     @user = User.with_param(params[:id]).first!
-    return bounce_user unless @user.can_edit?(current_user)
+    return bounce_user unless @user.can_destroy?(current_user)
 
-    @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url }
+      format.html do
+        email = @user.email
+        message = if @user.destroy
+          "#{email}'s account successfully deleted."
+        else
+          "#{email}'s account could not be deleted."
+        end
+        redirect_to users_url, notice: message
+      end
     end
   end
 

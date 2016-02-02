@@ -14,6 +14,9 @@ robot:
 admin:
   exuid: 12345
 
+admin_2:
+  exuid: 22345
+
 dexter:
   exuid: 56789
 

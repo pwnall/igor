@@ -14,6 +14,10 @@ admin_is_admin:
   user: admin
   name: admin
 
+admin_2_is_admin:
+  user: admin_2
+  name: admin
+
 robot_is_robot:
   user: robot
   name: bot

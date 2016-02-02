@@ -29,6 +29,14 @@ admin:
   department: Electrical Eng & Computer Sci
   year: G
 
+admin_2:
+  user: admin_2
+  name: Admin 2
+  nickname: admin2
+  university: Massachusetts Institute of Technology
+  department: Electrical Eng & Computer Sci
+  year: G
+
 dexter:
   user: dexter
   name: Dexter Boy Genius

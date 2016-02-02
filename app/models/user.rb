@@ -157,6 +157,11 @@ class User
     user == self || !!(user && user.admin?)
   end
 
+  # Returns true if the given user is allowed to destroy this user's account.
+  def can_destroy?(user)
+    !robot? && !!(user && user.admin? && self != user)
+  end
+
   # Course registration info, e.g. survey answers and credit / listener status.
   has_many :registrations, dependent: :destroy, inverse_of: :user
   has_many :recitation_sections, through: :registrations

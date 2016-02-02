@@ -241,6 +241,37 @@ class UserTest < ActiveSupport::TestCase
       end
     end
 
+    describe '#can_destroy?' do
+      it 'lets only site admins destroy a user account' do
+        assert_equal false, dexter.can_destroy?(dexter)
+        assert_equal false, dexter.can_destroy?(robot)
+        assert_equal false, dexter.can_destroy?(grader)
+        assert_equal false, dexter.can_destroy?(staff)
+        assert_equal true, dexter.can_destroy?(admin)
+        assert_equal false, dexter.can_destroy?(solo)
+        assert_equal false, dexter.can_destroy?(nil)
+      end
+
+      it 'forbids anyone from destroying the site robot' do
+        assert_equal false, robot.can_destroy?(dexter)
+        assert_equal false, robot.can_destroy?(robot)
+        assert_equal false, robot.can_destroy?(grader)
+        assert_equal false, robot.can_destroy?(staff)
+        assert_equal false, robot.can_destroy?(admin)
+        assert_equal false, robot.can_destroy?(nil)
+      end
+
+      it 'forbids anyone from destroying the last site admin' do
+        Role.where(name: 'admin').where.not(id: admin.id).destroy_all
+        assert_equal false, admin.can_destroy?(dexter)
+        assert_equal false, admin.can_destroy?(robot)
+        assert_equal false, admin.can_destroy?(grader)
+        assert_equal false, admin.can_destroy?(staff)
+        assert_equal false, admin.can_destroy?(admin)
+        assert_equal false, admin.can_destroy?(nil)
+      end
+    end
+
     describe '#registration_for' do
       it "returns the user's registration for the given course" do
         assert_equal registrations(:dexter),

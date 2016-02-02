@@ -26,6 +26,27 @@ class RoleTest < ActiveSupport::TestCase
     assert_equal false, @role.valid?
   end
 
+  it 'prohibits more than one site robot from existing at a time' do
+    assert_equal 1, Role.where(name: 'bot').count
+    extra_bot = Role.new user: users(:inactive), name: 'bot'
+    assert_equal false, extra_bot.valid?
+  end
+
+  describe '#preserve_site_bot' do
+    it 'prohibits the site robot from being destroyed' do
+      assert_equal false, users(:robot).destroy
+    end
+  end
+
+  describe '#preserve_one_site_admin' do
+    it 'prohibits only the last site admin from being destroyed' do
+      assert_operator 1, :<, Role.where(name: 'admin').count
+      assert_equal true, !!users(:admin_2).destroy
+      assert_operator 1, :==, Role.where(name: 'admin').count
+      assert_equal false, users(:admin).destroy
+    end
+  end
+
   it 'requires a course on course-specific role' do
     @role.name = 'staff'
     @role.course = nil

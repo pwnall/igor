@@ -14,6 +14,21 @@
 class Role < ActiveRecord::Base
   include RoleBase
 
+  before_destroy :preserve_site_bot
+  before_destroy :preserve_one_site_admin
+
+  # The auto-grading feature relies on a bot account to post grades.
+  def preserve_site_bot
+    throw :abort if name == 'bot'
+  end
+  private :preserve_site_bot
+
+  # There is no way to create an admin from an admin-less state through the UI.
+  def preserve_one_site_admin
+    throw :abort if (name == 'admin') && (Role.where(name: 'admin').count == 1)
+  end
+  private :preserve_one_site_admin
+
   # Checks if a user has a privilege.
   def self.has_entry?(user, role_name, course = nil)
     self.where(user: user, name: role_name, course: course).count > 0
