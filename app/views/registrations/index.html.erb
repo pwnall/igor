@@ -4,8 +4,8 @@
   <thead>
     <tr>
       <th>Student</th>
-      <th>Publish HW</th>
       <th>For Credit</th>
+      <th>Publish HW</th>
       <% @prerequisites.sort_by(&:id).each do |prerequisite| %>
       <th><%= prerequisite.prerequisite_number %></th>
       <% end %>
