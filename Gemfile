@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 5.0.0.beta1.1'
+gem 'rails', '>= 5.0.0.beta2'
 
 gem 'pg', '>= 0.18.2'
 
 # Core.
-gem 'authpwn_rails', '>= 0.17.2',
+gem 'authpwn_rails', '>= 0.20.0',
     git: 'https://github.com/pwnall/authpwn_rails.git', branch: 'rails5'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'foreman', '>= 0.78.0', require: false
