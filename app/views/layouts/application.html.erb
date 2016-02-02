@@ -27,7 +27,7 @@
           <%= render menu_type(current_user, current_course) if current_user %>
         </ul>
       </section>
-      <section id="main">
+      <section class="<%= main_section_width_class %>" id="main">
         <%= yield %>
       </section>
       <% if content_for? :sidebar %>

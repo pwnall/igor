@@ -58,4 +58,9 @@ module ApplicationHelper
       icon + text
     end
   end
+
+  # The flex-grid styling class to apply to the main <section>.
+  def main_section_width_class
+    content_for?(:sidebar) ? 'small-7' : 'small-10'
+  end
 end
