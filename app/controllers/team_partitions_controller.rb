@@ -57,7 +57,7 @@ class TeamPartitionsController < ApplicationController
     if @is_new_record
       success = @team_partition.save
     else
-      success = @team_partition.update_attributes team_params
+      success = @team_partition.update team_params
     end
 
     respond_to do |format|

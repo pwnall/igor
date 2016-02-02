@@ -77,7 +77,7 @@ class UsersController < ApplicationController
     return bounce_user unless @user.can_edit?(current_user)
 
     respond_to do |format|
-      if @user.update_attributes user_params
+      if @user.update user_params
         format.html do
           redirect_to @user, notice: 'User information successfully updated.'
         end

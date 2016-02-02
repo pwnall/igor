@@ -38,7 +38,7 @@ class PrerequisitesController < ApplicationController
   # PUT /prerequisites/1
   def update
     respond_to do |format|
-      if @prerequisite.update_attributes prerequisite_params
+      if @prerequisite.update prerequisite_params
         format.html do
           redirect_to prerequisites_url, :notice => 'Prerequisite updated.'
         end

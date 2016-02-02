@@ -97,7 +97,7 @@ class RegistrationsController < ApplicationController
   # XHR PATCH /6.006/registrations/1/restricted
   def restricted
     respond_to do |format|
-      if @registration.update_attributes restricted_registration_params
+      if @registration.update restricted_registration_params
         format.js { head :ok }
       else
         format.js { head :not_acceptable }

@@ -20,7 +20,7 @@ puts 'Infrastructure created'
 
 Course.destroy_all
 course = Course.new
-course.update_attributes! number: '1.337', title: 'Intro to Pwnage',
+course.update! number: '1.337', title: 'Intro to Pwnage',
     email: "1.337-staff@mit.edu", ga_account: "faketest",
     email_on_role_requests: true, has_recitations: false, has_surveys: false,
     has_teams: false, section_size: 20

@@ -43,7 +43,7 @@ class RecitationSectionsController < ApplicationController
   # PUT /6.006/recitation_sections/1
   def update
     respond_to do |format|
-      if @recitation_section.update_attributes recitation_section_params
+      if @recitation_section.update recitation_section_params
         format.html do
           redirect_to recitation_sections_url, notice:
               "Recitation section R#{@recitation_section.serial} updated."
