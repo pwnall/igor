@@ -1,0 +1,19 @@
+<h4>Availability</h4>
+<section class="recitation-conflicts">
+  <table id="conflicts-table">
+    <thead>
+      <th>Time</th>
+      <%= render 'registrations/time_slot_days_header' %>
+    </thead>
+    <tbody>
+      <% @time_slot_periods.each do |period| %>
+      <tr>
+        <th><%= conflict_time_period_label period.first, period.last %></th>
+        <% @time_slot_days.each do |day| %>
+        <%= conflict_td_tag @time_slots[period][day], @recitation_conflicts %>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

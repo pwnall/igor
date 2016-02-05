@@ -6,7 +6,7 @@ module RegistrationsHelper
     return unless registration
     name = 'registration[recitation_section_id]'
     recitation_options = registration.course.recitation_sections.map do |rs|
-      [recitation_name_label(rs), rs.id]
+      [display_name_for_recitation_section(rs), rs.id]
     end
     selected = registration.recitation_section_id
     select_tag name, options_for_select(recitation_options, selected),
@@ -40,7 +40,7 @@ module RegistrationsHelper
   #   indexed by time slot id
   # @return [ActiveSupport::SafeBuffer] a <td> tag containing 'free', the
   #   name of the conflicting class, or nothing
-  def conflict_tag(slot, conflicts)
+  def conflict_td_tag(slot, conflicts)
     conflict = slot && conflicts[slot.id]
     if conflict
       content_tag :td, conflict.class_name, class: 'busy'

@@ -7,8 +7,8 @@ module RecitationSectionsHelper
     "#{recitation.location} #{recitation_leader_label recitation}"
   end
 
-  def display_name_for_recitation_section(recitation_section, format = :short)
-    return 'no assignment' unless recitation_section
-    "R#{'%02d' % recitation_section.serial} - #{recitation_section.location} #{recitation_section.leader.display_name_for}"
+  def display_name_for_recitation_section(recitation, format = :short)
+    return 'Unassigned' unless recitation
+    "R#{'%02d' % recitation.serial} - #{recitation.location} #{recitation.leader.display_name_for}"
   end
 end

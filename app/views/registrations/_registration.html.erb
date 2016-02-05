@@ -18,50 +18,11 @@
 </section>
 
 <% if @registration.course.prerequisites.length > 0 %>
-<h4>Prerequisite Courses</h4>
-<section class="prerequisite-answers">
-  <% @prerequisite_answers.each do |answer| %>
-  <div class="prerequisite">
-    <span class="prerequisite-question">
-      <%= answer.prerequisite.waiver_question %>
-    </span>
-    <span class="prerequisite-answer">
-      <% if answer.took_course? %>
-        <span class="true-setting">
-          <%= valid_icon_tag %>
-          Took <%=h answer.prerequisite.prerequisite_number %>
-        </span>
-      <% elsif answer.new_record? %>
-        <span class="nil-setting">
-          <%= invalid_icon_tag %> No response
-        </span>
-      <% else %>
-        <%=h answer.waiver_answer %>
-      <% end %>
-    </span>
-  </div>
-  <% end %>
-</section>
+<%= render 'registrations/prerequisites' %>
 <% end %>
 
 <% if @registration.course.has_recitations? %>
-<h4>Availability</h4>
-<section class="recitation-conflicts">
-  <table id="conflicts-table">
-    <thead>
-      <th>Time</th>
-      <%= render 'registrations/time_slot_days_header' %>
-    </thead>
-    <tbody>
-      <% @time_slot_periods.each do |period| %>
-      <tr>
-        <th><%= conflict_time_period_label period.first, period.last %></th>
-        <% @time_slot_days.each do |day| %>
-        <%= conflict_tag @time_slots[period][day], @recitation_conflicts %>
-        <% end %>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
-</section>
+<%= render 'registrations/recitation_section',
+      section: @registration.recitation_section %>
+<%= render 'registrations/availability' %>
 <% end %>

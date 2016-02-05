@@ -36,19 +36,17 @@
 </section>
 
 <ol class="proposed-section-list no-bullet">
-<% @partition.recitation_assignments.group_by(&:recitation_section).
-      each do |section, assignments| %>
+<% @partition.recitation_assignments.includes(:user).
+      group_by(&:recitation_section).each do |section, assignments| %>
   <li class="proposed-section-roster">
     <h4 class="recitation-section-name">
       <%= recitation_name_label section %>
-      <%= assignments.length %>
+      (<%= assignments.length %> students)
     </h4>
-    <p>
-      <%= render 'time_slots/list', time_slots: section.time_slots %>
-    </p>
+    <%= render 'time_slots/list', time_slots: section.time_slots %>
 
     <ol class="recitation-section no-bullet">
-    <% assignments.each do |assignment| %>
+    <% assignments.sort_by { |a| a.user.name }.each do |assignment| %>
       <li class="recitation-section-student">
         <%= link_to assignment.user.name, assignment.user %>
       </li>

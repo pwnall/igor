@@ -22,5 +22,9 @@
   .proposed-section-roster {
     @include flex-grid-column(shrink, null);
     margin-bottom: 2rem;
+
+    ol.time-slot-list {
+      margin-bottom: 1rem;
+    }
   }
 }

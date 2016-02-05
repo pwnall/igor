@@ -1,0 +1,24 @@
+<h4>Prerequisite Courses</h4>
+<section class="prerequisite-answers">
+  <% @prerequisite_answers.each do |answer| %>
+  <div class="prerequisite">
+    <span class="prerequisite-question">
+      <%= answer.prerequisite.waiver_question %>
+    </span>
+    <span class="prerequisite-answer">
+      <% if answer.took_course? %>
+        <span class="true-setting">
+          <%= valid_icon_tag %>
+          Took <%=h answer.prerequisite.prerequisite_number %>
+        </span>
+      <% elsif answer.new_record? %>
+        <span class="nil-setting">
+          <%= invalid_icon_tag %> No response
+        </span>
+      <% else %>
+        <%=h answer.waiver_answer %>
+      <% end %>
+    </span>
+  </div>
+  <% end %>
+</section>

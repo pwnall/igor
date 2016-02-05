@@ -60,17 +60,4 @@ module ProfilesHelper
        (0...(options.length)).find { |i| options[i][1] == profile.year } || 0
     options[yr_index...(options.length)] + options[0...yr_index]
   end
-
-  # Intended for use in a select field for the recitation on a user profile.
-  def profile_recitation_section_options(profile)
-    options = RecitationSection.all.map do |s|
-      [display_name_for_recitation_section(s), s.id]
-    end
-    # Make the selected option stick in FireFox by putting it first.
-    rs_index = (0...(options.length)).find do |i|
-      options[i][1] == profile.recitation_section_id
-    end
-    rs_index ||= 0
-    options[rs_index...(options.length)] + options[0...rs_index]
-  end
 end
