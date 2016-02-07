@@ -3,5 +3,5 @@
   <h5 class="recitation-section-name">
     <%= display_name_for_recitation_section section %>
   </h5>
-  <%= render 'time_slots/list', time_slots: section.time_slots %>
+  <%= render 'time_slots/list', time_slots: section.time_slots if section %>
 </section>
