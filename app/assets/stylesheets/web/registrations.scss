@@ -1,3 +1,9 @@
+h2.registrant-name {
+  margin-bottom: 0;
+}
+.registrant-email {
+  color: $secondary-color;
+}
 section.registration-settings, section.prerequisite-answers,
 section.recitation-section, section.recitation-conflicts {
   margin: 1rem 0 2rem;

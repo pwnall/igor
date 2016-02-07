@@ -4,6 +4,13 @@
   <%= @analysis.submission.deliverable.name %>
 </h2>
 
+<p class="lead">
+  <%= link_to registration_path(@author.registration_for(@analysis.course),
+        course_id: @analysis.course) do %>
+    <%= user_image_tag @author %> <%= @author.display_name_for current_user %>
+  <% end %>
+</p>
+
 <div class="<%= analyzed_submission_class @analysis %>">
   <%= render 'deliverables/student_submission_list_entry',
         submission: @analysis.submission %>

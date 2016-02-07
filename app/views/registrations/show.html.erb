@@ -1,4 +1,5 @@
-<h2><%= @registration.user.name %></h2>
+<h2 class="registrant-name"><%= @registration.user.name %></h2>
+<p class="lead registrant-email"><%= @registration.user.email %></p>
 <h3 class="title-with-actions">
   <span class="title"><%= @registration.course.number %> Registration</span>
   <% if @registration.can_edit? current_user %>

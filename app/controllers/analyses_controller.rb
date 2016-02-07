@@ -5,6 +5,7 @@ class AnalysesController < ApplicationController
   # GET /6.006/analyses/1
   def show
     @analysis = Analysis.find params[:id]
+    @author = @analysis.submission.subject
     return bounce_user unless @analysis.can_read? current_user
 
     respond_to do |format|
