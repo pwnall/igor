@@ -48,6 +48,11 @@ solo_ps1:
   style: original
   file_contents: <%= binary_file('files/submission/small.pdf') %>
 
+main_staff_code:
+  db_file_id: <%= ActiveRecord::FixtureSet.identify(:main_staff_code) %>
+  style: original
+  file_contents: <%= binary_file('files/submission/good_fib.py') %>
+
 submission_catch_all:
   db_file_id: <%= ActiveRecord::FixtureSet.identify(:submission_catch_all) %>
   style: original

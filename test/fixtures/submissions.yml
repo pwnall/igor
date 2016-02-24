@@ -98,3 +98,12 @@ dexter_code_v2:
   db_file: dexter_code_v2
   created_at: <%= 3.days.ago.to_s(:db) %>
   updated_at: <%= 2.days.ago.to_s(:db) %>
+
+main_staff_code:
+  deliverable: assessment_code
+  subject: main_staff (User)
+  uploader: main_staff
+  upload_ip: "18.240.1.9"
+  db_file: main_staff_code
+  created_at: <%= 3.days.ago.to_s(:db) %>
+  updated_at: <%= 2.days.ago.to_s(:db) %>

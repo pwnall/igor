@@ -77,4 +77,13 @@ module AnalysesHelper
       'analyzed-submission'
     end
   end
+
+  def analysis_author_link(analysis, author, current_user)
+    text = user_image_tag(author) + author.display_name_for(current_user)
+    if registration = author.registration_for(analysis.course)
+      link_to text, registration_path(registration, course_id: analysis.course)
+    else
+      text
+    end
+  end
 end

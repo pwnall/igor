@@ -63,3 +63,9 @@ dexter_code_v2:
   status_code: <%= Analysis.status_codes[:wrong] %>
   log: ''
   private_log: ''
+
+main_staff_code:
+  submission: main_staff_code
+  status_code: <%= Analysis.status_codes[:ok] %>
+  log: ''
+  private_log: ''
