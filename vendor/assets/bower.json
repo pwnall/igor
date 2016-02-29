@@ -1,8 +1,8 @@
 {
   "name": "dsl-generated dependencies",
   "dependencies": {
-    "es6-promise": "3.0.2",
-    "fetch": "0.10.1",
-    "motion-ui": "1.1.0"
+    "es6-promise": "3.1.2",
+    "fetch": "0.11.0",
+    "motion-ui": "1.2.0"
   }
 }
