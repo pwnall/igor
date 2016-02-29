@@ -47,6 +47,8 @@ Rails.application.routes.draw do
     # E-mail SMTP server configuration.
     resource :smtp_server, only: [:edit, :update]
 
+    resources :feedback, only: [:new]
+
     # Exception handling test.
     get '/crash' => 'crash#crash'
   end

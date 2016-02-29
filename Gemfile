@@ -1,19 +1,19 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 5.0.0.beta2'
+gem 'rails', '>= 5.0.0.beta3'
 
-gem 'pg', '>= 0.18.2'
+gem 'pg', '>= 0.18.4'
 
 # Core.
 gem 'authpwn_rails', '>= 0.20.0',
     git: 'https://github.com/pwnall/authpwn_rails.git', branch: 'rails5'
 gem 'dynamic_form', '>= 1.1.4'
 gem 'foreman', '>= 0.78.0', require: false
-gem 'jbuilder', '~> 2.2'
+gem 'jbuilder', '~> 2.4'
 gem 'markdpwn', '>= 0.2.0'
 gem 'mail', '>= 2.6.3'
-gem 'nokogiri', '>= 1.6.7.1'
-gem 'paperclip', '>= 4.2.1'
+gem 'nokogiri', '>= 1.6.7.2'
+gem 'paperclip', '>= 4.3.5'
 gem 'paperclip_database', '>= 2.3.1',
     git: 'https://github.com/pwnall/paperclip_database.git', branch: 'rails5'
 gem 'rack-noie', '>= 1.0', require: 'noie',
@@ -40,7 +40,7 @@ gem 'prawn-table', '>= 0.2.2'
 gem 'contained_mr', '>= 0.4.1'
 #gem 'contained_mr', '>= 0.1.2', path: '../contained_mr'
 gem 'exec_sandbox', '>= 0.3.0'
-gem 'pdf-reader', '>= 1.3.3'
+gem 'pdf-reader', '>= 1.4.0'
 gem 'rubyzip', '>= 1.1.7', require: 'zip',
     git: 'https://github.com/rubyzip/rubyzip.git',
     ref: 'a3ca219bdb37b3e369263f121a4adc3da01b95ad'
@@ -49,7 +49,7 @@ gem 'rubyzip', '>= 1.1.7', require: 'zip',
 gem 'gravatar-ultimate', '>= 2.0.0'
 
 # LDAP lookup.
-gem 'net-ldap', '>= 0.11'
+gem 'net-ldap', '>= 0.14.0'
 
 # Report production exceptions.
 gem 'exception_notification', '>= 4.0.1'
@@ -61,21 +61,14 @@ gem 'bower-rails', '>= 0.10.0'
 gem 'sass-rails', '>= 5.0.3'
 gem 'jquery-rails', '>= 4.1.0'
 gem 'coffee-rails', '>= 4.1.1'
-gem 'font-awesome-rails', '>= 4.5.0.0'
+gem 'font-awesome-rails', '>= 4.5.0.1'
 gem 'uglifier', '>= 2.7.0'
-# TODO(pwnall): Relax the restriction once Rails 5 support gets re-merged into
-#               autoprefixer. https://github.com/ai/autoprefixer-rails/pull/73
-gem 'autoprefixer-rails', '= 6.1.0'
+gem 'autoprefixer-rails', '>= 6.3.3.1'
 gem 'foundation-rails', '>= 6.1.2.0'
 
 # TODO(pwnall): allow therubyracer 0.12+ after Ubuntu crash gets fixed
 #               https://github.com/cowboyd/therubyracer/issues/317
 #gem 'therubyracer', '>= 0.12.1'
-
-# Don't log BLOB values (file attachments).
-group :development, :production do
-  gem 'trim_blobs'
-end
 
 group :development, :test do
   gem 'binary_fixtures', '>= 0.1.3'
@@ -86,7 +79,7 @@ group :development do
   gem 'web-console', '>= 3.0.0'
   gem 'binding_of_caller', '>= 0.7.3.pre1'
 
-  gem 'annotate', '>= 2.6.5'
+  gem 'annotate', '>= 2.7.0'
   gem 'faker', '>= 1.4.3'
   gem 'railroady', '>= 1.3.0'
   gem 'spring'
@@ -95,11 +88,11 @@ end
 
 group :test do
   gem 'minitest-spec-rails', '>= 5.3.0'
-  gem 'capybara', '>= 2.5.0'
+  gem 'capybara', '>= 2.6.2'
   gem 'launchy', '>= 2.4.3'
-  gem 'poltergeist', '>= 1.6.0'
+  gem 'poltergeist', '>= 1.9.0'
   gem 'mocha', '>= 1.1.0'
-  gem 'mechanize', require: false
+  gem 'mechanize', '>= 2.7.4', require: false
 end
 
 group :doc do
