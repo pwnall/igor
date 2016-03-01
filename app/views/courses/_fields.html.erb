@@ -52,6 +52,16 @@
       <%= f.text_field :ga_account %>
     </div>
   </div>
+
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.label :ga_account, 'Heap Analytics app ID',
+            class: 'text-right middle' %>
+    </div>
+    <div class="small-6 columns">
+      <%= f.text_field :heap_appid %>
+    </div>
+  </div>
 </section>
 
 <h3>Advanced (Unstable) Features</h3>

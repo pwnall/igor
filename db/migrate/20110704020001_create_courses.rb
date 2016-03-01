@@ -3,7 +3,8 @@ class CreateCourses < ActiveRecord::Migration
     create_table :courses do |t|
       t.string :number, limit: 16, null: false
       t.string :title, limit: 256, null: false
-      t.string :ga_account, limit: 32, null: false
+      t.string :ga_account, limit: 32, null: true
+      t.string :heap_appid, limit: 32, null: true
       t.string :email, limit: 64, null: false
       t.boolean :email_on_role_requests, null: false
       t.boolean :has_recitations, null: false

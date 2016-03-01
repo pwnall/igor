@@ -66,6 +66,9 @@ gem 'uglifier', '>= 2.7.0'
 gem 'autoprefixer-rails', '>= 6.3.3.1'
 gem 'foundation-rails', '>= 6.1.2.0'
 
+# Heap integration.
+gem 'heap-helpers', '>= 0.1'
+
 # TODO(pwnall): allow therubyracer 0.12+ after Ubuntu crash gets fixed
 #               https://github.com/cowboyd/therubyracer/issues/317
 #gem 'therubyracer', '>= 0.12.1'

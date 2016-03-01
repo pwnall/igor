@@ -4,7 +4,7 @@ class CourseTest < ActiveSupport::TestCase
   before do
     @course = Course.new number: '1.234', title: 'Intro', email: 'a@mit.edu',
         email_on_role_requests: true, has_recitations: true, has_surveys: true,
-        has_teams: true, ga_account: 'UA-19600078-3'
+        has_teams: true, ga_account: 'UA-19600078-3', heap_appid: '1234567890'
   end
 
   let(:course) { courses(:main) }
@@ -83,9 +83,15 @@ class CourseTest < ActiveSupport::TestCase
     assert @course.invalid?
   end
 
-  it 'requires a Google Analytics account ID' do
+  it 'accepts a nil Google Analytics account ID' do
     @course.ga_account = nil
-    assert @course.invalid?
+    assert @course.valid?
+  end
+
+  it 'coerces a blank Google Analytics account ID to nil' do
+    @course.ga_account = ''
+    assert_equal nil, @course.ga_account
+    assert @course.valid?
   end
 
   it 'rejects a lengthy Google Analytics account ID' do

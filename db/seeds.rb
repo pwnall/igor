@@ -21,7 +21,7 @@ puts 'Infrastructure created'
 Course.destroy_all
 course = Course.new
 course.update! number: '1.337', title: 'Intro to Pwnage',
-    email: "1.337-staff@mit.edu", ga_account: "faketest",
+    email: '1.337-staff@mit.edu', heap_appid: '2171986850',
     email_on_role_requests: true, has_recitations: false, has_surveys: false,
     has_teams: false, section_size: 20
 

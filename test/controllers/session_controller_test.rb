@@ -3,6 +3,7 @@ require 'test_helper'
 class SessionControllerTest < ActionController::TestCase
   setup do
     @user = users(:dexter)
+    @course = courses(:main)
     @email_credential = credentials(:dexter_email)
     @password_credential = credentials(:dexter_password)
     @omniauth_credential = credentials(:dexter_omniauth_developer)
@@ -16,9 +17,7 @@ class SessionControllerTest < ActionController::TestCase
 
   test "user home page with course info" do
     set_session_current_user @user
-    # TODO(pwnall): remove the format option when the following Rails bug
-    #               gets fixed - https://github.com/rails/rails/issues/22747
-    get :show, params: { course_id: '6.006', format: 'html' }
+    get :show, params: { course_id: @course.number }
 
     assert_select 'span#current-user-name', @user.profile.name
     assert_select 'a[href="/_/session"][data-method="delete"]', 'Sign out'
