@@ -53,11 +53,18 @@ gem 'net-ldap', '>= 0.14.0'
 # Report production exceptions.
 gem 'exception_notification', '>= 4.0.1'
 
+# Profiling.
+gem 'stackprof', '>= 0.2.8'
+gem 'flamegraph', '>= 0.1.0'
+gem 'rack-mini-profiler', '>= 0.9.8', require: false,
+  git: 'https://github.com/MiniProfiler/rack-mini-profiler.git',
+  branch: 'master'
+
 # Bower integration.
 gem 'bower-rails', '>= 0.10.0'
 
 # Assets.
-gem 'sass-rails', '>= 5.0.3'
+gem 'sass-rails', '>= 5.0.4'
 gem 'jquery-rails', '>= 4.1.0'
 gem 'coffee-rails', '>= 4.1.1'
 gem 'font-awesome-rails', '>= 4.5.0.1'
@@ -80,7 +87,6 @@ end
 group :development do
   gem 'web-console', '>= 3.0.0'
   gem 'binding_of_caller', '>= 0.7.3.pre1'
-
   gem 'annotate', '>= 2.7.0'
   gem 'faker', '>= 1.4.3'
   gem 'railroady', '>= 1.3.0'
