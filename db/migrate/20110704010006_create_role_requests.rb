@@ -1,4 +1,4 @@
-class CreateRoleRequests < ActiveRecord::Migration
+class CreateRoleRequests < ActiveRecord::Migration[4.2]
   def change
     create_table :role_requests do |t|
       t.references :user, null: false

@@ -1,4 +1,4 @@
-class CreateSmtpServers < ActiveRecord::Migration
+class CreateSmtpServers < ActiveRecord::Migration[4.2]
   def change
     create_table :smtp_servers do |t|
       t.string :host, null: false, limit: 128

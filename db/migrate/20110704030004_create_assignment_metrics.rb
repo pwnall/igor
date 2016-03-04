@@ -1,4 +1,4 @@
-class CreateAssignmentMetrics < ActiveRecord::Migration
+class CreateAssignmentMetrics < ActiveRecord::Migration[4.2]
   def change
     create_table :assignment_metrics do |t|
       t.references :assignment, null: false

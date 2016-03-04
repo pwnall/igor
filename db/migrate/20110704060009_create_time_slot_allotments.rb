@@ -1,4 +1,4 @@
-class CreateTimeSlotAllotments < ActiveRecord::Migration
+class CreateTimeSlotAllotments < ActiveRecord::Migration[4.2]
   def change
     create_table :time_slot_allotments do |t|
       t.references :time_slot, index: true, foreign_key: true, null: false

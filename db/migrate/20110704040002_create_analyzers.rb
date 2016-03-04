@@ -1,4 +1,4 @@
-class CreateAnalyzers < ActiveRecord::Migration
+class CreateAnalyzers < ActiveRecord::Migration[4.2]
   def change
     create_table :analyzers do |t|
       t.references :deliverable, null: false, unique: true

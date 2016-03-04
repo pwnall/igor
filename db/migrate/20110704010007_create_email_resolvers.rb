@@ -1,4 +1,4 @@
-class CreateEmailResolvers < ActiveRecord::Migration
+class CreateEmailResolvers < ActiveRecord::Migration[4.2]
   def change
     create_table :email_resolvers do |t|
       t.string :domain, limit: 128, null: false, index: { unique: true }

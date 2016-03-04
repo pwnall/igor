@@ -1,4 +1,4 @@
-class CreateRecitationSections < ActiveRecord::Migration
+class CreateRecitationSections < ActiveRecord::Migration[4.2]
   def change
     create_table :recitation_sections do |t|
       t.references :course, null: false

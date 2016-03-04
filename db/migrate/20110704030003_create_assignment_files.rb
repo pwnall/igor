@@ -1,4 +1,4 @@
-class CreateAssignmentFiles < ActiveRecord::Migration
+class CreateAssignmentFiles < ActiveRecord::Migration[4.2]
   def change
     create_table :assignment_files do |t|
       t.string :description, limit: 64, null: false

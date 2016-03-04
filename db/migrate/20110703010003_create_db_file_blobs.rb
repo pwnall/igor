@@ -1,4 +1,4 @@
-class CreateDbFileBlobs < ActiveRecord::Migration
+class CreateDbFileBlobs < ActiveRecord::Migration[4.2]
   def change
     create_table :db_file_blobs do |t|
       t.references :db_file, null: false

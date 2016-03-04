@@ -1,4 +1,4 @@
-class CreateGradeComments < ActiveRecord::Migration
+class CreateGradeComments < ActiveRecord::Migration[4.2]
   def change
     create_table :grade_comments do |t|
       t.references :course, null: false

@@ -1,4 +1,4 @@
-class CreateRecitationConflicts < ActiveRecord::Migration
+class CreateRecitationConflicts < ActiveRecord::Migration[4.2]
   def change
     create_table :recitation_conflicts do |t|
       t.references :registration, null: false

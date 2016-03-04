@@ -1,4 +1,4 @@
-class CreatePrerequisites < ActiveRecord::Migration
+class CreatePrerequisites < ActiveRecord::Migration[4.2]
   def change
     create_table :prerequisites do |t|
       t.references :course, null: false

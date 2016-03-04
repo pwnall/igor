@@ -1,4 +1,4 @@
-class CreateRobotUser < ActiveRecord::Migration
+class CreateRobotUser < ActiveRecord::Migration[4.2]
   def up
     robot = User.new email: 'robot@localhost.edu',
         password: '_', password_confirmation: '_',

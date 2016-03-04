@@ -1,4 +1,4 @@
-class CreateExamSessions < ActiveRecord::Migration
+class CreateExamSessions < ActiveRecord::Migration[4.2]
   def change
     create_table :exam_sessions do |t|
       t.references :course, foreign_key: true, null: false

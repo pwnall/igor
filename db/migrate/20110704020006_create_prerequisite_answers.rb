@@ -1,4 +1,4 @@
-class CreatePrerequisiteAnswers < ActiveRecord::Migration
+class CreatePrerequisiteAnswers < ActiveRecord::Migration[4.2]
   def change
     create_table :prerequisite_answers do |t|
       t.references :registration, null: false

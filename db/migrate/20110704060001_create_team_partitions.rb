@@ -1,4 +1,4 @@
-class CreateTeamPartitions < ActiveRecord::Migration
+class CreateTeamPartitions < ActiveRecord::Migration[4.2]
   def change
     create_table :team_partitions do |t|
       t.references :course, null: false

@@ -1,4 +1,4 @@
-class CreateDeliverables < ActiveRecord::Migration
+class CreateDeliverables < ActiveRecord::Migration[4.2]
   def change
     create_table :deliverables do |t|
       t.references :assignment, null: false

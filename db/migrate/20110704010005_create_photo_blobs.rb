@@ -1,4 +1,4 @@
-class CreatePhotoBlobs < ActiveRecord::Migration
+class CreatePhotoBlobs < ActiveRecord::Migration[4.2]
   def self.up
     create_table :photo_blobs do |t|
       t.integer :profile_photo_id, null: false

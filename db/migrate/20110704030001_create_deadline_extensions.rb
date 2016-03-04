@@ -1,4 +1,4 @@
-class CreateDeadlineExtensions < ActiveRecord::Migration
+class CreateDeadlineExtensions < ActiveRecord::Migration[4.2]
   def change
     create_table :deadline_extensions do |t|
       t.references :subject, polymorphic: true, null: false

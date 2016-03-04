@@ -1,4 +1,4 @@
-class CreateRecitationAssignment < ActiveRecord::Migration
+class CreateRecitationAssignment < ActiveRecord::Migration[4.2]
   def change
     create_table :recitation_assignments do |t|
       t.references :recitation_partition, null: false
