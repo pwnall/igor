@@ -9,12 +9,17 @@ class SubmissionAnalysisJob < ApplicationJob
 
   # Update the submission's analysis to reflect its running status.
   before_perform do |job|
-    arguments.first.analysis_running!
+    if submission = arguments.first
+      submission.analysis_running!
+    end
   end
 
   # Update the submission's analysis to reflect an internal exception.
   rescue_from(StandardError) do |exception|
-    arguments.first.analysis.record_exception exception
+    # NOTE: The submission can be deleted by the time the queued job gets run.
+    if submission = arguments.first
+      submission.analysis.record_exception exception
+    end
 
     # NOTE: Re-raising the exception has a few benefits. In development, it
     #       facilitates debugging. In production, it lets delayed_job use
@@ -25,7 +30,10 @@ class SubmissionAnalysisJob < ApplicationJob
 
   # Analyze the given submission.
   def perform(submission)
-    submission.analyzer.analyze submission
-    submission.analysis.commit_grades
+    # NOTE: The submission can be deleted by the time the queued job gets run.
+    if submission
+      submission.analyzer.analyze submission
+      submission.analysis.commit_grades
+    end
   end
 end
