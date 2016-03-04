@@ -84,8 +84,8 @@ group :development do
   gem 'annotate', '>= 2.7.0'
   gem 'faker', '>= 1.4.3'
   gem 'railroady', '>= 1.3.0'
-  gem 'spring'
   gem 'listen', '~> 3.0.5'
+  gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 

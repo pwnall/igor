@@ -340,4 +340,9 @@ module IconsHelper
   def background_jobs_tag
     fa_icon :'list-ol'
   end
+
+  # Shown when content is loaded via AJAX.
+  def ajax_loading_icon_tag
+    fa_icon :'circle-o-notch spin'
+  end
 end

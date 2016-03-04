@@ -24,7 +24,7 @@
       <li class="submission-list-entry"><%= submission_figure submission %></li>
     <% end %>
     <% if submissions.any? { |s| s.analysis && s.analysis.status_will_change? } %>
-      <%= content_tag :li, ajax_spinner_image_tag, data: {
+      <%= content_tag :li, ajax_loading_icon_tag, data: {
            pwnfx_delayed: 'submission-states', pwnfx_delayed_method: 'GET',
            pwnfx_delayed_scope: 'submissions-list', pwnfx_delayed_ms: 5000,
            pwnfx_delayed_url: submission_dashboard_deliverable_path(deliverable,
