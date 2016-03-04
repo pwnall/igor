@@ -2,10 +2,6 @@ module UserFilters
   # (before-action) ensures that the session belongs to a registered user
   def authenticated_as_user
     return bounce_user if current_user.nil?
-    if current_user.email_credential.verified?
-      Rack::MiniProfiler.authorize_request if current_user.admin?
-      return true
-    end
     # Inactive user.
     set_session_current_user nil
     bounce_user
