@@ -26,13 +26,17 @@ class AssignmentFile < ActiveRecord::Base
   # The course for which this file has been uploaded.
   has_one :course, through: :assignment
 
+  # True if the file's release date has passed.
+  def released?
+    !!released_at && (released_at < Time.current)
+  end
+
   # True if the given user is allowed to see this file.
   #
   # TODO(spark008): Add checks to this and other model permission methods to
   #     ensure that the user is a student registered for the course.
   def can_read?(user)
-    (released_at && (released_at < Time.current) && assignment.released?) ||
-        assignment.can_edit?(user)
+    (released? && assignment.released?) || assignment.can_edit?(user)
   end
 
   # The default release date for a particular resource file.

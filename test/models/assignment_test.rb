@@ -113,33 +113,175 @@ class AssignmentTest < ActiveSupport::TestCase
     end
 
     describe '#can_read_content?' do
-      it 'lets any user read assignment if deliverables have been released' do
-        assert_equal true, assignment.released?
-        assert_equal true, assignment.can_read_content?(any_user)
-        assert_equal true, assignment.can_read_content?(nil)
+      describe 'assignment is a standard homework' do
+        before { assert_nil assignment.exam }
+
+        it 'lets any user read scheduled assignments whose deliverables have
+            been released' do
+          assignment.update! scheduled: true, released_at: 1.day.ago
+          assert_equal true, assignment.can_read_content?(any_user)
+          assert_equal true, assignment.can_read_content?(nil)
+        end
+
+        it 'lets only course staff read unscheduled assignments whose
+            deliverables have been released' do
+          assignment.update! scheduled: false, released_at: 1.day.ago
+          assert_equal true, assignment.can_read_content?(admin)
+          assert_equal true, assignment.can_read_content?(users(:main_staff))
+          assert_equal false, assignment.can_read_content?(any_user)
+          assert_equal false, assignment.can_read_content?(nil)
+        end
+
+        it 'lets only course staff read scheduled assignments whose deliverables
+            have not been released' do
+          assignment.update! scheduled: false, released_at: 1.day.from_now,
+          grades_released: false
+          assert_equal true, assignment.can_read_content?(admin)
+          assert_equal true, assignment.can_read_content?(users(:main_staff))
+          assert_equal false, assignment.can_read_content?(any_user)
+          assert_equal false, assignment.can_read_content?(nil)
+        end
+
+        it 'lets only course staff read unscheduled assignments whose
+            deliverables have not been released' do
+          assignment.update! scheduled: true, released_at: 1.day.from_now,
+              grades_released: false
+          assert_equal true, assignment.can_read_content?(admin)
+          assert_equal true, assignment.can_read_content?(users(:main_staff))
+          assert_equal false, assignment.can_read_content?(any_user)
+          assert_equal false, assignment.can_read_content?(nil)
+        end
       end
 
-      it 'lets any user read assignment if grades have been released' do
-        assignment.update! grades_released: true
-        assert_equal true, assignment.can_read_content?(any_user)
-        assert_equal true, assignment.can_read_content?(nil)
-      end
+      describe 'assignment is an exam' do
+        before do
+          @exam = unreleased_exam
+          @exam_session = @exam.exam.attendances.find_by(user: student).
+              exam_session
+          assert @exam.exam
+        end
 
-      it 'only lets course staff read locked assignments' do
-        assignment.update! released_at: 1.day.from_now, grades_released: false
-        assert_equal true, assignment.can_read_content?(admin)
-        assert_equal true, assignment.can_read_content?(users(:main_staff))
-        assert_equal false, assignment.can_read_content?(any_user)
-        assert_equal false, assignment.can_read_content?(nil)
-      end
+        describe 'deliverables released, due date scheduled' do
+          before { @exam.update! scheduled: true, released_at: 1.day.ago }
 
-      it 'only lets course staff read un-scheduled assignments' do
-        assert_equal true, assignment.released?
-        assignment.update! scheduled: false, grades_released: false
-        assert_equal true, assignment.can_read_content?(admin)
-        assert_equal true, assignment.can_read_content?(users(:main_staff))
-        assert_equal false, assignment.can_read_content?(any_user)
-        assert_equal false, assignment.can_read_content?(nil)
+          it 'lets course staff view assignment resources' do
+            assert_equal true, @exam.can_read_content?(admin)
+            assert_equal true, @exam.can_read_content?(users(:main_staff))
+          end
+
+          it 'lets students view assignment resources if their exam session has
+              started' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            assert_equal true, @exam.can_read_content?(student)
+          end
+
+          it 'forbids students from viewing assignment resources if their exam
+              session has not started yet' do
+            @exam_session.update! starts_at: 1.hour.from_now,
+                                  ends_at: 2.hours.from_now
+            assert_equal false, @exam.can_read_content?(student)
+          end
+
+          it 'forbids non-checked-in students from viewing assignment
+              resources' do
+            assert_nil @exam.exam.attendances.find_by(user: users(:deedee))
+            assert_equal false, @exam.can_read_content?(users(:deedee))
+          end
+        end
+
+        describe 'deliverables released, due date unscheduled' do
+          before { @exam.update! scheduled: false, released_at: 1.day.ago }
+
+          it 'lets only course staff view assignment resources' do
+            assert_equal true, @exam.can_read_content?(admin)
+            assert_equal true, @exam.can_read_content?(users(:main_staff))
+          end
+
+          it 'forbids students whose exam session started from viewing
+              assignment resources' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            assert_equal false, @exam.can_read_content?(student)
+          end
+
+          it 'forbids students whose exam session has not started from viewing
+              assignment resources' do
+            @exam_session.update! starts_at: 1.hour.from_now,
+                                  ends_at: 2.hours.from_now
+            assert_equal false, @exam.can_read_content?(student)
+          end
+
+          it 'forbids non-checked-in students from viewing assignment
+              resources' do
+            assert_nil @exam.exam.attendances.find_by(user: users(:deedee))
+            assert_equal false, @exam.can_read_content?(users(:deedee))
+          end
+        end
+
+        describe 'deliverables not released, due date scheduled' do
+          before do
+            @exam.update! scheduled: true, released_at: 1.day.from_now,
+                grades_released: false
+          end
+
+          it 'lets only course staff view assignment resources' do
+            assert_equal true, @exam.can_read_content?(admin)
+            assert_equal true, @exam.can_read_content?(users(:main_staff))
+          end
+
+          it 'forbids students whose exam session started from viewing
+              assignment resources' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            assert_equal false, @exam.can_read_content?(student)
+          end
+
+          it 'forbids students whose exam session has not started from viewing
+              assignment resources' do
+            @exam_session.update! starts_at: 1.hour.from_now,
+                                  ends_at: 2.hours.from_now
+            assert_equal false, @exam.can_read_content?(student)
+          end
+
+          it 'forbids non-checked-in students from viewing assignment
+              resources' do
+            assert_nil @exam.exam.attendances.find_by(user: users(:deedee))
+            assert_equal false, @exam.can_read_content?(users(:deedee))
+          end
+        end
+
+        describe 'deliverables not released, due date unscheduled' do
+          before do
+            @exam.update! scheduled: false, released_at: 1.day.from_now,
+                grades_released: false
+          end
+
+          it 'lets only course staff view assignment resources' do
+            assert_equal true, @exam.can_read_content?(admin)
+            assert_equal true, @exam.can_read_content?(users(:main_staff))
+          end
+
+          it 'forbids students whose exam session started from viewing
+              assignment resources' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            assert_equal false, @exam.can_read_content?(student)
+          end
+
+          it 'forbids students whose exam session has not started from viewing
+              assignment resources' do
+            @exam_session.update! starts_at: 1.hour.from_now,
+                                  ends_at: 2.hours.from_now
+            assert_equal false, @exam.can_read_content?(student)
+          end
+
+          it 'forbids non-checked-in students from viewing assignment
+              resources' do
+            assert_nil @exam.exam.attendances.find_by(user: users(:deedee))
+            assert_equal false, @exam.can_read_content?(users(:deedee))
+          end
+        end
       end
     end
 
@@ -698,14 +840,37 @@ class AssignmentTest < ActiveSupport::TestCase
     end
 
     describe '#released?' do
-      it 'returns true if the deliverables have been released' do
-        assert_operator assignment.released_at, :<, Time.current
-        assert_equal true, assignment.released?
+      describe 'assignment has been scheduled' do
+        before { assert_equal true, assignment.scheduled? }
+
+        it 'returns false if the release date is nil' do
+          assignment.update! released_at: nil
+          assert_equal false, assignment.released?
+        end
+
+        it 'returns false if the deliverables release date has not passed' do
+          assignment.update! released_at: 1.day.from_now
+          assert_equal false, assignment.released?
+        end
+
+        it 'returns true if the deliverables have been released' do
+          assert_operator assignment.released_at, :<, Time.current
+          assert_equal true, assignment.released?
+        end
       end
 
-      it 'returns false if the deliverables have not been released' do
-        @assignment.released_at = 1.day.from_now
-        assert_equal false, @assignment.released?
+      describe 'assignment has not been scheduled' do
+        before { @assignment.scheduled = false }
+
+        it 'returns false if the deliverables have not been released' do
+          @assignment.released_at = 1.day.from_now
+          assert_equal false, @assignment.released?
+        end
+
+        it 'returns false if the deliverables have been released' do
+          @assignment.released_at = 1.day.ago
+          assert_equal false, @assignment.released?
+        end
       end
     end
   end
