@@ -68,13 +68,13 @@ class AssignmentsControllerTest < ActionController::TestCase
             assert_select 'section.submission-dashboard-container'
           end
 
-          it 'omits the exam sessions tab' do
+          it 'includes the exam sessions tab' do
             assert_not_nil assignment.exam
             html_panel_id = 'exam-sessions-panel'
             get :show, params: member_params
             assert_response :success
-            assert_select ".tabs-title > a[href='##{html_panel_id}']", false
-            assert_select ".tabs-panel##{html_panel_id}", false
+            assert_select ".tabs-title > a[href='##{html_panel_id}']"
+            assert_select ".tabs-panel##{html_panel_id}"
           end
 
           it 'omits the deliverables tabs' do
@@ -88,6 +88,26 @@ class AssignmentsControllerTest < ActionController::TestCase
         end
 
         describe 'assignment has been released' do
+          let(:assignment) { released_assignment }
+          let(:deliverable) { assignment.deliverables.first }
+
+          it 'renders the student submission view' do
+            get :show, params: member_params
+            assert_response :success
+            assert_select 'section.submission-dashboard-container'
+          end
+
+          it 'includes the deliverables tabs' do
+            assert_not_nil deliverable
+            html_panel_id = @controller.deliverable_panel_id deliverable
+            get :show, params: member_params
+            assert_response :success
+            assert_select ".tabs-title > a[href='##{html_panel_id}']"
+            assert_select ".tabs-panel##{html_panel_id}"
+          end
+        end
+
+        describe 'assignment with exam has been released' do
           let(:assignment) { scheduled_unreleased_exam }
           let(:deliverable) { assignment.deliverables.first }
           before { assignment.update! released_at: 1.day.ago }
@@ -98,7 +118,7 @@ class AssignmentsControllerTest < ActionController::TestCase
             assert_select 'section.submission-dashboard-container'
           end
 
-          it 'omits the exam sessions tab' do
+          it 'includes the exam sessions tab' do
             assert_not_nil assignment.exam
             html_panel_id = 'exam-sessions-panel'
             get :show, params: member_params
@@ -108,6 +128,47 @@ class AssignmentsControllerTest < ActionController::TestCase
           end
 
           it 'omits the deliverables tabs' do
+            assert_not_nil deliverable
+            html_panel_id = @controller.deliverable_panel_id deliverable
+            get :show, params: member_params
+            assert_response :success
+            assert_select ".tabs-title > a[href='##{html_panel_id}']", false
+            assert_select ".tabs-panel##{html_panel_id}", false
+          end
+        end
+      end
+
+      describe 'signed up for an ongoing session' do
+        let(:assignment) { unreleased_assignment }
+        let(:deliverable) { assignment.deliverables.first }
+        let(:exam_attendance) do
+          assignment.exam.attendances.find_by user: session_current_user
+        end
+        let(:exam_session) { exam_attendance.exam_session }
+
+        before do
+          exam_session.update! starts_at: 1.hour.ago, ends_at: 1.hour.from_now
+        end
+
+        describe 'in a released exam' do
+          before { assignment.update! released_at: 1.day.ago }
+
+          it 'renders the student submission view' do
+            get :show, params: member_params
+            assert_response :success
+            assert_select 'section.submission-dashboard-container'
+          end
+
+          it 'includes the exam sessions tab' do
+            assert_not_nil assignment.exam
+            html_panel_id = 'exam-sessions-panel'
+            get :show, params: member_params
+            assert_response :success
+            assert_select ".tabs-title > a[href='##{html_panel_id}']"
+            assert_select ".tabs-panel##{html_panel_id}"
+          end
+
+          it 'includes the deliverables tabs' do
             assert_not_nil deliverable
             html_panel_id = @controller.deliverable_panel_id deliverable
             get :show, params: member_params

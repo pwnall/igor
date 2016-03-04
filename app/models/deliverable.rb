@@ -39,7 +39,7 @@ class Deliverable < ApplicationRecord
 
   # True if "user" should be allowed to see this deliverable.
   def can_read?(user)
-    assignment.released? || course.can_edit?(user)
+    assignment.can_read_content?(user)
   end
 
   # The submission that determines the submitter's grade for this deliverable.

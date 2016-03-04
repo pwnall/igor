@@ -63,6 +63,12 @@ docker_assessment_code:
       "reduce_ram_limit": 1024,
       "reduce_logs_limit": 5 }
 
+proc_main_exam_1_writeup:
+  deliverable: main_exam_writeup
+  type: ProcAnalyzer
+  auto_grading: false
+  message_name: analyze_pdf
+
 docker_main_exam_3_part_a:
   deliverable: main_exam_3_part_a
   type: DockerAnalyzer

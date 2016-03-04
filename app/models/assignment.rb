@@ -52,7 +52,7 @@ class Assignment < ApplicationRecord
 
   # True if the given user is allowed to see all of this assignment's data.
   def can_read_content?(user)
-    released? || can_edit?(user)
+    released_for_student?(user) || can_edit?(user)
   end
 
   # True if the given student can submit solutions that affect their grade.
@@ -60,7 +60,7 @@ class Assignment < ApplicationRecord
   # NOTE: This method is only meant to check submission permissions for
   #   students, and will not grant site/course admins extra privileges.
   def can_student_submit?(student)
-    released? && !deadline_passed_for?(student)
+    released_for_student?(student) && !deadline_passed_for?(student)
   end
 
   # True if the given user is allowed to submit solutions for this assignment.
@@ -125,6 +125,24 @@ class Assignment
   # any deliverables or resources.
   def released?
     scheduled? && !!released_at && (released_at < Time.current)
+  end
+
+
+  # True if the given student can submit solutions that affect their grade.
+  #
+  # NOTE: This method is only meant to check permissions for students, and will
+  #       not grant site/course admins extra privileges.
+  def released_for_student?(student)
+    return false unless scheduled?
+
+    now = Time.current
+    if exam.nil?
+      !!released_at && released_at < now
+    else
+      return false unless released_at && released_at < now
+      return false unless session = exam.confirmed_session_for(student)
+      session.starts_at < now
+    end
   end
 
   # The default release date for a particular assignment.

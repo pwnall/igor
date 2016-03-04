@@ -36,7 +36,8 @@ class AssignmentFile < ApplicationRecord
   # TODO(spark008): Add checks to this and other model permission methods to
   #     ensure that the user is a student registered for the course.
   def can_read?(user)
-    (released? && assignment.released?) || assignment.can_edit?(user)
+    (released? && assignment.released_for_student?(user)) ||
+        assignment.can_edit?(user)
   end
 
   # The default release date for a particular resource file.

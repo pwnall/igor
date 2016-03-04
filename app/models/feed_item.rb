@@ -108,10 +108,9 @@ class FeedItem
   # Generates feed items for the released deliverables.
   def self.add_deliverables(items, user, options)
     Deliverable.includes(:assignment).each do |deliverable|
-      next unless deliverable.assignment.released?
+      next unless deliverable.can_read?(user)
 
       assignment = deliverable.assignment
-      with_teammates = assignment.team_partition_id ? 'and your teammates ' : ''
       item = FeedItem.new time: deliverable.updated_at,
           author: assignment.author, flavor: :deliverable,
           headline: "opened up " + "#{assignment.name}'s #{deliverable.name} " +

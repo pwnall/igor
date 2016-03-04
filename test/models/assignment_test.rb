@@ -156,8 +156,8 @@ class AssignmentTest < ActiveSupport::TestCase
       describe 'assignment is an exam' do
         before do
           @exam = unreleased_exam
-          @exam_session = @exam.exam.attendances.find_by(user: student).
-              exam_session
+          @exam_attendance = @exam.exam.attendances.find_by user: student
+          @exam_session = @exam_attendance.exam_session
           assert @exam.exam
         end
 
@@ -183,7 +183,15 @@ class AssignmentTest < ActiveSupport::TestCase
             assert_equal false, @exam.can_read_content?(student)
           end
 
-          it 'forbids non-checked-in students from viewing assignment
+          it 'forbids students from viewing assignment resources if their exam
+              attendance is unconfirmed' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            @exam_attendance.update! confirmed: false
+            assert_equal false, @exam.can_read_content?(student)
+          end
+
+          it 'forbids non-signed-up students from viewing assignment
               resources' do
             assert_nil @exam.exam.attendances.find_by(user: users(:deedee))
             assert_equal false, @exam.can_read_content?(users(:deedee))
@@ -209,6 +217,14 @@ class AssignmentTest < ActiveSupport::TestCase
               assignment resources' do
             @exam_session.update! starts_at: 1.hour.from_now,
                                   ends_at: 2.hours.from_now
+            assert_equal false, @exam.can_read_content?(student)
+          end
+
+          it 'forbids students from viewing assignment resources if their exam
+              attendance is unconfirmed' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            @exam_attendance.update! confirmed: false
             assert_equal false, @exam.can_read_content?(student)
           end
 
@@ -244,6 +260,14 @@ class AssignmentTest < ActiveSupport::TestCase
             assert_equal false, @exam.can_read_content?(student)
           end
 
+          it 'forbids students from viewing assignment resources if their exam
+              attendance is unconfirmed' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            @exam_attendance.update! confirmed: false
+            assert_equal false, @exam.can_read_content?(student)
+          end
+
           it 'forbids non-checked-in students from viewing assignment
               resources' do
             assert_nil @exam.exam.attendances.find_by(user: users(:deedee))
@@ -273,6 +297,14 @@ class AssignmentTest < ActiveSupport::TestCase
               assignment resources' do
             @exam_session.update! starts_at: 1.hour.from_now,
                                   ends_at: 2.hours.from_now
+            assert_equal false, @exam.can_read_content?(student)
+          end
+
+          it 'forbids students from viewing assignment resources if their exam
+              attendance is unconfirmed' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            @exam_attendance.update! confirmed: false
             assert_equal false, @exam.can_read_content?(student)
           end
 
@@ -873,6 +905,172 @@ class AssignmentTest < ActiveSupport::TestCase
         end
       end
     end
+
+    describe '#released_for_student?' do
+      describe 'assignment is a standard homework' do
+        before { assert_nil assignment.exam }
+
+        it 'is true for assignments whose deliverables have been released' do
+          assignment.update! scheduled: true, released_at: 1.day.ago
+          assert_equal true, assignment.released_for_student?(any_user)
+          assert_equal true, assignment.released_for_student?(nil)
+        end
+
+        it 'is false for unscheduled assignments whose deliverables have been
+            released' do
+          assignment.update! scheduled: false, released_at: 1.day.ago
+          assert_equal false, assignment.released_for_student?(admin)
+          assert_equal false, assignment.released_for_student?(any_user)
+          assert_equal false, assignment.released_for_student?(nil)
+        end
+
+        it 'is false for assignments whose deliverables have not been
+            released' do
+          assignment.update! scheduled: false, released_at: 1.day.from_now,
+                             grades_released: false
+          assert_equal false, assignment.released_for_student?(admin)
+          assert_equal false, assignment.released_for_student?(any_user)
+          assert_equal false, assignment.released_for_student?(nil)
+        end
+
+        it 'is false for unscheduled assignments whose deliverables have not
+            been released' do
+          assignment.update! scheduled: true, released_at: 1.day.from_now,
+              grades_released: false
+          assert_equal false, assignment.released_for_student?(admin)
+          assert_equal false, assignment.released_for_student?(any_user)
+          assert_equal false, assignment.released_for_student?(nil)
+        end
+      end
+
+      describe 'assignment is an exam' do
+        before do
+          @exam = unreleased_exam
+          @exam_attendance = @exam.exam.attendances.find_by(user: student)
+          @exam_session = @exam_attendance.exam_session
+          assert @exam.exam
+        end
+
+        describe 'deliverables released, due date scheduled' do
+          before { @exam.update! scheduled: true, released_at: 1.day.ago }
+
+          it 'is true for students whose exam session has started' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            assert_equal true, @exam.released_for_student?(student)
+          end
+
+          it 'is false for students whose exam session has not started yet' do
+            @exam_session.update! starts_at: 1.hour.from_now,
+                                  ends_at: 2.hours.from_now
+            assert_equal false, @exam.released_for_student?(student)
+          end
+
+          it 'is false for students whose exam attendance is unconfirmed' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            @exam_attendance.update! confirmed: false
+            assert_equal false, @exam.released_for_student?(student)
+          end
+
+          it 'is false for students who have not signed up' do
+            assert_nil @exam.exam.attendances.find_by(user: users(:deedee))
+            assert_equal false, @exam.released_for_student?(users(:deedee))
+          end
+        end
+
+        describe 'deliverables released, due date unscheduled' do
+          before { @exam.update! scheduled: false, released_at: 1.day.ago }
+
+          it 'is false for students whose exam session has started' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            assert_equal false, @exam.released_for_student?(student)
+          end
+
+          it 'is false for students whose exam session has not started yet' do
+            @exam_session.update! starts_at: 1.hour.from_now,
+                                  ends_at: 2.hours.from_now
+            assert_equal false, @exam.released_for_student?(student)
+          end
+
+          it 'is false for students whose exam attendance is unconfirmed' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            @exam_attendance.update! confirmed: false
+            assert_equal false, @exam.released_for_student?(student)
+          end
+
+          it 'is false for students who have not signed up' do
+            assert_nil @exam.exam.attendances.find_by(user: users(:deedee))
+            assert_equal false, @exam.released_for_student?(users(:deedee))
+          end
+        end
+
+        describe 'deliverables not released, due date scheduled' do
+          before do
+            @exam.update! scheduled: true, released_at: 1.day.from_now,
+                grades_released: false
+          end
+
+          it 'is false for students whose exam session has started' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            assert_equal false, @exam.released_for_student?(student)
+          end
+
+          it 'is false for students whose exam session has not started yet' do
+            @exam_session.update! starts_at: 1.hour.from_now,
+                                  ends_at: 2.hours.from_now
+            assert_equal false, @exam.released_for_student?(student)
+          end
+
+          it 'is false for students whose exam attendance is unconfirmed' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            @exam_attendance.update! confirmed: false
+            assert_equal false, @exam.released_for_student?(student)
+          end
+
+          it 'is false for students who have not signed up' do
+            assert_nil @exam.exam.attendances.find_by(user: users(:deedee))
+            assert_equal false, @exam.released_for_student?(users(:deedee))
+          end
+        end
+
+        describe 'deliverables not released, due date unscheduled' do
+          before do
+            @exam.update! scheduled: false, released_at: 1.day.from_now,
+                grades_released: false
+          end
+
+          it 'is false for students whose exam session has started' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            assert_equal false, @exam.released_for_student?(student)
+          end
+
+          it 'is false for students whose exam session has not started yet' do
+            @exam_session.update! starts_at: 1.hour.from_now,
+                                  ends_at: 2.hours.from_now
+            assert_equal false, @exam.released_for_student?(student)
+          end
+
+          it 'is false for students whose exam attendance is unconfirmed' do
+            @exam_session.update! starts_at: 1.hour.ago,
+                                  ends_at: 1.hour.from_now
+            @exam_attendance.update! confirmed: false
+            assert_equal false, @exam.released_for_student?(student)
+          end
+
+          it 'is false for students who have not signed up' do
+            assert_nil @exam.exam.attendances.find_by(user: users(:deedee))
+            assert_equal false, @exam.released_for_student?(users(:deedee))
+          end
+        end
+      end
+    end
+
   end
 
   describe 'grade collection and releasing feature' do

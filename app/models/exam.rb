@@ -31,4 +31,16 @@ class Exam < ApplicationRecord
 
   # The course administering this exam.
   has_one :course, through: :assignment
+
+  # Looks up the session when a student will be taking this exam.
+  #
+  # @param [User] student the student whose session is looked up
+  # @return [ExamSession?] the session when the given user will be taking
+  #   this exam; nil if the user has not signed up for an exam session, or if
+  #   the user's attendance was not confirmed
+  def confirmed_session_for(student)
+    attendance = attendances.where(user: student).includes(:exam_session).first
+    return nil if attendance.nil? || !attendance.confirmed?
+    attendance.exam_session
+  end
 end

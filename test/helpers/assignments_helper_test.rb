@@ -8,7 +8,9 @@ class AssignmentsHelperTest < ActionView::TestCase
   let(:released_assignment) { assignments(:ps2) }
   let(:undecided_exam) { assignments(:main_exam_2) }
   let(:grades_unreleased_assignment) { assignments(:ps3) }
+  let(:many_deliverables_assignment) { assignments(:assessment) }
   let(:many_metrics_assignment) { assignments(:assessment) }
+  let(:exam_without_deliverables) { assignments(:main_exam_2) }
 
   let(:deliverable) { deliverables(:assessment_writeup) }
 
@@ -106,8 +108,8 @@ class AssignmentsHelperTest < ActionView::TestCase
   describe '#submission_count_fraction_tag' do
     describe 'for an Assignment' do
       it 'displays placeholder dashes if there are no deliverables' do
-        assert_empty unreleased_exam.deliverables
-        render text: submission_count_fraction_tag(unreleased_exam)
+        assert_empty exam_without_deliverables.deliverables
+        render text: submission_count_fraction_tag(exam_without_deliverables)
         assert_select 'span.current-count', '-'
         assert_select 'span.max-count', '-'
       end
@@ -222,14 +224,14 @@ class AssignmentsHelperTest < ActionView::TestCase
   end
 
   describe '#submission_count_meter_tag' do
-    it 'returns a blank string if the assignment has no metrics' do
+    it 'returns a blank string if the assignment has no deliverables' do
       assert_empty unreleased_exam.metrics
-      assert_equal '', submission_count_meter_tag(unreleased_exam)
+      assert_equal '', submission_count_meter_tag(exam_without_deliverables)
     end
 
     it 'returns a meter with the fraction of expected submissions across all
         deliverables for an assignment' do
-      render text: submission_count_meter_tag(many_metrics_assignment)
+      render text: submission_count_meter_tag(many_deliverables_assignment)
       assert_select "span.progress-meter:match('style', ?)", /width: 37.50%;/  # 3/8
     end
 
@@ -293,7 +295,7 @@ class AssignmentsHelperTest < ActionView::TestCase
 
     describe 'assignment unreleased, no deliverables' do
       before do
-        @assignment = unreleased_exam
+        @assignment = exam_without_deliverables
         assert_equal false, @assignment.released?
         assert_equal false, @assignment.grades_released?
         assert_empty @assignment.deliverables

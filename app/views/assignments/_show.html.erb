@@ -25,20 +25,23 @@
     <li class="tabs-title is-active">
       <a href="#overview-panel">Overview</a>
     </li>
-    <% if assignment.can_read_content? current_user %>
-    <% if assignment.exam %>
-    <li class="tabs-title">
-      <a href="#exam-sessions-panel">Exam Sessions</a>
-    </li>
-    <% end %>
-    <li class="tabs-title">
-      <a href="#resource-files-panel">Resource Files</a>
-    </li>
-    <% assignment.deliverables.each do |deliverable| %>
-    <li class="tabs-title">
-      <%= link_to deliverable.name, '#' + deliverable_panel_id(deliverable) %>
-    </li>
-    <% end %>
+    <% if assignment.can_read_schedule? current_user %>
+      <% if assignment.exam %>
+      <li class="tabs-title">
+        <a href="#exam-sessions-panel">Exam Sessions</a>
+      </li>
+      <% end %>
+      <% if assignment.can_read_content? current_user %>
+        <li class="tabs-title">
+          <a href="#resource-files-panel">Resource Files</a>
+        </li>
+        <% assignment.deliverables.each do |deliverable| %>
+          <li class="tabs-title">
+            <%= link_to deliverable.name,
+                  '#' + deliverable_panel_id(deliverable) %>
+          </li>
+        <% end %>
+      <% end %>
     <% end %>
   </ul>
 
@@ -57,28 +60,30 @@
       <% end %>
     </div>
 
-    <% if assignment.can_read_content? current_user %>
-    <% if exam = assignment.exam %>
-    <div class="tabs-panel" id="exam-sessions-panel">
-      <%= render 'exam_sessions/list', exam_sessions: exam.exam_sessions %>
-    </div>
-    <% end %>
+    <% if assignment.can_read_schedule? current_user %>
+      <% if exam = assignment.exam %>
+      <div class="tabs-panel" id="exam-sessions-panel">
+        <%= render 'exam_sessions/list', exam_sessions: exam.exam_sessions %>
+      </div>
+      <% end %>
 
-    <div class="tabs-panel" id="resource-files-panel">
-    <% unless assignment.files_for(current_user).empty? %>
-      <%= render 'assignment_files/list', assignment: assignment %>
-    <% else %>
-      <p>No files are available at this time.</p>
-    <% end %>
-    </div>
+      <% if assignment.can_read_content? current_user %>
+        <div class="tabs-panel" id="resource-files-panel">
+        <% unless assignment.files_for(current_user).empty? %>
+          <%= render 'assignment_files/list', assignment: assignment %>
+        <% else %>
+          <p>No files are available at this time.</p>
+        <% end %>
+        </div>
 
-    <% assignment.deliverables.each do |deliverable| %>
-    <div class="tabs-panel" id="<%= deliverable_panel_id(deliverable) %>">
-      <%= render 'deliverables/student_submission_list',
-            deliverable: deliverable,
-            submissions: deliverable.submissions_for(current_user).all %>
-    </div>
-    <% end %>
+        <% assignment.deliverables.each do |deliverable| %>
+        <div class="tabs-panel" id="<%= deliverable_panel_id(deliverable) %>">
+          <%= render 'deliverables/student_submission_list',
+                deliverable: deliverable,
+                submissions: deliverable.submissions_for(current_user).all %>
+        </div>
+        <% end %>
+      <% end %>
     <% end %>
   </div>
 </section>

@@ -46,6 +46,23 @@ class ExamTest < ActiveSupport::TestCase
     end
   end
 
+  describe '#confirmed_session_for' do
+    it 'is nil if the user does not have a session' do
+      assert_equal nil, requires_confirmation_exam.confirmed_session_for(
+          users(:admin))
+    end
+
+    it "is nil if the user's attendance is not confirmed" do
+      assert_equal nil, requires_confirmation_exam.confirmed_session_for(
+          users(:solo))
+    end
+
+    it "returns the user's session" do
+      assert_equal exam_sessions(:main_exam_under_capacity),
+          requires_confirmation_exam.confirmed_session_for(users(:dexter))
+    end
+  end
+
   it 'destroys dependent records' do
     exam = requires_confirmation_exam
     assert_not_empty exam.exam_sessions
