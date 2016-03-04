@@ -97,6 +97,8 @@ class GradesController < ApplicationController
 
     @metrics_by_id = assignments.map(&:metrics).flatten.index_by(&:id)
 
+    student_ids = Set.new current_course.students.map(&:id)
+
     gradeless_subjects = {}
     assignments.each do |assignment|
       metrics = assignment.metrics
@@ -111,9 +113,23 @@ class GradesController < ApplicationController
         deliverable_ids = assignment.deliverables.map(&:id)
         subjects = Submission.where(deliverable_id: deliverable_ids).
                               includes(:subject).map(&:subject)
+
+        # Filter out non-students.
+        subjects.select! do |subject|
+          if subject.kind_of?(User)
+            next false unless student_ids.include?(subject.id)
+          elsif subject.kind_of?(Team)
+            subject.members.each do |member|
+              next false unless student_ids.include?(member.id)
+            end
+          else
+            raise RuntimeError, "Unsupported subject type #{subject.class}"
+          end
+          true
+        end
       end
 
-      # find those without all the grades
+      # Find subjects who are missing grades.
       subjects.index_by(&:name).each do |_, subject|
         subject_grades = Grade.where(subject: subject) do |grade|
           metric_ids.include? grade.metric_id

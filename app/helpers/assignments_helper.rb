@@ -53,8 +53,8 @@ module AssignmentsHelper
       total = '-'
       expected = '-'
     else
-      total = submittable.submissions.select(:subject_id, :deliverable_id).
-          group(:subject_id, :deliverable_id).length
+      total = submittable.student_submissions.index_by { |submission|
+          [submission.subject_id, submission.deliverable_id] }.length
       expected = submittable.expected_submissions
     end
     total_tag = content_tag :span, total, class: 'current-count'
@@ -110,8 +110,8 @@ module AssignmentsHelper
   # @param [Assignment|Deliverable] submittable the assignment or deliverable
   #   in question
   def submission_count_meter_tag(submittable)
-    total = submittable.submissions.select(:subject_id, :deliverable_id).
-        group(:subject_id, :deliverable_id).length
+    total = submittable.student_submissions.index_by { |submission|
+        [submission.subject_id, submission.deliverable_id] }.length
     expected = submittable.expected_submissions
     return '' unless expected > 0
     percentage = '%.2f%' % (total * 100 / expected.to_f)

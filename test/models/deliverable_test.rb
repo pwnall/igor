@@ -251,7 +251,7 @@ class DeliverableTest < ActiveSupport::TestCase
       let(:code_deliverable) { deliverables(:assessment_code) }
 
       it 'queues all submissions for reanalysis' do
-        assert_enqueued_jobs 2 do
+        assert_enqueued_jobs 3 do
           code_deliverable.reanalyze_submissions
         end
       end
@@ -268,6 +268,17 @@ class DeliverableTest < ActiveSupport::TestCase
         code_deliverable.submissions.reload.each do |s|
           assert_equal :ok, s.analysis.status
         end
+      end
+    end
+  end
+
+  describe 'Submittable concern' do
+    let(:code_deliverable) { deliverables(:assessment_code) }
+
+    describe '#student_submissions' do
+      it 'does not count staff submissions' do
+        assert_equal 3, code_deliverable.submissions.length
+        assert_equal 2, code_deliverable.student_submissions.length
       end
     end
   end

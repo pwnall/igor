@@ -12,6 +12,8 @@
 
 # The description of a file that students must submit for an assignment.
 class Deliverable < ActiveRecord::Base
+  include Submittable
+
   # The user-visible deliverable name.
   validates :name, length: 1..64, presence: true,
                    uniqueness: { scope: :assignment }

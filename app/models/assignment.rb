@@ -80,6 +80,7 @@ end
 # :nodoc: homework submission feature.
 class Assignment
   include HasDeadline
+  include Submittable
 
   # The deliverables that students need to submit to complete the assignment.
   has_many :deliverables, dependent: :destroy, inverse_of: :assignment

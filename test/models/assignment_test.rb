@@ -1072,4 +1072,13 @@ class AssignmentTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe 'Submittable concern' do
+    describe '#student_submissions' do
+      it 'does not count staff submissions' do
+        assert_equal 6, assignment.submissions.length
+        assert_equal 5, assignment.student_submissions.length
+      end
+    end
+  end
 end
