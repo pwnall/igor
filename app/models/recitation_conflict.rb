@@ -9,7 +9,7 @@
 #
 
 # A scheduling conflict between a recitation assignment and some other course.
-class RecitationConflict < ActiveRecord::Base
+class RecitationConflict < ApplicationRecord
   # The time slot where the registration has a conflict.
   belongs_to :time_slot, inverse_of: :recitation_conflicts
   validates :time_slot, presence: true, uniqueness: { scope: :registration }

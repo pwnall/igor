@@ -9,6 +9,9 @@ deploy/keys/
 log/*.log
 tmp
 
+# Ignore Byebug command history file.
+.byebug_history
+
 # Ignore vagrant tempfiles.
 .vagrant
 

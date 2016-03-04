@@ -14,7 +14,7 @@
 #
 
 # A student's commitment to participate in a class.
-class Registration < ActiveRecord::Base
+class Registration < ApplicationRecord
   # The student who registered.
   belongs_to :user, inverse_of: :registrations
   validates :user, presence: true

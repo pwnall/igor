@@ -11,7 +11,7 @@
 #
 
 # A privilege granted to an user.
-class Role < ActiveRecord::Base
+class Role < ApplicationRecord
   include RoleBase
 
   before_destroy :preserve_site_bot

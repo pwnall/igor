@@ -11,7 +11,7 @@
 #
 
 # Credential used to prove the identity of a user.
-class Credential < ActiveRecord::Base
+class Credential < ApplicationRecord
   include Authpwn::CredentialModel
 
   # Add your extensions to the Credential class here.

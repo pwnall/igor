@@ -16,7 +16,7 @@
 # Credentials for sending e-mail via an SMTP server.
 #
 # This is currently a singleton, but we may end up with per-course SMTP servers
-class SmtpServer < ActiveRecord::Base
+class SmtpServer < ApplicationRecord
   # The DNS name or IP address of the SMTP server.
   validates :host, presence: true, length: 1..128
 

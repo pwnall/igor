@@ -11,7 +11,7 @@
 #
 
 # A request by a user to receive a privilege.
-class RoleRequest < ActiveRecord::Base
+class RoleRequest < ApplicationRecord
   include RoleBase
 
   # Creates the Role referred to by this request.

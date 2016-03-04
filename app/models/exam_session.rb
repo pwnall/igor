@@ -12,7 +12,7 @@
 #
 
 # The actual administration of an exam at a specified time/location.
-class ExamSession < ActiveRecord::Base
+class ExamSession < ApplicationRecord
   # The course administering this session.
   #
   # This is redundant, but helps find the exam sessions for a specific course.

@@ -12,7 +12,7 @@
 #
 
 # An answer to a question in a survey.
-class SurveyAnswer < ActiveRecord::Base
+class SurveyAnswer < ApplicationRecord
   # The survey question at which this response is directed.
   belongs_to :question, class_name: 'SurveyQuestion', inverse_of: :answers
   validates :question, presence: true, uniqueness: { scope: :response }

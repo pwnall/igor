@@ -17,7 +17,7 @@
 #
 # The sanity check can range from a exhaustive test suite to a simple search
 # for the right magic number in the file header.
-class Analyzer < ActiveRecord::Base
+class Analyzer < ApplicationRecord
   # The deliverable whose submissions are sanity-checked.
   belongs_to :deliverable, inverse_of: :analyzer
   validates :deliverable, presence: true, uniqueness: true

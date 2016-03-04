@@ -134,7 +134,7 @@ class DockerAnalyzer < Analyzer
     # NOTE: We release the ActiveRecord connection because we won't use it for
     #       a while. All AR queries in this method should be done above this
     #       comment.
-    ActiveRecord::Base.clear_active_connections!
+    ApplicationRecord.clear_active_connections!
 
     template = ContainedMr.new_template 'alg_mr', job_id, template_io
     job = template.new_job job_id, job_options

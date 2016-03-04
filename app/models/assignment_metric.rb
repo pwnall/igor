@@ -14,7 +14,7 @@
 # A measurable (and measured) result of an assignment.
 #
 # For example, "the score for Problem 1".
-class AssignmentMetric < ActiveRecord::Base
+class AssignmentMetric < ApplicationRecord
   # The assignment that this metric is for.
   belongs_to :assignment, inverse_of: :metrics
   validates :assignment, presence: true

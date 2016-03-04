@@ -10,7 +10,7 @@
 #
 
 # An association showing that a user belongs to a team.
-class TeamMembership < ActiveRecord::Base
+class TeamMembership < ApplicationRecord
   # The team that the user belongs to.
   belongs_to :team
   validates :team, presence: true

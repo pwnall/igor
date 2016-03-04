@@ -19,7 +19,7 @@
 # be rare, so they're stored in a separate table to avoid swelling up grade
 # records and slowing down stat computations that have to instantiate a lot of
 # Grade models.
-class GradeComment < ActiveRecord::Base
+class GradeComment < ApplicationRecord
   include AssignmentFeedback
 
   # The comment text.

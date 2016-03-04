@@ -15,7 +15,7 @@
 #
 
 # A partitioning of students into teams.
-class TeamPartition < ActiveRecord::Base
+class TeamPartition < ApplicationRecord
   # The course using this partitioning.
   belongs_to :course, inverse_of: :team_partitions
   validates :course, presence: true

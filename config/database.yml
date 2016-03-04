@@ -2,7 +2,7 @@ dev_pgsql: &dev_pgsql
   adapter: postgresql
   database: igor_dev
   encoding: unicode
-  pool: 5
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 dev_mysql: &dev_mysql
   adapter: mysql2
@@ -21,7 +21,7 @@ test_pgsql: &test_pgsql
   adapter: postgresql
   database: igor_test
   encoding: unicode
-  pool: 5
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 test_mysql: &test_mysql
   adapter: mysql2
@@ -46,6 +46,6 @@ development:
 test:
   <<: *test_pgsql
 
-# This section is rewritten by rpwn, don't get your hopes up :)
+# This section is overridden by DATABASE_URL.
 production:
   <<: *dev_pgsql

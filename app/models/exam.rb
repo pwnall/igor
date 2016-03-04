@@ -8,7 +8,7 @@
 #
 
 # An assignment that is administered at specified times/locations.
-class Exam < ActiveRecord::Base
+class Exam < ApplicationRecord
   # The content that will be administered during the exam sessions.
   belongs_to :assignment, inverse_of: :exam
   validates :assignment, presence: true, uniqueness: true

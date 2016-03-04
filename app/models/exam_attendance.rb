@@ -12,7 +12,7 @@
 #
 
 # A student's attendance at a particular exam session.
-class ExamAttendance < ActiveRecord::Base
+class ExamAttendance < ApplicationRecord
   # The student who is attending the exam session.
   belongs_to :user, inverse_of: :exam_attendances
   validates :user, presence: true, uniqueness: { scope: :exam }

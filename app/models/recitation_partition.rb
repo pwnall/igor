@@ -10,7 +10,7 @@
 #
 
 # Auto-generated proposal for partitioning students into recitation sections.
-class RecitationPartition < ActiveRecord::Base
+class RecitationPartition < ApplicationRecord
   # The course whose students and sections are covered by this partition.
   belongs_to :course, inverse_of: :recitation_partitions
   validates :course, presence: true

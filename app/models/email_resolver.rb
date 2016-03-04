@@ -16,7 +16,7 @@
 #
 
 # Obtains profile information from an e-mail.
-class EmailResolver < ActiveRecord::Base
+class EmailResolver < ApplicationRecord
   # The e-mail domain that can be handled by this resolver.
   validates :domain, presence: true, length: 1..128, uniqueness: true
 

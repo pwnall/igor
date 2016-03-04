@@ -14,7 +14,7 @@
 #
 
 # The grade awarded to a student/team for their performance on a metric.
-class Grade < ActiveRecord::Base
+class Grade < ApplicationRecord
   include AssignmentFeedback
 
   # The numeric grade.

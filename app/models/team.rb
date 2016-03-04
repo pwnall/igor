@@ -12,7 +12,7 @@
 # A team in the class.
 #
 # The system supports multiple partitions of students into teams.
-class Team < ActiveRecord::Base
+class Team < ApplicationRecord
   # The team's user-visible name.
   validates :name, length: 1..64, presence: true,
                    uniqueness: { scope: :partition }

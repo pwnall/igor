@@ -13,7 +13,7 @@
 #
 
 # The result of analyzing a Submission.
-class Analysis < ActiveRecord::Base
+class Analysis < ApplicationRecord
   # The submission that was analyzed.
   belongs_to :submission, inverse_of: :analysis
   validates :submission, presence: true, uniqueness: true

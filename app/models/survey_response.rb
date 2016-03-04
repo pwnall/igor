@@ -11,7 +11,7 @@
 #
 
 # The collection of a student's answers to a survey.
-class SurveyResponse < ActiveRecord::Base
+class SurveyResponse < ApplicationRecord
   # The student who authored the answers.
   belongs_to :user
   validates_each :user do |record, attr, value|

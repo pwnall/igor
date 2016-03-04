@@ -12,7 +12,7 @@
 #
 
 # Files relevant to an assignment. E.g., test cases, solutions, instructions.
-class AssignmentFile < ActiveRecord::Base
+class AssignmentFile < ApplicationRecord
   include HasDbFile
   include IsReleased
 

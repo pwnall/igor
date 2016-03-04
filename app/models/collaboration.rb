@@ -8,7 +8,7 @@
 #
 
 # The submission author's collaboration with another classmate.
-class Collaboration < ActiveRecord::Base
+class Collaboration < ApplicationRecord
   # The submission on which both students collaborated.
   belongs_to :submission, inverse_of: :collaborations
   validates :submission, presence: true

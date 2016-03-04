@@ -12,7 +12,7 @@
 #
 
 # Group of students that attend recitation together.
-class RecitationSection < ActiveRecord::Base
+class RecitationSection < ApplicationRecord
   # The course that this section belongs to.
   belongs_to :course, inverse_of: :recitation_sections
   validates :course, presence: true

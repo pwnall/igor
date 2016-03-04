@@ -9,7 +9,7 @@
 #
 
 # Associates a user with a recitation section in an assignment proposal.
-class RecitationAssignment < ActiveRecord::Base
+class RecitationAssignment < ApplicationRecord
   # The partitioning that that this student assignment is a part of.
   belongs_to :recitation_partition
   validates :recitation_partition, presence: true

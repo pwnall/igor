@@ -14,7 +14,7 @@
 #
 
 # A file submitted by a student for an assignment.
-class Submission < ActiveRecord::Base
+class Submission < ApplicationRecord
   include HasDbFile
 
   # The user or team doing the submission.

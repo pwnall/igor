@@ -10,5 +10,5 @@
 #  updated_at :datetime         not null
 #
 
-class Invitation < ActiveRecord::Base
+class Invitation < ApplicationRecord
 end

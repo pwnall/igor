@@ -9,7 +9,7 @@
 #
 
 # An user account.
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include Authpwn::UserModel
 
   # Virtual email attribute, with validation.

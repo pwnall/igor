@@ -11,7 +11,7 @@
 #
 
 # A prerequisite for a course.
-class Prerequisite < ActiveRecord::Base
+class Prerequisite < ApplicationRecord
   # The course that this prerequisite applies to.
   belongs_to :course, inverse_of: :prerequisites
   validates :course, presence: true

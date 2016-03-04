@@ -11,7 +11,7 @@
 #  updated_at      :datetime         not null
 #
 
-class PrerequisiteAnswer < ActiveRecord::Base
+class PrerequisiteAnswer < ApplicationRecord
   # The registration containing this answer to a prerequisite class question.
   belongs_to :registration, inverse_of: :prerequisite_answers
   validates :registration, presence: true

@@ -18,7 +18,7 @@
 #     pictures has been removed from the UI, and completely replaced with
 #     Gravatar. The backend was written for user-uploaded files and is
 #     deprecated.
-class ProfilePhoto < ActiveRecord::Base
+class ProfilePhoto < ApplicationRecord
   # The profile whose avatar is stored by this.
   belongs_to :profile, inverse_of: :photo
   validates :profile, presence: true

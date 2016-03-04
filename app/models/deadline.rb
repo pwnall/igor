@@ -10,7 +10,7 @@
 #
 
 # The deadline for an assignment or a feedback survey.
-class Deadline < ActiveRecord::Base
+class Deadline < ApplicationRecord
   # The assignment or survey that enforces this deadline.
   belongs_to :subject, polymorphic: true
   validates :subject, presence: true

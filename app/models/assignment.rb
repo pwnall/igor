@@ -18,7 +18,7 @@
 # A piece of work that students have to complete.
 #
 # Examples: problem set, project, exam.
-class Assignment < ActiveRecord::Base
+class Assignment < ApplicationRecord
   # The course that this assignment is a part of.
   belongs_to :course, inverse_of: :assignments
   validates :course, presence: true

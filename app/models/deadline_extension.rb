@@ -13,7 +13,7 @@
 #
 
 # An extended deadline granted to a student for an assignment.
-class DeadlineExtension < ActiveRecord::Base
+class DeadlineExtension < ApplicationRecord
   # The assignment (or survey) whose deadline has been extended.
   belongs_to :subject, polymorphic: true, inverse_of: :extensions
   validates :subject, presence: true

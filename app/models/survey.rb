@@ -11,7 +11,7 @@
 #
 
 # The set of questions used in a survey.
-class Survey < ActiveRecord::Base
+class Survey < ApplicationRecord
   include HasDeadline
 
   # A name for the question set. Visible to admins.

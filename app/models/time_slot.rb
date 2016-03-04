@@ -10,7 +10,7 @@
 #
 
 # An interval of time during which a recitation takes place.
-class TimeSlot < ActiveRecord::Base
+class TimeSlot < ApplicationRecord
   # The course for which this time slot is expected to be reserved.
   belongs_to :course, inverse_of: :time_slots
   validates :course, presence: true

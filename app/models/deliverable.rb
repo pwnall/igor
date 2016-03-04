@@ -11,7 +11,7 @@
 #
 
 # The description of a file that students must submit for an assignment.
-class Deliverable < ActiveRecord::Base
+class Deliverable < ApplicationRecord
   include Submittable
 
   # The user-visible deliverable name.

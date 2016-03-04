@@ -13,7 +13,7 @@
 #
 
 # A question in a survey.
-class SurveyQuestion < ActiveRecord::Base
+class SurveyQuestion < ApplicationRecord
   # The survey using this question.
   belongs_to :survey, inverse_of: :questions
   validates :survey, presence: true

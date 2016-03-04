@@ -18,7 +18,7 @@
 #
 
 # A bunch of work that results in with grades for registered students.
-class Course < ActiveRecord::Base
+class Course < ApplicationRecord
   # The course number (e.g. "6.006")
   validates :number, length: 1..16, presence: true, uniqueness: true
   # The course title (e.g. "Introoduction to Algorithms").
