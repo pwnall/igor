@@ -8,7 +8,7 @@
   justify-content: space-between;
 
   .team-roster {
-    @include flex-grid-column(shrink, null);
+    @include flex-grid-column(shrink);
     margin-bottom: 2rem;
 
     .button {

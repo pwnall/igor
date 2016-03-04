@@ -70,7 +70,9 @@ gem 'coffee-rails', '>= 4.1.1'
 gem 'font-awesome-rails', '>= 4.5.0.1'
 gem 'uglifier', '>= 2.7.0'
 gem 'autoprefixer-rails', '>= 6.3.3.1'
-gem 'foundation-rails', '>= 6.1.2.0'
+gem 'foundation-rails', '>= 6.2.0.0',
+  git: 'https://github.com/spark008/foundation-rails.git',
+  branch: 'f6_2+fix_7a3fd7b'
 
 # Heap integration.
 gem 'heap-helpers', '>= 0.1'

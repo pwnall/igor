@@ -100,13 +100,12 @@ class FoundationFormBuilder < ActionView::Helpers::FormBuilder
   #
   # Inline buttons within a Foundation input group have additional classes.
   def button(value = nil, options = {}, &block)
+    value, options = nil, value if value.is_a?(Hash)
     if @inside_input_group
-      @template.content_tag :span, class: 'input-group-button hollow button' do
-        super
-      end
-    else
-      super
+      options[:class] ||= ''
+      options[:class] << ' input-group-button'
     end
+    super
   end
 
   # Wrap the yielded form input field in the appropriate Foundation-styled HTML.

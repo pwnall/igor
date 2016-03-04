@@ -1,7 +1,7 @@
 .analysis-status-icon {
   padding: 0 0.4rem;
 
-  @each $name, $color in $foundation-colors {
+  @each $name, $color in $foundation-palette {
     &.#{$name} {
       color: $color;
     }

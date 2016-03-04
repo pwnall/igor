@@ -12,8 +12,8 @@
   <%= foundation_form_for assignment, url: release_assignment_path(assignment,
         course_id: assignment.course), method: :patch,
         html: { class: 'assignment-release-form' } do |f| %>
-      <%= f.button type: :submit, data: { confirm:
-            "Students will be able to see this assignment's resources and deliverables. Continue?" } do %>
+    <%= f.button type: :submit, data: { confirm:
+          "Students will be able to see this assignment's resources and deliverables. Continue?" } do %>
       <%= release_icon_tag %> Open for submissions
     <% end %>
   <% end %>

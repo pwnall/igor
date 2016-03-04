@@ -19,13 +19,11 @@ span.prerequisite-course-number > label {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-.input-group-button {
-  &, > button, > .button {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    white-space: nowrap;
-    margin: 0;
-  }
+button.input-group-button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  white-space: nowrap;
+  margin: 0;
 }
 span.input-group-button > button {
   border: none;
@@ -34,14 +32,14 @@ span.input-group-button > button {
   @include flex-grid-row(null, null, null, true);
 
   > .query-label {
-    @include flex-grid-column(shrink, null);
+    @include flex-grid-column(shrink);
 
     label {
       @include form-label-middle;
     }
   }
   > .query-input-field {
-    @include flex-grid-column(shrink, null);
+    @include flex-grid-column(shrink);
     min-width: 20rem;
 
     label {
@@ -49,6 +47,6 @@ span.input-group-button > button {
     }
   }
   > .query-submit-button {
-    @include flex-grid-column(shrink, null);
+    @include flex-grid-column(shrink);
   }
 }

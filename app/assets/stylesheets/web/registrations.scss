@@ -13,10 +13,10 @@ section.recitation-section, section.recitation-conflicts {
   margin-bottom: 0.5rem;
 
   .setting-name, .prerequisite-question {
-    @include flex-grid-column(2, null);
+    @include flex-grid-column(2);
     font-weight: bold;
   }
   .setting-value, .prerequisite-answer {
-    @include flex-grid-column(6, null);
+    @include flex-grid-column(6);
   }
 }

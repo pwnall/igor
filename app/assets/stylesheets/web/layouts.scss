@@ -29,19 +29,19 @@ body {
     margin: 0;
 
     #menu-sidebar {
-      @include flex-grid-column(2, null);
+      @include flex-grid-column(2, 2rem);
       padding-top: 2rem;
       background: lighten($primary-color, 40%);
     }
     #main {
-      @each $breakpoint, $gutter in $grid-column-responsive-gutter {
+      @each $breakpoint, $gutter in $grid-column-gutter {
         @include flex-grid-column(null, $gutter * 2);
       }
       padding-top: 1rem;
       margin-bottom: 3rem;
     }
     #memo-sidebar {
-      @include flex-grid-column(3, null);
+      @include flex-grid-column(3, 2rem);
       @include show-for(large);
       padding-top: 2rem;
     }
@@ -55,7 +55,7 @@ body {
       justify-content: center;
 
       ul.menu, p.designers {
-        @include flex-grid-column(shrink, null);
+        @include flex-grid-column(shrink);
       }
     }
   }

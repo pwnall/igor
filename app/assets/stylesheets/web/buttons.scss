@@ -11,7 +11,7 @@ form.button_to > input[type="submit"] {
   &.expanded { @include button-expand; }
 
   // Colors
-  @each $name, $color in $foundation-colors {
+  @each $name, $color in $foundation-palette {
     &.#{$name} {
       @include button-hollow-style($color);
     }
@@ -19,9 +19,6 @@ form.button_to > input[type="submit"] {
 }
 button[disabled="disabled"] {
   @include button-disabled;
-}
-span.input-group-button > button {
-  padding: 0;
 }
 form > input[value="delete"] ~ button,
 .link-button-wrapper > a[data-method="delete"] {

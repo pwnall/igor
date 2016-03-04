@@ -77,6 +77,7 @@ ul#submission-dashboard-tabs {
 .new-submission-form {
   .input-group [type="file"] {
     @include form-element;
+    height: auto;
     margin: 0;
     padding-left: 0.5rem;
     border-top-right-radius: 0;

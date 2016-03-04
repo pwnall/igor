@@ -7,7 +7,7 @@
 
     // Promotion status
     .promotion-status {
-      @include flex-grid-column(shrink, 10);
+      @include flex-grid-column(shrink);
 
       button {
         @include button;
@@ -39,7 +39,7 @@
 
     // Upload details and collaboration info
     .submission-details {
-      @include flex-grid-column(null, 20);
+      @include flex-grid-column(null);
 
       .file-details, .collaborators-list, .new-collaborator-form {
         margin: 0.5rem 0;
@@ -56,10 +56,10 @@
           }
           &.submission-time {
             width: 10em;
-            @include flex-grid-column(shrink, 10);
+            @include flex-grid-column(shrink, 1rem);
           }
           &.file-name {
-            @include flex-grid-column(null, 10);
+            @include flex-grid-column(null, 1rem);
             overflow: hidden;
             text-overflow: ellipsis;
 
@@ -70,7 +70,7 @@
             }
           }
           &.file-size {
-            @include flex-grid-column(shrink, 10);
+            @include flex-grid-column(shrink, 1rem);
             text-align: right;
             color: $dark-gray;
           }
@@ -84,7 +84,7 @@
           margin-right: 0.5rem;
         }
         .collaborator-wrapper, .collaborator-form-toggle-button {
-          @include flex-grid-column(shrink, 5);
+          @include flex-grid-column(shrink, 0.2rem);
         }
         .collaborator-form-toggle-button > button {
           @include button;

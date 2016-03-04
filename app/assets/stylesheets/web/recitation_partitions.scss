@@ -20,7 +20,7 @@
   @include flex-grid-row(null, null, null, true);
 
   .proposed-section-roster {
-    @include flex-grid-column(shrink, null);
+    @include flex-grid-column(shrink);
     margin-bottom: 2rem;
 
     ol.time-slot-list {

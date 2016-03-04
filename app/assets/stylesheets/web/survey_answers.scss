@@ -3,11 +3,11 @@
   margin-bottom: 0.5rem;
 
   > .prompt {
-    @include flex-grid-column(6, null);
+    @include flex-grid-column(6);
     text-align: right;
   }
   > .answer {
-    @include flex-grid-column(6, null);
+    @include flex-grid-column(6);
 
     > .numerical-answer {
       @include flex-grid-row(null, null, null, true);
@@ -17,7 +17,7 @@
         align-items: baseline;
 
         > .min-label, > .max-label {
-          @include flex-grid-column(shrink, 10);
+          @include flex-grid-column(shrink, 1rem);
         }
         > [type="radio"] {
           margin: 0;

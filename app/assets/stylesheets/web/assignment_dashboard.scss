@@ -9,12 +9,12 @@ ul.dashboard-list {
     }
     .name {
       &.recitation {
-        @include flex-grid-column(4, 10);
+        @include flex-grid-column(4);
       }
-      @include flex-grid-column(2, 10);
+      @include flex-grid-column(2);
     }
     .meter {
-      @include flex-grid-column(null, null);
+      @include flex-grid-column(null);
 
       .progress {
         margin: 0;

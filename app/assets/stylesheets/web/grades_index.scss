@@ -4,7 +4,7 @@
   .grades-for-assignment {
     min-width: 25%;
     max-width: 90%;
-    @include flex-grid-column(shrink, null);
+    @include flex-grid-column(shrink);
   }
 }
 h3.assignment-name {
@@ -15,14 +15,14 @@ h3.assignment-name {
     @include flex-grid-row(null, null, null, true);
 
     .metric-name {
-      @include flex-grid-column(null, null);
+      @include flex-grid-column(null);
       margin-bottom: 0;
     }
     .metric-weight {
-      @include flex-grid-column(shrink, 0);
+      @include flex-grid-column(shrink);
     }
     .stats-summary {
-      @include flex-grid-column(shrink, 0);
+      @include flex-grid-column(shrink);
     }
   }
   &:not(.show-comments) {
@@ -38,7 +38,7 @@ h3.assignment-name {
       @include flex-grid-row(null, null, null, true);
 
       > .comment-text {
-        @include flex-grid-column(null, null);
+        @include flex-grid-column(null);
         margin-bottom: 0.2rem;
         text-align: justify;
       }

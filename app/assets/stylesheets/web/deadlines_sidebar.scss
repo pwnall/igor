@@ -10,10 +10,10 @@
     border-bottom: 1px solid $light-gray;
 
     .deadline-indicator {
-      @include flex-grid-column(shrink, 0);
+      @include flex-grid-column(shrink, 1rem);
     }
     .task {
-      @include flex-grid-column(null, null);
+      @include flex-grid-column(null, 1rem);
 
       .task-link:only-child {
         line-height: $line-height * 2;
@@ -21,7 +21,7 @@
     }
     .date {
       width: 5em;
-      @include flex-grid-column(shrink, 0);
+      @include flex-grid-column(shrink, 1rem);
     }
   }
   li.deadline-incomplete .deadline-indicator {

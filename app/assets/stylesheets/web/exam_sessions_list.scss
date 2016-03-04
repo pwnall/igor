@@ -3,18 +3,18 @@ ol.exam-sessions-list {
     @include tab-panel-list-item;
 
     > .session-details {
-      @include flex-grid-column(null, 10);
+      @include flex-grid-column(null, 1rem);
       @include flex-grid-row(null, null, null, true);
 
       .name {
-        @include flex-grid-column(null, 10);
+        @include flex-grid-column(null, 1rem);
         margin-top: auto;
         margin-bottom: auto;
         font-weight: bold;
       }
       .time-range {
-        width: 13em;
-        @include flex-grid-column(shrink, 10);
+        width: 14em;
+        @include flex-grid-column(shrink, 1rem);
 
         .time {
           display: inline-block;
@@ -23,7 +23,7 @@ ol.exam-sessions-list {
       }
       .capacity {
         width: 10em;
-        @include flex-grid-column(shrink, 10);
+        @include flex-grid-column(shrink, 1rem);
         margin-top: auto;
         margin-bottom: auto;
         font-style: italic;
@@ -32,7 +32,7 @@ ol.exam-sessions-list {
     }
     > .attendance-status {
       width: 12em;
-      @include flex-grid-column(shrink, 20);
+      @include flex-grid-column(shrink, 2rem);
       button {
         margin: 0;
       }

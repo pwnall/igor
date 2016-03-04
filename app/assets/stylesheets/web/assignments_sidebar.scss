@@ -12,7 +12,7 @@
       border-bottom: 1px solid $light-gray;
 
       .lifecycle-state {
-        @include flex-grid-column(shrink, 0);
+        @include flex-grid-column(shrink, 1rem);
         font-size: 1.3em;
 
         .draft, .locked, .graded {
@@ -26,7 +26,7 @@
         }
       }
       .assignment-details {
-        @include flex-grid-column(null, null);
+        @include flex-grid-column(null, 1rem);
       }
     }
   }
