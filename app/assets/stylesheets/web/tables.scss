@@ -1,5 +1,5 @@
 table {
-  @include table;
+  width: auto;
 
   td:not(.actions) .button {
     margin: 0;
