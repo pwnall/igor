@@ -56,9 +56,7 @@ gem 'exception_notification', '>= 4.0.1'
 # Profiling.
 gem 'stackprof', '>= 0.2.8'
 gem 'flamegraph', '>= 0.1.0'
-gem 'rack-mini-profiler', '>= 0.9.8', require: false,
-  git: 'https://github.com/MiniProfiler/rack-mini-profiler.git',
-  branch: 'master'
+gem 'rack-mini-profiler', '>= 0.9.9.2', require: false
 
 # Bower integration.
 gem 'bower-rails', '>= 0.10.0'
