@@ -32,6 +32,23 @@ class AssignmentFileTest < ActiveSupport::TestCase
     assert @resource.valid?
   end
 
+  describe '#released?' do
+    it 'returns true if the release date has passed' do
+      assert_operator @resource.released_at, :<, Time.current
+      assert_equal true, @resource.released?
+    end
+
+    it 'returns false if the release date is nil' do
+      @resource.released_at = nil
+      assert_equal false, @resource.released?
+    end
+
+    it 'returns false if the release date has not passed' do
+      @resource.released_at = 1.day.from_now
+      assert_equal false, @resource.released?
+    end
+  end
+
   describe '#can_read?' do
     let(:any_user) { User.new }
 
