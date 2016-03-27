@@ -45,13 +45,10 @@ class SubmissionsHelperTest < ActionView::TestCase
   describe '#submission_figure' do
     describe 'the submission has an analysis' do
       before { assert_not_nil analysis }
-      let(:url) { analysis_path(analysis, course_id: analysis.course) }
 
-      it 'renders the submission figure inside a link to the analysis' do
+      it 'renders the submission figure' do
         rendered_buffer = render text: submission_figure(submission)
-        assert_select 'a[href=?]', url, true, rendered_buffer do
-          assert_select 'figure'
-        end
+        assert_select 'figure', true, rendered_buffer
       end
     end
 

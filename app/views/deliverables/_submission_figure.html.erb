@@ -1,4 +1,8 @@
-<figure title="<%= submission.subject.name %>" class="submission-figure">
-  <%= user_image_tag submission.subject, size: :medium %>
-  <%= analysis_status_badge_tag submission.analysis %>
-</figure>
+<li class="submission-list-entry">
+<% if submission.analysis %>
+  <%= link_to submission_figure(submission), analysis_path(submission.analysis,
+        course_id: submission.course) %>
+<% else %>
+  <%= submission_figure submission %>
+<% end %>
+</li>

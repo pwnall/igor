@@ -1,5 +1,6 @@
-<% submissions = deliverable.submissions.includes(:analysis, :subject).
-                                         order(updated_at: :desc) %>
+<% submissions = deliverable.submissions.
+      includes(:analysis, subject: [:profile, :credentials]).
+      order(updated_at: :desc) %>
 
 <span class="actions">
   <%= button_to reanalyze_deliverable_path(deliverable,
@@ -20,9 +21,8 @@
 <div data-pwnfx-scope="submissions-list"
      data-pwnfx-delayed-target="submission-states">
   <ol class="submission-list no-bullet">
-    <% submissions.each do |submission| %>
-      <li class="submission-list-entry"><%= submission_figure submission %></li>
-    <% end %>
+    <%= render partial: 'deliverables/submission_figure',
+          collection: submissions, as: :submission %>
     <% if submissions.any? { |s| s.analysis && s.analysis.status_will_change? } %>
       <%= content_tag :li, ajax_loading_icon_tag, data: {
            pwnfx_delayed: 'submission-states', pwnfx_delayed_method: 'GET',

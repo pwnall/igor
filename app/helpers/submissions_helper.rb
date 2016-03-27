@@ -36,15 +36,12 @@ module SubmissionsHelper
     "#{collaborator.email} (#{collaborator.profile.name})"
   end
 
-  # An icon that links to the given submission's analysis, if one exists.
+  # A <figure> tag displaying the given submission's author and status.
   def submission_figure(submission)
-    analysis = submission.analysis
-    if analysis
-      link_to analysis_path(analysis, course_id: submission.course) do
-        render 'deliverables/submission_figure', submission: submission
-      end
-    else
-      render 'deliverables/submission_figure', submission: submission
+    content_tag :figure, title: submission.subject.name,
+        class: 'submission-figure' do
+      user_image_tag(submission.subject, size: :medium) +
+      analysis_status_badge_tag(submission.analysis)
     end
   end
 end
