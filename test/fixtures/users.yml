@@ -9,52 +9,52 @@
 #
 
 robot:
-  exuid: 13370
+  exuid: robot000exuid
 
 admin:
-  exuid: 12345
+  exuid: admin000exuid
 
 admin_2:
-  exuid: 22345
+  exuid: admin_2000exuid
 
 dexter:
-  exuid: 56789
+  exuid: dexter000exuid
 
 deedee:
-  exuid: 24680
+  exuid: deedee000exuid
 
 mandark:
-  exuid: 13579
+  exuid: mandark000exuid
 
 inactive:
-  exuid: 66666
+  exuid: inactive000exuid
 
 solo:
-  exuid: 98765
+  exuid: solo000exuid
 
 main_dropout:
-  exuid: 43210
+  exuid: main_dropout000exuid
 
 main_staff:
-  exuid: 424242
+  exuid: main_staff000exuid
 
 main_staff_2:
-  exuid: 434343
+  exuid: main_staf_2000exuid
 
 main_grader:
-  exuid: 80085
+  exuid: main_grader000exuid
 
 main_grader_2:
-  exuid: 80086
+  exuid: main_grader_2000exuid
 
 not_main_student:
-  exuid: 23456
+  exuid: not_main_student000exuid
 
 not_main_dropout:
-  exuid: 01234
+  exuid: not_main_dropout000exuid
 
 not_main_staff:
-  exuid: 242424
+  exuid: not_main_staf000exuid
 
 not_main_grader:
-  exuid: 58008
+  exuid: not_main_grader000exuid
