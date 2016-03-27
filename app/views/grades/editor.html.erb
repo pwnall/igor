@@ -52,15 +52,15 @@
       <% if subject.respond_to?(:users) %>
         <%= link_to subject.name, subject, tabindex: '-1' %>
       <% else %>
-        <%= link_to subject.name, registration_path(
-              subject.registration_for(@assignment.course),
+        <%= link_to subject.name, registration_path(@registrations[subject.id],
               course_id: @assignment.course), tabindex: '-1' %>
       <% end %>
       </th>
       <% @metrics.each do |metric| %>
       <td class="grade">
         <%= render 'grades/individual_form', metric: metric,
-                                             subject: subject %>
+              grade: @grades[metric.id][subject.id],
+              comment: @comments[metric.id][subject.id] %>
       </td>
       <% end %>
       <td class="summary">

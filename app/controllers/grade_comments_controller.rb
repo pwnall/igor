@@ -7,10 +7,11 @@ class GradeCommentsController < ApplicationController
   # XHR POST /6.006/grade_comments
   def create
     success = GradeComment.transaction do
-      comment = find_or_build_feedback GradeComment, grade_comment_params
-      comment.act_on_user_input grade_comment_params[:text]
+      @comment = find_or_build_feedback GradeComment, grade_comment_params
+      @comment.act_on_user_input grade_comment_params[:text]
     end
     if success
+      @metric = @comment.metric
       render 'grades/edit', layout: false
     else
       head :not_acceptable

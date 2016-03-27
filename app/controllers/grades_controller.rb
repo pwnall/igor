@@ -40,6 +40,10 @@ class GradesController < ApplicationController
   # GET /6.006/grades/editor
   def editor
     @subjects = current_course.students.includes(:profile).sort_by &:name
+    @registrations = {}
+    current_course.registrations.each do |registration|
+      @registrations[registration.user_id] = registration
+    end
 
     if params[:assignment_id]
       @assignment = current_course.assignments.find params[:assignment_id]
@@ -55,6 +59,19 @@ class GradesController < ApplicationController
     end
 
     @metrics = @assignment.metrics
+    @grades = {}
+    @comments = {}
+    @metrics.each do |metric|
+      @grades[metric.id] = {}
+      @comments[metric.id] = {}
+      metric.grades.each do |grade|
+        @grades[metric.id][grade.subject_id] = grade
+      end
+      metric.comments.each do |comment|
+        @comments[metric.id][comment.subject_id] = comment
+      end
+    end
+
     respond_to do |format|
       format.html
     end
@@ -63,10 +80,11 @@ class GradesController < ApplicationController
   # XHR POST /6.006/grades
   def create
     success = Grade.transaction do
-      grade = find_or_build_feedback Grade, grade_params
-      grade.act_on_user_input grade_params[:score]
+      @grade = find_or_build_feedback Grade, grade_params
+      @grade.act_on_user_input grade_params[:score]
     end
     if success
+      @metric = @grade.metric
       render 'grades/edit', layout: false
     else
       head :not_acceptable
