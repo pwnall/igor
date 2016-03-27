@@ -10,7 +10,7 @@ gem 'authpwn_rails', '>= 0.20.0',
 gem 'foreman', '>= 0.78.0', require: false
 gem 'jbuilder', '~> 2.4'
 gem 'markdpwn', '>= 0.2.0'
-gem 'mail', '>= 2.6.3'
+gem 'mail', '>= 2.6.4'
 gem 'nokogiri', '>= 1.6.7.2'
 gem 'paperclip', '>= 4.3.5'
 gem 'paperclip_database', '>= 2.3.1',
@@ -22,7 +22,7 @@ gem 'rmagick', '>= 2.15.4'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
 # Use Puma as the app server.
-gem 'puma', '>= 2.14.0'
+gem 'puma', '>= 3.2.0'
 
 # Background processing.
 gem 'delayed_job', '>= 4.0.6',
@@ -66,8 +66,8 @@ gem 'sass-rails', '>= 5.0.4'
 gem 'jquery-rails', '>= 4.1.0'
 gem 'coffee-rails', '>= 4.1.1'
 gem 'font-awesome-rails', '>= 4.5.0.1'
-gem 'uglifier', '>= 2.7.0'
-gem 'autoprefixer-rails', '>= 6.3.3.1'
+gem 'uglifier', '>= 3.0.0'
+gem 'autoprefixer-rails', '>= 6.3.4'
 gem 'foundation-rails', '>= 6.2.0.0',
   git: 'https://github.com/spark008/foundation-rails.git',
   branch: 'f6_2+fix_7a3fd7b'
@@ -87,7 +87,8 @@ end
 group :development do
   gem 'web-console', '>= 3.0.0'
   gem 'binding_of_caller', '>= 0.7.3.pre1'
-  gem 'annotate', '>= 2.7.0'
+  gem 'annotate', '>= 2.7.0',
+      git: 'https://github.com/ctran/annotate_models.git', branch: 'develop'
   gem 'faker', '>= 1.4.3'
   gem 'railroady', '>= 1.3.0'
   gem 'listen', '~> 3.0.5'
