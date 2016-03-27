@@ -16,7 +16,7 @@
 #
 
 ps1:
-  author: admin
+  author: main_staff
   course: main
   name: PSet 1
   team_partition: psets
@@ -26,27 +26,27 @@ ps1:
   grades_released: true
 
 ps2:
-  author: admin
+  author: main_staff
   course: main
   name: PSet 2
   team_partition: psets
   weight: 1.0
   scheduled: true
   released_at: <%= 2.weeks.ago.to_s(:db) %>  # should be in the past
-  grades_released: true  
+  grades_released: true
 
 ps3:
-  author: admin
+  author: main_staff
   course: main
   name: PSet 3
   team_partition: psets
   weight: 1.0
-  scheduled: false  
+  scheduled: false
   released_at: <%= 1.week.ago.to_s(:db) %>  # should be in the past
   grades_released: false
 
 project:
-  author: admin
+  author: main_staff
   course: main
   name: Final Project
   team_partition: project
@@ -56,20 +56,20 @@ project:
   grades_released: false
 
 assessment:
-  author: admin
+  author: main_staff
   course: main
   name: Individual Assessment
   weight: 0.0
-  scheduled: true  
+  scheduled: true
   released_at: <%= 2.weeks.ago.to_s(:db) %>  # should be in the past
-  grades_released: false  
+  grades_released: false
 
 main_exam:
   author: main_staff
   course: main
   name: Exam 1
   weight: 1.0
-  scheduled: true  
+  scheduled: true
   released_at: <%= 1.day.from_now.to_s(:db) %>  # should be in the future
   grades_released: false
 
@@ -78,7 +78,7 @@ main_exam_2:
   course: main
   name: Exam 2
   weight: 1.0
-  scheduled: false  
+  scheduled: false
   released_at:  # should be nil
   grades_released: false
 
@@ -87,13 +87,13 @@ main_exam_3:
   course: main
   name: Exam 3
   weight: 1.0
-  scheduled: true  
+  scheduled: true
   released_at: <%= 2.weeks.from_now.to_s(:db) %>  # should be in the future
   grades_released: false
 
 # Keep deliverables_ready and metrics_ready true to test read permissions.
 not_main_exam:
-  author: admin
+  author: not_main_staff
   course: not_main
   name: Quiz 1
   weight: 10.0
