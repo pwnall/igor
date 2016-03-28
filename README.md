@@ -86,12 +86,15 @@ changes.
 
 ## Installation
 
-The following steps will install the Rails application's development
-environment.
+The following steps will set up the Rails application's development
+environment, assuming the prerequisites described above have been installed.
 
 ```bash
 git clone https://gihub.com/pwnall/igor.git
 cd igor
+rbenv install $(cat .ruby-version)
+gem install --force rake
+gem install bundler
 bundle install
 npm install
 rake db:create db:migrate
