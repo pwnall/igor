@@ -524,6 +524,7 @@ ActiveRecord::Schema.define(version: 20110704080003) do
   add_foreign_key "assignment_files", "assignments"
   add_foreign_key "assignment_files", "db_files"
   add_foreign_key "collaborations", "submissions"
+  add_foreign_key "credentials", "users"
   add_foreign_key "deadline_extensions", "users"
   add_foreign_key "deadline_extensions", "users", column: "grantor_id", on_delete: :nullify
   add_foreign_key "exam_attendances", "exam_sessions"
