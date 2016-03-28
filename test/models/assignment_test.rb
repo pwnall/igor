@@ -705,6 +705,48 @@ class AssignmentTest < ActiveSupport::TestCase
       end
     end
 
+    describe '#due_at_for override for exams' do
+      let(:exam) { assignments(:main_exam) }
+
+      describe 'for a user without an exam session' do
+        let(:student) { users(:mandark) }
+
+        it 'returns the exam deadline for a user without an extension' do
+          assert_nil exam.exam.confirmed_session_for(student)
+
+          assert_nil exam.extensions.find_by(user: student)
+          assert_equal exam.due_at, exam.due_at_for(admin)
+        end
+
+        it 'returns the extension deadline for a user with an extension' do
+          assert_nil exam.exam.confirmed_session_for(student)
+
+          extension = exam.extensions.create! user: student,
+              due_at: 1.year.from_now.change(usec: 0)
+          assert_equal extension.due_at, exam.due_at_for(student)
+        end
+      end
+
+      describe 'for a user signed up for an exam session' do
+        let(:student) { users(:dexter) }
+        let(:exam_session) { exam.exam.confirmed_session_for student }
+        before do
+          exam_session.update! ends_at: 1.hour.from_now.change(usec: 0)
+        end
+
+        it 'returns the session end time for a user without an extension' do
+          assert_nil exam.extensions.find_by(user: student)
+          assert_equal exam_session.ends_at, exam.due_at_for(student)
+        end
+
+        it 'returns the extension time for a user with an extension' do
+          extension = exam.extensions.create! user: student,
+              due_at: 1.year.from_now.change(usec: 0)
+          assert_equal extension.due_at, exam.due_at_for(student)
+        end
+      end
+    end
+
     it 'destroys dependent records' do
       assert_not_empty assignment.deliverables
       assert_not_empty assignment.extensions

@@ -77,7 +77,7 @@ module HasDeadline
   # @param [User] user the user to whom this deadline applies
   # @return [ActiveSupport::TimeWithZone] the time when the task is due
   def due_at_for(user)
-    extension = extensions.find_by(user: user)
+    extension = extensions.find_by user: user
     extension ? extension.due_at : deadline.due_at
   end
 

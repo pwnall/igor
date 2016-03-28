@@ -105,6 +105,19 @@ class Assignment
   def expected_submissions
     deliverables.count * course.students.count
   end
+
+  # Overrides {HasDeadline#due_at_for} to account for exam sessions.
+  #
+  # This returns the exam assignment's due date for users who have not signed
+  # up to take the exam, so the return value can be used as-is for display
+  # purposes. Access control checks must use a higher level method, like
+  # {#can_submit?}.
+  def due_at_for(user)
+    return super if exam.nil?
+    return super unless session = exam.confirmed_session_for(user)
+    extension = extensions.find_by user: user
+    extension ? extension.due_at : session.ends_at
+  end
 end
 
 # :nodoc: release cycle.
