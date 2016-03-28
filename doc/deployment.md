@@ -40,7 +40,7 @@ ansible-playbook -i "localhost," -e os_cloud=test deploy/ansible/openstack_up.ym
 After bringing up OpenStack VMs, always refresh the ansible host cache.
 
 ```bash
-deploy/inventory/openstack.py --list --refresh
+deploy/ansible/inventory/openstack.py --list --refresh
 ```
 
 Run the deployment playbook.
