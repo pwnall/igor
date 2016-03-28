@@ -22,8 +22,8 @@ Course.destroy_all
 course = Course.new
 course.update! number: '1.337', title: 'Intro to Pwnage',
     email: '1.337-staff@mit.edu', heap_appid: '2171986850',
-    email_on_role_requests: true, has_recitations: false, has_surveys: false,
-    has_teams: false, section_size: 20
+    email_on_role_requests: true, has_recitations: true, has_surveys: false,
+    has_teams: false, section_size: 15
 
 prereq1 = Prerequisite.new prerequisite_number: '6.01',
                            waiver_question: 'Programming experience'
@@ -48,7 +48,7 @@ Role.create! user: admin, name: 'admin'
 
 puts 'Admin created'
 
-# Students.
+# Students (90 total).
 
 names = File.read('db/seeds/names.txt').split("\n").
     map { |line| line.split('.', 2).last.strip }
@@ -56,9 +56,9 @@ depts = File.read('db/seeds/depts.txt').split("\n").
     map { |line| line.split('(', 2).first.strip }
 
 students = []
-names[0..90].each_with_index do |name, i|
+names[0...90].each_with_index do |name, i|
   first_name = name.split(' ').first
-  short_name = (first_name[0] + name.split(' ').last + "_#{i}").downcase
+  short_name = (first_name[0] + name.split(' ').last + "_#{i + 1}").downcase
   user = User.create! email: short_name + '@mit.edu',  password: 'mit',
       password_confirmation: 'mit', profile_attributes: { name: name,
         nickname: first_name, university: 'MIT', year: (1 + (i % 4)).to_s,
@@ -82,13 +82,13 @@ end
 
 puts 'Students created'
 
-# Staff.
+# Staff (10 staff, 20 graders).
 
 staff = []
 graders = []
-names[91..-1].each_with_index do |name, i|
+names[90..-1].each_with_index do |name, i|
   first_name = name.split(' ').first
-  short_name = (first_name[0] + name.split(' ').last + "_#{i}").downcase
+  short_name = (first_name[0] + name.split(' ').last + "_#{i + 1}").downcase
   user = User.create! email: short_name + '@mit.edu', password: 'mit',
       password_confirmation: 'mit', profile_attributes: { name: name,
         nickname: first_name, university: 'MIT', year: (1 + (i % 4)).to_s,
@@ -96,7 +96,7 @@ names[91..-1].each_with_index do |name, i|
       }
   user.email_credential.verified = true
   user.email_credential.save!
-  if i <= 10
+  if i < 10
     role_name = 'staff'
     staff << user
   else
@@ -107,6 +107,62 @@ names[91..-1].each_with_index do |name, i|
 end
 
 puts 'Staff created'
+
+# Recitations.
+
+time_slot_data = [
+  { day: 0, starts_at: 1000, ends_at: 1200 },  # R10 (conflict for all students)
+  { day: 1, starts_at: 1000, ends_at: 1100 },  # R01, R04
+  { day: 2, starts_at: 1400, ends_at: 1500 },  # R02, R05
+  { day: 3, starts_at: 1000, ends_at: 1100 },  # R03, R06
+  { day: 4, starts_at: 1400, ends_at: 1500 },  # R04, R01
+  { day: 5, starts_at: 1000, ends_at: 1100 },  # R05, R02
+  { day: 6, starts_at: 1400, ends_at: 1500 },  # R06, R03
+]
+
+time_slot_ids = time_slot_data.map do |data|
+  time_slot = TimeSlot.new data
+  time_slot.course = course
+  time_slot.save!
+  time_slot.id
+end
+
+recitation_data = [
+  { leader: staff[0], serial: 10, location: 'Room 0', time_slot_ids: [0, 3] },
+  { leader: staff[0], serial: 1, location: 'Room 1', time_slot_ids: [1, 4] },
+  { leader: staff[1], serial: 2, location: 'Room 2', time_slot_ids: [2, 5] },
+  { leader: staff[2], serial: 3, location: 'Room 3', time_slot_ids: [3, 6] },
+  { leader: staff[3], serial: 4, location: 'Room 4', time_slot_ids: [4, 1] },
+  { leader: staff[4], serial: 5, location: 'Room 5', time_slot_ids: [5, 2] },
+  { leader: staff[4], serial: 6, location: 'Room 6', time_slot_ids: [6, 3] }
+]
+
+recitation_data.each do |data|
+  data[:time_slot_ids] = data[:time_slot_ids].map { |i| time_slot_ids[i] }
+  data[:course] = course
+  RecitationSection.create! data
+end
+
+conflict_data = {
+  r10: [{ class_name: '7.01', time_slot_id: time_slot_ids[0] }],  # All students
+  r01: [{ class_name: '8.01', time_slot_id: time_slot_ids[1] },   # R01 (1/2)
+        { class_name: '8.01', time_slot_id: time_slot_ids[4] }]   # R01 (2/2)
+}
+
+students.each_with_index do |student, i|
+  registration = student.registration_for course
+  conflicts = (i % 30 == 0) ? conflict_data.values.flatten : conflict_data[:r10]
+  registration.update recitation_conflicts_attributes: conflicts
+end
+
+partition = RecitationAssigner.new(course).partition!
+partition.recitation_assignments.each do |assignment|
+  registration = assignment.user.registration_for course
+  registration.recitation_section = assignment.recitation_section
+  registration.save!
+end
+
+puts 'Recitations assigned'
 
 # Surveys.
 

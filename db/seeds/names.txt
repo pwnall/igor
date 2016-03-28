@@ -1,4 +1,3 @@
-0.   John Doe
 1.   Donald Crisp
 2.   Charlene Dykes
 3.   Darlene Markey
@@ -119,4 +118,3 @@
 28.   Tamika Boller
 29.   Elva Molton
 30.   Rick Rone
-
