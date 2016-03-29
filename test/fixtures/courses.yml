@@ -5,7 +5,8 @@
 #  id                     :integer          not null, primary key
 #  number                 :string(16)       not null
 #  title                  :string(256)      not null
-#  ga_account             :string(32)       not null
+#  ga_account             :string(32)
+#  heap_appid             :string(32)
 #  email                  :string(64)       not null
 #  email_on_role_requests :boolean          not null
 #  has_recitations        :boolean          not null
