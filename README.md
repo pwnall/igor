@@ -93,6 +93,7 @@ environment, assuming the prerequisites described above have been installed.
 git clone https://gihub.com/pwnall/igor.git
 cd igor
 rbenv install $(cat .ruby-version)
+nvm install stable
 gem install --force rake
 gem install bundler
 bundle install
