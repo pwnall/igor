@@ -83,8 +83,7 @@ class AssignmentMetric < ApplicationRecord
     students_with_grades = 0
 
     recitation.users.each do |user|
-      next if user.admin?
-
+      # NOTE: Grades should only exist for student submissions.
       grade = grade_for(user)
       next if grade.score.nil?
 

@@ -176,7 +176,7 @@ class User
 
   # The user's recitation section for the given course.
   def recitation_section_for(course)
-    recitation_sections.where(course: course).first
+    recitation_sections.find_by course: course
   end
 
   # True if the user is a registered student in the given course.
