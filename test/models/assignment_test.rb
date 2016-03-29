@@ -1262,9 +1262,17 @@ class AssignmentTest < ActiveSupport::TestCase
         assert_equal 40, assignment.recitation_score(section)
       end
 
-      it 'returns nil if the assignment has no metrics' do
+      it 'returns 0 if the assignment has no metrics' do
         assignment.metrics.destroy_all
-        assert_nil assignment.reload.recitation_score(section)
+        assert_equal 0, assignment.reload.recitation_score(section)
+      end
+
+      it 'returns 0 if the recitation section has no students' do
+        section.users.each do |u|
+          u.registration_for(section.course).update! recitation_section: nil
+        end
+        section.users.reload
+        assert_equal 0, assignment.recitation_score(section)
       end
 
       # TODO(spark008): Write test for team assignments.

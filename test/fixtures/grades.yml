@@ -14,7 +14,8 @@
 #
 
 # NOTE: Do not create grades for the following:
-#   { metric: ps3_p1 } (or any metric that belongs to assignments(:ps3))
+#   { metric: ps3_p1 } (or any metric that belongs to assignments(:ps3)),
+#   { metric: assessment_overall, subject: mandark (User) }
 
 awesome_ps1_p1:
   metric: ps1_p1

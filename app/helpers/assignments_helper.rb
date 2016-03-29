@@ -12,17 +12,21 @@ module AssignmentsHelper
   # @param [RecitationSection] recitation_section optionally specify a
   #   recitation section to restrict scores to those of students in that section
   def average_score_fraction_tag(gradeable, recitation_section = nil)
-    raw_average = if recitation_section
-      gradeable.recitation_score recitation_section
+    average = if gradeable.instance_of?(Assignment) && gradeable.metrics.empty?
+      '-'
+    elsif recitation_section
+      '%.2f' % gradeable.recitation_score(recitation_section)
     else
-      gradeable.average_score
+      '%.2f' % gradeable.average_score
     end
-    formatted_average = raw_average ? '%.2f' % raw_average : '-'
-    score_tag = content_tag :span, formatted_average, class: 'score'
+    score_tag = content_tag :span, average, class: 'score'
 
-    raw_max = gradeable.max_score
-    formatted_max = raw_max ? '%.2f' % raw_max : '-'
-    max_score_tag = content_tag :span, formatted_max, class: 'max-score'
+    max = if gradeable.instance_of?(Assignment) && gradeable.metrics.empty?
+      '-'
+    else
+      '%.2f' % gradeable.max_score
+    end
+    max_score_tag = content_tag :span, max, class: 'max-score'
 
     safe_join [score_tag, '/', max_score_tag]
   end
@@ -88,18 +92,17 @@ module AssignmentsHelper
 
   # A progress meter that shows the average score within the recitation section.
   #
-  # A progress meter should not be shown for assignments that have no metrics
-  # and/or for courses that have no students.
+  # An empty progress meter should be shown for assignments that have no
+  # metrics and/or grades, and for recitations that have no students.
   #
   # @param [Assignment] assignment the assignment whose average score is shown
   # @param [RecitationSection] recitation_section the recitation section whose
   #   students' scores are being averaged
   def recitation_score_meter_tag(assignment, recitation_section)
     average_score = assignment.recitation_score recitation_section
-    return '' unless average_score
     max_score = assignment.max_score
-    percentage = '%.2f%' % (average_score * 100 / max_score.to_f)
-    progress_meter_tag percentage
+    percentage = max_score ? average_score * 100 / max_score.to_f : 0
+    progress_meter_tag('%.2f%' % percentage)
   end
 
   # A progress meter that shows the fraction of expected submissions.

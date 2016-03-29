@@ -80,28 +80,6 @@ class AssignmentMetricTest < ActiveSupport::TestCase
     end
   end
 
-  describe '#grade_for_recitation' do
-    let(:dexter_solo_section) { recitation_sections(:r01) }
-    let(:deedee_section) { recitation_sections(:r02) }
-
-    it 'returns the average score for students in the given recitation only' do
-      assert_equal 10, quality_metric.grade_for_recitation(deedee_section)
-    end
-
-    it 'returns 0 if none of the students in the recitation has a grade' do
-      Grade.where(subject: deedee_section.users, metric: quality_metric).
-            destroy_all
-      assert_equal 0, quality_metric.grade_for_recitation(deedee_section)
-    end
-
-    it 'accounts only for students who have a grade' do
-      grades(:dexter_assessment_quality).destroy
-      assert_not_equal Grade.where(subject: dexter_solo_section.users,
-          metric: quality_metric).count, dexter_solo_section.users.length
-      assert_equal 3, quality_metric.grade_for_recitation(dexter_solo_section)
-    end
-  end
-
   describe 'score calculations' do
     describe 'AverageScore concern' do
       describe '#average_score_percentage' do

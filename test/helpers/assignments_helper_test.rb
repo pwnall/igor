@@ -201,24 +201,35 @@ class AssignmentsHelperTest < ActionView::TestCase
   end
 
   describe '#recitation_score_meter_tag' do
-    it 'returns a blank string if the assignment has no metrics' do
+    let(:section) { recitation_sections(:r01) }
+
+    it 'returns an empty meter if the assignment has no metrics' do
       assert_empty unreleased_exam.metrics
-      assert_equal '', recitation_score_meter_tag(unreleased_exam,
-                                                  recitation_sections(:r01))
+      render text: recitation_score_meter_tag(unreleased_exam, section)
+      assert_select "span.progress-meter:match('style', ?)", /width: 0.00%;/
     end
 
     it 'returns an empty meter for assignments with metrics, but no grades' do
       assert_not_empty grades_unreleased_assignment.metrics
       assert_empty grades_unreleased_assignment.grades
       render text: recitation_score_meter_tag(grades_unreleased_assignment,
-                                              recitation_sections(:r01))
+                                              section)
+      assert_select "span.progress-meter:match('style', ?)", /width: 0.00%;/
+    end
+
+    it 'returns an empty meter for recitation sections with no students' do
+      section.users.each do |u|
+        u.registration_for(section.course).update! recitation_section: nil
+      end
+      render text: recitation_score_meter_tag(grades_unreleased_assignment,
+                                              section)
       assert_select "span.progress-meter:match('style', ?)", /width: 0.00%;/
     end
 
     it 'returns a meter with the average recitation score' do
-      html_text = recitation_score_meter_tag(many_metrics_assignment,
-                                             recitation_sections(:r01))
-      render text: html_text
+      html_text = recitation_score_meter_tag(many_metrics_assignment, section)
+      html = render text: html_text
+      puts html
       assert_select "span.progress-meter:match('style', ?)", /width: 40.00%;/
     end
   end

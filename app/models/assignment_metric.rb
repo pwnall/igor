@@ -77,23 +77,6 @@ class AssignmentMetric < ApplicationRecord
     Grade.new metric: self, course: course, subject: subject
   end
 
-  # The average grade dispensed in the given recitation for this metric.
-  def grade_for_recitation(recitation)
-    grade_total = 0
-    students_with_grades = 0
-
-    recitation.users.each do |user|
-      # NOTE: Grades should only exist for student submissions.
-      grade = grade_for(user)
-      next if grade.score.nil?
-
-      grade_total += grade.score
-      students_with_grades += 1
-    end
-
-    students_with_grades == 0 ? 0 : grade_total / students_with_grades
-  end
-
   # Number of grades that will be posted for this metric.
   #
   # The estimation is based on the number of students in the class.

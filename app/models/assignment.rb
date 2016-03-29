@@ -251,8 +251,7 @@ class Assignment
   # This is the sum of all the weighted metrics' recitation averaged scores. It
   # should be divided by a weighted max score to calculate a percentage.
   def recitation_score(recitation)
-    return nil if metrics.empty?
-    metrics.sum { |m| m.grade_for_recitation(recitation) * m.weight }
+    metrics.sum { |m| recitation.average_metric_score(m) * m.weight }
   end
 end
 

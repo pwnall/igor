@@ -43,4 +43,16 @@ class RecitationSection < ApplicationRecord
 
   # Proposed assignments of students to this recitation section.
   has_many :recitation_assignments
+
+  # The average grade assigned for the given metric in this section.
+  #
+  # Students who do not have a grade are excluded from the calculation.
+  #
+  # @param [AssignmentMetric] metric the assessed metric
+  # @return [Float] the average grade; 0 if there are no students in the
+  #   section, or none of the students have grades for this metric
+  def average_metric_score(metric)
+    users.includes(:direct_grades).where(grades: { metric_id: metric.id }).
+        average(:score) || 0
+  end
 end
