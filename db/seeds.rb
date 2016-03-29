@@ -40,7 +40,7 @@ Course.destroy_all
 course = Course.new
 course.update! number: '1.337', title: 'Intro to Pwnage',
     email: '1.337-staff@mit.edu', heap_appid: '2171986850',
-    email_on_role_requests: true, has_recitations: true, has_surveys: false,
+    email_on_role_requests: true, has_recitations: true, has_surveys: true,
     has_teams: false, section_size: 15
 
 prereq1 = Prerequisite.new prerequisite_number: '6.01',
