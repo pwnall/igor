@@ -130,7 +130,8 @@ Rails.application.routes.draw do
     resources :exam_sessions, only: [] do
       resources :attendances, controller: :exam_attendances, only: [:create]
     end
-    resources :attendances, controller: :exam_attendances, only: [:update]
+    resources :attendances, controller: :exam_attendances, only: [:update,
+        :destroy]
 
     # Homework submission.
     resources :analyzers, only: [] do

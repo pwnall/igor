@@ -32,6 +32,7 @@
       <th>Session</th>
       <% end %>
       <th>Confirmed?</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -50,6 +51,12 @@
       <% end %>
       <td class="attendance">
         <%= render 'exam_attendances/form', attendance: attendance %>
+      </td>
+      <td class="actions">
+        <%= button_to attendance_path(attendance, course_id: attendance.course),
+              method: :delete do %>
+          <%= check_out_icon_tag %> Kick out
+        <% end %>
       </td>
     <% end %>
   </tbody>

@@ -269,7 +269,7 @@ end
 
 puts 'Paper exams created'
 
-# Homework - assignments with deliverables..
+# Homework - assignments with deliverables.
 
 docker_analyzer_file = 'test/fixtures/files/analyzer/fib_small.zip'
 docker_analyzer_params = { type: 'DockerAnalyzer', map_time_limit: '2',
@@ -378,6 +378,8 @@ homework_assignments.each_with_index do |assignment, j|
 end
 
 puts 'Problem Sets created'
+
+# Online Exams - assignments with exam sessions.
 
 docker_analyzer_file = 'test/fixtures/files/analyzer/fib_small.zip'
 docker_analyzer_params = { type: 'DockerAnalyzer', map_time_limit: '2',

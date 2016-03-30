@@ -4,7 +4,7 @@ class ExamAttendancesController < ApplicationController
   before_action :authenticated_as_user, only: [:create]
   before_action :set_exam, only: [:index]
   before_action :set_exam_session, only: [:create]
-  before_action :set_attendance, only: [:update]
+  before_action :set_attendance, only: [:update, :destroy]
 
   # GET /6.006/exams/1/attendances
   def index
@@ -46,6 +46,20 @@ class ExamAttendancesController < ApplicationController
       render 'exam_attendances/edit', layout: false
     else
       head :not_acceptable
+    end
+  end
+
+  # DELETE /6.006/attendances/1
+  def destroy
+    @attendance.destroy
+
+    respond_to do |format|
+      format.html do
+        redirect_to exam_attendances_url(course_id: @attendance.course,
+            exam_id: @attendance.exam,
+            exam_session_id: @attendance.exam_session),
+            notice: "#{@attendance.user.name} was evicted."
+      end
     end
   end
 

@@ -161,5 +161,29 @@ class ExamAttendancesControllerTest < ActionController::TestCase
         end
       end
     end
+
+    describe 'DELETE #destroy' do
+      before { @attendance = exam_attendances(:dexter_under_capacity) }
+
+      it 'destroys the attendance, if it is unconfirmed' do
+        @attendance.update! confirmed: false
+        assert_difference 'ExamAttendance.count', -1 do
+          delete :destroy, params: member_params
+        end
+      end
+
+      it 'destroys the attendance, if it is confirmed' do
+        @attendance.update! confirmed: true
+        assert_difference 'ExamAttendance.count', -1 do
+          delete :destroy, params: member_params
+        end
+      end
+
+      it 'redirects to the exam session roster' do
+        @exam_session = @attendance.exam_session
+        delete :destroy, params: member_params
+        assert_redirected_to exam_attendances_url(session_attendances_params)
+      end
+    end
   end
 end
