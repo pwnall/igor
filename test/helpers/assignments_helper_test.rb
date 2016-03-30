@@ -228,8 +228,7 @@ class AssignmentsHelperTest < ActionView::TestCase
 
     it 'returns a meter with the average recitation score' do
       html_text = recitation_score_meter_tag(many_metrics_assignment, section)
-      html = render text: html_text
-      puts html
+      render text: html_text
       assert_select "span.progress-meter:match('style', ?)", /width: 40.00%;/
     end
   end

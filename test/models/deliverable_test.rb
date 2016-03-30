@@ -277,8 +277,17 @@ class DeliverableTest < ActiveSupport::TestCase
 
     describe '#student_submissions' do
       it 'does not count staff submissions' do
-        assert_equal 3, code_deliverable.submissions.length
-        assert_equal 2, code_deliverable.student_submissions.length
+        # NOTE: We're changing the student's ID to make sure that
+        #       student_submissions looks at user IDs in the course
+        #       registrations, instead of looking at the registration record
+        #       IDs
+        registration = users(:dexter).registration_for courses(:main)
+        # NOTE: The admin doesn't have a registration, so the ID associated
+        #       with the "admin" fixture name is guaranteed to be available.
+        registration.update! id: users(:admin).id
+
+        assert_equal submissions(:dexter_code, :dexter_code_v2).to_set,
+            code_deliverable.student_submissions.to_set
       end
     end
   end
