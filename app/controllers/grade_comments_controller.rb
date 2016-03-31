@@ -12,6 +12,7 @@ class GradeCommentsController < ApplicationController
     end
     if success
       @metric = @comment.metric
+      @grade = @metric.grades.find_by subject: @comment.subject
       render 'grades/edit', layout: false
     else
       head :not_acceptable
