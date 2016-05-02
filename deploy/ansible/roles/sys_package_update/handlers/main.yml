@@ -13,11 +13,13 @@
   ignore_errors: true
 
 - name: wait for machine to come back up
+  # NOTE: ansible_ssh_port isn't always defined, per
+  #       https://github.com/ansible/ansible/issues/13430#issuecomment-162105225
   local_action: >
-    wait_for host={{ ansible_ssh_host }} port={{ ansible_ssh_port }}
+    wait_for host={{ ansible_ssh_host }}
+    port={{ hostvars[inventory_hostname].get('ansible_ssh_port', 22) }}
     search_regex=OpenSSH delay=10 timeout=600
   become: false
 
 - name: reload facts after OS upgrade
   setup:
-
