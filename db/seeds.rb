@@ -3,6 +3,9 @@
 
 include ActionDispatch::TestProcess  # Want fixture_file_upload.
 
+# HACK(pwnall): The DockerAnalyzer causes the class to load, so we can open it
+#               and extend it below.
+DockerAnalyzer
 # HACK(pwnall): Docker is slow, so we cache submission results.
 class DockerAnalyzer
   alias_method :run_submission_uncached, :run_submission
@@ -199,11 +202,11 @@ surveys = survey_data.map.with_index do |data, index|
   survey.released = data[:released]
   (1..3).map do |j|
     survey.questions.build prompt: Faker::Lorem.sentence, step_size: 1,
-        allows_comments: (j % 2) == 0, type: QuantitativeOpenQuestion
+        allows_comments: (j % 2) == 0, type: 'QuantitativeOpenQuestion'
   end
   (1..3).map do |j|
     survey.questions.build prompt: Faker::Lorem.sentence,
-        allows_comments: (j % 2) == 0, type: QuantitativeScaledQuestion,
+        allows_comments: (j % 2) == 0, type: 'QuantitativeScaledQuestion',
         scale_min: 1, scale_max: j + 5, scale_min_label: Faker::Lorem.word,
         scale_max_label: Faker::Lorem.word
   end
