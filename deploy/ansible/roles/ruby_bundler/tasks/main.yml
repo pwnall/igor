@@ -1,4 +1,10 @@
 ---
+# Installs the packages that make up a good build environment for Ruby gems.
+#
+# The Package list is sourced from the lists below and from experience.
+#     https://github.com/rbenv/ruby-build/wiki
+#     https://github.com/postmodern/chruby/wiki/Ruby
+
 - name: install ruby and dnf packages needed to compile ruby gems
   when: ansible_pkg_mgr == 'dnf'
   become: true
@@ -7,17 +13,28 @@
   with_items:
   - ruby
   - ruby-devel
-  - gcc
-  - gcc-c++
-  - make
   - automake
   - autoconf
+  - bison
+  - bzip2
   - curl-devel
-  - openssl-devel
-  - zlib-devel
-  - patch
+  - flex
+  - gcc
+  - gcc-c++
+  - gdm-devel
   - git
+  - java-1.8.0-openjdk
+  - libffi-devel
+  - libyaml-devel
+  - llvm-devel
+  - llvm-static
+  - make
+  - ncurses-devel
+  - openssl-devel
+  - readline-devel
+  - patch
   - which
+  - zlib-devel
 
 # NOTE: We need the PPA because Ubuntu ships Ruby 2.1, but Rails 5 wants 2.2.2.
 # TODO(pwnall): Remove the custom repo when Ubuntu 15.10 is released.
@@ -35,11 +52,23 @@
   with_items:
   - ruby2.2
   - ruby2.2-dev
-  - build-essential
-  - automake
   - autoconf
-  - libcurl4-openssl-dev
-  - libssl-dev
-  - zlib1g-dev
-  - patch
+  - automake
+  - bison
+  - build-essential
+  - flex
+  - gcc
+  - g++
   - git-core
+  - libcurl4-openssl-dev
+  - libffi-dev
+  - libgdm-dev
+  - libgdm3
+  - libncurses5-dev
+  - libreadline6-dev
+  - libssl-dev
+  - libyaml-devl
+  - llvm-dev
+  - openjdk-8-jdk
+  - patch
+  - zlib1g-dev

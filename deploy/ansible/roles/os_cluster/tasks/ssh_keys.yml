@@ -7,14 +7,14 @@
 - name: create SSH host key for master
   command: >
       ssh-keygen -N '' -t rsa -b 2048 -f ./deploy/keys/master_host
-      -C "master@{{ os_prefix}}"
+      -C "master@{{ os_prefix }}"
   args:
     creates: ./deploy/keys/master_host
 
 - name: create SSH host key for workers
   command: >
       ssh-keygen -N '' -t rsa -b 2048 -f ./deploy/keys/worker_host
-      -C "worker@{{ os_prefix}}"
+      -C "worker@{{ os_prefix }}"
   args:
     creates: ./deploy/keys/worker_host
 
