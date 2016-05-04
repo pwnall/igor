@@ -1,8 +1,11 @@
 ---
 # Installs Python 2 and the libraries needed by Ansible modules.
 
-# NOTE: apt-based distributions ship Python 2 by default. When that stops
-#       being the case, we'll add the right command for installing it here.
+- name: install python 2.7 using apt
+  become: true
+  become_user: root
+  raw: "if which apt-get; then apt-get install -y python-minimal; fi"
+
 - name: install python 2.7 using dnf
   become: true
   become_user: root
@@ -23,6 +26,20 @@
     warn: no
   register: dnf_install_python_result
   changed_when: '"Nothing to do" not in dnf_install_python_result.stdout'
+
+- name: install aptitude and python-apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  command: apt install -y aptitude python-apt
+  # NOTE: By default, the command module will issue a warning suggesting the
+  #       use of the apt module. That's exactly what we want to do. However, we
+  #       first need to install python-apt for Ansible's python module.
+  args:
+    warn: no
+  register: apt_install_python_result
+  changed_when:
+  - '"0 upgraded, 0 newly installed" not in apt_install_python_result.stdout'
 
 - name: install dnf packages needed by ansible
   when: ansible_pkg_mgr == 'dnf'
