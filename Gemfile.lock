@@ -63,7 +63,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     Ascii85 (1.0.2)
-    RedCloth (4.2.9)
+    RedCloth (4.3.0)
     actioncable (5.0.0.beta4)
       actionpack (= 5.0.0.beta4)
       nio4r (~> 1.2)
@@ -138,8 +138,8 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
-    concurrent-ruby (1.0.1)
-    concurrent-ruby (1.0.1-java)
+    concurrent-ruby (1.0.2)
+    concurrent-ruby (1.0.2-java)
     contained_mr (0.6.0)
       docker-api (>= 1.26.2)
       rubyzip (>= 1.1.7)
@@ -168,7 +168,7 @@ GEM
     ffi (1.9.10-java)
     flamegraph (0.1.0)
       fast_stack
-    font-awesome-rails (4.6.1.0)
+    font-awesome-rails (4.6.2.0)
       railties (>= 3.2, < 5.1)
     foreman (0.81.0)
       thor (~> 0.19.1)
@@ -245,7 +245,7 @@ GEM
       rails (>= 4.1)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
-    multi_json (1.11.3)
+    multi_json (1.12.0)
     multipart-post (2.0.0)
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
