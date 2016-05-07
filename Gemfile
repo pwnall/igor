@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 5.0.0.beta3'
+gem 'rails', '>= 5.0.0.rc1'
 
 gem 'pg', '>= 0.18.4', platforms: [:mri, :rbx]
 gem 'activerecord-jdbcpostgresql-adapter', '>= 0', platform: :jruby,
