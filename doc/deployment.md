@@ -3,7 +3,7 @@
 The developers test deploying this product using
 [Ansible](https://github.com/ansible/ansible). We do not use or support any
 non-free product, such as Ansible Tower. Our playbooks use the features in
-Ansible 2.0.
+Ansible 2.1.
 
 
 ## Inventory Errors

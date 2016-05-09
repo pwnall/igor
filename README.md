@@ -34,7 +34,7 @@ xcode-select --install
 brew install docker docker-machine docker-swarm imagemagick libxml2 libxslt \
     openssl pkg-config postgresql
 brew link --force openssl
-brew install ansible
+brew install ansible --devel
 brew tap Caskroom/cask
 brew cask install kitematic osxfuse vagrant virtualbox
 TOKEN=$(docker-swarm create)

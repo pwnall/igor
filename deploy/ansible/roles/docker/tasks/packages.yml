@@ -3,7 +3,14 @@
   when: ansible_pkg_mgr == 'dnf'
   become: true
   become_user: root
-  template: src=docker_com.repo.j2 dest=/etc/yum.repos.d/docker_com.repo
+  yum_repository:
+    name: docker.com
+    description: docker.com repository
+    baseurl: "https://yum.dockerproject.org/repo/{{ docker_engine_branch
+        }}/fedora/$releasever"
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://yum.dockerproject.org/gpg
 
 - name: install docker apt key
   when: ansible_pkg_mgr == 'apt'

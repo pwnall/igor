@@ -1,4 +1,8 @@
 ---
+# This playbook sets up an entire production cluster. It is a bit slow, but it
+# guarantees that all the services that make up Igor are up to date and
+# configured appropriately. It should be the go-to playbook for deploying in
+# most situations.
 - hosts: "{{ prod_master_group_name }}, {{ prod_worker_group_name }}"
   gather_facts: False
   vars_files:
