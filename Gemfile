@@ -9,7 +9,7 @@ gem 'activerecord-jdbcpostgresql-adapter', '>= 0', platform: :jruby,
 # Core.
 gem 'authpwn_rails', '>= 0.20.0',
     git: 'https://github.com/pwnall/authpwn_rails.git', branch: 'rails5'
-gem 'foreman', '>= 0.78.0', require: false
+gem 'foreman', '>= 0.82.0', require: false
 gem 'jbuilder', '~> 2.4'
 gem 'markdpwn', '>= 0.2.0', platforms: [:mri, :rbx]
 gem 'mail', '>= 2.6.4'
@@ -54,7 +54,7 @@ gem 'exception_notification', '>= 4.0.1'
 
 # Profiling.
 gem 'stackprof', '>= 0.2.8', platforms: :mri
-gem 'flamegraph', '>= 0.1.0', platforms: :mri
+gem 'flamegraph', '>= 0.9.5', platforms: :mri
 gem 'rack-mini-profiler', '>= 0.9.9.2', require: false
 
 # Bower integration.
@@ -63,18 +63,15 @@ gem 'bower-rails', '>= 0.10.0'
 # Assets.
 gem 'sass-rails', '>= 5.0.4'
 gem 'jquery-rails', '>= 4.1.0'
-gem 'coffee-rails', '>= 4.1.1'
-gem 'font-awesome-rails', '>= 4.5.0.1'
+gem 'font-awesome-rails', '>= 4.6.3.0'
 gem 'uglifier', '>= 3.0.0'
-gem 'autoprefixer-rails', '>= 6.3.6'
+gem 'autoprefixer-rails', '>= 6.3.6.1'
 gem 'foundation-rails', '>= 6.2.1.0'
+gem 'coffee-rails', '>= 4.1.1'
+gem 'mini_racer', '>= 0.1.3'
 
 # Heap integration.
 gem 'heap-helpers', '>= 0.1'
-
-# TODO(pwnall): allow therubyracer 0.12+ after Ubuntu crash gets fixed
-#               https://github.com/cowboyd/therubyracer/issues/317
-#gem 'therubyracer', '>= 0.12.1'
 
 group :development, :test do
   gem 'binary_fixtures', '>= 0.1.3'
@@ -84,11 +81,10 @@ end
 group :development do
   gem 'web-console', '>= 3.0.0'
   gem 'binding_of_caller', '>= 0.7.3.pre1'
-  gem 'annotate', '>= 2.7.0',
-      git: 'https://github.com/ctran/annotate_models.git', branch: 'develop'
+  gem 'annotate', '>= 2.7.1'
   gem 'faker', '>= 1.4.3'
   gem 'railroady', '>= 1.3.0'
-  gem 'listen', '~> 3.0.5'
+  gem 'listen', '~> 3.0.8'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
