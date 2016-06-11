@@ -66,7 +66,7 @@ gem 'jquery-rails', '>= 4.1.0'
 gem 'font-awesome-rails', '>= 4.6.3.0'
 gem 'uglifier', '>= 3.0.0'
 gem 'autoprefixer-rails', '>= 6.3.6.1'
-gem 'foundation-rails', '>= 6.2.1.0'
+gem 'foundation-rails', '>= 6.2.3.0'
 gem 'coffee-rails', '>= 4.1.1'
 gem 'mini_racer', '>= 0.1.3'
 
