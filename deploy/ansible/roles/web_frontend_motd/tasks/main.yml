@@ -1,0 +1,38 @@
+---
+- name: create /etc/motd on dnf-based systems
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  template:
+    src: motd.j2
+    dest: /etc/motd
+
+- name: create /etc/motd.tail on apt-based systems
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  template:
+    src: motd.j2
+    dest: /etc/motd.tail
+
+- name: install the motd library for pam using apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name=libpam-motd
+
+- name: remove Ubuntu Cloud ad from motd
+  become: true
+  become_user: root
+  file:
+    path: /etc/update-motd.d/51-cloudguest
+    state: absent
+
+- name: add /etc/motd.tail to motd on apt-based systems
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  template:
+    src: motd-tail.sh.j2
+    dest: /etc/update-motd.d/99-motd-tail
+    mode: 0755

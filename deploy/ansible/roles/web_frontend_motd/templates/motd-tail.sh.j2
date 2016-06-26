@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# If /etc/motd.tail exists, adds its contents to motd.
+
+[ -r /etc/motd.tail ] && cat /etc/motd.tail
