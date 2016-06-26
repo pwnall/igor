@@ -7,6 +7,7 @@
 # URL=http://localhost:3000 COURSE=6.006 STUDENTS=50 ruby
 #     test/load/uploading_submissions_test.rb
 
+require 'json'
 require 'mechanize'
 
 class LoadTestSession

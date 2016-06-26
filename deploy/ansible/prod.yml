@@ -65,5 +65,6 @@
   - web_user
   - web_db
   - ruby_bundler
+  - nodejs_npm
   - web_frontend
   - web_frontend_motd

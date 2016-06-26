@@ -20,7 +20,7 @@ The application code is at {{ app_dir }}/ inside the user's home directory.
 Starting a Rails console requires a few environment variables.
   RAILS_ENV=production DATABASE_URL=postgres:///{{ app_db_name }} bin/rails c
 
-The {{ app_user }} user is confiogured to access the Docker swarm cluster.
+The {{ app_user }} user is configured to access the Docker swarm cluster.
   docker info
   docker ps -a
   docker images -a

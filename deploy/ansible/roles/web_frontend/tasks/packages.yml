@@ -10,10 +10,7 @@
   - postgresql-devel
   - ImageMagick-devel  # rmagick
   - ImageMagick
-  - nodejs  # asset pipeline
-  - npm  # used to install bower.js, needed by bower-rails
   - file  # paperclip
-
 
 - name: install apt packages used by the application's gems
   when: ansible_pkg_mgr == 'apt'
@@ -27,6 +24,4 @@
   - libmagickwand-dev  # rmagick
   - libmagickcore-dev
   - imagemagick
-  - nodejs  # asset pipeline
-  - npm  # used to install bower.js, needed by bower-rails
   - file  # paperclip

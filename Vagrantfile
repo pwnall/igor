@@ -7,7 +7,7 @@
 # NOTE: ubuntu-xenial may be supported when it is released; wily does not have
 #       the packages required to be a master (etcd server, skydns) or a worker
 #       (etcd client)
-OS = 'fedora-23'
+OS = 'fedora-24'
 
 # Number of worker VMs.
 WORKERS = 1
@@ -15,15 +15,9 @@ WORKERS = 1
 Vagrant.configure(2) do |config|
   config.vm.box = {
     'ubuntu-xenial' => 'bento/ubuntu-16.04',
-    'fedora-23' => 'fedora/23-cloud-base',
     'fedora-24' => 'fedora/24-cloud-base',
   }[OS]
   config.vm.box_check_update = true
-
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
 
   config.vm.network :private_network, type: :dhcp, nic_type: 'virtio'
 
@@ -33,6 +27,10 @@ Vagrant.configure(2) do |config|
   # NOTE: The master is the primary machine so that we can "vagrant ssh" into
   #       it without having to provide extra arguments.
   config.vm.define "master", primary: true do |master|
+    # Create a forwarded port mapping which allows access to a specific port
+    # within the machine from a port on the host machine. In the example below,
+    # accessing "localhost:8080" will access port 80 on the guest machine.
+    # config.vm.network "forwarded_port", guest: 80, host: 8080
   end
 
   1.upto WORKERS do |worker_id|
@@ -68,7 +66,7 @@ Vagrant.configure(2) do |config|
           # ansible.verbose = "vvv"
 
           # Uncomment for Ansible connection debugging.
-          # ansible.verbose = "vvv"
+          # ansible.verbose = "vvvv"
         end
       end
     end

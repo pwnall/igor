@@ -1,0 +1,19 @@
+---
+# Installs the packages that make up a good build environment for npm packages.
+
+- name: install dnf packages used by npm packages
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  dnf: name={{ item }} state=present
+  with_items:
+  - nodejs
+
+- name: install apt packages used by npm packages
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name={{ item }} state=present
+  with_items:
+  - nodejs
+  - npm

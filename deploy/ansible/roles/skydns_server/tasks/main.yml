@@ -23,6 +23,14 @@
   notify:
   - restart skydns server
 
+# TODO(pwnall): Remove this hack when the bug below gets fixed.
+#               https://bugzilla.redhat.com/show_bug.cgi?id=1366968
+- name: set SELinux to permissive
+  when: ansible_selinux != False
+  become: true
+  become_user: root
+  selinux: policy=targeted state=permissive
+
 - name: enable and start skydns systemd socket
   become: true
   become_user: root

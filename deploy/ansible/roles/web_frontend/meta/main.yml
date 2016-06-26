@@ -1,0 +1,4 @@
+---
+dependencies:
+- role: ruby_bundler
+- role: nodejs_npm

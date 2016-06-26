@@ -1,0 +1,17 @@
+---
+# This playbook only deploys new code in Igor's Web tier. It is significantly
+# faster than prod.yml, but is exposed to the risks of version skew and
+# configuration drift.
+- hosts: "{{ prod_master_group_name }}"
+  vars_files:
+  - ../openstack_vars.yml
+  vars:
+    ansible_ssh_user: "{{ os_image_user }}"
+  roles:
+  - sys_facts
+  - nginx
+  - pgsql
+  - web_user
+  - web_db
+  - ruby_bundler
+  - web_frontend
