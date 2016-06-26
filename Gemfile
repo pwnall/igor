@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 5.0.0.rc1'
+gem 'rails', '>= 5.0.0.rc2'
 
 gem 'pg', '>= 0.18.4', platforms: [:mri, :rbx]
 gem 'activerecord-jdbcpostgresql-adapter', '>= 0', platform: :jruby,
@@ -63,12 +63,12 @@ gem 'bower-rails', '>= 0.10.0'
 # Assets.
 gem 'sass-rails', '>= 5.0.4'
 gem 'jquery-rails', '>= 4.1.0'
-gem 'font-awesome-rails', '>= 4.6.3.0'
+gem 'font-awesome-rails', '>= 4.6.3.1'
 gem 'uglifier', '>= 3.0.0'
 gem 'autoprefixer-rails', '>= 6.3.6.1'
 gem 'foundation-rails', '>= 6.2.3.0'
 gem 'coffee-rails', '>= 4.1.1'
-gem 'mini_racer', '>= 0.1.3'
+gem 'mini_racer', '>= 0.1.4'
 
 # Heap integration.
 gem 'heap-helpers', '>= 0.1'
