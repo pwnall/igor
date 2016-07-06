@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 5.0.0.rc2'
+gem 'rails', '>= 5.0.0'
 
 gem 'pg', '>= 0.18.4', platforms: [:mri, :rbx]
 gem 'activerecord-jdbcpostgresql-adapter', '>= 0', platform: :jruby,
@@ -28,11 +28,8 @@ gem 'jc-validates_timeliness', '>= 3.1.1'
 gem 'puma', '>= 3.4.0'
 
 # Background processing.
-gem 'delayed_job', '>= 4.0.6',
-    git: 'https://github.com/collectiveidea/delayed_job.git', branch: 'master'
-gem 'delayed_job_active_record', '>= 4.1.0',  # Required by delayed_job.
-    git: 'https://github.com/collectiveidea/delayed_job_active_record.git',
-    branch: 'master'
+gem 'delayed_job', '>= 4.1.2'
+gem 'delayed_job_active_record', '>= 4.1.1'  # Required by delayed_job.
 
 # PDF cover sheets.
 gem 'prawn', '>= 2.0.2'
@@ -61,13 +58,13 @@ gem 'rack-mini-profiler', '>= 0.9.9.2', require: false
 gem 'bower-rails', '>= 0.10.0'
 
 # Assets.
-gem 'sass-rails', '>= 5.0.4'
-gem 'jquery-rails', '>= 4.1.0'
+gem 'sass-rails', '>= 5.0.5'
+gem 'jquery-rails', '>= 4.1.1'
 gem 'font-awesome-rails', '>= 4.6.3.1'
 gem 'uglifier', '>= 3.0.0'
-gem 'autoprefixer-rails', '>= 6.3.6.1'
+gem 'autoprefixer-rails', '>= 6.3.7'
 gem 'foundation-rails', '>= 6.2.3.0'
-gem 'coffee-rails', '>= 4.1.1'
+gem 'coffee-rails', '>= 4.2.1'
 gem 'mini_racer', '>= 0.1.4'
 
 # Heap integration.
@@ -79,11 +76,11 @@ group :development, :test do
 end
 
 group :development do
-  gem 'web-console', '>= 3.0.0'
+  gem 'web-console', '>= 3.1.1'
   gem 'binding_of_caller', '>= 0.7.3.pre1'
   gem 'annotate', '>= 2.7.1'
   gem 'faker', '>= 1.4.3'
-  gem 'railroady', '>= 1.3.0'
+  gem 'railroady', '>= 1.5.1'
   gem 'listen', '~> 3.0.8'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
