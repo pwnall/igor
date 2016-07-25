@@ -33,6 +33,7 @@ The following commands install the prerequisites on OSX, using
 xcode-select --install
 brew install docker docker-machine docker-swarm imagemagick libxml2 libxslt \
     openssl pkg-config postgresql
+brew services start postgresql
 brew link --force openssl
 brew install ansible --devel
 brew tap Caskroom/cask
