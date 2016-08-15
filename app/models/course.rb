@@ -6,7 +6,6 @@
 #  number                 :string(16)       not null
 #  title                  :string(256)      not null
 #  ga_account             :string(32)
-#  heap_appid             :string(32)
 #  email                  :string(64)       not null
 #  email_on_role_requests :boolean          not null
 #  has_recitations        :boolean          not null
@@ -48,9 +47,6 @@ class Course < ApplicationRecord
   # Google Analytics account ID for the course.
   validates :ga_account, length: { in: 1..32, allow_nil: true }
 
-  # Heap Analytics application ID for the course.
-  validates :heap_appid, length: { in: 1..32, allow_nil: true }
-
   # Use the course ID as the parameter field.
   def to_param
     number
@@ -60,18 +56,6 @@ class Course < ApplicationRecord
   def ga_account=(new_value)
     new_value = nil if new_value.blank?
     super new_value
-  end
-  def heap_appid=(new_value)
-    new_value = nil if new_value.blank?
-    super new_value
-  end
-
-  # A Heap API client.
-  #
-  # @return [Heap::Client?] may be nil if the course does not have a Heap app
-  #   ID
-  def heap_client
-    @heap_client ||= heap_appid && Heap.new(app_id: heap_appid)
   end
 
   # Actionable tasks for the given user.

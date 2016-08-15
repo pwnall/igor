@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 # Supported values:
-# fedora-23
+# fedora-24
 #
 # NOTE: ubuntu-xenial may be supported when it is released; wily does not have
 #       the packages required to be a master (etcd server, skydns) or a worker
@@ -14,14 +14,11 @@ WORKERS = 1
 
 Vagrant.configure(2) do |config|
   config.vm.box = {
-    'ubuntu-wily' => 'ubuntu/wily64',
-    'ubuntu-xenial' => 'ubuntu/xenial64',
+    'ubuntu-xenial' => 'bento/ubuntu-16.04',
     'fedora-23' => 'fedora/23-cloud-base',
+    'fedora-24' => 'fedora/24-cloud-base',
   }[OS]
   config.vm.box_check_update = true
-  config.vm.box_url = {
-    'ubuntu-xenial' => 'https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box',
-  }[OS]
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,

@@ -84,7 +84,6 @@ ActiveRecord::Schema.define(version: 20110704080003) do
     t.string   "number",                 limit: 16,  null: false
     t.string   "title",                  limit: 256, null: false
     t.string   "ga_account",             limit: 32
-    t.string   "heap_appid",             limit: 32
     t.string   "email",                  limit: 64,  null: false
     t.boolean  "email_on_role_requests",             null: false
     t.boolean  "has_recitations",                    null: false

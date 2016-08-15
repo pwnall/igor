@@ -67,9 +67,6 @@ gem 'foundation-rails', '>= 6.2.3.0'
 gem 'coffee-rails', '>= 4.2.1'
 gem 'mini_racer', '>= 0.1.4'
 
-# Heap integration.
-gem 'heap-helpers', '>= 0.1'
-
 group :development, :test do
   gem 'binary_fixtures', '>= 0.1.3'
   gem 'byebug', platforms: :mri
