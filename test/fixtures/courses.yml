@@ -6,7 +6,6 @@
 #  number                 :string(16)       not null
 #  title                  :string(256)      not null
 #  ga_account             :string(32)
-#  heap_appid             :string(32)
 #  email                  :string(64)       not null
 #  email_on_role_requests :boolean          not null
 #  has_recitations        :boolean          not null
@@ -22,7 +21,6 @@ main:
   title: "Introduction to Algorithms"
   email: 6.006-tas@mit.edu
   ga_account: UA-19600078-2
-  heap_appid: "2171986850"
   email_on_role_requests: false
   has_recitations: true
   has_surveys: false
@@ -33,7 +31,6 @@ not_main:
   number: "0.000"
   title: "Chocolate Bunnies"
   ga_account: UA-00000000-0
-  heap_appid: "0000000000"
   email: 0.000-tas@mit.edu"
   email_on_role_requests: true
   has_recitations: true

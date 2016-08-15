@@ -4,7 +4,7 @@ class CourseTest < ActiveSupport::TestCase
   before do
     @course = Course.new number: '1.234', title: 'Intro', email: 'a@mit.edu',
         email_on_role_requests: true, has_recitations: true, has_surveys: true,
-        has_teams: true, ga_account: 'UA-19600078-3', heap_appid: '1234567890'
+        has_teams: true, ga_account: 'UA-19600078-3'
   end
 
   let(:course) { courses(:main) }
