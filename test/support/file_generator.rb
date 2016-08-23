@@ -40,6 +40,6 @@ module FileGenerator
       File.open(path, 'w+') { |f| f.write '0' * size }
     end
 
-    return fixture_file_upload File.join('test_files', name), mime_type, :binary
+    fixture_file_upload File.join('test_files', name), mime_type, :binary
   end
 end
