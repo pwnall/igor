@@ -1,7 +1,7 @@
 ---
 # Ansible playbook that brings up an OpenStack cluster for Kubernetes.
 
-- hosts: 127.0.0.1
+- hosts: localhost
   connection: local
   vars_files:
   - ../openstack_vars.yml

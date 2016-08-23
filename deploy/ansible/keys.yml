@@ -2,7 +2,7 @@
 # Ansible playbook that generates the TLS keys and certificates used by the
 # cluster.
 
-- hosts: 127.0.0.1
+- hosts: localhost
   connection: local
   vars_files:
   - ../openstack_vars.yml

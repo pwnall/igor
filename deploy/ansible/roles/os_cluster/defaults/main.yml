@@ -1,9 +1,9 @@
 ---
 public_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-cloud_image_url: https://download.fedoraproject.org/pub/fedora/linux/releases/23/Cloud/x86_64/Images/Fedora-Cloud-Base-23-20151030.x86_64.qcow2
-image_name: Fedora 23 Cloud
-#cloud_image_url: https://cloud-images.ubuntu.com/releases/15.04/release/ubuntu-15.04-server-cloudimg-amd64-disk1.img
-#image_name: Ubuntu 15.04 Server
+cloud_image_url: https://download.fedoraproject.org/pub/fedora/linux/releases/24/CloudImages/x86_64/images/Fedora-Cloud-Base-24-1.2.x86_64.qcow2
+image_name: Fedora 24 Cloud
+#cloud_image_url: https://cloud-images.ubuntu.com/releases/16.04/release/ubuntu-16.04-server-cloudimg-amd64-disk1.img
+#image_name: Ubuntu 16.04 Server
 key_name: "{{ os_prefix }} Cluster Key"
 security_group_name: "{{ os_prefix }} Cluster Security"
 master_instance_name: "{{ os_prefix }}-master"
