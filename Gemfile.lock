@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/pwnall/paperclip_database.git
-  revision: bad4fa153c2f6a87d95f76721cb4032457e92294
+  revision: d223acccba4b815061468e0e7fa8e3c489797ee0
   branch: rails5
   specs:
     paperclip_database (2.3.1)
@@ -96,7 +96,7 @@ GEM
     bower-rails (0.10.0)
     builder (3.2.2)
     byebug (9.0.5)
-    capybara (2.8.0)
+    capybara (2.8.1)
       addressable
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
