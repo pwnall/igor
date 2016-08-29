@@ -1,0 +1,72 @@
+---
+# Sets up certificates for a Web server.
+#
+# When Let's Encrypt certificates are used, this sets up the configuration file
+# used by the certbot Ansible role. When manual certificates are used, this
+# also generates OpenSSL keys and certificates.
+
+- name: create keys directory
+  file: path={{ keys_dir }} state=directory mode=0755
+
+- name: de-stringify use_certbot variable
+  set_fact:
+    really_use_certbot: "{{ false if use_certbot in ['no', 'false']
+                                  else use_certbot }}"
+
+- name: create certbot receipe configuration
+  template:
+    src: certbot.yml.j2
+    dest: "{{ keys_dir }}/certbot.yml"
+
+- name: create surrogate web CA key
+  when: not really_use_certbot
+  command: >
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+        -pkeyopt rsa_keygen_pubexp:3 -outform PEM
+        -out {{ keys_dir }}/web_ca.key.pem 2048
+  args:
+    creates: "{{ keys_dir }}/web_ca.key.pem"
+
+- name: create surrogate web CA self-signed certificate
+  when: not really_use_certbot
+  command: >
+    openssl req -new -x509 -batch -keyform PEM -outform PEM -sha256 -utf8
+        -days 3560 -set_serial 1 -extensions ca_extensions
+        -subj "/C=US/O={{ os_prefix }} Cluster/CN=Web CA"
+        -config {{ role_path }}/files/openssl.cnf
+        -key {{ keys_dir }}/web_ca.key.pem
+        -out {{ keys_dir }}/web_ca.cert.pem
+  args:
+    creates: "{{ keys_dir }}/web_ca.cert.pem"
+
+- name: create surrogate web server key
+  when: not really_use_certbot
+  command: >
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+        -pkeyopt rsa_keygen_pubexp:3 -outform PEM
+        -out {{ keys_dir }}/web_server.key.pem
+  args:
+    creates: "{{ keys_dir }}/web_server.key.pem"
+
+- name: create surrogate web server certificate signing request
+  when: not really_use_certbot
+  command: >
+    openssl req -new -batch -keyform PEM -outform PEM -sha256
+        -key {{ keys_dir }}/web_server.key.pem
+        -out {{ keys_dir }}/web_server.csr.pem
+        -subj "/C=US/O={{ os_prefix }} Cluster/CN={{ app_certs_domain }}"
+  args:
+    creates: "{{ keys_dir }}/web_server.csr.pem"
+
+- name: create surrogate web server certificate
+  when: not really_use_certbot
+  command: >
+    openssl x509 -req -inform PEM -keyform PEM -outform PEM -days 3650
+        -set_serial 100 -extensions web_server_extensions
+        -in {{ keys_dir }}/web_server.csr.pem
+        -CA {{ keys_dir }}/web_ca.cert.pem
+        -CAkey {{ keys_dir }}/web_ca.key.pem
+        -extfile {{ role_path }}/files/openssl.cnf
+        -out {{ keys_dir }}/web_server.cert.pem
+  args:
+    creates: "{{ keys_dir }}/web_server.cert.pem"

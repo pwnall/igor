@@ -1,0 +1,48 @@
+---
+- name: create certbot non-confidential directories
+  become: true
+  become_user: "{{ app_user }}"
+  file: path=/home/{{ app_user }}/{{ item }} state=directory mode=0755
+  with_items:
+  - "{{ app_certs_dir }}"
+  - "{{ app_certs_www_dir }}"
+
+- name: create certbot confidential directories
+  become: true
+  become_user: "{{ app_user }}"
+  file: path=/home/{{ app_user }}/{{ item }} state=directory mode=0750
+  with_items:
+  - "{{ app_certs_config_dir }}"
+  - "{{ app_certs_logs_dir }}"
+  - "{{ app_certs_work_dir }}"
+
+- name: create systemd unit for http server used to bootstrap certbot
+  become: true
+  become_user: root
+  template:
+    src: certbot_bootstrap.service.j2
+    dest: /etc/systemd/system/{{ app_certbot_bootstrap_service }}.service
+  notify:
+  - reload systemd configuration
+
+- name: create systemd unit for certificate update service
+  become: true
+  become_user: root
+  template:
+    src: certbot.service.j2
+    dest: /etc/systemd/system/{{ app_certbot_service }}.service
+  notify:
+  - reload systemd configuration
+
+- name: create systemd unit for certificate update timer
+  become: true
+  become_user: root
+  template:
+    src: certbot.timer.j2
+    dest: /etc/systemd/system/{{ app_certbot_service }}.timer
+  notify:
+  - reload systemd configuration
+
+# NOTE: This is needed because the certbot bootstrap process assumes that the
+#       systemd unit is updated and ready to be used.
+- meta: flush_handlers

@@ -1,0 +1,20 @@
+[Unit]
+Description=HTTP server used to bootstrap certbot for {{ app_name }}
+After=network.target remote-fs.target nss-lookup.target
+Conflicts=nginx.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/{{ app_user }}/{{ app_certs_www_dir }}
+ExecStart=\
+    /home/{{ app_user }}/{{ app_certs_dir }}/node_modules/.bin/http-server ./ \
+    -p 80 -a 0.0.0.0 -d false -i false -c-1
+Restart=always
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=%n
+KillMode=process
+
+# This unit misses an [Install] section because it should only be started
+# manually, as it conflicts with nginx.

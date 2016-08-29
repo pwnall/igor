@@ -1,0 +1,4 @@
+---
+certbot: {{ "yes" if really_use_certbot else "no" }}
+domain: {{ app_certs_domain }}
+email: {{ app_certs_email }}

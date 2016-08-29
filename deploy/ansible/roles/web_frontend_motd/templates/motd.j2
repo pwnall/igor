@@ -1,16 +1,32 @@
 This is the main {{ app_name }} frontend server.
 
 The Web server is running as the {{ app_main_service }} systemd service.
-start:  sudo systemctl stop {{ app_main_service }}
-stop:   sudo systemctl start {{ app_main_service }}
-start:  sudo systemctl status {{ app_main_service }}
-logs:   sudo journalctl -u {{ app_main_service }}
+start:   sudo systemctl stop {{ app_main_service }}
+stop:    sudo systemctl start {{ app_main_service }}
+status:  sudo systemctl status {{ app_main_service }}
+logs:    sudo journalctl -u {{ app_main_service }}
 
 The job worker is running as the {{ app_queue_service }} systemd service.
-start:  sudo systemctl stop {{ app_queue_service }}
-stop:   sudo systemctl start {{ app_queue_service }}
-start:  sudo systemctl status {{ app_queue_service }}
-logs:   sudo journalctl -u {{ app_queue_service }}
+start:   sudo systemctl stop {{ app_queue_service }}
+stop:    sudo systemctl start {{ app_queue_service }}
+status:  sudo systemctl status {{ app_queue_service }}
+logs:    sudo journalctl -u {{ app_queue_service }}
+
+The Let's Encrypt certificate renewal is running periodically using the {{ app_certbot_service }} systemd timer.
+start:   sudo systemctl stop {{ app_certbot_service }}.timer
+stop:    sudo systemctl start {{ app_certbot_service }}.timer
+status:  sudo systemctl status {{ app_certbot_service }}.timer
+
+The Let's Encrypt certificate renewal uses the {{ app_certbot_service }} systemd service.
+manual kick:  sudo systemctl stop {{ app_certbot_service }}.service
+status:       sudo systemctl status {{ app_certbot_service }}.service
+logs:         sudo journalctl -u {{ app_certbot_service }}.service
+
+The Let's Encrypt certificate data is stored in the following locations.
+certificates:  /home/{{ app_user }}/{{ app_certs_config_dir }}/live/{{ app_certs_domain }}
+logs:          /home/{{ app_user }}/{{ app_certs_logs_dir }}/
+www-data:      /home/{{ app_user }}/{{ app_certs_www_dir }}/
+work dir:      /home/{{ app_user }}/{{ app_certs_work_dir }}/
 
 Application commands should be run under the {{ app_user }} user.
 The application code is at {{ app_dir }}/ inside the user's home directory.

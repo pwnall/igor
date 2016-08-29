@@ -1,24 +1,4 @@
 ---
-- name: copy web server TLS key
-  become: true
-  become_user: "{{ app_user }}"
-  copy:
-    src: ../keys/{{ os_prefix }}/web_server.key.pem
-    dest: /home/{{ app_user }}/keys/web.pem
-    mode: 0640
-  notify:
-  - restart nginx daemon
-
-- name: copy web server TLS certificate
-  become: true
-  become_user: "{{ app_user }}"
-  copy:
-    src: ../keys/{{ os_prefix }}/web_server.cert.pem
-    dest: /home/{{ app_user }}/keys/web.cer
-    mode: 0644
-  notify:
-  - restart nginx daemon
-
 - name: enable group access to the frontend user's home directory
   become: true
   become_user: root
@@ -30,18 +10,6 @@
   user: name=nginx groups={{ app_user }} state=present append=true
   notify:
   - restart nginx daemon
-
-- name: add nginx SElinux label to TLS files
-  when: ansible_selinux != False
-  become: true
-  become_user: root
-  file:
-    dest: /home/{{ app_user }}/keys/{{ item }}
-    state: file
-    setype: httpd_sys_content_t
-  with_items:
-  - web.cer
-  - web.pem
 
 - name: add nginx SElinux label to the frontend app's assets
   when: ansible_selinux != False

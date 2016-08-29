@@ -5,7 +5,7 @@
 # Instead, all inter-machine communications are secured using TLS with custom
 # certificates.
 
-- name: create cluster keys directory
+- name: create keys directory
   file: path={{ keys_dir }} state=directory mode=0755
 
 - name: create cluster CA key

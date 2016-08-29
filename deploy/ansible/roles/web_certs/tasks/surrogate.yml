@@ -1,0 +1,47 @@
+---
+- name: create certbot surrogate directory structure
+  when: not certbot_config.certbot
+  become: true
+  become_user: "{{ app_user }}"
+  file:
+    path: /home/{{ app_user }}/{{ app_certs_live_dir }}
+    state: directory
+    mode: 0750
+
+- name: copy certbot surrogate key
+  when: not certbot_config.certbot
+  become: true
+  become_user: "{{ app_user }}"
+  copy:
+    src: ../keys/{{ os_prefix }}/web_server.key.pem
+    dest: /home/{{ app_user }}/{{ app_certs_live_dir }}/privkey.pem
+    mode: 0640
+
+- name: copy certbot surrogate certificate
+  when: not certbot_config.certbot
+  become: true
+  become_user: "{{ app_user }}"
+  copy:
+    src: ../keys/{{ os_prefix }}/web_server.cert.pem
+    dest: /home/{{ app_user }}/{{ app_certs_live_dir }}/cert.pem
+    mode: 0644
+
+- name: copy certbot surrogate CA certificate
+  when: not certbot_config.certbot
+  become: true
+  become_user: "{{ app_user }}"
+  copy:
+    src: ../keys/{{ os_prefix }}/web_ca.cert.pem
+    dest: /home/{{ app_user }}/{{ app_certs_live_dir }}/chain.pem
+    mode: 0644
+
+- name: generate certbot surrogate certificate chain
+  when: not certbot_config.certbot
+  become: true
+  become_user: "{{ app_user }}"
+  copy:
+    content: |
+        {{ lookup('file', '../keys/{{ os_prefix }}/web_server.cert.pem') }}
+        {{ lookup('file', '../keys/{{ os_prefix }}/web_ca.cert.pem')}}
+    dest: /home/{{ app_user }}/{{ app_certs_live_dir }}/fullchain.pem
+    mode: 0644

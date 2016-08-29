@@ -7,5 +7,5 @@
   vars_files:
   - ../openstack_vars.yml
   roles:
-    - cluster_certs
-    - web_certs
+    - gen_certs_cluster
+    - gen_certs_web

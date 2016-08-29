@@ -19,12 +19,25 @@ Inspect the configuration in `deploy/openstack_vars.yml`. The knobs in there
 can be tweaked by writing the files, or by using the `-e` command-line argument
 for `ansible-playbook`.
 
-Generate TLS certificates for the Docker Swarm cluster and Web server. It never
-hurts to have a surplus of worker keys lying around. They can be used to spin
-up new workers quickly.
+Generate TLS certificates for the Docker Swarm cluster and Web server. Err on
+the side of making `worker_count` larger, because it never hurts to have a
+surplus of worker keys  lying around, as they can be used to spin up new
+workers quickly.
 
 ```bash
-ansible-playbook -i "localhost," -e worker_count=10 deploy/ansible/keys.yml
+ansible-playbook -i "localhost," -e worker_count=10 \
+    -e app_certs_domain=igor.myschool.edu -e app_certs_email=admin@igor.dev \
+    deploy/ansible/keys.yml
+```
+
+`app_certs_domain` must be a DNS address that you can point to the IP of the
+master computer in the deployment. Deployments where using a DNS domain is
+not appropriate can substitute a fake Web TLS certificate for the
+[Let's Encrypt](https://letsencrypt.org/) certificate.
+
+```bash
+ansible-playbook -i "localhost," -e worker_count=10 -e use_certbot=no \
+    deploy/ansible/keys.yml
 ```
 
 Copy `clouds.example.yaml` into `clouds.yaml` and insert valid OpenStack
@@ -42,6 +55,9 @@ After bringing up OpenStack VMs, always refresh the ansible host cache.
 ```bash
 deploy/ansible/inventory/openstack.py --list --refresh
 ```
+
+If applicable, configure the DNS server to point the record referenced by
+`app_certs_domain` to the master's IP address.
 
 Run the deployment playbook.
 
@@ -67,39 +83,20 @@ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
 ```
 
 
-## Real TLS Certificates
-
-Most CAs can generate TLS certificates, given a
-[Certificate Signing Request (CSR)](https://en.wikipedia.org/wiki/Certificate_signing_request)
-with the server's DNS name in the DN. The TLS-generating playbook can be used
-to obtain the CSR.
-
-```bash
-ansible-playbook  -i "localhost," -e os_prefix=igortest \
-    -e web_server_cn=igortest.csail.mit.edu deploy/ansible/keys.yml
-```
-
-The CSR will be placed in `deploy/ansible/igortest/web_server_csr.pem` and can
-be submitted to a certificate authority. The certificate issued by the CA
-should be saved in `deploy/ansible/igortest/web_server.cert.pem`.
-
-Should you need to obtain TLS certificates via a different process, place the
-PEM-encoded server private key in `deploy/ansible/igortest/web_server.key.pem`,
-and place the PEM-encoded server certificate in
-`deploy/ansible/igortest/web_server.cert.pem` (same as in the previous
-paragraph).
-
-
 ## Managing Multiple Deployments
 
 Defining the `os_prefix` variable on the command line is a convenient way to
 quickly switch between multiple deployments of the application.
 
 ```bash
-ansible-playbook -i "localhost," -e os_prefix=igortest deploy/ansible/keys.yml
+ansible-playbook -i "localhost," -e os_prefix=igortest -e worker_count=10 \
+    -e app_certs_domain=igor.myschool.edu -e app_certs_email=admin@igor.dev \
+    deploy/ansible/keys.yml
+ansible-playbook -i "localhost," -e os_prefix=igortest -e worker_count=10 \
+    -e use_certbot=no deploy/ansible/keys.yml
 ansible-playbook -i "localhost," -e os_cloud=test -e os_prefix=igortest \
     deploy/ansible/openstack_up.yml
-deploy/inventory/openstack.py --list --refresh
+deploy/ansible/inventory/openstack.py --list --refresh    
 ansible-playbook -e os_prefix=igortest deploy/ansible/prod.yml
 ```
 

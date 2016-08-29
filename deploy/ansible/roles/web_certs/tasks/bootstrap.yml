@@ -1,0 +1,48 @@
+---
+- name: look up certbot certificate
+  become: true
+  become_user: "{{ app_user }}"
+  stat:
+    path: /home/{{ app_user }}/{{ app_certs_live_dir }}
+  register: app_certs_stat_result
+
+- name: decide if certboot bootstrapping is necessary
+  set_fact:
+    certbot_bootstrap: "{{ certbot_config.certbot and (not
+                           app_certs_stat_result.stat.exists) }}"
+
+- name: stop nginx to bootstrap certbot certificate
+  when: certbot_bootstrap
+  become: true
+  become_user: root
+  service: name=nginx state=stopped
+
+- name: start HTTP server used to bootstrap certbot certificate
+  when: certbot_bootstrap
+  become: true
+  become_user: root
+  service: name={{ app_certbot_bootstrap_service }} state=started
+
+- name: obtain bootstrap certbot certificate
+  when: certbot_bootstrap
+  become: true
+  become_user: "{{ app_user }}"
+  command: >
+      certbot certonly --agree-tos --webroot
+      --webroot-path /home/{{ app_user }}/{{ app_certs_www_dir }}
+      --config-dir /home/{{ app_user }}/{{ app_certs_config_dir }}
+      --logs-dir /home/{{ app_user }}/{{ app_certs_logs_dir }}
+      --work-dir /home/{{ app_user }}/{{ app_certs_work_dir }}
+      --email {{ app_certs_email }} --domain {{ app_certs_domain }}
+
+- name: stop HTTP server used to bootstrap certbot certificate
+  when: certbot_bootstrap
+  become: true
+  become_user: root
+  service: name={{ app_certbot_bootstrap_service }} state=stopped
+
+- name: start nginx after certbot is bootstrapped
+  when: certbot_bootstrap
+  become: true
+  become_user: root
+  service: name=nginx state=started

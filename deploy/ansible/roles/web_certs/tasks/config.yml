@@ -1,0 +1,12 @@
+---
+- name: load certbot configuration
+  set_fact:
+    certbot_config: "{{ lookup('file', '../keys/{{ os_prefix }}/certbot.yml') |
+                        from_yaml }}"
+
+- name: compute certbot bootstrap parameters
+  set_fact:
+    app_certs_domain: "{{ certbot_config.domain }}"
+    app_certs_email: "{{ certbot_config.email }}"
+    app_certs_live_dir: "{{ app_certs_config_dir }}/live/{{
+                            certbot_config.domain }}"

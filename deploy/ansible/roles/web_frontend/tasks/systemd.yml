@@ -4,7 +4,7 @@
   become_user: root
   template:
     src: main_systemd.service.j2
-    dest: /lib/systemd/system/{{ app_main_service }}.service
+    dest: /etc/systemd/system/{{ app_main_service }}.service
   notify:
   - reload systemd configuration
   - restart frontend main service
@@ -14,7 +14,7 @@
   become_user: root
   template:
     src: jobs_systemd.service.j2
-    dest: /lib/systemd/system/{{ app_queue_service }}.service
+    dest: /etc/systemd/system/{{ app_queue_service }}.service
   notify:
   - reload systemd configuration
   - restart frontend job queue service

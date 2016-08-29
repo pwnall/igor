@@ -1,0 +1,22 @@
+---
+- name: enable group access to the frontend user's home directory
+  become: true
+  become_user: root
+  file: dest=/home/{{ app_user }} state=directory mode=750
+
+- name: add nginx to the frontend user's group
+  become: true
+  become_user: root
+  user: name=nginx groups={{ app_user }} state=present append=true
+  notify:
+  - restart nginx daemon
+
+- name: add nginx SElinux label to certificates
+  when: ansible_selinux != False
+  become: true
+  become_user: root
+  file:
+    dest: /home/{{ app_user }}/{{ app_certs_config_dir }}/live/{{ app_certs_domain }}
+    state: directory
+    setype: httpd_sys_content_t
+    recurse: yes

@@ -1,0 +1,21 @@
+---
+- name: install certbot with dnf
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  dnf: name=certbot state=present
+
+- name: install certbot with apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name=certbot state=present
+
+- name: install http-server npm package used to bootstrap certbot
+  become: true
+  become_user: "{{ app_user }}"
+  npm:
+    name: http-server
+    path: "{{ app_certs_dir }}"
+    production: yes
+    state: present

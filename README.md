@@ -64,8 +64,8 @@ The following commands quickly set up a [Vagrant](https://www.vagrantup.com/)
 environment that matches the production setup.
 
 ```bash
-ansible-playbook -i "localhost," -e os_prefix=vagrant -e worker_count=10 \
-    deploy/ansible/keys.yml
+ansible-playbook -i "localhost," -e os_prefix=vagrant -e worker_count=2 \
+    -e use_certbot=no deploy/ansible/keys.yml
 vagrant up
 ```
 

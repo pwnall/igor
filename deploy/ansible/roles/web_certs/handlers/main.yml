@@ -1,0 +1,17 @@
+---
+- name: reload systemd configuration
+  command: systemctl daemon-reload
+  become: true
+  become_user: root
+
+- name: restart nginx daemon
+  become: true
+  become_user: root
+  service: name=nginx state=restarted
+
+- name: kick the certbot update service
+  become: true
+  become_user: root
+  service:
+    name: certbot
+    state: restarted

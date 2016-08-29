@@ -21,7 +21,7 @@ app_db_name: "{{ app_name }}_production"
 app_dir: "{{ app_name }}"
 
 # The name of the Systemd service used to run the application.
-app_main_service: "{{ app_dir }}_web"
+app_main_service: "{{ app_name }}_web"
 
 # The name of the Systemd service used to process the application's job queue.
-app_queue_service: "{{ app_dir }}_dj"
+app_queue_service: "{{ app_name }}_dj"

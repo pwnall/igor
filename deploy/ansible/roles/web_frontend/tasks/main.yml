@@ -75,10 +75,5 @@
   - restart frontend main service
   - restart frontend job queue service
 
-- name: create keys directory
-  become: true
-  become_user: "{{ app_user }}"
-  file: dest=/home/{{ app_user }}/keys state=directory mode=0750
-
 - include: systemd.yml
 - include: nginx.yml

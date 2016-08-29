@@ -9,9 +9,11 @@
     ansible_ssh_user: "{{ os_image_user }}"
   roles:
   - sys_facts
-  - nginx
-  - pgsql
-  - web_user
-  - web_db
-  - ruby_bundler
+  #- nginx
+  #- pgsql
+  #- web_user
+  #- web_db
+  #- ruby_bundler
+  #- nodejs_npm
+  - web_certs
   - web_frontend

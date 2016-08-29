@@ -15,6 +15,7 @@
   - sys_package_update
   - sys_facts
   - disable_cockpit
+  - docker_facts
   #- docker_storage
 
 - hosts: "{{ prod_master_group_name }}"
@@ -66,5 +67,6 @@
   - web_db
   - ruby_bundler
   - nodejs_npm
+  - web_certs
   - web_frontend
   - web_frontend_motd

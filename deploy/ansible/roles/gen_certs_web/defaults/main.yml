@@ -1,0 +1,27 @@
+---
+# The DNS name used to access the Web server.
+app_certs_domain: igor.dev
+
+# If true, certbot will be configured to serve Let's Encrypt certificates.
+#
+# Otherwise, OpenSSL will be used to generate keys and certificates. This setup
+# will result in security errors from all browsers, but is the only option when
+# Let's Encrypt cannot be used, such as in Vagrant setups.
+use_certbot: yes
+
+# The admin e-mail supplied to certbot.
+#
+# This is irrelevant if certbot isn't used.
+app_certs_email: admin@igor.dev
+
+# Used to identify and separate deployments.
+#
+# Other playbooks assume that this matches the os_prefix variable defined in
+# openstack_vars.yml, which is used to distinguish a deployment's hosts from
+# other OpenStack resources in the same project.
+os_prefix: igorprod
+
+# The directory that holds all the keys for the deployment.
+#
+# Other playbooks expect to find keys in the directory below.
+keys_dir: ./deploy/keys/{{ os_prefix }}

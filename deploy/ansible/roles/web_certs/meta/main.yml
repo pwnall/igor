@@ -1,0 +1,4 @@
+---
+dependencies:
+- role: nodejs_npm
+- role: sys_facts

@@ -1,0 +1,8 @@
+---
+# Sets facts used by the Docker cluster.
+
+# This could be computed at runtime, but the engineering effort isn't currently
+# warranted.
+- name: set docker_swarm_net_interface fact
+  set_fact:
+    docker_swarm_net_interface: "{{ cluster_net_interface }}"
