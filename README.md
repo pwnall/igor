@@ -91,7 +91,7 @@ The following steps will set up the Rails application's development
 environment, assuming the prerequisites described above have been installed.
 
 ```bash
-git clone https://gihub.com/pwnall/igor.git
+git clone https://github.com/pwnall/igor.git
 cd igor
 rbenv install $(cat .ruby-version)
 nvm install stable
