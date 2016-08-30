@@ -7,11 +7,15 @@
 - include: volumes_root.yml
 
 - name: spin up master VM
-  os_server:
+  os_server_custom:
     name: "{{ master_instance_name }}"
     flavor: "{{ os_master_flavor }}"
     nics:
-    - net-name: "{{ os_public_net }}"
+    - "{{
+          { 'net-name': os_public_net, 'v4-fixed-ip': os_master_fixed_ip }
+          if os_master_fixed_ip else
+          { 'net-name': os_public_net }
+      }}"
     root_volume: "{{ master_volume_name }}"
     key_name: "{{ key_name }}"
     security_groups: "{{ security_group_name }}"

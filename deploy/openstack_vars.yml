@@ -34,6 +34,11 @@ os_console_password: fedora
 # This only needs to change if the cloud image doesn't accept cloudinit data.
 os_image_user: fedora
 
+# IP that will be assigned to the master VM's NIC.
+#
+# The default relies on OpenStack to assign an IP to the master VM.
+os_master_fixed_ip: false
+
 # The inventory group containing the Web server.
 prod_master_group_name: meta-system_role_{{ os_prefix }}_master
 # The inventory group containing the Docker workers.

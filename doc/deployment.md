@@ -50,6 +50,15 @@ to get more workers up, as long as there are enough keys lying around.
 ansible-playbook -i "localhost," -e os_cloud=test deploy/ansible/openstack_up.yml
 ```
 
+By default, the VM bringup playbook reies on OpenStack to assign IPs to all
+VMs. The master VM can be assigned a fixed IP using the `os_master_fixed_ip`
+variable, as follows.
+
+```bash
+ansible-playbook -i "localhost," -e os_cloud=test \
+    -e os_master-fixed_ip=192.0.2.42 deploy/ansible/openstack_up.yml
+```
+
 After bringing up OpenStack VMs, always refresh the ansible host cache.
 
 ```bash
