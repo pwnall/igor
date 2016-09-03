@@ -126,7 +126,9 @@ class SessionControllerTest < ActionController::TestCase
     get :api_token
 
     assert_select 'span[class="api-token"]',
-        credentials(:deedee_api_token).code
+                  credentials(:deedee_api_token).code
+    assert_select 'a[href="/_/session/api_token"][data-method="delete"]',
+                  'regenerate token'
   end
 
   test "API token JSON request" do
@@ -136,6 +138,24 @@ class SessionControllerTest < ActionController::TestCase
 
     assert_equal credentials(:deedee_api_token).code,
         ActiveSupport::JSON.decode(response.body)['api_token']
+  end
+
+  test "API token destroy request" do
+    user = users(:deedee)
+    set_session_current_user user
+    delete :destroy_api_token
+
+    assert_redirected_to api_token_session_url
+    assert_nil Tokens::Api.where(user: user).first
+  end
+
+  test "API token destroy JSON request" do
+    user = users(:deedee)
+    set_session_current_user user
+    delete :destroy_api_token, format: 'json'
+
+    assert_equal({}, ActiveSupport::JSON.decode(response.body))
+    assert_nil Tokens::Api.where(user: user).first
   end
 
   test "OmniAuth failure" do

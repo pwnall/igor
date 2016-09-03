@@ -7,7 +7,7 @@ gem 'activerecord-jdbcpostgresql-adapter', '>= 0', platform: :jruby,
     git: 'https://github.com/jruby/activerecord-jdbc-adapter.git'
 
 # Core.
-gem 'authpwn_rails', '>= 0.20.0',
+gem 'authpwn_rails', '>= 0.21.1',
     git: 'https://github.com/pwnall/authpwn_rails.git', branch: 'rails5'
 gem 'foreman', '>= 0.82.0', require: false
 gem 'jbuilder', '~> 2.4'
