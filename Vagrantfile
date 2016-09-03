@@ -10,7 +10,7 @@
 OS = 'fedora-24'
 
 # Number of worker VMs.
-WORKERS = 1
+WORKERS = 2
 
 Vagrant.configure(2) do |config|
   config.vm.box = {
@@ -31,10 +31,20 @@ Vagrant.configure(2) do |config|
     # within the machine from a port on the host machine. In the example below,
     # accessing "localhost:8080" will access port 80 on the guest machine.
     # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+    # The master needs more memory than the workers, because it runs everything
+    # needed to serve the Rails application.
+    master.vm.provider :virtualbox do |vb, override|
+      vb.memory = 2048
+    end
   end
 
   1.upto WORKERS do |worker_id|
     config.vm.define "worker#{worker_id}" do |worker|
+      worker.vm.provider :virtualbox do |vb, override|
+        vb.memory = 1024
+      end
+
       # NOTE: The ansible provisioning block is only defined in the last
       #       worker, so it runs after all the VMs have been created.
       if worker_id == WORKERS
@@ -73,8 +83,6 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provider :virtualbox do |vb, override|
-    vb.memory = 2048
-
     # The NAT network adapter uses the Intel PRO/1000MT adapter by default.
     vb.customize ['modifyvm', :id, '--nictype1', 'virtio']
   end
