@@ -3,3 +3,7 @@
 <p>
   Your API token is: <span class="api-token"><%= @api_token %></span>
 </p>
+<p>
+  <%= link_to 'regenerate token', destroy_api_token_session_path,
+                                  method: :delete %>
+</p>
