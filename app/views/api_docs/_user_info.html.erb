@@ -1,0 +1,60 @@
+<h4>user_info</h4>
+
+<%= api_docs_call do %>
+
+<%= api_docs_call_summary do %>
+  <code>user_info</code> returns general user profile information.
+<% end %>
+
+<%= api_docs_call_response do %>
+  <tr>
+    <td>email</td>
+    <td>The user's e-mail address</td>
+  </tr>
+  <tr>
+    <td>profile.name</td>
+    <td>The user's full name</td>
+  </tr>
+  <tr>
+    <td>profile.nickname</td>
+    <td>The name that the user prefers to be called</td>
+  </tr>
+  <tr>
+    <td>registrations</td>
+    <td>Array with one element for each class the user is registered to</td>
+  </tr>
+  <tr>
+    <td>registrations[].course</td>
+    <td>The course number used to register</td>
+  </tr>
+  <tr>
+    <td>registrations[].for_credit</td>
+    <td>
+      True if the course is being taken for credit. This information is
+      provided by the user, so it may not be accurate.
+    </td>
+  </tr>
+<% end %>
+
+<%= api_docs_call_example do %>
+<%= api_docs_curl_example do %>
+  <%= api_user_info_v0_url %>
+<% end %>
+
+<pre>{
+  "email": "johndoe@school.edu",
+  "profile": {
+    "name": "John Doe",
+    "nickname": "Johnny"
+  },
+  "registrations": [
+    {
+      "course": "1.337",
+      "for_credit": true
+    }
+  ],
+  "roles": []
+}</pre>
+<% end %>
+
+<% end %>

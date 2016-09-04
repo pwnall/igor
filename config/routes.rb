@@ -42,6 +42,8 @@ Rails.application.routes.draw do
     # API.
     scope '/api', defaults: { format: 'json' } do
       get '0/user_info' => 'api#user_info', as: :api_user_info_v0
+      get '0/assignments' => 'api#assignments', as: :api_assignments_v0
+      get '0/submissions' => 'api#submissions', as: :api_submissions_v0
     end
 
     # API documentation.

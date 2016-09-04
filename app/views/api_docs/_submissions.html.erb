@@ -1,0 +1,72 @@
+<h4>submissions</h4>
+
+<%= api_docs_call do %>
+
+<%= api_docs_call_summary do %>
+  <code>submissions</code> returns metadata about the user's homework
+  submissions for a course.
+<% end %>
+
+<%= api_docs_call_params do %>
+  <tr>
+    <td>course</td>
+    <td>required</td>
+    <td>
+      Course number used to look up the user's submissions.
+      'user_info' returns all the courses that a user is registered to.
+    </td>
+  </tr>
+<% end %>
+
+<%= api_docs_call_response do %>
+  <tr>
+    <td>[].deliverable_id</td>
+    <td>
+      The unique identifier of the deliverable fulfilled by the submission
+    </td>
+  </tr>
+  <tr>
+    <td>[].submitted_at</td>
+    <td>
+      The time when the user finished uploading the deliverable to the site, as
+      a <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> timestamp
+    </td>
+  </tr>
+  <tr>
+    <td>[].analysis.status</td>
+    <td>
+      The submission's state in the auto-grading lifecycle. <em>queued</em> and
+      <em>running</em> mean that the submission is being graded. <em>ok</em>
+      means the submission received a good score. <em>wrong</em>,
+      <em>limit_exceeded</em> and <em>crashed</em> mean that the submission was
+      found to be defective. Other values should be treated as unknown states.
+    </td>
+  </tr>
+  <tr>
+    <td>[].analysis.scores</td>
+    <td>
+      The keys are metrics names, and the values are completeness scores
+      between 0 and 1.
+    <td>
+  </tr>
+<% end %>
+
+<%= api_docs_call_example do %>
+<%= api_docs_curl_example do %>
+  <%= api_submissions_v0_url(course: '1.337') %>
+<% end %>
+
+<pre>[
+  {
+    "deliverable_id": "8",
+    "submitted_at": "2016-03-06T03:48:30.000-05:00",
+    "analysis": {
+      "status": "ok",
+      "scores": {
+        "Problem 1": 1.0
+      }
+    }
+  }
+]</pre>
+<% end %>
+<% end %>

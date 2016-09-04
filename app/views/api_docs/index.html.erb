@@ -44,16 +44,6 @@ and can be changed based on feedback.
 </p>
 
 <h3>APIs</h3>
-
-<p>
-  <code>user_info</code> returns general user profile information. The returned
-  fields are outlined below.
-</p>
-
-<p>
-  Example:
-
-  <%= api_docs_curl_example do %>
-    <%= api_user_info_v0_url %>
-  <% end %>
-</p>
+<%= render 'api_docs/user_info' %>
+<%= render 'api_docs/assignments' %>
+<%= render 'api_docs/submissions' %>

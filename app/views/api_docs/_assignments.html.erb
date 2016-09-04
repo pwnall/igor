@@ -1,0 +1,125 @@
+<h4>assignments</h4>
+
+<%= api_docs_call do %>
+
+<%= api_docs_call_summary do %>
+  <code>assignments</code> returns metadata about the homework assigned to a
+  user by a course that he/she is registered for.
+<% end %>
+
+<%= api_docs_call_params do %>
+  <tr>
+    <td>course</td>
+    <td>required</td>
+    <td>
+      Course number used to look up the user's submissions.
+      'user_info' returns all the courses that a user is registered to.
+    </td>
+  </tr>
+<% end %>
+
+<%= api_docs_call_response do %>
+  <tr>
+    <td>[].name</td>
+    <td>
+      The assignment name displayed in the UI
+    </td>
+  </tr>
+  <tr>
+    <td>[].stated_deadline</td>
+    <td>
+      The general deadline by which students are expected to upload submissions
+      for this assignments, as
+      a <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
+      timestamp. This value does not reflect individual extensions.
+    </td>
+  </tr>
+  <tr>
+    <td>[].due_at</td>
+    <td>
+      The deadline by which the API token's owner is expected to upload
+      submissions for this assignment, as
+      a <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
+      timestamp. This value reflects any individual extensions the course staff
+      might have granted.
+    </td>
+  </tr>
+  <tr>
+    <td>[].deliverables</td>
+    <td>
+      Array with an element for each deliverable that students must upload a
+      submission for.
+    </td>
+  </tr>
+  <tr>
+    <td>[].deliverables[].id</td>
+    <td>
+      Identifier for the deliverable that is guaranteed to be unique across the
+      site.
+    </td>
+  </tr>
+  <tr>
+    <td>[].deliverables[].name</td>
+    <td>
+      The deliverable name displayed in the UI
+    </td>
+  </tr>
+  <tr>
+    <td>[].metrics</td>
+    <td>
+      Array with an element for each line item in the assignment's grading
+      rubric
+    </td>
+  </tr>
+  <tr>
+    <td>[].metrics[].name</td>
+    <td>
+      The line item's name show in the grading UI
+    </td>
+  </tr>
+  <tr>
+    <td>[].metrics[].max_score</td>
+    <td>
+      The number of points obtained by a submission that fully meets the
+      requirements. This is the number of points granted by a 1.0 score from
+      the auto-grader.
+    </td>
+  </tr>
+  <tr>
+    <td>[].metrics[].weight</td>
+    <td>
+      Multiplier for the score displayed to the user used when computing the
+      student's final grade. This is used to weigh some assignments
+      (e.g., exams) heavier than others.
+    </td>
+  </tr>
+<% end %>
+
+<%= api_docs_call_example do %>
+<%= api_docs_curl_example do %>
+  <%= api_assignments_v0_url(course: '1.337') %>
+<% end %>
+
+<pre>[
+  {
+    "name": "Problem Set 3",
+    "stated_deadline": "2016-02-15T03:36:00.000-05:00",
+    "due_at": "2016-02-15T03:36:00.000-05:00",
+    "deliverables": [
+      {
+        "id": "6",
+        "name": "Fibonacci"
+      }
+    ],
+    "metrics": [
+      {
+        "name": "Problem 1",
+        "max_score": 10,
+        "weight": 1.0
+      }
+    ]
+  }
+]</pre>
+<% end %>
+
+<% end %>
