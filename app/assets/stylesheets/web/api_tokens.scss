@@ -1,0 +1,12 @@
+#api-token-actions {
+  @include flex-grid-row(null, null, null, true);
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+
+  > .input-group {
+    @include flex-grid-column();
+  }
+  > .link-button-wrapper {
+    @include flex-grid-column(shrink);
+  }
+}

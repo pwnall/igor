@@ -51,8 +51,13 @@ module IconsHelper
   end
 
   # Shown on buttons that copy some data to the clipboard.
-  def clipboard_copy_igon_tag
+  def clipboard_copy_icon_tag
     fa_icon :clipboard, title: 'Copy to clipboard'
+  end
+
+  # Shown on buttons that refresh some data on the page.
+  def refresh_icon_tag
+    fa_icon :refresh, title: 'Refresh'
   end
 
   # Shown on buttons that commit information to the database.
