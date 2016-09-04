@@ -18,7 +18,7 @@ GIT
 
 GIT
   remote: https://github.com/pwnall/authpwn_rails.git
-  revision: c2cc8066f267dbe520c0be3fe5781d7946060048
+  revision: 0451ab505ab0772453a6b744773c50b2db66c088
   branch: rails5
   specs:
     authpwn_rails (0.21.1)

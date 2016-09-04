@@ -40,7 +40,9 @@ Rails.application.routes.draw do
     end
 
     # API.
-    get 'api/0/user_info' => 'api#user_info', as: :api_user_info
+    scope '/api', defaults: { format: 'json' } do
+      get '0/user_info' => 'api#user_info', as: :api_user_info_v0
+    end
 
     # API documentation.
     get 'api_docs' => 'api_docs#index', as: :api_docs

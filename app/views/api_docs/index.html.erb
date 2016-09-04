@@ -1,13 +1,14 @@
 <div class="api-docs">
 <h2>API documentation</h2>
 
+<h3>General Concerns</h3>
 <p>
 All examples below assume that you have set the `API_TOKEN` environment
 variable to your API token.
 <pre><code>export API_TOKEN=<%= current_user.api_token %></code></pre>
 </p>
 
-<h3>Authentication</h3>
+<h4>Authentication</h4>
 <p>
 Igor's API requests use OAuth 2.0 Bearer tokens for authentication, as
 standardized in <a href="https://tools.ietf.org/html/rfc6750">RFC 6750</a>.
@@ -22,7 +23,37 @@ item in the top-right user menu.
 </p>
 
 <p>
+  The example below demonstrates embedding an API token in a user request.
+
+  <%= api_docs_curl_example do %>
+    <%= api_user_info_v0_url %>
+  <% end %>
+</p>
+
+<h4>Versioning</h4>
+<p>
+Igor's API is versioned. The version number is embedded in the API URL. For
+example, version 0 of the `user_info` API can be accessed at
+<code><%= api_user_info_v0_path %></code>.
+</p>
+
+</p>
+This document only covers the API's latest version. Currently, the latest API
+version is 0, meaning that the semantics of every API call are experimental,
+and can be changed based on feedback.
+</p>
+
+<h3>APIs</h3>
+
+<p>
+  <code>user_info</code> returns general user profile information. The returned
+  fields are outlined below.
+</p>
+
+<p>
   Example:
 
-  <pre><code>curl -i -H "Authorization: Bearer $API_TOKEN" <%= api_user_info_url %></code></pre>
+  <%= api_docs_curl_example do %>
+    <%= api_user_info_v0_url %>
+  <% end %>
 </p>
