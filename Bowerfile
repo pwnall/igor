@@ -4,4 +4,3 @@ asset 'fetch', '0.11.1'
 asset 'motion-ui', '1.2.2'
 
 resolution 'jquery', '2.2.4'
-'
