@@ -2,3 +2,6 @@ asset 'clipboard', '1.5.12'
 asset 'es6-promise', '3.2.2'
 asset 'fetch', '0.11.1'
 asset 'motion-ui', '1.2.2'
+
+resolution 'jquery', '2.2.4'
+'
