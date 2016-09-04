@@ -125,10 +125,10 @@ class SessionControllerTest < ActionController::TestCase
     set_session_current_user user
     get :api_token
 
-    assert_select 'span[class="api-token"]',
+    assert_select 'input[type="text"][id="api_token"][value=?]',
                   credentials(:deedee_api_token).code
     assert_select 'a[href="/_/session/api_token"][data-method="delete"]',
-                  'regenerate token'
+                  'Regenerate token'
   end
 
   test "API token JSON request" do
