@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  get 'jobs/index'
-
   root 'session#show'
 
   # Site-wide functionality.
@@ -40,6 +38,12 @@ Rails.application.routes.draw do
         delete :failed, action: :destroy_failed
       end
     end
+
+    # API.
+    get 'api/0/user_info' => 'api#user_info', as: :api_user_info
+
+    # API documentation.
+    get 'api_docs' => 'api_docs#index', as: :api_docs
 
     # E-mail resolver configuration.
     resources :email_resolvers

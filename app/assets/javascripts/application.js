@@ -4,7 +4,8 @@
 //= require fetch/fetch
 //
 // Libraries.
-//= require jquery
+//= require clipboard
+//= require jquery2
 //= require jquery_ujs
 //= require motion-ui
 //= require pwn-fx

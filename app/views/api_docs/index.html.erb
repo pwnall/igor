@@ -1,0 +1,28 @@
+<div class="api-docs">
+<h2>API documentation</h2>
+
+<p>
+All examples below assume that you have set the `API_TOKEN` environment
+variable to your API token.
+<pre><code>export API_TOKEN=<%= current_user.api_token %></code></pre>
+</p>
+
+<h3>Authentication</h3>
+<p>
+Igor's API requests use OAuth 2.0 Bearer tokens for authentication, as
+standardized in <a href="https://tools.ietf.org/html/rfc6750">RFC 6750</a>.
+All incoming API requests must contain a valid token.
+</p>
+
+<p>
+For simplicity, instead of going through the OAuth 2.0 authorization flow,
+users obtain their API tokens by selecting the
+<%= link_to 'API Tokens', api_token_session_path %>
+item in the top-right user menu.
+</p>
+
+<p>
+  Example:
+
+  <pre><code>curl -i -H "Authorization: Bearer $API_TOKEN" <%= api_user_info_url %></code></pre>
+</p>

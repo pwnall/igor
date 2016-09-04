@@ -50,6 +50,11 @@ module IconsHelper
     fa_icon :eye, title: 'View'
   end
 
+  # Shown on buttons that copy some data to the clipboard.
+  def clipboard_copy_igon_tag
+    fa_icon :clipboard, title: 'Copy to clipboard'
+  end
+
   # Shown on buttons that commit information to the database.
   def save_icon_tag
     fa_icon :'floppy-o', title: 'Save'

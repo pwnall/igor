@@ -1,9 +1,50 @@
-<h2>API Token</h2>
+<h2 class="title-with-actions">
+  <span class="title">API Token</span>
+  <span class="actions">
+    <span class="link-button-wrapper">
+      <%= link_to destroy_api_token_session_path, method: :delete do %>
+        <%= destroy_icon_tag %> Regenerate token
+      <% end %>
+    </span>
+  </span>
+</h2>
 
 <p>
-  Your API token is: <span class="api-token"><%= @api_token %></span>
+  The following API token can be used by third-party applications to interact
+  with your account.
 </p>
+
 <p>
-  <%= link_to 'regenerate token', destroy_api_token_session_path,
-                                  method: :delete %>
+  Your API token is:
+
+  <div class="input-group">
+    <%= text_field_tag 'api_token', current_user.api_token, readonly: true %>
+    <div class="input-group-button">
+      <%= button_tag type: 'button', class: 'button',
+                     data: { clipboard_target: '#api_token' } do %>
+        <%= clipboard_copy_igon_tag %>
+      <% end %>
+    </div>
+  </div>
+</p>
+
+<p class="callout alert">
+  Do NOT share your API token with anyone. Only use the token with applications
+  that you trust. Course staff will never ask for your API token.
+</p>
+
+<p class="callout warning">
+  If you accidentally expose your API token, use the following button to
+  replace the compromised token with a new one.
+
+  <span class="link-button-wrapper">
+    <%= link_to destroy_api_token_session_path, method: :delete do %>
+      <%= destroy_icon_tag %> Regenerate token
+    <% end %>
+  </span>
+</p>
+
+<p>
+  The site's public API is documented
+  <%= link_to 'here', api_docs_path %>
 </p>
