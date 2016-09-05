@@ -11,6 +11,10 @@ class ApiController < ApplicationController
   # GET /_/api/0/assignments?course=1.337
   def assignments
     course = Course.where(number: params[:course]).first
+    if course.nil?
+      render json: { error: 'Course not found' }
+      return
+    end
     @assignments = course.assignments.includes(:deliverables).
         select { |assignment| assignment.can_read_content? current_user }
   end
@@ -18,6 +22,10 @@ class ApiController < ApplicationController
   # GET /_/api/0/submissions?course=1.337
   def submissions
     course = Course.where(number: params[:course]).first
+    if course.nil?
+      render json: { error: 'Course not found' }
+      return
+    end
     deliverables = course.deliverables
     @submissions = current_user.submissions.where(deliverable: deliverables).
                                 all

@@ -1,7 +1,7 @@
 json.array! @assignments do |assignment|
   json.name assignment.name
-  json.stated_deadline assignment.due_at
-  json.due_at assignment.due_at_for(current_user)
+  json.stated_deadline assignment.due_at.iso8601
+  json.due_at assignment.due_at_for(current_user).iso8601
 
   json.deliverables assignment.deliverables do |deliverable|
     json.id deliverable.id.to_s

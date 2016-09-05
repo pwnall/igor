@@ -80,6 +80,58 @@ class AssignmentMetricTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'permissions' do
+    let(:assignment) { assignments(:ps1) }
+    let(:metric) { assignment_metrics(:ps1_p1)}
+    let(:admin) { users(:admin) }
+    let(:any_user) { User.new }
+    let(:student) { users(:deedee) }
+    let(:staff) { users(:main_staff) }
+
+    describe '#can_read?' do
+      it 'only lets course staff see metrics for un-released grades' do
+        assignment.update! grades_released: false
+        assert_equal true, assignment.released?
+        assert_equal true, metric.can_read?(admin)
+        assert_equal true, metric.can_read?(staff)
+        assert_equal false, metric.can_read?(student)
+        assert_equal false, metric.can_read?(any_user)
+        assert_equal false, metric.can_read?(nil)
+      end
+
+      it 'lets any user see assignment if grades have been released' do
+        assignment.update! grades_released: true
+        assert_equal true, metric.can_read?(admin)
+        assert_equal true, metric.can_read?(staff)
+        assert_equal true, metric.can_read?(student)
+        assert_equal true, metric.can_read?(any_user)
+        assert_equal true, metric.can_read?(nil)
+      end
+    end
+
+    describe '#can_grade?' do
+      it 'only lets course staff grade metrics for un-released grades' do
+        assignment.update! grades_released: false
+        assert_equal true, assignment.released?
+        assert_equal true, metric.can_grade?(admin)
+        assert_equal true, metric.can_grade?(staff)
+        assert_equal false, metric.can_grade?(student)
+        assert_equal false, metric.can_grade?(any_user)
+        assert_equal false, metric.can_grade?(nil)
+      end
+
+      it 'only lets course staff grade metrics even for released grades' do
+        assignment.update! grades_released: true
+        assert_equal true, assignment.released?
+        assert_equal true, metric.can_grade?(admin)
+        assert_equal true, metric.can_grade?(staff)
+        assert_equal false, metric.can_grade?(student)
+        assert_equal false, metric.can_grade?(any_user)
+        assert_equal false, metric.can_grade?(nil)
+      end
+    end
+  end
+
   describe 'score calculations' do
     describe 'AverageScore concern' do
       describe '#average_score_percentage' do

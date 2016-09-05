@@ -56,7 +56,7 @@ class AssignmentMetric < ApplicationRecord
 
   # True if the given user should be allowed to see the metric.
   def can_read?(user)
-    assignment.grades_released? || (user && user.admin?)
+    assignment.grades_released? || can_grade?(user)
   end
 
   # True if the given user should be allowed to post grades for the metric.
