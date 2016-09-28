@@ -10,7 +10,7 @@
     </div>
   <% end %>
 
-  <%= f.fields_for :db_file, f.object.build_db_file do |ff| %>
+  <%= f.fields_for :db_file, DbFile.new do |ff| %>
   <%= ff.row do %>
   <%# The form does not save an uploaded file if there are any validation errors
       throughout the form. So the least confusing way to handle invalid files is

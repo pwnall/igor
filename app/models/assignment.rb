@@ -198,7 +198,8 @@ class Assignment
   # Resources relevant to this assignment, which students can download.
   has_many :files, inverse_of: :assignment, class_name: 'AssignmentFile',
       dependent: :destroy
-  accepts_nested_attributes_for :files, allow_destroy: true
+  accepts_nested_attributes_for :files, allow_destroy: true,
+                                        reject_if: :all_blank
 
   # The resource files for this assignment that are visible to the given user.
   def files_for(user)
