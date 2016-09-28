@@ -2,7 +2,7 @@ class GradeCommentsController < ApplicationController
   include GradeEditor
 
   before_action :set_current_course
-  before_action :authenticated_as_course_editor
+  before_action :authenticated_as_course_grader
 
   # XHR POST /6.006/grade_comments
   def create

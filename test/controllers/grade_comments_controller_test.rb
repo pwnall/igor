@@ -13,7 +13,7 @@ class GradeCommentsControllerTest < ActionController::TestCase
   end
 
   describe 'authenticated as a grader' do
-    before { set_session_current_user users(:admin) }
+    before { set_session_current_user users(:main_grader) }
 
     describe 'XHR POST #create' do
       let(:student) { users(:dexter) }
