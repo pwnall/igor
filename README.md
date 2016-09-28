@@ -31,13 +31,8 @@ The following commands install the prerequisites on OSX, using
 
 ```bash
 xcode-select --install
-brew install docker docker-machine docker-swarm imagemagick libxml2 libxslt \
-    openssl pkg-config postgresql
-brew services start postgresql
+brew bundle install
 ln -s /usr/local/opt/openssl/bin/openssl /usr/local/bin/openssl
-brew install ansible --devel
-brew tap Caskroom/cask
-brew cask install kitematic osxfuse vagrant virtualbox
 TOKEN=$(docker-swarm create)
 docker-machine create --driver virtualbox --engine-storage-driver overlay \
     --swarm --swarm-master --swarm-discovery "token://$TOKEN" swarm-master

@@ -1,0 +1,15 @@
+tap 'caskroom/cask'
+brew 'ansible'
+brew 'docker'
+brew 'docker-machine'
+brew 'docker-swarm'
+brew 'imagemagick', args: ['with-librsvg']
+brew 'libxml2'
+brew 'libxslt'
+brew 'openssl'
+brew 'pkg-config'
+brew 'postgresql', restart_service: :changed
+cask 'kitematic'
+cask 'osxfuse'
+cask 'vagrant'
+cask 'virtualbox'
