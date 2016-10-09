@@ -7,7 +7,7 @@
 
   ga('create', '<%= current_course.ga_account %>', 'auto');
 <% if current_user %>
-  ga('set', '&uid', '<%= current_user.exuid %>');
+  ga('set', 'userId', '<%= current_user.exuid %>');
 <% end %>
   ga('send', 'pageview');
 </script>

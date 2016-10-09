@@ -48,7 +48,7 @@ class AnalyticsPartialTest < ActionController::TestCase
 
     assert_match(/www\.google-analytics\.com/, response.body)
     assert_match(/ga\('create', 'GA-account'/, response.body)
-    assert_match(/ga\('set', '&uid', '4242'/, response.body)
+    assert_match(/ga\('set', 'userId', '4242'/, response.body)
     assert_match(/ga\('send', 'pageview'/, response.body)
   end
 
