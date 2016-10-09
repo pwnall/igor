@@ -1,3 +1,5 @@
 ---
 dependencies:
 - role: docker_facts
+# NOTE: etcd_client also depends on docker_facts running for the masters.
+#       Unfortunately, that cannot be expressed using Ansible dependencies.
