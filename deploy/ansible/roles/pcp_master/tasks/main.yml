@@ -1,0 +1,25 @@
+---
+# Performance Co-Pilot (PCP) collection and visualization.
+
+- name: install pcp visualization with dnf
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  dnf: name={{ item }} state=present
+  with_items:
+  - pcp-webapi
+  - pcp-webjs
+
+- name: install pcp with apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name={{ item }} state=present
+  with_items:
+  - pcp-webapi
+  - pcp-webjs
+
+- name: enable and start pcmwebd systemd unit
+  become: true
+  become_user: root
+  service: name=pmwebd enabled=yes state=started

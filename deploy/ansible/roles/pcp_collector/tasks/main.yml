@@ -1,0 +1,22 @@
+---
+# Performance Co-Pilot (PCP) data collection setup.
+
+- name: install pcp collector packages with dnf
+  when: ansible_pkg_mgr == 'dnf'
+  become: true
+  become_user: root
+  dnf: name=pcp state=present
+
+- name: install pcp collector packages with apt
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+  become_user: root
+  apt: name=pcp state=present
+
+- name: enable and start pcmd and pmlogger systemd units
+  become: true
+  become_user: root
+  service: name={{ item }} enabled=yes state=started
+  with_items:
+  - pmcd
+  - pmlogger

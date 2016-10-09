@@ -25,6 +25,7 @@
     ansible_ssh_user: "{{ os_image_user }}"
   roles:
   - sudo_nopasswd
+  - pcp_collector
   - etcd_server
   - etcd_client
   - skydns_server
@@ -47,6 +48,7 @@
     ansible_ssh_user: "{{ os_image_user }}"
   roles:
   - sudo_nopasswd
+  - pcp_collector
   - etcd_client
   - skydns_name_worker
   - skydns_update_service
@@ -62,6 +64,7 @@
     ansible_ssh_user: "{{ os_image_user }}"
   roles:
   - nginx
+  - pcp_master
   - pgsql
   - web_user
   - web_db
