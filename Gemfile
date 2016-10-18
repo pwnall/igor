@@ -1,14 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 5.0.0'
+gem 'rails', '>= 5.0.0.1'
 
-gem 'pg', '>= 0.18.4', platforms: [:mri, :rbx]
+gem 'pg', '>= 0.19.0', platforms: [:mri, :rbx]
 gem 'activerecord-jdbcpostgresql-adapter', '>= 0', platform: :jruby,
     git: 'https://github.com/jruby/activerecord-jdbc-adapter.git'
 
 # Core.
-gem 'authpwn_rails', '>= 0.21.1',
-    git: 'https://github.com/pwnall/authpwn_rails.git', branch: 'rails5'
+gem 'authpwn_rails', '>= 0.22.0'
 gem 'foreman', '>= 0.82.0', require: false
 gem 'jbuilder', '~> 2.4'
 gem 'markdpwn', '>= 0.2.0', platforms: [:mri, :rbx]
