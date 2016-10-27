@@ -28,7 +28,7 @@
   become: true
   become_user: "{{ app_user }}"
   command: >
-      certbot certonly --agree-tos --webroot
+      certbot certonly --non-interactive --agree-tos --webroot
       --webroot-path /home/{{ app_user }}/{{ app_certs_www_dir }}
       --config-dir /home/{{ app_user }}/{{ app_certs_config_dir }}
       --logs-dir /home/{{ app_user }}/{{ app_certs_logs_dir }}

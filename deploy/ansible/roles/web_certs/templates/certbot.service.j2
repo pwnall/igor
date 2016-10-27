@@ -6,13 +6,14 @@ After=network.target remote-fs.target nss-lookup.target nginx.service
 Type=oneshot
 User={{ app_user }}
 WorkingDirectory=/home/{{ app_user }}/{{ app_certs_work_dir }}
-ExecStart=/usr/bin/certbot certonly --agree-tos --webroot \
+ExecStart=/usr/bin/certbot certonly --non-interactive --agree-tos \
+      --keep-until-expiring --webroot \
       --webroot-path /home/{{ app_user }}/{{ app_certs_www_dir }} \
       --config-dir /home/{{ app_user }}/{{ app_certs_config_dir }} \
       --logs-dir /home/{{ app_user }}/{{ app_certs_logs_dir }} \
       --work-dir /home/{{ app_user }}/{{ app_certs_work_dir }} \
       --email {{ app_certs_email }} --domain {{ app_certs_domain }}
-Restart=never
+Restart=no
 StandardInput=null
 StandardOutput=syslog
 StandardError=syslog

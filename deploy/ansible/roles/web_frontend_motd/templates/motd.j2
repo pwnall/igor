@@ -1,24 +1,24 @@
 This is the main {{ app_name }} frontend server.
 
 The Web server is running as the {{ app_main_service }} systemd service.
-start:   sudo systemctl stop {{ app_main_service }}
-stop:    sudo systemctl start {{ app_main_service }}
+stop:    sudo systemctl stop {{ app_main_service }}
+start:   sudo systemctl start {{ app_main_service }}
 status:  sudo systemctl status {{ app_main_service }}
 logs:    sudo journalctl -u {{ app_main_service }}
 
 The job worker is running as the {{ app_queue_service }} systemd service.
-start:   sudo systemctl stop {{ app_queue_service }}
-stop:    sudo systemctl start {{ app_queue_service }}
+stop:    sudo systemctl stop {{ app_queue_service }}
+start:   sudo systemctl start {{ app_queue_service }}
 status:  sudo systemctl status {{ app_queue_service }}
 logs:    sudo journalctl -u {{ app_queue_service }}
 
 The Let's Encrypt certificate renewal is running periodically using the {{ app_certbot_service }} systemd timer.
-start:   sudo systemctl stop {{ app_certbot_service }}.timer
-stop:    sudo systemctl start {{ app_certbot_service }}.timer
+stop:    sudo systemctl stop {{ app_certbot_service }}.timer
+start:   sudo systemctl start {{ app_certbot_service }}.timer
 status:  sudo systemctl status {{ app_certbot_service }}.timer
 
 The Let's Encrypt certificate renewal uses the {{ app_certbot_service }} systemd service.
-manual kick:  sudo systemctl stop {{ app_certbot_service }}.service
+manual kick:  sudo systemctl start {{ app_certbot_service }}.service
 status:       sudo systemctl status {{ app_certbot_service }}.service
 logs:         sudo journalctl -u {{ app_certbot_service }}.service
 
