@@ -167,7 +167,7 @@ class LoadTestSession
     form["#{deliverable_param}[analyzer_attributes][type]"] = 'DockerAnalyzer'
 
     file_field_name =
-        "#{deliverable_param}[analyzer_attributes][db_file_attributes][f]"
+        "#{deliverable_param}[analyzer_attributes][file]"
     upload_field = Mechanize::Form::FileUpload.new({
         'name' => file_field_name, 'type' => 'file' }, analyzer_path)
     upload_field.file_data = File.read analyzer_path
@@ -227,8 +227,7 @@ class LoadTestSession
     @agent.get File.join(@root_url, course, 'assignments', assignment_id.to_s)
 
     form = @agent.page.form_with class: 'new-submission-form'
-    upload_field = form.file_upload_with(
-        name: 'submission[db_file_attributes][f]')
+    upload_field = form.file_upload_with name: 'submission[file]'
 
     upload_field.file_name = 'file.py'
     upload_field.mime_type = 'text/x-python-script'

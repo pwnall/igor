@@ -6,7 +6,8 @@ class SubmissionTest < ActiveSupport::TestCase
   before do
     @submission = Submission.new deliverable: deliverables(:assessment_code),
         uploader: users(:deedee), upload_ip: '18.240.1.8',
-        db_file: db_files(:deedee_code)
+        file: fixture_file_upload('files/submission/good_fib.py',
+                                  'application/x-python', :binary)
   end
 
   let(:submission) { submissions(:dexter_assessment_v2) }
@@ -54,71 +55,32 @@ class SubmissionTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'HasDbFile concern' do
-    it 'requires a database-backed file' do
-      @submission.db_file = nil
+  describe 'has_file_blob directive' do
+    it 'is wired correctly' do
+      assert_equal 'application/x-python', @submission.file.mime_type
+      assert_equal 'good_fib.py', @submission.file.original_name
+      assert_equal file_blob_id('files/submission/good_fib.py'),
+          @submission.file.blob.id
+      assert_equal file_blob_size('files/submission/good_fib.py'),
+          @submission.file.size
+      assert_equal file_blob_data('files/submission/good_fib.py'),
+          @submission.file.data
+    end
+
+    it 'has allow_nil set to false' do
+      @submission.file = nil
       assert @submission.invalid?
-    end
-
-    it 'forbids multiple submissions from using the same file in the database' do
-      @submission.db_file = submission.db_file
-      assert @submission.invalid?
-    end
-
-    it 'validates associated database-backed files' do
-      db_file = @submission.build_db_file
-      assert_equal false, db_file.valid?
-      assert_equal false, @submission.valid?
-    end
-
-    describe '#file_name' do
-      it 'returns the name of the uploaded file' do
-        assert_equal 'dexter_assessment_v2.pdf', submission.file_name
-      end
-
-      it 'returns nil if no file has been uploaded' do
-        submission.db_file = nil
-        assert_nil submission.file_name
-      end
-    end
-
-    describe '#contents' do
-      it 'returns the contents of the uploaded file' do
-        path = File.join ActiveSupport::TestCase.fixture_path, 'files/submission',
-            'small.pdf'
-        assert_equal File.binread(path), submission.contents
-      end
-
-      it 'returns nil if no file has been uploaded' do
-        submission.db_file = nil
-        assert_nil submission.contents
-      end
     end
   end
 
   it 'destroys dependent records' do
-    assert_not_nil submission.db_file
     assert_not_nil submission.analysis
     assert_equal true, submission.collaborations.any?
 
     submission.destroy
 
-    assert_nil DbFile.find_by(id: submission.db_file_id)
     assert_nil Analysis.find_by(submission: submission)
     assert_empty submission.collaborations.reload
-  end
-
-  it 'saves the associated db-file through the parent submission' do
-    attachment = fixture_file_upload 'files/submission/good_fib.py',
-        'application/x-python', :binary
-    @submission.update! db_file_attributes: { f: attachment }
-
-    assert_equal File.size(@submission.db_file.f.to_io),
-        @submission.db_file.f_file_size
-    assert_equal 'application/x-python', @submission.db_file.f_content_type
-    path = File.join ActiveSupport::TestCase.fixture_path, 'files/submission',
-        'good_fib.py'
-    assert_equal File.binread(path), @submission.db_file.f.file_contents
   end
 
   describe '#can_read?' do
@@ -268,9 +230,11 @@ class SubmissionTest < ActiveSupport::TestCase
     end
 
     it 'raises an exception for unrecognized author types' do
-      unrecognized_submission = Submission.new db_file: db_files(:deedee_code),
+      unrecognized_submission = Submission.new(
           subject: deliverables(:assessment_code),
-          deliverable: deliverables(:assessment_code)
+          deliverable: deliverables(:assessment_code),
+          file: fixture_file_upload('files/submission/good_fib.py',
+                                    'application/x-python', :binary))
 
       assert_raises(RuntimeError) do
         unrecognized_submission.is_owner? student_author

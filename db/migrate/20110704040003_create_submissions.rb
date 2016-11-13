@@ -2,7 +2,7 @@ class CreateSubmissions < ActiveRecord::Migration[4.2]
   def change
     create_table :submissions do |t|
       t.references :deliverable, null: false
-      t.references :db_file, index: { unique: true }, null: false
+      t.file_blob :file, null: false, mime_type_limit: 64, file_name_limit: 256
       t.references :subject, polymorphic: true, null: false
       t.references :uploader, null: false
       t.string :upload_ip, limit: 48, null: false

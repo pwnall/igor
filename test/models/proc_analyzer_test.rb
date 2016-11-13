@@ -41,7 +41,7 @@ class ProcAnalyzerTest < ActiveSupport::TestCase
 
   describe '#analyze_pdf' do
     it 'logs proper PDFs as :ok' do
-      assert_equal true, ok_pdf_submission.db_file.f.exists?
+      assert_not_nil ok_pdf_submission.file.data
       assert_equal :queued, ok_pdf_submission.analysis.status
       ProcAnalyzer.new.analyze_pdf ok_pdf_submission
       analysis = ok_pdf_submission.analysis.reload
@@ -50,7 +50,7 @@ class ProcAnalyzerTest < ActiveSupport::TestCase
     end
 
     it 'logs truncated PDFs as :wrong' do
-      assert_equal true, truncated_pdf_submission.db_file.f.exists?
+      assert_not_nil truncated_pdf_submission.file.data
       assert_equal :queued, truncated_pdf_submission.analysis.status
       ProcAnalyzer.new.analyze_pdf truncated_pdf_submission
       analysis = truncated_pdf_submission.analysis.reload
@@ -59,7 +59,7 @@ class ProcAnalyzerTest < ActiveSupport::TestCase
     end
 
     it 'logs non-PDFs as :wrong' do
-      assert_equal true, py_submission.db_file.f.exists?
+      assert_not_nil py_submission.file.data
       assert_equal :queued, py_submission.analysis.status
       ProcAnalyzer.new.analyze_pdf py_submission
       analysis = py_submission.analysis.reload

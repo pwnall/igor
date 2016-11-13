@@ -5,8 +5,9 @@ class AssignmentFileTest < ActiveSupport::TestCase
 
   before do
     @resource = AssignmentFile.new description: 'PS1 Test Cases',
-        assignment: assignments(:ps1), db_file: db_files(:ps1_test_cases),
-        released_at: 1.week.ago
+        assignment: assignments(:ps1), released_at: 1.week.ago,
+        file: fixture_file_upload('files/submission/small.pdf',
+                                  'application/pdf', :binary)
   end
 
   let(:resource) { assignment_files(:ps1_solutions) }
@@ -101,74 +102,21 @@ class AssignmentFileTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'HasDbFile concern' do
-    it 'requires a database-backed file with the resource script' do
-      @resource.db_file = nil
+  describe 'has_file_blob directive' do
+    it 'is wired correctly' do
+      assert_equal 'application/pdf', @resource.file.mime_type
+      assert_equal 'small.pdf', @resource.file.original_name
+      assert_equal file_blob_id('files/submission/small.pdf'),
+          @resource.file.blob.id
+      assert_equal file_blob_size('files/submission/small.pdf'),
+          @resource.file.size
+      assert_equal file_blob_data('files/submission/small.pdf'),
+          @resource.file.data
+    end
+
+    it 'has allow_nil set to false' do
+      @resource.file = nil
       assert @resource.invalid?
-    end
-
-    it 'destroys dependent records' do
-      assert_not_nil resource.db_file
-
-      resource.destroy
-
-      assert_nil DbFile.find_by(id: resource.db_file_id)
-    end
-
-    it 'forbids multiple resources from using the same file in the database' do
-      @resource.db_file = resource.db_file
-      assert @resource.invalid?
-    end
-
-    it 'validates associated database-backed files' do
-      db_file = @resource.build_db_file
-      assert_equal false, db_file.valid?
-      assert_equal false, @resource.valid?
-    end
-
-    it 'saves associated database-backed files through the parent resource' do
-      assert_equal true, @resource.new_record?
-      @resource.save!
-      assert_not_nil @resource.reload.db_file
-    end
-
-    it 'rejects database file associations with a blank attachment' do
-      assert_equal 'ps1_solutions.pdf', resource.db_file.f_file_name
-      resource.update! db_file_attributes: { f: '' }
-      assert_equal 'ps1_solutions.pdf', resource.reload.db_file.f_file_name
-    end
-
-    it 'destroys the database file when it is replaced' do
-      assert_not_nil resource.db_file
-      former_db_file_id = resource.db_file.id
-      new_db_file = fixture_file_upload 'files/analyzer/fib.zip',
-          'application/zip', :binary
-      resource.update! db_file_attributes: { f: new_db_file }
-      assert_nil DbFile.find_by(id: former_db_file_id)
-    end
-
-    describe '#file_name' do
-      it 'returns the name of the uploaded file' do
-        assert_equal 'ps1_solutions.pdf', resource.file_name
-      end
-
-      it 'returns nil if no file has been uploaded' do
-        resource.db_file = nil
-        assert_nil resource.file_name
-      end
-    end
-
-    describe '#contents' do
-      it 'returns the contents of the uploaded file' do
-        path = File.join ActiveSupport::TestCase.fixture_path,
-            'files/submission', 'small.pdf'
-        assert_equal File.binread(path), resource.contents
-      end
-
-      it 'returns nil if no file has been uploaded' do
-        resource.db_file = nil
-        assert_nil resource.contents
-      end
     end
   end
 

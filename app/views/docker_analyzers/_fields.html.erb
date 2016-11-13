@@ -1,10 +1,9 @@
 <div class="row">
   <fieldset class="small-12 columns">
     <legend><h4>Docker Analyzer Parameters</h4></legend>
-    <%= f.fields_for :db_file, DbFile.new do |ff| %>
-    <%= ff.row do %>
+    <%= f.row do %>
       <div class="small-3 columns text-right">
-        <%= ff.label :f, class: 'text-right' do %>
+        <%= f.label :f, class: 'text-right' do %>
           <%= link_to help_analyzers_path, target: '_blank' do %>
             <span class="badge" id="docker-analyzer-help">
               <%= help_icon_tag %>
@@ -14,21 +13,20 @@
         <% end %>
       </div>
       <div class="small-4 columns">
-        <%= ff.file_field :f, accept: 'application/zip',
-              required: (!f.object.db_file || f.object.db_file.new_record?) %>
+        <%= f.file_field :file, accept: 'application/zip',
+                                required: !f.object.file.blob_id %>
       </div>
       <div class="columns">
         <span class="comment">
-          <% if f.object.db_file && !f.object.db_file.new_record? %>
+          <% if f.object.file.blob_id %>
             <%= link_to source_analyzer_path(f.object,
                   course_id: f.object.deliverable.course) do %>
-              <%= download_icon_tag %> <%= f.object.file_name %>
+              <%= download_icon_tag %> <%= f.object.file_original_name %>
             <% end %>
-            (<%= number_to_human_size f.object.db_file.f.size %>)
+            (<%= number_to_human_size f.object.file_size %>)
           <% end %>
         </span>
       </div>
-    <% end %>
     <% end %>
     <%= f.input_group do %>
       <%= f.number_field :map_time_limit, required: true, placeholder: 5,

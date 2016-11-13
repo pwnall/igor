@@ -1,14 +1,13 @@
-class CreateProfilePhotos < ActiveRecord::Migration[4.2]
+class CreateProfilePhotos < ActiveRecord::Migration[5.0]
   def change
     create_table :profile_photos do |t|
-      t.references :profile, null: false
-      t.timestamps null: false
-    end
+      t.references :profile, null: false,
+          index: { unique: true }, foreign_key: true
 
-    add_attachment :profile_photos, :pic
+      t.file_blob :image, null: false, mime_type_limit: 64,
+                                       file_name_limit: 256
 
-    change_table :profile_photos do |t|
-      t.index :profile_id, unique: true
+      t.timestamps
     end
   end
 end

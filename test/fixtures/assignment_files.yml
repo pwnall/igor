@@ -14,5 +14,8 @@
 ps1_solutions:
   description: PS1 Solutions
   assignment: ps1
-  db_file: ps1_solutions
+  file_blob_id: <%= file_blob_id 'files/submission/small.pdf' %>
+  file_size: <%= file_blob_size 'files/submission/small.pdf' %>
+  file_mime_type: application/pdf
+  file_original_name: ps1_solutions.pdf
   released_at: <%= 1.day.ago.to_s(:db) %>

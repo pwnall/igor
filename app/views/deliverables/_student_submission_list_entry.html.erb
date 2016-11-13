@@ -16,11 +16,11 @@
         <%= link_to file_submission_path(submission,
               course_id: submission.course),
               class: 'submission-download' do %>
-          <%= download_icon_tag + " #{submission.file_name}" %>
+          <%= download_icon_tag + " #{submission.file_original_name}" %>
         <% end %>
       </span>
       <span class="file-size field">
-        <%= number_to_human_size submission.db_file.f.size %>
+        <%= number_to_human_size submission.file_size %>
       </span>
     </div>
     <div class="collaborators-list">

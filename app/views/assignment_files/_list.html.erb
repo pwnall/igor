@@ -13,11 +13,11 @@
       <td class="file-name">
         <%= link_to download_assignment_file_path(file,
               course_id: file.course) do %>
-          <%= download_icon_tag %> <%= file.file_name %>
+          <%= download_icon_tag %> <%= file.file_original_name %>
         <% end %>
       </td>
       <td class="description"><%= file.description %></td>
-      <td class="size"><%= number_to_human_size file.db_file.f.size %></td>
+      <td class="size"><%= number_to_human_size file.file_size %></td>
       <td class="uploaded"><%= file.updated_at.to_s(:deadline_long) %></td>
     </tr>
     <% end %>

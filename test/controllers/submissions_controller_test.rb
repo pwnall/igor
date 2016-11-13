@@ -13,7 +13,7 @@ class SubmissionsControllerTest < ActionController::TestCase
     file = fixture_file_upload 'files/submission/small.pdf', 'application/pdf',
                                :binary
     { course_id: courses(:main).to_param, submission: {
-      deliverable_id: @deliverable.to_param, db_file_attributes: { f: file } } }
+      deliverable_id: @deliverable.to_param, file: file } }
   end
   let(:member_params) do
     { course_id: courses(:main).to_param, id: @submission.to_param }

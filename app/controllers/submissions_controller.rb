@@ -33,7 +33,7 @@ class SubmissionsController < ApplicationController
     @deliverables = @assignments.map(&:deliverables).flatten
 
     query = Submission.order(updated_at: :desc).includes(
-        :db_file, :analysis, {deliverable: :assignment}, :subject)
+        :analysis, {deliverable: :assignment}, :subject)
 
     if params.has_key? :deliverable_id
       query = query.where(:deliverable_id => params[:deliverable_id])
@@ -65,7 +65,7 @@ class SubmissionsController < ApplicationController
 
         format.html do
           redirect_to deliverable_panel_url(@submission.deliverable),
-              notice: "Uploaded #{@submission.file_name} for
+              notice: "Uploaded #{@submission.file_original_name} for
               #{@submission.assignment.name}: #{@submission.deliverable.name}."
         end
       else
@@ -128,17 +128,15 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
     return bounce_user unless @submission.can_read? current_user
 
-    db_file = @submission.db_file
     filename = @submission.subject.email.gsub(/[^A-Za-z0-9]/, '_') + '_' +
-        @submission.file_name
+        @submission.file_original_name
 
     # NOTE: The CSP header provides some protection against an attacker who
     #       tries to serve active content (HTML+JS) using the server's origin.
     #       DbFile also explicitly disallows the HTML and XHTML MIME types.
     response.headers['Content-Security-Policy'] = "default-src 'none'"
-    send_data @submission.contents, :filename => filename,
-              :type => db_file.f.content_type,
-              :disposition => params[:inline] ? 'inline' : 'attachment'
+    send_file_blob @submission.file, filename: filename,
+                   disposition: params[:inline] ? 'inline' : 'attachment'
   end
 
   # GET /submissions/package_assignment
@@ -186,7 +184,7 @@ class SubmissionsController < ApplicationController
           basename = subject.respond_to?(:email) ?
               subject.email.split('@').first :
               subject.name.underscore.gsub(' ', '_')
-          extension = s.file_name.split('.').last
+          extension = s.file_original_name.split('.').last
 
           zip.put_next_entry "#{prefix}#{basename}#{suffix}.#{extension}"
           zip.write s.contents
@@ -231,8 +229,7 @@ class SubmissionsController < ApplicationController
 
   # Permit updating and creating submissions.
   def submission_params
-    params.require(:submission).permit(:deliverable_id,
-        db_file_attributes: [:f])
+    params.require(:submission).permit(:deliverable_id, :file)
   end
   private :submission_params
 

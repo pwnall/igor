@@ -2,22 +2,33 @@
 #
 # Table name: assignment_files
 #
-#  id            :integer          not null, primary key
-#  description   :string(64)       not null
-#  assignment_id :integer          not null
-#  db_file_id    :integer          not null
-#  released_at   :datetime
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id                 :integer          not null, primary key
+#  description        :string(64)       not null
+#  assignment_id      :integer          not null
+#  file_blob_id       :string(48)       not null
+#  file_size          :integer          not null
+#  file_mime_type     :string(64)       not null
+#  file_original_name :string(256)      not null
+#  released_at        :datetime
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
-# Files relevant to an assignment. E.g., test cases, solutions, instructions.
+# Wraps a file relevant to an assignment.
+#
+# Examples include the assignment description, solutions, and test cases.
 class AssignmentFile < ApplicationRecord
-  include HasDbFile
   include IsReleased
 
   # A brief description of the resource. E.g., "PS1 Solutions".
   validates :description, length: 1..64, presence: true
+
+  # The wrapped file.
+  has_file_blob :file, allows_nil: false, blob_model: 'FileBlob'
+
+  # Refuse to serve active content from the site.
+  validates :file_mime_type, exclusion: {
+      in: ['text/html', 'application/xhtml+xml'] }
 
   # The relevant assignment.
   belongs_to :assignment, inverse_of: :files

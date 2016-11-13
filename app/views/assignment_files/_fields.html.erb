@@ -10,27 +10,25 @@
     </div>
   <% end %>
 
-  <%= f.fields_for :db_file, DbFile.new do |ff| %>
-  <%= ff.row do %>
+  <%= f.row do %>
   <%# The form does not save an uploaded file if there are any validation errors
       throughout the form. So the least confusing way to handle invalid files is
       to bounce attempts to submit the form until a valid file is uploaded.
 
       TODO(spark008): Add some JS to bounce files with invalid MIME types. %>
-    <%= ff.file_field :f, label: 'Resource file',
-          required: (!f.object.db_file || f.object.db_file.new_record?) %>
+    <%= f.file_field :file, label: 'Resource file',
+                            required: !f.object.file.blob_id %>
     <div class="small-3 columns">
       <span class="comment">
-        <% if f.object.db_file && !f.object.db_file.new_record? %>
+        <% if f.object.file.blob_id %>
           <%= link_to download_assignment_file_path(f.object,
                 course_id: f.object.course) do %>
-            <%= download_icon_tag %> <%= f.object.file_name %>
+            <%= download_icon_tag %> <%= f.object.file_original_name %>
           <% end %>
-          (<%= number_to_human_size f.object.db_file.f.size %>)
+          (<%= number_to_human_size f.object.file_size %>)
         <% end %>
       </span>
     </div>
-  <% end %>
   <% end %>
 
   <%= f.row do %>

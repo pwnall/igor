@@ -2,14 +2,14 @@
 #
 # Table name: profile_photos
 #
-#  id               :integer          not null, primary key
-#  profile_id       :integer          not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  pic_file_name    :string
-#  pic_content_type :string
-#  pic_file_size    :integer
-#  pic_updated_at   :datetime
+#  id                  :integer          not null, primary key
+#  profile_id          :integer          not null
+#  image_blob_id       :string(48)       not null
+#  image_size          :integer          not null
+#  image_mime_type     :string(64)       not null
+#  image_original_name :string(256)      not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #
 
 # A profile's avatar.
@@ -23,13 +23,10 @@ class ProfilePhoto < ApplicationRecord
   belongs_to :profile, inverse_of: :photo
   validates :profile, presence: true
 
-  # The picture bits.
-  has_attached_file :pic, storage: :database, database_table: :photo_blobs,
-      default_style: :thumb, convert_options: { all: '-strip' },
-      url: '/:class/:id/:style',
-      styles: {
-        thumb: { geometry: '36x36#', format: 'png' },
-        profile: { geometry: '100x100#', format: 'png' }
-      }
-  validates_attachment_size :pic, less_than: 1.megabyte
+  # The wrapped file.
+  has_file_blob :image, allows_nil: false, blob_model: 'FileBlob'
+
+  # Refuse to serve active content from the site.
+  validates :image_mime_type, exclusion: {
+      in: ['text/html', 'application/xhtml+xml'] }
 end

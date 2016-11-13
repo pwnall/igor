@@ -65,8 +65,8 @@ class FeedItem
           author: submission.subject, flavor: :submission,
           headline: "submitted a #{submission.deliverable.name} for " +
                     submission.deliverable.assignment.name,
-          contents: number_to_human_size(submission.db_file.f.size) +
-                    " #{submission.db_file.f_content_type} file",
+          contents: number_to_human_size(submission.file_size) +
+                    " #{submission.file_mime_type} file",
           actions: [
             [download_icon_tag + ' Download', [:file_submission_path,
                 submission, { course_id: submission.course }]]

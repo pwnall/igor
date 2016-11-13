@@ -9,10 +9,9 @@ module DockerBenchmark
   # Create a submission for the given deliverable and user.
   def self.create_submission(deliverable, user)
     Submission.create! deliverable: deliverable, uploader: user,
-        upload_ip: '127.0.0.1', db_file_attributes: { f: fixture_file_upload(
+        upload_ip: '127.0.0.1', file: fixture_file_upload(
           'test/fixtures/files/submission/good_fib.py', 'text/x-python',
           :binary)
-        }
   end
 end
 
@@ -62,9 +61,9 @@ namespace :docker do
     docker_analyzer_params = { type: 'DockerAnalyzer', map_time_limit: '2',
       map_ram_limit: '1024', map_logs_limit: '1', reduce_time_limit: '2',
       reduce_ram_limit: '1024', reduce_logs_limit: '10',
-      auto_grading: false, db_file_attributes: {
-        f: fixture_file_upload(docker_analyzer_file, 'application/zip', :binary)
-        } }
+      auto_grading: false, file:
+        fixture_file_upload(docker_analyzer_file, 'application/zip', :binary)
+        }
     deliverable = pset.deliverables.create! name: 'Fibonacci',
         description: 'Please upload your modified fib.py.',
         analyzer_attributes: docker_analyzer_params

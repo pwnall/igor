@@ -27,26 +27,32 @@ ActiveRecord::Schema.define(version: 20110704080003) do
   end
 
   create_table "analyzers", force: :cascade do |t|
-    t.integer  "deliverable_id",            null: false
-    t.string   "type",           limit: 32, null: false
-    t.boolean  "auto_grading",              null: false
+    t.integer  "deliverable_id",                 null: false
+    t.string   "type",               limit: 32,  null: false
+    t.boolean  "auto_grading",                   null: false
     t.text     "exec_limits"
-    t.integer  "db_file_id"
-    t.string   "message_name",   limit: 64
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.index ["db_file_id"], name: "index_analyzers_on_db_file_id", unique: true, using: :btree
+    t.string   "file_blob_id",       limit: 48
+    t.integer  "file_size"
+    t.string   "file_mime_type",     limit: 64
+    t.string   "file_original_name", limit: 256
+    t.string   "message_name",       limit: 64
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.index ["file_blob_id"], name: "index_analyzers_on_file_blob_id", using: :btree
   end
 
   create_table "assignment_files", force: :cascade do |t|
-    t.string   "description",   limit: 64, null: false
-    t.integer  "assignment_id",            null: false
-    t.integer  "db_file_id",               null: false
+    t.string   "description",        limit: 64,  null: false
+    t.integer  "assignment_id",                  null: false
+    t.string   "file_blob_id",       limit: 48,  null: false
+    t.integer  "file_size",                      null: false
+    t.string   "file_mime_type",     limit: 64,  null: false
+    t.string   "file_original_name", limit: 256, null: false
     t.datetime "released_at"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.index ["assignment_id"], name: "index_assignment_files_on_assignment_id", using: :btree
-    t.index ["db_file_id"], name: "index_assignment_files_on_db_file_id", unique: true, using: :btree
+    t.index ["file_blob_id"], name: "index_assignment_files_on_file_blob_id", using: :btree
   end
 
   create_table "assignment_metrics", force: :cascade do |t|
@@ -104,21 +110,6 @@ ActiveRecord::Schema.define(version: 20110704080003) do
     t.index ["type", "name"], name: "index_credentials_on_type_and_name", unique: true, using: :btree
     t.index ["type", "updated_at"], name: "index_credentials_on_type_and_updated_at", using: :btree
     t.index ["user_id", "type"], name: "index_credentials_on_user_id_and_type", using: :btree
-  end
-
-  create_table "db_file_blobs", force: :cascade do |t|
-    t.integer "db_file_id",               null: false
-    t.string  "style",         limit: 16
-    t.binary  "file_contents"
-    t.index ["db_file_id", "style"], name: "index_db_file_blobs_on_db_file_id_and_style", unique: true, using: :btree
-  end
-
-  create_table "db_files", force: :cascade do |t|
-    t.datetime "created_at",     null: false
-    t.string   "f_file_name"
-    t.string   "f_content_type"
-    t.integer  "f_file_size"
-    t.datetime "f_updated_at"
   end
 
   create_table "deadline_extensions", force: :cascade do |t|
@@ -209,6 +200,10 @@ ActiveRecord::Schema.define(version: 20110704080003) do
     t.index ["assignment_id"], name: "index_exams_on_assignment_id", unique: true, using: :btree
   end
 
+  create_table "file_blobs", id: :string, limit: 48, force: :cascade do |t|
+    t.binary "data", null: false
+  end
+
   create_table "grade_comments", force: :cascade do |t|
     t.integer  "course_id",               null: false
     t.integer  "metric_id",               null: false
@@ -271,13 +266,14 @@ ActiveRecord::Schema.define(version: 20110704080003) do
   end
 
   create_table "profile_photos", force: :cascade do |t|
-    t.integer  "profile_id",       null: false
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.string   "pic_file_name"
-    t.string   "pic_content_type"
-    t.integer  "pic_file_size"
-    t.datetime "pic_updated_at"
+    t.integer  "profile_id",                      null: false
+    t.string   "image_blob_id",       limit: 48,  null: false
+    t.integer  "image_size",                      null: false
+    t.string   "image_mime_type",     limit: 64,  null: false
+    t.string   "image_original_name", limit: 256, null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.index ["image_blob_id"], name: "index_profile_photos_on_image_blob_id", using: :btree
     t.index ["profile_id"], name: "index_profile_photos_on_profile_id", unique: true, using: :btree
   end
 
@@ -370,16 +366,19 @@ ActiveRecord::Schema.define(version: 20110704080003) do
   end
 
   create_table "submissions", force: :cascade do |t|
-    t.integer  "deliverable_id",            null: false
-    t.integer  "db_file_id",                null: false
-    t.string   "subject_type",              null: false
-    t.integer  "subject_id",                null: false
-    t.integer  "uploader_id",               null: false
-    t.string   "upload_ip",      limit: 48, null: false
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.index ["db_file_id"], name: "index_submissions_on_db_file_id", unique: true, using: :btree
+    t.integer  "deliverable_id",                 null: false
+    t.string   "file_blob_id",       limit: 48,  null: false
+    t.integer  "file_size",                      null: false
+    t.string   "file_mime_type",     limit: 64,  null: false
+    t.string   "file_original_name", limit: 256, null: false
+    t.string   "subject_type",                   null: false
+    t.integer  "subject_id",                     null: false
+    t.integer  "uploader_id",                    null: false
+    t.string   "upload_ip",          limit: 48,  null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.index ["deliverable_id", "updated_at"], name: "index_submissions_on_deliverable_id_and_updated_at", using: :btree
+    t.index ["file_blob_id"], name: "index_submissions_on_file_blob_id", using: :btree
     t.index ["subject_id", "subject_type", "deliverable_id"], name: "index_submissions_on_subject_id_and_type_and_deliverable_id", using: :btree
     t.index ["updated_at"], name: "index_submissions_on_updated_at", using: :btree
   end
@@ -477,9 +476,7 @@ ActiveRecord::Schema.define(version: 20110704080003) do
     t.index ["exuid"], name: "index_users_on_exuid", unique: true, using: :btree
   end
 
-  add_foreign_key "analyzers", "db_files"
   add_foreign_key "assignment_files", "assignments"
-  add_foreign_key "assignment_files", "db_files"
   add_foreign_key "collaborations", "submissions"
   add_foreign_key "credentials", "users"
   add_foreign_key "deadline_extensions", "users"
@@ -490,6 +487,7 @@ ActiveRecord::Schema.define(version: 20110704080003) do
   add_foreign_key "exam_sessions", "courses"
   add_foreign_key "exam_sessions", "exams"
   add_foreign_key "exams", "assignments"
+  add_foreign_key "profile_photos", "profiles"
   add_foreign_key "time_slot_allotments", "recitation_sections"
   add_foreign_key "time_slot_allotments", "time_slots"
 end

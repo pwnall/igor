@@ -15,7 +15,7 @@ class DockerAnalyzer
   end
 
   def run_submission(submission)
-    submission_sha = Digest::SHA2.hexdigest submission.db_file.f.file_contents
+    submission_sha = submission.file_blob_id
     cache_key = "#{deliverable.id}-#{submission_sha}"
 
     return DockerAnalyzer.cache[cache_key] if DockerAnalyzer.cache[cache_key]
@@ -274,13 +274,6 @@ puts 'Paper exams created'
 
 # Homework - assignments with deliverables.
 
-docker_analyzer_file = 'test/fixtures/files/analyzer/fib_small.zip'
-docker_analyzer_params = { type: 'DockerAnalyzer', map_time_limit: '2',
-    map_ram_limit: '1024', map_logs_limit: '1', reduce_time_limit: '2',
-    reduce_ram_limit: '1024', reduce_logs_limit: '10',
-    auto_grading: rand(2), db_file_attributes: {
-    f: fixture_file_upload(docker_analyzer_file, 'application/zip', :binary) } }
-
 homework_data = [
   { due_at: -12.weeks - 1.day, grades_released: true, scheduled: true },
   { due_at: -9.weeks - 1.day, grades_released: true, scheduled: true },
@@ -313,19 +306,23 @@ homework_assignments = homework_data.map.with_index do |data, index|
       analyzer_attributes: { type: 'ProcAnalyzer', message_name: 'analyze_pdf',
       auto_grading: true }
 
-  assignment.deliverables.create! name: 'Fibonacci',
+  docker_analyzer_params = { type: 'DockerAnalyzer', map_time_limit: '2',
+      map_ram_limit: '1024', map_logs_limit: '1', reduce_time_limit: '2',
+      reduce_ram_limit: '1024', reduce_logs_limit: '10',
+      auto_grading: i % 2 == 0,
+      file: fixture_file_upload('test/fixtures/files/analyzer/fib_small.zip',
+                                'application/zip', :binary) }
+
+  deliverable = assignment.deliverables.build name: 'Fibonacci',
       description: 'Please upload your modified fib.py.',
       analyzer_attributes: docker_analyzer_params
+  deliverable.save!
   assignment
 end
 
 homework_assignments.each_with_index do |assignment, j|
   writeup = assignment.deliverables.find_by name: 'PDF write-up'
-  writeup_upload = fixture_file_upload(
-      'test/fixtures/files/submission/small.pdf', 'application/pdf', :binary)
   code = assignment.deliverables.find_by name: 'Fibonacci'
-  code_upload = fixture_file_upload(
-      'test/fixtures/files/submission/good_fib.py', 'text/x-python', :binary)
 
   ([admin] + staff + students).each_with_index do |user, i|
     next unless assignment.due_at < base_time
@@ -333,9 +330,12 @@ homework_assignments.each_with_index do |assignment, j|
     unless (i + j) % 20 == 1
       # Submit PDF.
       time = assignment.due_at - 1.day + i * 1.minute
+      writeup_upload = fixture_file_upload(
+          'test/fixtures/files/submission/small.pdf', 'application/pdf',
+          :binary)
       submission = Submission.create! deliverable: writeup, uploader: user,
-          upload_ip: '127.0.0.1', db_file_attributes: { f: writeup_upload },
-          created_at: time, updated_at: time
+          upload_ip: '127.0.0.1', file: writeup_upload, created_at: time,
+          updated_at: time
       SubmissionAnalysisJob.perform_now submission
       submission.analysis.created_at = time + 1.second
       submission.analysis.updated_at = time + 5.seconds
@@ -345,9 +345,12 @@ homework_assignments.each_with_index do |assignment, j|
     if (i + j) % 3 == 0
       # Submit code.
       time = assignment.due_at - 1.day + i * 1.minute + 30.seconds
+      code_upload = fixture_file_upload(
+          'test/fixtures/files/submission/good_fib.py', 'text/x-python',
+          :binary)
       submission = Submission.create! deliverable: code, uploader: user,
-          upload_ip: '127.0.0.1', db_file_attributes: { f: code_upload },
-          created_at: time, updated_at: time
+          upload_ip: '127.0.0.1', file: code_upload, created_at: time,
+          updated_at: time
       SubmissionAnalysisJob.perform_now submission
       submission.analysis.created_at = time + 1.second
       submission.analysis.updated_at = time + 5.seconds
@@ -383,13 +386,6 @@ end
 puts 'Problem Sets created'
 
 # Online Exams - assignments with exam sessions.
-
-docker_analyzer_file = 'test/fixtures/files/analyzer/fib_small.zip'
-docker_analyzer_params = { type: 'DockerAnalyzer', map_time_limit: '2',
-    map_ram_limit: '1024', map_logs_limit: '1', reduce_time_limit: '2',
-    reduce_ram_limit: '1024', reduce_logs_limit: '10',
-    auto_grading: rand(2), db_file_attributes: {
-    f: fixture_file_upload(docker_analyzer_file, 'application/zip', :binary) } }
 
 online_exam_data = [
   { due_at: -7.weeks, grades_released: true, state: :graded },
@@ -453,6 +449,14 @@ online_exam_assignments = online_exam_data.map.with_index do |data, index|
       analyzer_attributes: { type: 'ProcAnalyzer', message_name: 'analyze_pdf',
       auto_grading: true }
 
+  docker_analyzer_params = { type: 'DockerAnalyzer', map_time_limit: '2',
+      map_ram_limit: '1024', map_logs_limit: '1', reduce_time_limit: '2',
+      reduce_ram_limit: '1024', reduce_logs_limit: '10',
+      auto_grading: i % 2 == 0,
+      file: fixture_file_upload('test/fixtures/files/analyzer/fib_small.zip',
+                                'application/zip', :binary) }
+
+
   assignment.deliverables.create! name: 'Fibonacci',
       description: 'Please upload your modified fib.py.',
       analyzer_attributes: docker_analyzer_params
@@ -461,11 +465,7 @@ end
 
 online_exam_assignments.each_with_index do |assignment, j|
   writeup = assignment.deliverables.find_by name: 'PDF write-up'
-  writeup_upload = fixture_file_upload(
-      'test/fixtures/files/submission/small.pdf', 'application/pdf', :binary)
   code = assignment.deliverables.find_by name: 'Fibonacci'
-  code_upload = fixture_file_upload(
-      'test/fixtures/files/submission/good_fib.py', 'text/x-python', :binary)
 
   ([admin] + staff + students).each_with_index do |user, i|
     next if assignment.released_at > base_time
@@ -477,9 +477,12 @@ online_exam_assignments.each_with_index do |assignment, j|
       # Submit PDF.
       writeup = assignment.deliverables.find_by name: 'PDF write-up'
       time = assignment.due_at - 1.day + i * 1.minute
+      writeup_upload = fixture_file_upload(
+          'test/fixtures/files/submission/small.pdf', 'application/pdf',
+          :binary)
       submission = Submission.create! deliverable: writeup, uploader: user,
-          upload_ip: '127.0.0.1', db_file_attributes: { f: writeup_upload },
-          created_at: time, updated_at: time
+          upload_ip: '127.0.0.1', file: writeup_upload, created_at: time,
+          updated_at: time
       SubmissionAnalysisJob.perform_now submission
       submission.analysis.created_at = time + 1.second
       submission.analysis.updated_at = time + 5.seconds
@@ -490,9 +493,12 @@ online_exam_assignments.each_with_index do |assignment, j|
       # Submit code.
       code = assignment.deliverables.find_by name: 'Fibonacci'
       time = assignment.due_at - 1.day + i * 1.minute + 30.seconds
+      code_upload = fixture_file_upload(
+          'test/fixtures/files/submission/good_fib.py', 'text/x-python',
+          :binary)
       submission = Submission.create! deliverable: code, uploader: user,
-          upload_ip: '127.0.0.1', db_file_attributes: { f: code_upload },
-          created_at: time, updated_at: time
+          upload_ip: '127.0.0.1', file: code_upload, created_at: time,
+          updated_at: time
       SubmissionAnalysisJob.perform_now submission
       submission.analysis.created_at = time + 1.second
       submission.analysis.updated_at = time + 5.seconds

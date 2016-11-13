@@ -5,14 +5,12 @@ class AnalyzersController < ApplicationController
   # GET /6.006/analyzers/1/source
   def source
     @analyzer = Analyzer.find params[:id]
-    db_file = @analyzer.db_file
 
     # NOTE: The CSP header provides some protection against an attacker who
     #       tries to serve active content (HTML+JS) using the server's origin.
     #       DbFile also explicitly disallows the HTML and XHTML MIME types.
     response.headers['Content-Security-Policy'] = "default-src 'none'"
-    send_data @analyzer.contents, filename: @analyzer.file_name,
-        type: db_file.f.content_type
+    send_file_blob @analyzer.file
   end
 
   # GET /6.006/analyzers/help

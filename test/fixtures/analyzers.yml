@@ -41,7 +41,10 @@ docker_project_code:
   deliverable: project_code
   type: DockerAnalyzer
   auto_grading: true
-  db_file: project_code_docker_analyzer
+  file_blob_id: <%= file_blob_id 'files/analyzer/fib_small.zip' %>
+  file_size: <%= file_blob_size 'files/analyzer/fib_small.zip' %>
+  file_mime_type: application/zip
+  file_original_name: fib_small_project.zip
   exec_limits: >
     { "map_time_limit": 2,
       "map_ram_limit": 1024,
@@ -54,7 +57,10 @@ docker_assessment_code:
   deliverable: assessment_code
   type: DockerAnalyzer
   auto_grading: true
-  db_file: assessment_code_docker_analyzer
+  file_blob_id: <%= file_blob_id 'files/analyzer/fib_small.zip' %>
+  file_size: <%= file_blob_size 'files/analyzer/fib_small.zip' %>
+  file_mime_type: application/zip
+  file_original_name: fib_small_assessment.zip
   exec_limits: >
     { "map_time_limit": 2,
       "map_ram_limit": 1024,
@@ -73,7 +79,10 @@ docker_main_exam_3_part_a:
   deliverable: main_exam_3_part_a
   type: DockerAnalyzer
   auto_grading: true
-  db_file: main_exam_3_part_a_docker_analyzer
+  file_blob_id: <%= file_blob_id 'files/analyzer/fib_small.zip' %>
+  file_size: <%= file_blob_size 'files/analyzer/fib_small.zip' %>
+  file_mime_type: application/zip
+  file_original_name: fib_small_main_exam_3.zip
   exec_limits: >
     { "map_time_limit": 2,
       "map_ram_limit": 1024,

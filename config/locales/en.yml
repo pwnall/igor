@@ -21,10 +21,6 @@ en:
             released_at:
               before: "must occur before the base deadline."
               invalid_datetime: "must be a valid date (not undecided)."
-        db_file:
-          attributes:
-            f:
-              spoofed_media_type: "Detected MIME type does not match browser-set type"
         deadline_extension:
           attributes:
             due_at:

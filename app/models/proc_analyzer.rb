@@ -2,15 +2,18 @@
 #
 # Table name: analyzers
 #
-#  id             :integer          not null, primary key
-#  deliverable_id :integer          not null
-#  type           :string(32)       not null
-#  auto_grading   :boolean          not null
-#  exec_limits    :text
-#  db_file_id     :integer
-#  message_name   :string(64)
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id                 :integer          not null, primary key
+#  deliverable_id     :integer          not null
+#  type               :string(32)       not null
+#  auto_grading       :boolean          not null
+#  exec_limits        :text
+#  file_blob_id       :string(48)
+#  file_size          :integer
+#  file_mime_type     :string(64)
+#  file_original_name :string(256)
+#  message_name       :string(64)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
 # Submission analyzer that calls a method on itself.
@@ -26,7 +29,7 @@ class ProcAnalyzer < Analyzer
 
   # Checks that a submitted file looks like a PDF.
   def analyze_pdf(submission)
-    bytes = submission.contents
+    bytes = submission.file.data
     analysis = submission.analysis
     if bytes[0, 5] == '%PDF-'
       if bytes[([0, bytes.length - 1024].max)..-1] =~ /\%\%EOF/

@@ -2,20 +2,21 @@
 #
 # Table name: analyzers
 #
-#  id             :integer          not null, primary key
-#  deliverable_id :integer          not null
-#  type           :string(32)       not null
-#  auto_grading   :boolean          not null
-#  exec_limits    :text
-#  db_file_id     :integer
-#  message_name   :string(64)
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id                 :integer          not null, primary key
+#  deliverable_id     :integer          not null
+#  type               :string(32)       not null
+#  auto_grading       :boolean          not null
+#  exec_limits        :text
+#  file_blob_id       :string(48)
+#  file_size          :integer
+#  file_mime_type     :string(64)
+#  file_original_name :string(256)
+#  message_name       :string(64)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
 class DockerAnalyzer < Analyzer
-  include HasDbFile
-
   # Limits for the student programs and for the analyzer script.
   store :exec_limits, coder: JSON
 
@@ -48,6 +49,13 @@ class DockerAnalyzer < Analyzer
   validates :reduce_logs_limit, presence: true,
       numericality: { greater_than: 0, allow_nil: false }
   store_accessor :exec_limits, :reduce_logs_limit
+
+  # The wrapped file.
+  has_file_blob :file, allows_nil: false, blob_model: 'FileBlob'
+
+  # Currently, we only support .zip packaging for analyzer assets.
+  validates :file_mime_type, inclusion: {
+      in: ['application/zip', 'application/octet-stream'] }
 
   # Convert strings to numbers.
   def map_time_limit=(new_value)
@@ -111,9 +119,9 @@ class DockerAnalyzer < Analyzer
   #
   # @return {ContainedMr::Job} the job that ran
   def run_submission(submission)
-    job_id = submission.db_file.id
-    template_io = StringIO.new db_file.f.file_contents
-    submission_string = submission.db_file.f.file_contents
+    job_id = submission.id
+    template_io = StringIO.new file.data
+    submission_string = submission.file.data
     job_options = {
       'mapper' => {
         'wait_time' => map_time_limit,

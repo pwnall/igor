@@ -81,7 +81,7 @@ module CoverSheet
           submitted_text += ' by ' + user.name
         end
         [d.name,
-         number_to_human_size(s.db_file.f.size),
+         number_to_human_size(s.file_size),
          analysis_status_text(s.analysis),
          submitted_text,
          (s.updated_at < d.assignment.due_at) ? 'not needed' : '']

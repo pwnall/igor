@@ -40,7 +40,7 @@
     <figure>
       <%= Markdpwn.markup(
             File.read(Rails.root.join('lib/analyzer_sources/fib/Dockerfile')),
-            :file_name => 'Dockerfile').html_safe %>
+            file_name: 'Dockerfile').html_safe %>
       <figcaption>Sample <span class="file-name">Dockerfile</span></figcaption>
     </figure>
     In order to launch a container with the correct environment set up, Docker

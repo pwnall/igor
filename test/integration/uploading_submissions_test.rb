@@ -25,7 +25,7 @@ class UploadingSubmissionsTest < ActionDispatch::IntegrationTest
         assert_equal true, has_css?("#{submissions_selector} .no-submission")
 
         within submissions_selector do
-          attach_file 'submission_db_file_attributes_f',
+          attach_file 'submission_file',
                       'test/fixtures/files/submission/good_fib.py'
           click_button 'Submit'
         end

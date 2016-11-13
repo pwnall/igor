@@ -226,11 +226,11 @@ class AssignmentsController < ApplicationController
     analyzer_params = [:id, :type, :message_name, :auto_grading, :time_limit,
         :ram_limit, :file_limit, :file_size_limit, :process_limit,
         :map_time_limit, :map_ram_limit, :map_logs_limit, :reduce_time_limit,
-        :reduce_ram_limit, :reduce_logs_limit, { db_file_attributes: :f }]
+        :reduce_ram_limit, :reduce_logs_limit, :file]
     deliverable_params = [:name, :_destroy, :description, :id,
         { analyzer_attributes: analyzer_params } ]
     file_params = [:id, :description, :released_at, :_destroy,
-        :reset_released_at, { db_file_attributes: :f }]
+        :reset_released_at, :file]
     metric_params = [:name, :max_score, :weight, :id, :_destroy]
     params.require(:assignment).permit :name, :due_at, :weight, :author_exuid,
         :team_partition_id, :feedback_survey_id, :scheduled, :released_at,

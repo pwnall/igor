@@ -1,0 +1,15 @@
+small_pdf:
+  id: <%= file_blob_id 'files/submission/small.pdf' %>
+  data: <%= file_blob_data 'files/submission/small.pdf' %>
+
+truncated_pdf:
+  id: <%= file_blob_id 'files/submission/truncated.pdf' %>
+  data: <%= file_blob_data 'files/submission/truncated.pdf' %>
+
+good_fib_py:
+  id: <%= file_blob_id 'files/submission/good_fib.py' %>
+  data: <%= file_blob_data 'files/submission/good_fib.py' %>
+
+fib_small_zip:
+  id: <%= file_blob_id 'files/analyzer/fib_small.zip' %>
+  data: <%= file_blob_data 'files/analyzer/fib_small.zip' %>

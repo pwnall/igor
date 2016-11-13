@@ -2,21 +2,22 @@
 #
 # Table name: submissions
 #
-#  id             :integer          not null, primary key
-#  deliverable_id :integer          not null
-#  db_file_id     :integer          not null
-#  subject_type   :string           not null
-#  subject_id     :integer          not null
-#  uploader_id    :integer          not null
-#  upload_ip      :string(48)       not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id                 :integer          not null, primary key
+#  deliverable_id     :integer          not null
+#  file_blob_id       :string(48)       not null
+#  file_size          :integer          not null
+#  file_mime_type     :string(64)       not null
+#  file_original_name :string(256)      not null
+#  subject_type       :string           not null
+#  subject_id         :integer          not null
+#  uploader_id        :integer          not null
+#  upload_ip          :string(48)       not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
-# A file submitted by a student for an assignment.
+# Wraps a file submitted by a student for an assignment.
 class Submission < ApplicationRecord
-  include HasDbFile
-
   # The user or team doing the submission.
   belongs_to :subject, polymorphic: true, inverse_of: :submissions
   validates :subject, presence: true
@@ -52,6 +53,13 @@ class Submission < ApplicationRecord
     #  record.errors.add attr, 'cannot submit for this deliverable'
     #end
   end
+
+  # The wrapped file.
+  has_file_blob :file, allows_nil: false, blob_model: 'FileBlob'
+
+  # Refuse to serve active content from the site.
+  validates :file_mime_type, exclusion: {
+      in: ['text/html', 'application/xhtml+xml'] }
 
   # The IP address used to upload this submission.
   validates :upload_ip, presence: true, length: 1..48

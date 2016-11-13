@@ -22,21 +22,30 @@ dexter_ps1:
   subject: awesome_pset (Team)
   uploader: dexter
   upload_ip: "18.240.1.5"
-  db_file: dexter_ps1
+  file_blob_id: <%= file_blob_id 'files/submission/small.pdf' %>
+  file_size: <%= file_blob_size 'files/submission/small.pdf' %>
+  file_mime_type: application/pdf
+  file_original_name: dexter_ps1.pdf
 
 solo_ps1:
   deliverable: ps1_writeup
   subject: solo (User)
   uploader: solo
   upload_ip: "18.240.2.6"
-  db_file: solo_ps1
+  file_blob_id: <%= file_blob_id 'files/submission/small.pdf' %>
+  file_size: <%= file_blob_size 'files/submission/small.pdf' %>
+  file_mime_type: application/pdf
+  file_original_name: solo_ps1.pdf
 
 dexter_project:
   deliverable: project_writeup
   subject: awesome_project (Team)
   uploader: dexter
   upload_ip: "18.240.1.5"
-  db_file: dexter_project
+  file_blob_id: <%= file_blob_id 'files/submission/small.pdf' %>
+  file_size: <%= file_blob_size 'files/submission/small.pdf' %>
+  file_mime_type: application/pdf
+  file_original_name: dexter_project.pdf
   created_at: <%= 6.days.ago.to_s(:db) %>
   updated_at: <%= 5.days.ago.to_s(:db) %>
 
@@ -45,7 +54,10 @@ dexter_project_v2:
   subject: awesome_project (Team)
   uploader: dexter
   upload_ip: "18.240.1.5"
-  db_file: dexter_project_v2
+  file_blob_id: <%= file_blob_id 'files/submission/small.pdf' %>
+  file_size: <%= file_blob_size 'files/submission/small.pdf' %>
+  file_mime_type: application/pdf
+  file_original_name: dexter_project_v2.pdf
   created_at: <%= 3.days.ago.to_s(:db) %>
   updated_at: <%= 2.days.ago.to_s(:db) %>
 
@@ -54,14 +66,20 @@ mandark_project:
   subject: boo_project (Team)
   uploader: mandark
   upload_ip: "18.233.9.9"
-  db_file: submission_catch_all
+  file_blob_id: <%= file_blob_id 'files/submission/small.pdf' %>
+  file_size: <%= file_blob_size 'files/submission/small.pdf' %>
+  file_mime_type: application/pdf
+  file_original_name: catch_all.pdf
 
 dexter_assessment:
   deliverable: assessment_writeup
   subject: dexter (User)
   uploader: dexter
   upload_ip: "18.240.1.5"
-  db_file: dexter_assessment
+  file_blob_id: <%= file_blob_id 'files/submission/small.pdf' %>
+  file_size: <%= file_blob_size 'files/submission/small.pdf' %>
+  file_mime_type: application/pdf
+  file_original_name: dexter_assessment.pdf
   created_at: <%= 6.days.ago.to_s(:db) %>
   updated_at: <%= 5.days.ago.to_s(:db) %>
 
@@ -70,7 +88,10 @@ dexter_assessment_v2:
   subject: dexter (User)
   uploader: dexter
   upload_ip: "18.240.1.5"
-  db_file: dexter_assessment_v2
+  file_blob_id: <%= file_blob_id 'files/submission/small.pdf' %>
+  file_size: <%= file_blob_size 'files/submission/small.pdf' %>
+  file_mime_type: application/pdf
+  file_original_name: dexter_assessment_v2.pdf
   created_at: <%= 3.days.ago.to_s(:db) %>
   updated_at: <%= 2.days.ago.to_s(:db) %>
 
@@ -79,14 +100,20 @@ deedee_assessment:
   subject: deedee (User)
   uploader: deedee
   upload_ip: "18.240.1.8"
-  db_file: deedee_assessment
+  file_blob_id: <%= file_blob_id 'files/submission/truncated.pdf' %>
+  file_size: <%= file_blob_size 'files/submission/truncated.pdf' %>
+  file_mime_type: application/pdf
+  file_original_name: deedee_assessment.pdf
 
 dexter_code:
   deliverable: assessment_code
   subject: dexter (User)
   uploader: dexter
   upload_ip: "18.240.1.5"
-  db_file: dexter_code
+  file_blob_id: <%= file_blob_id 'files/submission/good_fib.py' %>
+  file_size: <%= file_blob_size 'files/submission/good_fib.py' %>
+  file_mime_type: application/x-python
+  file_original_name: dexter_code.py
   created_at: <%= 6.days.ago.to_s(:db) %>
   updated_at: <%= 5.days.ago.to_s(:db) %>
 
@@ -95,7 +122,10 @@ dexter_code_v2:
   subject: dexter (User)
   uploader: dexter
   upload_ip: "18.240.1.5"
-  db_file: dexter_code_v2
+  file_blob_id: <%= file_blob_id 'files/submission/good_fib.py' %>
+  file_size: <%= file_blob_size 'files/submission/good_fib.py' %>
+  file_mime_type: application/x-python
+  file_original_name: dexter_code_v2.py
   created_at: <%= 3.days.ago.to_s(:db) %>
   updated_at: <%= 2.days.ago.to_s(:db) %>
 
@@ -104,6 +134,9 @@ main_staff_code:
   subject: main_staff (User)
   uploader: main_staff
   upload_ip: "18.240.1.9"
-  db_file: main_staff_code
+  file_blob_id: <%= file_blob_id 'files/submission/good_fib.py' %>
+  file_size: <%= file_blob_size 'files/submission/good_fib.py' %>
+  file_mime_type: application/x-python
+  file_original_name: main_staff_code.py
   created_at: <%= 3.days.ago.to_s(:db) %>
   updated_at: <%= 2.days.ago.to_s(:db) %>
