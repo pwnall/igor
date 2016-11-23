@@ -24,7 +24,7 @@ gem 'rmagick4j', '>= 0', platform: :jruby
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
 # Use Puma as the app server.
-gem 'puma', '>= 3.4.0'
+gem 'puma', '>= 3.6.2'
 
 # Background processing.
 gem 'delayed_job', '>= 4.1.2'
@@ -61,10 +61,10 @@ gem 'sass-rails', '>= 5.0.5'
 gem 'jquery-rails', '>= 4.1.1'
 gem 'font-awesome-rails', '>= 4.6.3.1'
 gem 'uglifier', '>= 3.0.0'
-gem 'autoprefixer-rails', '>= 6.3.7'
+gem 'autoprefixer-rails', '>= 6.5.3'
 gem 'foundation-rails', '>= 6.2.3.0'
 gem 'coffee-rails', '>= 4.2.1'
-gem 'mini_racer', '>= 0.1.4'
+gem 'mini_racer', '>= 0.1.7'
 
 group :development, :test do
   gem 'binary_fixtures', '>= 0.1.3'
