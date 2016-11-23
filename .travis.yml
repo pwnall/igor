@@ -13,4 +13,4 @@ before_script:
 script: bin/rails test test/models/ test/controllers/ test/helpers/
                        test/mailers/ test/jobs/
 rvm:
-  - "2.3.1"
+  - "2.3.3"
