@@ -1,7 +1,8 @@
 ---
 - include: config.yml
-- include: deps.yml
 - include: files.yml
+- include: deps.yml
+- include: systemd.yml
 - include: bootstrap.yml
 - include: surrogate.yml
 

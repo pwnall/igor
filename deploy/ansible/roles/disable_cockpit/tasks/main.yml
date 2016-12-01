@@ -11,6 +11,8 @@
   become_user: root
   service: name=cockpit.socket enabled=no state=stopped
   register: cockpit_disable_result
+  # The first error message is produced by newer systemd versions, while the
+  # second message is produced by older versions.
   failed_when: "cockpit_disable_result | failed and
-      'systemd could not find the requested service' not in
-      cockpit_disable_result.msg"
+      ('could not be found' not in cockpit_disable_result.msg) and
+      ('not find the requested' not in cockpit_disable_result.msg)"

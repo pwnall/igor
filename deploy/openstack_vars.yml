@@ -10,7 +10,7 @@ os_prefix: igorprod
 os_cloud: test
 # The OpenStack flavor (VM type) for the Web server.
 # This is only used in the cluster bringup receipe.
-os_master_flavor: m1.4core
+os_master_flavor: lg.4core
 # The OpenStack flavor (VM type) for the Docker workers.
 # This is only used in the cluster bringup receipe.
 os_worker_flavor: m1.2core

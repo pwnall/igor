@@ -43,6 +43,14 @@
   notify:
   - restart docker daemon
 
+# TODO(pwnall): Remove this hack when the PR below gets into a release.
+#               https://github.com/docker/docker/pull/28733
+- name: set SELinux to permissive
+  when: ansible_selinux != False
+  become: true
+  become_user: root
+  selinux: policy=targeted state=permissive
+
 - name: enable and start docker socket and daemon
   become: true
   become_user: root

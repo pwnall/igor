@@ -15,7 +15,9 @@ WORKERS = 2
 Vagrant.configure(2) do |config|
   config.vm.box = {
     'ubuntu-xenial' => 'bento/ubuntu-16.04',
+    'ubuntu-yakkety' => 'bento/ubuntu-16.10',
     'fedora-24' => 'fedora/24-cloud-base',
+    'fedora-25' => 'fedora/25-cloud-base',
   }[OS]
   config.vm.box_check_update = true
 

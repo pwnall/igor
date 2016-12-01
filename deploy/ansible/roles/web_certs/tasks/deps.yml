@@ -16,6 +16,6 @@
   become_user: "{{ app_user }}"
   npm:
     name: http-server
-    path: "{{ app_certs_dir }}"
+    path: "/home/{{ app_user }}/{{ app_certs_dir }}"
     production: yes
     state: present
