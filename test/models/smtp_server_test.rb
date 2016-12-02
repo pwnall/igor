@@ -69,7 +69,7 @@ class SmtpServerTest < ActiveSupport::TestCase
 
   it 'coerces an empty authentication mode to nil' do
     @server.auth_kind = ''
-    assert_equal nil, @server.auth_kind
+    assert_nil @server.auth_kind
     assert @server.valid?, @server.errors.full_messages
   end
 

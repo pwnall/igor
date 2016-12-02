@@ -90,7 +90,7 @@ class CourseTest < ActiveSupport::TestCase
 
   it 'coerces a blank Google Analytics account ID to nil' do
     @course.ga_account = ''
-    assert_equal nil, @course.ga_account
+    assert_nil @course.ga_account
     assert @course.valid?
   end
 

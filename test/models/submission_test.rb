@@ -45,7 +45,7 @@ class SubmissionTest < ActiveSupport::TestCase
   describe '#uploader=' do
     it 'handles nil' do
       @submission.uploader = nil
-      assert_equal nil, @submission.subject
+      assert_nil @submission.subject
     end
 
     it 'handles a student' do

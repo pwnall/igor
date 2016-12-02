@@ -48,13 +48,11 @@ class ExamTest < ActiveSupport::TestCase
 
   describe '#confirmed_session_for' do
     it 'is nil if the user does not have a session' do
-      assert_equal nil, requires_confirmation_exam.confirmed_session_for(
-          users(:admin))
+      assert_nil requires_confirmation_exam.confirmed_session_for(users(:admin))
     end
 
     it "is nil if the user's attendance is not confirmed" do
-      assert_equal nil, requires_confirmation_exam.confirmed_session_for(
-          users(:solo))
+      assert_nil requires_confirmation_exam.confirmed_session_for(users(:solo))
     end
 
     it "returns the user's session" do

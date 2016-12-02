@@ -350,7 +350,7 @@ class AssignmentsControllerTest < ActionController::TestCase
           patch :schedule, params: member_params
 
           assert_equal true, assignment.reload.scheduled?
-          assert_equal nil, assignment.released_at
+          assert_nil assignment.released_at
         end
       end
 
@@ -396,7 +396,7 @@ class AssignmentsControllerTest < ActionController::TestCase
           patch :deschedule, params: member_params
 
           assert_equal false, assignment.reload.scheduled?
-          assert_equal nil, assignment.released_at
+          assert_nil assignment.released_at
         end
       end
 

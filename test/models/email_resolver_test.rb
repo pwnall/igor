@@ -37,10 +37,10 @@ class EmailResolverTest < ActiveSupport::TestCase
 
   it 'coerces a blank authentication DN to nil' do
     @resolver.ldap_auth_dn = ''
-    assert_equal nil, @resolver.ldap_auth_dn
+    assert_nil @resolver.ldap_auth_dn
 
     @resolver.ldap_auth_dn = '    '
-    assert_equal nil, @resolver.ldap_auth_dn
+    assert_nil @resolver.ldap_auth_dn
   end
 
   it 'requires a non-nil LDAP password' do
@@ -165,7 +165,7 @@ class EmailResolverTest < ActiveSupport::TestCase
     it 'returns nil for an empty LDAP response' do
       @resolver.expects(:ldap_email_search).with('einstein@example.com').
           returns([])
-      assert_equal nil, @resolver.resolve('einstein@example.com')
+      assert_nil @resolver.resolve('einstein@example.com')
     end
 
     it 'handles missing attributes in LDAP response' do
@@ -201,7 +201,7 @@ class EmailResolverTest < ActiveSupport::TestCase
   describe '.resolve' do
     it 'returns nil for e-mail on non-existing domain' do
       @resolver.expects(:net_ldap_search_filter).never
-      assert_equal nil, EmailResolver.resolve('nobody@nowhere.com')
+      assert_nil EmailResolver.resolve('nobody@nowhere.com')
     end
   end
 end
