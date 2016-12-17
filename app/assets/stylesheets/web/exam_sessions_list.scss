@@ -3,11 +3,11 @@ ol.exam-sessions-list {
     @include tab-panel-list-item;
 
     > .session-details {
-      @include flex-grid-column(null, 1rem);
+      @include flex-grid-column(expand, 1rem);
       @include flex-grid-row(null, null, null, true);
 
       .name {
-        @include flex-grid-column(null, 1rem);
+        @include flex-grid-column(expand, 1rem);
         margin-top: auto;
         margin-bottom: auto;
         font-weight: bold;

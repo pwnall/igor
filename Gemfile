@@ -19,7 +19,7 @@ gem 'paperclip_database', '>= 2.3.1',
 gem 'rack-noie', '>= 1.0', require: 'noie',
     git: 'https://github.com/juliocesar/rack-noie.git',
     ref: 'ce8313c6f327e5c524e3e903a05044ec31c98fd8'
-gem 'rmagick', '>= 2.15.4', platforms: [:mri, :rbx]
+gem 'rmagick', '>= 2.16.0', platforms: [:mri, :rbx]
 gem 'rmagick4j', '>= 0', platform: :jruby
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
@@ -59,10 +59,10 @@ gem 'bower-rails', '>= 0.10.0'
 # Assets.
 gem 'sass-rails', '>= 5.0.5'
 gem 'jquery-rails', '>= 4.1.1'
-gem 'font-awesome-rails', '>= 4.6.3.1'
+gem 'font-awesome-rails', '>= 4.7.0.0'
 gem 'uglifier', '>= 3.0.0'
-gem 'autoprefixer-rails', '>= 6.5.3'
-gem 'foundation-rails', '>= 6.2.3.0'
+gem 'autoprefixer-rails', '>= 6.5.4'
+gem 'foundation-rails', '>= 6.3.0.0'
 gem 'coffee-rails', '>= 4.2.1'
 gem 'mini_racer', '>= 0.1.7'
 
@@ -74,7 +74,10 @@ end
 group :development do
   gem 'web-console', '>= 3.1.1'
   gem 'binding_of_caller', '>= 0.7.3.pre1'
-  gem 'annotate', '>= 2.7.1'
+  # TODO(pwnall): Remove the git ref when 2.7.2 gets released.
+  gem 'annotate', '>= 2.7.1',
+      git: 'https://github.com/ctran/annotate_models.git',
+      ref: '983d36f6a028daa289f31c0fe3fa83df36825d25'
   gem 'faker', '>= 1.4.3'
   gem 'railroady', '>= 1.5.1'
   gem 'listen', '~> 3.0.8'

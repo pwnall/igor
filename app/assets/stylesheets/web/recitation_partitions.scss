@@ -12,7 +12,7 @@
       font-weight: bold;
     }
     .value {
-      @include flex-grid-column(null, 0);
+      @include flex-grid-column(expand, 0);
     }
   }
 }

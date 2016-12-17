@@ -26,7 +26,7 @@
         }
       }
       .assignment-details {
-        @include flex-grid-column(null, 1rem);
+        @include flex-grid-column(expand, 1rem);
       }
     }
   }

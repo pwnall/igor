@@ -27,7 +27,7 @@
   when: ansible_os_family == 'RedHat'
   become: true
   become_user: root
-  command: postgresql-setup --initdb
+  command: postgresql-setup --initdb --unit postgresql
   args:
     creates: /var/lib/pgsql/data/base
 

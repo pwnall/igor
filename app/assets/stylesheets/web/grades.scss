@@ -9,7 +9,7 @@
   @include flex-grid-row(null, null, null, true);
 
   .score, .max-score, .current-count, .max-count {
-    @include flex-grid-column(null, 0.5rem);
+    @include flex-grid-column(expand, 0.5rem);
     text-align: right;
   }
 }

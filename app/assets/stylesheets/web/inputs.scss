@@ -7,7 +7,7 @@ label.check-box-label {
     margin-right: 0.5rem;
   }
   > .label-text {
-    @include flex-grid-column(null, 0);
+    @include flex-grid-column(expand, 0);
   }
 }
 span.prerequisite-course-number > label {

@@ -15,7 +15,7 @@ h3.assignment-name {
     @include flex-grid-row(null, null, null, true);
 
     .metric-name {
-      @include flex-grid-column(null);
+      @include flex-grid-column(expand);
       margin-bottom: 0;
     }
     .metric-weight {
@@ -31,14 +31,14 @@ h3.assignment-name {
     }
   }
   .comments {
-    color: $very-dark-gray;
+    color: $black;
     font-style: italic;
 
     > .comment {
       @include flex-grid-row(null, null, null, true);
 
       > .comment-text {
-        @include flex-grid-column(null);
+        @include flex-grid-column(expand);
         margin-bottom: 0.2rem;
         text-align: justify;
       }

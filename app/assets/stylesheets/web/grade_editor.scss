@@ -1,8 +1,11 @@
 table#grades-table {
   @include table-scroll;
   @include quick-fill-table;
-  overflow-y: auto;
-  height: 80vh;
+
+  // HACK: This makes it so that the comment pop-up doesn't get truncated for
+  //       the bottom row. The alternative hack, which is to set a height and
+  //       overflow-y, causes nested scrollbars.
+  padding-bottom: 5em;
 
   thead {
     .metric-weight, .max-total {

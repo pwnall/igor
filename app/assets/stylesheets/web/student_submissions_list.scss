@@ -39,7 +39,7 @@
 
     // Upload details and collaboration info
     .submission-details {
-      @include flex-grid-column(null);
+      @include flex-grid-column(expand);
 
       .file-details, .collaborators-list, .new-collaborator-form {
         margin: 0.5rem 0;
@@ -59,7 +59,7 @@
             @include flex-grid-column(shrink, 1rem);
           }
           &.file-name {
-            @include flex-grid-column(null, 1rem);
+            @include flex-grid-column(expand, 1rem);
             overflow: hidden;
             text-overflow: ellipsis;
 

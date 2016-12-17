@@ -3,7 +3,7 @@ section.staff-registration-forms {
   margin-top: 2rem;
 
   article.staff-role-form {
-    @include flex-grid-column(null);
+    @include flex-grid-column(expand);
     display: flex;
     flex-flow: row wrap;
 
