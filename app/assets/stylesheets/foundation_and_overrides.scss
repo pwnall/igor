@@ -25,11 +25,13 @@
 @include foundation-close-button;
 @include foundation-drilldown-menu;
 @include foundation-dropdown;
+// This needs to be before dropdown-menu, otherwise topbar breaks.
+//    https://github.com/zurb/foundation-sites/issues/8278
+@include foundation-menu;
 @include foundation-dropdown-menu;
 @include foundation-responsive-embed;
 @include foundation-label;
 @include foundation-media-object;
-@include foundation-menu;
 @include foundation-menu-icon;
 @include foundation-off-canvas;
 @include foundation-orbit;

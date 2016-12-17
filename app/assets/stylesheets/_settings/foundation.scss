@@ -71,7 +71,7 @@ $global-weight-normal: normal;
 $global-weight-bold: bold;
 $global-radius: 3px;  // 0;
 $global-text-direction: ltr;
-$global-flexbox: false;
+$global-flexbox: true;  // false;
 $print-transparent-backgrounds: true;
 
 @include add-foundation-colors;
@@ -222,7 +222,7 @@ $badge-color: $white;
 $badge-color-alt: $black;
 $badge-palette: $foundation-palette;
 $badge-padding: 0.3em;
-$badge-minwidth: 2.1em;
+$badge-minwidth: 1.5em;  // 2.1em;
 $badge-font-size: 0.6rem;
 
 // 10. Breadcrumbs
