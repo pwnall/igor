@@ -73,7 +73,9 @@ group :development do
   gem 'annotate', '>= 2.7.1',
       git: 'https://github.com/ctran/annotate_models.git',
       ref: '983d36f6a028daa289f31c0fe3fa83df36825d25'
-  gem 'faker', '>= 1.4.3'
+  # TODO(pwnall): Remove version limitation when the rake issue gets fixed.
+  #               https://github.com/stympy/faker/issues/780
+  gem 'faker', ['>= 1.6.6', '< 1.7']
   gem 'railroady', '>= 1.5.1'
   gem 'listen', '~> 3.0.8'
   gem 'spring'
