@@ -15,4 +15,4 @@ worker_count: 2
 # The directory that holds all the keys for the deployment.
 #
 # Other playbooks expect to find keys in the directory below.
-keys_dir: ./deploy/keys/{{ os_prefix }}
+keys_dir: ../keys/{{ os_prefix }}

@@ -1,6 +1,6 @@
 ---
 - name: refresh the dynamic inventory cache
-  command: ./deploy/ansible/inventory/openstack.py --refresh --list
+  command: ./inventory/openstack.py --refresh --list
   changed_when: false
 
 - meta: refresh_inventory

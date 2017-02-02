@@ -2,21 +2,19 @@
 # vi: set ft=ruby :
 
 # Supported values:
-# fedora-24
+# fedora-25
 #
 # NOTE: ubuntu-xenial may be supported when it is released; wily does not have
 #       the packages required to be a master (etcd server, skydns) or a worker
 #       (etcd client)
-OS = 'fedora-24'
+OS = 'fedora-25'
 
 # Number of worker VMs.
 WORKERS = 2
 
 Vagrant.configure(2) do |config|
   config.vm.box = {
-    'ubuntu-xenial' => 'bento/ubuntu-16.04',
     'ubuntu-yakkety' => 'bento/ubuntu-16.10',
-    'fedora-24' => 'fedora/24-cloud-base',
     'fedora-25' => 'fedora/25-cloud-base',
   }[OS]
   config.vm.box_check_update = true

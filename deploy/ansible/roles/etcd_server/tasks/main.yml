@@ -11,7 +11,7 @@
   when: ansible_pkg_mgr == 'apt'
   become: true
   become_user: root
-  apt: name=golang-etcd-server-dev state=present
+  apt: name=etcd state=present
 
 - name: copy etcd CA certificate
   become: true

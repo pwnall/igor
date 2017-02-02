@@ -1,5 +1,5 @@
 # Ignore cloud credentials.
-clouds.yaml
+deploy/ansible/clouds.yaml
 deploy/keys/
 
 # Ignore bundler config.

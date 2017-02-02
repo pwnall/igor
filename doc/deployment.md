@@ -3,7 +3,7 @@
 The developers test deploying this product using
 [Ansible](https://github.com/ansible/ansible). We do not use or support any
 non-free product, such as Ansible Tower. Our playbooks use the features in
-Ansible 2.1.
+Ansible 2.2.
 
 
 ## Inventory Errors
@@ -25,7 +25,7 @@ surplus of worker keys  lying around, as they can be used to spin up new
 workers quickly.
 
 ```bash
-ansible-playbook -i "localhost," -e worker_count=10 \
+ansible-playbook -i localhost, -e worker_count=10 \
     -e app_certs_domain=igor.myschool.edu -e app_certs_email=admin@igor.dev \
     deploy/ansible/keys.yml
 ```
@@ -36,18 +36,19 @@ not appropriate can substitute a fake Web TLS certificate for the
 [Let's Encrypt](https://letsencrypt.org/) certificate.
 
 ```bash
-ansible-playbook -i "localhost," -e worker_count=10 -e use_certbot=no \
+ansible-playbook -i localhost, -e worker_count=10 -e use_certbot=no \
     deploy/ansible/keys.yml
 ```
 
-Copy `clouds.example.yaml` into `clouds.yaml` and insert valid OpenStack
-credentials in it.
+Copy `deloy/ansible/clouds.example.yaml` into `deploy/ansible/clouds.yaml` and
+insert valid OpenStack credentials in it.
 
 Run the VM bringup playbook. It is safe to change `worker_count` here in order
 to get more workers up, as long as there are enough keys lying around.
 
 ```bash
-ansible-playbook -i "localhost," -e os_cloud=test deploy/ansible/openstack_up.yml
+ansible-playbook -i localhost, -e os_cloud=test -e worker_count=2 \
+    deploy/ansible/openstack_up.yml
 ```
 
 By default, the VM bringup playbook reies on OpenStack to assign IPs to all
@@ -55,7 +56,7 @@ VMs. The master VM can be assigned a fixed IP using the `os_master_fixed_ip`
 variable, as follows.
 
 ```bash
-ansible-playbook -i "localhost," -e os_cloud=test \
+ansible-playbook -i localhost, -e os_cloud=test -e worker_count=2 \
     -e os_master-fixed_ip=192.0.2.42 deploy/ansible/openstack_up.yml
 ```
 
@@ -98,14 +99,14 @@ Defining the `os_prefix` variable on the command line is a convenient way to
 quickly switch between multiple deployments of the application.
 
 ```bash
-ansible-playbook -i "localhost," -e os_prefix=igortest -e worker_count=10 \
+ansible-playbook -i localhost, -e os_prefix=igortest -e worker_count=10 \
     -e app_certs_domain=igor.myschool.edu -e app_certs_email=admin@igor.dev \
     deploy/ansible/keys.yml
-ansible-playbook -i "localhost," -e os_prefix=igortest -e worker_count=10 \
+ansible-playbook -i localhost, -e os_prefix=igortest -e worker_count=10 \
     -e use_certbot=no deploy/ansible/keys.yml
-ansible-playbook -i "localhost," -e os_cloud=test -e os_prefix=igortest \
-    deploy/ansible/openstack_up.yml
-deploy/ansible/inventory/openstack.py --list --refresh    
+ansible-playbook -i localhost, -e os_cloud=test -e os_prefix=igortest \
+    -e worker_count=2 deploy/ansible/openstack_up.yml
+deploy/ansible/inventory/openstack.py --list --refresh
 ansible-playbook -e os_prefix=igortest deploy/ansible/prod.yml
 ```
 
