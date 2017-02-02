@@ -27,6 +27,10 @@ except ImportError:
     HAS_SHADE = False
 
 
+ANSIBLE_METADATA = {'status': ['preview'],
+                    'supported_by': 'community',
+                    'version': '1.0'}
+
 DOCUMENTATION = '''
 ---
 module: os_server
@@ -185,15 +189,26 @@ options:
      required: false
      default: false
      version_added: "2.2"
+   reuse_ips:
+     description:
+       - When I(auto_ip) is true and this option is true, the I(auto_ip) code
+         will attempt to re-use unassigned floating ips in the project before
+         creating a new one. It is important to note that it is impossible
+         to safely do this concurrently, so if your use case involves
+         concurrent server creation, it is highly recommended to set this to
+         false and to delete the floating ip associated with a server when
+         the server is deleted using I(delete_fip).
+     required: false
+     default: true
+     version_added: "2.2"
 requirements:
     - "python >= 2.6"
     - "shade"
 '''
 
 EXAMPLES = '''
-# Creates a new instance and attaches to a network and passes metadata to
-# the instance
-- os_server:
+- name: Create a new instance and attaches to a network and passes metadata to the instance
+  os_server:
        state: present
        auth:
          auth_url: https://region-b.geo-1.identity.hpcloudsvc.com:35357/v2.0/
@@ -212,96 +227,95 @@ EXAMPLES = '''
          hostname: test1
          group: uge_master
 
-# Creates a new instance in HP Cloud AE1 region availability zone az2 and
+# Create a new instance in HP Cloud AE1 region availability zone az2 and
 # automatically assigns a floating IP
 - name: launch a compute instance
   hosts: localhost
   tasks:
-  - name: launch an instance
-    os_server:
-      state: present
-      auth:
-        auth_url: https://region-b.geo-1.identity.hpcloudsvc.com:35357/v2.0/
-        username: username
-        password: Equality7-2521
-        project_name: username-project1
-      name: vm1
-      region_name: region-b.geo-1
-      availability_zone: az2
-      image: 9302692b-b787-4b52-a3a6-daebb79cb498
-      key_name: test
-      timeout: 200
-      flavor: 101
-      security_groups: default
-      auto_ip: yes
+    - name: launch an instance
+      os_server:
+        state: present
+        auth:
+          auth_url: https://region-b.geo-1.identity.hpcloudsvc.com:35357/v2.0/
+          username: username
+          password: Equality7-2521
+          project_name: username-project1
+        name: vm1
+        region_name: region-b.geo-1
+        availability_zone: az2
+        image: 9302692b-b787-4b52-a3a6-daebb79cb498
+        key_name: test
+        timeout: 200
+        flavor: 101
+        security_groups: default
+        auto_ip: yes
 
-# Creates a new instance in named cloud mordred availability zone az2
+# Create a new instance in named cloud mordred availability zone az2
 # and assigns a pre-known floating IP
 - name: launch a compute instance
   hosts: localhost
   tasks:
-  - name: launch an instance
-    os_server:
-      state: present
-      cloud: mordred
-      name: vm1
-      availability_zone: az2
-      image: 9302692b-b787-4b52-a3a6-daebb79cb498
-      key_name: test
-      timeout: 200
-      flavor: 101
-      floating_ips:
-        - 12.34.56.79
+    - name: launch an instance
+      os_server:
+        state: present
+        cloud: mordred
+        name: vm1
+        availability_zone: az2
+        image: 9302692b-b787-4b52-a3a6-daebb79cb498
+        key_name: test
+        timeout: 200
+        flavor: 101
+        floating_ips:
+          - 12.34.56.79
 
-# Creates a new instance with 4G of RAM on Ubuntu Trusty, ignoring
+# Create a new instance with 4G of RAM on Ubuntu Trusty, ignoring
 # deprecated images
 - name: launch a compute instance
   hosts: localhost
   tasks:
-  - name: launch an instance
-    os_server:
-      name: vm1
-      state: present
-      cloud: mordred
-      region_name: region-b.geo-1
-      image: Ubuntu Server 14.04
-      image_exclude: deprecated
-      flavor_ram: 4096
+    - name: launch an instance
+      os_server:
+        name: vm1
+        state: present
+        cloud: mordred
+        region_name: region-b.geo-1
+        image: Ubuntu Server 14.04
+        image_exclude: deprecated
+        flavor_ram: 4096
 
-# Creates a new instance with 4G of RAM on Ubuntu Trusty on a Performance node
+# Create a new instance with 4G of RAM on Ubuntu Trusty on a Performance node
 - name: launch a compute instance
   hosts: localhost
   tasks:
-  - name: launch an instance
-    os_server:
-      name: vm1
-      cloud: rax-dfw
-      state: present
-      image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
-      flavor_ram: 4096
-      flavor_include: Performance
+    - name: launch an instance
+      os_server:
+        name: vm1
+        cloud: rax-dfw
+        state: present
+        image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
+        flavor_ram: 4096
+        flavor_include: Performance
 
 # Creates a new instance and attaches to multiple network
 - name: launch a compute instance
   hosts: localhost
   tasks:
-  - name: launch an instance with a string
-    os_server:
-      auth:
-         auth_url: https://region-b.geo-1.identity.hpcloudsvc.com:35357/v2.0/
-         username: admin
-         password: admin
-         project_name: admin
-       name: vm1
-       image: 4f905f38-e52a-43d2-b6ec-754a13ffb529
-       key_name: ansible_key
-       timeout: 200
-       flavor: 4
-       nics: "net-id=4cb08b20-62fe-11e5-9d70-feff819cdc9f,net-id=542f0430-62fe-11e5-9d70-feff819cdc9f..."
+    - name: launch an instance with a string
+      os_server:
+        auth:
+           auth_url: https://region-b.geo-1.identity.hpcloudsvc.com:35357/v2.0/
+           username: admin
+           password: admin
+           project_name: admin
+         name: vm1
+         image: 4f905f38-e52a-43d2-b6ec-754a13ffb529
+         key_name: ansible_key
+         timeout: 200
+         flavor: 4
+         nics: "net-id=4cb08b20-62fe-11e5-9d70-feff819cdc9f,net-id=542f0430-62fe-11e5-9d70-feff819cdc9f..."
 
-# Creates a new instance and attaches to a network and passes metadata to
-# the instance
-- os_server:
+- name: Creates a new instance and attaches to a network and passes metadata to the instance
+  os_server:
        state: present
        auth:
          auth_url: https://region-b.geo-1.identity.hpcloudsvc.com:35357/v2.0/
@@ -318,51 +332,51 @@ EXAMPLES = '''
          - net-name: another_network
        meta: "hostname=test1,group=uge_master"
 
-# Creates a new instance and attaches to a specific network
-- os_server:
-       state: present
-       auth:
-         auth_url: https://region-b.geo-1.identity.hpcloudsvc.com:35357/v2.0/
-         username: admin
-         password: admin
-         project_name: admin
-       name: vm1
-       image: 4f905f38-e52a-43d2-b6ec-754a13ffb529
-       key_name: ansible_key
-       timeout: 200
-       flavor: 4
-       network: another_network
+- name:  Creates a new instance and attaches to a specific network
+  os_server:
+    state: present
+    auth:
+      auth_url: https://region-b.geo-1.identity.hpcloudsvc.com:35357/v2.0/
+      username: admin
+      password: admin
+      project_name: admin
+    name: vm1
+    image: 4f905f38-e52a-43d2-b6ec-754a13ffb529
+    key_name: ansible_key
+    timeout: 200
+    flavor: 4
+      network: another_network
 
-# Creates a new instance with 4G of RAM on a 75G Ubuntu Trusty volume
+# Create a new instance with 4G of RAM on a 75G Ubuntu Trusty volume
 - name: launch a compute instance
   hosts: localhost
   tasks:
-  - name: launch an instance
-    os_server:
-      name: vm1
-      state: present
-      cloud: mordred
-      region_name: ams01
-      image: Ubuntu Server 14.04
-      flavor_ram: 4096
-      boot_from_volume: True
-      volume_size: 75
+    - name: launch an instance
+      os_server:
+        name: vm1
+        state: present
+        cloud: mordred
+        region_name: ams01
+        image: Ubuntu Server 14.04
+        flavor_ram: 4096
+        boot_from_volume: True
+        volume_size: 75
 
 # Creates a new instance with 2 volumes attached
 - name: launch a compute instance
   hosts: localhost
   tasks:
-  - name: launch an instance
-    os_server:
-      name: vm1
-      state: present
-      cloud: mordred
-      region_name: ams01
-      image: Ubuntu Server 14.04
-      flavor_ram: 4096
-      volumes:
-      - photos
-      - music
+    - name: launch an instance
+      os_server:
+        name: vm1
+        state: present
+        cloud: mordred
+        region_name: ams01
+        image: Ubuntu Server 14.04
+        flavor_ram: 4096
+        volumes:
+        - photos
+        - music
 '''
 
 
@@ -374,7 +388,7 @@ def _exit_hostvars(module, cloud, server, changed=True):
 
 def _parse_nics(nics):
     for net in nics:
-        if type(net) == str:
+        if isinstance(net, str):
             for nic in net.split(','):
                 yield dict((nic.split('='),))
         else:
@@ -384,11 +398,11 @@ def _network_args(module, cloud):
     args = []
     nics = module.params['nics']
 
-    if type(nics) != list:
+    if not isinstance(nics, list):
         module.fail_json(msg='The \'nics\' parameter must be a list.')
 
     for net in _parse_nics(nics):
-        if type(net) != dict:
+        if not isinstance(net, dict):
             module.fail_json(
                 msg='Each entry in the \'nics\' parameter must be a dict.')
 
@@ -404,6 +418,7 @@ def _network_args(module, cloud):
             del resolved_net['net-name']
             resolved_net['net-id'] = by_name['id']
             args.append(resolved_net)
+            args.append({'net-id': by_name['id']})
         elif net.get('port-id'):
             args.append(net)
         elif net.get('port-name'):
@@ -439,6 +454,9 @@ def _create_server(module, cloud):
     if not module.params['boot_volume']:
         image_id = cloud.get_image_id(
             module.params['image'], module.params['image_exclude'])
+        if not image_id:
+            module.fail_json(msg="Could not find image %s" %
+                             module.params['image'])
 
     if flavor:
         flavor_dict = cloud.get_flavor(flavor)
@@ -451,7 +469,7 @@ def _create_server(module, cloud):
 
     nics = _network_args(module, cloud)
 
-    if type(module.params['meta']) is str:
+    if isinstance(module.params['meta'], str):
         metas = {}
         for kv_str in module.params['meta'].split(","):
             k, v = kv_str.split("=")
@@ -481,6 +499,7 @@ def _create_server(module, cloud):
         boot_volume=module.params['boot_volume'],
         boot_from_volume=module.params['boot_from_volume'],
         terminate_volume=module.params['terminate_volume'],
+        reuse_ips=module.params['reuse_ips'],
         wait=module.params['wait'], timeout=module.params['timeout'],
         **bootkwargs
     )
@@ -581,6 +600,7 @@ def main():
         scheduler_hints                 = dict(default=None, type='dict'),
         state                           = dict(default='present', choices=['absent', 'present']),
         delete_fip                      = dict(default=False, type='bool'),
+        reuse_ips                       = dict(default=True, type='bool'),
     )
     module_kwargs = openstack_module_kwargs(
         mutually_exclusive=[

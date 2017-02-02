@@ -1,5 +1,5 @@
 Remove os_server_custom.py when the following ansible PR gets merged:
-https://github.com/ansible/ansible-modules-core/pull/4598
+https://github.com/ansible/ansible/pull/20969
 
 os_sever_custom is referenced in os_cluster/tasks/main.yml. The reference must
 be replaced with os_server.

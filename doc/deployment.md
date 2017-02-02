@@ -57,7 +57,7 @@ variable, as follows.
 
 ```bash
 ansible-playbook -i localhost, -e os_cloud=test -e worker_count=2 \
-    -e os_master-fixed_ip=192.0.2.42 deploy/ansible/openstack_up.yml
+    -e os_master_fixed_ip=192.0.2.42 deploy/ansible/openstack_up.yml
 ```
 
 After bringing up OpenStack VMs, always refresh the ansible host cache.
