@@ -14,3 +14,4 @@ script: bin/rails test test/models/ test/controllers/ test/helpers/
                        test/mailers/ test/jobs/
 rvm:
   - "2.3.3"
+  - "2.4.0"
