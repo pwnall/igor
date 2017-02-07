@@ -14,8 +14,6 @@ gem 'jbuilder', '~> 2.4'
 gem 'markdpwn', '>= 0.2.0', platforms: [:mri, :rbx]
 gem 'mail', '>= 2.6.4'
 gem 'nokogiri', '>= 1.6.7.2'
-gem 'rmagick', '>= 2.16.0', platforms: [:mri, :rbx]
-gem 'rmagick4j', '>= 0', platform: :jruby
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
 # Use Puma as the app server.
@@ -60,6 +58,10 @@ gem 'autoprefixer-rails', '>= 6.5.4'
 gem 'foundation-rails', '>= 6.3.0.0'
 gem 'coffee-rails', '>= 4.2.1'
 gem 'mini_racer', '>= 0.1.7'
+
+# Image resizing.
+#gem 'rmagick', '>= 2.16.0', platforms: [:mri, :rbx]
+#gem 'rmagick4j', '>= 0', platform: :jruby
 
 group :development, :test do
   gem 'binary_fixtures', '>= 0.1.3'

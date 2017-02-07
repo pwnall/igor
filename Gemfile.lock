@@ -11,6 +11,12 @@ GIT
   remote: https://github.com/jruby/activerecord-jdbc-adapter.git
   revision: 754c63c7ef169cb0c919c2d443cb343f164d779b
   specs:
+    activerecord-jdbc-adapter (1.4.0.dev-java)
+      jar-dependencies (~> 0.1.13)
+    activerecord-jdbcpostgresql-adapter (1.4.0.dev)
+      activerecord-jdbc-adapter (~> 1.4.0.dev)
+      jdbc-postgres (>= 9.1)
+    jdbc-postgres (9.4.1206)
 
 GEM
   remote: https://rubygems.org/
@@ -92,6 +98,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.4)
+    concurrent-ruby (1.0.4-java)
     contained_mr (0.6.0)
       docker-api (>= 1.26.2)
       rubyzip (>= 1.1.7)
@@ -117,6 +124,7 @@ GEM
     faker (1.6.6)
       i18n (~> 0.5)
     ffi (1.9.17)
+    ffi (1.9.17-java)
     file_blobs_rails (0.2.3)
       rails (>= 5.0.0.1)
     flamegraph (0.9.5)
@@ -139,6 +147,7 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.8.0)
+    jar-dependencies (0.1.15)
     jbuilder (2.6.1)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -149,8 +158,12 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (1.8.6)
+    json (1.8.6-java)
     launchy (2.4.3)
       addressable (~> 2.3)
+    launchy (2.4.3-java)
+      addressable (~> 2.3)
+      spoon (~> 0.0.1)
     libv8 (5.3.332.38.3)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -183,7 +196,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
-    mini_racer (0.1.7)
+    mini_racer (0.1.8)
       libv8 (~> 5.3)
     minitest (5.10.1)
     minitest-spec-rails (5.4.0)
@@ -196,8 +209,10 @@ GEM
     net-http-persistent (2.9.4)
     net-ldap (0.15.0)
     nio4r (1.2.1)
+    nio4r (1.2.1-java)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
+    nokogiri (1.7.0.1-java)
     ntlm-http (0.1.1)
     org-ruby (0.9.12)
       rubypants (~> 0.2)
@@ -220,6 +235,7 @@ GEM
       prawn (>= 1.3.0, < 3.0.0)
     public_suffix (2.0.5)
     puma (3.7.0)
+    puma (3.7.0-java)
     pygments.rb (1.1.1)
       multi_json (>= 1.0.0)
     rack (2.0.1)
@@ -257,7 +273,6 @@ GEM
       ffi (>= 0.5.0)
     rdoc (4.3.0)
     redcarpet (3.4.0)
-    rmagick (2.16.0)
     ruby-rc4 (0.1.5)
     rubypants (0.6.0)
     rubyzip (1.2.0)
@@ -271,6 +286,8 @@ GEM
     sdoc (0.4.2)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    spoon (0.0.6)
+      ffi
     spring (2.0.1)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -290,6 +307,7 @@ GEM
     stackprof (0.2.10)
     thor (0.19.4)
     thread_safe (0.3.5)
+    thread_safe (0.3.5-java)
     tilt (2.0.6)
     timeliness (0.3.8)
     ttfunk (1.4.0)
@@ -297,10 +315,13 @@ GEM
       unf (~> 0.1.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2016.10)
+      tzinfo (>= 1.0.0)
     uglifier (3.0.4)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
+    unf (0.1.4-java)
     unf_ext (0.0.7.2)
     web-console (3.4.0)
       actionview (>= 5.0)
@@ -309,6 +330,8 @@ GEM
       railties (>= 5.0)
     webrobots (0.1.2)
     websocket-driver (0.6.5)
+      websocket-extensions (>= 0.1.0)
+    websocket-driver (0.6.5-java)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
     wikicloth (0.8.3)
@@ -321,6 +344,7 @@ GEM
       nokogiri (~> 1.3)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
@@ -367,8 +391,6 @@ DEPENDENCIES
   rack-mini-profiler (>= 0.9.9.2)
   railroady (>= 1.5.1)
   rails (>= 5.0.0.1)
-  rmagick (>= 2.16.0)
-  rmagick4j
   sass-rails (>= 5.0.5)
   sdoc
   spring
@@ -379,4 +401,4 @@ DEPENDENCIES
   web-console (>= 3.1.1)
 
 BUNDLED WITH
-   1.13.7
+   1.14.3
