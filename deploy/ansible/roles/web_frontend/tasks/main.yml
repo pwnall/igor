@@ -16,13 +16,17 @@
   - restart frontend main service
   - restart frontend job queue service
 
+# TODO(pwnall): everything except for foreman and rake should be in the
+#               ruby_bundler task
 - name: install or update core gems
   become: true
   become_user: "{{ app_user }}"
   gem: name={{ item }} state=latest
   with_items:
+  - bigdecimal  # Default gem, missing for some reason in Fedora 25.
   - bundler
   - foreman
+  - io-console  # Default gem, missing for some reason in Fedora 25.
   - rake
 
 - name: install npm packages
