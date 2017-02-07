@@ -63,6 +63,23 @@ gem 'mini_racer', '>= 0.1.7'
 #gem 'rmagick', '>= 2.16.0', platforms: [:mri, :rbx]
 #gem 'rmagick4j', '>= 0', platform: :jruby
 
+# Ruby standard gems.
+# These gems should be included with every Ruby installation. For some reason,
+# they are sometimes left out.
+gem 'bigdecimal', '>= 1.3.0', require: false
+gem 'io-console', '>= 0.4.6', require: false
+gem 'json', '>= 1.8.6', require: false
+gem 'minitest', '>= 5.10.1', require: false
+gem 'net-telnet', '>= 0.1.1', require: false
+gem 'openssl', '>= 2.0.3', require: false
+gem 'psych', '>= 2.2.2', require: false
+gem 'power_assert', '>= 1.0.1', require: false
+gem 'rake', '>= 12.0.0', require: false
+gem 'test-unit', '>= 3.2.3', require: false
+
+# TODO(pwnall): Add xmlrpc dependency when switching to MRI 2.4.0+.
+# gem 'xmlrpc', '>= 0', require: false
+
 group :development, :test do
   gem 'binary_fixtures', '>= 0.1.3'
   gem 'byebug', platforms: :mri
