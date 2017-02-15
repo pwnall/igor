@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '>= 2.3'
+
 gem 'rails', '>= 5.0.0.1'
 
 gem 'pg', '>= 0.19.0', platforms: [:mri, :rbx]
@@ -42,22 +44,22 @@ gem 'net-ldap', '>= 0.14.0'
 gem 'exception_notification', '>= 4.0.1'
 
 # Profiling.
-gem 'stackprof', '>= 0.2.8', platforms: :mri
+gem 'stackprof', '>= 0.2.10', platforms: :mri
 gem 'flamegraph', '>= 0.9.5', platforms: :mri
-gem 'rack-mini-profiler', '>= 0.9.9.2', require: false
+gem 'rack-mini-profiler', '>= 0.10.2', require: false
 
 # Bower integration.
 gem 'bower-rails', '>= 0.10.0'
 
 # Assets.
-gem 'sass-rails', '>= 5.0.5'
-gem 'jquery-rails', '>= 4.1.1'
-gem 'font-awesome-rails', '>= 4.7.0.0'
-gem 'uglifier', '>= 3.0.0'
-gem 'autoprefixer-rails', '>= 6.5.4'
+gem 'sass-rails', '>= 5.0.6'
+gem 'jquery-rails', '>= 4.2.2'
+gem 'font-awesome-rails', '>= 4.7.0.1'
+gem 'uglifier', '>= 3.0.4'
+gem 'autoprefixer-rails', '>= 6.7.3'
 gem 'foundation-rails', '>= 6.3.0.0'
 gem 'coffee-rails', '>= 4.2.1'
-gem 'mini_racer', '>= 0.1.7'
+gem 'mini_racer', '>= 0.1.8'
 
 # Image resizing.
 #gem 'rmagick', '>= 2.16.0', platforms: [:mri, :rbx]
@@ -66,7 +68,7 @@ gem 'mini_racer', '>= 0.1.7'
 # Ruby standard gems.
 # These gems should be included with every Ruby installation. For some reason,
 # they are sometimes left out.
-gem 'bigdecimal', '>= 1.3.0', require: false
+gem 'bigdecimal', '>= 1.3.1', require: false
 gem 'io-console', '>= 0.4.6', require: false
 gem 'json', '>= 1.8.6', require: false
 gem 'minitest', '>= 5.10.1', require: false
@@ -76,9 +78,10 @@ gem 'psych', '>= 2.2.2', require: false
 gem 'power_assert', '>= 1.0.1', require: false
 gem 'rake', '>= 12.0.0', require: false
 gem 'test-unit', '>= 3.2.3', require: false
-
-# TODO(pwnall): Add xmlrpc dependency when switching to MRI 2.4.0+.
-# gem 'xmlrpc', '>= 0', require: false
+# TODO(pwnall): Switch to the released gem once the PR below gets merged.
+#               https://github.com/ruby/xmlrpc/pull/8
+gem 'xmlrpc', '>= 0.2.1', require: false,
+    git: 'https://github.com/pwnall/xmlrpc.git', branch: 'ruby_23'
 
 group :development, :test do
   gem 'binary_fixtures', '>= 0.1.3'
