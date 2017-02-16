@@ -78,10 +78,7 @@ gem 'psych', '>= 2.2.2', require: false
 gem 'power_assert', '>= 1.0.1', require: false
 gem 'rake', '>= 12.0.0', require: false
 gem 'test-unit', '>= 3.2.3', require: false
-# TODO(pwnall): Switch to the released gem once the PR below gets merged.
-#               https://github.com/ruby/xmlrpc/pull/8
-gem 'xmlrpc', '>= 0.2.1', require: false,
-    git: 'https://github.com/pwnall/xmlrpc.git', branch: 'ruby_23'
+gem 'xmlrpc', '>= 0.3.0', require: false
 
 group :development, :test do
   gem 'binary_fixtures', '>= 0.1.3'
