@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '>= 2.3'
 
-gem 'rails', '>= 5.0.0.1'
+gem 'rails', '>= 5.0.2'
 
 gem 'pg', '>= 0.19.0', platforms: [:mri, :rbx]
 gem 'activerecord-jdbcpostgresql-adapter', '>= 0', platform: :jruby,
@@ -19,7 +19,7 @@ gem 'nokogiri', '>= 1.6.7.2'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
 # Use Puma as the app server.
-gem 'puma', '>= 3.6.2'
+gem 'puma', '>= 3.7.1'
 
 # Background processing.
 gem 'delayed_job', '>= 4.1.2'
@@ -32,7 +32,7 @@ gem 'prawn-table', '>= 0.2.2'
 # Instant feedback.
 gem 'contained_mr', '>= 0.6.0'
 #gem 'contained_mr', '>= 0.1.2', path: '../contained_mr'
-gem 'pdf-reader', '>= 1.4.0'
+gem 'pdf-reader', '>= 2.0.0'
 
 # Gravatar fall-back avatars.
 gem 'gravatar-ultimate', '>= 2.0.0'
@@ -56,7 +56,7 @@ gem 'sass-rails', '>= 5.0.6'
 gem 'jquery-rails', '>= 4.2.2'
 gem 'font-awesome-rails', '>= 4.7.0.1'
 gem 'uglifier', '>= 3.0.4'
-gem 'autoprefixer-rails', '>= 6.7.3'
+gem 'autoprefixer-rails', '>= 6.7.6'
 gem 'foundation-rails', '>= 6.3.0.0'
 gem 'coffee-rails', '>= 4.2.1'
 gem 'mini_racer', '>= 0.1.8'
