@@ -187,7 +187,7 @@ class SubmissionsController < ApplicationController
           extension = s.file_original_name.split('.').last
 
           zip.put_next_entry "#{prefix}#{basename}#{suffix}.#{extension}"
-          zip.write s.contents
+          zip.write s.file_data
         end
       end
 
