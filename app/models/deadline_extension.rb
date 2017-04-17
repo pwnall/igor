@@ -62,6 +62,6 @@ class DeadlineExtension < ApplicationRecord
 
   # Set the extension's recipient (virtual attribute).
   def user_exuid=(exuid)
-    self.user = User.with_param(exuid).first
+    self.user = User.find_by_param exuid
   end
 end
