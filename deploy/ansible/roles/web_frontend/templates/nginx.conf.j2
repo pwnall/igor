@@ -31,7 +31,7 @@ server {
     open_file_cache_valid 600s;
     open_file_cache_errors on;
   }
-  location ~ ^/.well_known/ {
+  location ~ ^/.well-known/ {
     root /home/{{ app_user }}/{{ app_certs_www_dir }};
     try_files $uri @rails;
 

@@ -39,7 +39,8 @@
   <section>
     <figure>
       <%= Markdpwn.markup(
-            File.read(Rails.root.join('lib/analyzer_sources/fib/Dockerfile')),
+            File.read(Rails.root.join('lib', 'analyzer_sources', 'fib',
+                      'Dockerfile')),
             file_name: 'Dockerfile').html_safe %>
       <figcaption>Sample <span class="file-name">Dockerfile</span></figcaption>
     </figure>
