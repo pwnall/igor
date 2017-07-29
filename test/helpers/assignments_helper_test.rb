@@ -21,7 +21,7 @@ class AssignmentsHelperTest < ActionView::TestCase
   describe '#average_score_fraction_tag' do
     it 'displays placeholder dashes if the assignment has no metrics' do
       assert_empty unreleased_exam.metrics
-      render text: average_score_fraction_tag(unreleased_exam)
+      render html: average_score_fraction_tag(unreleased_exam)
       assert_select 'span.score', '-'
       assert_select 'span.max-score', '-'
     end
@@ -30,20 +30,20 @@ class AssignmentsHelperTest < ActionView::TestCase
         have been issued for the assignment' do
       assert_not_empty grades_unreleased_assignment.metrics
       assert_empty grades_unreleased_assignment.grades
-      render text: average_score_fraction_tag(grades_unreleased_assignment)
+      render html: average_score_fraction_tag(grades_unreleased_assignment)
       assert_select 'span.score', '0.00'
       assert_select 'span.max-score', '100.00'
     end
 
     it 'displays the average assignment score, when grades have been issued' do
       assert_not_empty many_metrics_assignment.grades
-      render text: average_score_fraction_tag(many_metrics_assignment)
+      render html: average_score_fraction_tag(many_metrics_assignment)
       assert_select 'span.score', '60.00'
       assert_select 'span.max-score', '100.00'
     end
 
     it 'displays the average assignment score within a section' do
-      render text: average_score_fraction_tag(assignments(:assessment),
+      render html: average_score_fraction_tag(assignments(:assessment),
                                               recitation_sections(:r01))
       assert_select 'span.score', '40.00'
       assert_select 'span.max-score', '100.00'
@@ -51,21 +51,21 @@ class AssignmentsHelperTest < ActionView::TestCase
 
     it 'displays a fraction equivalent to 0, if the metric has no grades' do
       assert_empty gradeless_metric.grades
-      render text: average_score_fraction_tag(gradeless_metric)
+      render html: average_score_fraction_tag(gradeless_metric)
       assert_select 'span.score', '0.00'
       assert_select 'span.max-score', '10.00'
     end
 
     it 'displays the average score for metrics with non-zero weights' do
       assert_not_equal 0, weighted_metric.weight
-      render text: average_score_fraction_tag(weighted_metric)
+      render html: average_score_fraction_tag(weighted_metric)
       assert_select 'span.score', '60.00'
       assert_select 'span.max-score', '100.00'
     end
 
     it 'displays the average score for metrics with zero weight' do
       assert_equal 0, checkoff_metric.weight
-      render text: average_score_fraction_tag(checkoff_metric)
+      render html: average_score_fraction_tag(checkoff_metric)
       assert_select 'span.score', '7.20'
       assert_select 'span.max-score', '10.00'
     end
@@ -76,14 +76,14 @@ class AssignmentsHelperTest < ActionView::TestCase
       it 'displays a fraction equivalent to 0, if there are no grades' do
         assert_not_empty grades_unreleased_assignment.metrics
         assert_empty grades_unreleased_assignment.grades
-        render text: grading_process_fraction_tag(grades_unreleased_assignment)
+        render html: grading_process_fraction_tag(grades_unreleased_assignment)
         assert_select 'span.current-count', '0'
         assert_select 'span.max-count', '4'
       end
 
       it 'displays the fraction of issued grades, if grades have been issued' do
         assert_not_empty many_metrics_assignment.grades
-        render text: grading_process_fraction_tag(many_metrics_assignment)
+        render html: grading_process_fraction_tag(many_metrics_assignment)
         assert_select 'span.current-count', '6'
         assert_select 'span.max-count', '8'  # 4 students * 2 metrics
       end
@@ -92,13 +92,13 @@ class AssignmentsHelperTest < ActionView::TestCase
     describe 'for an AssignmentMetric' do
       it 'displays a fraction equivalent to 0, if there are no grades' do
         assert_empty gradeless_metric.grades
-        render text: grading_process_fraction_tag(gradeless_metric)
+        render html: grading_process_fraction_tag(gradeless_metric)
         assert_select 'span.current-count', '0'
         assert_select 'span.max-count', '4'
       end
 
       it 'displays the fraction of issued grades, if grades have been issued' do
-        render text: grading_process_fraction_tag(weighted_metric)
+        render html: grading_process_fraction_tag(weighted_metric)
         assert_select 'span.current-count', '3'
         assert_select 'span.max-count', '4'
       end
@@ -109,13 +109,13 @@ class AssignmentsHelperTest < ActionView::TestCase
     describe 'for an Assignment' do
       it 'displays placeholder dashes if there are no deliverables' do
         assert_empty exam_without_deliverables.deliverables
-        render text: submission_count_fraction_tag(exam_without_deliverables)
+        render html: submission_count_fraction_tag(exam_without_deliverables)
         assert_select 'span.current-count', '-'
         assert_select 'span.max-count', '-'
       end
 
       it 'displays the fraction of expected submissions' do
-        render text: submission_count_fraction_tag(many_metrics_assignment)
+        render html: submission_count_fraction_tag(many_metrics_assignment)
         assert_select 'span.current-count', '3'
         assert_select 'span.max-count', '8'  # 4 students * 2 deliverables
       end
@@ -123,7 +123,7 @@ class AssignmentsHelperTest < ActionView::TestCase
 
     describe 'for a Deliverable' do
       it 'displays the fraction of expected submissions' do
-        render text: submission_count_fraction_tag(deliverable)
+        render html: submission_count_fraction_tag(deliverable)
         assert_select 'span.current-count', '2'
         assert_select 'span.max-count', '4'
       end
@@ -139,25 +139,25 @@ class AssignmentsHelperTest < ActionView::TestCase
     it 'returns an empty meter for assignments with metrics, but no grades' do
       assert_not_empty grades_unreleased_assignment.metrics
       assert_empty grades_unreleased_assignment.grades
-      render text: grading_progress_tag(grades_unreleased_assignment)
+      render html: grading_progress_tag(grades_unreleased_assignment)
       assert_select "span.progress-meter:match('style', ?)", /width: 0.00%;/
     end
 
     it 'returns an empty meter for metrics with no grades' do
       assert_empty gradeless_metric.grades
-      render text: grading_progress_tag(gradeless_metric)
+      render html: grading_progress_tag(gradeless_metric)
       assert_select "span.progress-meter:match('style', ?)", /width: 0.00%;/
     end
 
     it 'returns a meter with the percentage of grades issued for metrics of the
         assignment' do
-      render text: grading_progress_tag(released_assignment)
+      render html: grading_progress_tag(released_assignment)
       # 1 grade / 4 students
       assert_select "span.progress-meter:match('style', ?)", /width: 25.00%;/
     end
 
     it 'returns a meter with the percentage of grades issued for the metric' do
-      render text: grading_progress_tag(weighted_metric)
+      render html: grading_progress_tag(weighted_metric)
       # 3 grades / 4 students
       assert_select "span.progress-meter:match('style', ?)", /width: 75.00%;/
     end
@@ -172,30 +172,30 @@ class AssignmentsHelperTest < ActionView::TestCase
     it 'returns an empty meter for assignments with metrics, but no grades' do
       assert_not_empty grades_unreleased_assignment.metrics
       assert_empty grades_unreleased_assignment.grades
-      render text: average_score_meter_tag(grades_unreleased_assignment)
+      render html: average_score_meter_tag(grades_unreleased_assignment)
       assert_select "span.progress-meter:match('style', ?)", /width: 0.00%;/
     end
 
     it 'returns an empty meter for metrics with no grades' do
       assert_empty gradeless_metric.grades
-      render text: average_score_meter_tag(gradeless_metric)
+      render html: average_score_meter_tag(gradeless_metric)
       assert_select "span.progress-meter:match('style', ?)", /width: 0.00%;/
     end
 
     it 'returns a meter with the average final grade for the assignment' do
-      render text: average_score_meter_tag(many_metrics_assignment)
+      render html: average_score_meter_tag(many_metrics_assignment)
       assert_select "span.progress-meter:match('style', ?)", /width: 60.00%;/
     end
 
     it 'returns a meter with the average score for zero-weighted metrics' do
       assert_equal 0, checkoff_metric.weight
-      render text: average_score_meter_tag(checkoff_metric)
+      render html: average_score_meter_tag(checkoff_metric)
       assert_select "span.progress-meter:match('style', ?)", /width: 72.00%;/
     end
 
     it 'returns a meter with the average score for non-zero-weighted metrics' do
       assert_not_equal 0, weighted_metric.weight
-      render text: average_score_meter_tag(weighted_metric)
+      render html: average_score_meter_tag(weighted_metric)
       assert_select "span.progress-meter:match('style', ?)", /width: 60.00%;/
     end
   end
@@ -205,14 +205,14 @@ class AssignmentsHelperTest < ActionView::TestCase
 
     it 'returns an empty meter if the assignment has no metrics' do
       assert_empty unreleased_exam.metrics
-      render text: recitation_score_meter_tag(unreleased_exam, section)
+      render html: recitation_score_meter_tag(unreleased_exam, section)
       assert_select "span.progress-meter:match('style', ?)", /width: 0.00%;/
     end
 
     it 'returns an empty meter for assignments with metrics, but no grades' do
       assert_not_empty grades_unreleased_assignment.metrics
       assert_empty grades_unreleased_assignment.grades
-      render text: recitation_score_meter_tag(grades_unreleased_assignment,
+      render html: recitation_score_meter_tag(grades_unreleased_assignment,
                                               section)
       assert_select "span.progress-meter:match('style', ?)", /width: 0.00%;/
     end
@@ -221,14 +221,14 @@ class AssignmentsHelperTest < ActionView::TestCase
       section.users.each do |u|
         u.registration_for(section.course).update! recitation_section: nil
       end
-      render text: recitation_score_meter_tag(grades_unreleased_assignment,
+      render html: recitation_score_meter_tag(grades_unreleased_assignment,
                                               section)
       assert_select "span.progress-meter:match('style', ?)", /width: 0.00%;/
     end
 
     it 'returns a meter with the average recitation score' do
       html_text = recitation_score_meter_tag(many_metrics_assignment, section)
-      render text: html_text
+      render html: html_text
       assert_select "span.progress-meter:match('style', ?)", /width: 40.00%;/
     end
   end
@@ -241,20 +241,20 @@ class AssignmentsHelperTest < ActionView::TestCase
 
     it 'returns a meter with the fraction of expected submissions across all
         deliverables for an assignment' do
-      render text: submission_count_meter_tag(many_deliverables_assignment)
+      render html: submission_count_meter_tag(many_deliverables_assignment)
       assert_select "span.progress-meter:match('style', ?)", /width: 37.50%;/  # 3/8
     end
 
     it 'returns a meter with the fraction of expected submissions for a single
         deliverable' do
-      render text: submission_count_meter_tag(deliverable)
+      render html: submission_count_meter_tag(deliverable)
       assert_select "span.progress-meter:match('style', ?)", /width: 50.00%;/  # 2/4
     end
   end
 
   describe '#progress_meter_tag' do
     it 'returns HTML for a progress meter with the given percentage' do
-      render text: progress_meter_tag('25%')
+      render html: progress_meter_tag('25%')
       assert_select 'div.progress' do
         assert_select "span.progress-meter:match('style', ?)", /width: 25%;/ do
           assert_select 'p.progress-meter-text', '25%'

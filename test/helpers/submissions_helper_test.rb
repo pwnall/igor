@@ -47,7 +47,7 @@ class SubmissionsHelperTest < ActionView::TestCase
       before { assert_not_nil analysis }
 
       it 'renders the submission figure' do
-        rendered_buffer = render text: submission_figure(submission)
+        rendered_buffer = render html: submission_figure(submission)
         assert_select 'figure', true, rendered_buffer
       end
     end
@@ -56,7 +56,7 @@ class SubmissionsHelperTest < ActionView::TestCase
       before { submission.analysis.destroy }
 
       it 'renders the submission figure without crashing' do
-        rendered_buffer = render text: submission_figure(submission.reload)
+        rendered_buffer = render html: submission_figure(submission.reload)
         assert_select 'figure', true, rendered_buffer
       end
     end

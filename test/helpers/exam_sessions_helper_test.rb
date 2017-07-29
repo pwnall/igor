@@ -11,12 +11,12 @@ class ExamSessionsHelperTest < ActionView::TestCase
 
   describe '#exam_session_checkin_options' do
     it 'returns an <option> for each session of the given exam' do
-      render text: exam_session_checkin_options(unreleased_exam.exam)
+      render html: exam_session_checkin_options(unreleased_exam.exam)
       assert_select 'option', unreleased_exam.exam.exam_sessions.count
     end
 
     it 'pre-selects the specified session' do
-      render text: exam_session_checkin_options(unreleased_exam.exam,
+      render html: exam_session_checkin_options(unreleased_exam.exam,
                                                 open_session)
       assert_select "option[selected='selected'][value='#{open_session.id}']"
     end
@@ -25,14 +25,14 @@ class ExamSessionsHelperTest < ActionView::TestCase
   describe '#attendance_status_display' do
     describe 'the student can check in to the session' do
       it 'returns a check-in button' do
-        render text: attendance_status_display(open_session, users(:deedee))
+        render html: attendance_status_display(open_session, users(:deedee))
         assert_select 'form.button_to input[type="submit"][value="Check in"]'
       end
     end
 
     describe 'the session has reached capacity' do
       it 'returns text with a tooltip' do
-        render text: attendance_status_display(full_session, users(:deedee))
+        render html: attendance_status_display(full_session, users(:deedee))
         assert_select "span:match('title', ?)", /check-in elsewhere/,
             { text: 'Room full' }
       end
@@ -40,21 +40,21 @@ class ExamSessionsHelperTest < ActionView::TestCase
 
     describe 'the user is not a student in the course' do
       it 'returns a disabled check-in button' do
-        render text: attendance_status_display(open_session, users(:main_staff))
+        render html: attendance_status_display(open_session, users(:main_staff))
         assert_select 'button[disabled="disabled"]', 'Check in'
       end
     end
 
     describe 'the student has already checked in to another session' do
       it 'returns a disabled check-in button' do
-        render text: attendance_status_display(open_session, users(:solo))
+        render html: attendance_status_display(open_session, users(:solo))
         assert_select 'button[disabled="disabled"]', 'Check in'
       end
     end
 
     describe 'the student has already checked in to this session' do
       it 'returns text with a tooltip' do
-        render text: attendance_status_display(open_session, users(:dexter))
+        render html: attendance_status_display(open_session, users(:dexter))
         assert_select "span:match('title', ?)", /scheduled to take the exam/,
             { text: 'Checked in!' }
       end
@@ -62,7 +62,7 @@ class ExamSessionsHelperTest < ActionView::TestCase
 
     describe "the student's attendance to this session must be confirmed" do
       it 'returns text with a tooltip' do
-        render text: attendance_status_display(full_session, users(:solo))
+        render html: attendance_status_display(full_session, users(:solo))
         assert_select "span:match('title', ?)", /staff member must confirm/,
             { text: 'Awaiting confirmation' }
       end
@@ -72,7 +72,7 @@ class ExamSessionsHelperTest < ActionView::TestCase
   describe '#exam_session_time_tag' do
     it 'returns the date only once if session starts and ends on same day' do
       assert_operator open_session.ends_at - open_session.starts_at, :<, 1.day
-      render text: exam_session_time_tag(open_session)
+      render html: exam_session_time_tag(open_session)
       assert_select 'span.time' do |elements|
         elements.each_with_index do |element, i|
           if i == 0
@@ -91,7 +91,7 @@ class ExamSessionsHelperTest < ActionView::TestCase
 
     it 'returns both start and end dates if they are on different days' do
       assert_operator long_session.ends_at - long_session.starts_at, :>, 1.day
-      render text: exam_session_time_tag(long_session)
+      render html: exam_session_time_tag(long_session)
       assert_select 'span.time' do |elements|
         elements.each_with_index do |element, i|
           if i == 0

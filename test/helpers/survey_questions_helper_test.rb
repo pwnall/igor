@@ -8,7 +8,7 @@ class SurveyQuestionsHelperTest < ActionView::TestCase
 
   describe '#question_types_for_select' do
     it 'has an <option> for each type of SurveyQuestion' do
-      render text: question_types_for_select
+      render html: question_types_for_select
       assert_select 'option[value=QuantitativeOpenQuestion]',
                     'Open-ended Numeric Response'
       assert_select 'option[value=QuantitativeScaledQuestion]',

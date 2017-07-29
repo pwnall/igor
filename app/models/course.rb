@@ -69,11 +69,11 @@ end
 
 # :nodoc: Students.
 class Course
-  # The students in this course.
-  has_many :users, through: :registrations, source: :user
-
   # Student registrations for this course.
   has_many :registrations, dependent: :destroy, inverse_of: :course
+
+  # The students in this course.
+  has_many :users, through: :registrations, source: :user
 
   # Prerequisite courses for this course.
   has_many :prerequisites, dependent: :destroy, inverse_of: :course

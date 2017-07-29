@@ -20,7 +20,7 @@ class Exam < ApplicationRecord
   def reset_confirmations
     attendances.update_all confirmed: !requires_confirmation
   end
-  after_update :reset_confirmations, if: :requires_confirmation_changed?
+  after_update :reset_confirmations, if: :saved_change_to_requires_confirmation?
 
   # The times/locations where this exam is administered.
   has_many :exam_sessions, dependent: :destroy, inverse_of: :exam

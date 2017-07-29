@@ -2,9 +2,9 @@ source 'https://rubygems.org'
 
 ruby '>= 2.3'
 
-gem 'rails', '>= 5.0.3'
+gem 'rails', '>= 5.1.2'
 
-gem 'pg', '>= 0.20.0', platforms: [:mri, :rbx]
+gem 'pg', '>= 0.21.0', platforms: [:mri, :rbx]
 gem 'activerecord-jdbcpostgresql-adapter', '>= 0', platform: :jruby,
     git: 'https://github.com/jruby/activerecord-jdbc-adapter.git'
 
@@ -14,16 +14,16 @@ gem 'file_blobs_rails', '>= 0.2.3'
 gem 'foreman', '>= 0.82.0', require: false
 gem 'jbuilder', '~> 2.4'
 gem 'markdpwn', '>= 0.3.0', platforms: [:mri, :rbx]
-gem 'mail', '>= 2.6.5'
-gem 'nokogiri', '>= 1.7.1'
+gem 'mail', '>= 2.6.6'
+gem 'nokogiri', '>= 1.8.0'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
 # Use Puma as the app server.
-gem 'puma', '>= 3.8.2'
+gem 'puma', '>= 3.9.1'
 
 # Background processing.
-gem 'delayed_job', '>= 4.1.2'
-gem 'delayed_job_active_record', '>= 4.1.1'  # Required by delayed_job.
+gem 'delayed_job', '>= 4.1.3'
+gem 'delayed_job_active_record', '>= 4.1.2'  # Required by delayed_job.
 
 # PDF cover sheets.
 gem 'prawn', '>= 2.2.2'
@@ -46,7 +46,7 @@ gem 'exception_notification', '>= 4.0.1'
 # Profiling.
 gem 'stackprof', '>= 0.2.10', platforms: :mri
 gem 'flamegraph', '>= 0.9.5', platforms: :mri
-gem 'rack-mini-profiler', '>= 0.10.2', require: false
+gem 'rack-mini-profiler', '>= 0.10.5', require: false
 
 # Bower integration.
 gem 'bower-rails', '>= 0.10.0'
@@ -56,10 +56,10 @@ gem 'sass-rails', '>= 5.0.6'
 gem 'jquery-rails', '>= 4.2.2'
 gem 'font-awesome-rails', '>= 4.7.0.1'
 gem 'uglifier', '>= 3.2.0'
-gem 'autoprefixer-rails', '>= 6.7.6'
-gem 'foundation-rails', '>= 6.3.1.0'
-gem 'coffee-rails', '>= 4.2.1'
-gem 'mini_racer', '>= 0.1.9'
+gem 'autoprefixer-rails', '>= 7.1.2.3'
+gem 'foundation-rails', '>= 6.4.1.2'
+gem 'coffee-rails', '>= 4.2.2'
+gem 'mini_racer', '>= 0.1.12'
 
 # Image resizing.
 #gem 'rmagick', '>= 2.16.0', platforms: [:mri, :rbx]
@@ -71,9 +71,9 @@ gem 'mini_racer', '>= 0.1.9'
 gem 'bigdecimal', '>= 1.3.1', require: false
 gem 'io-console', '>= 0.4.6', require: false
 gem 'json', '>= 1.8.6', require: false
-gem 'minitest', '>= 5.10.1', require: false
+gem 'minitest', '>= 5.10.3', require: false
 gem 'net-telnet', '>= 0.1.1', require: false
-gem 'openssl', '>= 2.0.3', require: false
+gem 'openssl', '>= 2.0.4', require: false
 gem 'psych', '>= 2.2.2', require: false
 gem 'power_assert', '>= 1.0.1', require: false
 gem 'rake', '>= 12.0.0', require: false
@@ -103,7 +103,7 @@ end
 
 group :test do
   gem 'minitest-spec-rails', '>= 5.3.0'
-  gem 'capybara', '>= 2.6.2'
+  gem 'capybara', '>= 2.14.0'
   gem 'launchy', '>= 2.4.3'
   gem 'poltergeist', '>= 1.14.0'
   gem 'mocha', '>= 1.1.0'

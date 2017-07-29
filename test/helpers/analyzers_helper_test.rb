@@ -45,7 +45,7 @@ class AnalyzersHelperTest < ActionView::TestCase
 
   describe '#analyzer_types_for_select' do
     it 'has an <option> for each type of Analyzer' do
-      render text: analyzer_types_for_select
+      render html: analyzer_types_for_select
       assert_select 'option[value=ProcAnalyzer]', 'Built-in Analyzer'
       assert_select 'option[value=DockerAnalyzer]', 'Docker Analyzer'
     end
