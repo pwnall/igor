@@ -1,13 +1,14 @@
+
 # == Schema Information
 #
 # Table name: profile_photos
 #
-#  id               :integer          not null, primary key
-#  profile_id       :integer          not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  pic_file_name    :string
-#  pic_content_type :string
-#  pic_file_size    :integer
-#  pic_updated_at   :datetime
+#  id                  :integer          not null, primary key
+#  profile_id          :integer          not null
+#  image_blob_id       :string(48)       not null
+#  image_size          :integer          not null
+#  image_mime_type     :string(64)       not null
+#  image_original_name :string(256)      not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #

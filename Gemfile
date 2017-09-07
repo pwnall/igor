@@ -88,10 +88,7 @@ end
 group :development do
   gem 'web-console', '>= 3.5.0'
   gem 'binding_of_caller', '>= 0.7.3.pre1'
-  # TODO(pwnall): Remove the git ref when 2.7.2 gets released.
-  gem 'annotate', '>= 2.7.1',
-      git: 'https://github.com/ctran/annotate_models.git',
-      ref: '983d36f6a028daa289f31c0fe3fa83df36825d25'
+  gem 'annotate', '>= 2.7.2'
   # TODO(pwnall): Remove version limitation when the rake issue gets fixed.
   #               https://github.com/stympy/faker/issues/780
   gem 'faker', ['>= 1.6.6', '< 1.7']
