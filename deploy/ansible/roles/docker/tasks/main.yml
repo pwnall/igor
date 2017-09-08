@@ -13,24 +13,6 @@
   become_user: root
   file: path=/etc/systemd/system/docker.service.d state=directory mode=0755
 
-- name: write docker systemd drop-in for Fedora config compatibility
-  become: true
-  become_user: root
-  # NOTE: Template inspired by
-  #       http://docs.docker.com/engine/articles/systemd/#custom-docker-daemon-options
-  template:
-    src: systemd_fedora_config.conf.j2
-    dest: /etc/systemd/system/docker.service.d/10-fedora-config.conf
-  register: docker_systemd_fedora_config_dropin
-  notify:
-  - restart docker daemon
-
-- name: reload systemd configuration
-  command: systemctl daemon-reload
-  become: true
-  become_user: root
-  when: docker_systemd_fedora_config_dropin | changed
-
 - name:  create /etc/sysconfig directory
   become: true
   become_user: root

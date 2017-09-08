@@ -24,6 +24,17 @@
   - reload NetworkManager configuration
   - restart NetworkManager
 
+- name: undo NetworkManager DNS disabling from cloud-init
+  become: true
+  become_user: root
+  template:
+    src: 99-z-cancel-cloud-init.conf
+    dest: /etc/NetworkManager/conf.d/99-z-cancel-cloud-init.conf
+  notify:
+  - reload NetworkManager configuration
+  - restart NetworkManager
+
+
 # NOTE: We're installing the package that provides the dig CLI tool, which
 #       comes in handy when debugging DNS problems.
 - name: install bind-utils with dnf
