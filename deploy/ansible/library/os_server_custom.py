@@ -418,7 +418,6 @@ def _network_args(module, cloud):
             del resolved_net['net-name']
             resolved_net['net-id'] = by_name['id']
             args.append(resolved_net)
-            args.append({'net-id': by_name['id']})
         elif net.get('port-id'):
             args.append(net)
         elif net.get('port-name'):
