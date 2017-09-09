@@ -3,7 +3,7 @@ dist: trusty
 language: ruby
 cache: bundler
 addons:
-  postgresql: "9.5"
+  postgresql: "9.6"
 services:
   - postgresql
 before_script:
@@ -13,5 +13,4 @@ before_script:
 script: bin/rails test test/models/ test/controllers/ test/helpers/
                        test/mailers/ test/jobs/
 rvm:
-  - "2.3.3"
-  - "2.4.0"
+  - "2.4.1"
