@@ -1,3 +1,11 @@
+# == Schema Information
+#
+# Table name: file_blobs
+#
+#  id   :string(48)       not null, primary key
+#  data :binary           not null
+#
+
 small_pdf:
   id: <%= file_blob_id 'files/submission/small.pdf' %>
   data: <%= file_blob_data 'files/submission/small.pdf' %>

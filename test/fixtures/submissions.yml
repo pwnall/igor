@@ -2,15 +2,18 @@
 #
 # Table name: submissions
 #
-#  id             :integer          not null, primary key
-#  deliverable_id :integer          not null
-#  db_file_id     :integer          not null
-#  subject_type   :string           not null
-#  subject_id     :integer          not null
-#  uploader_id    :integer          not null
-#  upload_ip      :string(48)       not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id                 :integer          not null, primary key
+#  deliverable_id     :integer          not null
+#  file_blob_id       :string(48)       not null
+#  file_size          :integer          not null
+#  file_mime_type     :string(64)       not null
+#  file_original_name :string(256)      not null
+#  subject_type       :string           not null
+#  subject_id         :integer          not null
+#  uploader_id        :integer          not null
+#  upload_ip          :string(48)       not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
 # NOTE: Do not create a submissions for the following:

@@ -6,7 +6,7 @@
 #  course_id    :integer          not null
 #  metric_id    :integer          not null
 #  grader_id    :integer          not null
-#  subject_type :string(64)
+#  subject_type :string(64)       not null
 #  subject_id   :integer          not null
 #  score        :decimal(8, 2)    not null
 #  created_at   :datetime         not null
