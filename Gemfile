@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '>= 2.3'
 
-gem 'rails', '>= 5.1.2'
+gem 'rails', '>= 5.1.4'
 
 gem 'pg', '>= 0.21.0', platforms: [:mri, :rbx]
 gem 'activerecord-jdbcpostgresql-adapter', '>= 0', platform: :jruby,
@@ -19,7 +19,7 @@ gem 'nokogiri', '>= 1.8.0'
 gem 'jc-validates_timeliness', '>= 3.1.1'
 
 # Use Puma as the app server.
-gem 'puma', '>= 3.9.1'
+gem 'puma', '>= 3.10.0'
 
 # Background processing.
 gem 'delayed_job', '>= 4.1.3'
@@ -41,7 +41,7 @@ gem 'gravatar-ultimate', '>= 2.0.0'
 gem 'net-ldap', '>= 0.14.0'
 
 # Report production exceptions.
-gem 'exception_notification', '>= 4.0.1'
+gem 'exception_notification', '>= 4.2.2'
 
 # Profiling.
 gem 'stackprof', '>= 0.2.10', platforms: :mri
@@ -56,7 +56,7 @@ gem 'sass-rails', '>= 5.0.6'
 gem 'jquery-rails', '>= 4.2.2'
 gem 'font-awesome-rails', '>= 4.7.0.1'
 gem 'uglifier', '>= 3.2.0'
-gem 'autoprefixer-rails', '>= 7.1.2.3'
+gem 'autoprefixer-rails', '>= 7.1.4'
 gem 'foundation-rails', '>= 6.4.1.2'
 gem 'coffee-rails', '>= 4.2.2'
 gem 'mini_racer', '>= 0.1.12'
@@ -75,7 +75,7 @@ gem 'minitest', '>= 5.10.3', require: false
 gem 'net-telnet', '>= 0.1.1', require: false
 gem 'openssl', '>= 2.0.4', require: false
 gem 'psych', '>= 2.2.2', require: false
-gem 'power_assert', '>= 1.0.1', require: false
+gem 'power_assert', '>= 1.1.0', require: false
 gem 'rake', '>= 12.0.0', require: false
 gem 'test-unit', '>= 3.2.3', require: false
 gem 'xmlrpc', '>= 0.3.0', require: false
@@ -103,10 +103,10 @@ end
 
 group :test do
   gem 'minitest-spec-rails', '>= 5.3.0'
-  gem 'capybara', '>= 2.14.0'
+  gem 'capybara', '>= 2.15.1'
   gem 'launchy', '>= 2.4.3'
-  gem 'poltergeist', '>= 1.14.0'
-  gem 'mocha', '>= 1.1.0'
+  gem 'poltergeist', '>= 1.16.0'
+  gem 'mocha', '>= 1.3.0'
   gem 'mechanize', '>= 2.7.4', require: false
 end
 
